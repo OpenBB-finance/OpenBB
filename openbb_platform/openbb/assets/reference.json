@@ -3,7 +3,7 @@
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.2.5",
+        "core": "1.2.7",
         "extensions": {
             "openbb_core_extension": [
                 "commodity@1.1.3",
@@ -72,7 +72,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -308,7 +308,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -428,7 +428,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -639,7 +639,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.",
                         "default": null,
                         "optional": true
                     }
@@ -845,7 +845,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'polygon']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon.",
                         "default": null,
                         "optional": true
                     }
@@ -1200,7 +1200,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -1794,7 +1794,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -2003,7 +2003,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -2324,7 +2324,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: y, f, i, n, a, n, c, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -2452,7 +2452,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: y, f, i, n, a, n, c, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -2555,7 +2555,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -2659,7 +2659,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -2763,7 +2763,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -2859,7 +2859,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -2999,7 +2999,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -3135,7 +3135,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -3327,7 +3327,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -3510,7 +3510,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'tradingeconomics']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, tradingeconomics.",
                         "default": null,
                         "optional": true
                     }
@@ -4082,7 +4082,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred', 'oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -4333,7 +4333,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -4420,7 +4420,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -4676,7 +4676,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -4997,7 +4997,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -5173,7 +5173,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['federal_reserve']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.",
                         "default": null,
                         "optional": true
                     }
@@ -5328,7 +5328,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -5513,7 +5513,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -5617,7 +5617,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -5729,7 +5729,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -5857,7 +5857,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -6067,7 +6067,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['econdb']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: e, c, o, n, d, b.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.",
                         "default": null,
                         "optional": true
                     }
@@ -6251,7 +6251,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['econdb']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: e, c, o, n, d, b.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.",
                         "default": null,
                         "optional": true
                     }
@@ -6460,7 +6460,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['econdb']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: e, c, o, n, d, b.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.",
                         "default": null,
                         "optional": true
                     }
@@ -6588,7 +6588,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['federal_reserve']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.",
                         "default": null,
                         "optional": true
                     }
@@ -6923,7 +6923,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -7117,7 +7117,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -7287,7 +7287,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
                         "default": null,
                         "optional": true
                     }
@@ -7465,7 +7465,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -7704,7 +7704,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -7977,7 +7977,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -8121,7 +8121,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -8232,7 +8232,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -8384,7 +8384,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -8463,7 +8463,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: s, e, c.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
                         "default": null,
                         "optional": true
                     }
@@ -8977,7 +8977,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['benzinga', 'fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: b, e, n, z, i, n, g, a.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -9366,7 +9366,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -9622,7 +9622,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -9844,7 +9844,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['benzinga']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: b, e, n, z, i, n, g, a.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga.",
                         "default": null,
                         "optional": true
                     }
@@ -10397,7 +10397,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -10670,7 +10670,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -10898,7 +10898,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -11166,7 +11166,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -11310,7 +11310,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: y, f, i, n, a, n, c, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -11446,7 +11446,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: y, f, i, n, a, n, c, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -11582,7 +11582,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: y, f, i, n, a, n, c, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -11718,7 +11718,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: y, f, i, n, a, n, c, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -11854,7 +11854,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: y, f, i, n, a, n, c, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -11990,7 +11990,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: y, f, i, n, a, n, c, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -12126,7 +12126,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: y, f, i, n, a, n, c, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -12286,7 +12286,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -12406,7 +12406,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -12973,7 +12973,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -14598,7 +14598,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -15034,7 +15034,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -16066,7 +16066,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -16194,7 +16194,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -16558,7 +16558,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -16716,7 +16716,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -16869,7 +16869,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -17012,7 +17012,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -17171,7 +17171,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -17314,7 +17314,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -17425,7 +17425,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -18940,7 +18940,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -19272,7 +19272,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -20415,7 +20415,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -20553,7 +20553,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -20746,7 +20746,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -21113,7 +21113,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -21693,7 +21693,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -21812,7 +21812,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -21931,7 +21931,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.",
                         "default": null,
                         "optional": true
                     }
@@ -22266,7 +22266,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -22369,7 +22369,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -22480,7 +22480,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['tiingo']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: t, i, i, n, g, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: tiingo.",
                         "default": null,
                         "optional": true
                     }
@@ -22575,7 +22575,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -22950,7 +22950,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -23327,7 +23327,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -23676,7 +23676,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -23905,7 +23905,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: s, e, c.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
                         "default": null,
                         "optional": true
                     }
@@ -24065,7 +24065,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -24552,7 +24552,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['polygon']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: p, o, l, y, g, o, n.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: polygon.",
                         "default": null,
                         "optional": true
                     }
@@ -24793,7 +24793,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -25322,7 +25322,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -25530,7 +25530,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: s, e, c.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
                         "default": null,
                         "optional": true
                     }
@@ -25682,7 +25682,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['intrinio', 'sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, sec.",
                         "default": null,
                         "optional": true
                     }
@@ -25815,7 +25815,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -26128,7 +26128,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -26694,7 +26694,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.",
                         "default": null,
                         "optional": true
                     }
@@ -27182,7 +27182,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -27451,7 +27451,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -27980,7 +27980,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -29338,7 +29338,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -29417,7 +29417,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -29488,7 +29488,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
                         "default": null,
                         "optional": true
                     }
@@ -29836,7 +29836,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.",
                         "default": null,
                         "optional": true
                     }
@@ -30861,7 +30861,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -30941,7 +30941,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -31052,7 +31052,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -31230,7 +31230,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -31326,7 +31326,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['federal_reserve', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.",
                         "default": null,
                         "optional": true
                     }
@@ -31540,7 +31540,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -31627,7 +31627,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['federal_reserve', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.",
                         "default": null,
                         "optional": true
                     }
@@ -31849,7 +31849,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -31993,7 +31993,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -32188,7 +32188,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -32275,7 +32275,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -32371,7 +32371,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['federal_reserve', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.",
                         "default": null,
                         "optional": true
                     }
@@ -32569,7 +32569,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -32664,7 +32664,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -32759,7 +32759,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -32838,7 +32838,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['econdb', 'federal_reserve', 'fmp', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: e, c, o, n, d, b.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.",
                         "default": null,
                         "optional": true
                     }
@@ -32990,7 +32990,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -33077,7 +33077,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['federal_reserve', 'fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -33270,7 +33270,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -33398,7 +33398,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -33486,7 +33486,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -33612,7 +33612,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -33699,7 +33699,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -33901,7 +33901,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['federal_reserve', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.",
                         "default": null,
                         "optional": true
                     }
@@ -34128,7 +34128,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -34335,7 +34335,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
                         "default": null,
                         "optional": true
                     }
@@ -34536,7 +34536,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -34763,7 +34763,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -34966,7 +34966,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
                         "default": null,
                         "optional": true
                     }
@@ -35095,7 +35095,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, m, p.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -35226,7 +35226,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['benzinga', 'fmp', 'intrinio', 'tiingo']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: b, e, n, z, i, n, g, a.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, tiingo.",
                         "default": null,
                         "optional": true
                     }
@@ -35758,7 +35758,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: b, e, n, z, i, n, g, a.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, polygon, tiingo, yfinance.",
                         "default": null,
                         "optional": true
                     }
@@ -36338,7 +36338,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: s, e, c.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
                         "default": null,
                         "optional": true
                     }
@@ -36426,7 +36426,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: s, e, c.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
                         "default": null,
                         "optional": true
                     }
@@ -36513,7 +36513,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: s, e, c.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
                         "default": null,
                         "optional": true
                     }
@@ -36601,7 +36601,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: s, e, c.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
                         "default": null,
                         "optional": true
                     }
@@ -36664,7 +36664,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: s, e, c.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
                         "default": null,
                         "optional": true
                     }
@@ -36775,7 +36775,7 @@
                     {
                         "name": "provider",
                         "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: s, e, c.",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
                         "default": null,
                         "optional": true
                     }
