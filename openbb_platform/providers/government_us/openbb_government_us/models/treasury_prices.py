@@ -46,9 +46,7 @@ class GovernmentUSTreasuryPricesFetcher(
 
         today = date.today()
         last_bd = (
-            today - timedelta(today.weekday() - 4)
-            if today.weekday() > 4
-            else today
+            today - timedelta(today.weekday() - 4) if today.weekday() > 4 else today
         )
         if params.get("date") is None:
             params["date"] = last_bd
