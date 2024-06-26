@@ -45,57 +45,57 @@ class IntrinioOptionsSnapshotsQueryParams(OptionsSnapshotsQueryParams):
 class IntrinioOptionsSnapshotsData(OptionsSnapshotsData):
     """Intrinio Options Snapshots Data. Warning: This is a large file."""
 
-    bid: Optional[float] = Field(
-        default=None,
+    bid: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The last bid price at the time.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_size: Optional[int] = Field(
-        default=None,
+    bid_size: List[Union[int, None]] = Field(
+        default_factory=list,
         description="The size of the last bid price.",
     )
-    bid_timestamp: Optional[datetime] = Field(
-        default=None,
+    bid_timestamp: List[Union[datetime, None]] = Field(
+        default_factory=list,
         description="The timestamp of the last bid price.",
     )
-    ask: Optional[float] = Field(
-        default=None,
+    ask: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The last ask price at the time.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_size: Optional[int] = Field(
-        default=None,
+    ask_size: List[Union[int, None]] = Field(
+        default_factory=list,
         description="The size of the last ask price.",
     )
-    ask_timestamp: Optional[datetime] = Field(
-        default=None,
+    ask_timestamp: List[Union[datetime, None]] = Field(
+        default_factory=list,
         description="The timestamp of the last ask price.",
     )
-    total_bid_volume: Optional[int] = Field(
-        default=None,
+    total_bid_volume: List[Union[int, None]] = Field(
+        default_factory=list,
         description="Total volume of bids.",
     )
-    bid_high: Optional[float] = Field(
-        default=None,
+    bid_high: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The highest bid price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_low: Optional[float] = Field(
-        default=None,
+    bid_low: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The lowest bid price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    total_ask_volume: Optional[int] = Field(
-        default=None,
+    total_ask_volume: List[Union[int, None]] = Field(
+        default_factory=list,
         description="Total volume of asks.",
     )
-    ask_high: Optional[float] = Field(
-        default=None,
+    ask_high: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The highest ask price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_low: Optional[float] = Field(
-        default=None,
+    ask_low: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The lowest ask price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
@@ -316,14 +316,11 @@ class IntrinioOptionsSnapshotsFetcher(
             strike = f"{front}{_strike[0]}{_strike[1]}{back}"
             return symbol + exp + cp + strike
 
-        if symbols.str.contains("\.").any():  # noqa
+        if symbols.str.contains("\.").any():  # noqa  # pylint: disable=W1401
             df["contract_symbol"] = df["contract_symbol"].apply(apply_contract_symbol)
         else:
             df["contract_symbol"] = symbols.str.replace("_", "")
         df = df.replace({NaT: None, np.nan: None})
         df = df.sort_values(by="volume", ascending=False)
 
-        return [
-            IntrinioOptionsSnapshotsData.model_validate(d)
-            for d in df.to_dict(orient="records")
-        ]
+        return [IntrinioOptionsSnapshotsData.model_validate(df.to_dict(orient="list"))]

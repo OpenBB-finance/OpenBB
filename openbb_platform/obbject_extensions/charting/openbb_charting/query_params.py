@@ -96,7 +96,7 @@ class EtfPricePerformanceChartQueryParams(EquityPricePerformanceChartQueryParams
 
 
 class EtfHoldingsChartQueryParams(ChartQueryParams):
-    """ "ETF Holdings Chart Query Params."""
+    """ETF Holdings Chart Query Params."""
 
     title: Optional[str] = Field(
         default=None,
@@ -399,6 +399,7 @@ class ChartParams:
     equity_price_historical = EquityPriceHistoricalChartQueryParams
     economy_fred_series = EconomyFredSeriesChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
+    derivatives_futures_historical = EquityPriceHistoricalChartQueryParams
     equity_price_performance = EquityPricePerformanceChartQueryParams
     etf_historical = EtfPricePerformanceChartQueryParams
     etf_holdings = EtfHoldingsChartQueryParams
