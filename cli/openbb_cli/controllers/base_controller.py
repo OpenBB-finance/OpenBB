@@ -19,6 +19,7 @@ from openbb_cli.controllers.utils import (
     check_file_type_saved,
     check_positive,
     get_flair_and_username,
+    handle_obbject_display,
     parse_and_split_input,
     print_guest_block_msg,
     print_rich_table,
@@ -657,21 +658,9 @@ class BaseController(metaclass=ABCMeta):
                     index = int(ns_parser.index)
                     obbject = session.obbject_registry.get(index)
                     if obbject:
-                        if ns_parser.chart and obbject.chart:
-                            obbject.show()
-                        else:
-                            title = obbject.extra.get("command", "")
-                            df = obbject.to_dataframe()
-                            print_rich_table(
-                                df=df,
-                                show_index=True,
-                                title=title,
-                                export=ns_parser.export,
-                            )
-                            if ns_parser.chart and not obbject.chart:
-                                session.console.print(
-                                    "[info]No chart available.[/info]"
-                                )
+                        handle_obbject_display(
+                            obbject, ns_parser.chart, ns_parser.export
+                        )
                     else:
                         session.console.print(
                             f"[info]No result found at index {index}.[/info]"
@@ -683,19 +672,7 @@ class BaseController(metaclass=ABCMeta):
             elif ns_parser.key:
                 obbject = session.obbject_registry.get(ns_parser.key)
                 if obbject:
-                    if ns_parser.chart and obbject.chart:
-                        obbject.show()
-                    else:
-                        title = obbject.extra.get("command", "")
-                        df = obbject.to_dataframe()
-                        print_rich_table(
-                            df=df,
-                            show_index=True,
-                            title=title,
-                            export=ns_parser.export,
-                        )
-                        if ns_parser.chart and not obbject.chart:
-                            session.console.print("[info]No chart available.[/info]")
+                    handle_obbject_display(obbject, ns_parser.chart, ns_parser.export)
                 else:
                     session.console.print(
                         f"[info]No result found with key '{ns_parser.key}'.[/info]"

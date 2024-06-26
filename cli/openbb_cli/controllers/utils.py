@@ -21,6 +21,7 @@ from openbb_charting.core.backend import create_backend, get_backend
 from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
 from openbb_cli.session import Session
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
+from openbb_core.app.model.obbject import OBBject
 from pytz import all_timezones, timezone
 from rich.table import Table
 
@@ -973,4 +974,32 @@ def request(
         headers=headers,
         timeout=timeout,
         **kwargs,
+    )
+
+
+def handle_obbject_display(obbject: OBBject, chart: bool = False, export: bool = False):
+    """Handle the display of the object.
+
+    Parameters
+    ----------
+    chart : bool
+        Whether the object is a chart
+    """
+    if chart:
+        try:
+            if obbject.chart:
+                obbject.show()
+            else:
+                obbject.charting.to_chart(render=True)
+            return
+        except Exception as e:
+            session.console.print(f"Failed to display chart: {e}")
+
+    title = obbject.extra.get("command", "")
+    df = obbject.to_dataframe()
+    print_rich_table(
+        df=df,
+        show_index=True,
+        title=title,
+        export=export,
     )
