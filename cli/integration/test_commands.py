@@ -8,8 +8,13 @@ from openbb_cli.cli import main
     "input_values",
     [
         "/equity/price/historical --symbol aapl --provider fmp",
-        "/equity/price/historical --symbol msft --provider fmp",
-        "/equity/price/historical --symbol goog --provider fmp",
+        "/equity/price/historical --symbol msft --provider yfinance",
+        "/equity/price/historical --symbol goog --provider polygon",
+        "/crypto/price/historical --symbol btc --provider fmp",
+        "/currency/price/historical --symbol eur --provider fmp",
+        "/derivatives/futures/historical --symbol cl --provider fmp",
+        "/etf/price/historical --symbol spy --provider fmp",
+        "/economy",
     ],
 )
 @pytest.mark.integration
