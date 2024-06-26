@@ -47,11 +47,12 @@ from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
 from openbb_core.app.version import CORE_VERSION, VERSION
 from openbb_core.env import Env
-from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
-    from numpy import ndarray
-    from pandas import DataFrame, Series
+    # pylint: disable=import-outside-toplevel
+    from numpy import ndarray  # noqa
+    from pandas import DataFrame, Series  # noqa
+    from openbb_core.provider.abstract.data import Data  # noqa
 
 try:
     from openbb_charting import Charting  # type: ignore
@@ -69,7 +70,7 @@ DataProcessingSupportedTypes = TypeVar(
     "Series",
     List["Series"],
     "ndarray",
-    Data,
+    "Data",
 )
 
 TAB = "    "
@@ -362,6 +363,7 @@ class ImportDefinition:
         # ruff --fix the resulting code to remove unused imports.
         # TODO: Find a better way to handle this. This is a temporary solution.
         code += "\nimport openbb_core.provider"
+        code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nimport pandas"
         code += "\nfrom pandas import DataFrame, Series"
         code += "\nimport numpy"
@@ -372,25 +374,21 @@ class ImportDefinition:
         code += "\nfrom pydantic import BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
-        code += (
-            "\nfrom typing import ForwardRef, List, Dict, Union, Optional, Literal, Any"
-        )
+        code += "\nfrom typing import TYPE_CHECKING, ForwardRef, List, Dict, Union, Optional, Literal, Any"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         code += "\nfrom warnings import warn, simplefilter"
         if sys.version_info < (3, 9):
             code += "\nimport typing_extensions"
         else:
             code += "\nfrom typing_extensions import Annotated, deprecated"
-        code += "\nfrom openbb_core.app.utils import df_to_basemodel"
+        # code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.utils.decorators import exception_handler, validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
-        code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         code += "\nfrom openbb_core.app.model.field import OpenBBField"
         # if path.startswith("/quantitative"):
         #    code += "\nfrom openbb_quantitative.models import "
         #    code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
-
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
         module_list.sort()
@@ -712,8 +710,9 @@ class MethodDefinition:
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
         )
         func_params = func_params.replace(
-            "openbb_core.provider.abstract.data.Data", "Data"
+            "openbb_core.provider.abstract.data.Data", '"Data"'
         )
+        func_params = func_params.replace("ForwardRef('Data')", "Data")
         func_params = func_params.replace("ForwardRef('DataFrame')", "DataFrame")
         func_params = func_params.replace("ForwardRef('Series')", "Series")
         func_params = func_params.replace("ForwardRef('ndarray')", "ndarray")
