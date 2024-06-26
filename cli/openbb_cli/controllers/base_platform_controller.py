@@ -162,7 +162,7 @@ class PlatformController(BaseController):
             ):
                 try:
                     ns_parser = self._intersect_data_processing_commands(ns_parser)
-
+                    export = hasattr(ns_parser, "export") and ns_parser.export
                     store_obbject = (
                         hasattr(ns_parser, "register_obbject")
                         and ns_parser.register_obbject
@@ -227,8 +227,6 @@ class PlatformController(BaseController):
 
                             # making the dataframe available either for printing or exporting
                             df = obbject.to_dataframe()
-
-                            export = hasattr(ns_parser, "export") and ns_parser.export
 
                             if hasattr(ns_parser, "chart") and ns_parser.chart:
                                 fig = obbject.chart.fig if obbject.chart else None
