@@ -80,7 +80,7 @@ class SettingsController(BaseController):
                 description=field["description"],
                 add_help=False,
             )
-            ns_parser = self.parse_simple_args(parser, other_args)
+            ns_parser, _ = self.parse_simple_args(parser, other_args)
             if ns_parser:
                 session.settings.set_item(
                     field_name, not getattr(session.settings, field_name)
@@ -113,7 +113,7 @@ class SettingsController(BaseController):
                 type=type_,  # type: ignore[arg-type]
                 choices=choices,
             )
-            ns_parser = self.parse_simple_args(parser, other_args)
+            ns_parser, _ = self.parse_simple_args(parser, other_args)
             if ns_parser:
                 if ns_parser.value:
                     # Console style is applied immediately
