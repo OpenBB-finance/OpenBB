@@ -4,7 +4,7 @@ from argparse import SUPPRESS, ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
 from types import MethodType
-from typing import Callable, List, Literal
+from typing import Callable, List, Literal, Tuple
 from unittest.mock import patch
 
 from openbb_cli.controllers.utils import (
@@ -110,7 +110,7 @@ def __mock_parse_known_args_and_warn(
     )
 
 
-def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> None:
+def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> Tuple:
     """Add arguments.
 
     Add the arguments that would have normally added by:
@@ -127,6 +127,7 @@ def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> N
         "-h", "--help", action="store_true", help="show this help message"
     )
     _ = other_args
+    return None, None
 
 
 def __get_command_func(controller, command: str):
@@ -216,7 +217,7 @@ def __patch_controller_functions(controller):
             target=controller,
             attribute="parse_simple_args",
             side_effect=__mock_parse_simple_args,
-            return_value=None,
+            return_value=(None, None),
         ),
         patch.object(
             target=controller,
