@@ -710,7 +710,7 @@ class MethodDefinition:
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
         )
         func_params = func_params.replace(
-            "openbb_core.provider.abstract.data.Data", '"Data"'
+            "openbb_core.provider.abstract.data.Data", "Data"
         )
         func_params = func_params.replace("ForwardRef('Data')", "Data")
         func_params = func_params.replace("ForwardRef('DataFrame')", "DataFrame")
