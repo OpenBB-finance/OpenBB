@@ -153,7 +153,7 @@ def test_log_startup(logging_service):
             "mock_route",
             "mock_func",
             {},
-            (OpenBBError, OpenBBError("mock_error")),
+            (OpenBBError(), OpenBBError("mock_error")),
             {"X-OpenBB-Test": "test"},
         ),
         (
