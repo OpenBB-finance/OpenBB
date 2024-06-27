@@ -116,6 +116,23 @@ class EtfHoldingsChartQueryParams(ChartQueryParams):
     )
 
 
+class FuturesCurveChartQueryParams(ChartQueryParams):
+    """ETF Holdings Chart Query Params."""
+
+    title: Optional[str] = Field(
+        default=None,
+        description="Title of the chart.",
+    )
+    orientation: Literal["v", "h"] = Field(
+        default="v",
+        description="Orientation of the bars.",
+    )
+    layout_kwargs: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
+    )
+
+
 class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
     """Equity Historical Price Chart Query Params."""
 
@@ -396,10 +413,11 @@ class ChartParams:
     """Chart Query Params."""
 
     crypto_price_historical = EquityPriceHistoricalChartQueryParams
+    derivatives_futures_curve = FuturesCurveChartQueryParams
+    derivatives_futures_historical = EquityPriceHistoricalChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
     economy_fred_series = EconomyFredSeriesChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
-    derivatives_futures_historical = EquityPriceHistoricalChartQueryParams
     equity_price_performance = EquityPricePerformanceChartQueryParams
     etf_historical = EtfPricePerformanceChartQueryParams
     etf_holdings = EtfHoldingsChartQueryParams
