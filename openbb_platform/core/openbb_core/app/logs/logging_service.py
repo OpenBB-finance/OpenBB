@@ -225,7 +225,8 @@ class LoggingService(metaclass=SingletonMeta):
 
             # Get execution info
             openbb_error = cast(
-                Optional[OpenBBError], exec_info[1] if exec_info else None
+                Optional[OpenBBError],
+                exec_info[1] if exec_info and len(exec_info) > 1 else None,
             )
             # Construct message
             message_label = "ERROR" if openbb_error else "CMD"
