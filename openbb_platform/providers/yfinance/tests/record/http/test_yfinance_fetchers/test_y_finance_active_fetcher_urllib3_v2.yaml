@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      user_agent:
+      - Mozilla/5.0
+    method: GET
+    uri: https://finance.yahoo.com/screener/predefined/most_actives
+  response:
+    body:
+      string: <html><meta charset='utf-8'><script>if(window!=window.top){document.write('<p>Content
+        is currently unavailable.</p><img src="//geo.yahoo.com/p?s=1197757039&t='+new
+        Date().getTime()+'&_R='+encodeURIComponent(document.referrer)+'&err=404&err_url='+'https%3A%2F%2Ffinance.yahoo.com%2Fscreener%2Fpredefined%2Fmost_actives'+'"
+        width="0px" height="0px"/>');}else{window.location.replace('https://www.yahoo.com/?err=404&err_url=https%3A%2F%2Ffinance.yahoo.com%2Fscreener%2Fpredefined%2Fmost_actives');}</script><noscript><META
+        http-equiv="refresh" content="0;URL='https://www.yahoo.com/?err=404&err_url=https%3A%2F%2Ffinance.yahoo.com%2Fscreener%2Fpredefined%2Fmost_actives'"></noscript></html>
+    headers:
+      Age:
+      - '0'
+      Cache-Control:
+      - max-age=0, private
+      Connection:
+      - keep-alive
+      Content-Security-Policy:
+      - frame-ancestors 'self' https://*.builtbygirls.com https://*.rivals.com https://*.engadget.com
+        https://*.intheknow.com https://*.autoblog.com https://*.techcrunch.com https://*.yahoo.com
+        https://*.aol.com https://*.huffingtonpost.com https://*.oath.com https://*.search.yahoo.com
+        https://*.pnr.ouryahoo.com https://pnr.ouryahoo.com https://*.search.aol.com
+        https://*.search.huffpost.com https://*.onesearch.com https://*.verizonmedia.com
+        https://*.publishing.oath.com https://*.autoblog.com; sandbox allow-forms
+        allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox
+        allow-presentation; report-uri https://csp.yahoo.com/beacon/csp?src=ats&site=finance&region=US&lang=en-US&device=desktop&yrid=5k4an45j7qf10&partner=;
+      Content-Type:
+      - text/html
+      Date:
+      - Thu, 27 Jun 2024 10:17:04 GMT
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Expires:
+      - '-1'
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - ATS
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,X-Failsafe-Cache
+      X-Amz-Cf-Id:
+      - Zgl4CNYjFQ_GGQHACzXGJoD0Vnq23NuFIAYqQ9qocuAcpBOJzekGZQ==
+      X-Amz-Cf-Pop:
+      - DUB56-P2
+      X-Cache:
+      - Error from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 404
+      message: Not Found
+version: 1

@@ -1,0 +1,374 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
+  response:
+    body:
+      string: '{"quoteSummary":{"result":[{"assetProfile":{"address1":"One Apple Park
+        Way","city":"Cupertino","state":"CA","zip":"95014","country":"United States","phone":"408
+        996 1010","website":"https://www.apple.com","industry":"Consumer Electronics","industryKey":"consumer-electronics","industryDisp":"Consumer
+        Electronics","sector":"Technology","sectorKey":"technology","sectorDisp":"Technology","longBusinessSummary":"Apple
+        Inc. designs, manufactures, and markets smartphones, personal computers, tablets,
+        wearables, and accessories worldwide. The company offers iPhone, a line of
+        smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose
+        tablets; and wearables, home, and accessories comprising AirPods, Apple TV,
+        Apple Watch, Beats products, and HomePod. It also provides AppleCare support
+        and cloud services; and operates various platforms, including the App Store
+        that allow customers to discover and download applications and digital content,
+        such as books, music, video, games, and podcasts. In addition, the company
+        offers various services, such as Apple Arcade, a game subscription service;
+        Apple Fitness+, a personalized fitness service; Apple Music, which offers
+        users a curated listening experience with on-demand radio stations; Apple
+        News+, a subscription news and magazine service; Apple TV+, which offers exclusive
+        original content; Apple Card, a co-branded credit card; and Apple Pay, a cashless
+        payment service, as well as licenses its intellectual property. The company
+        serves consumers, and small and mid-sized businesses; and the education, enterprise,
+        and government markets. It distributes third-party applications for its products
+        through the App Store. The company also sells its products through its retail
+        and online stores, and direct sales force; and third-party cellular network
+        carriers, wholesalers, retailers, and resellers. Apple Inc. was founded in
+        1976 and is headquartered in Cupertino, California.","fullTimeEmployees":150000,"companyOfficers":[{"maxAge":1,"name":"Mr.
+        Timothy D. Cook","age":62,"title":"CEO & Director","yearBorn":1961,"fiscalYear":2023,"totalPay":{"raw":16239562,"fmt":"16.24M","longFmt":"16,239,562"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Luca  Maestri","age":60,"title":"CFO & Senior VP","yearBorn":1963,"fiscalYear":2023,"totalPay":{"raw":4612242,"fmt":"4.61M","longFmt":"4,612,242"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Jeffrey E. Williams","age":59,"title":"Chief Operating Officer","yearBorn":1964,"fiscalYear":2023,"totalPay":{"raw":4637585,"fmt":"4.64M","longFmt":"4,637,585"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Ms.
+        Katherine L. Adams","age":59,"title":"Senior VP, General Counsel & Secretary","yearBorn":1964,"fiscalYear":2023,"totalPay":{"raw":4618064,"fmt":"4.62M","longFmt":"4,618,064"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Ms.
+        Deirdre  O''Brien","age":56,"title":"Senior Vice President of Retail","yearBorn":1967,"fiscalYear":2023,"totalPay":{"raw":4613369,"fmt":"4.61M","longFmt":"4,613,369"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Chris  Kondo","title":"Senior Director of Corporate Accounting","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        James  Wilson","title":"Chief Technology Officer","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Suhasini  Chandramouli","title":"Director
+        of Investor Relations","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Greg  Joswiak","title":"Senior Vice President of Worldwide Marketing","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Adrian  Perica","age":49,"title":"Head of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":6,"boardRisk":1,"compensationRisk":2,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1717200000,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":209.07,"open":211.44,"dayLow":210.64,"dayHigh":214.86,"regularMarketPreviousClose":209.07,"regularMarketOpen":211.44,"regularMarketDayLow":210.64,"regularMarketDayHigh":214.86,"dividendRate":1.0,"dividendYield":0.0047,"exDividendDate":1715299200,"payoutRatio":0.14930001,"fiveYearAvgDividendYield":0.71,"beta":1.25,"trailingPE":33.113354,"forwardPE":29.252401,"volume":64234747,"regularMarketVolume":64234747,"averageVolume":68349616,"averageVolume10days":107411900,"averageDailyVolume10Day":107411900,"bid":213.14,"ask":213.21,"bidSize":100,"askSize":100,"marketCap":3269996838912,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":220.2,"priceToSalesTrailing12Months":8.568658,"fiftyDayAverage":188.9354,"twoHundredDayAverage":183.35056,"trailingAnnualDividendRate":0.96,"trailingAnnualDividendYield":0.0045917635,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3307433099264,"forwardPE":29.252401,"profitMargins":0.26306,"floatShares":15308474083,"sharesOutstanding":15334099968,"sharesShort":113523602,"sharesShortPriorMonth":94308265,"sharesShortPreviousMonthDate":1714435200,"dateShortInterest":1717113600,"sharesPercentSharesOut":0.0074,"heldPercentInsiders":0.052199997,"heldPercentInstitutions":0.57608,"shortRatio":1.86,"shortPercentOfFloat":0.0074,"beta":1.25,"impliedSharesOutstanding":15334099968,"category":null,"bookValue":4.837,"priceToBook":44.087246,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1696032000,"nextFiscalYearEnd":1727654400,"mostRecentQuarter":1711756800,"earningsQuarterlyGrowth":-0.022,"netIncomeToCommon":100389003264,"trailingEps":6.44,"forwardEps":7.29,"pegRatio":3.02,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":8.667,"enterpriseToEbitda":25.515,"52WeekChange":0.124795556,"SandP52WeekChange":0.24598539,"lastDividendValue":0.25,"lastDividendDate":1715299200},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
+        Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":213.25,"targetHighPrice":275.0,"targetLowPrice":164.0,"targetMeanPrice":210.07,"targetMedianPrice":210.0,"recommendationMean":2.0,"recommendationKey":"buy","numberOfAnalystOpinions":37,"totalCash":67150000128,"totalCashPerShare":4.379,"ebitda":129629003776,"totalDebt":104590000128,"quickRatio":0.875,"currentRatio":1.037,"totalRevenue":381623009280,"debtToEquity":140.968,"revenuePerShare":24.537,"returnOnAssets":0.22073999,"returnOnEquity":1.4725,"freeCashflow":84726874112,"operatingCashflow":110563000320,"earningsGrowth":0.007,"revenueGrowth":-0.043,"grossMargins":0.45586,"ebitdaMargins":0.33968,"operatingMargins":0.30743,"profitMargins":0.26306,"financialCurrency":"USD"}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=1, stale-while-revalidate=9
+      content-encoding:
+      - gzip
+      content-length:
+      - '3048'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 27 Jun 2024 10:17:16 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '6'
+      y-rid:
+      - 4nu1fadj7qf1c
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary//AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=institutionOwnership%2CfundOwnership%2CmajorDirectHolders%2CmajorHoldersBreakdown%2CinsiderTransactions%2CinsiderHolders%2CnetSharePurchaseActivity
+  response:
+    body:
+      string: '{"quoteSummary":{"result":[{"institutionOwnership":{"ownershipList":[{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Vanguard
+        Group Inc","pctHeld":{"raw":0.0834,"fmt":"8.34%"},"position":{"raw":1303688506,"fmt":"1.3B","longFmt":"1,303,688,506"},"value":{"raw":252876459508,"fmt":"252.88B","longFmt":"252,876,459,508"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Blackrock
+        Inc.","pctHeld":{"raw":0.0665,"fmt":"6.65%"},"position":{"raw":1039640859,"fmt":"1.04B","longFmt":"1,039,640,859"},"value":{"raw":201659137420,"fmt":"201.66B","longFmt":"201,659,137,420"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Berkshire
+        Hathaway, Inc","pctHeld":{"raw":0.0586,"fmt":"5.86%"},"position":{"raw":915560382,"fmt":"915.56M","longFmt":"915,560,382"},"value":{"raw":177591247296,"fmt":"177.59B","longFmt":"177,591,247,296"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"State
+        Street Corporation","pctHeld":{"raw":0.037,"fmt":"3.70%"},"position":{"raw":578897858,"fmt":"578.9M","longFmt":"578,897,858"},"value":{"raw":112288817516,"fmt":"112.29B","longFmt":"112,288,817,516"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"FMR,
+        LLC","pctHeld":{"raw":0.0196,"fmt":"1.96%"},"position":{"raw":307066638,"fmt":"307.07M","longFmt":"307,066,638"},"value":{"raw":59561715772,"fmt":"59.56B","longFmt":"59,561,715,772"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Geode
+        Capital Management, LLC","pctHeld":{"raw":0.0186,"fmt":"1.86%"},"position":{"raw":291538165,"fmt":"291.54M","longFmt":"291,538,165"},"value":{"raw":56549657865,"fmt":"56.55B","longFmt":"56,549,657,865"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Price
+        (T.Rowe) Associates Inc","pctHeld":{"raw":0.0145000005,"fmt":"1.45%"},"position":{"raw":226650943,"fmt":"226.65M","longFmt":"226,650,943"},"value":{"raw":43963483413,"fmt":"43.96B","longFmt":"43,963,483,413"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Morgan
+        Stanley","pctHeld":{"raw":0.013099999,"fmt":"1.31%"},"position":{"raw":204714950,"fmt":"204.71M","longFmt":"204,714,950"},"value":{"raw":39708558851,"fmt":"39.71B","longFmt":"39,708,558,851"}},{"maxAge":1,"reportDate":{"raw":1672444800,"fmt":"2022-12-31"},"organization":"Norges
+        Bank Investment Management","pctHeld":{"raw":0.0107,"fmt":"1.07%"},"position":{"raw":167374278,"fmt":"167.37M","longFmt":"167,374,278"},"value":{"raw":21746939940,"fmt":"21.75B","longFmt":"21,746,939,940"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Northern
+        Trust Corporation","pctHeld":{"raw":0.0105,"fmt":"1.05%"},"position":{"raw":164536073,"fmt":"164.54M","longFmt":"164,536,073"},"value":{"raw":31915062079,"fmt":"31.92B","longFmt":"31,915,062,079"}}],"maxAge":1},"majorHoldersBreakdown":{"maxAge":1,"insidersPercentHeld":0.052199997,"institutionsPercentHeld":0.57608,"institutionsFloatPercentHeld":0.60780996,"institutionsCount":6335},"insiderHolders":{"holders":[{"maxAge":1,"name":"ADAMS
+        KATHERINE L","relation":"General Counsel","url":"","transactionDescription":"Stock
+        Gift","latestTransDate":{"raw":1715299200,"fmt":"2024-05-10"},"positionDirect":{"raw":291543,"fmt":"291.54k","longFmt":"291,543"},"positionDirectDate":{"raw":1715299200,"fmt":"2024-05-10"}},{"maxAge":1,"name":"COOK
+        TIMOTHY D","relation":"Chief Executive Officer","url":"","transactionDescription":"Sale","latestTransDate":{"raw":1712016000,"fmt":"2024-04-02"},"positionDirect":{"raw":3280180,"fmt":"3.28M","longFmt":"3,280,180"},"positionDirectDate":{"raw":1712016000,"fmt":"2024-04-02"}},{"maxAge":1,"name":"JUNG
+        ANDREA","relation":"Director","url":"","transactionDescription":"Conversion
+        of Exercise of derivative security","latestTransDate":{"raw":1706745600,"fmt":"2024-02-01"},"positionDirect":{"raw":74489,"fmt":"74.49k","longFmt":"74,489"},"positionDirectDate":{"raw":1706745600,"fmt":"2024-02-01"}},{"maxAge":1,"name":"KONDO
+        CHRISTOPHER","relation":"Officer","url":"","transactionDescription":"Sale","latestTransDate":{"raw":1715731200,"fmt":"2024-05-15"},"positionDirect":{"raw":29278,"fmt":"29.28k","longFmt":"29,278"},"positionDirectDate":{"raw":1715731200,"fmt":"2024-05-15"}},{"maxAge":1,"name":"LEVINSON
+        ARTHUR D","relation":"Director","url":"","transactionDescription":"Sale","latestTransDate":{"raw":1717027200,"fmt":"2024-05-30"},"positionDirect":{"raw":4415580,"fmt":"4.42M","longFmt":"4,415,580"},"positionDirectDate":{"raw":1717027200,"fmt":"2024-05-30"}},{"maxAge":1,"name":"MAESTRI
+        LUCA","relation":"Chief Financial Officer","url":"","transactionDescription":"Sale","latestTransDate":{"raw":1712793600,"fmt":"2024-04-11"},"positionDirect":{"raw":107788,"fmt":"107.79k","longFmt":"107,788"},"positionDirectDate":{"raw":1712793600,"fmt":"2024-04-11"}},{"maxAge":1,"name":"O''BRIEN
+        DEIRDRE","relation":"Officer","url":"","transactionDescription":"Sale","latestTransDate":{"raw":1712016000,"fmt":"2024-04-02"},"positionDirect":{"raw":136572,"fmt":"136.57k","longFmt":"136,572"},"positionDirectDate":{"raw":1712016000,"fmt":"2024-04-02"}},{"maxAge":1,"name":"SUGAR
+        RONALD D","relation":"Director","url":"","transactionDescription":"Conversion
+        of Exercise of derivative security","latestTransDate":{"raw":1706745600,"fmt":"2024-02-01"},"positionDirect":{"raw":107795,"fmt":"107.8k","longFmt":"107,795"},"positionDirectDate":{"raw":1706745600,"fmt":"2024-02-01"}},{"maxAge":1,"name":"WAGNER
+        SUSAN L","relation":"Director","url":"","transactionDescription":"Conversion
+        of Exercise of derivative security","latestTransDate":{"raw":1706745600,"fmt":"2024-02-01"},"positionDirect":{"raw":67375,"fmt":"67.38k","longFmt":"67,375"},"positionDirectDate":{"raw":1706745600,"fmt":"2024-02-01"}},{"maxAge":1,"name":"WILLIAMS
+        JEFFREY E","relation":"Chief Operating Officer","url":"","transactionDescription":"Sale","latestTransDate":{"raw":1712793600,"fmt":"2024-04-11"},"positionIndirect":{"raw":489944,"fmt":"489.94k","longFmt":"489,944"},"positionIndirectDate":{"raw":1712793600,"fmt":"2024-04-11"}}],"maxAge":1},"majorDirectHolders":{"holders":[],"maxAge":1},"netSharePurchaseActivity":{"maxAge":1,"period":"6m","buyInfoCount":15,"buyInfoShares":674431,"buyPercentInsiderShares":0.0,"sellInfoCount":8,"sellInfoShares":598229,"sellPercentInsiderShares":0.0,"netInfoCount":23,"netInfoShares":76202,"netPercentInsiderShares":0.0,"totalInsiderShares":800439040},"insiderTransactions":{"transactions":[{"maxAge":1,"shares":{"raw":75000,"fmt":"75k","longFmt":"75,000"},"value":{"raw":14368500,"fmt":"14.37M","longFmt":"14,368,500"},"filerUrl":"","transactionText":"Sale
+        at price 191.58 per share.","filerName":"LEVINSON ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1717027200,"fmt":"2024-05-30"},"ownership":"D"},{"maxAge":1,"shares":{"raw":4999,"fmt":"5k","longFmt":"4,999"},"value":{"raw":951785,"fmt":"951.78k","longFmt":"951,785"},"filerUrl":"","transactionText":"Sale
+        at price 190.40 per share.","filerName":"KONDO CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1715731200,"fmt":"2024-05-15"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1850,"fmt":"1.85k","longFmt":"1,850"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1715299200,"fmt":"2024-05-10"},"ownership":"D"},{"maxAge":1,"shares":{"raw":8119,"fmt":"8.12k","longFmt":"8,119"},"filerUrl":"","transactionText":"","filerName":"KONDO
+        CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1713139200,"fmt":"2024-04-15"},"ownership":"D"},{"maxAge":1,"shares":{"raw":59162,"fmt":"59.16k","longFmt":"59,162"},"value":{"raw":10188880,"fmt":"10.19M","longFmt":"10,188,880"},"filerUrl":"","transactionText":"Sale
+        at price 172.22 per share.","filerName":"WILLIAMS JEFFREY E","filerRelation":"Chief
+        Operating Officer","moneyText":"","startDate":{"raw":1712793600,"fmt":"2024-04-11"},"ownership":"I"},{"maxAge":1,"shares":{"raw":53194,"fmt":"53.19k","longFmt":"53,194"},"value":{"raw":9261933,"fmt":"9.26M","longFmt":"9,261,933"},"filerUrl":"","transactionText":"Sale
+        at price 173.19 - 175.02 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1712793600,"fmt":"2024-04-11"},"ownership":"D"},{"maxAge":1,"shares":{"raw":196410,"fmt":"196.41k","longFmt":"196,410"},"value":{"raw":33258614,"fmt":"33.26M","longFmt":"33,258,614"},"filerUrl":"","transactionText":"Sale
+        at price 168.62 - 170.03 per share.","filerName":"COOK TIMOTHY D","filerRelation":"Chief
+        Executive Officer","moneyText":"","startDate":{"raw":1712016000,"fmt":"2024-04-02"},"ownership":"D"},{"maxAge":1,"shares":{"raw":54732,"fmt":"54.73k","longFmt":"54,732"},"value":{"raw":9244235,"fmt":"9.24M","longFmt":"9,244,235"},"filerUrl":"","transactionText":"Sale
+        at price 168.90 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1712016000,"fmt":"2024-04-02"},"ownership":"D"},{"maxAge":1,"shares":{"raw":54732,"fmt":"54.73k","longFmt":"54,732"},"value":{"raw":9244782,"fmt":"9.24M","longFmt":"9,244,782"},"filerUrl":"","transactionText":"Sale
+        at price 168.91 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1712016000,"fmt":"2024-04-02"},"ownership":"D"},{"maxAge":1,"shares":{"raw":196410,"fmt":"196.41k","longFmt":"196,410"},"filerUrl":"","transactionText":"","filerName":"COOK
+        TIMOTHY D","filerRelation":"Chief Executive Officer","moneyText":"","startDate":{"raw":1711929600,"fmt":"2024-04-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":113309,"fmt":"113.31k","longFmt":"113,309"},"filerUrl":"","transactionText":"","filerName":"ADAMS
+        KATHERINE L","filerRelation":"General Counsel","moneyText":"","startDate":{"raw":1711929600,"fmt":"2024-04-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":113309,"fmt":"113.31k","longFmt":"113,309"},"filerUrl":"","transactionText":"","filerName":"WILLIAMS
+        JEFFREY E","filerRelation":"Chief Operating Officer","moneyText":"","startDate":{"raw":1711929600,"fmt":"2024-04-01"},"ownership":"I"},{"maxAge":1,"shares":{"raw":113309,"fmt":"113.31k","longFmt":"113,309"},"filerUrl":"","transactionText":"","filerName":"MAESTRI
+        LUCA","filerRelation":"Chief Financial Officer","moneyText":"","startDate":{"raw":1711929600,"fmt":"2024-04-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":113309,"fmt":"113.31k","longFmt":"113,309"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1711929600,"fmt":"2024-04-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":100000,"fmt":"100k","longFmt":"100,000"},"value":{"raw":18094000,"fmt":"18.09M","longFmt":"18,094,000"},"filerUrl":"","transactionText":"Sale
+        at price 180.94 per share.","filerName":"LEVINSON ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1709164800,"fmt":"2024-02-29"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1852,"fmt":"1.85k","longFmt":"1,852"},"filerUrl":"","transactionText":"","filerName":"LEVINSON
+        ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1706745600,"fmt":"2024-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1852,"fmt":"1.85k","longFmt":"1,852"},"filerUrl":"","transactionText":"","filerName":"SUGAR
+        RONALD D","filerRelation":"Director","moneyText":"","startDate":{"raw":1706745600,"fmt":"2024-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1852,"fmt":"1.85k","longFmt":"1,852"},"filerUrl":"","transactionText":"","filerName":"WAGNER
+        SUSAN L","filerRelation":"Director","moneyText":"","startDate":{"raw":1706745600,"fmt":"2024-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1852,"fmt":"1.85k","longFmt":"1,852"},"filerUrl":"","transactionText":"","filerName":"JUNG
+        ANDREA","filerRelation":"Director","moneyText":"","startDate":{"raw":1706745600,"fmt":"2024-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1852,"fmt":"1.85k","longFmt":"1,852"},"filerUrl":"","transactionText":"","filerName":"BELL
+        JAMES A","filerRelation":"Director","moneyText":"","startDate":{"raw":1706745600,"fmt":"2024-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1852,"fmt":"1.85k","longFmt":"1,852"},"filerUrl":"","transactionText":"","filerName":"LOZANO
+        MONICA C.","filerRelation":"Director","moneyText":"","startDate":{"raw":1706745600,"fmt":"2024-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1852,"fmt":"1.85k","longFmt":"1,852"},"filerUrl":"","transactionText":"","filerName":"GORE
+        ALBERT A JR","filerRelation":"Director","moneyText":"","startDate":{"raw":1706745600,"fmt":"2024-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1852,"fmt":"1.85k","longFmt":"1,852"},"filerUrl":"","transactionText":"","filerName":"GORSKY
+        ALEX","filerRelation":"Director","moneyText":"","startDate":{"raw":1706745600,"fmt":"2024-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":5513,"fmt":"5.51k","longFmt":"5,513"},"value":{"raw":1058496,"fmt":"1.06M","longFmt":"1,058,496"},"filerUrl":"","transactionText":"Sale
+        at price 192.00 per share.","filerName":"KONDO CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1701216000,"fmt":"2023-11-29"},"ownership":"D"},{"maxAge":1,"shares":{"raw":123448,"fmt":"123.45k","longFmt":"123,448"},"value":{"raw":23305748,"fmt":"23.31M","longFmt":"23,305,748"},"filerUrl":"","transactionText":"Sale
+        at price 188.79 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1700179200,"fmt":"2023-11-17"},"ownership":"I"},{"maxAge":1,"shares":{"raw":123448,"fmt":"123.45k","longFmt":"123,448"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1700092800,"fmt":"2023-11-16"},"ownership":"D"},{"maxAge":1,"shares":{"raw":4806,"fmt":"4.81k","longFmt":"4,806"},"value":{"raw":884496,"fmt":"884.5k","longFmt":"884,496"},"filerUrl":"","transactionText":"Sale
+        at price 184.04 per share.","filerName":"KONDO CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1699574400,"fmt":"2023-11-10"},"ownership":"D"},{"maxAge":1,"shares":{"raw":10785,"fmt":"10.79k","longFmt":"10,785"},"filerUrl":"","transactionText":"","filerName":"KONDO
+        CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1697155200,"fmt":"2023-10-13"},"ownership":"D"},{"maxAge":1,"shares":{"raw":63695,"fmt":"63.7k","longFmt":"63,695"},"value":{"raw":11356182,"fmt":"11.36M","longFmt":"11,356,182"},"filerUrl":"","transactionText":"Sale
+        at price 177.89 - 178.91 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1696809600,"fmt":"2023-10-09"},"ownership":"D"},{"maxAge":1,"shares":{"raw":69785,"fmt":"69.78k","longFmt":"69,785"},"value":{"raw":12351945,"fmt":"12.35M","longFmt":"12,351,945"},"filerUrl":"","transactionText":"Sale
+        at price 177.00 per share.","filerName":"WILLIAMS JEFFREY E","filerRelation":"Chief
+        Operating Officer","moneyText":"","startDate":{"raw":1696550400,"fmt":"2023-10-06"},"ownership":"I"},{"maxAge":1,"shares":{"raw":240569,"fmt":"240.57k","longFmt":"240,569"},"value":{"raw":41498284,"fmt":"41.5M","longFmt":"41,498,284"},"filerUrl":"","transactionText":"Sale
+        at price 171.42 - 173.18 per share.","filerName":"COOK TIMOTHY D","filerRelation":"Chief
+        Executive Officer","moneyText":"","startDate":{"raw":1696291200,"fmt":"2023-10-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":65536,"fmt":"65.54k","longFmt":"65,536"},"value":{"raw":11278365,"fmt":"11.28M","longFmt":"11,278,365"},"filerUrl":"","transactionText":"Sale
+        at price 171.62 - 173.24 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1696291200,"fmt":"2023-10-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":65536,"fmt":"65.54k","longFmt":"65,536"},"value":{"raw":11279673,"fmt":"11.28M","longFmt":"11,279,673"},"filerUrl":"","transactionText":"Sale
+        at price 172.08 - 172.65 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1696291200,"fmt":"2023-10-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":511000,"fmt":"511k","longFmt":"511,000"},"filerUrl":"","transactionText":"","filerName":"COOK
+        TIMOTHY D","filerRelation":"Chief Executive Officer","moneyText":"","startDate":{"raw":1695945600,"fmt":"2023-09-29"},"ownership":"D"},{"maxAge":1,"shares":{"raw":136268,"fmt":"136.27k","longFmt":"136,268"},"filerUrl":"","transactionText":"","filerName":"ADAMS
+        KATHERINE L","filerRelation":"General Counsel","moneyText":"","startDate":{"raw":1695945600,"fmt":"2023-09-29"},"ownership":"D"},{"maxAge":1,"shares":{"raw":136268,"fmt":"136.27k","longFmt":"136,268"},"filerUrl":"","transactionText":"","filerName":"WILLIAMS
+        JEFFREY E","filerRelation":"Chief Operating Officer","moneyText":"","startDate":{"raw":1695945600,"fmt":"2023-09-29"},"ownership":"D"},{"maxAge":1,"shares":{"raw":136268,"fmt":"136.27k","longFmt":"136,268"},"filerUrl":"","transactionText":"","filerName":"MAESTRI
+        LUCA","filerRelation":"Chief Financial Officer","moneyText":"","startDate":{"raw":1695945600,"fmt":"2023-09-29"},"ownership":"D"},{"maxAge":1,"shares":{"raw":136268,"fmt":"136.27k","longFmt":"136,268"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1695945600,"fmt":"2023-09-29"},"ownership":"D"},{"maxAge":1,"shares":{"raw":5600,"fmt":"5.6k","longFmt":"5,600"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1691452800,"fmt":"2023-08-08"},"ownership":"D"},{"maxAge":1,"shares":{"raw":15419,"fmt":"15.42k","longFmt":"15,419"},"value":{"raw":2753217,"fmt":"2.75M","longFmt":"2,753,217"},"filerUrl":"","transactionText":"Sale
+        at price 178.56 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1691366400,"fmt":"2023-08-07"},"ownership":"D"},{"maxAge":1,"shares":{"raw":31896,"fmt":"31.9k","longFmt":"31,896"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1691107200,"fmt":"2023-08-04"},"ownership":"D"},{"maxAge":1,"shares":{"raw":68642,"fmt":"68.64k","longFmt":"68,642"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"JUNG ANDREA","filerRelation":"Director","moneyText":"","startDate":{"raw":1684195200,"fmt":"2023-05-16"},"ownership":"I"},{"maxAge":1,"shares":{"raw":2900,"fmt":"2.9k","longFmt":"2,900"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1683676800,"fmt":"2023-05-10"},"ownership":"D"},{"maxAge":1,"shares":{"raw":4092,"fmt":"4.09k","longFmt":"4,092"},"value":{"raw":708980,"fmt":"708.98k","longFmt":"708,980"},"filerUrl":"","transactionText":"Sale
+        at price 173.26 per share.","filerName":"KONDO CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1683504000,"fmt":"2023-05-08"},"ownership":"D"},{"maxAge":1,"shares":{"raw":10792,"fmt":"10.79k","longFmt":"10,792"},"filerUrl":"","transactionText":"","filerName":"KONDO
+        CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1681430400,"fmt":"2023-04-14"},"ownership":"D"},{"maxAge":1,"shares":{"raw":69996,"fmt":"70k","longFmt":"69,996"},"value":{"raw":11566839,"fmt":"11.57M","longFmt":"11,566,839"},"filerUrl":"","transactionText":"Sale
+        at price 165.25 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1681344000,"fmt":"2023-04-13"},"ownership":"D"},{"maxAge":1,"shares":{"raw":200,"fmt":"200","longFmt":"200"},"value":{"raw":32984,"fmt":"32.98k","longFmt":"32,984"},"filerUrl":"","transactionText":"Sale
+        at price 164.92 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1680739200,"fmt":"2023-04-06"},"ownership":"D"},{"maxAge":1,"shares":{"raw":77817,"fmt":"77.82k","longFmt":"77,817"},"value":{"raw":12926379,"fmt":"12.93M","longFmt":"12,926,379"},"filerUrl":"","transactionText":"Sale
+        at price 166.11 - 166.62 per share.","filerName":"WILLIAMS JEFFREY E","filerRelation":"Chief
+        Operating Officer","moneyText":"","startDate":{"raw":1680566400,"fmt":"2023-04-04"},"ownership":"D"},{"maxAge":1,"shares":{"raw":56072,"fmt":"56.07k","longFmt":"56,072"},"value":{"raw":9261353,"fmt":"9.26M","longFmt":"9,261,353"},"filerUrl":"","transactionText":"Sale
+        at price 164.67 - 165.62 per share.","filerName":"COOK TIMOTHY D","filerRelation":"Chief
+        Executive Officer","moneyText":"","startDate":{"raw":1680480000,"fmt":"2023-04-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":72225,"fmt":"72.22k","longFmt":"72,225"},"value":{"raw":11938880,"fmt":"11.94M","longFmt":"11,938,880"},"filerUrl":"","transactionText":"Sale
+        at price 164.71 - 165.81 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1680480000,"fmt":"2023-04-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":3167,"fmt":"3.17k","longFmt":"3,167"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1680480000,"fmt":"2023-04-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":43622,"fmt":"43.62k","longFmt":"43,622"},"value":{"raw":7215444,"fmt":"7.22M","longFmt":"7,215,444"},"filerUrl":"","transactionText":"Sale
+        at price 164.73 - 165.87 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1680480000,"fmt":"2023-04-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":111329,"fmt":"111.33k","longFmt":"111,329"},"filerUrl":"","transactionText":"","filerName":"COOK
+        TIMOTHY D","filerRelation":"Chief Executive Officer","moneyText":"","startDate":{"raw":1680220800,"fmt":"2023-03-31"},"ownership":"D"},{"maxAge":1,"shares":{"raw":149684,"fmt":"149.68k","longFmt":"149,684"},"filerUrl":"","transactionText":"","filerName":"ADAMS
+        KATHERINE L","filerRelation":"General Counsel","moneyText":"","startDate":{"raw":1680220800,"fmt":"2023-03-31"},"ownership":"D"},{"maxAge":1,"shares":{"raw":149684,"fmt":"149.68k","longFmt":"149,684"},"filerUrl":"","transactionText":"","filerName":"WILLIAMS
+        JEFFREY E","filerRelation":"Chief Operating Officer","moneyText":"","startDate":{"raw":1680220800,"fmt":"2023-03-31"},"ownership":"D"},{"maxAge":1,"shares":{"raw":149684,"fmt":"149.68k","longFmt":"149,684"},"filerUrl":"","transactionText":"","filerName":"MAESTRI
+        LUCA","filerRelation":"Chief Financial Officer","moneyText":"","startDate":{"raw":1680220800,"fmt":"2023-03-31"},"ownership":"D"},{"maxAge":1,"shares":{"raw":90620,"fmt":"90.62k","longFmt":"90,620"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1680220800,"fmt":"2023-03-31"},"ownership":"D"},{"maxAge":1,"shares":{"raw":187730,"fmt":"187.73k","longFmt":"187,730"},"value":{"raw":29991745,"fmt":"29.99M","longFmt":"29,991,745"},"filerUrl":"","transactionText":"Sale
+        at price 159.76 per share.","filerName":"WILLIAMS JEFFREY E","filerRelation":"Chief
+        Operating Officer","moneyText":"","startDate":{"raw":1679443200,"fmt":"2023-03-22"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1685,"fmt":"1.69k","longFmt":"1,685"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"LEVINSON ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1675382400,"fmt":"2023-02-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1685,"fmt":"1.69k","longFmt":"1,685"},"filerUrl":"","transactionText":"","filerName":"LEVINSON
+        ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1675209600,"fmt":"2023-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1685,"fmt":"1.69k","longFmt":"1,685"},"filerUrl":"","transactionText":"","filerName":"SUGAR
+        RONALD D","filerRelation":"Director","moneyText":"","startDate":{"raw":1675209600,"fmt":"2023-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1685,"fmt":"1.69k","longFmt":"1,685"},"filerUrl":"","transactionText":"","filerName":"WAGNER
+        SUSAN L","filerRelation":"Director","moneyText":"","startDate":{"raw":1675209600,"fmt":"2023-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1685,"fmt":"1.69k","longFmt":"1,685"},"filerUrl":"","transactionText":"","filerName":"JUNG
+        ANDREA","filerRelation":"Director","moneyText":"","startDate":{"raw":1675209600,"fmt":"2023-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1685,"fmt":"1.69k","longFmt":"1,685"},"filerUrl":"","transactionText":"","filerName":"BELL
+        JAMES A","filerRelation":"Director","moneyText":"","startDate":{"raw":1675209600,"fmt":"2023-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1685,"fmt":"1.69k","longFmt":"1,685"},"filerUrl":"","transactionText":"","filerName":"LOZANO
+        MONICA C.","filerRelation":"Director","moneyText":"","startDate":{"raw":1675209600,"fmt":"2023-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1685,"fmt":"1.69k","longFmt":"1,685"},"filerUrl":"","transactionText":"","filerName":"GORE
+        ALBERT A JR","filerRelation":"Director","moneyText":"","startDate":{"raw":1675209600,"fmt":"2023-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1685,"fmt":"1.69k","longFmt":"1,685"},"filerUrl":"","transactionText":"","filerName":"GORSKY
+        ALEX","filerRelation":"Director","moneyText":"","startDate":{"raw":1675209600,"fmt":"2023-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":2275,"fmt":"2.27k","longFmt":"2,275"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1670544000,"fmt":"2022-12-09"},"ownership":"D"},{"maxAge":1,"shares":{"raw":20200,"fmt":"20.2k","longFmt":"20,200"},"value":{"raw":3004144,"fmt":"3M","longFmt":"3,004,144"},"filerUrl":"","transactionText":"Sale
+        at price 148.72 per share.","filerName":"KONDO CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1669075200,"fmt":"2022-11-22"},"ownership":"D"},{"maxAge":1,"shares":{"raw":176299,"fmt":"176.3k","longFmt":"176,299"},"value":{"raw":27493275,"fmt":"27.49M","longFmt":"27,493,275"},"filerUrl":"","transactionText":"Sale
+        at price 154.70 - 157.20 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1666915200,"fmt":"2022-10-28"},"ownership":"D"},{"maxAge":1,"shares":{"raw":8053,"fmt":"8.05k","longFmt":"8,053"},"value":{"raw":1147150,"fmt":"1.15M","longFmt":"1,147,150"},"filerUrl":"","transactionText":"Sale
+        at price 142.45 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1665964800,"fmt":"2022-10-17"},"ownership":"D"},{"maxAge":1,"shares":{"raw":13136,"fmt":"13.14k","longFmt":"13,136"},"filerUrl":"","transactionText":"","filerName":"KONDO
+        CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1665705600,"fmt":"2022-10-14"},"ownership":"D"},{"maxAge":1,"shares":{"raw":16612,"fmt":"16.61k","longFmt":"16,612"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1665705600,"fmt":"2022-10-14"},"ownership":"D"},{"maxAge":1,"shares":{"raw":181139,"fmt":"181.14k","longFmt":"181,139"},"value":{"raw":25615117,"fmt":"25.62M","longFmt":"25,615,117"},"filerUrl":"","transactionText":"Sale
+        at price 138.44 - 142.93 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1664755200,"fmt":"2022-10-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":176299,"fmt":"176.3k","longFmt":"176,299"},"value":{"raw":25062882,"fmt":"25.06M","longFmt":"25,062,882"},"filerUrl":"","transactionText":"Sale
+        at price 141.09 - 142.83 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1664755200,"fmt":"2022-10-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":365600,"fmt":"365.6k","longFmt":"365,600"},"filerUrl":"","transactionText":"","filerName":"ADAMS
+        KATHERINE L","filerRelation":"General Counsel","moneyText":"","startDate":{"raw":1664496000,"fmt":"2022-09-30"},"ownership":"D"},{"maxAge":1,"shares":{"raw":365600,"fmt":"365.6k","longFmt":"365,600"},"filerUrl":"","transactionText":"","filerName":"WILLIAMS
+        JEFFREY E","filerRelation":"Chief Operating Officer","moneyText":"","startDate":{"raw":1664496000,"fmt":"2022-09-30"},"ownership":"I"},{"maxAge":1,"shares":{"raw":365600,"fmt":"365.6k","longFmt":"365,600"},"filerUrl":"","transactionText":"","filerName":"MAESTRI
+        LUCA","filerRelation":"Chief Financial Officer","moneyText":"","startDate":{"raw":1664496000,"fmt":"2022-09-30"},"ownership":"D"},{"maxAge":1,"shares":{"raw":365600,"fmt":"365.6k","longFmt":"365,600"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1664496000,"fmt":"2022-09-30"},"ownership":"D"},{"maxAge":1,"shares":{"raw":96735,"fmt":"96.73k","longFmt":"96,735"},"value":{"raw":16924259,"fmt":"16.92M","longFmt":"16,924,259"},"filerUrl":"","transactionText":"Sale
+        at price 174.66 - 175.60 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1660694400,"fmt":"2022-08-17"},"ownership":"D"},{"maxAge":1,"shares":{"raw":96735,"fmt":"96.73k","longFmt":"96,735"},"value":{"raw":16924259,"fmt":"16.92M","longFmt":"16,924,259"},"filerUrl":"","transactionText":"Sale
+        at price 174.66 - 175.60 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1660694400,"fmt":"2022-08-17"},"ownership":"D"},{"maxAge":1,"shares":{"raw":15366,"fmt":"15.37k","longFmt":"15,366"},"value":{"raw":2533239,"fmt":"2.53M","longFmt":"2,533,239"},"filerUrl":"","transactionText":"Sale
+        at price 164.86 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1659916800,"fmt":"2022-08-08"},"ownership":"D"},{"maxAge":1,"shares":{"raw":31896,"fmt":"31.9k","longFmt":"31,896"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1659657600,"fmt":"2022-08-05"},"ownership":"D"},{"maxAge":1,"shares":{"raw":25000,"fmt":"25k","longFmt":"25,000"},"value":{"raw":4119155,"fmt":"4.12M","longFmt":"4,119,155"},"filerUrl":"","transactionText":"Sale
+        at price 161.46 - 166.28 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1659484800,"fmt":"2022-08-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1276,"fmt":"1.28k","longFmt":"1,276"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"BELL JAMES A","filerRelation":"Director","moneyText":"","startDate":{"raw":1651795200,"fmt":"2022-05-06"},"ownership":"D"},{"maxAge":1,"shares":{"raw":25000,"fmt":"25k","longFmt":"25,000"},"value":{"raw":4042888,"fmt":"4.04M","longFmt":"4,042,888"},"filerUrl":"","transactionText":"Sale
+        at price 159.94 - 165.95 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1651622400,"fmt":"2022-05-04"},"ownership":"D"},{"maxAge":1,"shares":{"raw":8000,"fmt":"8k","longFmt":"8,000"},"value":{"raw":1319305,"fmt":"1.32M","longFmt":"1,319,305"},"filerUrl":"","transactionText":"Sale
+        at price 164.54 - 165.41 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1650240000,"fmt":"2022-04-18"},"ownership":"D"},{"maxAge":1,"shares":{"raw":13146,"fmt":"13.15k","longFmt":"13,146"},"filerUrl":"","transactionText":"","filerName":"KONDO
+        CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1649980800,"fmt":"2022-04-15"},"ownership":"D"},{"maxAge":1,"shares":{"raw":16612,"fmt":"16.61k","longFmt":"16,612"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1649980800,"fmt":"2022-04-15"},"ownership":"D"},{"maxAge":1,"shares":{"raw":105901,"fmt":"105.9k","longFmt":"105,901"},"value":{"raw":18824389,"fmt":"18.82M","longFmt":"18,824,389"},"filerUrl":"","transactionText":"Sale
+        at price 177.46 - 178.19 per share.","filerName":"WILLIAMS JEFFREY E","filerRelation":"Chief
+        Operating Officer","moneyText":"","startDate":{"raw":1649030400,"fmt":"2022-04-04"},"ownership":"I"},{"maxAge":1,"shares":{"raw":29198,"fmt":"29.2k","longFmt":"29,198"},"value":{"raw":5190427,"fmt":"5.19M","longFmt":"5,190,427"},"filerUrl":"","transactionText":"Sale
+        at price 177.49 - 178.18 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1649030400,"fmt":"2022-04-04"},"ownership":"D"},{"maxAge":1,"shares":{"raw":120000,"fmt":"120k","longFmt":"120,000"},"filerUrl":"","transactionText":"","filerName":"ADAMS
+        KATHERINE L","filerRelation":"General Counsel","moneyText":"","startDate":{"raw":1648771200,"fmt":"2022-04-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":204932,"fmt":"204.93k","longFmt":"204,932"},"filerUrl":"","transactionText":"","filerName":"WILLIAMS
+        JEFFREY E","filerRelation":"Chief Operating Officer","moneyText":"","startDate":{"raw":1648771200,"fmt":"2022-04-01"},"ownership":"I"},{"maxAge":1,"shares":{"raw":204932,"fmt":"204.93k","longFmt":"204,932"},"filerUrl":"","transactionText":"","filerName":"MAESTRI
+        LUCA","filerRelation":"Chief Financial Officer","moneyText":"","startDate":{"raw":1648771200,"fmt":"2022-04-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":60936,"fmt":"60.94k","longFmt":"60,936"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1648771200,"fmt":"2022-04-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":25000,"fmt":"25k","longFmt":"25,000"},"value":{"raw":4369548,"fmt":"4.37M","longFmt":"4,369,548"},"filerUrl":"","transactionText":"Sale
+        at price 173.04 - 175.78 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1643846400,"fmt":"2022-02-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1986,"fmt":"1.99k","longFmt":"1,986"},"value":{"raw":344154,"fmt":"344.15k","longFmt":"344,154"},"filerUrl":"","transactionText":"Sale
+        at price 173.29 per share.","filerName":"LEVINSON ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1986,"fmt":"1.99k","longFmt":"1,986"},"filerUrl":"","transactionText":"","filerName":"LEVINSON
+        ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1986,"fmt":"1.99k","longFmt":"1,986"},"filerUrl":"","transactionText":"","filerName":"SUGAR
+        RONALD D","filerRelation":"Director","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1986,"fmt":"1.99k","longFmt":"1,986"},"filerUrl":"","transactionText":"","filerName":"WAGNER
+        SUSAN L","filerRelation":"Director","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1986,"fmt":"1.99k","longFmt":"1,986"},"filerUrl":"","transactionText":"","filerName":"JUNG
+        ANDREA","filerRelation":"Director","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1986,"fmt":"1.99k","longFmt":"1,986"},"filerUrl":"","transactionText":"","filerName":"BELL
+        JAMES A","filerRelation":"Director","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1986,"fmt":"1.99k","longFmt":"1,986"},"filerUrl":"","transactionText":"","filerName":"LOZANO
+        MONICA C.","filerRelation":"Director","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":1986,"fmt":"1.99k","longFmt":"1,986"},"filerUrl":"","transactionText":"","filerName":"GORE
+        ALBERT A JR","filerRelation":"Director","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":486,"fmt":"486","longFmt":"486"},"filerUrl":"","transactionText":"","filerName":"GORSKY
+        ALEX","filerRelation":"Director","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":3450,"fmt":"3.45k","longFmt":"3,450"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1643673600,"fmt":"2022-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":9005,"fmt":"9.01k","longFmt":"9,005"},"value":{"raw":1350750,"fmt":"1.35M","longFmt":"1,350,750"},"filerUrl":"","transactionText":"Sale
+        at price 150.00 per share.","filerName":"KONDO CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1636675200,"fmt":"2021-11-12"},"ownership":"D"},{"maxAge":1,"shares":{"raw":25000,"fmt":"25k","longFmt":"25,000"},"value":{"raw":3716895,"fmt":"3.72M","longFmt":"3,716,895"},"filerUrl":"","transactionText":"Sale
+        at price 148.61 - 149.11 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1635724800,"fmt":"2021-11-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":165829,"fmt":"165.83k","longFmt":"165,829"},"value":{"raw":24645506,"fmt":"24.65M","longFmt":"24,645,506"},"filerUrl":"","transactionText":"Sale
+        at price 148.62 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1634601600,"fmt":"2021-10-19"},"ownership":"D"},{"maxAge":1,"shares":{"raw":18247,"fmt":"18.25k","longFmt":"18,247"},"value":{"raw":2670391,"fmt":"2.67M","longFmt":"2,670,391"},"filerUrl":"","transactionText":"Sale
+        at price 146.32 - 146.75 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1634515200,"fmt":"2021-10-18"},"ownership":"D"},{"maxAge":1,"shares":{"raw":17591,"fmt":"17.59k","longFmt":"17,591"},"filerUrl":"","transactionText":"","filerName":"KONDO
+        CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1634256000,"fmt":"2021-10-15"},"ownership":"D"},{"maxAge":1,"shares":{"raw":38904,"fmt":"38.9k","longFmt":"38,904"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1634256000,"fmt":"2021-10-15"},"ownership":"D"},{"maxAge":1,"shares":{"raw":165829,"fmt":"165.83k","longFmt":"165,829"},"value":{"raw":23022040,"fmt":"23.02M","longFmt":"23,022,040"},"filerUrl":"","transactionText":"Sale
+        at price 138.83 per share.","filerName":"WILLIAMS JEFFREY E","filerRelation":"Chief
+        Operating Officer","moneyText":"","startDate":{"raw":1633305600,"fmt":"2021-10-04"},"ownership":"I"},{"maxAge":1,"shares":{"raw":89437,"fmt":"89.44k","longFmt":"89,437"},"value":{"raw":12416539,"fmt":"12.42M","longFmt":"12,416,539"},"filerUrl":"","transactionText":"Sale
+        at price 138.83 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1633305600,"fmt":"2021-10-04"},"ownership":"D"},{"maxAge":1,"shares":{"raw":354392,"fmt":"354.39k","longFmt":"354,392"},"filerUrl":"","transactionText":"","filerName":"ADAMS
+        KATHERINE L","filerRelation":"General Counsel","moneyText":"","startDate":{"raw":1633046400,"fmt":"2021-10-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":354392,"fmt":"354.39k","longFmt":"354,392"},"filerUrl":"","transactionText":"","filerName":"WILLIAMS
+        JEFFREY E","filerRelation":"Chief Operating Officer","moneyText":"","startDate":{"raw":1633046400,"fmt":"2021-10-01"},"ownership":"I"},{"maxAge":1,"shares":{"raw":354392,"fmt":"354.39k","longFmt":"354,392"},"filerUrl":"","transactionText":"","filerName":"MAESTRI
+        LUCA","filerRelation":"Chief Financial Officer","moneyText":"","startDate":{"raw":1633046400,"fmt":"2021-10-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":191376,"fmt":"191.38k","longFmt":"191,376"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1633046400,"fmt":"2021-10-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":2386440,"fmt":"2.39M","longFmt":"2,386,440"},"value":{"raw":354568479,"fmt":"354.57M","longFmt":"354,568,479"},"filerUrl":"","transactionText":"Sale
+        at price 148.30 - 149.97 per share.","filerName":"COOK TIMOTHY D","filerRelation":"Chief
+        Executive Officer","moneyText":"","startDate":{"raw":1629849600,"fmt":"2021-08-25"},"ownership":"D"},{"maxAge":1,"shares":{"raw":5040000,"fmt":"5.04M","longFmt":"5,040,000"},"filerUrl":"","transactionText":"","filerName":"COOK
+        TIMOTHY D","filerRelation":"Chief Executive Officer","moneyText":"","startDate":{"raw":1629763200,"fmt":"2021-08-24"},"ownership":"D"},{"maxAge":1,"shares":{"raw":70000,"fmt":"70k","longFmt":"70,000"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"COOK TIMOTHY D","filerRelation":"Chief
+        Executive Officer","moneyText":"","startDate":{"raw":1629417600,"fmt":"2021-08-20"},"ownership":"D"},{"maxAge":1,"shares":{"raw":14877,"fmt":"14.88k","longFmt":"14,877"},"value":{"raw":2171893,"fmt":"2.17M","longFmt":"2,171,893"},"filerUrl":"","transactionText":"Sale
+        at price 145.99 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1628208000,"fmt":"2021-08-06"},"ownership":"D"},{"maxAge":1,"shares":{"raw":31896,"fmt":"31.9k","longFmt":"31,896"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1628121600,"fmt":"2021-08-05"},"ownership":"D"},{"maxAge":1,"shares":{"raw":17000,"fmt":"17k","longFmt":"17,000"},"value":{"raw":2480048,"fmt":"2.48M","longFmt":"2,480,048"},"filerUrl":"","transactionText":"Sale
+        at price 145.83 - 146.50 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1627862400,"fmt":"2021-08-02"},"ownership":"D"},{"maxAge":1,"shares":{"raw":4010,"fmt":"4.01k","longFmt":"4,010"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1620950400,"fmt":"2021-05-14"},"ownership":"D"},{"maxAge":1,"shares":{"raw":17000,"fmt":"17k","longFmt":"17,000"},"value":{"raw":2257631,"fmt":"2.26M","longFmt":"2,257,631"},"filerUrl":"","transactionText":"Sale
+        at price 132.57 - 133.93 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1620000000,"fmt":"2021-05-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":121072,"fmt":"121.07k","longFmt":"121,072"},"value":{"raw":16079338,"fmt":"16.08M","longFmt":"16,079,338"},"filerUrl":"","transactionText":"Sale
+        at price 132.58 - 133.93 per share.","filerName":"MAESTRI LUCA","filerRelation":"Chief
+        Financial Officer","moneyText":"","startDate":{"raw":1620000000,"fmt":"2021-05-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":18216,"fmt":"18.22k","longFmt":"18,216"},"value":{"raw":2441126,"fmt":"2.44M","longFmt":"2,441,126"},"filerUrl":"","transactionText":"Sale
+        at price 134.01 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1618531200,"fmt":"2021-04-16"},"ownership":"D"},{"maxAge":1,"shares":{"raw":17603,"fmt":"17.6k","longFmt":"17,603"},"filerUrl":"","transactionText":"","filerName":"KONDO
+        CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1618444800,"fmt":"2021-04-15"},"ownership":"D"},{"maxAge":1,"shares":{"raw":38908,"fmt":"38.91k","longFmt":"38,908"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1618444800,"fmt":"2021-04-15"},"ownership":"D"},{"maxAge":1,"shares":{"raw":133867,"fmt":"133.87k","longFmt":"133,867"},"value":{"raw":16832437,"fmt":"16.83M","longFmt":"16,832,437"},"filerUrl":"","transactionText":"Sale
+        at price 125.74 per share.","filerName":"WILLIAMS JEFFREY E","filerRelation":"Chief
+        Operating Officer","moneyText":"","startDate":{"raw":1617580800,"fmt":"2021-04-05"},"ownership":"I"},{"maxAge":1,"shares":{"raw":59068,"fmt":"59.07k","longFmt":"59,068"},"filerUrl":"","transactionText":"","filerName":"ADAMS
+        KATHERINE L","filerRelation":"General Counsel","moneyText":"","startDate":{"raw":1617235200,"fmt":"2021-04-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":257348,"fmt":"257.35k","longFmt":"257,348"},"filerUrl":"","transactionText":"","filerName":"WILLIAMS
+        JEFFREY E","filerRelation":"Chief Operating Officer","moneyText":"","startDate":{"raw":1617235200,"fmt":"2021-04-01"},"ownership":"I"},{"maxAge":1,"shares":{"raw":257348,"fmt":"257.35k","longFmt":"257,348"},"filerUrl":"","transactionText":"","filerName":"MAESTRI
+        LUCA","filerRelation":"Chief Financial Officer","moneyText":"","startDate":{"raw":1617235200,"fmt":"2021-04-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":3416,"fmt":"3.42k","longFmt":"3,416"},"value":{"raw":463210,"fmt":"463.21k","longFmt":"463,210"},"filerUrl":"","transactionText":"Sale
+        at price 135.60 per share.","filerName":"LEVINSON ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1612224000,"fmt":"2021-02-02"},"ownership":"D"},{"maxAge":1,"shares":{"raw":3416,"fmt":"3.42k","longFmt":"3,416"},"filerUrl":"","transactionText":"","filerName":"LEVINSON
+        ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1612137600,"fmt":"2021-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":3416,"fmt":"3.42k","longFmt":"3,416"},"filerUrl":"","transactionText":"","filerName":"SUGAR
+        RONALD D","filerRelation":"Director","moneyText":"","startDate":{"raw":1612137600,"fmt":"2021-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":3416,"fmt":"3.42k","longFmt":"3,416"},"filerUrl":"","transactionText":"","filerName":"WAGNER
+        SUSAN L","filerRelation":"Director","moneyText":"","startDate":{"raw":1612137600,"fmt":"2021-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":3416,"fmt":"3.42k","longFmt":"3,416"},"filerUrl":"","transactionText":"","filerName":"JUNG
+        ANDREA","filerRelation":"Director","moneyText":"","startDate":{"raw":1612137600,"fmt":"2021-02-01"},"ownership":"I"},{"maxAge":1,"shares":{"raw":3416,"fmt":"3.42k","longFmt":"3,416"},"filerUrl":"","transactionText":"","filerName":"BELL
+        JAMES A","filerRelation":"Director","moneyText":"","startDate":{"raw":1612137600,"fmt":"2021-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":281,"fmt":"281","longFmt":"281"},"filerUrl":"","transactionText":"","filerName":"LOZANO
+        MONICA C.","filerRelation":"Director","moneyText":"","startDate":{"raw":1612137600,"fmt":"2021-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":3416,"fmt":"3.42k","longFmt":"3,416"},"filerUrl":"","transactionText":"","filerName":"GORE
+        ALBERT A JR","filerRelation":"Director","moneyText":"","startDate":{"raw":1612137600,"fmt":"2021-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":17000,"fmt":"17k","longFmt":"17,000"},"value":{"raw":2273749,"fmt":"2.27M","longFmt":"2,273,749"},"filerUrl":"","transactionText":"Sale
+        at price 131.79 - 134.56 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1612137600,"fmt":"2021-02-01"},"ownership":"D"},{"maxAge":1,"shares":{"raw":408,"fmt":"408","longFmt":"408"},"value":{"raw":0,"fmt":null,"longFmt":"0"},"filerUrl":"","transactionText":"Stock
+        Gift at price 0.00 per share.","filerName":"LEVINSON ARTHUR D","filerRelation":"Director","moneyText":"","startDate":{"raw":1606867200,"fmt":"2020-12-02"},"ownership":"D"},{"maxAge":1,"shares":{"raw":57480,"fmt":"57.48k","longFmt":"57,480"},"filerUrl":"","transactionText":"","filerName":"ADAMS
+        KATHERINE L","filerRelation":"General Counsel","moneyText":"","startDate":{"raw":1605225600,"fmt":"2020-11-13"},"ownership":"D"},{"maxAge":1,"shares":{"raw":17000,"fmt":"17k","longFmt":"17,000"},"value":{"raw":1877109,"fmt":"1.88M","longFmt":"1,877,109"},"filerUrl":"","transactionText":"Sale
+        at price 109.22 - 110.99 per share.","filerName":"ADAMS KATHERINE L","filerRelation":"General
+        Counsel","moneyText":"","startDate":{"raw":1604361600,"fmt":"2020-11-03"},"ownership":"D"},{"maxAge":1,"shares":{"raw":14840,"fmt":"14.84k","longFmt":"14,840"},"value":{"raw":1800686,"fmt":"1.8M","longFmt":"1,800,686"},"filerUrl":"","transactionText":"Sale
+        at price 121.34 per share.","filerName":"KONDO CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1602806400,"fmt":"2020-10-16"},"ownership":"D"},{"maxAge":1,"shares":{"raw":31200,"fmt":"31.2k","longFmt":"31,200"},"value":{"raw":3737869,"fmt":"3.74M","longFmt":"3,737,869"},"filerUrl":"","transactionText":"Sale
+        at price 119.58 - 120.14 per share.","filerName":"O''BRIEN DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1602806400,"fmt":"2020-10-16"},"ownership":"D"},{"maxAge":1,"shares":{"raw":23652,"fmt":"23.65k","longFmt":"23,652"},"filerUrl":"","transactionText":"","filerName":"KONDO
+        CHRISTOPHER","filerRelation":"Officer","moneyText":"","startDate":{"raw":1602720000,"fmt":"2020-10-15"},"ownership":"D"},{"maxAge":1,"shares":{"raw":66532,"fmt":"66.53k","longFmt":"66,532"},"filerUrl":"","transactionText":"","filerName":"O''BRIEN
+        DEIRDRE","filerRelation":"Officer","moneyText":"","startDate":{"raw":1602720000,"fmt":"2020-10-15"},"ownership":"D"}],"maxAge":1},"fundOwnership":{"ownershipList":[{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Vanguard
+        Total Stock Market Index Fund","pctHeld":{"raw":0.0298,"fmt":"2.98%"},"position":{"raw":465990265,"fmt":"465.99M","longFmt":"465,990,265"},"value":{"raw":90388131702,"fmt":"90.39B","longFmt":"90,388,131,702"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Vanguard
+        500 Index Fund","pctHeld":{"raw":0.0225,"fmt":"2.25%"},"position":{"raw":352024182,"fmt":"352.02M","longFmt":"352,024,182"},"value":{"raw":68282130582,"fmt":"68.28B","longFmt":"68,282,130,582"}},{"maxAge":1,"reportDate":{"raw":1693440000,"fmt":"2023-08-31"},"organization":"Fidelity
+        500 Index Fund","pctHeld":{"raw":0.0108,"fmt":"1.08%"},"position":{"raw":169378703,"fmt":"169.38M","longFmt":"169,378,703"},"value":{"raw":31821176932,"fmt":"31.82B","longFmt":"31,821,176,932"}},{"maxAge":1,"reportDate":{"raw":1696032000,"fmt":"2023-09-30"},"organization":"SPDR
+        S&P 500 ETF Trust","pctHeld":{"raw":0.0106,"fmt":"1.06%"},"position":{"raw":165192563,"fmt":"165.19M","longFmt":"165,192,563"},"value":{"raw":28282618711,"fmt":"28.28B","longFmt":"28,282,618,711"}},{"maxAge":1,"reportDate":{"raw":1696032000,"fmt":"2023-09-30"},"organization":"iShares
+        Core S&P 500 ETF","pctHeld":{"raw":0.0089,"fmt":"0.89%"},"position":{"raw":138984763,"fmt":"138.98M","longFmt":"138,984,763"},"value":{"raw":23795581273,"fmt":"23.8B","longFmt":"23,795,581,273"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Vanguard
+        Growth Index Fund","pctHeld":{"raw":0.0081,"fmt":"0.81%"},"position":{"raw":127130805,"fmt":"127.13M","longFmt":"127,130,805"},"value":{"raw":24659562245,"fmt":"24.66B","longFmt":"24,659,562,245"}},{"maxAge":1,"reportDate":{"raw":1693440000,"fmt":"2023-08-31"},"organization":"Invesco
+        ETF Tr-Invesco QQQ Tr, Series 1 ETF","pctHeld":{"raw":0.008,"fmt":"0.80%"},"position":{"raw":124293053,"fmt":"124.29M","longFmt":"124,293,053"},"value":{"raw":23350935867,"fmt":"23.35B","longFmt":"23,350,935,867"}},{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Vanguard
+        Institutional Index Fund-Institutional Index Fund","pctHeld":{"raw":0.0064999997,"fmt":"0.65%"},"position":{"raw":100926716,"fmt":"100.93M","longFmt":"100,926,716"},"value":{"raw":19576755102,"fmt":"19.58B","longFmt":"19,576,755,102"}},{"maxAge":1,"reportDate":{"raw":1693440000,"fmt":"2023-08-31"},"organization":"Vanguard
+        Information Technology Index Fund","pctHeld":{"raw":0.0049,"fmt":"0.49%"},"position":{"raw":76972129,"fmt":"76.97M","longFmt":"76,972,129"},"value":{"raw":14460753875,"fmt":"14.46B","longFmt":"14,460,753,875"}},{"maxAge":1,"reportDate":{"raw":1696032000,"fmt":"2023-09-30"},"organization":"Select
+        Sector SPDR Fund-Technology","pctHeld":{"raw":0.0041,"fmt":"0.41%"},"position":{"raw":64568089,"fmt":"64.57M","longFmt":"64,568,089"},"value":{"raw":11054702517,"fmt":"11.05B","longFmt":"11,054,702,517"}}],"maxAge":1}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=1, stale-while-revalidate=15
+      content-encoding:
+      - gzip
+      content-length:
+      - '6761'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 27 Jun 2024 10:17:17 GMT
+      server:
+      - ATS
+      vary:
+      - Origin
+      x-envoy-decorator-operation:
+      - finance-yql--mtls-default-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '6'
+      x-yahoo-request-id:
+      - 3m13le1j7qf1d
+    status:
+      code: 200
+      message: OK
+version: 1

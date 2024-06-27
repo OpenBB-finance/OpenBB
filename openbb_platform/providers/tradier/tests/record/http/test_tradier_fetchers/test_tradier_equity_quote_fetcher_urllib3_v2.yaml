@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://sandbox.tradier.com/v1/markets/quotes?symbols=SPY,SPY251219P00450000&greeks=true
+  response:
+    body:
+      string: Invalid Access Token
+    headers:
+      Access-Control-Allow-Headers:
+      - accept, authorization
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '20'
+      Content-Type:
+      - plain/text
+      Date:
+      - Thu, 27 Jun 2024 10:16:45 GMT
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

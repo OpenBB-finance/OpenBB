@@ -1,0 +1,171 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=AAPL
+  response:
+    body:
+      string: '{"explains":[],"count":15,"quotes":[{"exchange":"NMS","shortname":"Apple
+        Inc.","quoteType":"EQUITY","symbol":"AAPL","index":"quotes","score":6142200.0,"typeDisp":"Equity","longname":"Apple
+        Inc.","exchDisp":"NASDAQ","sector":"Technology","sectorDisp":"Technology","industry":"Consumer
+        Electronics","industryDisp":"Consumer Electronics","dispSecIndFlag":true,"isYahooFinance":true},{"exchange":"MEX","shortname":"APPLE
+        INC","quoteType":"EQUITY","symbol":"AAPL.MX","index":"quotes","score":20091.0,"typeDisp":"Equity","longname":"Apple
+        Inc.","exchDisp":"Mexico","sector":"Technology","sectorDisp":"Technology","industry":"Consumer
+        Electronics","industryDisp":"Consumer Electronics","isYahooFinance":true},{"exchange":"NGM","shortname":"Direxion
+        Daily AAPL Bull 2X Sha","quoteType":"ETF","symbol":"AAPU","index":"quotes","score":20020.0,"typeDisp":"ETF","longname":"Direxion
+        Daily AAPL Bull 2X Shares","exchDisp":"NASDAQ","isYahooFinance":true},{"exchange":"NGM","shortname":"GraniteShares
+        2x Long AAPL Dail","quoteType":"ETF","symbol":"AAPB","index":"quotes","score":20018.0,"typeDisp":"ETF","longname":"GraniteShares
+        2x Long AAPL Daily ETF","exchDisp":"NASDAQ","isYahooFinance":true},{"exchange":"BUE","shortname":"APPLE
+        INC CEDEAR(REPR 1/20 SHR)","quoteType":"EQUITY","symbol":"AAPL.BA","index":"quotes","score":20009.0,"typeDisp":"Equity","longname":"Apple
+        Inc.","exchDisp":"Buenos Aires","sector":"Technology","sectorDisp":"Technology","industry":"Consumer
+        Electronics","industryDisp":"Consumer Electronics","isYahooFinance":true},{"exchange":"ASE","shortname":"DIREXION
+        DAILY AAPL BULL 1.5X S","quoteType":"INDEX","symbol":"^AAPU-NV","index":"quotes","score":20008.0,"typeDisp":"Index","longname":"DIREXION
+        DAILY AAPL BULL 1.5X S","exchDisp":"NYSE MKT","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
+        Jan 2025 50.000 call","quoteType":"OPTION","symbol":"AAPL250117C00050000","index":"quotes","score":20007.0,"typeDisp":"Option","longname":"AAPL
+        Jan 2025 50.000 call","exchDisp":"OPR","isYahooFinance":true}],"news":[{"uuid":"7635d569-35b1-3e8d-ac7d-8046ef280b4c","title":"Is
+        Apple a Better Once-in-a-Generation Investment Opportunity Than Nvidia Right
+        Now?","publisher":"Motley Fool","link":"https://finance.yahoo.com/m/7635d569-35b1-3e8d-ac7d-8046ef280b4c/is-apple-a-better.html","providerPublishTime":1719481800,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/Fm_.tEZic.qT9Lc5BI.fPQ--~B/aD00NDgwO3c9NjcyMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/d3b1c32afc6b7671234f40e405cb1434","width":6720,"height":4480,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/OayCCDlnTmF2IZ.e6dhPKw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/d3b1c32afc6b7671234f40e405cb1434","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["NVDA","AAPL"]},{"uuid":"e30650c7-ee32-3279-81fd-752f59d61925","title":"Billionaires
+        Are Selling Meta and Buying This Stock Instead","publisher":"Motley Fool","link":"https://finance.yahoo.com/m/e30650c7-ee32-3279-81fd-752f59d61925/billionaires-are-selling-meta.html","providerPublishTime":1719480600,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/xTy_htshvw3OIfRbWjbrzQ--~B/aD02NzU7dz0xMjAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/875c6c6877a6d532f0d844f3298d0ca0","width":1200,"height":675,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/AwO8_8IBLXfJWXyWn4Pp8A--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/875c6c6877a6d532f0d844f3298d0ca0","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["META","AAPL"]},{"uuid":"c6762837-8b3a-3d63-966e-caf33d4fba63","title":"This
+        Is Spotify''s Biggest Test Yet","publisher":"Motley Fool","link":"https://finance.yahoo.com/m/c6762837-8b3a-3d63-966e-caf33d4fba63/this-is-spotify%27s-biggest.html","providerPublishTime":1719476100,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/GX5_ir3DrX55w_Dx1Zh7dg--~B/aD0xNDE0O3c9MjExOTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/ea427c330a8f4b4c75a50fbcb1d9a4a9","width":2119,"height":1414,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/oCm7sCgo7MGPyvPFVo_V2g--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/ea427c330a8f4b4c75a50fbcb1d9a4a9","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["SPOT","AAPL","AMZN"]},{"uuid":"52b7de28-17ed-3a6a-b88e-41a6ce2bb792","title":"3
+        Warren Buffett Stocks That Are Screaming Buys Right Now","publisher":"Motley
+        Fool","link":"https://finance.yahoo.com/m/52b7de28-17ed-3a6a-b88e-41a6ce2bb792/3-warren-buffett-stocks-that.html","providerPublishTime":1719476100,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/1dQ9dyLNQYx4HqkgbkTluw--~B/aD00NDE7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/cff0c670c05f366447bd64327a1a2f69","width":720,"height":441,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/F67HJi9KdrK2QIBdH3mWmw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/cff0c670c05f366447bd64327a1a2f69","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AMZN","AAPL","V"]},{"uuid":"71313380-df65-3ec2-9140-0d876173d0f3","title":"Did
+        Your Heart Just Skip a Beat? Your Watch Already Knows That and More.","publisher":"Barrons.com","link":"https://finance.yahoo.com/m/71313380-df65-3ec2-9140-0d876173d0f3/did-your-heart-just-skip-a.html","providerPublishTime":1719468000,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/IaVl3o5Wu9liTnpmXXFb7g--~B/aD01MzM7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/Barrons.com/da9599f6329f5a569e8dcd885a7859ad","width":800,"height":533,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/08K57lr3DAuw8usBn3teWQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/Barrons.com/da9599f6329f5a569e8dcd885a7859ad","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["IRTC","AAPL","GOOG","DXCM","ABT"]},{"uuid":"0d02deef-25ad-351f-adb3-7a8620b6f714","title":"Apple
+        partners with Affirm to maintain competitive edge in US mobile wallet space","publisher":"Electronic
+        Payments","link":"https://finance.yahoo.com/m/0d02deef-25ad-351f-adb3-7a8620b6f714/apple-partners-with-affirm-to.html","providerPublishTime":1719464705,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/j33.DnylSe.fclMyBRl0tg--~B/aD02Njc7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/electronic_payments_938/6235903fb5f838c0f6017403eda73111","width":1000,"height":667,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/tn5xquXYOWe_ME4oihHprg--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/electronic_payments_938/6235903fb5f838c0f6017403eda73111","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["GLDAF","AAPL","AFRM"]},{"uuid":"17c8c757-3b3f-39be-a42f-179e8dc3e02c","title":"Nasdaq
+        Leads Gains While Microsoft Remains In Buy Zone; This Blue Chip Breaks Out
+        (Live Coverage)","publisher":"Investor''s Business Daily","link":"https://finance.yahoo.com/m/17c8c757-3b3f-39be-a42f-179e8dc3e02c/nasdaq-leads-gains-while.html","providerPublishTime":1719432650,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/lWvzFl3ESOZ2f8ElL44fDw--~B/aD01NzI7dz0xMDEyO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/6968e5629802ea340f49654a6a333a2e","width":1012,"height":572,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/MiLE8FqHQdu8w3XTVrdvOQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/6968e5629802ea340f49654a6a333a2e","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["^DJI","AAPL","MSFT","RIVN"]},{"uuid":"85a1d027-7692-31a5-8b8b-ddd018a45b13","title":"Apple
+        Hopes To Stand Out As Privacy-Focused AI Company","publisher":"Investor''s
+        Business Daily","link":"https://finance.yahoo.com/m/85a1d027-7692-31a5-8b8b-ddd018a45b13/apple-hopes-to-stand-out-as.html","providerPublishTime":1719432089,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/Xfr8vyBJVXGgOcEqw4.JKQ--~B/aD01MTE7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/012f03d1f8d0bad3fcffe1be17ba0838","width":1000,"height":511,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/_jSZJcJja8TB_NeIMSYhVg--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/012f03d1f8d0bad3fcffe1be17ba0838","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL"]}],"nav":[],"lists":[],"researchReports":[],"screenerFieldResults":[],"totalTime":42,"timeTakenForQuotes":433,"timeTakenForNews":700,"timeTakenForAlgowatchlist":400,"timeTakenForPredefinedScreener":400,"timeTakenForCrunchbase":0,"timeTakenForNav":400,"timeTakenForResearchReports":0,"timeTakenForScreenerField":0,"timeTakenForCulturalAssets":0}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=120, stale-while-revalidate=180
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 27 Jun 2024 10:17:02 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-search--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '45'
+      y-rid:
+      - 5bibldpj7qf0u
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=MSFT
+  response:
+    body:
+      string: "{\"explains\":[],\"count\":15,\"quotes\":[{\"exchange\":\"NMS\",\"shortname\":\"Microsoft
+        Corporation\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT\",\"index\":\"quotes\",\"score\":3929400.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
+        Corporation\",\"exchDisp\":\"NASDAQ\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"dispSecIndFlag\":true,\"isYahooFinance\":true},{\"exchange\":\"MEX\",\"shortname\":\"MICROSOFT
+        CORP\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT.MX\",\"index\":\"quotes\",\"score\":20050.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
+        Corporation\",\"exchDisp\":\"Mexico\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"isYahooFinance\":true},{\"exchange\":\"PCX\",\"shortname\":\"Tidal
+        ETF Trust II YieldMax MSF\",\"quoteType\":\"ETF\",\"symbol\":\"MSFO\",\"index\":\"quotes\",\"score\":20013.0,\"typeDisp\":\"ETF\",\"longname\":\"YieldMax
+        MSFT Option Income Strategy ETF\",\"exchDisp\":\"NYSEArca\",\"isYahooFinance\":true},{\"exchange\":\"NGM\",\"shortname\":\"Direxion
+        Daily MSFT Bull 2X Sha\",\"quoteType\":\"ETF\",\"symbol\":\"MSFU\",\"index\":\"quotes\",\"score\":20009.0,\"typeDisp\":\"ETF\",\"longname\":\"Direxion
+        Daily MSFT Bull 2X Shares\",\"exchDisp\":\"NASDAQ\",\"isYahooFinance\":true},{\"exchange\":\"NEO\",\"shortname\":\"MICROSOFT
+        CDR (CAD HEDGED)\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT.NE\",\"index\":\"quotes\",\"score\":20008.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
+        Corporation\",\"exchDisp\":\"NEO\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Dec 2024 320.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT241220P00320000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Dec 2024 320.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Jan 2026 560.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116C00560000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Jan 2026 560.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"ce7b8eb9-0a8e-3f92-bee0-582053a7d25a\",\"title\":\"Microsoft
+        maintains AI services in Hong Kong, as OpenAI curbs API access from China\",\"publisher\":\"South
+        China Morning Post\",\"link\":\"https://finance.yahoo.com/news/microsoft-maintains-ai-services-hong-093000823.html\",\"providerPublishTime\":1719480600,\"type\":\"STORY\",\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"42417a16-7f11-37d0-9431-b2d194fd0aeb\",\"title\":\"Have
+        $1,000? 2 Glorious Growth Stocks to Buy Right Now\",\"publisher\":\"Motley
+        Fool\",\"link\":\"https://finance.yahoo.com/m/42417a16-7f11-37d0-9431-b2d194fd0aeb/have-%241%2C000%3F-2-glorious.html\",\"providerPublishTime\":1719479700,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/lGCUlq9MNpGPphHe2bcw9A--~B/aD0xNDE0O3c9MjEyMTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/9efa94905df22f277aa33f95ecf7ac5b\",\"width\":2121,\"height\":1414,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/76yPaPDGF6qfa5Qp0IO5zw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/9efa94905df22f277aa33f95ecf7ac5b\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\",\"LULU\"]},{\"uuid\":\"2c63b511-fbe4-307c-b066-bc77294b9fb6\",\"title\":\"2
+        Index ETFs to Buy Hand Over Fist and 1 to Avoid\",\"publisher\":\"Motley Fool\",\"link\":\"https://finance.yahoo.com/m/2c63b511-fbe4-307c-b066-bc77294b9fb6/2-index-etfs-to-buy-hand-over.html\",\"providerPublishTime\":1719478920,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/xrRJuVSGCp8ROuYlQeAWCQ--~B/aD00MjM5O3c9NjM1OTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/98f107b3e33999fa41faeb4435aea185\",\"width\":6359,\"height\":4239,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/h178OAf2xO5As2AK7tbkfA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/98f107b3e33999fa41faeb4435aea185\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"^GSPC\",\"QQQ\",\"MSFT\",\"SPY\"]},{\"uuid\":\"f59ecc76-392b-3f78-87cb-f35cf6f36179\",\"title\":\"The
+        Biggest Economy in the World by the End of 2024\",\"publisher\":\"Insider
+        Monkey\",\"link\":\"https://finance.yahoo.com/news/biggest-economy-world-end-2024-233345847.html\",\"providerPublishTime\":1719444782,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/exU3kaMlk5YLgqNSBrr8Sg--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/bb9c0f219cded046f35f0b1686761b6c\",\"width\":1456,\"height\":816,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/yQelJQ6d3dJ4F7YabWKPOg--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/bb9c0f219cded046f35f0b1686761b6c\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"8394ccde-ec3b-3940-96cb-5b101859795d\",\"title\":\"Cloud
+        Computing: Find Top Cloud Stocks And Track Industry Trends\",\"publisher\":\"Investor's
+        Business Daily\",\"link\":\"https://finance.yahoo.com/m/8394ccde-ec3b-3940-96cb-5b101859795d/cloud-computing%3A-find-top.html\",\"providerPublishTime\":1719432709,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/YIvmvVwucXfMcM84JKWYng--~B/aD01NjU7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/2362cfe5441dabc9abb528fdd1b8b618\",\"width\":1000,\"height\":565,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/XM8KMt_GHSEVdgpSHStNow--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/2362cfe5441dabc9abb528fdd1b8b618\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"GOOGL\",\"MSFT\"]},{\"uuid\":\"17c8c757-3b3f-39be-a42f-179e8dc3e02c\",\"title\":\"Nasdaq
+        Leads Gains While Microsoft Remains In Buy Zone; This Blue Chip Breaks Out
+        (Live Coverage)\",\"publisher\":\"Investor's Business Daily\",\"link\":\"https://finance.yahoo.com/m/17c8c757-3b3f-39be-a42f-179e8dc3e02c/nasdaq-leads-gains-while.html\",\"providerPublishTime\":1719432650,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/lWvzFl3ESOZ2f8ElL44fDw--~B/aD01NzI7dz0xMDEyO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/6968e5629802ea340f49654a6a333a2e\",\"width\":1012,\"height\":572,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/MiLE8FqHQdu8w3XTVrdvOQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/6968e5629802ea340f49654a6a333a2e\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"^DJI\",\"AAPL\",\"MSFT\",\"RIVN\"]},{\"uuid\":\"75bceb0b-543c-3743-b43d-2cc665bf49ef\",\"title\":\"Bill
+        Gates and Warren Buffett Team Up to Transform Nuclear Power\",\"publisher\":\"Oilprice.com\",\"link\":\"https://finance.yahoo.com/news/bill-gates-warren-buffett-team-200000657.html\",\"providerPublishTime\":1719432000,\"type\":\"STORY\",\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"76d59de2-4283-4051-a8c4-91a2dd33c9e6\",\"title\":\"Europe
+        is at the gates of Apple\u2019s walled garden\",\"publisher\":\"Yahoo Finance\",\"link\":\"https://finance.yahoo.com/news/europe-is-at-the-gates-of-apples-walled-garden-181838860.html\",\"providerPublishTime\":1719425918,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/T_sipyWGJ5u4EsIXBv0cUw--~B/aD0xOTUwO3c9MjkyNTthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-06/d19df550-324f-11ef-9057-0e752fcdeaa5\",\"width\":2925,\"height\":1950,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/euG.GHClU1HbzJz7mR8jDQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-06/d19df550-324f-11ef-9057-0e752fcdeaa5\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\",\"AAPL\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":53,\"timeTakenForQuotes\":437,\"timeTakenForNews\":700,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0}"
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=120, stale-while-revalidate=180
+      content-encoding:
+      - gzip
+      content-length:
+      - '2554'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 27 Jun 2024 10:17:02 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-search--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '55'
+      y-rid:
+      - 39i3ct9j7qf0u
+    status:
+      code: 200
+      message: OK
+version: 1

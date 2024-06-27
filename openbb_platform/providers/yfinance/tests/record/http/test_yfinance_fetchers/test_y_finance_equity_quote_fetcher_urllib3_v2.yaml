@@ -1,0 +1,92 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
+  response:
+    body:
+      string: '{"quoteSummary":{"result":[{"assetProfile":{"address1":"One Apple Park
+        Way","city":"Cupertino","state":"CA","zip":"95014","country":"United States","phone":"408
+        996 1010","website":"https://www.apple.com","industry":"Consumer Electronics","industryKey":"consumer-electronics","industryDisp":"Consumer
+        Electronics","sector":"Technology","sectorKey":"technology","sectorDisp":"Technology","longBusinessSummary":"Apple
+        Inc. designs, manufactures, and markets smartphones, personal computers, tablets,
+        wearables, and accessories worldwide. The company offers iPhone, a line of
+        smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose
+        tablets; and wearables, home, and accessories comprising AirPods, Apple TV,
+        Apple Watch, Beats products, and HomePod. It also provides AppleCare support
+        and cloud services; and operates various platforms, including the App Store
+        that allow customers to discover and download applications and digital content,
+        such as books, music, video, games, and podcasts. In addition, the company
+        offers various services, such as Apple Arcade, a game subscription service;
+        Apple Fitness+, a personalized fitness service; Apple Music, which offers
+        users a curated listening experience with on-demand radio stations; Apple
+        News+, a subscription news and magazine service; Apple TV+, which offers exclusive
+        original content; Apple Card, a co-branded credit card; and Apple Pay, a cashless
+        payment service, as well as licenses its intellectual property. The company
+        serves consumers, and small and mid-sized businesses; and the education, enterprise,
+        and government markets. It distributes third-party applications for its products
+        through the App Store. The company also sells its products through its retail
+        and online stores, and direct sales force; and third-party cellular network
+        carriers, wholesalers, retailers, and resellers. Apple Inc. was founded in
+        1976 and is headquartered in Cupertino, California.","fullTimeEmployees":150000,"companyOfficers":[{"maxAge":1,"name":"Mr.
+        Timothy D. Cook","age":62,"title":"CEO & Director","yearBorn":1961,"fiscalYear":2023,"totalPay":{"raw":16239562,"fmt":"16.24M","longFmt":"16,239,562"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Luca  Maestri","age":60,"title":"CFO & Senior VP","yearBorn":1963,"fiscalYear":2023,"totalPay":{"raw":4612242,"fmt":"4.61M","longFmt":"4,612,242"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Jeffrey E. Williams","age":59,"title":"Chief Operating Officer","yearBorn":1964,"fiscalYear":2023,"totalPay":{"raw":4637585,"fmt":"4.64M","longFmt":"4,637,585"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Ms.
+        Katherine L. Adams","age":59,"title":"Senior VP, General Counsel & Secretary","yearBorn":1964,"fiscalYear":2023,"totalPay":{"raw":4618064,"fmt":"4.62M","longFmt":"4,618,064"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Ms.
+        Deirdre  O''Brien","age":56,"title":"Senior Vice President of Retail","yearBorn":1967,"fiscalYear":2023,"totalPay":{"raw":4613369,"fmt":"4.61M","longFmt":"4,613,369"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Chris  Kondo","title":"Senior Director of Corporate Accounting","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        James  Wilson","title":"Chief Technology Officer","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Suhasini  Chandramouli","title":"Director
+        of Investor Relations","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Greg  Joswiak","title":"Senior Vice President of Worldwide Marketing","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Adrian  Perica","age":49,"title":"Head of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":6,"boardRisk":1,"compensationRisk":2,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1717200000,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":209.07,"open":211.44,"dayLow":210.64,"dayHigh":214.86,"regularMarketPreviousClose":209.07,"regularMarketOpen":211.44,"regularMarketDayLow":210.64,"regularMarketDayHigh":214.86,"dividendRate":1.0,"dividendYield":0.0047,"exDividendDate":1715299200,"payoutRatio":0.14930001,"fiveYearAvgDividendYield":0.71,"beta":1.25,"trailingPE":33.113354,"forwardPE":29.252401,"volume":64234747,"regularMarketVolume":64234747,"averageVolume":68349616,"averageVolume10days":107411900,"averageDailyVolume10Day":107411900,"bid":213.14,"ask":213.21,"bidSize":100,"askSize":100,"marketCap":3269996838912,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":220.2,"priceToSalesTrailing12Months":8.568658,"fiftyDayAverage":188.9354,"twoHundredDayAverage":183.35056,"trailingAnnualDividendRate":0.96,"trailingAnnualDividendYield":0.0045917635,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3307433099264,"forwardPE":29.252401,"profitMargins":0.26306,"floatShares":15308474083,"sharesOutstanding":15334099968,"sharesShort":113523602,"sharesShortPriorMonth":94308265,"sharesShortPreviousMonthDate":1714435200,"dateShortInterest":1717113600,"sharesPercentSharesOut":0.0074,"heldPercentInsiders":0.052199997,"heldPercentInstitutions":0.57608,"shortRatio":1.86,"shortPercentOfFloat":0.0074,"beta":1.25,"impliedSharesOutstanding":15334099968,"category":null,"bookValue":4.837,"priceToBook":44.087246,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1696032000,"nextFiscalYearEnd":1727654400,"mostRecentQuarter":1711756800,"earningsQuarterlyGrowth":-0.022,"netIncomeToCommon":100389003264,"trailingEps":6.44,"forwardEps":7.29,"pegRatio":3.02,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":8.667,"enterpriseToEbitda":25.515,"52WeekChange":0.124795556,"SandP52WeekChange":0.24598539,"lastDividendValue":0.25,"lastDividendDate":1715299200},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
+        Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":213.25,"targetHighPrice":275.0,"targetLowPrice":164.0,"targetMeanPrice":210.07,"targetMedianPrice":210.0,"recommendationMean":2.0,"recommendationKey":"buy","numberOfAnalystOpinions":37,"totalCash":67150000128,"totalCashPerShare":4.379,"ebitda":129629003776,"totalDebt":104590000128,"quickRatio":0.875,"currentRatio":1.037,"totalRevenue":381623009280,"debtToEquity":140.968,"revenuePerShare":24.537,"returnOnAssets":0.22073999,"returnOnEquity":1.4725,"freeCashflow":84726874112,"operatingCashflow":110563000320,"earningsGrowth":0.007,"revenueGrowth":-0.043,"grossMargins":0.45586,"ebitdaMargins":0.33968,"operatingMargins":0.30743,"profitMargins":0.26306,"financialCurrency":"USD"}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=1, stale-while-revalidate=9
+      content-encoding:
+      - gzip
+      content-length:
+      - '3048'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 27 Jun 2024 10:17:16 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '4'
+      y-rid:
+      - 71vfav5j7qf1c
+    status:
+      code: 200
+      message: OK
+version: 1
