@@ -201,7 +201,10 @@ class LoggingService(metaclass=SingletonMeta):
             Callable representing the executed function.
         kwargs : Dict[str, Any]
             Keyword arguments passed to the function.
-        exec_info : Optional[Tuple[Type[BaseException], BaseException, Optional[TracebackType]]], optional
+        exec_info : Union[
+            Tuple[Type[BaseException], BaseException, TracebackType],
+            Tuple[None, None, None],
+        ]
             Exception information, by default None
         """
         self._user_settings = user_settings
