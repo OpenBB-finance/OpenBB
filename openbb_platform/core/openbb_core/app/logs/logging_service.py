@@ -186,8 +186,7 @@ class LoggingService(metaclass=SingletonMeta):
         ],
         custom_headers: Optional[Dict[str, Any]] = None,
     ):
-        """
-        Log command output and relevant information.
+        """Log command output and relevant information.
 
         Parameters
         ----------
