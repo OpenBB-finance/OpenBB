@@ -14,7 +14,7 @@ from openbb_core.provider.standard_models.equity_historical import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.references import INTERVALS_DICT, PERIODS
-from pydantic import Field, PrivateAttr, field_validator, model_validator
+from pydantic import Field, PrivateAttr, model_validator
 
 if TYPE_CHECKING:
     from pandas import DataFrame
@@ -115,16 +115,6 @@ class YFinanceEquityHistoricalData(EquityHistoricalData):
         default=None,
         description="Dividend amount (split-adjusted), if a dividend was paid.",
     )
-
-    @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return formatted datetime."""
-        # pylint: disable=import-outside-toplevel
-        from pandas import Timestamp
-
-        if isinstance(v, Timestamp):
-            return v.to_pydatetime()
-        return v
 
 
 class YFinanceEquityHistoricalFetcher(
