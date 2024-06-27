@@ -136,7 +136,7 @@ def test_log_startup(logging_service):
 
 
 @pytest.mark.parametrize(
-    "user_settings, system_settings, route, func, kwargs, exec_info, custom_headers",
+    "user_settings, system_settings, route, func, kwargs, exec_info, custom_headers, expected_log_message",
     [
         (
             "mock_settings",
@@ -144,8 +144,9 @@ def test_log_startup(logging_service):
             "mock_route",
             "mock_func",
             {},
+            (None, None, None),
             None,
-            None,
+            'CMD: {"route": "mock_route", "input": {}, "error": null, "custom_headers": null}',
         ),
         (
             "mock_settings",
@@ -153,8 +154,13 @@ def test_log_startup(logging_service):
             "mock_route",
             "mock_func",
             {},
-            (OpenBBError(), OpenBBError("mock_error")),
+            (
+                OpenBBError,
+                OpenBBError("mock_error"),
+                ...,
+            ),  # ... is of TracebackType, but unnecessary for the test
             {"X-OpenBB-Test": "test"},
+            'ERROR: {"route": "mock_route", "input": {}, "error": "mock_error", "custom_headers": {"X-OpenBB-Test": "test"}}',  # noqa: E501
         ),
         (
             "mock_settings",
@@ -162,8 +168,9 @@ def test_log_startup(logging_service):
             "login",
             "mock_func",
             {},
-            None,
+            (None, None, None),
             {"X-OpenBB-Test1": "test1", "X-OpenBB-Test2": "test2"},
+            "STARTUP",
         ),
     ],
 )
@@ -176,6 +183,7 @@ def test_log(
     kwargs,
     exec_info,
     custom_headers,
+    expected_log_message,
 ):
     """Test the log method."""
     with patch(
@@ -198,9 +206,6 @@ def test_log(
                 mock_log_startup.assert_called_once()
 
         else:
-            mock_info = mock_get_logger.return_value.info
-            mock_error = mock_get_logger.return_value.error
-
             mock_callable = Mock()
             mock_callable.__name__ = func
 
@@ -214,26 +219,17 @@ def test_log(
                 custom_headers=custom_headers,
             )
 
-            message_label = "ERROR" if exec_info else "CMD"
-            log_message = json.dumps(
-                {
-                    "route": route,
-                    "input": kwargs,
-                    "error": str(exec_info[1]) if exec_info else None,
-                    "custom_headers": custom_headers,
-                }
-            )
-            log_message = f"{message_label}: {log_message}"
-
-            if exec_info:
+            if expected_log_message.startswith("ERROR"):
+                mock_error = mock_get_logger.return_value.error
                 mock_error.assert_called_once_with(
-                    log_message,
+                    expected_log_message,
                     extra={"func_name_override": "mock_func"},
                     exc_info=exec_info,
                 )
-            else:
+            if expected_log_message.startswith("CMD"):
+                mock_info = mock_get_logger.return_value.info
                 mock_info.assert_called_once_with(
-                    log_message,
+                    expected_log_message,
                     extra={"func_name_override": "mock_func"},
                     exc_info=exec_info,
                 )
