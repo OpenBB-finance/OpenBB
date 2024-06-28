@@ -9,9 +9,14 @@
 
 0. Merge `main` into `develop` and solve any conflict. You can do this by checking out `develop`, creating a branch `feature/merge-main-into-develop` and running `git merge main`. Merge this into `develop` if there are changes to commit.
 1. Open a PR with the changes to be published in the format `release/<version>` (for e.g. `release/4.0.0` ). For a particular package use the format `release/<package>-<version>` (for e.g. `release/openbb-core-1.0.1`).
-2. Ensure all the CI workflows pass.
-3. Ensure all unit tests pass: `pytest openbb_platform -m "not integration"`
-4. Ensure all integration tests pass: `pytest openbb_platform -m integration`
+2. Bump `openbb` package version in `openbb_platform/pyproject.toml`.
+
+> [!WARNING]
+> The version must be incremented before running the tests in  4. and 5., since there are tests that rely of this to check for deprecated endpoints.
+
+3. Ensure all the CI workflows pass.
+4. Ensure all unit tests pass: `pytest openbb_platform -m "not integration"`
+5. Ensure all integration tests pass: `pytest openbb_platform -m integration`
 
 ## Release
 
@@ -26,36 +31,9 @@
 
     1. To publish `openbb-core` run: `python build/pypi/openbb_platform/publish.py --core`
     2. To publish **ALL** extensions run: `python build/pypi/openbb_platform/publish.py --extensions`
-    3. To publish `openbb` (the main package) do the following:
-
-        3.1. Bump `openbb` package version and the extensions just published in 1. and 2. to its latest versions. This should be done here `openbb_platform/pyproject.toml`.
-
-        > [!TIP]
-        > Consider using the poetry plugin `up` for updating the extensions to the latest version:
-        > 1. `poetry self add poetry-plugin-up`
-        > 2. `poetry up --latest`
-
-        > [!WARNING]
-        > Create a new environment before proceeding. Make sure that only required (no extras!) extensions are installed.
-
-        3.2. Run `pip install -e .` from `openbb_platform`. This will install `openbb` in editable mode and fetch all the extensions (published in 1. and 2.) from PyPi.
-
-        3.3. Re-build the python interface: `python -c "import openbb; openbb.build()"`
-        - Run `python -c "import openbb"` and check that no extension is added or removed.
-        - Run a few commands to check if everything works correctly.
-
-        3.4. Run unit tests to validate the existence of deprecated endpoints (or watch this through GitHub Actions)
-
-        3.5. Run `poetry publish --build` from `openbb_platform`
-
-        3.6. Run `poetry lock` from `openbb_platform`
-
+    3. To publish `openbb` (the main package) run: `python build/pypi/openbb_platform/publish.py --openbb`
     > [!TIP]
-    > Note that, in order for packages to pick up the latest versions of dependencies, it is advised to clear the local cache of the dependencies:
-    >
-    > We can do that with `pip cache purge` and `poetry cache clear pypi --all`
-    >
-    > Also, sometimes there might be some delay in the PyPI API, so it might be necessary to wait a few minutes before publishing the next package.
+    > Note that, in order for packages to pick up the latest versions of dependencies, it is advised to clear the local cache of the dependencies: we can do that with `pip cache purge` and `poetry cache clear pypi --all`. Sometimes there might be some delay in the PyPI API, so it might be necessary to wait a few minutes for pip to pick the latest versions.
 
 2. Publish the CLI
 
