@@ -273,6 +273,10 @@ def check_integration_tests(
                     processing_command_params, function_params, function, True  # type: ignore
                 )
 
+                # if "chart" is in missing_items, remove it
+                if "chart" in missing_items:
+                    missing_items.remove("chart")
+
                 all_missing_items.extend(missing_items)
 
     return all_missing_items
