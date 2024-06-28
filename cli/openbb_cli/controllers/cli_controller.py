@@ -205,10 +205,11 @@ class CLIController(BaseController):
             choices["results"] = {
                 "--help": None,
                 "-h": "--help",
-                "--export": None,
+                "--export": {c: None for c in ["csv", "json", "xlsx", "png", "jpg"]},
                 "--index": None,
                 "--key": None,
                 "--chart": None,
+                "--sheet_name": None,
             }
 
             self.update_completer(choices)
