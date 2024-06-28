@@ -1,0 +1,98 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://cdn.finra.org/equity/otcmarket/biweekly/shrt20240115.csv
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>YNGFPQ24E5ADA43F</RequestId><HostId>tQOpumrPOSPwbd1v+vt+SyOE4Ytvl1WKOj1L9CWgbBh+o7S+jSnRFR+bZBcpd6Eku2jf/etV1y0=</HostId></Error>'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89af02e3fdda5be6-LIS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 28 Jun 2024 16:21:41 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=.vUJCp8kTu0OVCgvS9AMygg6f3xe4LFaLZdkgw1QRAw-1719591701-1.0.1.1-y4fOHI7didpDlkTs1CDl4GKuRvgDctlQfyYrOqkCxfOOOc2gfMFObVAo8W3o9ifVN30gXpIdmZOFOWMYQAPlnA;
+        path=/; expires=Fri, 28-Jun-24 16:51:41 GMT; domain=.cdn.finra.org; HttpOnly;
+        Secure; SameSite=None
+      Transfer-Encoding:
+      - chunked
+      via:
+      - 1.1 f355844b811a4a5ec94df0918f0fb80c.cloudfront.net (CloudFront)
+      x-amz-cf-id:
+      - cVk_Km-uClKMJ7Ro6cuAuIurZovw0Wj3x3iTCZ_iE2M4sdsalQWH7w==
+      x-amz-cf-pop:
+      - LIS50-P1
+      x-cache:
+      - Error from cloudfront
+    status:
+      code: 403
+      message: Forbidden
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://cdn.finra.org/equity/otcmarket/biweekly/shrt20240329.csv
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>B35WTDQSQ5XRTSMT</RequestId><HostId>tlQ9c5395KmjWQ5z6+6lml4aLO1lobbhfDqJBagtMHn459mz2spPA1TuOIryw71nTTlzhhODYxkQmYjL33qkyJZIczBssjas</HostId></Error>'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89af02e7cd065bdb-LIS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 28 Jun 2024 16:21:42 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=4tI_OuAxjIdnu8ZS91Vu7oHdtwO6IyW4ufkuE3cQsuk-1719591702-1.0.1.1-34Dqy1z47Ir.wJ2ZzuVDzlmCHWBAQY0..HzSVeVK0ZNzmzx_S6mQSfxoQ2im61yhPIi0Sl3U.QdjpqK5B4V23Q;
+        path=/; expires=Fri, 28-Jun-24 16:51:42 GMT; domain=.cdn.finra.org; HttpOnly;
+        Secure; SameSite=None
+      Transfer-Encoding:
+      - chunked
+      via:
+      - 1.1 a48f09960f130cb6049f12b379cf591e.cloudfront.net (CloudFront)
+      x-amz-cf-id:
+      - uc2hbjc-zfYXKNd3S0j-gyFOM3ZbkUbBT0Bf49XovnKL3XO8RwetTA==
+      x-amz-cf-pop:
+      - LIS50-P1
+      x-cache:
+      - Error from cloudfront
+    status:
+      code: 403
+      message: Forbidden
+version: 1
