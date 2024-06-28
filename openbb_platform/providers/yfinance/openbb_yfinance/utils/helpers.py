@@ -251,10 +251,10 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
                         nearest_dates = [data.index.asof(date) for date in dates_list]
                         data = data[data.index.isin(nearest_dates)]
                         data.index = data.index.strftime("%Y-%m-%d")
-                        for date in dates:
+                        for dt in dates:
                             try:
-                                historical_curve.append(data.loc[date, "close"])
-                                futures_date.append(date)
+                                historical_curve.append(data.loc[dt, "close"])
+                                futures_date.append(dt)
                                 futures_index.append(future.strftime("%Y-%m"))
                             except KeyError:
                                 historical_curve.append(None)
