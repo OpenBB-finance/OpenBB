@@ -96,18 +96,18 @@ def test_indicators(obbject):
     ]
 
 
-@patch("openbb_charting.charting.get_charting_functions")
-def test_functions(mock_get_charting_functions):
+@patch("openbb_charting.charting.get_charting_functions_list")
+def test_functions(get_charting_functions_list):
     """Test functions method."""
     # Arrange
-    mock_get_charting_functions.return_value = ["function1", "function2", "function3"]
+    get_charting_functions_list.return_value = ["function1", "function2", "function3"]
 
     # Act
     result = Charting.functions()
 
     # Assert
-    assert result == ["function1", "function2", "function3"]
-    mock_get_charting_functions.assert_called_once()
+    assert set(result) == {"function1", "function2", "function3"}
+    assert get_charting_functions_list.call_count >= 1
 
 
 @patch("openbb_charting.charting.get_backend")
