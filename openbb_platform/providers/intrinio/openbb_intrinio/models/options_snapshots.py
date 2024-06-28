@@ -45,57 +45,57 @@ class IntrinioOptionsSnapshotsQueryParams(OptionsSnapshotsQueryParams):
 class IntrinioOptionsSnapshotsData(OptionsSnapshotsData):
     """Intrinio Options Snapshots Data. Warning: This is a large file."""
 
-    bid: List[Union[float, None]] = Field(
-        default_factory=list,
+    bid: Optional[List[float]] = Field(
+        default=None,
         description="The last bid price at the time.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_size: List[Union[int, None]] = Field(
-        default_factory=list,
+    bid_size: Optional[List[int]] = Field(
+        default=None,
         description="The size of the last bid price.",
     )
-    bid_timestamp: List[Union[datetime, None]] = Field(
-        default_factory=list,
+    bid_timestamp: Optional[List[datetime]] = Field(
+        default=None,
         description="The timestamp of the last bid price.",
     )
-    ask: List[Union[float, None]] = Field(
-        default_factory=list,
+    ask: Optional[List[float]] = Field(
+        default=None,
         description="The last ask price at the time.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_size: List[Union[int, None]] = Field(
-        default_factory=list,
+    ask_size: Optional[List[float]] = Field(
+        default=None,
         description="The size of the last ask price.",
     )
-    ask_timestamp: List[Union[datetime, None]] = Field(
-        default_factory=list,
+    ask_timestamp: Optional[List[datetime]] = Field(
+        default=None,
         description="The timestamp of the last ask price.",
     )
-    total_bid_volume: List[Union[int, None]] = Field(
-        default_factory=list,
+    total_bid_volume: Optional[List[int]] = Field(
+        default=None,
         description="Total volume of bids.",
     )
-    bid_high: List[Union[float, None]] = Field(
-        default_factory=list,
+    bid_high: Optional[List[float]] = Field(
+        default=None,
         description="The highest bid price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_low: List[Union[float, None]] = Field(
-        default_factory=list,
+    bid_low: Optional[List[float]] = Field(
+        default=None,
         description="The lowest bid price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    total_ask_volume: List[Union[int, None]] = Field(
-        default_factory=list,
+    total_ask_volume: Optional[List[int]] = Field(
+        default=None,
         description="Total volume of asks.",
     )
-    ask_high: List[Union[float, None]] = Field(
-        default_factory=list,
+    ask_high: Optional[List[float]] = Field(
+        default=None,
         description="The highest ask price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_low: List[Union[float, None]] = Field(
-        default_factory=list,
+    ask_low: Optional[List[float]] = Field(
+        default=None,
         description="The lowest ask price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )

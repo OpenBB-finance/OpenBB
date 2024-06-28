@@ -85,13 +85,13 @@ class OBBject(Tagged, Generic[T]):
         return f"{self.__class__.__name__}\n\n" + "\n".join(items)
 
     def to_df(
-        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
+        self, index: Optional[str] = "date", sort_by: Optional[str] = None
     ) -> pd.DataFrame:
         """Alias for `to_dataframe`."""
         return self.to_dataframe(index=index, sort_by=sort_by)
 
     def to_dataframe(
-        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
+        self, index: Optional[str] = "date", sort_by: Optional[str] = None
     ) -> pd.DataFrame:
         """Convert results field to pandas dataframe.
 
