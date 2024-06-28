@@ -259,53 +259,53 @@ class ROUTER_derivatives_options(Container):
             Symbol of the options contract.
         expiration : List[date]
             Expiration date of the options contract.
-        dte : List[Optional[int]]
+        dte : Optional[List[int]]
             Number of days to expiration of the options contract.
         strike : List[float]
             Strike price of the options contract.
         option_type : List[str]
             The type of option.
-        volume : List[Optional[int]]
+        volume : Optional[List[int]]
             The trading volume.
-        open_interest : List[Optional[int]]
+        open_interest : Optional[List[int]]
             Open interest at the time.
-        last_price : List[Optional[float]]
+        last_price : Optional[List[float]]
             Last trade price at the time.
-        last_size : List[Optional[int]]
+        last_size : Optional[List[int]]
             Lot size of the last trade.
-        last_timestamp : List[Optional[datetime]]
+        last_timestamp : Optional[List[datetime]]
             Timestamp of the last price.
-        open : List[Optional[float]]
+        open : Optional[List[float]]
             The open price.
-        high : List[Optional[float]]
+        high : Optional[List[float]]
             The high price.
-        low : List[Optional[float]]
+        low : Optional[List[float]]
             The low price.
-        close : List[Optional[float]]
+        close : Optional[List[float]]
             The close price.
-        bid : List[Optional[float]]
+        bid : Optional[List[float]]
             The last bid price at the time. (provider: intrinio)
-        bid_size : List[Optional[int]]
+        bid_size : Optional[List[int]]
             The size of the last bid price. (provider: intrinio)
-        bid_timestamp : List[Optional[datetime]]
+        bid_timestamp : Optional[List[datetime]]
             The timestamp of the last bid price. (provider: intrinio)
-        ask : List[Optional[float]]
+        ask : Optional[List[float]]
             The last ask price at the time. (provider: intrinio)
-        ask_size : List[Optional[int]]
+        ask_size : Optional[List[float]]
             The size of the last ask price. (provider: intrinio)
-        ask_timestamp : List[Optional[datetime]]
+        ask_timestamp : Optional[List[datetime]]
             The timestamp of the last ask price. (provider: intrinio)
-        total_bid_volume : List[Optional[int]]
+        total_bid_volume : Optional[List[int]]
             Total volume of bids. (provider: intrinio)
-        bid_high : List[Optional[float]]
+        bid_high : Optional[List[float]]
             The highest bid price. (provider: intrinio)
-        bid_low : List[Optional[float]]
+        bid_low : Optional[List[float]]
             The lowest bid price. (provider: intrinio)
-        total_ask_volume : List[Optional[int]]
+        total_ask_volume : Optional[List[int]]
             Total volume of asks. (provider: intrinio)
-        ask_high : List[Optional[float]]
+        ask_high : Optional[List[float]]
             The highest ask price. (provider: intrinio)
-        ask_low : List[Optional[float]]
+        ask_low : Optional[List[float]]
             The lowest ask price. (provider: intrinio)
 
         Examples
