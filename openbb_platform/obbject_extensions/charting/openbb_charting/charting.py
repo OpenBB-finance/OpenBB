@@ -121,7 +121,7 @@ class Charting:
             )
         return self._functions[adjusted_route]
 
-    def get_params(self) -> Union[ChartParams, Any]:
+    def get_params(self) -> Union[ChartParams, None]:
         """Return the ChartQueryParams class for the function the OBBject was created from.
 
         Without assigning to a variable, it will print the docstring to the console.
@@ -135,7 +135,7 @@ class Charting:
         if hasattr(ChartParams, charting_function):
             return getattr(ChartParams, charting_function)()
         else:
-            return help(
+            return help(  # pylint: disable=func-returns-value
                 self._get_chart_function(  # pylint: disable=protected-access
                     self._obbject.extra[  # pylint: disable=protected-access
                         "metadata"
