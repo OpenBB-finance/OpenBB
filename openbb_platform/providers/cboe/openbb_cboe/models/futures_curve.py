@@ -49,8 +49,7 @@ class CboeFuturesCurveData(FuturesCurveData):
     """CBOE Futures Curve Data."""
 
     symbol: Optional[str] = Field(
-        default=None,
-        description=DATA_DESCRIPTIONS.get("symbol", "")
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
 
 
