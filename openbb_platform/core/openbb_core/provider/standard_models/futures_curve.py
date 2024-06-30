@@ -38,6 +38,6 @@ class FuturesCurveData(Data):
     expiration: str = Field(description="Futures expiration month.")
     price: float = Field(
         default=None,
-        description="The priec of the futures contract.",
+        description="The price of the futures contract.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
