@@ -107,10 +107,11 @@ class DerivativesViews:
 
         provider = kwargs.get("provider", "")
 
-        df["expiration"] = [
-            to_datetime(d).strftime("%b-%y") if d != "Current" else d
-            for d in df["expiration"]
-        ]
+        df["expiration"] = (
+            to_datetime(df["expiration"], errors="ignore")
+            .dt
+            .strftime("%b-%Y")
+        )
 
         if (
             provider == "cboe"
@@ -136,14 +137,17 @@ class DerivativesViews:
             """Create a scatter for each date in the data."""
             for date in dates:
                 color = colors[color_count % len(colors)]
-                plot_df = df[df["date"].astype(str) == date].copy()
+                plot_df = (
+                    df[df["date"].astype(str) == date].copy()
+                    if "date" in df.columns
+                    else df.copy()
+                )
                 plot_df = plot_df.drop(
                     columns=["date"] if "date" in plot_df.columns else []
                 ).rename(columns={"expiration": "Expiration", "price": "Price"})
                 figure.add_scatter(
                     x=plot_df["Expiration"],
                     y=plot_df["Price"],
-                    # fill=fill,
                     mode="lines+markers",
                     name=date,
                     line=dict(width=3, color=color),
