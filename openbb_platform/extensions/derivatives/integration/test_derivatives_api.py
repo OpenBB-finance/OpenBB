@@ -131,13 +131,15 @@ def test_derivatives_futures_historical(params, headers):
         (
             {
                 "provider": "yfinance",
-                "symbol": "VX",
+                "symbol": "ES",
+                "date": None,
             }
         ),
         (
             {
                 "provider": "cboe",
-                "symbol": "VX",
+                "symbol": "VX_EOD",
+                "date": None,
             }
         ),
     ],
