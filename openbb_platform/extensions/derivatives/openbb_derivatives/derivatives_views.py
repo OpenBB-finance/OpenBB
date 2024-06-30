@@ -107,10 +107,8 @@ class DerivativesViews:
 
         provider = kwargs.get("provider", "")
 
-        df["expiration"] = (
-            to_datetime(df["expiration"], errors="ignore")
-            .dt
-            .strftime("%b-%Y")
+        df["expiration"] = to_datetime(df["expiration"], errors="ignore").dt.strftime(
+            "%b-%Y"
         )
 
         if (
