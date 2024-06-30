@@ -47,9 +47,8 @@ def get_front_month(date: Optional[str] = None):
     if today.day > third_wednesday:
         # If today is after the third Wednesday of the month, return the next month
         return (today.month % 12) + 1
-    else:
-        # Otherwise, return the current month
-        return today.month
+    # Otherwise, return the current month
+    return today.month
 
 
 def get_vx_symbols(date: Optional[str] = None) -> Dict:
@@ -165,6 +164,7 @@ async def get_vx_current(
     return df
 
 
+# pylint: disable=too-many-locals
 async def get_vx_by_date(
     date: Union[str, List[str]],
     vx_type: Literal["am", "eod"] = "eod",
@@ -193,7 +193,6 @@ async def get_vx_by_date(
     from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_core.provider.utils.errors import EmptyDataError
     from openbb_cboe.models.equity_historical import CboeEquityHistoricalFetcher
-    from numpy import abs
     from pandas import Categorical, DataFrame, DatetimeIndex, concat, isna, to_datetime
 
     if vx_type not in ["am", "eod"]:
@@ -263,10 +262,10 @@ async def get_vx_by_date(
         df = df.dropna(how="any")
 
     nearest_dates = []
-    for date in dates_list:
-        nearest_date = df.index.asof(date)
+    for date_ in dates_list:
+        nearest_date = df.index.asof(date_)
         if isna(nearest_date):  # type: ignore
-            differences = abs(df.index - date)
+            differences = abs(df.index - date_)
             min_diff_index = differences.argmin()
             nearest_date = df.index[min_diff_index]
         nearest_dates.append(nearest_date)
