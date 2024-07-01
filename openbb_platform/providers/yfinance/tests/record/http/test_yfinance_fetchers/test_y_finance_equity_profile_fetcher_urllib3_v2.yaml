@@ -75,17 +75,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 11:20:36 GMT
+      - Mon, 01 Jul 2024 11:40:01 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '4'
+      - '3'
       y-rid:
-      - 1dtqqf9j8542h
+      - 5sk72i9j855ci
     status:
       code: 200
       message: OK
@@ -129,17 +129,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 11:20:36 GMT
+      - Mon, 01 Jul 2024 11:40:02 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '1'
       y-rid:
-      - 5qk3cl1j85484
+      - 7858qipj855ci
     status:
       code: 200
       message: OK

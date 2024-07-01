@@ -51,7 +51,7 @@ interactions:
         Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":210.62,"targetHighPrice":275.0,"targetLowPrice":164.0,"targetMeanPrice":211.8,"targetMedianPrice":210.0,"recommendationMean":2.0,"recommendationKey":"buy","numberOfAnalystOpinions":37,"totalCash":67150000128,"totalCashPerShare":4.379,"ebitda":129629003776,"totalDebt":104590000128,"quickRatio":0.875,"currentRatio":1.037,"totalRevenue":381623009280,"debtToEquity":140.968,"revenuePerShare":24.537,"returnOnAssets":0.22073999,"returnOnEquity":1.4725,"freeCashflow":84726874112,"operatingCashflow":110563000320,"earningsGrowth":0.007,"revenueGrowth":-0.043,"grossMargins":0.45586,"ebitdaMargins":0.33968,"operatingMargins":0.30743,"profitMargins":0.26306,"financialCurrency":"USD"}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -75,17 +75,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 11:20:36 GMT
+      - Mon, 01 Jul 2024 11:40:03 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '5'
+      - '4'
       y-rid:
-      - 5ree161j8543o
+      - 2l1u77tj855cj
     status:
       code: 200
       message: OK
@@ -333,7 +333,7 @@ interactions:
         Sector SPDR Fund-Technology","pctHeld":{"raw":0.0041,"fmt":"0.41%"},"position":{"raw":64568089,"fmt":"64.57M","longFmt":"64,568,089"},"value":{"raw":11054702517,"fmt":"11.05B","longFmt":"11,054,702,517"}}],"maxAge":1}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '2'
       Connection:
       - keep-alive
       Expect-CT:
@@ -357,17 +357,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 11:20:37 GMT
+      - Mon, 01 Jul 2024 11:40:03 GMT
       server:
       - ATS
       vary:
       - Origin
       x-envoy-decorator-operation:
-      - finance-yql--mtls-default-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-yql--mtls-default-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '5'
       x-yahoo-request-id:
-      - 54ds999j85485
+      - 7cchevhj855cj
     status:
       code: 200
       message: OK
