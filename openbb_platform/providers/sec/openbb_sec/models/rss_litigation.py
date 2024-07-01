@@ -53,7 +53,7 @@ class SecRssLitigationFetcher(
         from pandas import DataFrame, to_datetime  # noqa
 
         results: List = []
-        url = "https://www.sec.gov/rss/litigation/litreleases.xml"
+        url = "https://www.sec.gov/enforcement-litigation/litigation-releases/rss"
         r = make_request(url, headers=HEADERS)
 
         if r.status_code != 200:
