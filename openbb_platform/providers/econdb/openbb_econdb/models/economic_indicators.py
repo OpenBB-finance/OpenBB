@@ -170,6 +170,7 @@ class EconDbEconomicIndicatorsFetcher(
         """Extract the data."""
         if query.symbol.upper() == "MAIN":
             country = query.country.upper() if query.country else "US"
+
             return await get_main_indicators(
                 country,
                 query.start_date.strftime("%Y-%m-%d"),  # type: ignore
@@ -178,6 +179,7 @@ class EconDbEconomicIndicatorsFetcher(
                 query.transform,
                 query.use_cache,
             )
+
         token = credentials.get("econdb_api_key", "")  # type: ignore
         # Attempt to create a temporary token if one is not supplied.
         if not token:

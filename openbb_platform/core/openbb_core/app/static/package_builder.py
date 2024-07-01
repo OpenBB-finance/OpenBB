@@ -635,7 +635,7 @@ class MethodDefinition:
             else:
                 new_type = MethodDefinition.get_expanded_type(name)
                 if hasattr(new_type, "__constraints__"):
-                    types = new_type.__constraints__ + (param.annotation,)
+                    types = new_type.__constraints__ + (param.annotation,)  # type: ignore
                     updated_type = Union[types]  # type: ignore
                 else:
                     updated_type = (
@@ -1240,7 +1240,7 @@ class DocstringGenerator:
             ):
                 items.append(name.title())
             func = partial(cls._get_generic_types, items=items)
-            set().union(*map(func, type_.__args__), items)
+            set().union(*map(func, type_.__args__), items)  # type: ignore
         return items
 
     @staticmethod
@@ -1478,7 +1478,6 @@ class ReferenceGenerator:
                     expanded_types[field], is_required, "website"
                 )
                 field_type = f"Union[{field_type}, {expanded_type}]"
-
             cleaned_description = (
                 str(field_info.description)
                 .strip().replace("\n", " ").replace("  ", " ").replace('"', "'")
@@ -1505,7 +1504,6 @@ class ReferenceGenerator:
                     # Manually setting to List[<field_type>] for multiple items
                     # Should be removed if TYPE_EXPANSION is updated to include this
                     field_type = f"Union[{field_type}, List[{field_type}]]"
-
             default_value = "" if field_info.default is PydanticUndefined else field_info.default  # fmt: skip
 
             provider_field_params.append(

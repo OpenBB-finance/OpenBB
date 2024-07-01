@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/key-executives/AAPL?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA83VTU/bQBAG4Du/YpRDe4mi5pv0Bgml5UOJMC2HqofVehyPWM9GYzvUQv3vHYek
+        QOKghqCqB0vr9Wq9j97d2e8HAPf6ANQyyhzWPkItQCYv8I0swkQwpRA5q8MpMopxMPQ5p+jgHQRo
+        BTMjRa3+MAWbZDHDZdqAc5PFKMQIFw04Ck2SrkbNTKGDOr3m4YdeZ9lncxFkW0wW32pfg9Fq9BQ5
+        RCk7I0yMrnDZX6CRYy+sX5qDP/MsEAGxLdfBuXPa/ategfyMJgQfqUZmXkyGMMI5Oj9LFLvhkZIg
+        ZBhgoihrnlvKH+0A2cro78wYkaDNNC2lfOE5pmX7Cp3JyHO67gjy2KTEBDCMDYdiEp872stS4Xgy
+        w187lnvuKecxmSNrdc9lxNOqYIaxUApw7jn0e1G2xLIH5/kRKlE3Xlx4p69waeQWt5lOBacAZz69
+        I3P7v6CGMWEEJz/R5hnNEcZRpD7RQrCKrYpyTYnP4gJGmpT3a5hmr9UedHut/UFaA5qvA30iNmxJ
+        K9sjqDK/Kt1Fbg1olnrwZO0gaYFrtTpvQ2u/jjaeacUu99iKVkU4wygSLOCkATfkHFVU6na/e9h9
+        E8jOBW7rSbrSm4fcBkhvnhGShIIA4/fHQsgbsbTbvcEOmpfunf6unodgrtHG7J2fFi8mo22tbJpK
+        6tcU/6YKHPz4DZ5EYcEgCAAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:12:23 GMT
+      Etag:
+      - W/"820-xvK8qoPnTLHnpMXqvnkPD6OvsJI"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

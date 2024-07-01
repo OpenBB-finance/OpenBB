@@ -53,6 +53,7 @@ repos:
         args: ["--ignore-missing-imports", "--scripts-are-modules", "--check-untyped-defs"]
         additional_dependencies: ["types-requests", "types-setuptools"]
         require_serial: true
+        exclude: 'test_.*\.py'
   - repo: https://github.com/kynan/nbstripout
     rev: 0.6.1
     hooks:

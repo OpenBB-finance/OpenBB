@@ -1,6 +1,5 @@
 """Test the obbject registry."""
 
-import pytest
 from openbb_cli.argparse_translator.obbject_registry import Registry
 from openbb_core.app.model.obbject import OBBject
 
