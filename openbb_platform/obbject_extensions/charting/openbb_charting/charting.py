@@ -134,14 +134,14 @@ class Charting:
         ).replace("/", "_")[1:]
         if hasattr(ChartParams, charting_function):
             return getattr(ChartParams, charting_function)()
-        else:
-            return help(  # pylint: disable=func-returns-value
-                self._get_chart_function(  # pylint: disable=protected-access
-                    self._obbject.extra[  # pylint: disable=protected-access
-                        "metadata"
-                    ].route
-                )
+
+        return help(  # type: ignore
+            self._get_chart_function(  # pylint: disable=protected-access
+                self._obbject.extra[  # pylint: disable=protected-access
+                    "metadata"
+                ].route
             )
+        )
 
     def _prepare_data_as_df(
         self, data: Optional[Union[pd.DataFrame, pd.Series]]
