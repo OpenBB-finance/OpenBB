@@ -5,6 +5,7 @@
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerData,
@@ -436,7 +437,10 @@ class NasdaqEquityScreenerFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract data from the Nasdaq Equity Screener."""
-        base_url = f"https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit={query.limit if query.limit else 10000}&"
+        base_url = (
+            "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit="
+            + f"{query.limit if query.limit else 10000}&"
+        )
         exchange = query.exchange.split(",")
         exsubcategory = query.exsubcategory.split(",")
         marketcap = query.mktcap.split(",")
@@ -466,8 +470,12 @@ class NasdaqEquityScreenerFetcher(
         url = f"{base_url}{querystring}"
         try:
             response = make_request(url, headers=HEADERS)
-        except response.status_code != 200:
-            raise response.raise_for_status()
+            if response.status_code != 200:
+                raise response.raise_for_status()  # type: ignore
+        except Exception as e:
+            raise OpenBBError(
+                f"Error fetching data from Nasdaq Equity Screener: {e}"
+            ) from e
         return response.json()
 
     @staticmethod
@@ -482,7 +490,7 @@ class NasdaqEquityScreenerFetcher(
         rows = data.get("data", {}).get("table", {}).get("rows")
         if not rows:
             raise EmptyDataError("No results were found.")
-        results: NasdaqEquityScreenerData = []
+        results: List[NasdaqEquityScreenerData] = []
         for row in sorted(rows, key=lambda x: x["pctchange"], reverse=True):
             row.pop("url", None)
             results.append(NasdaqEquityScreenerData.model_validate(row))

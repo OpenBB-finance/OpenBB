@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/%5EDJI?apikey=MOCK_API_KEY&from=2023-01-01&interval=1d&to=2023-01-10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42VTW/bMAyG7/0VRs6JQJH63HW7rJftMOwybICbGE2GNCny0aIo+t9HKYtkx4od
+        H3zwS8kSH77k+11VTfZvTw/b9eRTNfnz5f7rZBq+LVf7w3a3mtfh+y/+UlXv8c3aoj40IRoBaQZy
+        JiGuidr2udmwRqSlEQq9cS5py9XjMmoWjdDkwVDS1tvXKCmUwgFYJ5M0X2/3zWkdKCFB6ta6evH3
+        85D+sl0fn4KKxqEBfpJ03PDi4/7QLH5eD5ov681jkKSzwljZus5J+t7s5s3mwBEgtPZe5V+/1s/x
+        WEZaofK6df3QxGzf15tjvXurJEwrpMnFxt9emt2PVTwWCIC4d4z4mA7jAF/AYYwSIeOo+zg8aU6b
+        J5u1hCPc2oSUFnBovpdRTlG+WwdHQU84CK1TYzj6QQnHTCojLFeLv8pjBkKRznrmwUtb9dXjAX6E
+        xywACXvfxsMUeDBPQd06z/aQcJn0/zzQe3uJMfMwxOu6HDs8CnrmYcCO8+gFJR7ahvs4fR2HZFx9
+        FopZIA6wMOPekPZGY+gCCOn5YGzugi/60hmDkyjiu4ABPac5gMUyhpKeMZD1OIqhF5RtgUay57hA
+        hmxhnUPbY4HeOgGZUZ+FvsUXcfPbeKgSD8PNSJUblQJ/2d/PjQqIuMeCMq0CTIWPxgtrvKZsto4x
+        CnomYn0s+WEivaA8N3gmGXReXkjtuUFSt+ZD8gYSz41W8fV4qHFvQNz7NhxUwqGccL7TwxMO4uGg
+        ZSdtySCap6Hln2dSGYckI0KTa83KDo6CnnHwHKRRHL2g1txAodGSupA6/gCy1svW2RMSiUq4oXZF
+        t1jkvP8JC79/3338A8bc8seKCQAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:12:18 GMT
+      Etag:
+      - W/"98a-GaBjuPAGbArTPT5nkIcCt0/rPEw"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

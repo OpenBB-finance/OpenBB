@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/EURUSD?apikey=MOCK_API_KEY&from=2023-01-01&interval=1d&to=2023-01-10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42WTW+bQBCG7/kViLNtzewXbK9tL720apteqh6IjWJXNkT+iqIo/73LhrKz6zHm
+        wmHeYYBnXl54vcuy/PCye2i3+Ycs/3z//f7Hp3zWVdebw7Hdb5ZVp/x2lSx79Uenrapj3fULEHIO
+        OEfw53itfaobp+ECClGUQ3m9eVz3ZW3VUN62z30V0Q7V5bY91H1dilCvVn8/XpHO7fa06wSpjEEz
+        1E+NO+l0ONarX1c6luuqeezqsAAAjYnwrd4v6+b4rqtCK4Bw++fn6un/zcjwUNVD7Xl+qZpTtX/J
+        EGaZkHky+eu53v/c7IZL98N909tsnDhYjriRVnDEDYTHHYgbaTRLnK4tIU6lQFxrZWGUeNwRES/L
+        dBWUeClFUTC4jQ17usANdgJuP3kaa8Ox1gKDDwJrowKhAbUqeXNH+4pRRxIxt3VrGzd31EFRI5Lt
+        pahx4V5AQy45oNaFIO65YG1us0Y/ehprzfoaCD/CWiKTJBoVCztaWAw7kgjsAmwgxsKOOgbYc28w
+        0IkSaLsGF4MhMQhtU5BnuqCtb9D2V+5GT6OtWGcrE145SptkY6CtIDwGtTZdWWJtKgXapQYyiqMd
+        d0QporVIBJoiWkhJLhlgl2Mpom47G/zkaawl62yjWNal5Fgj+XJSZ9OFJc6mUsQagzuvsMbUv72/
+        EK/HyNzliMvAcCaJbJChfElbTnA2+tnTcAsWt7VsaFvul8Qoy34go50l1qbSgNuhtKPOjhviGJFk
+        IhMjUijJpbYpypEfEhATaIOf/U7bHf/cvf0DWy6DQi8KAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:12:16 GMT
+      Etag:
+      - W/"a2f-+yvtcAuJCApuMam70lrjxhMBaNc"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

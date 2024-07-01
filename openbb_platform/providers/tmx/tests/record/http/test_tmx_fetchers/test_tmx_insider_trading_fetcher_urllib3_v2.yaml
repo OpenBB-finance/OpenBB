@@ -1,0 +1,75 @@
+interactions:
+- request:
+    body: '{"operationName": "getCompanyInsidersActivities", "variables": {"symbol":
+      "SHOP"}, "query": "query getCompanyInsidersActivities(\n    $symbol: String\n)
+      {\n    getCompanyInsidersActivities(\n      symbol: $symbol\n  ) {\n    insiderActivities
+      {\n      periodkey\n      buy {\n        name\n        trades\n        shares\n        sharesHeld\n        tradeValue\n    }\n      sell
+      {\n        name\n        trades\n        shares\n        sharesHeld\n        tradeValue\n    }\n  }\n    activitySummary
+      {\n      periodkey\n      buyShares\n      soldShares\n      netActivity\n      totalShares\n    }\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2WzW/TMBTA7/wVUc5V5Odv71a2QZmYkNqJy9SDu7jUmptMiTsIU/933A9WN2VK
+        YNwgp8Z230/P7/ccP6W59jo9e0q/GH9eLh900Xwoapubqh7eeftovTX1Zt7uRuPB26f0wVS2zO9N
+        k56lflEZc10WflGng3S2CmO300FaG+e2awu9NGHZZKGLQheD5KacNUVyoR9tHtb7SueboCT8Y6Gr
+        zU/MMP75NjIuD5NYIUn2iz9rtwoBgSHKUCbIevDMGJXz+dLY2ptqkFyZ+TwC0ANAEU6PARQoksfx
+        OQYqecYE2j0Qc0zlv28IdW3vdARhBwggCvyYAgrxVhacAccsEziK/s4W98aFJGzYrZGunGmSa3u3
+        0MZFKB7lIzFqbZiUVLVIiHCEMsnU/omIV+WiqH0ZcOelc8YUEQeiwiAFrYzwFn1UF0w4YRnE8YeT
+        0eUgGX96ezm+Sd5fjofjixcIhLZLD1yQNoJIKngGNEJ8XPl7s5XL6joZupl9IQk4rT7BAhRrMVDY
+        VSzW0w0j1r22314te+QixZJ3yx62mYmgCespeyQHEMJVp+0Kh37CmVK/Y7uMKEKC6LQdgkGcQBZY
+        p5h+2gONfSSorcup+EAUo5JkiO7Fl/+S+fiAIAqAdJsfTJMI2Kn5/qtxj68/6QHFR33IR/Y47IVU
+        jBPavwNkXDzR47wHiilHIpNk7ybp0wIQfbdCBZHs7AEcnMU8cNAvOP16APO4qJJBZw9grqQQJPvv
+        fl/3g9d6d+dpJqvlUldN98VnsodtBC9dHr0Wxu9vUM323Zdeu+f5jk/M3wp72r9/HHm6Xq/f/ADR
+        PMRnRQoAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:57 GMT
+      Etag:
+      - W/"a45-6D42jaAJydPC0deAmY0mG+fznGk"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-WebKit-CSP:
+      - frame-ancestors 'none'; default-src 'self'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

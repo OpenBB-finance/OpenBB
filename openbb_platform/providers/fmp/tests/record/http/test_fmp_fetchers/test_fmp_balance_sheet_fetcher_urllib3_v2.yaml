@@ -1,0 +1,85 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/balance-sheet-statement/AAPL?apikey=MOCK_API_KEY&limit=5&period=annual
+  response:
+    body:
+      string: !!binary |
+        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
+        H7LM+L/27PDb3/8Dupp1MmYpAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:12:21 GMT
+      Etag:
+      - W/"2966-VqkenhtTJMeIquXMMHUJQAlD3f8"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

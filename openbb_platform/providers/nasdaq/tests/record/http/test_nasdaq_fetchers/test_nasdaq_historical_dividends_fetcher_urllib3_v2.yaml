@@ -1,0 +1,90 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/quote/AAPL/dividends?assetclass=stocks
+  response:
+    body:
+      string: !!binary |
+        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
+        bmcvAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1487'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 11:01:30 GMT
+      Expires:
+      - Thu, 27 Jun 2024 11:01:30 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=72~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=b5946850ca1bc55e57ef5ab8a5b7707a;
+        path=/; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      gid:
+      - '204'
+      lang:
+      - en
+      rid:
+      - 1318b3a7-9e3d-42e0-bbdd-846259c555be
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1
