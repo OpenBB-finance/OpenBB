@@ -20,9 +20,9 @@ interactions:
         the adviser adjusts the securities from time to time to conform to periodic
         changes in the identity and/or relative weights of index securities. The composition
         and weighting of the securities portion of a portfolio deposit are also adjusted
-        to conform to changes in the index.\",\"companyOfficers\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":479.38,\"open\":478.528,\"dayLow\":478.13,\"dayHigh\":480.91,\"regularMarketPreviousClose\":479.38,\"regularMarketOpen\":478.528,\"regularMarketDayLow\":478.13,\"regularMarketDayHigh\":480.91,\"trailingPE\":39.17106,\"volume\":21945340,\"regularMarketVolume\":21945340,\"averageVolume\":37462366,\"averageVolume10days\":30768560,\"averageDailyVolume10Day\":30768560,\"bid\":480.4,\"ask\":480.63,\"bidSize\":900,\"askSize\":200,\"yield\":0.0058,\"totalAssets\":270069170176,\"fiftyTwoWeekLow\":342.35,\"fiftyTwoWeekHigh\":486.86,\"fiftyDayAverage\":450.6752,\"twoHundredDayAverage\":414.60596,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.003692269,\"navPrice\":480.56,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
-        Growth\",\"ytdReturn\":0.17647891,\"beta3Year\":1.19,\"totalAssets\":270069170176,\"yield\":0.0058,\"fundFamily\":\"Invesco\",\"fundInceptionDate\":921024000,\"legalType\":\"Exchange
-        Traded Fund\",\"threeYearAverageReturn\":0.119158,\"fiveYearAverageReturn\":0.21729931,\"lastSplitFactor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
+        to conform to changes in the index.\",\"companyOfficers\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":481.61,\"open\":482.4,\"dayLow\":478.4613,\"dayHigh\":487.19,\"regularMarketPreviousClose\":481.61,\"regularMarketOpen\":482.4,\"regularMarketDayLow\":478.4613,\"regularMarketDayHigh\":487.19,\"trailingPE\":39.068314,\"volume\":34881581,\"regularMarketVolume\":34881581,\"averageVolume\":37239408,\"averageVolume10days\":30903920,\"averageDailyVolume10Day\":30903920,\"bid\":478.13,\"ask\":479.52,\"bidSize\":4300,\"askSize\":4300,\"yield\":0.0058,\"totalAssets\":270069170176,\"fiftyTwoWeekLow\":342.35,\"fiftyTwoWeekHigh\":487.2,\"fiftyDayAverage\":452.7508,\"twoHundredDayAverage\":415.66074,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.003675173,\"navPrice\":478.92,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
+        Growth\",\"ytdReturn\":0.173393,\"beta3Year\":1.19,\"totalAssets\":270069170176,\"yield\":0.0058,\"fundFamily\":\"Invesco\",\"fundInceptionDate\":921024000,\"legalType\":\"Exchange
+        Traded Fund\",\"threeYearAverageReturn\":0.112927504,\"fiveYearAverageReturn\":0.21541959,\"lastSplitFactor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
         QQQ Trust, Series 1\",\"longName\":\"Invesco QQQ Trust\",\"firstTradeDateEpochUtc\":921076200,\"timeZoneFullName\":\"America/New_York\",\"timeZoneShortName\":\"EDT\",\"uuid\":\"714d32d4-5f6c-33bc-b36a-765119cb3c4c\",\"messageBoardId\":\"finmb_8108558\",\"gmtOffSetMilliseconds\":-14400000,\"maxAge\":1}}],\"error\":null}}"
     headers:
       Age:
@@ -46,11 +46,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1074'
+      - '1077'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 27 Jun 2024 10:17:17 GMT
+      - Mon, 01 Jul 2024 11:20:37 GMT
       server:
       - ATS
       vary:
@@ -58,9 +58,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '7'
+      - '3'
       y-rid:
-      - 6a42tf9j7qf1d
+      - 3f7q7hpj8546n
     status:
       code: 200
       message: OK
@@ -104,7 +104,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 27 Jun 2024 10:17:17 GMT
+      - Mon, 01 Jul 2024 11:20:37 GMT
       server:
       - ATS
       vary:
@@ -114,7 +114,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '1'
       y-rid:
-      - 1ei3ubtj7qf1e
+      - 6jr4kolj85486
     status:
       code: 200
       message: OK
