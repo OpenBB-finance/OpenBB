@@ -8,13 +8,110 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+    method: GET
+    uri: https://fc.yahoo.com/
+  response:
+    body:
+      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n  <head>\n    <meta http-equiv=\"content-type\"
+        content=\"text/html; charset=UTF-8\">\n    <meta charset=\"utf-8\">\n    <title>Yahoo</title>\n
+        \   <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimal-ui\">\n
+        \   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <style>\n
+        \     html {\n          height: 100%;\n      }\n      body {\n          background:
+        #fafafc url(https://s.yimg.com/nn/img/sad-panda-201402200631.png) 50% 50%;\n
+        \         background-size: cover;\n          height: 100%;\n          text-align:
+        center;\n          font: 300 18px \"helvetica neue\", helvetica, verdana,
+        tahoma, arial, sans-serif;\n          margin: 0;\n      }\n      table {\n
+        \         height: 100%;\n          width: 100%;\n          table-layout: fixed;\n
+        \         border-collapse: collapse;\n          border-spacing: 0;\n          border:
+        none;\n      }\n      h1 {\n          font-size: 42px;\n          font-weight:
+        400;\n          color: #400090;\n      }\n      p {\n          color: #1A1A1A;\n
+        \     }\n      #message-1 {\n          font-weight: bold;\n          margin:
+        0;\n      }\n      #message-2 {\n          display: inline-block;\n          *display:
+        inline;\n          zoom: 1;\n          max-width: 17em;\n          _width:
+        17em;\n      }\n      </style>\n      <script>\n      !function(){if(window==window.top){var
+        o=window.location.host;o.endsWith(\".yahoo.com\")&&window.location.replace(\"https://www.yahoo.com/\"),o.endsWith(\".aol.com\")&&window.location.replace(\"https://www.aol.com/\"),o.endsWith(\".huffpost.com\")&&window.location.replace(\"https://www.huffpost.com/\"),o.endsWith(\".engadget.com\")&&window.location.replace(\"https://www.engadget.com/\")}}();\n
+        \     </script>\n  </head>\n  <body>\n  <!-- status code : 404 -->\n  <!--
+        Not Found on Accelerator -->\n  <!-- host machine: e27.ycpi.nya.yahoo.com
+        -->\n  <!-- timestamp: 1719837798.025 -->\n  <!-- url: https://fc.yahoo.com/-->\n
+        \ <script type=\"text/javascript\">\n    function buildUrl(url, parameters){\n
+        \     var qs = [];\n      for(var key in parameters) {\n        var value
+        = parameters[key];\n        qs.push(encodeURIComponent(key) + \"=\" + encodeURIComponent(value));\n
+        \     }\n      url = url + \"?\" + qs.join('&');\n      return url;\n    }\n\n
+        \   function generateBRBMarkup(site) {\n      params.source = 'brb';\n      generateBeaconMarkup(params);\n
+        \     var englishHeader = 'Will be right back...';\n      var englishMessage1
+        = 'Thank you for your patience.';\n      var englishMessage2 = 'Our engineers
+        are working quickly to resolve the issue.';\n      var defaultLogoStyle =
+        '';\n      var siteDataMap = {\n        'default': {\n          logo: 'https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_205x58_frontpage.png',\n
+        \         logoAlt: 'Yahoo Logo',\n          logoStyle: defaultLogoStyle,\n
+        \         header: englishHeader,\n          message1: englishMessage1,\n          message2:
+        englishMessage2\n        }\n      };\n\n      var siteDetails = siteDataMap['default'];\n\n
+        \     document.write('<table><tbody><tr><td>');\n      document.write('<div
+        id=\"content\">');\n      document.write('<img src=\"' + siteDetails['logo']
+        + '\" alt=\"' + siteDetails['logoAlt'] + '\" style=\"' + siteDetails['logoStyle']
+        + '\">');\n      document.write('<h1 style=\"margin-top:20px;\">' + siteDetails['header']
+        + '</h1>');\n      document.write('<p id=\"message-1\">' + siteDetails['message1']
+        + '</p>');\n      document.write('<p id=\"message-2\">' + siteDetails['message2']
+        + '</p>');\n      document.write('</div>');\n      document.write('</td></tr></tbody></table>');\n
+        \   }\n\n    function generateBeaconMarkup(params) {\n        document.write('<img
+        src=\"' + buildUrl('//geo.yahoo.com/b', params) + '\" style=\"display:none;\"
+        width=\"0px\" height=\"0px\"/>');\n        var beacon = new Image();\n        beacon.src
+        = buildUrl('//bcn.fp.yahoo.com/p', params);\n    }\n\n    var hostname = window.location.hostname;\n
+        \   var device = 'desktop';\n    var ynet = ('-' === '1');\n    var time =
+        new Date().getTime();\n    var params = {\n        s: '1197757129',\n        t:
+        time,\n        err_url: document.URL,\n        err: '404',\n        test:
+        '-',\n        ats_host: 'e27.ycpi.nya.yahoo.com',\n        rid: '-',\n        message:
+        'Not Found on Accelerator'\n    };\n\n    if(ynet) {\n        document.write('<div
+        style=\"height: 5px; background-color: red;\"></div>');\n    }\n    generateBRBMarkup(hostname,
+        params);\n\n  </script>\n  <noscript>\n  <table>\n    <tbody>\n      <tr>\n
+        \       <td>\n          <div id=\"englishContent\">\n            <h1 style=\"margin-top:20px;\">Will
+        be right back...</h1>\n            <p id=\"message-1\">Thank you for your
+        patience.</p>\n            <p id=\"message-2\">Our engineers are working quickly
+        to resolve the issue.</p>\n          </div>\n        </td>\n      </tr>\n
+        \   </tbody>\n  </table>\n  </noscript>\n  </body>\n</html>\n"
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Language:
+      - en
+      Content-Length:
+      - '4744'
+      Content-Type:
+      - text/html
+      Date:
+      - Mon, 01 Jul 2024 12:43:18 GMT
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Server:
+      - ATS
+      Set-Cookie:
+      - A3=d=AQABBGakgmYCEA5HdzsKdIlYZ9C3xrBaExQFEgEBAQH1g2aMZtxH0iMA_eMAAA&S=AQAAAqFhqkZDHsK_FQZWsv7iy7s;
+        Expires=Tue, 1 Jul 2025 18:43:18 GMT; Max-Age=31557600; Domain=.yahoo.com;
+        Path=/; SameSite=None; Secure; HttpOnly
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 404
+      message: Not Found on Accelerator
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
       Cookie:
       - MOCK_COOKIE
     method: GET
     uri: https://query1.finance.yahoo.com/v1/test/getcrumb
   response:
     body:
-      string: lBVv2pgWbZ4
+      string: bQRPrXVZnGa
     headers:
       Age:
       - '0'
@@ -39,17 +136,17 @@ interactions:
       content-type:
       - text/plain;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 12:14:02 GMT
+      - Mon, 01 Jul 2024 12:43:18 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-external-services-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-external-services-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '0'
       y-rid:
-      - 2bddff1j857ca
+      - 2cintv5j85936
     status:
       code: 200
       message: OK
@@ -129,7 +226,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 12:14:03 GMT
+      - Mon, 01 Jul 2024 12:43:18 GMT
       server:
       - ATS
       vary:
@@ -137,9 +234,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '5'
+      - '3'
       y-rid:
-      - 2fbi79pj857cb
+      - 0seae45j85936
     status:
       code: 200
       message: OK
@@ -183,7 +280,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 12:14:03 GMT
+      - Mon, 01 Jul 2024 12:43:19 GMT
       server:
       - ATS
       vary:
@@ -193,7 +290,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '2'
       y-rid:
-      - 63s28n5j857cb
+      - 59sn88pj85937
     status:
       code: 200
       message: OK
