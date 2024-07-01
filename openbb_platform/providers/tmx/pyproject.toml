@@ -8,11 +8,11 @@ readme = "README.md"
 packages = [{ include = "openbb_tmx" }]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 aiohttp-client-cache = "^0.11.0"
 aiosqlite = "^0.20.0"
 random-user-agent = "^1.0.1"
-exchange-calendars = "^4.2.8"
+exchange-calendars = "^4.5.4"
 openbb-core = "^1.2.5"
 
 [build-system]

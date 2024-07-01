@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "openbb_quantitative" }]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.12"  # scipy forces python <4.0 explicitly
+python = ">=3.9,<3.13"  # scipy forces python <4.0 explicitly
 scipy = "^1.10.1"
 statsmodels = "^0.14.0"
 pandas-ta = "^0.3.14b"

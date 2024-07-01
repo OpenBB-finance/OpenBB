@@ -1,0 +1,101 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - www.cboe.com
+    method: GET
+    uri: https://www.cboe.com/us/futures/market_statistics/settlement/csv
+  response:
+    body: {}
+    headers:
+      CF-Cache-Status:
+      - EXPIRED
+      CF-Ray:
+      - 89a4a84f69a59f90-AMS
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:12:13 GMT
+      Link:
+      - <https://www.cboe.com/us/futures/market_statistics/settlement/csv>; rel="canonical"
+      Location:
+      - /us/futures/market_statistics/settlement/csv/
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Host,Accept-Encoding
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - www.cboe.com
+    method: GET
+    uri: https://www.cboe.com/us/futures/market_statistics/settlement/csv/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3TSy0rEMBQG4L3gO/gASZqTe7aizsyiMiKWjrtxnEVBrZQK+vbm0lPSgW6y+ZKT
+        Pz/ZD/37z2kkz3+fb/0Huf/97obj2PVfN3fH8Uz2Q3c6X181LWlaYapaEcGFotxQYQhIBh7RVo+I
+        lnIZUXFEVyLwiF5PuCCbiDs5oeQlC0VAMYMnJZQoYYHVE5KjIpHzHBBfED0FR0Az66xCbCYETiG8
+        0jHQGgNVLSJQER5imfQG7RVNpKnRxJznQUfUlIeDIk7lM22QwjkfSdrZtmgyzXTMZKsD1uvdZV7t
+        IPNqC5lXe8i81kTWlS52t9sDicviu4RsWjNvFhuK8GmDYU6VXqSP/01bpm3pRQIuknuZLthtSFwu
+        E0jBrC/9IoCM7YYB/wAAAP//QihAc4GxiZ6BBbI8mguA8qYGRkAFrr4uOiACwwZgGJggy6NbYKZn
+        hiKPFENg/ejy6A6AyDv6OhnqgAhEfgaHgCUwaemBUpejbwhIQQhK/jI0BSqwNNUzAOZqAAAAAP//
+        AwApJFitNgQAAA==
+    headers:
+      CF-Cache-Status:
+      - EXPIRED
+      CF-Ray:
+      - 89a4a8520d0d9f90-AMS
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename=FuturesSettlements_2024-06-26.csv
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/csv
+      Date:
+      - Thu, 27 Jun 2024 10:12:14 GMT
+      Last-Modified:
+      - Thu, 27 Jun 2024 04:04:13 GMT
+      Link:
+      - <https://www.cboe.com/us/futures/market_statistics/settlement/csv/>; rel="canonical"
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Host,Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

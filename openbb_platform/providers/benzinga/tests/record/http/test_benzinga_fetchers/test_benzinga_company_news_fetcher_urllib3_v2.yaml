@@ -1,0 +1,969 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?displayOutput=full&page=0&pageSize=20&sort=created%3Adesc&tickers=AAPL%2CMSFT&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":39518145,\"author\":\"Rounak Jain\",\"created\":\"Thu, 27
+        Jun 2024 03:33:35 -0400\",\"updated\":\"Thu, 27 Jun 2024 03:33:35 -0400\",\"title\":\"Apple
+        Watch X: Cupertino's Special 10th Anniversary Edition To Reportedly Feature
+        Largest Display Yet\",\"teaser\":\"New images of the rumored Apple Watch X
+        or Series 10 have surfaced, pointing at a larger display and a thinner case.\",\"body\":\"<p>New
+        images of the rumored <strong>Apple Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>) <a href=\\\"https://www.benzinga.com/topic/apple-watch\\\">Watch
+        X</a> or Series 10 have surfaced, pointing at a larger display and a thinner
+        case.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>: The leaked images,
+        <a href=\\\"https://www.91mobiles.com/hub/exclusive-apple-watch-series-10-cad-renders/\\\">sourced</a>
+        by 91mobiles, showcase a &#8220;larger&#8221; model with a 2-inch display,
+        which would be the biggest screen size on an Apple Watch to date.</p>\\n\\n\\n\\n<p>The
+        device is reportedly larger than the current Series 9 but smaller than the
+        Ultra.</p>\\n\\n\\n\\n<p>Despite the larger display, the dimensions of the
+        device are said to be approximately 46 x 39.7 x 11.6mm, which is larger than
+        the Series 9 but smaller than the Ultra.</p>\\n\\n\\n\\n<p>The design is similar
+        to the Series 9, featuring a Digital Crown, a Side button, and a square display.</p>\\n\\n\\n\\n<p><em>See
+        Also: <a href=\\\"https://www.benzinga.com/news/24/06/39474703/tim-cooks-goal-to-slash-assembly-workers-by-up-to-50-faces-setback-apple-reportedly-facing-precision\\\">Tim
+        Cook&#8217;s Goal To Slash Assembly Workers By Up To 50% Faces Setback: Apple
+        Reportedly Facing Precision Issues With Robots While Assembling iPhones</a></em></p>\\n\\n\\n\\n<p>The
+        &#8220;Apple Watch X&#8221; is expected to be launched in 2024 or 2025, marking
+        the device&#8217;s tenth anniversary. The new model is anticipated to have
+        a thinner case and potentially a magnetic band attachment system, as per Bloomberg&#8217;s
+        Mark Gurman.</p>\\n\\n\\n\\n<p>Noted Apple analyst <strong>Ming-Chi Kuo</strong>
+        <a href=\\\"https://medium.com/@mingchikuo/2h24-%E6%96%B0%E6%AC%BEapple-watch%E9%97%9C%E6%B3%A8%E7%84%A6%E9%BB%9E-series-10-%E9%89%91%E5%8A%9B%E7%89%B9-3d%E5%88%97%E5%8D%B0-the-focus-of-the-2h24-new-apple-watch-series-10-and-98075c44ce92\\\">also</a>
+        predicted that the Series 10 will be thinner and come in larger screen sizes
+        than previous models. Kuo suggested that the screen size options for the next-generation
+        Apple Watch will increase from 41mm to 45mm and from 45mm to 49mm, all encased
+        in a thinner design.</p>\\n\\n\\n\\n<p><em>Subscribe to the&nbsp;</em><a href=\\\"https://bztechtrends.beehiiv.com/subscribe\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>Benzinga Tech Trends
+        newsletter</em></a><em>&nbsp;to get all the latest tech developments delivered
+        to your inbox.</em></p>\\n\\n\\n\\n<p><strong>Why It Matters</strong>: The
+        leaked images add to the growing anticipation around Apple&#8217;s rumored
+        tenth-anniversary edition of the Apple Watch. This follows a <a href=\\\"https://www.benzinga.com/markets/equities/23/08/33810184/apple-eyes-splashy-upgrade-for-tenth-anniversary-edition-watch-after-minor-upgrade-with-series-9\\\">minor
+        upgrade</a> with the Series 9 in 2023.</p>\\n\\n\\n\\n<p>Apple is also <a
+        href=\\\"https://www.benzinga.com/news/24/03/37724310/apple-watch-2-0-new-patents-hint-at-expansion-beyond-health-tracking-after-masimo-fiasco\\\">exploring
+        the addition</a> of non-health-related functionalities.</p>\\n\\n\\n\\n<p>For
+        now, it is unclear if the leaked renders are accurate, but Apple typically
+        launches new Apple Watch models around September alongside its latest iPhone
+        lineup. The company is also rumored to be incorporating blood pressure monitoring
+        and sleep apnea detection in the 2024 Apple Watch model.</p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga's Consumer Tech coverage by&nbsp;</em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>See
+        Also: <a href=\\\"https://www.benzinga.com/news/24/06/39449884/twitter-co-founder-jack-dorsey-thinks-deepfakes-are-taking-us-toward-a-simulated-future-elon-musk-as?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Twitter Co-Founder Jack
+        Dorsey Thinks Deepfakes Are Taking Us Toward A Simulated Future</a></em></p>\\n\\n\\n\\n<p><strong><em>Disclaimer:</em></strong><em>&nbsp;This
+        content was partially produced with the help of&nbsp;<a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Benzinga Neuro</a>&nbsp;and
+        was reviewed and published by Benzinga editors.</em></p>\\n\\n\\n\\n<p><em>Photo
+        courtesy: Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39518145/apple-watch-x-cupertinos-special-10th-anniversary-edition-to-reportedly-feature-largest-display-yet\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/27/Apple-Watch-Ultra-2.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/27/Apple-Watch-Ultra-2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/27/Apple-Watch-Ultra-2.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Apple
+        Watch\"},{\"name\":\"Appleverse\"},{\"name\":\"benzinga neuro\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"}]},{\"id\":39509032,\"author\":\"Benzinga Insights\",\"created\":\"Wed,
+        26 Jun 2024 13:35:12 -0400\",\"updated\":\"Wed, 26 Jun 2024 13:35:13 -0400\",\"title\":\"10
+        Information Technology Stocks Whale Activity In Today's Session\",\"teaser\":\"
+        \",\"body\":\"<p>This whale alert can help traders discover the next big trading
+        opportunities.</p>\\n<p>Whales are entities with large sums of money and we
+        track their transactions here at Benzinga on our options activity scanner.</p>\\n<p>Traders
+        often look for circumstances when the market estimation of an option diverges
+        away from its normal worth. Abnormal amounts of trading activity could push
+        option prices to hyperbolic or underperforming levels. </p>\\n<p>Here's the
+        list of options activity happening in today's session:  <table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>AAPL</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>06/28/24</td>\\n<td>$212.50</td>\\n<td>$31.0K</td>\\n<td>25.1K</td>\\n<td>96.1K</td>\\n</tr>\\n<tr>\\n<td>NVDA</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>06/28/24</td>\\n<td>$124.00</td>\\n<td>$26.1K</td>\\n<td>22.6K</td>\\n<td>76.7K</td>\\n</tr>\\n<tr>\\n<td>MU</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>06/28/24</td>\\n<td>$140.00</td>\\n<td>$30.6K</td>\\n<td>10.8K</td>\\n<td>5.6K</td>\\n</tr>\\n<tr>\\n<td>AMD</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>06/28/24</td>\\n<td>$155.00</td>\\n<td>$35.0K</td>\\n<td>7.9K</td>\\n<td>5.2K</td>\\n</tr>\\n<tr>\\n<td>MARA</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>07/19/24</td>\\n<td>$25.00</td>\\n<td>$50.7K</td>\\n<td>10.8K</td>\\n<td>2.6K</td>\\n</tr>\\n<tr>\\n<td>MTSI</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>02/21/25</td>\\n<td>$160.00</td>\\n<td>$60.8K</td>\\n<td>153</td>\\n<td>1.7K</td>\\n</tr>\\n<tr>\\n<td>DELL</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>08/16/24</td>\\n<td>$150.00</td>\\n<td>$120.0K</td>\\n<td>4.1K</td>\\n<td>1.3K</td>\\n</tr>\\n<tr>\\n<td>SNOW</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>07/19/24</td>\\n<td>$135.00</td>\\n<td>$75.0K</td>\\n<td>2.3K</td>\\n<td>1.1K</td>\\n</tr>\\n<tr>\\n<td>HPQ</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>07/19/24</td>\\n<td>$35.00</td>\\n<td>$26.2K</td>\\n<td>18.6K</td>\\n<td>1.0K</td>\\n</tr>\\n<tr>\\n<td>SMCI</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>06/28/24</td>\\n<td>$835.00</td>\\n<td>$42.4K</td>\\n<td>532</td>\\n<td>976</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h2>Explanation</h2>\\n<p>These
+        bullet-by-bullet explanations have been constructed using the accompanying
+        table.  </p>\\n<p>\u2022  For <strong>AAPL</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>), we notice
+        a <strong>call</strong> option <strong>sweep</strong> that happens to be <strong>bearish</strong>,
+        expiring in 2 day(s) on <strong>June 28, 2024</strong>. This event was a transfer
+        of <strong>150</strong> contract(s) at a <strong>$212.50</strong> strike.
+        This particular call needed to be split into 3 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$31.0K</strong>,
+        with a price of <strong>$207.0</strong> per contract. There were <strong>25165</strong>
+        open contracts at this strike prior to today, and today <strong>96189</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>NVDA</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>),
+        we observe a <strong>put</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 2 day(s) on <strong>June 28, 2024</strong>. Parties
+        traded <strong>100</strong> contract(s) at a <strong>$124.00</strong> strike.
+        This particular put needed to be split into 5 different trades to become filled.
+        The total cost received by the writing party (or parties) was <strong>$26.1K</strong>,
+        with a price of <strong>$261.0</strong> per contract. There were <strong>22662</strong>
+        open contracts at this strike prior to today, and today <strong>76748</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  For <strong>MU</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MU#NASDAQ\\\">MU</a>),
+        we notice a <strong>call</strong> option <strong>trade</strong> that happens
+        to be <strong>bullish</strong>, expiring in 2 day(s) on <strong>June 28, 2024</strong>.
+        This event was a transfer of <strong>30</strong> contract(s) at a <strong>$140.00</strong>
+        strike. The total cost received by the writing party (or parties) was <strong>$30.6K</strong>,
+        with a price of <strong>$1020.0</strong> per contract. There were <strong>10853</strong>
+        open contracts at this strike prior to today, and today <strong>5606</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>AMD</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMD#NASDAQ\\\">AMD</a>),
+        we observe a <strong>call</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 2 day(s) on <strong>June 28, 2024</strong>. Parties
+        traded <strong>100</strong> contract(s) at a <strong>$155.00</strong> strike.
+        This particular call needed to be split into 4 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$35.0K</strong>,
+        with a price of <strong>$350.0</strong> per contract. There were <strong>7908</strong>
+        open contracts at this strike prior to today, and today <strong>5234</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  For <strong>MARA</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MARA#NASDAQ\\\">MARA</a>),
+        we notice a <strong>call</strong> option <strong>sweep</strong> that happens
+        to be <strong>bullish</strong>, expiring in 23 day(s) on <strong>July 19,
+        2024</strong>. This event was a transfer of <strong>962</strong> contract(s)
+        at a <strong>$25.00</strong> strike. This particular call needed to be split
+        into 8 different trades to become filled. The total cost received by the writing
+        party (or parties) was <strong>$50.7K</strong>, with a price of <strong>$53.0</strong>
+        per contract. There were <strong>10875</strong> open contracts at this strike
+        prior to today, and today <strong>2612</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  Regarding <strong>MTSI</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MTSI#NASDAQ\\\">MTSI</a>), we observe
+        a <strong>call</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 240 day(s) on <strong>February 21, 2025</strong>.
+        Parties traded <strong>174</strong> contract(s) at a <strong>$160.00</strong>
+        strike. This particular call needed to be split into 7 different trades to
+        become filled. The total cost received by the writing party (or parties) was
+        <strong>$60.8K</strong>, with a price of <strong>$350.0</strong> per contract.
+        There were <strong>153</strong> open contracts at this strike prior to today,
+        and today <strong>1710</strong> contract(s) were bought and sold. </p>\\n<p>\u2022
+        \ For <strong>DELL</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/DELL#NYSE\\\">DELL</a>),
+        we notice a <strong>call</strong> option <strong>trade</strong> that happens
+        to be <strong>bearish</strong>, expiring in 51 day(s) on <strong>August 16,
+        2024</strong>. This event was a transfer of <strong>250</strong> contract(s)
+        at a <strong>$150.00</strong> strike. The total cost received by the writing
+        party (or parties) was <strong>$120.0K</strong>, with a price of <strong>$480.0</strong>
+        per contract. There were <strong>4100</strong> open contracts at this strike
+        prior to today, and today <strong>1368</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  Regarding <strong>SNOW</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/SNOW#NYSE\\\">SNOW</a>), we observe
+        a <strong>call</strong> option <strong>trade</strong> with <strong>bullish</strong>
+        sentiment. It expires in 23 day(s) on <strong>July 19, 2024</strong>. Parties
+        traded <strong>250</strong> contract(s) at a <strong>$135.00</strong> strike.
+        The total cost received by the writing party (or parties) was <strong>$75.0K</strong>,
+        with a price of <strong>$300.0</strong> per contract. There were <strong>2350</strong>
+        open contracts at this strike prior to today, and today <strong>1143</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>HPQ</strong>
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/HPQ#NYSE\\\">HPQ</a>),
+        we observe a <strong>call</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 23 day(s) on <strong>July 19, 2024</strong>. Parties
+        traded <strong>328</strong> contract(s) at a <strong>$35.00</strong> strike.
+        This particular call needed to be split into 23 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$26.2K</strong>,
+        with a price of <strong>$80.0</strong> per contract. There were <strong>18629</strong>
+        open contracts at this strike prior to today, and today <strong>1006</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>SMCI</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SMCI#NASDAQ\\\">SMCI</a>),
+        we observe a <strong>put</strong> option <strong>sweep</strong> with <strong>bearish</strong>
+        sentiment. It expires in 2 day(s) on <strong>June 28, 2024</strong>. Parties
+        traded <strong>14</strong> contract(s) at a <strong>$835.00</strong> strike.
+        This particular put needed to be split into 6 different trades to become filled.
+        The total cost received by the writing party (or parties) was <strong>$42.4K</strong>,
+        with a price of <strong>$3030.0</strong> per contract. There were <strong>532</strong>
+        open contracts at this strike prior to today, and today <strong>976</strong>
+        contract(s) were bought and sold. </p>\\n<p><strong>Options Alert Terminology</strong><br
+        />\\n - <strong>Call Contracts:</strong> The right to buy shares as indicated
+        in the contract.<br />\\n - <strong>Put Contracts:</strong> The right to sell
+        shares as indicated in the contract.<br />\\n - <strong>Expiration Date:</strong>
+        When the contract expires. One must act on the contract by this date if one
+        wants to use it.<br />\\n - <strong>Premium/Option Price:</strong> The price
+        of the contract.  </p>\\n<p>For more information, visit our <em><a href=\\\"https://pro.benzinga.com/blog/how-to-understand-option-alerts/\\\">Guide
+        to Understanding Options Alerts</a></em> or read <a href=\\\"https://www.benzinga.com/markets/options\\\">more
+        news on unusual options activity</a>.  </p>\\n<p>This article was generated
+        by Benzinga's automated content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/insights/options/24/06/39509032/10-information-technology-stocks-whale-activity-in-todays-session\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/options_image_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/options_image_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/options_image_0.jpeg\"}],\"channels\":[{\"name\":\"Options\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMD\"},{\"name\":\"DELL\"},{\"name\":\"HPQ\"},{\"name\":\"MARA\"},{\"name\":\"MTSI\"},{\"name\":\"MU\"},{\"name\":\"NVDA\"},{\"name\":\"SMCI\"},{\"name\":\"SNOW\"}],\"tags\":[{\"name\":\"BZI-AUOA\"}]},{\"id\":39508567,\"author\":\"Hayden
+        Buckfire\",\"created\":\"Wed, 26 Jun 2024 13:06:30 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 13:09:15 -0400\",\"title\":\"Active Fund Managers Bet These 6
+        Stocks Will Trade Near All-Time Highs\",\"teaser\":\"Active fund managers
+        making large bets on momentum plays indicate confidence that Big Tech&#39;s
+        rally has legs for the remainder of 2024.\",\"body\":\"<p>Active fund managers
+        are making large bets on six <a href=\\\"https://www.benzinga.com/money/stocks-to-buy-now\\\">already
+        high-performing stocks</a>.</p>\\n\\n\\n\\n<p><strong>The Data:</strong> A
+        <a href=\\\"https://x.com/MikeZaccardi/status/1805906179853369429\\\">post</a>
+        on X relayed data from Bank of America research.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">Magnificent 5 + GLP-1 are overweight by active
+        funds <a href=\\\"https://t.co/JzyaTF9iFi\\\">pic.twitter.com/JzyaTF9iFi</a></p>&mdash;
+        Mike Zaccardi, CFA, CMT &#x1f356; (@MikeZaccardi) <a href=\\\"https://twitter.com/MikeZaccardi/status/1805906179853369429?ref_src=twsrc%5Etfw\\\">June
+        26, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>Long-only
+        active funds are overweight on the following companies relative to their weighting
+        in the <strong>SPDR S&amp;P 500 ETF Trust</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/SPY#NYSE\\\">SPY</a>): <strong>Microsoft
+        Corp</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>),
+        <strong>NVIDIA Corp</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>),
+        <strong>Amazon.com Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>),
+        <strong>Alphabet Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>),
+        <strong>Meta Platforms Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>)
+        and<strong> Eli Lilly And Co</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/LLY#NYSE\\\">LLY</a>).</p>\\n\\n\\n\\n<p>All
+        of the companies mentioned above are trading at or near all-time highs following
+        historic rallies in 2023 and 2024. NVIDIA has added over $2 trillion in market
+        cap in the past year while the already-large Microsoft, Eli Lilly and Alphabet
+        saw enormous gains as well. </p>\\n\\n\\n\\n<p>One stock missing from the
+        list is <strong>Apple Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>),
+        even though the stock&#8217;s all-time high closing price was $216.67 on June
+        17. </p>\\n\\n\\n\\n<p>Around 90% of the active funds indexed by the chart
+        currently own Microsoft. Meta and Eli Lilly (an outlier here among technology
+        companies) are weighted nearly twice as much among active funds than the S&amp;P
+        500.</p>\\n\\n\\n\\n<p>Large bets on momentum plays indicate a continued confidence
+        that Big Tech&#8217;s rally has legs going into the remainder of 2024. Fund
+        manager sentiment has <a href=\\\"https://www.benzinga.com/top-stories/24/06/39465012/the-bull-market-booms-back-fund-manager-sentiment-reaches-new-relative-high\\\">reached
+        relative highs</a> in June on the back of artificial intelligence-related
+        optimism.</p>\\n\\n\\n\\n<p>Other experts have <a href=\\\"https://www.benzinga.com/top-stories/24/06/39365183/warning-flags-expert-says-nvidia-in-bubble-ish-territory-points-to-potential-market-pullback\\\">pumped
+        the brakes</a> on pervading bullish sentiment, describing &#8220;warning flags&#8221;
+        pointing toward a &#8220;bubble-ish&#8221; market at risk of a substantial
+        drawdown.</p>\\n\\n\\n\\n<p><em>Now Read: <a href=\\\"https://www.benzinga.com/top-stories/24/06/39485696/meta-vs-alphabet-meta-accelerates-on-ai-while-google-has-revenue-earnings-advantage-bank-of-america\\\">Meta
+        Vs. Alphabet: Meta Accelerates On AI While Google Has Revenue, Earnings Advantage,
+        Bank Of America Says</a></em></p>\",\"url\":\"https://www.benzinga.com/markets/equities/24/06/39508567/active-fund-managers-bet-these-6-stocks-will-trade-near-all-time-highs\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/26/Big-Five-Companies--Big-Tech-Company-Log_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/26/Big-Five-Companies--Big-Tech-Company-Log_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/26/Big-Five-Companies--Big-Tech-Company-Log_0.jpeg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"LLY\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"SPY\"}],\"tags\":[{\"name\":\"AI\"},{\"name\":\"artificial
+        intelligence\"},{\"name\":\"magnificent 7\"},{\"name\":\"Stories That Matter\"}]},{\"id\":39508311,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Wed, 26 Jun 2024 12:56:10 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 12:56:11 -0400\",\"title\":\"B of A Securities Maintains Buy on
+        Apple, Maintains $230 Price Target\",\"teaser\":\"B of A Securities  analyst
+        Wamsi Mohan   maintains Apple (NASDAQ:AAPL) with a Buy and maintains $230
+        price target.\",\"body\":\"B of A Securities  analyst Wamsi Mohan   maintains
+        Apple (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        with a Buy and maintains $230 price target.\",\"url\":\"https://www.benzinga.com/news/24/06/39508311/b-of-a-securities-maintains-buy-on-apple-maintains-230-price-target\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Price
+        Target\"},{\"name\":\"Analyst Ratings\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[]},{\"id\":39502593,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Wed, 26 Jun 2024 09:33:38 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 09:33:39 -0400\",\"title\":\"Apple shares are trading higher after
+        Rosenblatt upgraded the stock from Neutral to Buy and raised the price target
+        from $196 to $260.\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/wiim/24/06/39502593/apple-shares-are-trading-higher-after-rosenblatt-upgraded-the-stock-from-neutral-to-buy-and-raised-t\",\"image\":[],\"channels\":[{\"name\":\"WIIM\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[]},{\"id\":39502578,\"author\":\"Shivani
+        Kumaresan\",\"created\":\"Wed, 26 Jun 2024 09:33:06 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 09:33:06 -0400\",\"title\":\"OpenAI's China Exit Sets Stage For
+        Local AI Surge With Baidu, Alibaba As Potential Gainers\",\"teaser\":\"As
+        OpenAI announces an end to its services in China, local AI leaders like Baidu
+        and Alibaba are seizing the opportunity to attract developers with various
+        incentives. This strategic shift highlights the intensifying US-China tech
+        rivalry and is set to transform China&#39;s AI landscape.\",\"body\":\"<p><strong>Microsoft
+        Corp </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        backed <strong>ChatGPT </strong>parent <strong>OpenAI&#8217;s</strong> proposed
+        policy change, that will end access to its AI development tools in China,
+        is likely to reshape the competitive landscape in <a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/topic/artificial-intelligence\\\" rel=\\\"noreferrer
+        noopener\\\">the artificial intelligence sector</a>.</p>\\n\\n\\n\\n<p>Starting
+        in July, OpenAI will <a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/24/06/39494097/chatgpt-parent-openai-to-block-access-to-ai-tools-amid-growing-tech-tensions-between-washington-and\\\"
+        rel=\\\"noreferrer noopener\\\">terminate services for its Chinese users</a>,
+        a decision that has prompted immediate reactions from local companies.</p>\\n\\n\\n\\n<p>Firms
+        such as <strong>Baidu Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/BIDU#NASDAQ\\\">BIDU</a>)
+        and <strong>Alibaba Group Holding Ltd.</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/BABA#NYSE\\\">BABA</a>) are now positioning
+        themselves to capitalize on the emerging gap in the market with various incentives
+        to attract developers, <a target=\\\"_blank\\\" href=\\\"https://www.bloomberg.com/news/articles/2024-06-26/openai-s-china-block-to-reshape-ai-scene-as-big-players-like-alibaba-pounce?srnd=homepage-uk&amp;sref=TBDibEcD\\\"
+        rel=\\\"noreferrer noopener\\\">Bloomberg</a> reports.</p>\\n\\n\\n\\n<p>This
+        strategic pivot by OpenAI not only underscores the growing tensions between
+        the U.S. and China over technological advancements but also sets the stage
+        for a realignment within China&#8217;s AI industry.</p>\\n\\n\\n\\n<p>As American
+        companies pull back, Chinese leaders in AI are ready to expand their influence
+        and user base.</p>\\n\\n\\n\\n<p><strong><em>Related Read</em></strong><em>:
+        <a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/24/06/39455319/alibaba-cloud-introduces-ai-programmer-to-speed-up-app-development\\\"
+        rel=\\\"noreferrer noopener\\\">Alibaba Cloud Introduces AI Programmer to
+        Speed Up App Development</a></em></p>\\n\\n\\n\\n<p>The withdrawal of OpenAI
+        is poised to disadvantage numerous smaller startups that relied on these accessible,
+        high-quality tools for development.</p>\\n\\n\\n\\n<p>Industry expert Bernard
+        Leong expressed concerns about a potential &#8220;bloodbath&#8221; in the
+        sector, predicting that only a few major players would survive the upheaval.</p>\\n\\n\\n\\n<p>Simultaneously,
+        major Chinese AI companies saw their stocks surge, with firms like <strong>Iflytek
+        Co</strong>. benefiting from the news.</p>\\n\\n\\n\\n<p>In response, companies
+        such as <strong>SenseTime Group Inc</strong>. and <strong>Zhipu AI</strong>
+        are offering millions of free tokens and support to those transitioning away
+        from OpenAI&#8217;s platforms.</p>\\n\\n\\n\\n<p>This development reflects
+        broader efforts by the U.S. to limit China&#8217;s access to cutting-edge
+        technologies, including AI and semiconductors, amid <a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/markets/asia/24/05/38824198/biden-announces-massive-tariffs-on-chinese-imports-to-protect-us-industries-clean-energy-solar-stock\\\"
+        rel=\\\"noreferrer noopener\\\">escalating geopolitical tensions</a>.</p>\\n\\n\\n\\n<p><strong><em>Disclaimer</em></strong>:
+        <em>This content was partially produced with the help of AI tools and was
+        reviewed and published by Benzinga editors.</em></p>\\n\\n\\n\\n<p><strong><em>Read
+        Next: </em></strong><em><a href=\\\"https://www.benzinga.com/news/24/06/39428720/after-us-and-eu-now-canada-considers-imposing-tariffs-on-chinese-evs-as-domestic-pressure-mounts-rep\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">After US And EU, Now
+        Canada Considers Imposing Tariffs On Chinese EVs As Domestic Pressure Mounts:
+        Report</a></em></p>\\n\\n\\n\\n<p><em>Photo via Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39502578/openais-china-exit-sets-stage-for-local-ai-surge-with-baidu-alibaba-as-potential-gainers\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/26/Dhaka--Bangladesh--16-May-2024-Openai-Gp.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/26/Dhaka--Bangladesh--16-May-2024-Openai-Gp.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/26/Dhaka--Bangladesh--16-May-2024-Openai-Gp.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Emerging
+        Markets\"},{\"name\":\"Tech\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"BABA\"},{\"name\":\"BIDU\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"AI\"},{\"name\":\"AI
+        Generated\"},{\"name\":\"artificial intelligence\"},{\"name\":\"Briefs\"},{\"name\":\"Stories
+        That Matter\"}]},{\"id\":39502514,\"author\":\"Benzinga Newsdesk\",\"created\":\"Wed,
+        26 Jun 2024 09:30:39 -0400\",\"updated\":\"Wed, 26 Jun 2024 09:30:40 -0400\",\"title\":\"Afterpay
+        Research Shows 4 in 5 'Buy Now, Pay Later' Customers Find Pay-in-Four Innovation
+        Reduces Financial Stress; Over 75% Say BNPL Eases Financial Strain During
+        Purchases and Installments; Study Reveals Increased Financial Stress Among
+        Americans, Especially Millennials and Gen Z Preparing for Major Life Changes\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/24/06/39502514/afterpay-research-shows-4-in-5-buy-now-pay-later-customers-find-pay-in-four-innovation-reduces-finan\",\"image\":[],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AFRM\"},{\"name\":\"PYPL\"},{\"name\":\"SQ\"}],\"tags\":[]},{\"id\":39502459,\"author\":\"Shivani
+        Kumaresan\",\"created\":\"Wed, 26 Jun 2024 09:29:07 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 09:29:08 -0400\",\"title\":\"Apple Introduces iPhone Update, Improves
+        Texting With Android Users\",\"teaser\":\"An update to iPhones allows for
+        sending and receiving high-quality images, which were previously limited to
+        iMessage interactions.\",\"body\":\"<p><strong>Apple Inc</strong>. (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        has introduced Rich Communication Services (RCS) support in its Messages app
+        with the latest update in the iOS 18 second developer beta, marking a major
+        enhancement in <a href=\\\"https://www.benzinga.com/topic/iphone\\\">cross-platform
+        messaging capabilities</a>.</p>\\n\\n\\n\\n<p>RCS allows for advanced messaging
+        features like sending and receiving high-quality images, file sharing, seeing
+        typing indicators, and getting read receipts, which were previously limited
+        to iMessage interactions among Apple devices. </p>\\n\\n\\n\\n<p>This update
+        enables iPhone users to communicate more effectively with Android users, as
+        RCS is supported by most Android phones signaling a move towards more inclusive
+        communication technology, reported TechCrunch.</p>\\n\\n\\n\\n<p>Prior to
+        this update, iPhone users were restricted to sending basic SMS or MMS messages
+        to non-Apple devices. </p>\\n\\n\\n\\n<p>The new RCS functionality bridges
+        this gap, allowing rich media exchanges and group chats across different device
+        ecosystems.</p>\\n\\n\\n\\n<p><em><strong>Also Read</strong>: <a href=\\\"https://www.benzinga.com/markets/equities/24/06/39372969/apple-revises-payment-options-reportedly-ends-buy-now-pay-later-service\\\">Apple
+        Revises Payment Options, Reportedly Ends &#8216;Buy Now, Pay Later&#8217;
+        Service</a></em></p>\\n\\n\\n\\n<p>Currently, the RCS feature is available
+        only through major U.S. carriers such as <strong>T-Mobile US Inc</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TMUS#NASDAQ\\\">TMUS</a>),
+        <strong>AT&amp;T Inc</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/T#NYSE\\\">T</a>),
+        and <strong>Verizon Communications Inc</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/VZ#NYSE\\\">VZ</a>).</p>\\n\\n\\n\\n<p>It
+        is operational only if the carrier supports RCS and has updated their network
+        for iOS 18. Apple has indicated that it plans to expand support to additional
+        regions pending carrier updates.</p>\\n\\n\\n\\n<p>The integration of RCS
+        in iOS 18 follows Apple&#8217;s announcement at the <a href=\\\"https://www.benzinga.com/news/24/06/39239622/apples-ai-strategy-could-trigger-three-year-iphone-sales-boost-says-top-tech-bull-dont-overthink-it\\\">Worldwide
+        Developer Conference earlier this month</a>, highlighting the company&#8217;s
+        efforts to provide more seamless and inclusive communication options across
+        different platforms.</p>\\n\\n\\n\\n<p>Apple stock has gained more than 12%
+        in the last 12 months. Investors can gain exposure to the stock via&nbsp;<strong>Vanguard
+        Information Technology ETF</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/VGT#NYSE\\\">VGT</a>)
+        and <strong>IShares U.S. Technology ETF</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/IYW#NYSE\\\">IYW</a>).</p>\\n\\n\\n\\n<p><strong>Price
+        Action</strong>: AAPL shares are trading higher by 0.82% at $210.64 in premarket
+        at last check Wednesday.</p>\\n\\n\\n\\n<p><strong><em>Disclaimer</em>: </strong><em>This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\n\\n\\n\\n<p><em><strong>Read
+        Next</strong>: <a href=\\\"https://www.benzinga.com/news/24/06/39474703/tim-cooks-goal-to-slash-assembly-workers-by-up-to-50-faces-setback-apple-reportedly-facing-precision\\\">Tim
+        Cook&#8217;s Goal To Slash Assembly Workers By Up To 50% Faces Setback: Apple
+        Reportedly Facing Precision Issues With Robots While Assembling iPhones</a></em></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39502459/apple-introduces-iphone-update-improves-texting-with-android-users\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/26/iPhone-text-rewrite.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/26/iPhone-text-rewrite.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/26/iPhone-text-rewrite.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"IYW\"},{\"name\":\"T\"},{\"name\":\"TMUS\"},{\"name\":\"VGT\"},{\"name\":\"VZ\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"},{\"name\":\"Consumer Tech\"},{\"name\":\"iPhone\"},{\"name\":\"iPhones\"},{\"name\":\"Stories
+        That Matter\"}]},{\"id\":39502231,\"author\":\"Upwallstreet\",\"created\":\"Wed,
+        26 Jun 2024 09:17:58 -0400\",\"updated\":\"Wed, 26 Jun 2024 09:19:31 -0400\",\"title\":\"Regulatory
+        Clouds Are Mounting Over Apple\",\"teaser\":\"On Monday,\_EU\_regulators found\_that\_Apple
+        Inc (NASDAQ: AAPL)\_violated the Digital Markets Act\_due to its\_lucrative
+        App Store by illegally blocking software developers from telling customers
+        how to access content outside the app store.\_Regulators also revealed that
+        they opened a separa\",\"body\":\"<p>On Monday,&nbsp;EU&nbsp;regulators found&nbsp;that&nbsp;Apple
+        Inc (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)&nbsp;violated
+        the Digital Markets Act&nbsp;due to its&nbsp;lucrative App Store by illegally
+        blocking software developers from telling customers how to access content
+        outside the app store.&nbsp;Regulators also revealed that they opened a separate
+        investigation into Apple&rsquo;s practice of charging a &quot;core technology
+        fee&quot; for iOS apps available in the EU.&nbsp;Apple&nbsp;responded that
+        it is confident that the changes it made&nbsp;in the EU comply with the DMA.</p>\\r\\n\\r\\n<p>Meanwhile,
+        in the U.S., Apple is defending itself against antitrust charges&nbsp;made
+        by the US Justice Department and 16 state attorneys general.&nbsp;In March,
+        they sued Apple for using&nbsp;illegal tactics to hold on to a monopoly in
+        the smartphone market.</p>\\r\\n\\r\\n<p>The&nbsp;new law designed to rein
+        in tech giants&nbsp;and limit their power is already starting to give Big
+        Tech legal headaches.&nbsp;</p>\\r\\n\\r\\n<p>The Digital Markets Act that
+        went into effect in March aims to limit the monopoly power that&nbsp;Apple,
+        Amazon (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>)&nbsp;Alphabet
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>),
+        Microsoft Corporation (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>),&nbsp;ByteDance,&nbsp;and&nbsp;Meta
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>)&nbsp;enjoy
+        by&nbsp;imposing&nbsp;more restrictive rules around competitive practices.
+        Apple was the first of the tech titans to receive a claim for breaching the
+        DMA by&nbsp;blocking developers from communicating alternative ways to purchase
+        their content.</p>\\r\\n\\r\\n<p>Altogether, the European Commission has significantly&nbsp;raised&nbsp;the
+        financial risks that Apple faces from global antitrust regulators.&nbsp;As
+        a reminder, Apple already lost to Spotify (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPOT#NYSE\\\">SPOT</a>)
+        who accused it for&nbsp;abusing&nbsp;its&nbsp;market dominance in&nbsp;the
+        distribution of music streaming apps,&nbsp;and is appealing the court&rsquo;s
+        decision and consequent $1.95 billion fine. Besides evaluating Apple&rsquo;s
+        lack of compliance with giving users the freedom of choice and its steering
+        rules, the EC is going after Alphabet to evaluate its measures to prevent
+        self-preferencing&nbsp;the Google search engine over others as well as its
+        steering rules as well. The EC wants to make sure that Alphabet implemented
+        measures to for Google search rivals to be treated in a fair and non-discriminatory
+        manner.&nbsp;</p>\\r\\n\\r\\n<p>EU watch dogs are also going after Meta for
+        its&nbsp;pay or consent&rdquo; model. As a gatekeeper, the EC is concerned
+        about Meta being a responsible gatekeeper. EC wants to prevent the accumulation
+        of personal data by gatekeepers&nbsp;and will question if Meta is&nbsp;obtaining&nbsp;consent
+        from users when&nbsp;intending&nbsp;to combine or cross-use their personal
+        data across different core platform services.</p>\\r\\n\\r\\n<p>Since enforcing
+        the Digital Markets Act, the EC is showing that it will make sure that&nbsp;Alphabet,
+        Amazon, Apple, ByteDance, Meta and Microsoft&nbsp;fully comply with the rules.
+        Although this is still a small step to holding the tech titans accountable
+        for their actions, it is a big step in ensuring fair competition in the digital
+        economy and regulating gatekeepers. With Apple, the EC clearly showed it means
+        business.</p>\\r\\n\\r\\n<p><em>DISCLAIMER:&nbsp;This content is for informational
+        purposes only. It is not intended as investing advice.</em></p>\\r\\n\\r\\n<p
+        class=\\\"contributor-disclaimer\\\"><em>This article is from an unpaid external
+        contributor. It does not represent Benzinga&#39;s reporting and has not been
+        edited for content or accuracy.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/24/06/39502231/regulatory-clouds-are-mounting-over-apple\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/blank-book-with-lit-lightbulb-top.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/blank-book-with-lit-lightbulb-top.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/blank-book-with-lit-lightbulb-top.jpg\"}],\"channels\":[{\"name\":\"Eurozone\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"SPOT\"}],\"tags\":[{\"name\":\"contributors\"},{\"name\":\"Expert
+        Ideas\"}]},{\"id\":39501593,\"author\":\"Benzinga Newsdesk\",\"created\":\"Wed,
+        26 Jun 2024 09:05:11 -0400\",\"updated\":\"Wed, 26 Jun 2024 09:05:11 -0400\",\"title\":\"Apple
+        Diagnostics For Self Service Repair Is Now Available In 32 European Countries\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/24/06/39501593/apple-diagnostics-for-self-service-repair-is-now-available-in-32-european-countries\",\"image\":[],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[]},{\"id\":39501029,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Wed, 26 Jun 2024 08:53:48 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 08:53:49 -0400\",\"title\":\"'YouTube seeks record label deals
+        for new AI music tools' - Financial Times\",\"teaser\":\"https://www.ft.com/content/e2d9472d-32e0-43f5-8109-efb753fac330\",\"body\":\"<p><a
+        href=\\\"https://www.ft.com/content/e2d9472d-32e0-43f5-8109-efb753fac330\\\"
+        title=\\\"https://www.ft.com/content/e2d9472d-32e0-43f5-8109-efb753fac330\\\">https://www.ft.com/content/e2d9472d-32e0-43f5-8109-efb753fac330</a></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39501029/youtube-seeks-record-label-deals-for-new-ai-music-tools-financial-times\",\"image\":[],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"RUM\"},{\"name\":\"SPOT\"},{\"name\":\"WMG\"}],\"tags\":[]},{\"id\":39499830,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Wed, 26 Jun 2024 08:14:23 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 08:14:24 -0400\",\"title\":\"Rosenblatt Upgrades Apple to Buy,
+        Raises Price Target to $260\",\"teaser\":\"Rosenblatt  analyst Barton Crockett
+        \  upgrades Apple (NASDAQ:AAPL) from Neutral to Buy and raises the price target
+        from $196 to $260.\",\"body\":\"Rosenblatt  analyst Barton Crockett   upgrades
+        Apple (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        from Neutral to Buy and raises the price target from $196 to $260.\",\"url\":\"https://www.benzinga.com/news/24/06/39499830/rosenblatt-upgrades-apple-to-buy-raises-price-target-to-260\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Upgrades\"},{\"name\":\"Price
+        Target\"},{\"name\":\"Analyst Ratings\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[]},{\"id\":39499140,\"author\":\"Anusuya
+        Lahiri\",\"created\":\"Wed, 26 Jun 2024 07:50:35 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 07:50:36 -0400\",\"title\":\"What's Going On With Taiwan Semi
+        Stock On Wednesday?\",\"teaser\":\"Taiwan Semiconductor Industry to maintain
+        global lead for 8-10 years, urged to ensure research security and develop
+        grand strategy for changing supply chains.\",\"body\":\"<p>Analysts on Tuesday
+        said that Taiwan&#8217;s Semiconductor Industry should maintain its global
+        lead for at least the next eight to ten years.</p>\\n\\n\\n\\n<p>They urged
+        the government to ensure the country&#8217;s research security and develop
+        a &#8220;grand strategy&#8221; considering changing supply chains.</p>\\n\\n\\n\\n<p><strong>Taiwan
+        Semiconductor Manufacturing Co</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TSM#NYSE\\\">TSM</a>),
+        <a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/24/05/39010105/taiwan-semi-leads-while-chinas-smic-climbs-to-third-in-global-chip-market\\\"
+        rel=\\\"noreferrer noopener\\\">headquartered in Taiwan</a>, led global foundry
+        revenue in the first quarter. It is a crucial supplier of <strong>Nvidia Corp</strong>
+        and <strong>Apple Inc </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>).</p>\\n\\n\\n\\n<figure
+        class=\\\"wp-block-image size-full\\\"><img loading=\\\"lazy\\\" decoding=\\\"async\\\"
+        width=\\\"750\\\" height=\\\"650\\\" src=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26051231/newplot-1-7.png\\\"
+        alt=\\\"\\\" class=\\\"wp-image-406001\\\" srcset=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26051231/newplot-1-7.png
+        750w,https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26051231/newplot-1-7-300x260.png
+        300w\\\" sizes=\\\"(max-width: 750px) 100vw, 750px\\\" /></figure>\\n\\n\\n\\n<p><strong><em>Also
+        Read:</em></strong><em> <a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/24/06/39481883/whats-going-on-with-taiwan-semi-stock-on-tuesday\\\"
+        rel=\\\"noreferrer noopener\\\">What&#8217;s Going On With Taiwan Semi Stock
+        On Tuesday?</a></em></p>\\n\\n\\n\\n<p>China&#8217;s state-backed <strong>Semiconductor
+        Manufacturing International Co</strong> TSMC held a 62% market share in the
+        first quarter.</p>\\n\\n\\n\\n<p>At a forum called &#8220;Taiwan in the era
+        of techno-geopolitics&#8221; in Taipei hosted by the new think tank Research
+        Institute for Democracy, Society, and Emerging Technology (DSET), veteran
+        analyst Ray Yang said he believes Taiwan&#8217;s semiconductor industry will
+        maintain its competitive edge for another eight to 10 years, Focus Taiwan
+        <a target=\\\"_blank\\\" href=\\\"https://focustaiwan.tw/business/202406250026\\\"
+        rel=\\\"noreferrer noopener\\\">reports</a>.</p>\\n\\n\\n\\n<p>Ray Yang, consulting
+        director at the Industry, Science and Technology International Strategy Center,
+        stated, &#8220;Next year, the industry will utilize 2-nanometer process technology,
+        and I believe Taiwan will continue to dominate until at least the 9-angstrom
+        generation.&#8221;</p>\\n\\n\\n\\n<p>During these partnerships, Yang emphasized
+        the importance of international collaboration and the need to protect Taiwan&#8217;s
+        research security.</p>\\n\\n\\n\\n<p>Meanwhile, Taiwan&#8217;s Semiconductor
+        Industry is facing geopolitical pressure linked to the U.S. concerns that
+        most of the IC manufacturing is happening in Asia. However, it should still
+        reach a mutually beneficial compromise with Washington, Taipei Times <a target=\\\"_blank\\\"
+        href=\\\"https://www.taipeitimes.com/News/biz/archives/2024/06/26/2003819884\\\"
+        rel=\\\"noreferrer noopener\\\">cited</a> a former TSMC executive.</p>\\n\\n\\n\\n<p>Konrad
+        Young, a former TSMC R&amp;D director, told at the DSET forum that the semiconductor
+        industry faces risks from US-China trade tensions-driven &#8220;geopolitics
+        2.0.&#8221;</p>\\n\\n\\n\\n<p>According to Young, &#8220;geopolitics 2.0&#8221;
+        is a contemporary version of what he called &#8220;geopolitics 1.0,&#8221;
+        which took place in the 1980s when the U.S., feeling threatened by Japan,
+        sought to dismantle its dominance in the semiconductor industry. He noted
+        that the current risk stems from the U.S.&#8217;s concerns amid its trade
+        frictions with China, particularly the potential loss of Taiwan&#8217;s competitive
+        edge if Taiwanese companies are asked to set up factories in the U.S.</p>\\n\\n\\n\\n<p>However,
+        Young pointed out that American companies, including top IC firms such as
+        <strong>Qualcomm Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/QCOM#NASDAQ\\\">QCOM</a>)
+        and <strong>Nvidia Corp</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>),
+        still rely heavily on TSMC for their chip manufacturing needs. This reliance
+        makes it unlikely that the U.S. government would take actions resulting in
+        mutually assured destruction.</p>\\n\\n\\n\\n<p>Young also called for cooperation
+        with non-US countries such as Europe, Japan, Southeast Asia, and even the
+        Middle East, which have invested in the industry.</p>\\n\\n\\n\\n<p>TSMC stock
+        gained over 72% in the last 12 months, buoyed by the artificial intelligence
+        frenzy.</p>\\n\\n\\n\\n<p><strong>Price Action: </strong>At the last check
+        on Wednesday, TSM shares traded higher by 0.21% to $172.96 premarket.</p>\\n\\n\\n\\n<p><strong><em>Disclaimer:</em></strong><em>
+        This content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\n\\n\\n\\n<p><em>Photo by Jack
+        Hong via Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39499140/whats-going-on-with-taiwan-semi-stock-on-wednesday\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/26/Tainan--Taiwan--September-30--2021-Taiwa.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/26/Tainan--Taiwan--September-30--2021-Taiwa.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/26/Tainan--Taiwan--September-30--2021-Taiwa.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"NVDA\"},{\"name\":\"QCOM\"},{\"name\":\"TSM\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"},{\"name\":\"BZ Data Project\"},{\"name\":\"Stock
+        Battles\"},{\"name\":\"Stories That Matter\"}]},{\"id\":39496617,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Wed, 26 Jun 2024 05:48:23 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 05:48:23 -0400\",\"title\":\"UAE Eyes Deeper Collaboration With
+        US In AI Race After Microsoft's $1.5B Investment In Local Firm\",\"teaser\":\"The
+        United Arab Emirates is making significant strides in the global AI race,
+        with the US as a key ally. The UAE&#39;s AI Minister, Omar Al Olama, has hinted
+        at a further collaboration with the U.S., following a $1.5 billion investment
+        by Microsoft Corp in a local AI firm.\",\"body\":\"<p>The United Arab Emirates
+        is making significant strides in the global AI race, with the U.S. as a key
+        ally. The UAE&#8217;s AI Minister, <strong>Omar Sultan Al Olama</strong>,
+        has hinted at a further collaboration with the U.S., <a href=\\\"https://www.benzinga.com/news/24/06/39153123/now-uae-forges-us-tie-up-with-1-5b-deal-to-become-global-ai-powerhouse\\\">following
+        a $1.5 billion investment</a> by <strong>Microsoft Corp.</strong> (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        in a local AI firm.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>: The
+        UAE is positioning itself as a global AI leader, and its partnership with
+        the U.S. is a crucial part of this strategy. Olama, the country&#8217;s AI
+        Minister, has indicated that the UAE and the U.S. are closely aligned in their
+        approach to AI development, <a href=\\\"https://edition.cnn.com/2024/06/26/tech/uae-ai-minister-omar-al-olama-hnk-spc-intl/index.html\\\">reported</a>
+        CNN.</p>\\n\\n\\n\\n<p><a href=\\\"https://www.benzinga.com/news/24/04/38264914/microsoft-invests-1-5b-in-uaes-top-ai-firm-g42-secures-board-seat\\\">UAE&#8217;s
+        AI strategy</a> is a key part of its plan to diversify its economy away from
+        oil. The country aims to be a global AI leader by 2031, with a national strategy
+        focused on deploying AI in priority sectors, developing an AI ecosystem, and
+        attracting talent.</p>\\n\\n\\n\\n<p>Despite its ties with the U.S., the UAE
+        has also maintained <a href=\\\"https://www.benzinga.com/news/24/06/39274269/uae-supports-us-restrictions-on-semiconductor-exports-to-china-report\\\">a
+        balance in its foreign policy</a>. The country has a significant trade relationship
+        with China, a key trade partner, and has had to make strategic decisions to
+        prioritize its alliance with the U.S.</p>\\n\\n\\n\\n<p>\\\"The UAE put a
+        stake in the ground in the AI race with Falcon,\\\"  <strong>James Lewis</strong>,
+        of the <strong>Center for Strategic and International Studies</strong>, said.</p>\\n\\n\\n\\n<p>Analysts
+        suggest that the UAE&#8217;s substantial oil wealth will play a crucial role
+        in developing extensive and costly AI infrastructure, according to the report.</p>\\n\\n\\n\\n<p><em>See
+        Also: <a href=\\\"https://www.benzinga.com/news/24/06/39450621/mark-cuban-falls-victim-to-this-common-account-takeover-tactic-by-hackers-and-loses-access-to-his-gm?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Mark Cuban Falls Victim
+        To This Common Account Takeover Tactic By Hackers And Loses Access To His
+        Gmail: Here&#8217;s How You Can Avoid It</a></em></p>\\n\\n\\n\\n<p><strong>Why
+        It Matters</strong>: The UAE&#8217;s alignment with the U.S. in the AI sector
+        comes amid heightened scrutiny of AI chip sales to the Middle East.</p>\\n\\n\\n\\n<p>In
+        May, the <a href=\\\"https://www.benzinga.com/general/politics/24/05/39098684/us-taps-brakes-on-ai-chip-sales-to-middle-east-over-national-security-concerns\\\">U.S.
+        government temporarily halted the export</a> of AI chips to the region, affecting
+        companies like <strong>Nvidia Corp.</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>) and <strong>Advanced
+        Micro Devices Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMD#NASDAQ\\\">AMD</a>).
+        This decision was part of a national security review of AI developments in
+        the area.</p>\\n\\n\\n\\n<p>Earlier in the year, the U.S. military confirmed
+        its use of <a href=\\\"https://www.benzinga.com/economics/macro-economic-events/24/02/37317328/us-military-utilizes-ai-in-middle-east-operations-weve-been-using-computer-vision\\\">AI
+        in Middle East operations</a>, highlighting the strategic importance of AI
+        technologies in combat scenarios. AI played a crucial role in over 85 airstrikes
+        targeting facilities in Iraq and Syria.</p>\\n\\n\\n\\n<p>Additionally, the
+        UAE&#8217;s AI ambitions align with broader regional trends. For instance,
+        Saudi Arabia <a href=\\\"https://www.benzinga.com/markets/equities/24/04/38045554/powering-saudi-vision-2030-informatica-brings-ai-data-cloud-to-the-kingdom\\\">launched
+        its first AI-powered</a> Intelligent Data Management Cloud (IDMC) platform
+        in April, aiming to support its Vision 2030 goals.</p>\\n\\n\\n\\n<p><em>Read
+        Next: <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/06/39467166/dan-ives-says-apple-stock-is-headed-to-300-tim-cook-could-claim-godfather-of-ai-tit?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Dan Ives Says Apple
+        Stock Is Headed To $300, Tim Cook Could Claim &#8216;Godfather Of AI&#8217;
+        Title: &#8216;It&#8217;s Their Castle&#8217;</a></em></p>\\n\\n\\n\\n<p><em>Image
+        generated using Dall-E</em></p>\\n\\n\\n\\n<p>This story was generated using
+        <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\">Benzinga Neuro</a>
+        and edited by <u><a href=\\\"https://www.benzinga.com/topic/Kaustubh-Bagalkote\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Kaustubh Bagalkote</a></u></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39496617/uae-eyes-deeper-collaboration-with-us-in-ai-race-after-microsofts-1-5b-investment-in-local-firm\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/26/UAE-AI.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/26/UAE-AI.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/26/UAE-AI.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Global\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AMD\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"Kaustubh Bagalkote\"},{\"name\":\"Middle East\"},{\"name\":\"Omar
+        Al Olama\"},{\"name\":\"UAE\"},{\"name\":\"United Arab Emirates\"}]},{\"id\":39495756,\"author\":\"Ananya
+        Gairola\",\"created\":\"Wed, 26 Jun 2024 04:43:59 -0400\",\"updated\":\"Wed,
+        26 Jun 2024 04:43:59 -0400\",\"title\":\"Green Bubbles With Read Receipts?
+        Apple Starts Enabling RCS On Latest iOS 18 Beta, Say Users\",\"teaser\":\"Apple
+        has reportedly enabled Rich Communication Services (RCS) in the latest iOS
+        18 beta, allowing iPhone users to send rich messages to Android users, according
+        to user reports on social media.\",\"body\":\"<p><strong>Apple Inc.</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        has reportedly started <a href=\\\"https://www.benzinga.com/news/24/01/36819930/why-ios-18-could-be-apples-biggest-software-update-in-iphones-history-analyst-explains\\\">enabling
+        Rich Communication Services</a> or RCS on its latest <strong>iOS 18</strong>
+        beta, according to user reports on social media.</p>\\n\\n\\n\\n<p><strong>What
+        Happened</strong>: On Tuesday, Bloomberg columnist&nbsp;<strong>Mark Gurman</strong>&nbsp;took
+        to <strong>X</strong>, formerly <strong>Twitter</strong>, &#8220;RCS is now
+        working in&nbsp;iOS 18. Seeing a read&nbsp;receipt for a green bubble&nbsp;is
+        jarring.&#8221;</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed is-type-rich
+        is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">I am only seeing a couple other reports on
+        Twitter about this, but RCS is now working in iOS 18. Seeing a read receipt
+        for a green bubble is jarring.</p>&mdash; Mark Gurman (@markgurman) <a href=\\\"https://twitter.com/markgurman/status/1805710116378771796?ref_src=twsrc%5Etfw\\\">June
+        25, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p><em>Subscribe
+        to the&nbsp;</em><a href=\\\"https://bztechtrends.beehiiv.com/subscribe\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>Benzinga Tech Trends
+        newsletter</em></a><em>&nbsp;to get all the latest tech developments delivered
+        to your inbox.</em></p>\\n\\n\\n\\n<p>At the WWDC 2024, Apple announced that
+        with iOS 18&nbsp;the <a href=\\\"https://www.benzinga.com/news/23/11/35843343/thanks-to-eu-after-usb-c-iphones-will-support-rcs-in-2024-heres-what-it-means-for-green-bubbles\\\">company
+        now officially supports RCS</a>, but the feature was not available to beta
+        users until now. With RCS, <strong>iPhone</strong> users can&nbsp;send rich
+        messages, including&nbsp;audio and larger media files, to <strong>Android</strong>
+        users. The Messages app will label these as &#8220;Text Message \u2013 RCS&#8221;.</p>\\n\\n\\n\\n<p>The\_first
+        beta of iOS 18, released earlier this month, showed no signs of RCS. However,
+        the second beta, released on Monday,\_added a new RCS toggle\_in the <strong>Settings</strong>
+        app for some users, causing confusion among beta testers, <a href=\\\"https://9to5mac.com/2024/06/24/ios-18-rcs-iphone-beta/\\\">reported</a>
+        9to5Mac.</p>\\n\\n\\n\\n<p>Other users on social also reported that RCS is
+        starting to work for them on iOS 18 Beta 2, complete with typing indicators,
+        read receipts, and reactions.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">Never thought I'd see the day.. <br><br>RCS
+        on iPhone is now active with iOS 18 Beta 2! &#x1f389; <a href=\\\"https://t.co/522cmzRdPH\\\">pic.twitter.com/522cmzRdPH</a></p>&mdash;
+        Brandon Butch (@BrandonButch) <a href=\\\"https://twitter.com/BrandonButch/status/1805712679404806603?ref_src=twsrc%5Etfw\\\">June
+        25, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">RCS is something we never thought Apple would
+        bring to iOS, but now it's finally here in iOS 18 Beta form anyway for now.
+        \ Here is how it works and what it can do.<br><br>Full video here:  <a href=\\\"https://t.co/qEfmDRkdeZ\\\">https://t.co/qEfmDRkdeZ</a>
+        <a href=\\\"https://t.co/oxppGfvd7s\\\">pic.twitter.com/oxppGfvd7s</a></p>&mdash;
+        Aaron Zollo (@zollotech) <a href=\\\"https://twitter.com/zollotech/status/1805744892842315793?ref_src=twsrc%5Etfw\\\">June
+        25, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p><strong>Why
+        It Matters: </strong>RCS support on the iPhone\_depends on\_Apple\_collaborating
+        with carrier partners\_to update their bundles shipped\_with iOS.</p>\\n\\n\\n\\n<p>Currently,
+        only a few carriers such as <strong>AT&amp;T</strong> and <strong>T-Mobile</strong>
+        in the U.S.\_have updated their carrier bundles\_to support RCS on the\_iPhone,
+        the report noted.</p>\\n\\n\\n\\n<p>While more carriers may enable&nbsp;RCS
+        support on the iPhone&nbsp;by September, when iOS 18&nbsp;will be publicly
+        available, most beta users likely won&#8217;t&nbsp;be able to test the&nbsp;new
+        feature. A public beta&nbsp;of&nbsp;iOS 18 will be available&nbsp;next month.</p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga's Consumer Tech coverage by&nbsp;</em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next:&nbsp;<a href=\\\"https://www.benzinga.com/news/24/06/39408910/limiting-apple-intelligence-features-not-a-tactic-to-boost-iphone-sales-say-top-executives-we-wouldv?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Limiting \u2018Apple
+        Intelligence&#8217; Features Not A Tactic To Boost iPhone Sales, Say Top Executives</a></em></p>\\n\\n\\n\\n<p><strong><em>Disclaimer:</em></strong><em>&nbsp;This
+        content was partially produced with the help of&nbsp;<a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Benzinga Neuro</a>&nbsp;and
+        was reviewed and published by Benzinga editors.</em></p>\\n\\n\\n\\n<p><em>Photo
+        courtesy: Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39495756/green-bubbles-with-read-receipts-apple-starts-enabling-rcs-on-latest-ios-18-beta-say-users\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/26/Apple-iMessage.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/26/Apple-iMessage.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/26/Apple-iMessage.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Android\"},{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"benzinga
+        neuro\"},{\"name\":\"Consumer Tech\"},{\"name\":\"iOS 18\"},{\"name\":\"iPhone\"},{\"name\":\"RCS\"},{\"name\":\"Software
+        &amp; Apps\"}]},{\"id\":39495387,\"author\":\"Benzinga Neuro\",\"created\":\"Wed,
+        26 Jun 2024 04:00:50 -0400\",\"updated\":\"Wed, 26 Jun 2024 04:00:51 -0400\",\"title\":\"Nvidia
+        Rival Groq Set To Double Valuation To $2.5B With BlackRock-Led Funding Round:
+        Report\",\"teaser\":\"Jonathan Ross, the CEO and founder of Groq, a company
+        that specializes in chips for AI, is on the brink of doubling his company&#39;s
+        valuation to $2.5 billion with a new funding round led by Blackrock.\",\"body\":\"<p><strong>Jonathan
+        Ross</strong>, the CEO and founder of <strong>Groq</strong>, a company that
+        specializes in chips for AI and is a rival of <strong>Nvidia Corp.</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>),
+        is on the brink of doubling his company&#8217;s valuation to $2.5 billion
+        with a new funding round led by <strong>BlackRock Inc.</strong></p>\\n\\n\\n\\n<p><strong>What
+        Happened</strong>: Groq (not to be confused with\_<strong>Elon Musk&#8217;s
+        Grok</strong>), which was established in 2016, is set to be valued at $2.5
+        billion in a new funding round led by BlackRock, <a href=\\\"https://www.businessinsider.com/groq-could-reach-2-5-billion-in-new-funding-round-2024-6\\\">reported</a>
+        Business Insider on Wednesday, citing multiple sources. The deal is yet to
+        be finalized, and the terms could still change.</p>\\n\\n\\n\\n<p>The new
+        funding round could potentially double Groq&#8217;s previous valuation, which
+        was $300 million in a 2021 round led by <strong>Tiger Global Management</strong>
+        and <strong>D1 Capital Partners</strong>, according to <strong>Pitchbook</strong>
+        data. The company has raised a total of $367 million. Groq has hired <strong>Morgan
+        Stanley</strong> to assist in raising $300 million in new funding.</p>\\n\\n\\n\\n<p>Groq,
+        founded by former Google executive Ross, provides chips designed for inference,
+        which processes AI that has already been deployed. The company&#8217;s chips,
+        known as &#8220;language processing units,&#8221; are advertised as over 10
+        times faster than conventional ones at one-tenth the cost.</p>\\n\\n\\n\\n<p><em>See
+        Also: <a href=\\\"https://www.benzinga.com/news/24/06/39446920/michael-dell-on-ais-rapid-rise-nvidias-ai-party-just-getting-started-and-more-top-artificial-intelli?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Michael Dell On AI&#8217;s
+        Rapid Rise, Nvidia&#8217;s AI Party Just Getting Started And More: Top Artificial
+        Intelligence Updates This Week</a></em></p>\\n\\n\\n\\n<p>Groq is competing
+        with several hardware inference companies according to the report, including
+        <strong>SiMa.ai</strong> backed by <strong>Point72</strong>, <strong>Dmatrix</strong>
+        backed by <strong>Microsoft Corp.</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>), and <strong>Untether.AI</strong>
+        backed by <strong>Intel Corp.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/INTC#NASDAQ\\\">INTC</a>),
+        to challenge Nvidia, which <a href=\\\"https://www.benzinga.com/news/24/06/39386946/microsoft-apple-step-aside-nvidia-is-now-the-most-valuable-public-company-in-the-world\\\">briefly
+        became</a> the most valuable company in the world last week before a significant
+        sell-off.</p>\\n\\n\\n\\n<p>Groq and BlackRock did not immediately respond
+        to\_<a href=\\\"http://pro.benzinga.com/\\\" target=\\\"_blank\\\" rel=\\\"noreferrer
+        noopener\\\">Benzinga</a>'s request for comment.</p>\\n\\n\\n\\n<p><strong>Why
+        It Matters</strong>: The AI industry is witnessing rapid developments and
+        significant investments. Recently, Musk&#8217;s <strong>xAI</strong> <a href=\\\"https://www.benzinga.com/news/24/05/39027735/elon-musks-xai-raises-6b-heres-where-it-stands-against-openai-anthropic-and-other-ai-rivals\\\">raised
+        $6 billion</a>, highlighting the fierce competition in the AI sector. Groq&#8217;s
+        valuation doubling is a testament to the growing interest and investment in
+        AI hardware.</p>\\n\\n\\n\\n<p><strong><strong>Chamath Palihapitiya</strong></strong>,
+        the billionaire investor and former&nbsp;<strong><strong>Facebook</strong>&nbsp;</strong>executive
+        recently <a href=\\\"https://www.benzinga.com/news/24/03/37448713/spac-king-chamath-palihapitiya-shares-key-insights-for-success-with-ai-developers-seeking-product-ma\\\">advised
+        developers to use Groq's AI models</a> to enhance their applications and extend
+        their financial runway. This endorsement underscores Groq&#8217;s potential
+        impact on the AI landscape.</p>\\n\\n\\n\\n<p>Meanwhile, Nvidia has experienced
+        <a href=\\\"https://www.benzinga.com/top-stories/24/06/39490865/nvidia-rebounds-over-6-after-550b-market-cap-loss\\\">fluctuations
+        in its market cap</a>, emphasizing the volatile nature of the AI chip market.
+        Despite Nvidia&#8217;s dominance, competitors like Groq are making significant
+        strides.</p>\\n\\n\\n\\n<p><em>Read Next: <a href=\\\"https://www.benzinga.com/news/24/06/39450394/whether-donald-trump-wins-election-or-joe-biden-jeff-bezos-backed-anthropics-ceo-says-my-message-is?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Whether Donald Trump
+        Wins Election Or Joe Biden, Jeff Bezos-Backed Anthropic&#8217;s CEO Says &#8216;My
+        Message Is Going To Be The Same&#8217; Regarding AI Safety</a></em></p>\\n\\n\\n\\n<p>Image
+        Via Shutterstock </p>\\n\\n\\n\\n<p>This story was generated using <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\">Benzinga
+        Neuro</a> and edited by <u><a href=\\\"https://www.benzinga.com/topic/Kaustubh-Bagalkote\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Kaustubh Bagalkote</a></u></p>\",\"url\":\"https://www.benzinga.com/markets/equities/24/06/39495387/nvidia-rival-groq-set-to-double-valuation-to-2-5b-with-blackrock-led-funding-round-report\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/26/AI-chips.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/26/AI-chips.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/26/AI-chips.jpeg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Entrepreneurship\"},{\"name\":\"Startups\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"INTC\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"Blackrock\"},{\"name\":\"chips\"},{\"name\":\"Groq\"},{\"name\":\"Kaustubh
+        Bagalkote\"}]},{\"id\":39494705,\"author\":\"Ananya Gairola\",\"created\":\"Wed,
+        26 Jun 2024 02:21:54 -0400\",\"updated\":\"Wed, 26 Jun 2024 02:21:55 -0400\",\"title\":\"Steve
+        Jobs' 1984 Macintosh Ad Suit Goes Under The Hammer: Could Be Among Top Ten
+        Most Expensive Suits In The World\",\"teaser\":\"Steve Jobs&#39; iconic blue
+        pin-striped suit from the 1984 Macintosh ad is up for auction, with bids starting
+        at $5,000 and expected to reach up to $30,000.\",\"body\":\"<p>In a unique
+        opportunity for <strong>Apple</strong> enthusiasts,&nbsp;<strong>Steve Jobs&#8217;</strong>
+        iconic blue pin-striped&nbsp;suit, worn in the 1984 Macintosh ad, is up for
+        auction.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>: The suit is part
+        of an auction featuring clothing worn by the former&nbsp;Apple CEO. The auction,
+        conducted by <strong>Julien&#8217;s Auctions</strong>, describes the suit
+        as &#8220;100% cupro with thin vertical stripes,&nbsp;two front pockets, one
+        breast&nbsp;pocket, three interior pockets, grey&nbsp;buttons, a cream silk-blend
+        lining,&nbsp;size tag reads &#8217;39/49.&#8221;</p>\\n\\n\\n\\n<p>The suit
+        also comes&nbsp;with a pair of matching&nbsp;dress pants, size 39L. The starting
+        bid for it is $5,000 and it&#8217;s expected to bring up to $30,000.</p>\\n\\n\\n\\n<figure
+        class=\\\"wp-block-image size-full\\\"><img loading=\\\"lazy\\\" decoding=\\\"async\\\"
+        width=\\\"632\\\" height=\\\"800\\\" src=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26014342/649287_l.jpg\\\"
+        alt=\\\"\\\" class=\\\"wp-image-405762\\\" srcset=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26014342/649287_l.jpg
+        632w,https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26014342/649287_l-237x300.jpg
+        237w\\\" sizes=\\\"(max-width: 632px) 100vw, 632px\\\" /><figcaption class=\\\"wp-element-caption\\\"><em>credit:
+        juliensauctions.com</em></figcaption></figure>\\n\\n\\n\\n<p><em>See Also:&nbsp;<a
+        href=\\\"https://www.benzinga.com/news/24/06/39371057/elon-musk-echoes-nvidia-ceo-jensen-huangs-prediction-about-humanoid-robots-they-will-be-10x-more-com?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Elon Musk Echoes Nvidia
+        CEO Jensen Huang&#8217;s Prediction About Humanoid Robots: &#8216;They Will
+        Be 10X More Common Than Cars&#8217;</a></em></p>\\n\\n\\n\\n<p>Also included
+        in the auction is&nbsp;a vintage Apple Macintosh pin&nbsp;found in the pocket
+        and&nbsp;the original wooden hanger. However, the white shirt Jobs wore in
+        the ad is not included.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-image size-full\\\"><img
+        loading=\\\"lazy\\\" decoding=\\\"async\\\" width=\\\"800\\\" height=\\\"450\\\"
+        src=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26014430/702218_l.jpg\\\"
+        alt=\\\"\\\" class=\\\"wp-image-405763\\\" srcset=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26014430/702218_l.jpg
+        800w,https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26014430/702218_l-300x169.jpg
+        300w,https://editorial-assets.benzinga.com/wp-content/uploads/2024/06/26014430/702218_l-768x432.jpg
+        768w\\\" sizes=\\\"(max-width: 800px) 100vw, 800px\\\" /><figcaption class=\\\"wp-element-caption\\\"><em>credit:
+        juliensauctions.com</em></figcaption></figure>\\n\\n\\n\\n<p>Other items from
+        Jobs&#8217; wardrobe are also up for bid, including a&nbsp;taupe and white
+        striped wool,&nbsp;and a two-piece suit by <strong>DiMitri Couture</strong>.
+        &#8220;Jobs was photographed wearing the suit to his friend Ben Rosen&#8217;s
+        1980 retirement party from Morgan Stanley, in Palo Alto, California,&#8221;
+        according to the site.</p>\\n\\n\\n\\n<p>There are also two ties, one from
+        <strong>Wilkes Bashford San Francisco</strong> and the other&nbsp;a brown
+        silk <strong>Polo Ralph&nbsp;Lauren</strong> brand necktie up for auction.
+        Both ties are expected to bring up to $2000.</p>\\n\\n\\n\\n<p>The auction
+        items were first <a href=\\\"https://appleinsider.com/articles/24/06/25/you-can-own-steve-jobs-iconic-1984-macintosh-ad-suit----but-itll-cost-you?utm_medium=social&amp;utm_source=&amp;utm_medium=&amp;utm_campaign=RSS\\\">spotted</a>
+        by AppleInsider.</p>\\n\\n\\n\\n<p><em>Subscribe to the&nbsp;</em><a href=\\\"https://bztechtrends.beehiiv.com/subscribe\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>Benzinga Tech Trends
+        newsletter</em></a><em>&nbsp;to get all the latest tech developments delivered
+        to your inbox.</em></p>\\n\\n\\n\\n<p><strong>Why It Matters</strong>: Previously,
+        it was reported that Jobs significantly <a href=\\\"https://www.benzinga.com/general/24/03/37921097/steve-jobs-didnt-become-a-billionaire-because-of-apple-it-was-actually-pixar-and-the-toy-story-movie\\\">shaped
+        his career and wealth</a> at<strong>&nbsp;Pixar Animation Studios</strong>
+        after being ousted from Apple in 1985. </p>\\n\\n\\n\\n<p>His return to Apple
+        in the late 90s marked a significant turnaround for the company. <a href=\\\"https://www.benzinga.com/news/24/05/38985210/steve-jobs-turned-around-apples-fortunes-27-years-ago-not-by-making-mac-better-than-windows-but-by-u\\\">Jobs&#8217;
+        marketing acumen played a crucial role</a> in this turnaround, focusing on
+        the values of what he wanted Apple to be known for rather than pushing product
+        details to prospective buyers. </p>\\n\\n\\n\\n<p>Items related to Jobs often
+        fetch high prices at auction. For instance, a $4.01 check he wrote to <strong>RadioShack</strong>
+        sold for over $46,000 in December. In March earlier this year, a <a href=\\\"https://www.benzinga.com/general/entertainment/24/03/37900047/steve-jobs-autographed-business-card-breaks-record-at-auction-how-sale-price-compares-to-el\\\">signed
+        business card by Jobs from 1983</a> set a new record as the most expensive
+        business card ever sold, fetching $181,183, far surpassing the pre-auction
+        estimate of $10,000.</p>\\n\\n\\n\\n<p>If true to its estimate, the suits
+        get auctioned at between $10,000 to $30,000, they might end up getting listed
+        among the top 10 most expensive suits in the world, which includes the likes
+        of <strong>Dormeuil Vanquish II</strong> ( $1 million),<strong> Kiton K50</strong>
+        ($1 million) and <strong>Stuart Hughes Diamond Edition</strong> ($600,000).</p>\\n\\n\\n\\n<p><em>Photo
+        courtesy: Anthony Sigalas on Flickr</em></p>\\n\\n\\n\\n<p><em>Read Next:&nbsp;<a
+        href=\\\"https://www.benzinga.com/news/24/06/39448709/under-pressure-from-elon-musk-linda-yaccarino-reshuffles-x-to-focus-on-boosting-sales-and-reducing-c?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Under Pressure From
+        Elon Musk, Linda Yaccarino Reshuffles X To Focus On Boosting Sales And Reducing
+        Costs</a></em></p>\\n\\n\\n\\n<p><em><strong>Disclaimer:</strong>&nbsp;This
+        content was partially produced with the help of&nbsp;</em><a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>Benzinga Neuro</em></a><em>&nbsp;and
+        was reviewed and published by Benzinga editors.</em></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39494705/steve-jobs-1984-macintosh-ad-suit-goes-under-the-hammer-could-be-among-top-ten-most-expensive-suits\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/26/Steve-Jobs.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/26/Steve-Jobs.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/26/Steve-Jobs.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"auction\"},{\"name\":\"benzinga
+        neuro\"},{\"name\":\"People In Tech\"},{\"name\":\"Steve Jobs\"},{\"name\":\"Stories
+        That Matter\"}]},{\"id\":39494097,\"author\":\"Ananya Gairola\",\"created\":\"Wed,
+        26 Jun 2024 00:08:09 -0400\",\"updated\":\"Wed, 26 Jun 2024 00:08:09 -0400\",\"title\":\"ChatGPT-Parent
+        OpenAI To Block Access To AI Tools Amid Growing Tech Tensions Between Washington
+        And Beijing\",\"teaser\":\"OpenAI, backed by Microsoft, announced it will
+        restrict access to its AI tools in China, warning developers that their accounts
+        will be blocked or suspended from July.\",\"body\":\"<p><strong>ChatGPT</strong>-maker
+        <strong>OpenAI</strong>\_has decided that it will be taking measures to restrict
+        access to its artificial intelligence tools in China. The company, backed
+        by\_<strong>Microsoft Corporation</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>), has reportedly
+        sent out warnings to developers in China.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>:
+        OpenAI provides access to its services in dozens of countries. However, individuals
+        accessing its products from countries not on the list, such as China, may
+        have their accounts blocked or suspended, according to the company's guidelines.</p>\\n\\n\\n\\n<p>The
+        company has informed developers in China that&nbsp;their access to its tools&nbsp;and
+        software will be blocked from July, <a href=\\\"https://www.bloomberg.com/news/articles/2024-06-25/openai-warns-it-will-block-access-to-ai-tools-from-china?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=socialflow-organic&amp;cmpid%3D=socialflow-twi\\\">reported</a>
+        Bloomberg, citing screenshots posted on social media that outlets including
+        the Securities Times reported on Tuesday.</p>\\n\\n\\n\\n<p><em>Subscribe
+        to the&nbsp;</em><a href=\\\"https://bztechtrends.beehiiv.com/subscribe\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>Benzinga Tech Trends
+        newsletter</em></a><em>&nbsp;to get all the latest tech developments delivered
+        to your inbox.</em></p>\\n\\n\\n\\n<p>&#8220;We&nbsp;are taking additional
+        steps to&nbsp;block API traffic from regions&nbsp;where we do not support&nbsp;access
+        to OpenAI's services,&#8221; stated an OpenAI spokesperson. The startup did
+        not immediately respond to <a href=\\\"https://pro.benzinga.com/dashboard\\\">Benzinga&#8217;s</a>
+        request for comments.</p>\\n\\n\\n\\n<p>Local players in China, such as&nbsp;<strong>Alibaba
+        Group Holding Ltd.</strong>&nbsp;and&nbsp;<strong>Tencent Holdings Ltd.</strong>-backed
+        <strong>Zhipu AI</strong>, have responded by offering incentives for&nbsp;developers
+        to switch to their&nbsp;products.</p>\\n\\n\\n\\n<p><strong>Why It Matters</strong>:
+        The reasons behind this move are not entirely clear. However, it comes at
+        a time when there is increasing pressure from the U.S. to limit China&#8217;s
+        access to advanced AI technology.</p>\\n\\n\\n\\n<p>Earlier this month, the&nbsp;<a
+        href=\\\"https://www.benzinga.com/markets/equities/24/06/39396293/us-pressures-japan-and-netherlands-to-tighten-chip-equipment-exports-to-china-report\\\">U.S.
+        urged Japan and the Netherlands</a>&nbsp;to tighten their export policies
+        on chipmaking equipment to China. This followed a&nbsp;<a href=\\\"https://www.benzinga.com/government/24/06/39473039/us-probing-chinese-telecom-giants-over-potential-data-threats-report\\\">probe
+        into Chinese telecom giants</a>&nbsp;over potential U.S. data threats.</p>\\n\\n\\n\\n<p>Meanwhile,
+        on Monday, Chinese President\_<strong>Xi Jinping</strong>, while addressing
+        a national science conference, also\_<a href=\\\"https://www.benzinga.com/news/24/06/39480781/xi-jinping-urges-china-to-ramp-up-tech-innovation-amid-ongoing-chip-dispute-with-us\\\">urged
+        China to ramp up its tech innovation</a>\_amid the ongoing chip dispute with
+        the U.S.</p>\\n\\n\\n\\n<p><em>Photo by CHUAN CHUAN on Shutterstock</em></p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga&#8217;s Consumer Tech coverage by&nbsp;</em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next:&nbsp;<a href=\\\"https://www.benzinga.com/news/24/06/39265691/a-day-after-shutting-down-tesla-phone-rumors-elon-musk-says-it-is-not-out-of-the-question?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">A Day After Shutting
+        Down Tesla Phone Rumors, Elon Musk Says It Is \u2018Not Out Of The Question'</a></em></p>\\n\\n\\n\\n<p><em><strong>Disclaimer:</strong>&nbsp;This
+        content was partially produced with the help of&nbsp;</em><a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>Benzinga Neuro</em></a><em>&nbsp;and
+        was reviewed and published by Benzinga editors.</em></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39494097/chatgpt-parent-openai-to-block-access-to-ai-tools-amid-growing-tech-tensions-between-washington-and\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/26/ChatGPT-1-Photo-by-CHUAN-CHUAN-on-Shutte.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/26/ChatGPT-1-Photo-by-CHUAN-CHUAN-on-Shutte.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/26/ChatGPT-1-Photo-by-CHUAN-CHUAN-on-Shutte.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"benzinga neuro\"},{\"name\":\"ChatGPT\"},{\"name\":\"China\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"OpenAi\"}]},{\"id\":39494035,\"author\":\"Benzinga Neuro\",\"created\":\"Tue,
+        25 Jun 2024 23:45:07 -0400\",\"updated\":\"Tue, 25 Jun 2024 23:45:07 -0400\",\"title\":\"Dan
+        Ives Labels Nvidia Correction A 'Near-Term Pullback', Hails Palantir As 'Purest
+        AI Name' Amid Growing Market Use Cases\",\"teaser\":\"The stock of NVIDIA
+        Corp has seen a significant rebound after a recent correction, with a prominent
+        analyst suggesting that the company&#39;s market cap could reach $4 trillion.
+        Additionally, the analyst has identified Palantir Technologies Inc as the
+        &#39;purest&#39; AI stock.\",\"body\":\"<p>The stock of <strong>NVIDIA Corp</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>)
+        has seen a significant <a href=\\\"https://www.benzinga.com/top-stories/24/06/39490865/nvidia-rebounds-over-6-after-550b-market-cap-loss\\\">rebound
+        after a recent correction</a>, with a prominent analyst suggesting that the
+        company&#8217;s market cap could reach $4 trillion. Additionally, the analyst
+        has identified <strong>Palantir Technologies Inc.</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/PLTR#NYSE\\\">PLTR</a>) as the &#8216;purest&#8217;
+        AI stock.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>: <strong>Dan Ives</strong>,
+        an analyst at <strong>Wedbush Securities</strong>, referred the recent dip
+        in Nvidia&#8217;s stock as a &#8220;near-term pullback,&#8221; in an interview
+        <a href=\\\"https://www.bnnbloomberg.ca/video/nvidia-stock-rebounds-after-falling-into-a-correction~2946909\\\">with</a>
+        BNN Bloomberg. </p>\\n\\n\\n\\n<p>He also predicted that the company&#8217;s
+        market cap could soar to $4 trillion, placing it alongside tech giants like
+        <strong>Apple Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        and <strong>Microsoft Corp</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        as the world&#8217;s most valuable company.</p>\\n\\n\\n\\n<p>When asked about
+        Nvidia&#8217;s price target, Ives suggested a bullish case of $200. He also
+        praised Nvidia CEO <strong>Jensen Huang</strong> as a key figure in the AI
+        industry.</p>\\n\\n\\n\\n<p>Shifting the focus to <strong>Palantir Technologies
+        Inc</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/PLTR#NYSE\\\">PLTR</a>),
+        Ives dismissed the notion that the company is not at the forefront of cutting-edge
+        technology and sales. </p>\\n\\n\\n\\n<p>He emphasized Palantir&#8217;s recent
+        developments, labeling the company as the &#8220;purest AI name in the market
+        in terms of use cases.&#8221; Ives expressed optimism about Palantir&#8217;s
+        future, stating that &#8220;monetization is gonna play out&#8221; as the industry
+        enters the second derivative of AI.</p>\\n\\n\\n\\n<p><em>See Also: <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/06/39435525/5-5-trillion-in-options-are-set-to-expire-on-triple-witching-friday-why-nvidia-coul?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">$5.5 Trillion In Options
+        Are Set To Expire On Triple Witching Friday: Why Nvidia Could Take Roller
+        Coaster Ride</a></em></p>\\n\\n\\n\\n<p><strong>Why It Matters</strong>: The
+        recent correction in Nvidia&#8217;s stock has been a topic of concern. After
+        reaching a market cap of $3.46 trillion, the company experienced a significant
+        loss, <a href=\\\"https://www.benzinga.com/top-stories/24/06/39490865/nvidia-rebounds-over-6-after-550b-market-cap-loss\\\">dropping
+        to $3.10 trillion</a>. This sparked concerns about Nvidia&#8217;s influence
+        on the S&amp;P 500 Index and the possibility of a broader market slump.</p>\\n\\n\\n\\n<p>Despite
+        these concerns, Ives&#8217; comments on the future potential of Nvidia and
+        the growing significance of AI in the market are reassuring. This aligns with
+        the views of other experts, such as economist <strong>Jeffrey Roach</strong>,
+        who dismissed fears of an <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/06/39484763/economist-dismisses-ai-bubble-fears-says-disruptive-technologies-might-be-antidote-\\\">AI
+        bubble burst</a> and emphasized the productivity gains from new disruptive
+        technologies like AI.</p>\\n\\n\\n\\n<p>Palantir&#8217;s role in the AI market
+        has also been a <a href=\\\"https://www.benzinga.com/trading-ideas/long-ideas/24/06/39487101/microsoft-amazon-or-palantir-reddit-users-debate-how-to-invest-4-900\\\">topic
+        of discussion</a>, with Reddit users debating the company&#8217;s potential
+        as an investment alongside giants like <strong>Microsoft</strong> and <strong>Amazon</strong>.</p>\\n\\n\\n\\n<p><strong>Price
+        Action</strong>: NVIDIA Corp closed at $126.09 on Tuesday, marking a significant
+        increase of 6.76% for the day. In after-hours trading, the stock continued
+        to climb to $127.24, up by 0.91%. Year to date, NVIDIA has seen a remarkable
+        surge of 161.76%. </p>\\n\\n\\n\\n<p>Meanwhile, Palantir Technologies Inc
+        closed at $24.56 on the same day, with a gain of 1.66%. After hours, the stock
+        slightly increased to $24.61, up by 0.20%. Year to date, Palantir has shown
+        a strong performance, rising by 48.13%, according to the <a href=\\\"https://pro.benzinga.com/dashboard\\\">data
+        from Benzinga Pro</a>.</p>\\n\\n\\n\\n<p><em>Read Next: <a href=\\\"https://www.benzinga.com/markets/cryptocurrency/24/06/39448955/dogecoin-killer-shiba-inu-falters-here-is-what-these-key-indicators-reveal-about-its-short?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">&#8216;Dogecoin Killer&#8217;
+        Shiba Inu Falters \u2014 Here Is What These Key Indicators Reveal About Its
+        Short-Term Prospects</a></em></p>\\n\\n\\n\\n<p>Image Via Shutterstock </p>\\n\\n\\n\\n<p>This
+        story was generated using <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\">Benzinga
+        Neuro</a> and edited by <u><a href=\\\"https://www.benzinga.com/topic/Kaustubh-Bagalkote\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Kaustubh Bagalkote</a></u></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39494035/dan-ives-labels-nvidia-correction-a-near-term-pullback-hails-palantir-as-purest-ai-name-amid-growing\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/25/untitled_2.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/25/untitled_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/25/untitled_2.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Global\"},{\"name\":\"Markets\"},{\"name\":\"Analyst
+        Ratings\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"PLTR\"}],\"tags\":[{\"name\":\"Dan
+        Ives\"},{\"name\":\"Kaustubh Bagalkote\"}]},{\"id\":39493929,\"author\":\"Ananya
+        Gairola\",\"created\":\"Tue, 25 Jun 2024 23:03:04 -0400\",\"updated\":\"Tue,
+        25 Jun 2024 23:03:05 -0400\",\"title\":\"Mark Zuckerberg's Meta Reportedly
+        Tests Apple Vision Pro-Like Feature For Quest Headsets\",\"teaser\":\"Meta
+        Platforms Inc. is reportedly testing a new feature for its Quest headsets
+        that allows users to position windows freely, similar to Apple Inc.&#39;s
+        Vision Pro, as discovered in version 67 of the Meta Quest Public Test Channel.\",\"body\":\"<p><strong>Mark
+        Zuckerberg</strong>-led <strong>Meta Platforms Inc.</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>)
+        is <a href=\\\"https://www.benzinga.com/general/gaming/24/02/37305770/mark-zuckerberg-on-a-mission-to-outdo-apple-vision-pro-meta-ceo-reportedly-eyes-south-korean-colla\\\">reportedly
+        experimenting</a> with a new&nbsp;feature for its <strong>Quest</strong> headsets,
+        which allows users to freely position windows in a manner&nbsp;similar to
+        <strong>Apple Inc.&#8217;s</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        <strong>Vision&nbsp;Pro</strong>.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>:
+        The feature, spotted by&nbsp;a data miner named <strong>Luna</strong>,&nbsp;was
+        found&nbsp;in version 67 of the&nbsp;Meta Quest Public Test Channel. If implemented,
+        it would allow users to&nbsp;move up to three windows&nbsp;from 2D apps around
+        their&nbsp;space and keep another three&nbsp;docked, <a href=\\\"https://www.theverge.com/2024/6/25/24185869/meta-quest-vr-virtual-screen-placement\\\">reported</a>
+        The Verge.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed is-type-rich is-provider-twitter
+        wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">Meta Quest OS v67 PTC<br><br>Settings &gt;
+        Experimental Features &gt; New Window Layout <a href=\\\"https://t.co/jDq0hdoCOV\\\">pic.twitter.com/jDq0hdoCOV</a></p>&mdash;
+        Luna (@Lunayian) <a href=\\\"https://twitter.com/Lunayian/status/1805443950745907408?ref_src=twsrc%5Etfw\\\">June
+        25, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p><em>See Also:&nbsp;<a
+        href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/06/39467166/dan-ives-says-apple-stock-is-headed-to-300-tim-cook-could-claim-godfather-of-ai-tit?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Dan Ives Says Apple
+        Stock Is Headed To $300, Tim Cook Could Claim &#8216;Godfather Of AI&#8217;
+        Title: &#8216;It&#8217;s Their Castle&#8217;</a></em></p>\\n\\n\\n\\n<p>Another
+        update that was shared by the YouTube channel BMFVR which has 243,000 subscribers,
+        suggested that the windows will only remember their placement within a limited&nbsp;distance
+        and return to their&nbsp;default positions if the user switches orientation
+        or resets the view.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed is-type-video
+        is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio\\\"><div
+        class=\\\"wp-block-embed__wrapper\\\">\\n<iframe loading=\\\"lazy\\\" title=\\\"New
+        Quest 3 Update Brings BIG Changes!\\\" width=\\\"500\\\" height=\\\"281\\\"
+        src=\\\"https://www.youtube.com/embed/JJN8edh-xXc?feature=oembed\\\" frameborder=\\\"0\\\"
+        allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+        picture-in-picture; web-share\\\" referrerpolicy=\\\"strict-origin-when-cross-origin\\\"
+        allowfullscreen></iframe>\\n</div></figure>\\n\\n\\n\\n<p>The update also
+        includes the ability&nbsp;to switch between curved and&nbsp;flat windows,
+        as well as&nbsp;a dimmer that lowers the brightness of virtual environments
+        while&nbsp;using 2D apps. This feature, however, does not yet work for passthrough
+        mode.</p>\\n\\n\\n\\n<p><em>Subscribe to the&nbsp;</em><a href=\\\"https://bztechtrends.beehiiv.com/subscribe\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>Benzinga Tech Trends
+        newsletter</em></a><em>&nbsp;to get all the latest tech developments delivered
+        to your inbox.</em></p>\\n\\n\\n\\n<p><strong>Why It Matters</strong>: This
+        development&nbsp;brings the <strong>Quest 3</strong>, in&nbsp;particular,
+        a step closer to&nbsp;<a href=\\\"https://www.benzinga.com/news/24/03/37616210/mark-zuckerberg-refutes-analysts-claim-quest-not-basically-just-the-same-as-apples-vision-pro\\\">Apple's
+        spatial computing</a> when used&nbsp;in mixed reality mode. However, it does
+        not&nbsp;seem to work quite the&nbsp;same way as the Vision Pro, the report
+        noted.</p>\\n\\n\\n\\n<p>The Apple Vision Pro enables users to position windows
+        in any space and keep them locked in place even as they move around or remove
+        the headset. </p>\\n\\n\\n\\n<p>Earlier in the year, Zuckerberg&nbsp;compared&nbsp;the
+        Vision Pro to Meta's Quest 3 and declared the <a href=\\\"https://www.benzinga.com/general/entertainment/24/02/37116135/mark-zuckerberg-finally-tries-apples-vision-pro-and-says-metas-quest-3-is-the-better-produc\\\">latter
+        as the better product</a>. At the time he said, &#8220;I finally tried Apple
+        Vision Pro,&#8221; adding, &#8220;I don't think that Quest is the better value,
+        I think Quest is the better product, period.&#8221;</p>\\n\\n\\n\\n<p>This
+        was followed by Zuckerberg&#8217;s\_<a href=\\\"https://www.benzinga.com/general/gaming/24/02/37305770/mark-zuckerberg-on-a-mission-to-outdo-apple-vision-pro-meta-ceo-reportedly-eyes-south-korean-colla\\\">reported\_trip
+        to South Korea</a> to discuss a potential partnership with <strong>LG Electronics
+        Inc</strong>. for a new XR headset.</p>\\n\\n\\n\\n<p><em>Image Credits &#8211;
+        Shutterstock</em></p>\\n\\n\\n\\n<p><em>Check out more of Benzinga&#8217;s
+        Consumer Tech coverage by&nbsp;</em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next:&nbsp;<a href=\\\"https://www.benzinga.com/general/education/24/06/39466991/michael-saylor-2012-apple-stock-prediction-goes-viral-heres-what-bitcoin-bull-got-right-whoever?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Michael Saylor 2012
+        Apple Stock Prediction Goes Viral, Here&#8217;s What Bitcoin Bull Got Right:
+        &#8216;Whoever Is Selling That Stock Must Be A Moron&#8217;</a></em></p>\\n\\n\\n\\n<p><em><strong>Disclaimer:</strong>&nbsp;This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39493929/mark-zuckerbergs-meta-reportedly-tests-apple-vision-pro-like-feature-for-quest-headsets\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/25/Meta-Quest-2.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/25/Meta-Quest-2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/25/Meta-Quest-2.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"META\"}],\"tags\":[{\"name\":\"benzinga
+        neuro\"},{\"name\":\"Consumer Tech\"},{\"name\":\"gadgets\"},{\"name\":\"Quest\"},{\"name\":\"vision
+        pro\"}]}]\n"
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:11:57 GMT
+      Etag:
+      - KWY2VaBt9-N_DFvZnzDdUmXHwBpSbExBv-H-uAP_AIM=
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/3.5.0, 1.1 c325bcaec82bfa9f1a033070b385ab14.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 2BqjePUL0AI4wTVfzQ2jMX06kYcQXBPOqEfK1Fot4FY6DFxLA1xYaQ==
+      X-Amz-Cf-Pop:
+      - AMS58-P1
+      X-Bz-Request-Id:
+      - 57751de4-5312-401b-aee2-01b5988af5e2#14542662
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '0'
+      X-Kong-Request-Id:
+      - 9eef4354b2c73751f88a9417b49f040f
+      X-Kong-Upstream-Latency:
+      - '38'
+      X-Powered-By:
+      - Pentium
+    status:
+      code: 200
+      message: OK
+version: 1
