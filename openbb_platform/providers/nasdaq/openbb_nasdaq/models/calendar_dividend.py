@@ -111,7 +111,7 @@ class NasdaqCalendarDividendFetcher(
                 and "rows" in r_json["data"]["calendar"]  # type: ignore
             ):
                 response = r_json["data"]["calendar"]["rows"]  # type: ignore
-            if len(response) > 0:
+            if response:
                 data.extend(response)
 
         await asyncio.gather(*[get_calendar_data(date) for date in dates])

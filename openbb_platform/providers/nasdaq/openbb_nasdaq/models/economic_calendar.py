@@ -115,24 +115,27 @@ class NasdaqEconomicCalendarFetcher(
         ]
 
         async def get_calendar_data(date: str):
+            """Get the calendar data for a single date."""
+            response: List = []
             url = f"https://api.nasdaq.com/api/calendar/economicevents?date={date}"
             r_json = await amake_request(url=url, headers=IPO_HEADERS)
-            if "data" in r_json and "rows" in r_json.get("data", {}):  # type: ignore
-                response = r_json["data"]["rows"]  # type: ignore
-            response = [
-                {
-                    **{k: v for k, v in item.items() if k != "gmt"},
-                    "date": (
-                        f"{date} 00:00"
-                        if item.get("gmt") == "All Day"
-                        else f"{date} {item.get('gmt', '')}".replace(
-                            "Tentative", "00:00"
-                        ).replace("24H", "00:00")
-                    ),
-                }
-                for item in response
-            ]
-            data.extend(response)
+            if r_json is not None and r_json.get("data"):  # type: ignore
+                response = r_json["data"].get("rows")  # type: ignore
+            if response:
+                response = [
+                    {
+                        **{k: v for k, v in item.items() if k != "gmt"},
+                        "date": (
+                            f"{date} 00:00"
+                            if item.get("gmt") == "All Day"
+                            else f"{date} {item.get('gmt', '')}".replace(
+                                "Tentative", "00:00"
+                            ).replace("24H", "00:00")
+                        ),
+                    }
+                    for item in response
+                ]
+                data.extend(response)
 
         await asyncio.gather(*[get_calendar_data(date) for date in dates])
 
