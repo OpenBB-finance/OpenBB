@@ -16,42 +16,41 @@ interactions:
     uri: https://api.nasdaq.com/api/screener/stocks?limit=10000&marketcap=large&sector=consumer_staples&tableonly=true
   response:
     body:
-      string: '{"data":{"filters":null,"table":{"asOf":null,"headers":{"symbol":"Symbol","name":"Name","lastsale":"Last
-        Sale","netchange":"Net Change","pctchange":"% Change","marketCap":"Market
-        Cap"},"rows":[{"symbol":"FMX","name":"Fomento Economico Mexicano S.A.B. de
-        C.V. Common Stock","lastsale":"$108.63","netchange":"1.88","pctchange":"1.761%","marketCap":"177,406,710,609","url":"/market-activity/stocks/fmx"},{"symbol":"BUD","name":"Anheuser-Busch
-        Inbev SA Sponsored ADR (Belgium)","lastsale":"$60.77","netchange":"1.71","pctchange":"2.895%","marketCap":"105,569,477,673","url":"/market-activity/stocks/bud"},{"symbol":"SONY","name":"Sony
-        Group Corporation American Depositary Shares ","lastsale":"$81.12","netchange":"0.59","pctchange":"0.733%","marketCap":"99,817,973,586","url":"/market-activity/stocks/sony"},{"symbol":"MDLZ","name":"Mondelez
-        International, Inc. Class A Common Stock","lastsale":"$68.42","netchange":"1.91","pctchange":"2.872%","marketCap":"91,775,784,012","url":"/market-activity/stocks/mdlz"},{"symbol":"CVS","name":"CVS
-        Health Corporation Common Stock","lastsale":"$61.73","netchange":"0.36","pctchange":"0.587%","marketCap":"77,494,173,562","url":"/market-activity/stocks/cvs"},{"symbol":"DEO","name":"Diageo
-        plc Common Stock","lastsale":"$131.43","netchange":"1.11","pctchange":"0.852%","marketCap":"73,400,524,075","url":"/market-activity/stocks/deo"},{"symbol":"MNST","name":"Monster
-        Beverage Corporation","lastsale":"$49.49","netchange":"0.40","pctchange":"0.815%","marketCap":"51,555,130,004","url":"/market-activity/stocks/mnst"},{"symbol":"STZ","name":"Constellation
-        Brands, Inc. Common Stock","lastsale":"$265.13","netchange":"1.63","pctchange":"0.619%","marketCap":"48,512,517,289","url":"/market-activity/stocks/stz"},{"symbol":"KDP","name":"Keurig
-        Dr Pepper Inc. Common Stock","lastsale":"$34.67","netchange":"0.29","pctchange":"0.844%","marketCap":"46,997,760,114","url":"/market-activity/stocks/kdp"},{"symbol":"KHC","name":"The
-        Kraft Heinz Company Common Stock","lastsale":"$33.21","netchange":"0.26","pctchange":"0.789%","marketCap":"40,326,842,624","url":"/market-activity/stocks/khc"},{"symbol":"GIS","name":"General
-        Mills, Inc. Common Stock","lastsale":"$68.07","netchange":"0.99","pctchange":"1.476%","marketCap":"38,428,834,297","url":"/market-activity/stocks/gis"},{"symbol":"HSY","name":"The
-        Hershey Company Common Stock","lastsale":"$187.30","netchange":"5.21","pctchange":"2.861%","marketCap":"37,877,529,160","url":"/market-activity/stocks/hsy"},{"symbol":"CTVA","name":"Corteva,
-        Inc. Common Stock ","lastsale":"$52.91","netchange":"-0.01","pctchange":"-0.019%","marketCap":"36,877,000,160","url":"/market-activity/stocks/ctva"},{"symbol":"KR","name":"Kroger
-        Company (The) Common Stock","lastsale":"$50.02","netchange":"-0.19","pctchange":"-0.378%","marketCap":"36,098,825,957","url":"/market-activity/stocks/kr"},{"symbol":"CCEP","name":"Coca-Cola
-        Europacific Partners plc Ordinary Shares","lastsale":"$75.97","netchange":"1.11","pctchange":"1.483%","marketCap":"34,901,875,835","url":"/market-activity/stocks/ccep"},{"symbol":"ABEV","name":"Ambev
-        S.A. American Depositary Shares (Each representing 1 Common Share)","lastsale":"$2.10","netchange":"0.02","pctchange":"0.962%","marketCap":"33,083,049,896","url":"/market-activity/stocks/abev"},{"symbol":"ADM","name":"Archer-Daniels-Midland
-        Company Common Stock","lastsale":"$62.13","netchange":"0.78","pctchange":"1.271%","marketCap":"30,719,419,831","url":"/market-activity/stocks/adm"},{"symbol":"TSN","name":"Tyson
-        Foods, Inc. Common Stock","lastsale":"$57.68","netchange":"1.38","pctchange":"2.451%","marketCap":"20,535,515,424","url":"/market-activity/stocks/tsn"},{"symbol":"K","name":"Kellanova
-        Common Stock","lastsale":"$58.26","netchange":"0.78","pctchange":"1.357%","marketCap":"19,918,141,158","url":"/market-activity/stocks/k"},{"symbol":"MKC","name":"McCormick
-        & Company, Incorporated Common Stock","lastsale":"$69.20","netchange":"0.52","pctchange":"0.757%","marketCap":"18,574,159,186","url":"/market-activity/stocks/mkc"},{"symbol":"KOF","name":"Coca
-        Cola Femsa S.A.B. de C.V.  American Depositary Shares, each representing 10
-        Units (each Unit consists of 3 Series B Shares and 5 Series L Shares)","lastsale":"$84.52","netchange":"1.12","pctchange":"1.343%","marketCap":"17,756,234,262","url":"/market-activity/stocks/kof"},{"symbol":"HRL","name":"Hormel
-        Foods Corporation Common Stock","lastsale":"$30.96","netchange":"0.32","pctchange":"1.044%","marketCap":"16,975,534,689","url":"/market-activity/stocks/hrl"},{"symbol":"BG","name":"Bunge
-        Limited Common Shares","lastsale":"$108.17","netchange":"2.30","pctchange":"2.172%","marketCap":"15,316,342,724","url":"/market-activity/stocks/bg"},{"symbol":"CAG","name":"ConAgra
-        Brands, Inc. Common Stock","lastsale":"$29.34","netchange":"0.52","pctchange":"1.804%","marketCap":"14,026,361,056","url":"/market-activity/stocks/cag"},{"symbol":"CELH","name":"Celsius
-        Holdings, Inc. Common Stock","lastsale":"$59.77","netchange":"-2.71","pctchange":"-4.337%","marketCap":"13,931,269,480","url":"/market-activity/stocks/celh"},{"symbol":"WBA","name":"Walgreens
-        Boots Alliance, Inc. Common Stock","lastsale":"$15.91","netchange":"-0.06","pctchange":"-0.376%","marketCap":"13,725,769,653","url":"/market-activity/stocks/wba"},{"symbol":"CPB","name":"Campbell
-        Soup Company Common Stock","lastsale":"$45.27","netchange":"0.76","pctchange":"1.707%","marketCap":"13,515,534,374","url":"/market-activity/stocks/cpb"},{"symbol":"LW","name":"Lamb
-        Weston Holdings, Inc. Common Stock ","lastsale":"$84.95","netchange":"0.10","pctchange":"0.118%","marketCap":"12,266,017,234","url":"/market-activity/stocks/lw"},{"symbol":"SJM","name":"The
-        J.M. Smucker Company Common Stock","lastsale":"$111.86","netchange":"3.16","pctchange":"2.907%","marketCap":"11,879,011,851","url":"/market-activity/stocks/sjm"},{"symbol":"ACI","name":"Albertsons
-        Companies, Inc. Class A Common Stock","lastsale":"$19.79","netchange":"0.23","pctchange":"1.176%","marketCap":"11,426,897,651","url":"/market-activity/stocks/aci"},{"symbol":"TAP","name":"Molson
-        Coors Beverage Company Class B Common Stock","lastsale":"$51.40","netchange":"0.45","pctchange":"0.883%","marketCap":"10,271,281,943","url":"/market-activity/stocks/tap"}]},"totalrecords":31,"asof":"Last
-        price as of Jun 24, 2024"},"message":null,"status":{"rCode":200,"bCodeMessage":null,"developerMessage":null}}'
+      string: !!binary |
+        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
+        IdhbddeL4ZMpxCY3la4H679+/RfCjypsJBkAAA==
     headers:
       Cache-Control:
       - max-age=0, no-cache, no-store
@@ -60,37 +59,39 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '1892'
+      - '1909'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 25 Jun 2024 05:24:33 GMT
+      - Mon, 01 Jul 2024 19:00:13 GMT
       Expires:
-      - Tue, 25 Jun 2024 05:24:33 GMT
+      - Mon, 01 Jul 2024 19:00:13 GMT
       Pragma:
       - no-cache
       Server:
       - Kestrel
       Set-Cookie:
-      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=34~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=a6a87be6083abadbf68a65760892cbd0;
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=76~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=04768c1a48a638c99c749c58ad1b0c2a;
         path=/; HttpOnly; Secure; SameSite=None
-      - ak_bmsc=B60A34D76B43F3BB37594877AC3D700D~000000000000000000000000000000~YAAQ2pUeuGmYLkqQAQAAJFnaTRgCwItwh95NTHkybeuaVa3zNDyILeLlaZjT9xVZ5hBvxrJagAdTv/qjEqrHkeTwCnKwnL36lhkaBVtrywtFT5DyPFD70YBsoXiUQGCVpw7G/qTdvM1KI7QIHxrXYQfi7WvamgyK5gSfxwSy0ecpxwr78vRY3kh+SWLNuUa4fqQARs6HAotyV7D9D8yccda92Ba+UBJ/7sYkClJY7e/dLavSKp/fVUKDSGSjMC66j6IUZNO8pb5W51jc40P6cy4cjVp0YbaOFWyGfXNsH2VTfO7Ao02oGYtrgFNVUVBFmtXyXJJxWiFtAGmz2Aut25NrCJRFLjKYoHnNK747DTnVs6fdjDL92I63qeSj2C91zadovqybp1ZzXWTLOQk4d7qCuapEjg==;
-        Domain=.nasdaq.com; Path=/; Expires=Tue, 25 Jun 2024 07:24:33 GMT; Max-Age=7200;
+      - ak_bmsc=BBF55E9D2674CA0D8D637715682E2A55~000000000000000000000000000000~YAAQ25UeuCM+lUuQAQAASEOrbxhEDwlgRRD8+KyL3cu3fQcxyo/aiYO/E839XbAhXDAu2GMbNY/zGfEo9Q37TNBPq0j4O6hSRDTCguDv/Z5dfHK/sAhtv0HdjdagFQY2u0ibpy0J852Dk3BFvV0al359g3VYXTcUgAnqIP7c1jrkXH/AWVw6KKKrgtoyFQk2nZmvKIpYlvUKIVS0UxNboKaTHqzYJXZYTwwy5HGedmvH1guhhK2rkhYsSA62TMdqKlE1CXEAmULv8FJv7iKAYTaZuZu82br4L4BZ1EmfBlrW4ayIqgKzVkBhAY/TdaroQT/5tq8ikxC5lDP1R1lSBbG5SQDuwcIqOLHt9W042J5+DE3Hf15UI7JDbieWcm7IEOQJO6jn+Vh04zqBWkn3O5WmKdabGQ==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 21:00:13 GMT; Max-Age=7200;
         HttpOnly
       Strict-Transport-Security:
       - max-age=86400
       Vary:
       - Accept-Encoding
       X-EdgeConnect-MidMile-RTT:
-      - '53'
+      - '46'
+      - '46'
       X-EdgeConnect-Origin-MEX-Latency:
-      - '75'
+      - '145'
+      - '145'
       gid:
-      - '204'
+      - '104'
       lang:
       - en
       rid:
-      - 7c53afca-e363-4fc7-9ab9-aefc56e54125
+      - 3937178e-9429-4f74-a2d4-f4b01d08a01c
       srctype:
       - default
     status:
