@@ -139,7 +139,9 @@ def publish(
                             "-m",
                             "poetry",
                             "build",
-                        ],  # Replace by ["publish", "--build"]
+                            "publish",
+                            "--build",
+                        ],
                         cwd=path.parent,
                     )
                 logger.info("✅ Success")
