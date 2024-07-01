@@ -635,7 +635,7 @@ class MethodDefinition:
             else:
                 new_type = MethodDefinition.get_expanded_type(name)
                 if hasattr(new_type, "__constraints__"):
-                    types = new_type.__constraints__ + (param.annotation,)
+                    types = new_type.__constraints__ + (param.annotation,)  # type: ignore
                     updated_type = Union[types]  # type: ignore
                 else:
                     updated_type = (
@@ -1240,7 +1240,7 @@ class DocstringGenerator:
             ):
                 items.append(name.title())
             func = partial(cls._get_generic_types, items=items)
-            set().union(*map(func, type_.__args__), items)
+            set().union(*map(func, type_.__args__), items)  # type: ignore
         return items
 
     @staticmethod

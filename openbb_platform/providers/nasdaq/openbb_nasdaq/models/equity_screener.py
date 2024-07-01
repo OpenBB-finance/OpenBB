@@ -471,7 +471,7 @@ class NasdaqEquityScreenerFetcher(
         try:
             response = make_request(url, headers=HEADERS)
             if response.status_code != 200:
-                raise response.raise_for_status()
+                raise response.raise_for_status()  # type: ignore
         except Exception as e:
             raise OpenBBError(
                 f"Error fetching data from Nasdaq Equity Screener: {e}"
