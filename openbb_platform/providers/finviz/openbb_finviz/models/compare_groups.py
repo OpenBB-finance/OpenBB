@@ -18,6 +18,8 @@ from openbb_finviz.utils.definitions import GROUPS, GROUPS_DICT, METRICS
 from pandas import DataFrame
 from pydantic import Field, field_validator
 
+GROUPS_CHOICES = sorted(list(GROUPS_DICT))
+
 
 class FinvizCompareGroupsQueryParams(CompareGroupsQueryParams):
     """Finviz Compare Groups Query Params."""
@@ -27,11 +29,13 @@ class FinvizCompareGroupsQueryParams(CompareGroupsQueryParams):
         description="US-listed stocks only."
         + " When a sector is selected, it is broken down by industry."
         + " The default is sector.",
+        json_schema_extra={"choices": GROUPS_CHOICES},  # type: ignore
     )
     metric: Union[METRICS, None] = Field(
         default="performance",
         description="Select from: performance, valuation, overview."
         + " The default is performance.",
+        json_schema_extra={"choices": ["performance", "valuation", "overview"]},
     )
 
 
