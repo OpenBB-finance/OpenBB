@@ -11,6 +11,60 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
+    uri: https://query1.finance.yahoo.com/v1/test/getcrumb
+  response:
+    body:
+      string: lBVv2pgWbZ4
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - private, max-age=60, stale-while-revalidate=30
+      content-length:
+      - '11'
+      content-type:
+      - text/plain;charset=utf-8
+      date:
+      - Mon, 01 Jul 2024 12:13:36 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-external-services-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '0'
+      y-rid:
+      - 7d5ndglj857bg
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
     uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
   response:
     body:
@@ -75,7 +129,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 11:40:01 GMT
+      - Mon, 01 Jul 2024 12:13:36 GMT
       server:
       - ATS
       vary:
@@ -83,9 +137,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '3'
+      - '6'
       y-rid:
-      - 5sk72i9j855ci
+      - 0adsvc1j857bh
     status:
       code: 200
       message: OK
@@ -129,7 +183,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 11:40:02 GMT
+      - Mon, 01 Jul 2024 12:13:37 GMT
       server:
       - ATS
       vary:
@@ -139,7 +193,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '1'
       y-rid:
-      - 7858qipj855ci
+      - 5r4i9itj857bh
     status:
       code: 200
       message: OK

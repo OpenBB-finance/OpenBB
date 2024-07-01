@@ -11,6 +11,60 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
+    uri: https://query1.finance.yahoo.com/v1/test/getcrumb
+  response:
+    body:
+      string: lBVv2pgWbZ4
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - private, max-age=60, stale-while-revalidate=30
+      content-length:
+      - '11'
+      content-type:
+      - text/plain;charset=utf-8
+      date:
+      - Mon, 01 Jul 2024 12:08:45 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-external-services-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '1'
+      y-rid:
+      - 32rsr39j8572d
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
     uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=AAPL
   response:
     body:
@@ -24,12 +78,12 @@ interactions:
         DAILY AAPL BULL 1.5X S\",\"exchDisp\":\"NYSE MKT\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
         Jan 2025 50.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL250117C00050000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
         Jan 2025 50.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
-        Sep 2025 310.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL250919C00310000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
-        Sep 2025 310.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
-        Jan 2025 310.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL250117C00310000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
-        Jan 2025 310.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Jul 2024 170.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL240719C00170000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Jul 2024 170.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
         Jan 2025 205.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL250117C00205000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
-        Jan 2025 205.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"15fa5308-7710-3f57-b234-484b28c506c7\",\"title\":\"3
+        Jan 2025 205.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Jan 2026 190.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL260116P00190000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Jan 2026 190.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"15fa5308-7710-3f57-b234-484b28c506c7\",\"title\":\"3
         Excellent Stocks That Can Beat the S&P 500\",\"publisher\":\"Motley Fool\",\"link\":\"https://finance.yahoo.com/m/15fa5308-7710-3f57-b234-484b28c506c7/3-excellent-stocks-that-can.html\",\"providerPublishTime\":1719828000,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/PAIdx_f0Hd6Rk4ioqDZ84w--~B/aD03ODc7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/77574cc24bf3ab61fb7d2b9aaa20ca9c\",\"width\":1400,\"height\":787,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/eGK3IvwEn_3vgb77Q6PTAQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/77574cc24bf3ab61fb7d2b9aaa20ca9c\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"^GSPC\",\"AAPL\",\"COST\",\"CAVA\"]},{\"uuid\":\"d7686b28-786a-3b54-94a1-5f0f6b98129c\",\"title\":\"Wedbush:
         Tech stocks should rise another 15% in 2H24\",\"publisher\":\"Investing.com\",\"link\":\"https://finance.yahoo.com/news/wedbush-tech-stocks-rise-another-052940980.html\",\"providerPublishTime\":1719811780,\"type\":\"STORY\",\"relatedTickers\":[\"MSFT\",\"NVDA\",\"AAPL\",\"COMP\"]},{\"uuid\":\"39f03da0-afcd-30b2-b484-641385a06190\",\"title\":\"No
         Nvidia in Your Portfolio? \u2018You\u2019re Just Toast\u2019\",\"publisher\":\"The
@@ -42,7 +96,7 @@ interactions:
         Nvidia stock is now in treacherous waters: Morning Brief\",\"publisher\":\"Yahoo
         Finance\",\"link\":\"https://finance.yahoo.com/news/why-nvidia-stock-is-now-in-treacherous-waters-morning-brief-100140753.html\",\"providerPublishTime\":1719741700,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/MRuPtGZ.5X5W7OSXvOuBpQ--~B/aD0zOTg3O3c9NjAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-05/80084530-21a9-11ef-abad-4695da5dc1a4\",\"width\":6000,\"height\":3987,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/QVwkrndMg3x668Ot5SJiow--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-05/80084530-21a9-11ef-abad-4695da5dc1a4\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MU\",\"KO\",\"AMZN\",\"MSFT\",\"CSCO\",\"AAPL\",\"NVDA\"]},{\"uuid\":\"13ff5014-26ed-3e80-97e7-a019698a90a9\",\"title\":\"Halfway
         Into 2024: 2 Underperforming \\\"Magnificent Seven\\\" Stocks to Buy Before
-        They Take Off\",\"publisher\":\"Motley Fool\",\"link\":\"https://finance.yahoo.com/m/13ff5014-26ed-3e80-97e7-a019698a90a9/halfway-into-2024%3A-2.html\",\"providerPublishTime\":1719736200,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/AkVBhGMRzvxR26KRr6S.ng--~B/aD0xNzk2O3c9MjYwMjthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/3304357762b303b9a9f82a1b19bd1446\",\"width\":2602,\"height\":1796,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ymvRtmLnE2nM5AheupZB2Q--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/3304357762b303b9a9f82a1b19bd1446\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AAPL\",\"TSLA\",\"NVDA\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":80,\"timeTakenForQuotes\":455,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0}"
+        They Take Off\",\"publisher\":\"Motley Fool\",\"link\":\"https://finance.yahoo.com/m/13ff5014-26ed-3e80-97e7-a019698a90a9/halfway-into-2024%3A-2.html\",\"providerPublishTime\":1719736200,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/AkVBhGMRzvxR26KRr6S.ng--~B/aD0xNzk2O3c9MjYwMjthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/3304357762b303b9a9f82a1b19bd1446\",\"width\":2602,\"height\":1796,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ymvRtmLnE2nM5AheupZB2Q--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/3304357762b303b9a9f82a1b19bd1446\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AAPL\",\"TSLA\",\"NVDA\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":77,\"timeTakenForQuotes\":453,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0}"
     headers:
       Age:
       - '0'
@@ -65,11 +119,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '2567'
+      - '2583'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 11:39:44 GMT
+      - Mon, 01 Jul 2024 12:08:45 GMT
       server:
       - ATS
       vary:
@@ -77,9 +131,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-search--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '82'
+      - '80'
       y-rid:
-      - 42uev21j855c0
+      - 78aiun9j8572d
     status:
       code: 200
       message: OK
@@ -101,18 +155,20 @@ interactions:
       string: "{\"explains\":[],\"count\":15,\"quotes\":[{\"exchange\":\"NMS\",\"shortname\":\"Microsoft
         Corporation\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT\",\"index\":\"quotes\",\"score\":2344200.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
         Corporation\",\"exchDisp\":\"NASDAQ\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"dispSecIndFlag\":true,\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
-        Dec 2024 320.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT241220P00320000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
-        Dec 2024 320.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
         Jan 2026 560.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116C00560000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
         Jan 2026 560.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Dec 2024 320.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT241220P00320000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Dec 2024 320.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
         Jan 2026 370.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116P00370000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
         Jan 2026 370.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
-        Dec 2026 360.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT261218C00360000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
-        Dec 2026 360.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
         Jan 2026 190.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116P00190000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
         Jan 2026 190.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
-        Jan 2026 450.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116C00450000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
-        Jan 2026 450.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"f6d67ef1-e05b-3b03-acfb-6b2a739401c6\",\"title\":\"Market
+        Jul 2024 420.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT240719C00420000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Jul 2024 420.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Nov 2024 210.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT241115C00210000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Nov 2024 210.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"9fd58388-5ddb-34dd-b5b6-fede22113b84\",\"title\":\"Is
+        Google Stock A Buy With Earnings Due, New CFO Waiting In The Wings?\",\"publisher\":\"Investor's
+        Business Daily\",\"link\":\"https://finance.yahoo.com/m/9fd58388-5ddb-34dd-b5b6-fede22113b84/is-google-stock-a-buy-with.html\",\"providerPublishTime\":1719834976,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/aFcDPgtSTk0D1LSh43hUFA--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/72ff211bba1161357e98bdef17aca65d\",\"width\":1000,\"height\":563,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/_iRGIYqn1_1rgLm.UcIRFw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/72ff211bba1161357e98bdef17aca65d\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"GOOG\",\"MSFT\",\"NVDA\"]},{\"uuid\":\"f6d67ef1-e05b-3b03-acfb-6b2a739401c6\",\"title\":\"Market
         Chatter: Microsoft Informs Texas State Agencies, Universities of Emails Exposed
         in Russian Hack\",\"publisher\":\"MT Newswires\",\"link\":\"https://finance.yahoo.com/news/market-chatter-microsoft-informs-texas-104108816.html\",\"providerPublishTime\":1719830468,\"type\":\"STORY\",\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"d3d379f1-35af-3bbb-9bcf-6f81ad0b5aad\",\"title\":\"AI-focused
         tech firms see big jump in market cap in June\",\"publisher\":\"Reuters\",\"link\":\"https://finance.yahoo.com/news/ai-focused-tech-firms-see-102644400.html\",\"providerPublishTime\":1719829604,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/KL1YaZdQ3rdinAXnQIexZg--~B/aD01MDA7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/reuters-finance.com/63446681414d26c51e4ad5d0a2e4c065\",\"width\":800,\"height\":500,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/Uc8sn7D98fpF4nsKiEPR0g--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/reuters-finance.com/63446681414d26c51e4ad5d0a2e4c065\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"NVDA\",\"MSFT\"]},{\"uuid\":\"692f7d43-4674-3b4f-be61-4024b4c33e70\",\"title\":\"You
@@ -123,9 +179,7 @@ interactions:
         Wall Street Journal\",\"link\":\"https://finance.yahoo.com/m/39f03da0-afcd-30b2-b484-641385a06190/no-nvidia-in-your-portfolio%3F.html\",\"providerPublishTime\":1719806640,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ZnH.6.Gvl4cLo8R34ZFGdg--~B/aD02NDA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/wsj.com/29643439c7ac24fec6ce15e1a07797b2\",\"width\":1280,\"height\":640,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/4u7oU40Q5hI9ck3qJIY5pA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/wsj.com/29643439c7ac24fec6ce15e1a07797b2\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\",\"GOOG\",\"AMZN\",\"AAPL\",\"META\"]},{\"uuid\":\"f28afc51-3701-3177-b6ea-292ccdc05509\",\"title\":\"World\u2019s
         Best Company According to the Media\",\"publisher\":\"Insider Monkey\",\"link\":\"https://finance.yahoo.com/news/world-best-company-according-media-204038433.html\",\"providerPublishTime\":1719780038,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/j0c2CRqJWIg_ql28R169Lg--~B/aD0zMDI0O3c9NDAzMjthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/insidermonkey.com/14fafcbf9feb1cedefebb6ef54d41032\",\"width\":4032,\"height\":3024,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ECg1NnmdXcDnbdEWlfqYjA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/14fafcbf9feb1cedefebb6ef54d41032\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"d5bec7a9-a9a3-335a-94d2-8e2020fa61e4\",\"title\":\"Is
         The Vanguard Growth Index Fund ETF Shares Still a Buy?\",\"publisher\":\"Motley
-        Fool\",\"link\":\"https://finance.yahoo.com/m/d5bec7a9-a9a3-335a-94d2-8e2020fa61e4/is-the-vanguard-growth-index.html\",\"providerPublishTime\":1719756000,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/h.6pvCZ8cdOjlG01gi5VAg--~B/aD00NTY7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/caec19bd16dc60fb9bc266606fa6b1e1\",\"width\":720,\"height\":456,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/XsC9Dy82Ks6EHWz9vjObsA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/caec19bd16dc60fb9bc266606fa6b1e1\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"NVDA\",\"MSFT\"]},{\"uuid\":\"f0e9b0c7-a865-32f0-ad99-aa22af282cc8\",\"title\":\"Prediction:
-        Apple Will Be the World's First $4 Trillion Company\",\"publisher\":\"Motley
-        Fool\",\"link\":\"https://finance.yahoo.com/m/f0e9b0c7-a865-32f0-ad99-aa22af282cc8/prediction%3A-apple-will-be-the.html\",\"providerPublishTime\":1719743400,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/o_v67u6mrhKu1t3TH15EMg--~B/aD00NDE7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/c2f752fecd11b8ca3c0c7991ce05e27a\",\"width\":720,\"height\":441,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/Tcl0uSXyMkqcz3KorHvoIA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/c2f752fecd11b8ca3c0c7991ce05e27a\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AAPL\",\"NVDA\",\"MSFT\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":115,\"timeTakenForQuotes\":490,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0}"
+        Fool\",\"link\":\"https://finance.yahoo.com/m/d5bec7a9-a9a3-335a-94d2-8e2020fa61e4/is-the-vanguard-growth-index.html\",\"providerPublishTime\":1719756000,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/h.6pvCZ8cdOjlG01gi5VAg--~B/aD00NTY7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/caec19bd16dc60fb9bc266606fa6b1e1\",\"width\":720,\"height\":456,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/XsC9Dy82Ks6EHWz9vjObsA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/caec19bd16dc60fb9bc266606fa6b1e1\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"NVDA\",\"MSFT\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":85,\"timeTakenForQuotes\":457,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0}"
     headers:
       Age:
       - '0'
@@ -148,11 +202,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '2399'
+      - '2473'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 11:39:45 GMT
+      - Mon, 01 Jul 2024 12:08:46 GMT
       server:
       - ATS
       vary:
@@ -160,9 +214,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-search--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '118'
+      - '87'
       y-rid:
-      - 7at2pllj855c1
+      - 14op4d1j8572e
     status:
       code: 200
       message: OK
