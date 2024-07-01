@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-chart/1day/%5EDJI?apikey=MOCK_API_KEY&from=2023-01-01&to=2023-01-10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA43SzU6DQBAH8HufgnBuJ/O9O30V48FoY02qmPh1ML67CyWFgtQS4MB/N/ubYW5W
+        VfVdnqqqH+7ed/W2qhlZNkgbwgpx2931+riked29lCUiRg7K4Tn3yaH56gJlgoyYMvXB/ulx3yWJ
+        HUwCXfrk/tC87Y4RKhCSnaLP5vDx3GbsmR3LVb7/rJetGMtWd4X2XLapNSdwb8+dWkOsgEKSzaxG
+        ZZNmlTy1Cqes11h92YpmIOP29VaOSOdFDH0lPK9isLqUaFzGYHVMV1lt2UpBkCinSVs5E0P3nlGn
+        O05SjiJtq+a5VFLwNVK9IPXyO/WPCUAR0IzqMaUqxvlIDl1lD0geJjSzpuia+q9VLlg1Q47RfJ3a
+        agiWUEimVilzbDQCDVYSh3ZCQmdWs9L03rq6/QXH+CSaCAQAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:12:17 GMT
+      Etag:
+      - W/"408-glTYZ6Uxgu2pCgKN72yd6UNBr5A"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

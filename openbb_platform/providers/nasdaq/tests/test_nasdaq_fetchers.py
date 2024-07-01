@@ -52,8 +52,8 @@ def test_nasdaq_equity_search_fetcher(credentials=test_credentials):
 def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
     """Test the Nasdaq Economic Calendar fetcher."""
     params = {
-        "start_date": datetime.date(2023, 11, 3),
-        "end_date": datetime.date(2023, 11, 3),
+        "start_date": datetime.date(2024, 6, 1),
+        "end_date": datetime.date(2024, 7, 10),
     }
 
     fetcher = NasdaqEconomicCalendarFetcher()
@@ -65,8 +65,8 @@ def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
 def test_nasdaq_calendar_dividend_fetcher(credentials=test_credentials):
     """Test the Nasdaq Calendar Dividend fetcher."""
     params = {
-        "start_date": datetime.date(2023, 11, 6),
-        "end_date": datetime.date(2023, 11, 6),
+        "start_date": datetime.date(2024, 6, 1),
+        "end_date": datetime.date(2024, 7, 1),
     }
 
     fetcher = NasdaqCalendarDividendFetcher()
@@ -78,8 +78,9 @@ def test_nasdaq_calendar_dividend_fetcher(credentials=test_credentials):
 def test_nasdaq_calendar_ipo_fetcher(credentials=test_credentials):
     """Test the Nasdaq Calendar IPO fetcher."""
     params = {
-        "start_date": datetime.date(2024, 6, 15),
-        "end_date": datetime.date(2024, 6, 30),
+        "start_date": datetime.date(2024, 6, 1),
+        "end_date": datetime.date(2024, 7, 1),
+        "status": "upcoming",
     }
 
     fetcher = NasdaqCalendarIpoFetcher()
@@ -130,8 +131,8 @@ def test_nasdaq_cot_search_fetcher(credentials=test_credentials):
 def test_nasdaq_calendar_earnings_fetcher(credentials=test_credentials):
     """Test the Nasdaq Calendar Earnings fetcher."""
     params = {
-        "start_date": datetime.date(2023, 11, 1),
-        "end_date": datetime.date(2023, 11, 30),
+        "start_date": datetime.date(2024, 7, 1),
+        "end_date": datetime.date(2024, 7, 3),
     }
 
     fetcher = NasdaqCalendarEarningsFetcher()

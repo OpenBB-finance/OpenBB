@@ -623,7 +623,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                 setattr(data, "_provider", provider)
             meta = Discriminator(get_provider) if len(args) > 1 else None
             inner = SerializeAsAny[Annotated[Union[tuple(args)], meta]]  # type: ignore[misc,valid-type]
-            full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type]
+            full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type,misc]
             annotations[name] = create_model(
                 f"OBBject_{name}",
                 __base__=OBBject[full],  # type: ignore[valid-type]

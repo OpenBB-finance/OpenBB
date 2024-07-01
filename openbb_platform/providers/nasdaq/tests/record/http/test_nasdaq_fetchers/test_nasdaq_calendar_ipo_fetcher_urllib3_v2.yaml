@@ -1,0 +1,140 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/ipo/calendar?date=2024-06
+  response:
+    body:
+      string: "{\"data\":{\"priced\":{\"asOf\":null,\"headers\":{\"proposedTickerSymbol\":\"Symbol\",\"companyName\":\"Company
+        Name\",\"proposedExchange\":\"Exchange/ Market\",\"proposedSharePrice\":\"Price\",\"sharesOffered\":\"Shares\",\"pricedDate\":\"Date\",\"dollarValueOfSharesOffered\":\"Offer
+        Amount\",\"dealStatus\":\"Actions\"},\"rows\":[{\"dealID\":\"1282948-108811\",\"proposedTickerSymbol\":\"RECT\",\"companyName\":\"Rectitude
+        Holdings Ltd.\",\"proposedExchange\":\"NASDAQ Capital\",\"proposedSharePrice\":\"4.00\",\"sharesOffered\":\"2,000,000\",\"pricedDate\":\"6/21/2024\",\"dollarValueOfSharesOffered\":\"$8,000,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1186827-101151\",\"proposedTickerSymbol\":\"FSHPU\",\"companyName\":\"Flag
+        Ship Acquisition Corp\",\"proposedExchange\":\"NASDAQ Global\",\"proposedSharePrice\":\"10.00\",\"sharesOffered\":\"6,000,000\",\"pricedDate\":\"6/18/2024\",\"dollarValueOfSharesOffered\":\"$60,000,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1297603-110263\",\"proposedTickerSymbol\":\"CUBWU\",\"companyName\":\"Lionheart
+        Holdings\",\"proposedExchange\":\"NASDAQ Global\",\"proposedSharePrice\":\"10.00\",\"sharesOffered\":\"20,000,000\",\"pricedDate\":\"6/18/2024\",\"dollarValueOfSharesOffered\":\"$200,000,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1298134-110329\",\"proposedTickerSymbol\":\"MACIU\",\"companyName\":\"Melar
+        Acquisition Corp. I/Cayman\",\"proposedExchange\":\"NASDAQ Global\",\"proposedSharePrice\":\"10.00\",\"sharesOffered\":\"15,000,000\",\"pricedDate\":\"6/18/2024\",\"dollarValueOfSharesOffered\":\"$150,000,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1033342-110202\",\"proposedTickerSymbol\":\"TEM\",\"companyName\":\"Tempus
+        AI, Inc.\",\"proposedExchange\":\"NASDAQ Global Select\",\"proposedSharePrice\":\"37.00\",\"sharesOffered\":\"11,100,000\",\"pricedDate\":\"6/14/2024\",\"dollarValueOfSharesOffered\":\"$410,700,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1297065-110218\",\"proposedTickerSymbol\":\"PCSC\",\"companyName\":\"Perceptive
+        Capital Solutions Corp\",\"proposedExchange\":\"NASDAQ Global\",\"proposedSharePrice\":\"10.00\",\"sharesOffered\":\"7,500,000\",\"pricedDate\":\"6/12/2024\",\"dollarValueOfSharesOffered\":\"$75,000,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1297210-110229\",\"proposedTickerSymbol\":\"ALFUU\",\"companyName\":\"Centurion
+        Acquisition Corp.\",\"proposedExchange\":\"NASDAQ Global\",\"proposedSharePrice\":\"10.00\",\"sharesOffered\":\"25,000,000\",\"pricedDate\":\"6/11/2024\",\"dollarValueOfSharesOffered\":\"$250,000,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1273862-107951\",\"proposedTickerSymbol\":\"WAY\",\"companyName\":\"Waystar
+        Holding Corp.\",\"proposedExchange\":\"NASDAQ Global Select\",\"proposedSharePrice\":\"21.50\",\"sharesOffered\":\"45,000,000\",\"pricedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$967,500,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1296073-110123\",\"proposedTickerSymbol\":\"CHEBU\",\"companyName\":\"Chenghe
+        Acquisition II Co.\",\"proposedExchange\":\"NYSE MKT\",\"proposedSharePrice\":\"10.00\",\"sharesOffered\":\"7,500,000\",\"pricedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$75,000,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1296752-110174\",\"proposedTickerSymbol\":\"RAPP\",\"companyName\":\"Rapport
+        Therapeutics, Inc.\",\"proposedExchange\":\"NASDAQ Global\",\"proposedSharePrice\":\"17.00\",\"sharesOffered\":\"8,000,000\",\"pricedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$136,000,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1285008-108988\",\"proposedTickerSymbol\":\"FLYE\",\"companyName\":\"Fly-E
+        Group, Inc.\",\"proposedExchange\":\"NASDAQ Capital\",\"proposedSharePrice\":\"4.00\",\"sharesOffered\":\"2,250,000\",\"pricedDate\":\"6/06/2024\",\"dollarValueOfSharesOffered\":\"$9,000,000\",\"dealStatus\":\"Priced\"},{\"dealID\":\"1090332-109774\",\"proposedTickerSymbol\":\"GAUZ\",\"companyName\":\"Gauzy
+        Ltd.\",\"proposedExchange\":\"NASDAQ Global\",\"proposedSharePrice\":\"17.00\",\"sharesOffered\":\"4,411,765\",\"pricedDate\":\"6/06/2024\",\"dollarValueOfSharesOffered\":\"$75,000,005\",\"dealStatus\":\"Priced\"},{\"dealID\":\"911156-110075\",\"proposedTickerSymbol\":\"LIF\",\"companyName\":\"Life360,
+        Inc.\",\"proposedExchange\":\"NASDAQ Global Select\",\"proposedSharePrice\":\"27.00\",\"sharesOffered\":\"5,750,000\",\"pricedDate\":\"6/06/2024\",\"dollarValueOfSharesOffered\":\"$155,250,000\",\"dealStatus\":\"Priced\"}]},\"upcoming\":{\"upcomingTable\":{\"asOf\":null,\"headers\":{\"proposedTickerSymbol\":\"Symbol\",\"companyName\":\"Company
+        Name\",\"proposedExchange\":\"Exchange/ Market\",\"proposedSharePrice\":\"Price\",\"sharesOffered\":\"Shares\",\"expectedPriceDate\":\"Expected
+        IPO Date\",\"dollarValueOfSharesOffered\":\"Offer Amount\"},\"rows\":[{\"dealID\":\"1298133-110328\",\"proposedTickerSymbol\":\"LB\",\"companyName\":\"LandBridge
+        Co LLC\",\"proposedExchange\":\"NYSE\",\"proposedSharePrice\":\"19.00-22.00\",\"sharesOffered\":\"14,500,000\",\"expectedPriceDate\":\"6/28/2024\",\"dollarValueOfSharesOffered\":\"$366,850,000\"},{\"dealID\":\"1147940-110414\",\"proposedTickerSymbol\":\"ALMS\",\"companyName\":\"ALUMIS
+        INC.\",\"proposedExchange\":\"NASDAQ Global\",\"proposedSharePrice\":\"16.00-18.00\",\"sharesOffered\":\"17,650,000\",\"expectedPriceDate\":\"6/28/2024\",\"dollarValueOfSharesOffered\":\"$365,355,000\"},{\"dealID\":\"1298105-110316\",\"proposedTickerSymbol\":\"WBTN\",\"companyName\":\"WEBTOON
+        Entertainment Inc.\",\"proposedExchange\":\"NASDAQ Global Select\",\"proposedSharePrice\":\"18.00-21.00\",\"sharesOffered\":\"15,000,000\",\"expectedPriceDate\":\"6/27/2024\",\"dollarValueOfSharesOffered\":\"$362,250,000\"},{\"dealID\":\"1295264-109998\",\"proposedTickerSymbol\":\"TBN\",\"companyName\":\"Tamboran
+        Resources Corp\",\"proposedExchange\":\"NYSE\",\"proposedSharePrice\":\"24.00-27.00\",\"sharesOffered\":\"6,500,000\",\"expectedPriceDate\":\"6/27/2024\",\"dollarValueOfSharesOffered\":\"$201,825,000\"},{\"dealID\":\"1102849-110305\",\"proposedTickerSymbol\":\"OSTX\",\"companyName\":\"OS
+        THERAPIES Inc\",\"proposedExchange\":\"NYSE MKT\",\"proposedSharePrice\":\"4.00\",\"sharesOffered\":\"2,000,000\",\"expectedPriceDate\":\"6/27/2024\",\"dollarValueOfSharesOffered\":\"$9,200,000\"},{\"dealID\":\"1228222-103944\",\"proposedTickerSymbol\":\"GLE\",\"companyName\":\"Global
+        Engine Group Holding Ltd\",\"proposedExchange\":\"NASDAQ Capital\",\"proposedSharePrice\":\"4.00-5.00\",\"sharesOffered\":\"2,500,000\",\"expectedPriceDate\":\"6/26/2024\",\"dollarValueOfSharesOffered\":\"$14,375,000\"}]},\"lastUpdatedTime\":\"LAST
+        UPDATED: 06/26/2024* - Source: EDGAR\xAE Online\"},\"filed\":{\"asOf\":null,\"headers\":{\"proposedTickerSymbol\":\"Symbol\",\"companyName\":\"Company
+        Name\",\"filedDate\":\"Date Filed\",\"dollarValueOfSharesOffered\":\"Offer
+        Amount\"},\"rows\":[{\"dealID\":\"1300207-110587\",\"proposedTickerSymbol\":\"TWFG\",\"companyName\":\"TWFG,
+        Inc.\",\"filedDate\":\"6/24/2024\",\"dollarValueOfSharesOffered\":\"$100,000,000\"},{\"dealID\":\"960829-110581\",\"proposedTickerSymbol\":\"ZSPC\",\"companyName\":\"zSpace,
+        Inc.\",\"filedDate\":\"6/24/2024\",\"dollarValueOfSharesOffered\":\"$30,000,000\"},{\"dealID\":\"1070996-110580\",\"proposedTickerSymbol\":\"ARDT\",\"companyName\":\"Ardent
+        Health Partners, LLC\",\"filedDate\":\"6/21/2024\",\"dollarValueOfSharesOffered\":\"$100,000,000\"},{\"dealID\":\"1300056-110562\",\"proposedTickerSymbol\":\"BSIIU\",\"companyName\":\"Black
+        Spade Acquisition II Co\",\"filedDate\":\"6/21/2024\",\"dollarValueOfSharesOffered\":\"$172,500,000\"},{\"dealID\":\"1300053-110560\",\"proposedTickerSymbol\":\"LHAI\",\"companyName\":\"Linkhome
+        Holdings Inc.\",\"filedDate\":\"6/21/2024\",\"dollarValueOfSharesOffered\":\"$11,500,000\"},{\"dealID\":\"1299979-110557\",\"proposedTickerSymbol\":\"ZJK\",\"companyName\":\"ZJK
+        Industrial Co., Ltd.\",\"filedDate\":\"6/21/2024\",\"dollarValueOfSharesOffered\":\"$5,000,000\"},{\"dealID\":\"1299951-110546\",\"proposedTickerSymbol\":\"FVNNU\",\"companyName\":\"Future
+        Vision II Acquisition Corp.\",\"filedDate\":\"6/20/2024\",\"dollarValueOfSharesOffered\":\"$57,500,000\"},{\"dealID\":\"1299923-110539\",\"proposedTickerSymbol\":\"AGH\",\"companyName\":\"Aureus
+        Greenway Holdings Inc\",\"filedDate\":\"6/20/2024\",\"dollarValueOfSharesOffered\":\"$25,200,000\"},{\"dealID\":\"1299811-110531\",\"proposedTickerSymbol\":\"SBXDU\",\"companyName\":\"SilverBox
+        Corp IV\",\"filedDate\":\"6/18/2024\",\"dollarValueOfSharesOffered\":\"$230,000,000\"},{\"dealID\":\"1299805-110530\",\"proposedTickerSymbol\":\"YSXT\",\"companyName\":\"YSX
+        Tech Co., Ltd\",\"filedDate\":\"6/18/2024\",\"dollarValueOfSharesOffered\":\"$8,625,000.00\"},{\"dealID\":\"1299792-110528\",\"proposedTickerSymbol\":\"VACHU\",\"companyName\":\"Voyager
+        Acquisition Corp./Cayman Islands\",\"filedDate\":\"6/18/2024\",\"dollarValueOfSharesOffered\":\"$300,150,000\"},{\"dealID\":\"1240695-110520\",\"proposedTickerSymbol\":\"TBH\",\"companyName\":\"Brag
+        House Holdings, Inc.\",\"filedDate\":\"6/18/2024\",\"dollarValueOfSharesOffered\":\"$9,200,000\"},{\"dealID\":\"1299699-110519\",\"proposedTickerSymbol\":\"HONDU\",\"companyName\":\"HCM
+        II Acquisition Corp.\",\"filedDate\":\"6/18/2024\",\"dollarValueOfSharesOffered\":\"$230,000,000\"},{\"dealID\":\"1299663-110516\",\"proposedTickerSymbol\":null,\"companyName\":\"Tavia
+        Acquisition Corp.\",\"filedDate\":\"6/17/2024\",\"dollarValueOfSharesOffered\":\"$201,250,000\"},{\"dealID\":\"1299662-110515\",\"proposedTickerSymbol\":\"SIMAU\",\"companyName\":\"SIM
+        Acquisition Corp. I\",\"filedDate\":\"6/17/2024\",\"dollarValueOfSharesOffered\":\"$230,000,000\"},{\"dealID\":\"1299524-110505\",\"proposedTickerSymbol\":\"INHI\",\"companyName\":\"Unitrend
+        Entertainment Group Ltd\",\"filedDate\":\"6/17/2024\",\"dollarValueOfSharesOffered\":\"$7,187,500\"},{\"dealID\":\"1299520-110504\",\"proposedTickerSymbol\":\"ZSMA\",\"companyName\":\"Zhong
+        Shi International Ltd\",\"filedDate\":\"6/17/2024\",\"dollarValueOfSharesOffered\":\"$5,000,000.00\"},{\"dealID\":\"1299501-110499\",\"proposedTickerSymbol\":\"CON\",\"companyName\":\"Concentra
+        Group Holdings Parent, Inc.\",\"filedDate\":\"6/14/2024\",\"dollarValueOfSharesOffered\":\"$100,000,000\"},{\"dealID\":\"1299483-110494\",\"proposedTickerSymbol\":\"CFFA\",\"companyName\":\"CF
+        Acquisition Corp. A\",\"filedDate\":\"6/14/2024\",\"dollarValueOfSharesOffered\":\"$115,000,000\"},{\"dealID\":\"1299399-110482\",\"proposedTickerSymbol\":\"STFS\",\"companyName\":\"Star
+        Fashion Culture Holdings Ltd\",\"filedDate\":\"6/14/2024\",\"dollarValueOfSharesOffered\":\"$17,250,000\"},{\"dealID\":\"1299356-110475\",\"proposedTickerSymbol\":\"LPAAU\",\"companyName\":\"Launch
+        One Acquisition Corp.\",\"filedDate\":\"6/13/2024\",\"dollarValueOfSharesOffered\":\"$230,000,000\"},{\"dealID\":\"1299143-110462\",\"proposedTickerSymbol\":null,\"companyName\":\"Calor
+        Del Sol Inc.\",\"filedDate\":\"6/12/2024\",\"dollarValueOfSharesOffered\":\"$90,000\"},{\"dealID\":\"1299109-110460\",\"proposedTickerSymbol\":\"NIPG\",\"companyName\":\"NIP
+        Group Inc.\",\"filedDate\":\"6/12/2024\",\"dollarValueOfSharesOffered\":\"$5,000,000\"},{\"dealID\":\"1299037-110442\",\"proposedTickerSymbol\":null,\"companyName\":\"Carbon
+        Zero Technologies International Inc.\",\"filedDate\":\"6/11/2024\",\"dollarValueOfSharesOffered\":\"$40,000,000\"},{\"dealID\":\"837018-110425\",\"proposedTickerSymbol\":\"LIHV\",\"companyName\":\"Sustainable
+        Projects Group Inc.\",\"filedDate\":\"6/10/2024\",\"dollarValueOfSharesOffered\":\"$20,000,000\"},{\"dealID\":\"1147940-110414\",\"proposedTickerSymbol\":\"ALMS\",\"companyName\":\"ALUMIS
+        INC.\",\"filedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$365,355,000\"},{\"dealID\":\"1298814-110409\",\"proposedTickerSymbol\":null,\"companyName\":\"Barony
+        Power Corp\",\"filedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$3,600,000\"},{\"dealID\":\"1298793-110408\",\"proposedTickerSymbol\":\"EQVU\",\"companyName\":\"EQV
+        Ventures Acquisition Corp.\",\"filedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$402,500,000\"},{\"dealID\":\"1298766-110402\",\"proposedTickerSymbol\":\"BRTH\",\"companyName\":\"Breathe
+        BioMedical Inc.\",\"filedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$11,500,000\"},{\"dealID\":\"1298756-110400\",\"proposedTickerSymbol\":\"UEOP\",\"companyName\":\"UEOPLE
+        Technology Holding Ltd\",\"filedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$8,625,000.00\"},{\"dealID\":\"1298734-110398\",\"proposedTickerSymbol\":\"RDACU\",\"companyName\":\"Rising
+        Dragon Acquisition Corp.\",\"filedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$57,500,000\"},{\"dealID\":\"1298719-110389\",\"proposedTickerSymbol\":\"GIGGU\",\"companyName\":\"GigCapital7
+        Corp.\",\"filedDate\":\"6/07/2024\",\"dollarValueOfSharesOffered\":\"$287,500,000\"},{\"dealID\":\"1298497-110365\",\"proposedTickerSymbol\":\"MBAVU\",\"companyName\":\"M3-Brigade
+        Acquisition V Corp.\",\"filedDate\":\"6/05/2024\",\"dollarValueOfSharesOffered\":\"$287,500,000\"}]},\"withdrawn\":{\"asOf\":null,\"headers\":{\"proposedTickerSymbol\":\"Symbol\",\"companyName\":\"Company
+        Name\",\"proposedExchange\":\"Exchange/ Market\",\"sharesOffered\":\"Shares\",\"filedDate\":\"Date
+        Filed\",\"dollarValueOfSharesOffered\":\"Offer Amount\",\"withdrawDate\":\"Date
+        Withdrawn\"},\"rows\":[{\"dealID\":\"1261660-106876\",\"proposedTickerSymbol\":null,\"companyName\":\"F3
+        Platform Biologics INC\",\"proposedExchange\":null,\"sharesOffered\":\"\",\"filedDate\":\"6/20/2023\",\"dollarValueOfSharesOffered\":\"$9,500,000\",\"withdrawDate\":\"6/20/2024\"},{\"dealID\":\"1296670-110170\",\"proposedTickerSymbol\":null,\"companyName\":\"Telix
+        Pharmaceuticals Ltd\",\"proposedExchange\":null,\"sharesOffered\":\"17,000,000\",\"filedDate\":\"5/17/2024\",\"dollarValueOfSharesOffered\":\"$232,058,500\",\"withdrawDate\":\"6/14/2024\"},{\"dealID\":\"1255496-106266\",\"proposedTickerSymbol\":null,\"companyName\":\"XJet
+        Ltd.\",\"proposedExchange\":null,\"sharesOffered\":\"1,600,000\",\"filedDate\":\"4/21/2023\",\"dollarValueOfSharesOffered\":\"$7,360,000\",\"withdrawDate\":\"6/14/2024\"},{\"dealID\":\"1251608-109003\",\"proposedTickerSymbol\":null,\"companyName\":\"Veg
+        House Holdings Inc.\",\"proposedExchange\":null,\"sharesOffered\":\"1,000,000\",\"filedDate\":\"2/05/2024\",\"dollarValueOfSharesOffered\":\"$5,750,000\",\"withdrawDate\":\"6/13/2024\"},{\"dealID\":\"1263209-108566\",\"proposedTickerSymbol\":null,\"companyName\":\"NEONC
+        TECHNOLOGIES HOLDINGS, INC.\",\"proposedExchange\":null,\"sharesOffered\":\"6,000,000\",\"filedDate\":\"12/18/2023\",\"dollarValueOfSharesOffered\":\"$94,875,000\",\"withdrawDate\":\"6/12/2024\"},{\"dealID\":\"1166237-98256\",\"proposedTickerSymbol\":null,\"companyName\":\"Huake
+        Holding Biology Co., LTD\",\"proposedExchange\":null,\"sharesOffered\":\"1,250,000\",\"filedDate\":\"6/29/2021\",\"dollarValueOfSharesOffered\":\"$8,625,000\",\"withdrawDate\":\"6/11/2024\"},{\"dealID\":\"1248315-105623\",\"proposedTickerSymbol\":null,\"companyName\":\"Harden
+        Technologies Inc.\",\"proposedExchange\":null,\"sharesOffered\":\"2,500,000\",\"filedDate\":\"2/14/2023\",\"dollarValueOfSharesOffered\":\"$20,125,000\",\"withdrawDate\":\"6/10/2024\"},{\"dealID\":\"1245502-105413\",\"proposedTickerSymbol\":null,\"companyName\":\"New
+        Ruipeng Pet Group Inc.\",\"proposedExchange\":null,\"sharesOffered\":\"\",\"filedDate\":\"1/23/2023\",\"dollarValueOfSharesOffered\":\"$100,000,000\",\"withdrawDate\":\"6/06/2024\"}]},\"month\":6,\"year\":2024,\"totalResults\":8},\"message\":null,\"status\":{\"rCode\":200,\"bCodeMessage\":null,\"developerMessage\":null}}"
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2694'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:29:45 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:29:45 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=91~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=6cc359cb6e08df18c1ab0e96f6a199b8;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=CD6DE534F2DDDAFCAD0EC294743C77FF~000000000000000000000000000000~YAAQkkd7XDH2WEqQAQAAOnw+WRj/3R5brYda811GOM1BGIG2rKhmDD9NHkUfpBGZMrbZC2xX0NDjV8EVgJLWxU3n1uKLHovm1s+a2rx3cKn80gVoq1udIY1MXJFlfpCeNEh8vtQWhA3BfkSOMGawlxESYSzLI1yfl9zeCKfAN6GWRxKwRo6j6Uvh3kHEYYQhJD5cFJnhbddEWMwT45p7aOXh+NuIhjsBwR8qpbDVQ+6f3Nl71u10orWqv4hhNgceKu9apcy79+hN+j6OzPCLNucMGOQxcfR8Pw1qJMFKJGEGAjXcNcCUWwj8vRXqDlEneF2bNz6h7f4DmrlFj24uJXH1X9aeLoHqw81dxNBvzH+Wu/TTObss3J72Os0/tA==;
+        Domain=.nasdaq.com; Path=/; Expires=Thu, 27 Jun 2024 12:29:45 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '0'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '127'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - 004d6149-2fa8-4e2e-98c9-720f0a91a1da
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

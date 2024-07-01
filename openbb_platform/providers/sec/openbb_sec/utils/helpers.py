@@ -207,7 +207,7 @@ async def download_zip_file(
             finally:
                 await session.close()
     else:
-        response = await amake_request(url, response_callback=callback)  # type: ignore
+        response = await amake_request(url, headers=HEADERS, response_callback=callback)  # type: ignore
 
     try:
         data = read_csv(BytesIO(response), compression="zip", sep="|")  # type: ignore

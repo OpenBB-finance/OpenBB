@@ -143,7 +143,11 @@ def test_sec_form_13FHR_fetcher(credentials=test_credentials):
 def test_sec_compare_company_facts_fetcher(credentials=test_credentials):
     """Test the SEC Compare Company Facts fetcher."""
     params = {
-        "fact": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "symbol": None,
+        "fact": "PaymentsForRepurchaseOfCommonStock",
+        "year": 2023,
+        "fiscal_period": None,
+        "instantaneous": False,
         "use_cache": False,
     }
 

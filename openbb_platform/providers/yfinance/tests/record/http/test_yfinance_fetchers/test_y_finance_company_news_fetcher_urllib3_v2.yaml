@@ -1,0 +1,320 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://fc.yahoo.com/
+  response:
+    body:
+      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n  <head>\n    <meta http-equiv=\"content-type\"
+        content=\"text/html; charset=UTF-8\">\n    <meta charset=\"utf-8\">\n    <title>Yahoo</title>\n
+        \   <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimal-ui\">\n
+        \   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <style>\n
+        \     html {\n          height: 100%;\n      }\n      body {\n          background:
+        #fafafc url(https://s.yimg.com/nn/img/sad-panda-201402200631.png) 50% 50%;\n
+        \         background-size: cover;\n          height: 100%;\n          text-align:
+        center;\n          font: 300 18px \"helvetica neue\", helvetica, verdana,
+        tahoma, arial, sans-serif;\n          margin: 0;\n      }\n      table {\n
+        \         height: 100%;\n          width: 100%;\n          table-layout: fixed;\n
+        \         border-collapse: collapse;\n          border-spacing: 0;\n          border:
+        none;\n      }\n      h1 {\n          font-size: 42px;\n          font-weight:
+        400;\n          color: #400090;\n      }\n      p {\n          color: #1A1A1A;\n
+        \     }\n      #message-1 {\n          font-weight: bold;\n          margin:
+        0;\n      }\n      #message-2 {\n          display: inline-block;\n          *display:
+        inline;\n          zoom: 1;\n          max-width: 17em;\n          _width:
+        17em;\n      }\n      </style>\n      <script>\n      !function(){if(window==window.top){var
+        o=window.location.host;o.endsWith(\".yahoo.com\")&&window.location.replace(\"https://www.yahoo.com/\"),o.endsWith(\".aol.com\")&&window.location.replace(\"https://www.aol.com/\"),o.endsWith(\".huffpost.com\")&&window.location.replace(\"https://www.huffpost.com/\"),o.endsWith(\".engadget.com\")&&window.location.replace(\"https://www.engadget.com/\")}}();\n
+        \     </script>\n  </head>\n  <body>\n  <!-- status code : 404 -->\n  <!--
+        Not Found on Accelerator -->\n  <!-- host machine: e24.ycpi.nya.yahoo.com
+        -->\n  <!-- timestamp: 1719838050.971 -->\n  <!-- url: https://fc.yahoo.com/-->\n
+        \ <script type=\"text/javascript\">\n    function buildUrl(url, parameters){\n
+        \     var qs = [];\n      for(var key in parameters) {\n        var value
+        = parameters[key];\n        qs.push(encodeURIComponent(key) + \"=\" + encodeURIComponent(value));\n
+        \     }\n      url = url + \"?\" + qs.join('&');\n      return url;\n    }\n\n
+        \   function generateBRBMarkup(site) {\n      params.source = 'brb';\n      generateBeaconMarkup(params);\n
+        \     var englishHeader = 'Will be right back...';\n      var englishMessage1
+        = 'Thank you for your patience.';\n      var englishMessage2 = 'Our engineers
+        are working quickly to resolve the issue.';\n      var defaultLogoStyle =
+        '';\n      var siteDataMap = {\n        'default': {\n          logo: 'https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_205x58_frontpage.png',\n
+        \         logoAlt: 'Yahoo Logo',\n          logoStyle: defaultLogoStyle,\n
+        \         header: englishHeader,\n          message1: englishMessage1,\n          message2:
+        englishMessage2\n        }\n      };\n\n      var siteDetails = siteDataMap['default'];\n\n
+        \     document.write('<table><tbody><tr><td>');\n      document.write('<div
+        id=\"content\">');\n      document.write('<img src=\"' + siteDetails['logo']
+        + '\" alt=\"' + siteDetails['logoAlt'] + '\" style=\"' + siteDetails['logoStyle']
+        + '\">');\n      document.write('<h1 style=\"margin-top:20px;\">' + siteDetails['header']
+        + '</h1>');\n      document.write('<p id=\"message-1\">' + siteDetails['message1']
+        + '</p>');\n      document.write('<p id=\"message-2\">' + siteDetails['message2']
+        + '</p>');\n      document.write('</div>');\n      document.write('</td></tr></tbody></table>');\n
+        \   }\n\n    function generateBeaconMarkup(params) {\n        document.write('<img
+        src=\"' + buildUrl('//geo.yahoo.com/b', params) + '\" style=\"display:none;\"
+        width=\"0px\" height=\"0px\"/>');\n        var beacon = new Image();\n        beacon.src
+        = buildUrl('//bcn.fp.yahoo.com/p', params);\n    }\n\n    var hostname = window.location.hostname;\n
+        \   var device = 'desktop';\n    var ynet = ('-' === '1');\n    var time =
+        new Date().getTime();\n    var params = {\n        s: '1197757129',\n        t:
+        time,\n        err_url: document.URL,\n        err: '404',\n        test:
+        '-',\n        ats_host: 'e24.ycpi.nya.yahoo.com',\n        rid: '-',\n        message:
+        'Not Found on Accelerator'\n    };\n\n    if(ynet) {\n        document.write('<div
+        style=\"height: 5px; background-color: red;\"></div>');\n    }\n    generateBRBMarkup(hostname,
+        params);\n\n  </script>\n  <noscript>\n  <table>\n    <tbody>\n      <tr>\n
+        \       <td>\n          <div id=\"englishContent\">\n            <h1 style=\"margin-top:20px;\">Will
+        be right back...</h1>\n            <p id=\"message-1\">Thank you for your
+        patience.</p>\n            <p id=\"message-2\">Our engineers are working quickly
+        to resolve the issue.</p>\n          </div>\n        </td>\n      </tr>\n
+        \   </tbody>\n  </table>\n  </noscript>\n  </body>\n</html>\n"
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Language:
+      - en
+      Content-Length:
+      - '4744'
+      Content-Type:
+      - text/html
+      Date:
+      - Mon, 01 Jul 2024 12:47:30 GMT
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Server:
+      - ATS
+      Set-Cookie:
+      - A3=d=AQABBGKlgmYCEH_iCxMJJu3kuT2m9kyM5HUFEgEBAQH2g2aMZtxH0iMA_eMAAA&S=AQAAAvaMnvspcSwoE1RDplZ0G8Q;
+        Expires=Tue, 1 Jul 2025 18:47:30 GMT; Max-Age=31557600; Domain=.yahoo.com;
+        Path=/; SameSite=None; Secure; HttpOnly
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 404
+      message: Not Found on Accelerator
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query1.finance.yahoo.com/v1/test/getcrumb
+  response:
+    body:
+      string: mDTooHU.00Q
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - private, max-age=60, stale-while-revalidate=30
+      content-length:
+      - '11'
+      content-type:
+      - text/plain;charset=utf-8
+      date:
+      - Mon, 01 Jul 2024 12:47:31 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-external-services-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '1'
+      y-rid:
+      - 0tuhsspj859b3
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=AAPL
+  response:
+    body:
+      string: "{\"explains\":[],\"count\":15,\"quotes\":[{\"exchange\":\"NMS\",\"shortname\":\"Apple
+        Inc.\",\"quoteType\":\"EQUITY\",\"symbol\":\"AAPL\",\"index\":\"quotes\",\"score\":2734600.0,\"typeDisp\":\"Equity\",\"longname\":\"Apple
+        Inc.\",\"exchDisp\":\"NASDAQ\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Consumer
+        Electronics\",\"industryDisp\":\"Consumer Electronics\",\"dispSecIndFlag\":true,\"isYahooFinance\":true},{\"exchange\":\"ASE\",\"shortname\":\"DIREXION
+        DAILY AAPL BULL 1.5X S\",\"quoteType\":\"INDEX\",\"symbol\":\"^AAPU-NV\",\"index\":\"quotes\",\"score\":20008.0,\"typeDisp\":\"Index\",\"longname\":\"DIREXION
+        DAILY AAPL BULL 1.5X S\",\"exchDisp\":\"NYSE MKT\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Jul 2024 170.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL240719C00170000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Jul 2024 170.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Sep 2025 310.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL250919C00310000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Sep 2025 310.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Jan 2025 50.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL250117C00050000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Jan 2025 50.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Jan 2025 205.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL250117C00205000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Jan 2025 205.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Jan 2025 310.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL250117C00310000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Jan 2025 310.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"4a8314a9-2806-3e98-8b84-84e6696166cd\",\"title\":\"Nokia\u2019s
+        latest mega deals aim to reinvent a company associated with mobile phones
+        it no longer sells\",\"publisher\":\"Fortune\",\"link\":\"https://finance.yahoo.com/news/nokia-latest-mega-deals-aim-100601849.html\",\"providerPublishTime\":1719828361,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ppOpJw1JlhZ0gv2VGePAmQ--~B/aD0xMzY1O3c9MjA0ODthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/fortune_175/764aebde5738ac02aaba5642d557f0aa\",\"width\":2048,\"height\":1365,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ACRIDCWtBW4nlpxhMA_JeQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/fortune_175/764aebde5738ac02aaba5642d557f0aa\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AAPL\",\"NOKIA.HE\"]},{\"uuid\":\"15fa5308-7710-3f57-b234-484b28c506c7\",\"title\":\"3
+        Excellent Stocks That Can Beat the S&P 500\",\"publisher\":\"Motley Fool\",\"link\":\"https://finance.yahoo.com/m/15fa5308-7710-3f57-b234-484b28c506c7/3-excellent-stocks-that-can.html\",\"providerPublishTime\":1719828000,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/PAIdx_f0Hd6Rk4ioqDZ84w--~B/aD03ODc7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/77574cc24bf3ab61fb7d2b9aaa20ca9c\",\"width\":1400,\"height\":787,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/eGK3IvwEn_3vgb77Q6PTAQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/77574cc24bf3ab61fb7d2b9aaa20ca9c\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"^GSPC\",\"AAPL\",\"COST\",\"CAVA\"]},{\"uuid\":\"d7686b28-786a-3b54-94a1-5f0f6b98129c\",\"title\":\"Wedbush:
+        Tech stocks should rise another 15% in 2H24\",\"publisher\":\"Investing.com\",\"link\":\"https://finance.yahoo.com/news/wedbush-tech-stocks-rise-another-052940980.html\",\"providerPublishTime\":1719811780,\"type\":\"STORY\",\"relatedTickers\":[\"MSFT\",\"NVDA\",\"AAPL\",\"COMP\"]},{\"uuid\":\"39f03da0-afcd-30b2-b484-641385a06190\",\"title\":\"No
+        Nvidia in Your Portfolio? \u2018You\u2019re Just Toast\u2019\",\"publisher\":\"The
+        Wall Street Journal\",\"link\":\"https://finance.yahoo.com/m/39f03da0-afcd-30b2-b484-641385a06190/no-nvidia-in-your-portfolio%3F.html\",\"providerPublishTime\":1719806640,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ZnH.6.Gvl4cLo8R34ZFGdg--~B/aD02NDA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/wsj.com/29643439c7ac24fec6ce15e1a07797b2\",\"width\":1280,\"height\":640,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/4u7oU40Q5hI9ck3qJIY5pA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/wsj.com/29643439c7ac24fec6ce15e1a07797b2\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\",\"GOOG\",\"AMZN\",\"AAPL\",\"META\"]},{\"uuid\":\"34eb2bd8-8128-3e03-96ed-b89048586a16\",\"title\":\"Apple
+        reportedly working to bring AI to the Vision Pro\",\"publisher\":\"TechCrunch\",\"link\":\"https://finance.yahoo.com/m/34eb2bd8-8128-3e03-96ed-b89048586a16/apple-reportedly-working-to.html\",\"providerPublishTime\":1719768929,\"type\":\"STORY\",\"relatedTickers\":[\"AAPL\"]},{\"uuid\":\"f8af60ac-133d-494e-b956-f08732a73622\",\"title\":\"June
+        jobs report ushers in new quarter during holiday-shortened trading week: What
+        to know this week\",\"publisher\":\"Yahoo Finance\",\"link\":\"https://finance.yahoo.com/news/june-jobs-report-ushers-in-new-quarter-during-holiday-shortened-trading-week-what-to-know-this-week-123222324.html\",\"providerPublishTime\":1719750742,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/tt.2hTASzUgxRexnjIBAHg--~B/aD0yNzU0O3c9NDQwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2023-12/c94b1f60-aa85-11ee-aff5-eabad3a7bbb2\",\"width\":4400,\"height\":2754,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/T1UeygbPZbdQcPr.71Cc5w--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2023-12/c94b1f60-aa85-11ee-aff5-eabad3a7bbb2\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"GOOG\",\"^IXIC\",\"^GSPC\",\"AMZN\",\"AAPL\",\"STZ\",\"META\",\"SPY\",\"QQQ\",\"NVDA\",\"^DJI\"]},{\"uuid\":\"f0e9b0c7-a865-32f0-ad99-aa22af282cc8\",\"title\":\"Prediction:
+        Apple Will Be the World's First $4 Trillion Company\",\"publisher\":\"Motley
+        Fool\",\"link\":\"https://finance.yahoo.com/m/f0e9b0c7-a865-32f0-ad99-aa22af282cc8/prediction%3A-apple-will-be-the.html\",\"providerPublishTime\":1719743400,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/o_v67u6mrhKu1t3TH15EMg--~B/aD00NDE7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/c2f752fecd11b8ca3c0c7991ce05e27a\",\"width\":720,\"height\":441,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/Tcl0uSXyMkqcz3KorHvoIA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/c2f752fecd11b8ca3c0c7991ce05e27a\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AAPL\",\"NVDA\",\"MSFT\"]},{\"uuid\":\"6dc41f53-62e6-4468-b2ce-74f9a3095830\",\"title\":\"Why
+        Nvidia stock is now in treacherous waters: Morning Brief\",\"publisher\":\"Yahoo
+        Finance\",\"link\":\"https://finance.yahoo.com/news/why-nvidia-stock-is-now-in-treacherous-waters-morning-brief-100140753.html\",\"providerPublishTime\":1719741700,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/MRuPtGZ.5X5W7OSXvOuBpQ--~B/aD0zOTg3O3c9NjAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-05/80084530-21a9-11ef-abad-4695da5dc1a4\",\"width\":6000,\"height\":3987,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/QVwkrndMg3x668Ot5SJiow--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-05/80084530-21a9-11ef-abad-4695da5dc1a4\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MU\",\"KO\",\"AMZN\",\"MSFT\",\"CSCO\",\"AAPL\",\"NVDA\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":161,\"timeTakenForQuotes\":521,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0}"
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=120, stale-while-revalidate=180
+      content-encoding:
+      - gzip
+      content-length:
+      - '2571'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 01 Jul 2024 12:47:31 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-search--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '165'
+      y-rid:
+      - 4as99gtj859b3
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=MSFT
+  response:
+    body:
+      string: "{\"explains\":[],\"count\":15,\"quotes\":[{\"exchange\":\"NMS\",\"shortname\":\"Microsoft
+        Corporation\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT\",\"index\":\"quotes\",\"score\":2338700.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
+        Corporation\",\"exchDisp\":\"NASDAQ\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"dispSecIndFlag\":true,\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Jan 2026 370.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116P00370000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Jan 2026 370.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Jan 2026 560.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116C00560000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Jan 2026 560.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Dec 2024 320.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT241220P00320000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Dec 2024 320.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Jul 2024 420.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT240719C00420000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Jul 2024 420.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Nov 2024 210.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT241115C00210000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Nov 2024 210.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Sep 2024 430.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT240920C00430000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Sep 2024 430.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"9fd58388-5ddb-34dd-b5b6-fede22113b84\",\"title\":\"Is
+        Google Stock A Buy With Earnings Due, New CFO Waiting In The Wings?\",\"publisher\":\"Investor's
+        Business Daily\",\"link\":\"https://finance.yahoo.com/m/9fd58388-5ddb-34dd-b5b6-fede22113b84/is-google-stock-a-buy-with.html\",\"providerPublishTime\":1719834976,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/aFcDPgtSTk0D1LSh43hUFA--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/72ff211bba1161357e98bdef17aca65d\",\"width\":1000,\"height\":563,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/_iRGIYqn1_1rgLm.UcIRFw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/72ff211bba1161357e98bdef17aca65d\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"GOOG\",\"MSFT\",\"NVDA\"]},{\"uuid\":\"83b76f5a-8f9c-3410-9556-e2c891923bfe\",\"title\":\"Evercore
+        ISI Adjusts Price Target on Microsoft to $485 From $500\",\"publisher\":\"MT
+        Newswires\",\"link\":\"https://finance.yahoo.com/news/evercore-isi-adjusts-price-target-113040474.html\",\"providerPublishTime\":1719833440,\"type\":\"STORY\",\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"f6d67ef1-e05b-3b03-acfb-6b2a739401c6\",\"title\":\"Market
+        Chatter: Microsoft Informs Texas State Agencies, Universities of Emails Exposed
+        in Russian Hack\",\"publisher\":\"MT Newswires\",\"link\":\"https://finance.yahoo.com/news/market-chatter-microsoft-informs-texas-104108816.html\",\"providerPublishTime\":1719830468,\"type\":\"STORY\",\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"d3d379f1-35af-3bbb-9bcf-6f81ad0b5aad\",\"title\":\"AI-focused
+        tech firms see big jump in market cap in June\",\"publisher\":\"Reuters\",\"link\":\"https://finance.yahoo.com/news/ai-focused-tech-firms-see-102644400.html\",\"providerPublishTime\":1719829604,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/KL1YaZdQ3rdinAXnQIexZg--~B/aD01MDA7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/reuters-finance.com/63446681414d26c51e4ad5d0a2e4c065\",\"width\":800,\"height\":500,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/Uc8sn7D98fpF4nsKiEPR0g--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/reuters-finance.com/63446681414d26c51e4ad5d0a2e4c065\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"NVDA\",\"MSFT\"]},{\"uuid\":\"692f7d43-4674-3b4f-be61-4024b4c33e70\",\"title\":\"You
+        Won't Want to Miss This Once-in-a-Generation AI-Powered Opportunity\",\"publisher\":\"Motley
+        Fool\",\"link\":\"https://finance.yahoo.com/m/692f7d43-4674-3b4f-be61-4024b4c33e70/you-won%27t-want-to-miss-this.html\",\"providerPublishTime\":1719829320,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/vrzD9j_ZS7Cs2VGnMzfMxQ--~B/aD0xNDE0O3c9MjEyMTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/4e362fb9d5a295077769545fe289b663\",\"width\":2121,\"height\":1414,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/j0F0I0MEVuZYvTTzyFK20A--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/4e362fb9d5a295077769545fe289b663\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"BEP\",\"MSFT\"]},{\"uuid\":\"d7686b28-786a-3b54-94a1-5f0f6b98129c\",\"title\":\"Wedbush:
+        Tech stocks should rise another 15% in 2H24\",\"publisher\":\"Investing.com\",\"link\":\"https://finance.yahoo.com/news/wedbush-tech-stocks-rise-another-052940980.html\",\"providerPublishTime\":1719811780,\"type\":\"STORY\",\"relatedTickers\":[\"MSFT\",\"NVDA\",\"AAPL\",\"COMP\"]},{\"uuid\":\"39f03da0-afcd-30b2-b484-641385a06190\",\"title\":\"No
+        Nvidia in Your Portfolio? \u2018You\u2019re Just Toast\u2019\",\"publisher\":\"The
+        Wall Street Journal\",\"link\":\"https://finance.yahoo.com/m/39f03da0-afcd-30b2-b484-641385a06190/no-nvidia-in-your-portfolio%3F.html\",\"providerPublishTime\":1719806640,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ZnH.6.Gvl4cLo8R34ZFGdg--~B/aD02NDA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/wsj.com/29643439c7ac24fec6ce15e1a07797b2\",\"width\":1280,\"height\":640,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/4u7oU40Q5hI9ck3qJIY5pA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/wsj.com/29643439c7ac24fec6ce15e1a07797b2\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\",\"GOOG\",\"AMZN\",\"AAPL\",\"META\"]},{\"uuid\":\"f28afc51-3701-3177-b6ea-292ccdc05509\",\"title\":\"World\u2019s
+        Best Company According to the Media\",\"publisher\":\"Insider Monkey\",\"link\":\"https://finance.yahoo.com/news/world-best-company-according-media-204038433.html\",\"providerPublishTime\":1719780038,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/j0c2CRqJWIg_ql28R169Lg--~B/aD0zMDI0O3c9NDAzMjthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/insidermonkey.com/14fafcbf9feb1cedefebb6ef54d41032\",\"width\":4032,\"height\":3024,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ECg1NnmdXcDnbdEWlfqYjA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/14fafcbf9feb1cedefebb6ef54d41032\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":96,\"timeTakenForQuotes\":471,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0}"
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=120, stale-while-revalidate=180
+      content-encoding:
+      - gzip
+      content-length:
+      - '2384'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 01 Jul 2024 12:47:31 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-search--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '98'
+      y-rid:
+      - 1c8r0olj859b4
+    status:
+      code: 200
+      message: OK
+version: 1

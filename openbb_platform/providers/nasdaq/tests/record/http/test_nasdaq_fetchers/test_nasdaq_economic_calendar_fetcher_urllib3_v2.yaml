@@ -1,0 +1,2044 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/economicevents?date=2024-06-03
+  response:
+    body:
+      string: "{\"data\":{\"asOf\":null,\"headers\":{\"gmt\":\"Time\",\"country\":\"Country\",\"eventName\":\"Event\",\"actual\":\"Actual\",\"consensus\":\"Consensus\",\"previous\":\"Previous\",\"description\":\"Description\"},\"rows\":[{\"gmt\":\"01:00\",\"country\":\"India\",\"eventName\":\"HSBC
+        India Manufacturing PMI\",\"actual\":\"57.5\",\"consensus\":\"58.4\",\"previous\":\"58.4\",\"description\":\"The
+        Purchasing Managers Index (PMI) is a composite indicator designed to provide
+        an overall view of activity in the manufacturing sector and acts as an leading
+        indicator for the whole economy. The PMI is a composite index based on the
+        diffusion indexes for the following five indicators and their weight: New
+        orders - 0.3, Output - 0.25 , Employment - 0.2, Suppliers delivery times -
+        0.15 and Stock of items purchased - 0.1 with the Delivery times index inverted
+        so that it moves in a comparable direction. When PMI is below 50.0 this indicates
+        that the manufacturing economy is declining and a value above 50.0 indicates
+        an expansion of the manufacturing economy. The individual survey indexes have
+        been seasonally adjusted using the US Bureau of Census X-11 programme. The
+        seasonally adjusted series are then used to calculate the seasonally adjusted
+        PMI. &lt;/BR&gt;A higher than expected reading should be taken as positive/bullish
+        for the INR , while a lower than expected reading should be taken as negative/bearish
+        for the INR.\"},{\"gmt\":\"02:00\",\"country\":\"Russia\",\"eventName\":\"Russian
+        S&P Global Manufacturing PMI\",\"actual\":\"54.4\",\"consensus\":\" \",\"previous\":\"54.3\",\"description\":\"The
+        Russian HSBC Manufacturing PMI is a composite indicator designed to provide
+        an overall view of activity in the manufacturing sector and acts as an leading
+        indicator for the whole economy. When the PMI is below 50.0 this indicates
+        that the manufacturing economy is declining and a value above 50.0 indicates
+        an expansion of the manufacturing economy.&lt;br/&gt;&lt;br/&gt;\\r\\nFlash
+        figures are released approximately 6 business days prior to the end of the
+        month. Final figures overwrite the flash figures upon release and are in turn
+        overwritten as the next Flash is available. &lt;br/&gt;&lt;br/&gt;\\r\\nThe
+        HSBC Manufacturing PMI is concluded from a monthly survey of hundreds of purchasing
+        managers, which asks respondents to rate the relative level of business conditions
+        including employment, production, new orders, prices, supplier deliveries,
+        and inventories.&lt;br/&gt;&lt;br/&gt;A higher than expected reading should
+        be taken as positive/bullish for the RUB , while a lower than expected reading
+        should be taken as negative/bearish for the RUB.\"},{\"gmt\":\"02:30\",\"country\":\"Australia\",\"eventName\":\"Commodity
+        Prices\",\"actual\":\"-4.2%\",\"consensus\":\" \",\"previous\":\"-12.1%\",\"description\":\"Commodity
+        Prices measures the change in the selling price of exported commodities.\\r\\nThe
+        commodity sector accounts for over half of Australia&#039;s export income.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the AUD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the AUD.\"},{\"gmt\":\"03:15\",\"country\":\"Spain\",\"eventName\":\"HCOB
+        Spain Manufacturing PMI\",\"actual\":\"54.0\",\"consensus\":\"52.5\",\"previous\":\"52.2\",\"description\":\"The
+        Spanish Manufacturing PMI is a composite indicator designed to provide an
+        overall view of activity in the manufacturing sector and acts as an leading
+        indicator for the whole economy.When PMI is below 50.0 this indicates that
+        the manufacturing economy is declining and a value above 50.0 indicates an
+        expansion of the manufacturing economy. The individual survey indexes have
+        been seasonally adjusted using the US Bureau of Census X-11 program. The seasonally
+        adjusted series are then used to calculate the seasonally adjusted PMI.&lt;/BR&gt;A
+        higher than expected reading should be taken as positive/bullish for the EUR
+        , while a lower than expected reading should be taken as negative/bearish
+        for the EUR.\"},{\"gmt\":\"03:30\",\"country\":\"Switzerland\",\"eventName\":\"procure.ch
+        PMI\",\"actual\":\"46.4\",\"consensus\":\"45.4\",\"previous\":\"41.4\",\"description\":\"procure.ch
+        Purchasing Manager&#039;s Index (PMI) measures the activity level of purchasing
+        managers in the manufacturing sector. A reading above 50 indicates expansion
+        in the sector; a reading below 50 indicates contraction. Traders watch these
+        surveys closely as purchasing managers usually have early access to data about
+        their company\u2019s performance, which can be a leading indicator of overall
+        economic performance.\\r\\n\\r\\nA higher than expected reading should be
+        taken as positive/bullish for the CHF, while a lower than expected reading
+        should be taken as negative/bearish for the CHF.\"},{\"gmt\":\"03:45\",\"country\":\"Italy\",\"eventName\":\"HCOB
+        Italy Manufacturing PMI\",\"actual\":\"45.6\",\"consensus\":\"47.9\",\"previous\":\"47.3\",\"description\":\"The
+        Italian Manufacturing Purchasing Managers&#039; Index (PMI) measures the activity
+        level of purchasing managers in the manufacturing sector. A reading above
+        50 indicates expansion in the sector; below indicates contraction. Traders
+        watch these surveys closely as purchasing managers usually have early access
+        to data about their company\u2019s performance, which can be a leading indicator
+        of overall economic performance.\\r\\n\\r\\nA higher than expected reading
+        should be taken as positive/bullish for the EUR, while a lower than expected
+        reading should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"03:50\",\"country\":\"France\",\"eventName\":\"HCOB
+        France Manufacturing PMI\",\"actual\":\"46.4\",\"consensus\":\"46.7\",\"previous\":\"45.3\",\"description\":\"The
+        French Manufacturing Purchasing Manager&#039;s Index (PMI) measures the activity
+        level of purchasing managers in the manufacturing sector. A reading above
+        50 indicates expansion in the sector; a reading below 50 indicates contraction.
+        Traders watch these surveys closely as purchasing managers usually have early
+        access to data about their company\u2019s performance, which can be a leading
+        indicator of overall economic performance.&lt;BR/&gt;&lt;BR/&gt;A higher than
+        expected reading should be taken as positive/bullish for the EUR, while a
+        lower than expected reading should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"03:55\",\"country\":\"Germany\",\"eventName\":\"HCOB
+        Germany Manufacturing PMI\",\"actual\":\"45.4\",\"consensus\":\"45.4\",\"previous\":\"42.5\",\"description\":\"The
+        German Manufacturing Purchasing Managers&#039; Index (PMI) measures the activity
+        level of purchasing managers in the manufacturing sector. A reading above
+        50 indicates expansion in the sector; below indicates contraction. Traders
+        watch these surveys closely as purchasing managers usually have early access
+        to data about their company\u2019s performance, which can be a leading indicator
+        of overall economic performance.&lt;BR/&gt;&lt;BR/&gt;A higher than expected
+        reading should be taken as positive/bullish for the EUR, while a lower than
+        expected reading should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"04:00\",\"country\":\"Euro
+        Zone\",\"eventName\":\"HCOB Eurozone Manufacturing PMI\",\"actual\":\"47.3\",\"consensus\":\"47.4\",\"previous\":\"45.7\",\"description\":\"The
+        Manufacturing Purchasing Managers&#039; Index (PMI) measures the activity
+        level of purchasing managers in the manufacturing sector. A reading above
+        50 indicates expansion in the sector; below 50 indicates contraction. Traders
+        watch these surveys closely as purchasing managers usually have early access
+        to data about their company\u2019s performance, which can be a leading indicator
+        of overall economic performance.&lt;BR/&gt;&lt;BR/&gt;A higher than expected
+        reading should be taken as positive/bullish for the EUR, while a lower than
+        expected reading should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"04:30\",\"country\":\"United
+        Kingdom\",\"eventName\":\"S&P Global/CIPS UK Manufacturing PMI\",\"actual\":\"51.2\",\"consensus\":\"51.3\",\"previous\":\"49.1\",\"description\":\"The
+        Manufacturing Purchasing Managers&#039; Index (PMI) measures the activity
+        level of purchasing managers in the manufacturing sector. A reading above
+        50 indicates expansion in the sector; below 50 indicates contraction. Traders
+        watch these surveys closely as purchasing managers usually have early access
+        to data about their company\u2019s performance, which can be a leading indicator
+        of overall economic performance.&lt;BR/&gt;&lt;BR/&gt;A higher than expected
+        reading should be taken as positive/bullish for the GBP, while a lower than
+        expected reading should be taken as negative/bearish for the GBP.\"},{\"gmt\":\"06:00\",\"country\":\"Spain\",\"eventName\":\"Car
+        Registration\",\"actual\":\"3.40%\",\"consensus\":\" \",\"previous\":\"23.10%\",\"description\":\"The
+        car registrations published by the European Automobile Manufacturers\u2019
+        Association (ACEA) describe the number of new passenger car registrations
+        in the United Kingdom. If the number increases, this is a sign of increasing
+        consumption. At the same time, British carmakers are earning more money, leading
+        to rising profits. This generally boosts the economy - and vice versa. If
+        car registrations are higher than expected, this usually leads to a rising
+        pound (GBP) exchange rate on the currency markets. Conversely, the pound exchange
+        rate (GBP) falls if new registrations are lower than expected or if expectations
+        are missed.\"},{\"gmt\":\"06:00\",\"country\":\"Spain\",\"eventName\":\"Car
+        Registration\",\"actual\":\"3.40%\",\"consensus\":\" \",\"previous\":\"-3.00%\",\"description\":\"The
+        car registrations published by the European Automobile Manufacturers\u2019
+        Association (ACEA) describe the number of new passenger car registrations
+        in the United Kingdom. If the number increases, this is a sign of increasing
+        consumption. At the same time, British carmakers are earning more money, leading
+        to rising profits. This generally boosts the economy - and vice versa. If
+        car registrations are higher than expected, this usually leads to a rising
+        pound (GBP) exchange rate on the currency markets. Conversely, the pound exchange
+        rate (GBP) falls if new registrations are lower than expected or if expectations
+        are missed.\"},{\"gmt\":\"07:25\",\"country\":\"Brazil\",\"eventName\":\"BCB
+        Focus Market Readout\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"&nbsp;\",\"description\":\"The
+        Focus Market Report provides weekly mean market expectations for inflation
+        over following month, 12 months, and following year as well as expectations
+        for Selic target rate, real GDP growth, net public sector debt/GDP, industrial
+        production growth, current account, and trade balance, collected from over
+        130 banks, brokers, and funds managers.\"},{\"gmt\":\"08:00\",\"country\":\"South
+        Africa\",\"eventName\":\"Total Vehicle Sales\",\"actual\":\"-14.20%\",\"consensus\":\"
+        \",\"previous\":\"2.20%\",\"description\":\"Retail sales data represents total
+        consumer purchase from retail stores. It provides valuable information about
+        consumer spending which makes up the consumption part of GDP. The most volatile
+        components like autos, gas prices and food prices are often removed from the
+        report to show more underlying demand patterns as changes in sales in these
+        categories are frequently a result of price changes. It is not adjusted for
+        inflation. Spending on services is not included.Rising retail sales indicate
+        stronger economic growth. However, if the increase is larger than forecast,
+        it may be inflationary.\"},{\"gmt\":\"08:00\",\"country\":\"South Africa\",\"eventName\":\"Total
+        Vehicle Sales\",\"actual\":\"37.11K\",\"consensus\":\" \",\"previous\":\"38.06K\",\"description\":\"Retail
+        sales data represents total consumer purchase from retail stores. It provides
+        valuable information about consumer spending which makes up the consumption
+        part of GDP. The most volatile components like autos, gas prices and food
+        prices are often removed from the report to show more underlying demand patterns
+        as changes in sales in these categories are frequently a result of price changes.
+        It is not adjusted for inflation. Spending on services is not included.Rising
+        retail sales indicate stronger economic growth. However, if the increase is
+        larger than forecast, it may be inflationary.\"},{\"gmt\":\"09:00\",\"country\":\"France\",\"eventName\":\"French
+        12-Month BTF Auction\",\"actual\":\"3.487%\",\"consensus\":\" \",\"previous\":\"3.503%\",\"description\":\"The
+        figures displayed in the calendar represent the average yield on the Bons
+        du Tr\xE9sor \xE0 taux fixe or BTF auctioned. &lt;BR/&gt;&lt;BR/&gt;French
+        BTF bills have maturities of up to 1 year. Governments issue treasuries to
+        borrow money to cover the gap between the amount they receive in taxes and
+        the amount they spend to refinance existing debt and/or to raise capital.&lt;BR/&gt;&lt;BR/&gt;The
+        yield on the BTF represents the return an investor will receive by holding
+        the treasury for its entire duration. All bidders receive the same rate at
+        the highest accepted bid.&lt;BR/&gt;&lt;BR/&gt;Yield fluctuations should be
+        monitored closely as an indicator of the government debt situation. Investors
+        compare the average rate at auction to the rate at previous auctions of the
+        same security.\"},{\"gmt\":\"09:00\",\"country\":\"France\",\"eventName\":\"French
+        3-Month BTF Auction\",\"actual\":\"3.686%\",\"consensus\":\" \",\"previous\":\"3.697%\",\"description\":\"The
+        figures displayed in the calendar represent the average yield on the Bons
+        du Tr\xE9sor \xE0 taux fixe or BTF auctioned. &lt;BR/&gt;&lt;BR/&gt;French
+        BTF bills have maturities of up to 1 year. Governments issue treasuries to
+        borrow money to cover the gap between the amount they receive in taxes and
+        the amount they spend to refinance existing debt and/or to raise capital.&lt;BR/&gt;&lt;BR/&gt;The
+        yield on the BTF represents the return an investor will receive by holding
+        the treasury for its entire duration. All bidders receive the same rate at
+        the highest accepted bid.&lt;BR/&gt;&lt;BR/&gt;Yield fluctuations should be
+        monitored closely as an indicator of the government debt situation. Investors
+        compare the average rate at auction to the rate at previous auctions of the
+        same security.\"},{\"gmt\":\"09:00\",\"country\":\"France\",\"eventName\":\"French
+        6-Month BTF Auction\",\"actual\":\"3.600%\",\"consensus\":\" \",\"previous\":\"3.657%\",\"description\":\"The
+        figures displayed in the calendar represent the average yield on the Bons
+        du Tr\xE9sor \xE0 taux fixe or BTF auctioned. &lt;BR/&gt;&lt;BR/&gt;French
+        BTF bills have maturities of up to 1 year. Governments issue treasuries to
+        borrow money to cover the gap between the amount they receive in taxes and
+        the amount they spend to refinance existing debt and/or to raise capital.&lt;BR/&gt;&lt;BR/&gt;The
+        yield on the BTF represents the return an investor will receive by holding
+        the treasury for its entire duration. All bidders receive the same rate at
+        the highest accepted bid.&lt;BR/&gt;&lt;BR/&gt;Yield fluctuations should be
+        monitored closely as an indicator of the government debt situation. Investors
+        compare the average rate at auction to the rate at previous auctions of the
+        same security.\"},{\"gmt\":\"09:00\",\"country\":\"Brazil\",\"eventName\":\"S&P
+        Global Manufacturing PMI\",\"actual\":\"52.1\",\"consensus\":\" \",\"previous\":\"55.9\",\"description\":\"The
+        HSBC Brazil Manufacturing PMI is based on data compiled from monthly replies
+        to questionnaires sent to purchasing executives in around 400 manufacturing
+        companies. The panel is stratified geographically and by Standard Industrial
+        Classification (SIC) group, based on industry contribution to Brazilian GDP.
+        \\r\\nSurvey responses reflect the change, if any, in the current month compared
+        to the previous month based on data collected mid-month.An index reading above
+        50 indicates an overall increase in that variable, below 50 an overall decrease.\"},{\"gmt\":\"09:00\",\"country\":\"Singapore\",\"eventName\":\"S&P
+        Global Singapore PMI\",\"actual\":\"50.6\",\"consensus\":\" \",\"previous\":\"50.5\",\"description\":\"The
+        Manufacturing Purchasing Managers Index (PMI) measures the activity level
+        of purchasing managers in the manufacturing sector. A reading above 50 indicates
+        expansion in the sector; below 50 indicates contraction. Traders watch these
+        surveys closely as purchasing managers usually have early access to data about
+        their company&#039;s performance, which can be a leading indicator of overall
+        economic performance.&lt;/BR&gt;A higher than expected reading should be taken
+        as positive/bullish for the SGD , while a lower than expected reading should
+        be taken as negative/bearish for the SGD.\"},{\"gmt\":\"09:30\",\"country\":\"Canada\",\"eventName\":\"S&P
+        Global Canada Manufacturing PMI\",\"actual\":\"49.3\",\"consensus\":\"50.2\",\"previous\":\"49.4\",\"description\":\"The
+        Index (PMI) measures the activity level of purchasing managers in the services
+        sector. A reading above 50 indicates expansion in the manufacturing sector;
+        a reading below 50 indicates contraction.\\r\\nA higher than expected reading
+        should be taken as positive/bullish for the CAD , while a lower than expected
+        reading should be taken as negative/bearish for the CAD.\"},{\"gmt\":\"09:45\",\"country\":\"United
+        States\",\"eventName\":\"S&P Global US Manufacturing PMI\",\"actual\":\"51.3\",\"consensus\":\"50.9\",\"previous\":\"50.0\",\"description\":\"The
+        Manufacturing Purchasing Managers&#039; Index (PMI) measures the activity
+        level of purchasing managers in the manufacturing sector. A reading above
+        50 indicates expansion in the sector; below 50 indicates contraction. Traders
+        watch these surveys closely as purchasing managers usually have early access
+        to data about their company\u2019s performance, which can be a leading indicator
+        of overall economic performance.\\r\\n\\r\\nA higher than expected reading
+        should be taken as positive/bullish for the USD while a lower than expected
+        reading should be taken as negative/bearish for the USD.\"},{\"gmt\":\"10:00\",\"country\":\"United
+        States\",\"eventName\":\"Construction Spending\",\"actual\":\"-0.1%\",\"consensus\":\"0.2%\",\"previous\":\"-0.2%\",\"description\":\"The
+        Construction Spending index measures the change in the total amount spent
+        on construction. The data is subject to large revisions and as such, this
+        report rarely has any market impact.&lt;BR/&gt;&lt;BR/&gt;A higher than expected
+        reading should be taken as positive/bullish for the USD, while a lower than
+        expected reading should be taken as negative/bearish for the USD.\"},{\"gmt\":\"10:00\",\"country\":\"United
+        States\",\"eventName\":\"ISM Manufacturing Employment\",\"actual\":\"51.1\",\"consensus\":\"48.5\",\"previous\":\"48.6\",\"description\":\"The
+        Institute of Supply Management (ISM) Manufacturing Purchasing Managers Index
+        (PMI) Report on Business is based on data compiled from monthly replies to
+        questions asked of purchasing and supply executives in over 400 industrial
+        companies. For each of the indicators measured (New Orders, Backlog of Orders,
+        New Export Orders, Imports, Production, Supplier Deliveries, Inventories,
+        Customers Inventories, Employment, and Prices), this report shows the percentage
+        reporting each response, the net difference between the number of responses
+        in the positive economic direction and the negative economic direction and
+        the diffusion index. Responses are raw data and are never changed. &lt;br/&gt;&lt;br/&gt;The
+        diffusion index includes the percent of positive responses plus one-half of
+        those responding the same (considered positive). The resulting single index
+        number is then seasonally adjusted to allow for the effects of repetitive
+        intra-year variations resulting primarily from normal differences in weather
+        conditions, various institutional arrangements, and differences attributable
+        to non-moveable holidays. All seasonal adjustment factors are supplied by
+        the U.S. Department of Commerce and are subject annually to relatively minor
+        changes when conditions warrant them. &lt;BR/&gt;&lt;BR/&gt;The PMI is a composite
+        index based on the seasonally adjusted diffusion indices for five of the indicators
+        with varying weights: New Orders --30% Production --25% Employment --20% Supplier
+        Deliveries --15% and Inventories -- 10%. &lt;br/&gt;&lt;br/&gt;A higher than
+        expected reading should be taken as positive/bullish for the USD, while a
+        lower than expected reading should be taken as negative/bearish for the USD.\"},{\"gmt\":\"10:00\",\"country\":\"United
+        States\",\"eventName\":\"ISM Manufacturing New Orders Index\",\"actual\":\"45.4\",\"consensus\":\"49.4\",\"previous\":\"49.1\",\"description\":\"The
+        Manufacturing ISM Report On Business is based on data compiled from monthly
+        replies to questions asked of purchasing and supply executives in over 400
+        industrial companies.For each of the indicators measured (New Orders, Backlog
+        of Orders, New Export Orders, Imports, Production, Supplier Deliveries, Inventories,
+        Customers Inventories, Employment, and Prices), this report shows the percentage
+        reporting each response,the net difference between the number of responses
+        in the positive economic directionand the negative economic direction and
+        the diffusion index. Responses are raw data and are never changed. The diffusion
+        index includes the percent of positive responses plus one-half of those responding
+        the same (considered positive). The resulting single index number is then
+        seasonally adjusted to allow for the effects of repetitive intra-year variations
+        resulting primarily from normal differences in weather conditions, various
+        institutional arrangements, and differences attributable to non-moveable holidays.
+        All seasonal adjustment factors are supplied by the U.S. Department of Commerce
+        and are subject annually to relatively minor changes when conditions warrant
+        them. The PMI is a composite index based on the seasonally adjusted diffusion
+        indices for five of the indicators with varying weights: New Orders --30%
+        Production --25% Employment --20% Supplier Deliveries --15% and Inventories
+        -- 10%.\"},{\"gmt\":\"10:00\",\"country\":\"United States\",\"eventName\":\"ISM
+        Manufacturing PMI\",\"actual\":\"48.7\",\"consensus\":\"49.8\",\"previous\":\"49.2\",\"description\":\"The
+        Institute of Supply Management (ISM) Manufacturing Purchasing Managers Index
+        (PMI) Report on Business is based on data compiled from monthly replies to
+        questions asked of purchasing and supply executives in over 400 industrial
+        companies. For each of the indicators measured (New Orders, Backlog of Orders,
+        New Export Orders, Imports, Production, Supplier Deliveries, Inventories,
+        Customers Inventories, Employment, and Prices), this report shows the percentage
+        reporting each response, the net difference between the number of responses
+        in the positive economic direction and the negative economic direction and
+        the diffusion index. Responses are raw data and are never changed. &lt;br/&gt;&lt;br/&gt;The
+        diffusion index includes the percent of positive responses plus one-half of
+        those responding the same (considered positive). The resulting single index
+        number is then seasonally adjusted to allow for the effects of repetitive
+        intra-year variations resulting primarily from normal differences in weather
+        conditions, various institutional arrangements, and differences attributable
+        to non-moveable holidays. All seasonal adjustment factors are supplied by
+        the U.S. Department of Commerce and are subject annually to relatively minor
+        changes when conditions warrant them. &lt;BR/&gt;&lt;BR/&gt;The PMI is a composite
+        index based on the seasonally adjusted diffusion indices for five of the indicators
+        with varying weights: New Orders --30% Production --25% Employment --20% Supplier
+        Deliveries --15% and Inventories -- 10%. &lt;br/&gt;&lt;br/&gt;A higher than
+        expected reading should be taken as positive/bullish for the USD, while a
+        lower than expected reading should be taken as negative/bearish for the USD.\"},{\"gmt\":\"10:00\",\"country\":\"United
+        States\",\"eventName\":\"ISM Manufacturing Prices\",\"actual\":\"57.0\",\"consensus\":\"60.0\",\"previous\":\"60.9\",\"description\":\"The
+        Institute of Supply Management (ISM) Manufacturing Purchasing Managers Index
+        (PMI) Report on Business is based on data compiled from monthly replies to
+        questions asked of purchasing and supply executives in over 400 industrial
+        companies. For each of the indicators measured (New Orders, Backlog of Orders,
+        New Export Orders, Imports, Production, Supplier Deliveries, Inventories,
+        Customers Inventories, Employment, and Prices), this report shows the percentage
+        reporting each response, the net difference between the number of responses
+        in the positive economic direction and the negative economic direction and
+        the diffusion index. Responses are raw data and are never changed. &lt;br/&gt;&lt;br/&gt;The
+        diffusion index includes the percent of positive responses plus one-half of
+        those responding the same (considered positive). The resulting single index
+        number is then seasonally adjusted to allow for the effects of repetitive
+        intra-year variations resulting primarily from normal differences in weather
+        conditions, various institutional arrangements, and differences attributable
+        to non-moveable holidays. All seasonal adjustment factors are supplied by
+        the U.S. Department of Commerce and are subject annually to relatively minor
+        changes when conditions warrant them. &lt;BR/&gt;&lt;BR/&gt;The PMI is a composite
+        index based on the seasonally adjusted diffusion indices for five of the indicators
+        with varying weights: New Orders --30% Production --25% Employment --20% Supplier
+        Deliveries --15% and Inventories -- 10%. &lt;br/&gt;&lt;br/&gt;The Prices
+        Paid subcategory is a diffusion index calculated by adding the percent of
+        responses indicating they paid more for inputs plus one-half of those responding
+        that they paid the same for inputs. The resulting single index number is then
+        seasonally adjusted.<BR/><BR/>The Prices Paid diffusion index is one of a
+        number of indicators pointing to the degree of inflationary pressures in the
+        economy. <br/><br/>\\r\\nA higher than expected reading should be taken as
+        positive/bullish for the USD, while a lower than expected reading should be
+        taken as negative/bearish for the USD.\"},{\"gmt\":\"11:30\",\"country\":\"United
+        States\",\"eventName\":\"3-Month Bill Auction\",\"actual\":\"5.250%\",\"consensus\":\"
+        \",\"previous\":\"5.255%\",\"description\":\"The figures displayed in the
+        calendar represent the rate on the Treasury Bill auctioned.&lt;BR/&gt;&lt;BR/&gt;U.S.
+        Treasury Bills have maturities of a few days to one year.  Governments issue
+        treasuries to borrow money to cover the gap between the amount they receive
+        in taxes and the amount they spend to refinance existing debt and/or to raise
+        capital. The rate on a Treasury Bill represents the return an investor will
+        receive by holding the bill for its entire duration. All bidders receive the
+        same rate at the highest accepted bid.&lt;BR/&gt;&lt;BR/&gt;Yield fluctuations
+        should be monitored closely as an indicator of the government debt situation.
+        Investors compare the average rate at auction to the rate at previous auctions
+        of the same security.\"},{\"gmt\":\"11:30\",\"country\":\"United States\",\"eventName\":\"6-Month
+        Bill Auction\",\"actual\":\"5.155%\",\"consensus\":\" \",\"previous\":\"5.170%\",\"description\":\"The
+        figures displayed in the calendar represent the rate on the Treasury Bill
+        auctioned.&lt;BR/&gt;&lt;BR/&gt;U.S. Treasury Bills have maturities of a few
+        days to one year. Governments issue treasuries to borrow money to cover the
+        gap between the amount they receive in taxes and the amount they spend to
+        refinance existing debt and/or to raise capital. The rate on a Treasury Bill
+        represents the return an investor will receive by holding the bill for its
+        entire duration. All bidders receive the same rate at the highest accepted
+        bid.&lt;BR/&gt;&lt;BR/&gt;Yield fluctuations should be monitored closely as
+        an indicator of the government debt situation. Investors compare the average
+        rate at auction to the rate at previous auctions of the same security.\"},{\"gmt\":\"12:00\",\"country\":\"United
+        States\",\"eventName\":\"Atlanta Fed GDPNow\",\"actual\":\"1.8%\",\"consensus\":\"2.7%\",\"previous\":\"2.7%\",\"description\":\"\"},{\"gmt\":\"19:00\",\"country\":\"South
+        Korea\",\"eventName\":\"CPI\",\"actual\":\"2.7%\",\"consensus\":\"2.8%\",\"previous\":\"2.9%\",\"description\":\"The
+        Consumer Price Index (CPI) measures the change in the price of goods and services
+        from the perspective of the consumer. It is a key way to measure changes in
+        purchasing trends and <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the KRW,
+        while a lower than expected reading should be taken as negative/bearish for
+        the KRW.\"},{\"gmt\":\"19:00\",\"country\":\"South Korea\",\"eventName\":\"CPI\",\"actual\":\"0.1%\",\"consensus\":\"0.2%\",\"previous\":\"0.0%\",\"description\":\"The
+        Consumer Price Index (CPI) measures the change in the price of goods and services
+        from the perspective of the consumer. It is a key way to measure changes in
+        purchasing trends and <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the KRW,
+        while a lower than expected reading should be taken as negative/bearish for
+        the KRW.\"},{\"gmt\":\"19:01\",\"country\":\"United Kingdom\",\"eventName\":\"BRC
+        Retail Sales Monitor\",\"actual\":\"0.4%\",\"consensus\":\"1.2%\",\"previous\":\"-4.4%\",\"description\":\"The
+        British Retail Consortium (BRC) Retail Sales Monitor measures the change in
+        the value of same-store sales in BRC-member retail outlets in the U.K.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the GBP,
+        while a lower than expected reading should be taken as negative/bearish for
+        the GBP.\"},{\"gmt\":\"19:50\",\"country\":\"Japan\",\"eventName\":\"Monetary
+        Base\",\"actual\":\"0.7%\",\"consensus\":\"2.2%\",\"previous\":\"1.8%\",\"description\":\"Monetary
+        Base measures the change in the total amount of domestic currency in circulation
+        and current account deposits held at the Bank of Japan. An increasing supply
+        of money leads to additional spending, which in turn leads to inflation.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Business
+        inventories\",\"actual\":\"1.3%\",\"consensus\":\" \",\"previous\":\"-1.6%\",\"description\":\"Total
+        business inventories are defined as the amount of goods kept by retailers,
+        wholesalers and manufacturers in the stockrooms. Too much inventories can
+        cause economic downturn. However, a certain level is necessary to be able
+        to continue production and sell goods. A lower than expected number should
+        be taken as positive to the AUD, while a higher than expected number as negative.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Company
+        Gross Operating Profits\",\"actual\":\"-2.5%\",\"consensus\":\"-0.9%\",\"previous\":\"7.1%\",\"description\":\"Company
+        Gross Operating Profits measures the change in the total value of profits
+        earned by private, non-financial corporations, with more than 20 employees.\\r\\nIt
+        is a leading indicator of business conditions and economic health. \\r\\n&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the AUD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the AUD.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Company
+        Profits Pre-Tax\",\"actual\":\"-8.4%\",\"consensus\":\" \",\"previous\":\"8.3%\",\"description\":\"The
+        series have been compiled from data collected by the Australian Bureau of
+        Statistics (ABS) in its Quarterly Business Indicators Survey. The survey collects
+        data from private businesses only. The scope excludes public sector business
+        units (i.e. all departments, authorities and other organisations owned \\r\\nand
+        controlled by Commonwealth, State and Local Government). The statistics in
+        this publication exclude non-employing businesses. Company profits before
+        income tax include net operating profit or loss before income tax and extraordinary
+        items and is net of capital profits or losses arising from the sale of \\r\\nbusinesses'
+        own capital goods and dividends received. Profits data are not collected from
+        employing businesses with less than 20 employees. Estimates for these businesses
+        are derived by applying sales information to an estimated profits to sales
+        ratio. The profits to sales ratio is based on data from the \\r\\nannual Economic
+        Activity Survey for small businesses.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Current
+        Account\",\"actual\":\"-4.9B\",\"consensus\":\"5.6B\",\"previous\":\"2.7B\",\"description\":\"The
+        Current Account index measures the difference in value between exported and
+        imported goods, services and interest payments during the reported month.
+        The goods portion is the same as the monthly Trade Balance figure. Because
+        foreigners must buy the domestic currency to pay for the nation&#039;s exports
+        the data can have a sizable affect on the AUD.&lt;BR/&gt;&lt;BR/&gt;A higher
+        than expected reading should be taken as positive/bullish for the AUD,\\r\\nwhile
+        a lower than expected reading should be taken as negative/bearish for the
+        AUD.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Net Exports
+        Contribution\",\"actual\":\"-0.9%\",\"consensus\":\" \",\"previous\":\"0.6%\",\"description\":\"Exports
+        of goods and services consist of transactions in goods and services (sales,
+        barter, gifts or grants) from residents to non-residents. Market influence
+        of GDP Unexpectedly high quarterly GDP growth is perceived to be potentially
+        inflationary if the economy is close to full capacity this, in turn, causes
+        bond prices to drop and yields and interest rates to rise. Where the stock
+        market is concerned on one side higher than expected growth leads to higher
+        profits and that's good for the stock market. On the other, it may increase
+        expected inflation and lead to higher interest rates that are bad for the
+        stock market. Larger than expected GDP growth will tend to appreciate the
+        exchange rate as it is expected to lead to higher interest rates.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Retail
+        Sales\",\"actual\":\"0.1%\",\"consensus\":\"0.1%\",\"previous\":\"-0.4%\",\"description\":\"Retail
+        Sales measure the change in the total value of inflation-adjusted sales at
+        the retail level. It is the foremost indicator of consumer spending, which
+        accounts for the majority of overall economic activity.\\r\\n&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the AUD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the AUD.\"},{\"gmt\":\"23:35\",\"country\":\"Japan\",\"eventName\":\"10-Year
+        JGB Auction\",\"actual\":\"1.048%\",\"consensus\":\" \",\"previous\":\"0.857%\",\"description\":\"The
+        figures displayed in the calendar represent the yield on the JGB auctioned.&lt;BR/&gt;&lt;BR/&gt;
+        JGB&#039;s have maturities of up to 50 years. Governments issue treasuries
+        to borrow money to cover the gap between the amount they receive in taxes
+        and the amount they spend to refinance existing debt and/or to raise capital.
+        The rate on a JGB represents the return an investor will receive by holding
+        the note for its entire duration. All bidders receive the same rate at the
+        highest accepted bid.&lt;BR/&gt;&lt;BR/&gt;Yield fluctuations should be monitored
+        closely as an indicator of the government debt situation. Investors compare
+        the average rate at auction to the rate at previous auctions of the same security.\"},{\"gmt\":\"All
+        Day\",\"country\":\"New Zealand\",\"eventName\":\"New Zealand - King's Birthday\",\"actual\":\"
+        \",\"consensus\":\" \",\"previous\":\" \",\"description\":\"\"}]},\"message\":null,\"status\":{\"rCode\":200,\"bCodeMessage\":null,\"developerMessage\":null}}"
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '6149'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 11:01:24 GMT
+      Expires:
+      - Thu, 27 Jun 2024 11:01:24 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=43~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=f1b255c8038508b21e266554a414d7f3;
+        path=/; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '10'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '109'
+      cache-hit:
+      - '2004'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - f8e8779f-d1a8-44dd-9c43-3b9a433b609c
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/economicevents?date=2024-06-15
+  response:
+    body:
+      string: '{"data":{"asOf":null,"headers":{"gmt":"Time","country":"Country","eventName":"Event","actual":"Actual","consensus":"Consensus","previous":"Previous","description":"Description"},"rows":[{"gmt":"06:00","country":"Euro
+        Zone","eventName":"Eurogroup Meetings","actual":"&nbsp;","consensus":" ","previous":"&nbsp;","description":""},{"gmt":"12:15","country":"Euro
+        Zone","eventName":"ECB''s Schnabel Speaks","actual":"&nbsp;","consensus":"
+        ","previous":"&nbsp;","description":"Isabel Schnabel, member of the Executive
+        Board of the European Central Bank, is set to speak. Her speeches often contain
+        indications on the future possible direction of monetary policy."}]},"message":null,"status":{"rCode":200,"bCodeMessage":null,"developerMessage":null}}'
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '372'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 11:01:24 GMT
+      Expires:
+      - Thu, 27 Jun 2024 11:01:24 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=51~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=d4148f75028e20801f9efd5107571902;
+        path=/; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '10'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '205'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - 62ac3547-4db3-40b8-882e-1fe0ec02b523
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/economicevents?date=2024-06-23
+  response:
+    body:
+      string: '{"data":{"asOf":null,"headers":{"gmt":"Time","country":"Country","eventName":"Event","actual":"Actual","consensus":"Consensus","previous":"Previous","description":"Description"},"rows":[{"gmt":"09:20","country":"Euro
+        Zone","eventName":"ECB''s Schnabel Speaks","actual":"&nbsp;","consensus":"
+        ","previous":"&nbsp;","description":"Isabel Schnabel, member of the Executive
+        Board of the European Central Bank, is set to speak. Her speeches often contain
+        indications on the future possible direction of monetary policy."},{"gmt":"18:45","country":"New
+        Zealand","eventName":"Exports","actual":"7.16B","consensus":" ","previous":"6.31B","description":"The
+        exports number provides the total NZ dollar amount of merchandise exports.
+        &lt;BR/&gt; \r\nA higher than expected number should be taken as positive
+        to the NZD, while a lower than expected number as negative."},{"gmt":"18:45","country":"New
+        Zealand","eventName":"Imports","actual":"6.95B","consensus":" ","previous":"6.32B","description":"The
+        Imports number measures any good or service brought into one country from
+        another country in a legitimate fashion, typically for use in trade. Import
+        goods or services are provided to domestic consumers by foreign producers.
+        &lt;BR/&gt;\r\nA lower than expected number should be taken as positive to
+        the NZD, while a higher than expected number as negative."},{"gmt":"18:45","country":"New
+        Zealand","eventName":"Trade Balance","actual":"204M","consensus":"155M","previous":"-3M","description":"The
+        Trade Balance measures the difference in value between imported and exported
+        goods and services over the reported period. A positive number indicates that
+        more goods and services were exported than imported.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the NZD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the NZD."},{"gmt":"18:45","country":"New Zealand","eventName":"Trade Balance","actual":"-10,050M","consensus":"
+        ","previous":"-10,220M","description":"The Trade Balance measures the difference
+        in value between imported and exported goods and services over the reported
+        period. A positive number indicates that more goods and services were exported
+        than imported. &lt;BR/&gt;\r\nA higher than expected reading should be taken
+        as positive/bullish for the NZD, while a lower than expected reading should
+        be taken as negative/bearish for the NZD."},{"gmt":"19:50","country":"Japan","eventName":"BoJ
+        Summary of Opinions","actual":"&nbsp;","consensus":" ","previous":"&nbsp;","description":"This
+        report includes the BOJ''s projection for inflation and economic growth. It
+        is scheduled 8 times per year, about 10 days after the Monetary Policy Statement
+        is released."},{"gmt":"23:00","country":"New Zealand","eventName":"Credit
+        Card Spending","actual":"0.0%","consensus":" ","previous":"-0.8%","description":"Credit
+        Card Spending measures the change in the credit card spending by individuals.\r\nIt
+        is closely correlated with consumer spending and confidence.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the NZD,\r\nwhile
+        a lower than expected reading should be taken as negative/bearish for the
+        NZD."}]},"message":null,"status":{"rCode":200,"bCodeMessage":null,"developerMessage":null}}'
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1069'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 11:01:25 GMT
+      Expires:
+      - Thu, 27 Jun 2024 11:01:25 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=30~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=c8111c4314f13879b7a9100bc1cfefb0;
+        path=/; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '10'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '240'
+      cache-hit:
+      - '3004'
+      gid:
+      - '204'
+      lang:
+      - en
+      rid:
+      - 9ee4604f-3df6-4213-82a3-fc5a9fe39f92
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/economicevents?date=2024-07-02
+  response:
+    body:
+      string: "{\"data\":{\"asOf\":null,\"headers\":{\"gmt\":\"Time\",\"country\":\"Country\",\"eventName\":\"Event\",\"actual\":\"Actual\",\"consensus\":\"Consensus\",\"previous\":\"Previous\",\"description\":\"Description\"},\"rows\":[{\"gmt\":\"03:00\",\"country\":\"Spain\",\"eventName\":\"Spanish
+        Unemployment Change\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-58.7K\",\"description\":\"Spanish
+        Unemployment Change measures the change in the number of unemployed people
+        during the previous month.\\r\\n\\r\\nA higher than expected reading should
+        be taken as negative/bearish for the EUR, while lower than expected reading
+        should be taken as positive/bullish for the EUR.\"},{\"gmt\":\"04:00\",\"country\":\"Italy\",\"eventName\":\"Italian
+        Monthly Unemployment Rate\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"6.9%\",\"description\":\"The
+        Italian unemployment rate measures the percentage of the total work force
+        that is unemployed and actively seeking employment during the previous month.This
+        data tends to have a muted impact since there are several earlier indicators
+        related to the euro zone labor market.\"},{\"gmt\":\"04:00\",\"country\":\"Brazil\",\"eventName\":\"IPC-Fipe
+        Inflation Index\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.09%\",\"description\":\"The
+        consumer price index (CPI) is a measure of change in the general level of
+        prices of goods and services bought by households over a specified period
+        of time. It compares a household's cost for a specific basket of finished
+        goods and services with the cost of the same basket during an earlier benchmark
+        period. \\r\\nThe consumer price index is used as a measurement of inflation
+        and is a key economic figure. Likely impact: \\r\\n1) Interest Rates: Larger-than-expected
+        quarterly increase in price inflation or increasing trend is considered inflationary;
+        this will cause bond prices to drop and yields and interest rates to rise.
+        \\r\\n2) Stock Prices: Higher than expected price inflation is bearish on
+        the stock market as higher inflation will lead to higher interest rates. \\r\\n3)
+        Exchange Rates: High inflation has an uncertain effect. It would lead to depreciation
+        as higher prices mean lower competitiveness. Conversely, higher inflation
+        causes higher interest rates and a tighter monetary policy that leads to an
+        appreciation.\"},{\"gmt\":\"04:30\",\"country\":\"Hong Kong\",\"eventName\":\"Retail
+        Sales\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-14.7%\",\"description\":\"Retail
+        Sales measure the change in the total value of inflation-adjusted sales at
+        the retail level. It is the foremost indicator of consumer spending, which
+        accounts for the majority of overall economic activity. &lt;/BR&gt;A higher
+        than expected reading should be taken as positive/bullish for the HKD , while
+        a lower than expected reading should be taken as negative/bearish for the
+        HKD.\"},{\"gmt\":\"05:00\",\"country\":\"United Kingdom\",\"eventName\":\"3-Year
+        Treasury Gilt Auction\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"4.505%\",\"description\":\"The
+        figures displayed in the calendar represent the yield on the Treasury Gilt
+        auctioned.&lt;BR/&gt;&lt;BR/&gt;U.K. Treasury Gilts have maturities up to
+        50 years. Governments issue treasuries to borrow money to cover the gap between
+        the amount they receive in taxes and the amount they spend to refinance existing
+        debt and/or to raise capital. The rate on a Treasury Gilt represents the return
+        an investor will receive by holding the note for its entire duration. All
+        bidders receive the same rate at the highest accepted bid.&lt;BR/&gt;&lt;BR/&gt;Yield
+        fluctuations should be monitored closely as an indicator of the government
+        debt situation. Investors compare the average rate at auction to the rate
+        at previous auctions of the same security.\"},{\"gmt\":\"05:00\",\"country\":\"Italy\",\"eventName\":\"Italian
+        Public Deficit\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"5.5%\",\"description\":\"Italy,
+        Public Finances, Public deficit/GDP\"},{\"gmt\":\"05:00\",\"country\":\"Euro
+        Zone\",\"eventName\":\"Core CPI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.4%\",\"description\":\"The
+        Core Consumer Price Index (CPI) measures the changes in the price of goods
+        and services, excluding food and energy. The CPI measures price change from
+        the perspective of the consumer. It is a key way to measure changes in purchasing
+        trends and <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>.\\n\\nA
+        higher than expected reading should be taken as positive/bullish for the EUR,
+        while a lower than expected reading should be taken as negative/bearish for
+        the EUR.\"},{\"gmt\":\"05:00\",\"country\":\"Euro Zone\",\"eventName\":\"Core
+        CPI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"2.9%\",\"description\":\"The
+        Core Consumer Price Index (CPI) measures the change in the price of goods
+        and services purchased by consumers, excluding food, energy, alcohol, and
+        tobacco. The data has a relatively mild impact because overall CPI is the
+        European Central Bank&#039;s mandated <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>
+        target.\\n&lt;BR/&gt;\\nA higher than expected reading should be taken as
+        positive/bullish for the EUR, while a lower than expected reading should be
+        taken as negative/bearish for the EUR.\"},{\"gmt\":\"05:00\",\"country\":\"Euro
+        Zone\",\"eventName\":\"CPI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"2.6%\",\"description\":\"The
+        Consumer Price Index (CPI) measures the change in the price of goods and services
+        from the perspective of the consumer. It is a key way to measure changes in
+        purchasing trends and <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>.
+        &lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should be taken as positive/bullish
+        for the EUR, while a lower than expected reading should be taken as negative/bearish
+        for the EUR.\"},{\"gmt\":\"05:00\",\"country\":\"Euro Zone\",\"eventName\":\"CPI\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"0.2%\",\"description\":\"The Consumer Price Index (CPI)
+        measures the change in the price of goods and services from the perspective
+        of the consumer. It is a key way to measure changes in purchasing trends and
+        <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>.
+        The impact on the currency may go both ways, a rise in CPI may lead to a rise
+        in interest rates and a rise in local currency, on the other hand, during
+        recession, a rise in CPI may lead to a deepened recession and therefore a
+        fall in local currency.\"},{\"gmt\":\"05:00\",\"country\":\"Euro Zone\",\"eventName\":\"CPI,
+        n.s.a\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"126.31\",\"description\":\"\"},{\"gmt\":\"05:00\",\"country\":\"Euro
+        Zone\",\"eventName\":\"HICP ex Energy & Food\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"2.9%\",\"description\":\"The harmonised indices of consumer
+        prices (HICPs) are calculated according to harmonised definitions and therefore
+        provide the best statistical basis for international comparisons of consumer
+        price inflation from the European Union perspective.The HICP for the euro
+        area is the key indicator of price stability recognised by the European Central
+        Bank and the European System of Central Banks.\"},{\"gmt\":\"05:00\",\"country\":\"Euro
+        Zone\",\"eventName\":\"Unemployment Rate\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"6.4%\",\"description\":\"The Unemployment Rate measures
+        the percentage of the total work force that is unemployed and actively seeking
+        employment during the previous month. The data tends to have a muted impact
+        as there are several earlier indicators related to  labor conditions in the
+        euro zone.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should be taken
+        as negative/bearish for the EUR, while a lower than expected reading should
+        be taken as positive/bullish for the EUR.\"},{\"gmt\":\"05:40\",\"country\":\"Spain\",\"eventName\":\"Spanish
+        12-Month Letras Auction\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"3.407%\",\"description\":\"The
+        figures displayed in the calendar represent the average yield on the Letras
+        del Tesoro auctioned. &lt;BR/&gt;&lt;BR/&gt;Spanish Bills have maturities
+        of less then two years. Governments issue treasuries to borrow money to cover
+        the gap between the amount they receive in taxes and the amount they spend
+        to refinance existing debt and/or to raise capital.&lt;BR/&gt;&lt;BR/&gt;The
+        yield on the Letras del Tesoro represents the return an investor will receive
+        by holding the treasury for its entire duration. All bidders receive the same
+        rate at the highest accepted bid.&lt;BR/&gt;&lt;BR/&gt;Yield fluctuations
+        should be monitored closely as an indicator of the government debt situation.
+        Investors compare the average rate at auction to the rate at previous auctions
+        of the same security.\"},{\"gmt\":\"05:40\",\"country\":\"Spain\",\"eventName\":\"Spanish
+        6-Month Letras Auction\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"3.367%\",\"description\":\"The
+        figures displayed in the calendar represent the average yield on the Letras
+        del Tesoro auctioned. &lt;BR/&gt;&lt;BR/&gt;Spanish Bills have maturities
+        of less then two years. Governments issue treasuries to borrow money to cover
+        the gap between the amount they receive in taxes and the amount they spend
+        to refinance existing debt and/or to raise capital.&lt;BR/&gt;&lt;BR/&gt;The
+        yield on the Letras del Tesoro represents the return an investor will receive
+        by holding the treasury for its entire duration. All bidders receive the same
+        rate at the highest accepted bid.&lt;BR/&gt;&lt;BR/&gt;Yield fluctuations
+        should be monitored closely as an indicator of the government debt situation.
+        Investors compare the average rate at auction to the rate at previous auctions
+        of the same security.\"},{\"gmt\":\"08:55\",\"country\":\"United States\",\"eventName\":\"Redbook\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"5.3%\",\"description\":\"The Redbook Index is a sales-weighted
+        of year-over-year same-store sales growth in a sample of large US general
+        merchandise retailers representing about 9,000 stores.\_A higher than expected
+        number should be taken as positive to the USD, while a lower than expected
+        number as negative.\"},{\"gmt\":\"09:00\",\"country\":\"Singapore\",\"eventName\":\"S&P
+        Global Singapore PMI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"50.6\",\"description\":\"The
+        Manufacturing Purchasing Managers Index (PMI) measures the activity level
+        of purchasing managers in the manufacturing sector. A reading above 50 indicates
+        expansion in the sector; below 50 indicates contraction. Traders watch these
+        surveys closely as purchasing managers usually have early access to data about
+        their company&#039;s performance, which can be a leading indicator of overall
+        economic performance.&lt;/BR&gt;A higher than expected reading should be taken
+        as positive/bullish for the SGD , while a lower than expected reading should
+        be taken as negative/bearish for the SGD.\"},{\"gmt\":\"09:30\",\"country\":\"United
+        States\",\"eventName\":\"Fed Chair Powell Speaks\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"&nbsp;\",\"description\":\"Federal Reserve Chair Jerome
+        Powell (Feb. 2018 \u2013 Feb. 2026) is to speak. As head of the Fed, which
+        controls short term interest rates, he has more influence over the U.S. dollar's
+        value than any other person. Traders closely watch his speeches as they are
+        often used to drop hints regarding future monetary policy.\"},{\"gmt\":\"09:30\",\"country\":\"Canada\",\"eventName\":\"S&P
+        Global Canada Manufacturing PMI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"49.3\",\"description\":\"The
+        Index (PMI) measures the activity level of purchasing managers in the services
+        sector. A reading above 50 indicates expansion in the manufacturing sector;
+        a reading below 50 indicates contraction.\\r\\nA higher than expected reading
+        should be taken as positive/bullish for the CAD , while a lower than expected
+        reading should be taken as negative/bearish for the CAD.\"},{\"gmt\":\"09:30\",\"country\":\"Euro
+        Zone\",\"eventName\":\"ECB President Lagarde Speaks\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"&nbsp;\",\"description\":\"European Central Bank (ECB) President
+        Christine Lagarde (November 2019 - October 2027) is to speak. As head of the
+        ECB, which sets short term interest rates, she has a major influence over
+        the value of the euro. Traders watch her speeches closely as they are often
+        used to drop subtle hints regarding future monetary policy and interest rate
+        shifts.\\r\\nHer comments may determine a short-term positive or negative
+        trend.\"},{\"gmt\":\"10:00\",\"country\":\"United States\",\"eventName\":\"JOLTs
+        Job Openings\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"8.059M\",\"description\":\"A
+        survey done by the US Bureau of Labor Statistics to help measure job vacancies.
+        It collects data from employers  about their businesses&#039; employment,
+        job openings, recruitment, hires and separations. &lt;BR/&gt;\\r\\nJOLTS defines
+        Job Openings as all positions that are open (not filled) on the last business
+        day of the month. A job is &quot;open&quot; only if it meets all three of
+        the following conditions: &lt;BR/&gt;\\r\\n1. A specific position exists and
+        there is work available for that position. &lt;BR/&gt;\\r\\n2. The job could
+        start within 30 days, whether or not the establishment finds a suitable candidate
+        during that time. &lt;BR/&gt;\\r\\n3. There is active recruiting for workers
+        from outside the establishment location that has the opening. &lt;BR/&gt;\\r\\nA
+        reading that is stronger than forecast is generally supportive (bullish) for
+        the USD,  while a weaker than forecast reading is generally negative (bearish)
+        for the USD.\"},{\"gmt\":\"10:10\",\"country\":\"United States\",\"eventName\":\"IBD/TIPP
+        Economic Optimism\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"40.5\",\"description\":\"The
+        Investor&#039;s Business Daily (IBD), TechnoMetrica Institute of Policy and
+        Politics (TIPP) Economic Optimism Index rates the relative level of economic
+        conditions, including six-month economic outlook, personal financial outlook
+        and confidence in federal economic policies. A level above 50.0 indicates
+        optimism; below indicates pessimism.&lt;BR/&gt;&lt;BR/&gt;A higher than expected
+        reading should be taken as positive/bullish for the USD, while a lower than
+        expected reading should be taken as negative/bearish for the USD.\"},{\"gmt\":\"11:00\",\"country\":\"New
+        Zealand\",\"eventName\":\"GlobalDairyTrade Price Index\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"-0.5%\",\"description\":\"Measures the weighted-average
+        price of 9 dairy products sold at auction every 2 weeks. It is viewed as a
+        leading indicator of New Zealand's trade balance because rising commodity
+        prices boost export income. The dairy industry is New Zealand's biggest export
+        earner, accounting for more than 29% by value of the country's exports.\"},{\"gmt\":\"11:00\",\"country\":\"New
+        Zealand\",\"eventName\":\"Milk Auctions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"3,893.0\",\"description\":\"Measures the weighted-average
+        price of 9 dairy products sold at auction every 2 weeks. It is viewed as a
+        leading indicator of New Zealand&#039;s trade balance because rising commodity
+        prices boost export income. The dairy industry is New Zealand&#039;s biggest
+        export earner, accounting for more than 29% by value of the country&#039;s
+        exports.\"},{\"gmt\":\"16:30\",\"country\":\"United States\",\"eventName\":\"API
+        Weekly Crude Oil Stock\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.914M\",\"description\":\"The
+        American Petroleum Institute reports inventory levels of US crude oil, gasoline
+        and distillates stocks. The figure shows how much oil and product is available
+        in storage.The indicator gives an overview of US petroleum demand.&lt;BR/&gt;&lt;BR/&gt;\\r\\nIf
+        the increase in crude inventories is more than expected, it implies weaker
+        demand and is bearish for crude prices. The same can be said if a decline
+        in inventories is less than expected. \\r\\n&lt;BR/&gt;\\r\\nIf the increase
+        in crude is less than expected, it implies greater demand and is bullish for
+        crude prices. The same can be said if a decline in inventories is more than
+        expected. \"},{\"gmt\":\"17:00\",\"country\":\"South Korea\",\"eventName\":\"FX
+        Reserves - USD\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"412.83B\",\"description\":\"Foreign
+        exchange reserves are only the foreign currency deposits held by central banks
+        and monetary authorities. The Bank of South Korea operates in the FX markets
+        by buying and selling foreign currency in response to exchange rate movements.
+        The dollars which the Bank is purchasing become part of the Bank&#039;s foreign
+        exchange reserves.\"},{\"gmt\":\"18:45\",\"country\":\"New Zealand\",\"eventName\":\"Building
+        Consents\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-1.9%\",\"description\":\"Building
+        Consents (also known as Building Permits) measures the change in the number
+        of new building consents issued by the government. Building consents are a
+        key indicator of demand in the housing market.&lt;BR/&gt;&lt;BR/&gt;A higher
+        than expected reading should be taken as positive/bullish for the NZD, while
+        a lower than expected reading should be taken as negative/bearish for the
+        NZD.\"},{\"gmt\":\"19:00\",\"country\":\"Australia\",\"eventName\":\"AIG Construction
+        Index\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-68.1\",\"description\":\"The
+        Australian Industry Group (AIG) Construction Index rates the relative level
+        of business conditions among construction companies. On the index, a reading
+        above 50 indicates industry expansion, below indicates contraction.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the AUD,\\r\\nwhile
+        a lower than expected reading should be taken as negative/bearish for the
+        AUD.\"},{\"gmt\":\"19:00\",\"country\":\"Australia\",\"eventName\":\"AIG Manufacturing
+        Index\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-31.1\",\"description\":\"The
+        Australian Industry Group (AIG) Manufacturing index rates the relative level
+        of business conditions in the sector. The data is based on a survey of about
+        200 manufacturers. A reading above 50 indicates expansion in the sector; below
+        50 indicates contraction. Traders watch these surveys closely as purchasing
+        managers usually have early access to data about their company\u2019s performance,
+        which can be a leading indicator of overall economic performance.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the AUD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the AUD.\"},{\"gmt\":\"19:00\",\"country\":\"Australia\",\"eventName\":\"Judo
+        Bank Australia Services PMI\",\"actual\":\"&nbsp;\",\"consensus\":\"50.6\",\"previous\":\"52.5\",\"description\":\"The
+        Australian Services Purchasing Managers Index (PMI) measures the activity
+        level of purchasing managers in the services sector. The report is based on
+        surveys of over 300 business executives in private sector services companies.
+        Each response is weighted according to the size of the company and its contribution
+        to total manufacturing or services output accounted for by the sub-sector
+        to which that company belongs. Replies from larger companies have a greater
+        impact on the final index numbers than those from small companies. Results
+        are presented by question asked, showing the percentage of respondents reporting
+        an improvement, deterioration or no change since the previous month.From these
+        percentages, an index is derived: a level of 50.0 signals no change since
+        the previous month, above 50.0 signals an increase (or improvement), below
+        50.0 a decrease (or contraction). Traders watch these surveys closely as purchasing
+        managers usually have early access to data about their company\u2019s performance,
+        which can be a leading indicator of overall economic performance. A higher
+        than expected reading should be taken as positive/bullish for the AUD , while
+        a lower than expected reading should be taken as negative/bearish for the
+        AUD.\"},{\"gmt\":\"19:50\",\"country\":\"Japan\",\"eventName\":\"Tankan All
+        Big Industry CAPEX\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"4.0%\",\"description\":\"This
+        is annual projection from each quarter's perspective. Japanese Fiscal Year
+        covers from April to March in the following year. Every quarter the respondents
+        give their forecast values for the Fiscal Year, starting from March survey
+        whichis before the next fiscal year starts.\"},{\"gmt\":\"19:50\",\"country\":\"Japan\",\"eventName\":\"Tankan
+        Big Manufacturing Outlook Index\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"10\",\"description\":\"Business
+        Conditions, large enterprises, manufacturing, actual result. Responding enterprises
+        are asked to choose one alternative among three as the best descriptor of
+        prevailing conditions, excluding seasonal factors at the timeof the survey
+        and three months hence. For Business Conditions, it's judgment of general
+        business conditions of the responding enterprise, primarily in light of individual
+        profits. The alternatives are, (1) Favorable (2) Not so favorable (3)Unfavorable.
+        Diffusion Index is calculated by subtracting the percentage share of enterprisesresponding
+        '(3) Unfavorable' from that of '(1) Favorable'.\"},{\"gmt\":\"19:50\",\"country\":\"Japan\",\"eventName\":\"Tankan
+        Large Manufacturers Index\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"11\",\"description\":\"The
+        Tankan Large Manufacturing Index rates the relative level of general business
+        conditions in the manufacturing sector. On the index, a level above zero indicates
+        improving conditions; below indicates worsening conditions. The data is compiled
+        from a survey of about 1,200 large manufacturers.&lt;BR/&gt;&lt;BR/&gt;A higher
+        than expected reading should be taken as positive/bullish for the JPY, while
+        a lower than expected reading should be taken as negative/bearish for the
+        JPY.\"},{\"gmt\":\"19:50\",\"country\":\"Japan\",\"eventName\":\"Tankan Large
+        Non-Manufacturers Diffusion Index\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"27\",\"description\":\"Tankan Business Conditions survey
+        sent to enterprises whom are asked to choose one alternative among three as
+        the best descriptor of prevailing conditions, The alternatives are, (1) Favorable
+        (2) Not so favorable (3) Unfavorable. The survey is sent to thousands of companies
+        and released sorted by the company&#039;s size and sector (Manufacturing and
+        Services). A higher than expected number should be taken as positive to the
+        JPY, while a lower than expected number as negative.\"},{\"gmt\":\"19:50\",\"country\":\"Japan\",\"eventName\":\"Tankan
+        Large Non-Manufacturers Index\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"34\",\"description\":\"The
+        Tankan Non-Manufacturing Index rates the relative level of general business
+        conditions among large businesses, excluding the manufacturing industry.\\r\\nOn
+        the index, a level above zero indicates improving conditions; below indicates
+        worsening conditions. The data is compiled from a survey of about 1,200 large
+        businesses.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should be
+        taken as positive/bullish for the JPY, while a lower than expected reading
+        should be taken as negative/bearish for the JPY.\"},{\"gmt\":\"19:50\",\"country\":\"Japan\",\"eventName\":\"Tankan
+        Small Manufacturing Index\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-1\",\"description\":\"Tankan
+        Business Conditions survey sent to enterprises whom are asked to choose one
+        alternative among three as the best descriptor of prevailing conditions, The
+        alternatives are, (1) Favorable (2) Not so favorable (3) Unfavorable. The
+        survey is sent to thousands of companies and released sorted by the company&#039;s
+        size and sector (Manufacturing and Services). A higher than expected number
+        should be taken as positive to the JPY, while a lower than expected number
+        as negative.\"},{\"gmt\":\"20:30\",\"country\":\"Japan\",\"eventName\":\"au
+        Jibun Bank Japan Services PMI\",\"actual\":\"&nbsp;\",\"consensus\":\"49.8\",\"previous\":\"53.8\",\"description\":\"The
+        survey covers transport & communication, financial intermediation, business
+        services, personal services, computing & IT and hotels & restaurants. Each
+        response received is weighted according to the size of the company to which
+        the questionnaire refers & the contribution to total service sector output
+        accounted for by the sub-sector to which that company belongs.This therefore
+        ensures that replies from larger companies have a greater impact on the final
+        index numbers than replies from small companies.The results are presented
+        by question asked, showing the % of respondents reporting an improvement,
+        deterioration or no-change since the previous month.From these %, an index
+        is derived such that a level of\\r\\n50.0 signals no-change since the previous
+        month.Above 50.0 signals an increase (or improvement),below 50.0 a decrease(or
+        deterioration).The greater the divergence from 50.0, the greater the rate
+        of change signaled.\"},{\"gmt\":\"20:30\",\"country\":\"Singapore\",\"eventName\":\"URA
+        Property Index\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"1.40%\",\"description\":\"Construction
+        industry provides information on construction output and activity. Such information
+        gives an insight into the supply on the housing and construction market. Rising
+        number of new construction starts or value of construction completed reflects
+        higher consumer and business optimism. Expanding construction indicates growth
+        in the housing market and predicts an increase in the overall economy. However,
+        an excessive supply of new buildings may result in a drop in housing prices.
+        The construction industry is one of the first to go into a recession when
+        the economy declines but also to recover as conditions improve.To compute
+        the price indices, transactions are first grouped by property type and locality.
+        The grouping is selected on the basis of frequent transactions and similar
+        prices ($ per sq m). The median price in each group is used to compute a sub-index.
+        The price index of a particular property type is the weighted average of all
+        the sub-indices of that property type in the various planning areas.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Building
+        Approvals\",\"actual\":\"&nbsp;\",\"consensus\":\"27.30%\",\"previous\":\"-2.50%\",\"description\":\"Building
+        Approvals (also known as Building Permits) measures the change in the number
+        of new building approvals issued by the government. Building permits are key
+        indicator of demand in the housing market.\\r\\n&lt;BR/&gt;&lt;BR/&gt;A higher
+        than expected reading should be taken as positive/bullish for the AUD, while
+        a lower than expected reading should be taken as negative/bearish for the
+        AUD.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Building
+        Approvals\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-0.3%\",\"description\":\"Building
+        Approvals (also known as Building Permits) measures the change in the number
+        of new building approvals issued by the government. Building permits are key
+        indicator of demand in the housing market.\\r\\n&lt;BR/&gt;&lt;BR/&gt;A higher
+        than expected reading should be taken as positive/bullish for the AUD, while
+        a lower than expected reading should be taken as negative/bearish for the
+        AUD.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"MI Inflation
+        Gauge\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.3%\",\"description\":\"The
+        Melbourne Institute (MI) Inflation Gauge measures the change in the price
+        of goods and services purchased by consumers. The data is designed to mimic
+        the quarterly government-released CPI data.&lt;BR/&gt;&lt;BR/&gt;A higher
+        than expected reading should be taken as positive/bullish for the AUD, while
+        a lower than expected reading should be taken as negative/bearish for the
+        AUD.\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Private
+        House Approvals\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-1.6%\",\"description\":\"Construction
+        industry provides information on construction output and activity. Such information
+        gives an insight into the supply on the housing and construction market. Rising
+        number of new construction starts or value of construction completed reflects
+        higher consumer and business optimism. Expanding\\r\\nconstruction indicates
+        growth in the housing market and predicts an increase in the overall economy.
+        However, an excessive supply of new buildings may result in a drop in housing
+        prices. The construction industry is one of the first to go into a recession
+        when the economy declines but also to recover as conditions improve.Statistics
+        of building work approved are compiled from: permits issued by local government
+        authorities; contracts let or day labour work authorised by Commonwealth,
+        State, semi-government and local government authorities; major building activity
+        in areas not subject to normal administrative approval e.g. building on remote
+        mine sites. \\r\\n\"},{\"gmt\":\"21:30\",\"country\":\"Australia\",\"eventName\":\"Retail
+        Sales\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.1%\",\"description\":\"Retail
+        Sales measure the change in the total value of inflation-adjusted sales at
+        the retail level. It is the foremost indicator of consumer spending, which
+        accounts for the majority of overall economic activity.\\r\\n&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the AUD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the AUD.\"},{\"gmt\":\"21:45\",\"country\":\"China\",\"eventName\":\"Caixin
+        Services PMI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"54.0\",\"description\":\"The
+        Chinese HSBC Services PMI is compiled by questionnaires sent to purchasing
+        executives in over 400 private service sector companies. The panel has been
+        carefully selected to accurately replicate the true structure of the services
+        economy. The HSBC Services PMI Index is developed for providing the most up-to-date
+        possible indication of what is really happening in the private sector economy
+        by tracking variables such as sales, employment, inventories and prices.&lt;/BR&gt;A
+        higher than expected reading should be taken as positive/bullish for the CNY
+        , while a lower than expected reading should be taken as negative/bearish
+        for the CNY.\"}]},\"message\":null,\"status\":{\"rCode\":200,\"bCodeMessage\":null,\"developerMessage\":null}}"
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '6697'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 11:01:25 GMT
+      Expires:
+      - Thu, 27 Jun 2024 11:01:25 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=55~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=ae144579d71c2a2e77944b5e025dbd3a;
+        path=/; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      cache-hit:
+      - '3004'
+      gid:
+      - '104'
+      lang:
+      - en
+      rid:
+      - f4d04898-a8a1-480b-b174-52ae3aafce04
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/economicevents?date=2024-07-08
+  response:
+    body:
+      string: '{"data":{"asOf":null,"headers":{"gmt":"Time","country":"Country","eventName":"Event","actual":"Actual","consensus":"Consensus","previous":"Previous","description":"Description"},"rows":[{"gmt":"01:00","country":"Japan","eventName":"Economy
+        Watchers Current Index","actual":"&nbsp;","consensus":" ","previous":"45.7","description":"The
+        Economy Watchers Current Index measures the current mood of businesses that
+        directly service consumers, such as barbers, taxi drivers, and waiters. The
+        data is compiled from a survey of about 2,000 workers. A reading above 50.0
+        indicates optimism; below indicates pessimism.\r\n&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the JPY,
+        while a lower than expected reading should be taken as negative/bearish for
+        the JPY."},{"gmt":"02:00","country":"Germany","eventName":"German Exports","actual":"&nbsp;","consensus":"
+        ","previous":"1.6%","description":"Exports of goods and services consist of
+        transactions in goods and services (sales, barter, gifts or grants) from residents
+        to non-residents.Exports free onboard (f.o.b.) and Imports cost insurance
+        freight (c.i.f.) are, in general, customs statistics reported under the general
+        trade statistics according to the recommendations of the UN International
+        Trade Statistics. For some countries Imports are reported as f.o.b. instead
+        of c.i.f. which is generally accepted. When reporting Imports as f.o.b. you
+        will have the effect of reducing the value of Imports by the amount of the
+        cost of insurance and freight."},{"gmt":"02:00","country":"Germany","eventName":"German
+        Imports","actual":"&nbsp;","consensus":" ","previous":"2.0%","description":"Exports
+        free on board (f.o.b.) and Imports cost insurance freight (c.i.f.) are, in
+        general, customs statistics reported under the general trade statistics according
+        to the recommendations of the UN International Trade Statistics. For some
+        countries Imports are reported as f.o.b. instead of c.i.f. which is generally
+        accepted. When reporting Imports as f.o.b. you will have the effect ofreducing
+        the value of Imports by the amount of the cost of insurance and freight."},{"gmt":"02:00","country":"Germany","eventName":"German
+        Trade Balance","actual":"&nbsp;","consensus":" ","previous":"22.1B","description":"The
+        Trade Balance measures the difference in worth between exported and imported
+        goods over the month. A positive number indicates that more goods were exported
+        than imported.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should
+        be taken as positive/bullish for the EUR, while a lower than expected reading
+        should be taken as negative/bearish for the EUR."},{"gmt":"02:45","country":"France","eventName":"French
+        Reserve Assets Total","actual":"&nbsp;","consensus":" ","previous":"245,904.0M","description":"The
+        official reserve assets are assets denominated in foreign currency, readily
+        available to and controlled by monetary authorities for meeting balance of
+        payments financing needs, intervening in exchange markets to affect the currency
+        exchange rate, and for other related purposes (such as maintaining confidence
+        in the currency and the economy, and serving as a basis for foreign borrowing).
+        They present a very comprehensive picture on a monthly basis of stocks at
+        market price, transactions, foreign exchange and market revaluations and other
+        changes in volume."},{"gmt":"04:30","country":"Euro Zone","eventName":"Sentix
+        Investor Confidence","actual":"&nbsp;","consensus":" ","previous":"0.3","description":"The
+        Sentix Investor Confidence Index rates the relative six-month economic outlook
+        for the euro zone. The data is compiled from a survey of about 2,800 investors
+        and analysts. A reading above zero indicates optimism; below indicates pessimism.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the EUR,
+        while a lower than expected reading should be taken as negative/bearish for
+        the EUR."},{"gmt":"07:00","country":"Brazil","eventName":"IGP-DI Inflation
+        Index","actual":"&nbsp;","consensus":" ","previous":"0.87%","description":"An
+        index that measures and tracks the changes in price of goods in the stages
+        before the retail level. Wholesale price indexes (WPIs) report monthly to
+        show the average price changes of goods sold in bulk, and they are a group
+        of the indicators that follow growth in the economy. \r\nAlthough some countries
+        still use the WPIs as a measure of inflation, many countries, including the
+        United States, use the producer price index (PPI) instead."},{"gmt":"10:00","country":"United
+        States","eventName":"CB Employment Trends Index","actual":"&nbsp;","consensus":"
+        ","previous":"111.44","description":"The eight labor-market indicators listed
+        below aggregated into the Employment Trends Index. &lt;/BR&gt;Percentage of
+        respondents who say they find &quot;&quot;Jobs Hard to Get&quot;&quot; (The
+        Conference Board Consumer Confidence Survey).Initial Claims for Unemployment
+        Insurance (U.S. Department of Labor). Percentage of Firms With Positions Not
+        Able to Fill Right Now (National Federation of Independent Business).Number
+        of employees hired by the temporary-help industry (U.S. Bureau of Labor Statistics).Part-time
+        Workers for Economic Reasons (BLS).Job Openings (BLS). Industrial Production
+        (Federal Reserve Board).Real Manufacturing and Trade Sales (U.S. Bureau of
+        Economic Analysis).&lt;/BR&gt;A higher than expected reading should be taken
+        as positive/bullish for the USD , while a lower than expected reading should
+        be taken as negative/bearish for the USD."},{"gmt":"15:00","country":"United
+        States","eventName":"Consumer Credit","actual":"&nbsp;","consensus":" ","previous":"6.40B","description":"Consumer
+        Credit measures the change in the total value of outstanding consumer credit
+        that requires installment payments.\r\nIt is closely correlated with consumer
+        spending and confidence. The figure can be volatile as it often subject to
+        sizable revisions.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should
+        be taken as positive/bullish for the USD, while a lower than expected reading
+        should be taken as negative/bearish for the USD."},{"gmt":"19:01","country":"United
+        Kingdom","eventName":"BRC Retail Sales Monitor","actual":"&nbsp;","consensus":"
+        ","previous":"0.4%","description":"The British Retail Consortium (BRC) Retail
+        Sales Monitor measures the change in the value of same-store sales in BRC-member
+        retail outlets in the U.K.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading
+        should be taken as positive/bullish for the GBP, while a lower than expected
+        reading should be taken as negative/bearish for the GBP."},{"gmt":"19:50","country":"Japan","eventName":"M3
+        Money Supply","actual":"&nbsp;","consensus":" ","previous":"2,173.4B","description":"M3
+        Money Supply measures the total quantity of domestic currency in circulation
+        and deposited in banks. An increasing supply of money leads to additional
+        spending, which in turn leads to inflation."},{"gmt":"20:30","country":"Australia","eventName":"Westpac
+        Consumer Sentiment","actual":"&nbsp;","consensus":" ","previous":"1.7%","description":"The
+        Westpac Consumer Sentiment Index measures the change in the level of consumer
+        confidence in economic activity.\r\nOn the index, a level above 100.0 indicates
+        optimism; below indicates pessimism.\r\nThe data is compiled from a survey
+        of about 1,200 consumers which asks respondents to rate the relative level
+        of past and future economic conditions.&lt;BR/&gt;&lt;BR/&gt;A higher than
+        expected reading should be taken as positive/bullish for the AUD, while a
+        lower than expected reading should be taken as negative/bearish for the AUD."},{"gmt":"21:30","country":"Australia","eventName":"NAB
+        Business Confidence","actual":"&nbsp;","consensus":" ","previous":"-3","description":"The
+        National Australia Bank (NAB) Business Confidence Index rates the current
+        level of business conditions in Australia. Changes in business sentiment can
+        be an early signal of future economic activity such as spending, hiring, and
+        investment. The index is based on data collected from a survey of around 350
+        companies. A level above zero indicates improving conditions; below indicates
+        worsening conditions.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading
+        should be taken as positive/bullish for the AUD, while a lower than expected
+        reading should be taken as negative/bearish for the AUD."},{"gmt":"21:30","country":"Australia","eventName":"NAB
+        Business Survey","actual":"&nbsp;","consensus":" ","previous":"6","description":"Business
+        confidence is a measure of respondents expectations of business conditions
+        in their industry for the upcoming period. Business conditions is a simple
+        average of trading, profitability and employment indices, reported by respondents
+        for their company. A higher than expected number should be taken as positive
+        to the AUD, while a lower than expected number as negative."}]},"message":null,"status":{"rCode":200,"bCodeMessage":null,"developerMessage":null}}'
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2708'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 11:01:25 GMT
+      Expires:
+      - Thu, 27 Jun 2024 11:01:25 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=70~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=86c28ca7dc5f533f4a47d4c5d0b1f282;
+        path=/; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '10'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '283'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - b67487b3-7c2f-4ad7-8909-c39e4a10201d
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/economicevents?date=2024-06-28
+  response:
+    body:
+      string: "{\"data\":{\"asOf\":null,\"headers\":{\"gmt\":\"Time\",\"country\":\"Country\",\"eventName\":\"Event\",\"actual\":\"Actual\",\"consensus\":\"Consensus\",\"previous\":\"Previous\",\"description\":\"Description\"},\"rows\":[{\"gmt\":\"01:00\",\"country\":\"Japan\",\"eventName\":\"Construction
+        Orders\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"26.4%\",\"description\":\"Construction
+        Orders number checks with 50 representative construction companies in Japan
+        as subjects, the survey uses mail questionnaires to collect the information.
+        The survey data are used to tabulate: amount of orders received (separately
+        for investors and construction type); completed work amount in a month; amount
+        of unfinished construction at the end of the month; and remaining orders received
+        in terms of the number of months. A higher than expected number should be
+        taken as positive to the JPY, while a lower than expected number as negative.\"},{\"gmt\":\"01:00\",\"country\":\"Japan\",\"eventName\":\"Housing
+        Starts\",\"actual\":\"&nbsp;\",\"consensus\":\"-6.0%\",\"previous\":\"13.9%\",\"description\":\"Housing
+        starts measures the change in the annualized number of new residential buildings
+        that began construction during the reported month. It is a leading indicator
+        of strength in the housing sector.\\r\\n&lt;BR/&gt;&lt;BR/&gt;A higher than
+        expected reading should be taken as positive/bullish for the JPY, while a
+        lower than expected reading should be taken as negative/bearish for the JPY.\"},{\"gmt\":\"02:00\",\"country\":\"United
+        Kingdom\",\"eventName\":\"Business Investment\",\"actual\":\"&nbsp;\",\"consensus\":\"-0.6%\",\"previous\":\"-0.6%\",\"description\":\"\"},{\"gmt\":\"02:00\",\"country\":\"United
+        Kingdom\",\"eventName\":\"Business Investment\",\"actual\":\"&nbsp;\",\"consensus\":\"0.9%\",\"previous\":\"0.9%\",\"description\":\"Business
+        Investment measures the change in the total inflation-adjusted value of capital
+        expenditure made by companies in the private sector.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the GBP,\\r\\nwhile
+        a lower than expected reading should be taken as negative/bearish for the
+        GBP.\"},{\"gmt\":\"02:00\",\"country\":\"United Kingdom\",\"eventName\":\"Current
+        Account\",\"actual\":\"&nbsp;\",\"consensus\":\"-17.7B\",\"previous\":\"-21.2B\",\"description\":\"The
+        Current Account index measures the difference in value between exported and
+        imported goods, services and interest payments during the reported month.
+        The goods portion is the same as the monthly Trade Balance figure. Because
+        foreigners must buy the domestic currency to pay for the nation&#039;s exports
+        the data can have a sizable affect on the GBP.&lt;BR/&gt;&lt;BR/&gt;A higher
+        than expected reading should be taken as positive/bullish for the GBP,\\r\\nwhile
+        a lower than expected reading should be taken as negative/bearish for the
+        GBP.\"},{\"gmt\":\"02:00\",\"country\":\"United Kingdom\",\"eventName\":\"GDP\",\"actual\":\"&nbsp;\",\"consensus\":\"0.2%\",\"previous\":\"0.2%\",\"description\":\"Gross
+        Domestic Product (GDP) measures the annualized change in the inflation-adjusted
+        value of all goods and services produced by the economy. It is the broadest
+        measure of economic activity and the primary indicator of the economy&#039;s
+        health.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should be taken
+        as positive/bullish for the GBP, while a lower than expected reading should
+        be taken as negative/bearish for the GBP.\"},{\"gmt\":\"02:00\",\"country\":\"United
+        Kingdom\",\"eventName\":\"GDP\",\"actual\":\"&nbsp;\",\"consensus\":\"0.6%\",\"previous\":\"0.6%\",\"description\":\"Gross
+        Domestic Product (GDP) measures the annualized change in the inflation-adjusted
+        value of all goods and services produced by the economy. It is the broadest
+        measure of economic activity and the primary indicator of the economy&#039;s
+        health.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should be taken
+        as positive/bullish for the GBP, while a lower than expected reading should
+        be taken as negative/bearish for the GBP.\"},{\"gmt\":\"02:00\",\"country\":\"Germany\",\"eventName\":\"German
+        Import Price Index\",\"actual\":\"&nbsp;\",\"consensus\":\"0.2%\",\"previous\":\"0.7%\",\"description\":\"The
+        German Import Price Index measures the change in the price of imported goods
+        purchased domestically.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading
+        should be taken as positive/bullish for the EUR, while a lower than expected
+        reading should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"02:00\",\"country\":\"Germany\",\"eventName\":\"German
+        Import Price Index\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-1.7%\",\"description\":\"Exports
+        free on board (f.o.b.) and Imports cost insurance freight (c.i.f.) are, in
+        general, customs statistics reported under the general trade statistics according
+        to the recommendations of the UN International Trade Statistics. For some
+        countries Imports are reported as f.o.b. instead of c.i.f. which is generally
+        accepted. When reporting Imports as f.o.b. you will have the effect ofreducing
+        the value of Imports by the amount of the cost of insurance and freight.\"},{\"gmt\":\"02:00\",\"country\":\"Germany\",\"eventName\":\"German
+        Imports\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"2.0%\",\"description\":\"Exports
+        free on board (f.o.b.) and Imports cost insurance freight (c.i.f.) are, in
+        general, customs statistics reported under the general trade statistics according
+        to the recommendations of the UN International Trade Statistics. For some
+        countries Imports are reported as f.o.b. instead of c.i.f. which is generally
+        accepted. When reporting Imports as f.o.b. you will have the effect ofreducing
+        the value of Imports by the amount of the cost of insurance and freight.\"},{\"gmt\":\"02:00\",\"country\":\"Germany\",\"eventName\":\"German
+        Retail Sales\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-0.6%\",\"description\":\"German
+        Retail Sales measures the change in the total value of inflation-adjusted
+        sales at the retail level, excluding automobiles and gas stations. It is the
+        primary indicator of consumer spending, which accounts for the majority of
+        economic activity.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should
+        be taken as positive/bullish for the EUR, while a lower than expected reading
+        should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"02:00\",\"country\":\"Germany\",\"eventName\":\"German
+        Retail Sales\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-1.2%\",\"description\":\"German
+        Retail Sales measures the change in the total value of inflation-adjusted
+        sales at the retail level, excluding automobiles and gas stations. It is the
+        primary indicator of consumer spending, which accounts for the majority of
+        economic activity.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should
+        be taken as positive/bullish for the EUR, while a lower than expected reading
+        should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"02:00\",\"country\":\"South
+        Africa\",\"eventName\":\"M3 Money Supply\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"5.75%\",\"description\":\"The terms M1, M2, M3 refer to
+        the monetary aggregates. Monetary Aggregate or money supply is the quantity
+        of money available within the economy to purchase goods, services, and securities.
+        \\r\\n\\r\\nM1: Technically defined this is the sum of: the tender that is
+        held outside banks, travelers checks, checking accounts (but not demand deposits),
+        minus the amount of money in the Federal Reserve float. \\r\\n\\r\\nM2: The
+        sum of: M1, savings deposits (this would include money market accounts from
+        which no checks can be written), small denomination time deposits, retirement
+        accounts. \\r\\n \\r\\nM3: M2 plus long-term deposits held by the domestic
+        private sector. \\r\\n \\r\\nThe monetary aggregates have been revised to
+        include promissory notes. The monetary aggregates have always included negotiable
+        certificates of deposit but excluded promissory notes, earlier on.\"},{\"gmt\":\"02:00\",\"country\":\"South
+        Africa\",\"eventName\":\"Private Sector Credit\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"3.90%\",\"description\":\"Credit extended by a country's
+        central bank to domestic borrowers, including the government and commercial
+        banks. An increase in domestic credit tends to increase the stock of money
+        and, ceteris paribus, leads to an outflow of international reserves thereby,
+        in the long run, decreasing the money stock.Total of investments, bills discounted,
+        instalment sale credit, leasing finance, mortagage advances and other loans
+        and advances.\"},{\"gmt\":\"02:45\",\"country\":\"France\",\"eventName\":\"French
+        Consumer Spending\",\"actual\":\"&nbsp;\",\"consensus\":\"0.2%\",\"previous\":\"-0.8%\",\"description\":\"French
+        Consumer Spending measures the change in the inflation-adjusted value of all
+        goods expenditures by consumers. Consumer spending accounts for the majority
+        of economic activity.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading
+        should be taken as positive/bullish for the EUR, while a lower than expected
+        reading should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"02:45\",\"country\":\"France\",\"eventName\":\"French
+        CPI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"2.3%\",\"description\":\"The
+        French Consumer Price Index (CPI) measures the changes in the price of goods
+        and services purchased by consumers. A higher than expected reading should
+        be taken as positive/bullish for the EUR, while a lower than expected reading
+        should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"02:45\",\"country\":\"France\",\"eventName\":\"French
+        CPI\",\"actual\":\"&nbsp;\",\"consensus\":\"0.1%\",\"previous\":\"0.0%\",\"description\":\"The
+        French Consumer Price Index (CPI) measures the changes in the price of goods
+        and services purchased by consumers.&lt;BR/&gt;&lt;BR/&gt;A higher than expected
+        reading should be taken as positive/bullish for the EUR, while a lower than
+        expected reading should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"02:45\",\"country\":\"France\",\"eventName\":\"French
+        HICP\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.1%\",\"description\":\"Harmonised
+        Index of Consumer Prices, is the same as CPI, but with a joint basket of products
+        for all Eurozone member countries. The impact on the currency may go both
+        ways, a rise in CPI may lead to a rise in interest rates and a rise in local
+        currency, on the other hand, during recession, a rise in CPI may lead to a
+        deepened recession and therefore a fall in local currency.\"},{\"gmt\":\"02:45\",\"country\":\"France\",\"eventName\":\"French
+        HICP\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"2.6%\",\"description\":\"Harmonised
+        Index of Consumer Prices, is the same as CPI, but with a joint basket of products
+        for all Eurozone member countries. The impact on the currency may go both
+        ways, a rise in CPI may lead to a rise in interest rates and a rise in local
+        currency, on the other hand, during recession, a rise in CPI may lead to a
+        deepened recession and therefore a fall in local currency.\"},{\"gmt\":\"02:45\",\"country\":\"France\",\"eventName\":\"French
+        PPI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-3.6%\",\"description\":\"The
+        Producer Price Index (PPI) measures the change in the price of goods sold
+        by manufacturers. It is a leading indicator of consumer price inflation, which
+        accounts for the majority of overall inflation.&lt;BR/&gt;&lt;BR/&gt;A higher
+        than expected reading should be taken as positive/bullish for the EUR, while
+        a lower than expected reading should be taken as negative/bearish for the
+        EUR.\"},{\"gmt\":\"02:45\",\"country\":\"France\",\"eventName\":\"PPI\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"-6.80%\",\"description\":\"The Producer Price Index (PPI)
+        measures the change in the price of goods sold by manufacturers. It is a leading
+        indicator of consumer price inflation, which accounts for the majority of
+        overall inflation.\\r\\n&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading
+        should be taken as positive/bullish for the USD, while a lower than expected
+        reading should be taken as negative/bearish for the USD.\"},{\"gmt\":\"03:00\",\"country\":\"Switzerland\",\"eventName\":\"KOF
+        Leading Indicators\",\"actual\":\"&nbsp;\",\"consensus\":\"101.0\",\"previous\":\"100.3\",\"description\":\"The
+        KOF Leading Indicators Index is designed to predict the direction of the economy
+        over the following six months. The index is a composite reading of 12 economic
+        indicators related to banking confidence, production, new orders, consumer
+        confidence and housing.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading
+        should be taken as positive/bullish for the CHF, while a lower than expected
+        reading should be taken as negative/bearish for the CHF.\"},{\"gmt\":\"03:00\",\"country\":\"Switzerland\",\"eventName\":\"Official
+        Reserves Assets\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"803.9B\",\"description\":\"The
+        official reserve assets are assets denominated in foreign currency, readily
+        available to and controlled by monetary authorities for meeting balance of
+        payments financing needs, intervening in exchange markets to affect the currency
+        exchange rate, and for other related purposes (such as maintaining confidence
+        in the currency and the economy, and serving as a basis for foreign borrowing).
+        They present a very comprehensive picture on a monthly basis of stocks at
+        market price, transactions, foreign exchange and market revaluations and other
+        changes in volume.\"},{\"gmt\":\"03:00\",\"country\":\"Spain\",\"eventName\":\"Core
+        CPI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"3.0%\",\"description\":\"The
+        Core Consumer Price Index (CPI) measures the changes in the price of goods\\r\\nand
+        services, excluding food and energy. The CPI measures price change from the
+        perspective of the consumer. It is a key way to measure changes in purchasing
+        trends and &lt;a href=&quot;https://www.investing.com/academy/trading/inflation-definition/&quot;&gt;inflation&lt;/a&gt;.\\r\\n&lt;BR/&gt;\\r\\nA
+        higher than expected reading should be taken as positive/bullish for the GBP,
+        while a lower than expected reading should be taken as negative/bearish for
+        the GBP.\"},{\"gmt\":\"03:00\",\"country\":\"Spain\",\"eventName\":\"Spanish
+        CPI\",\"actual\":\"&nbsp;\",\"consensus\":\"3.3%\",\"previous\":\"3.6%\",\"description\":\"The
+        Consumer Price Index (CPI) measures the change in the price of goods and services
+        from the perspective of the consumer. It is a key way to measure changes in
+        purchasing trends and <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>.
+        The impact on the currency may go both ways, a rise in CPI may lead to a rise
+        in interest rates and a rise in local currency, on the other hand, during
+        recession, a rise in CPI may lead to a deepened recession and therefore a
+        fall in local currency.\"},{\"gmt\":\"03:00\",\"country\":\"Spain\",\"eventName\":\"Spanish
+        CPI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.3%\",\"description\":\"The
+        Consumer Price Index (CPI) measures the change in the price of goods and services
+        from the perspective of the consumer. It is a key way to measure changes in
+        purchasing trends and <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>.
+        &lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should be taken as positive/bullish
+        for the EUR, while a lower than expected reading should be taken as negative/bearish
+        for the EUR.\"},{\"gmt\":\"03:00\",\"country\":\"Spain\",\"eventName\":\"Spanish
+        HICP\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"3.8%\",\"description\":\"Harmonised
+        Index of Consumer Prices, is the same as CPI, but with a joint basket of products
+        for all Eurozone member countries. The impact on the currency may go both
+        ways, a rise in CPI may lead to a rise in interest rates and a rise in local
+        currency, on the other hand, during recession, a rise in CPI may lead to a
+        deepened recession and therefore a fall in local currency.\"},{\"gmt\":\"03:00\",\"country\":\"Spain\",\"eventName\":\"Spanish
+        HICP\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.2%\",\"description\":\"Harmonised
+        Index of Consumer Prices, is the same as CPI, but with a joint basket of products
+        for all Eurozone member countries. The impact on the currency may go both
+        ways, a rise in CPI may lead to a rise in interest rates and a rise in local
+        currency, on the other hand, during recession, a rise in CPI may lead to a
+        deepened recession and therefore a fall in local currency.\"},{\"gmt\":\"03:55\",\"country\":\"Germany\",\"eventName\":\"German
+        Unemployment Change\",\"actual\":\"&nbsp;\",\"consensus\":\"15K\",\"previous\":\"25K\",\"description\":\"German
+        Unemployment Change measures the change in the number of unemployed people
+        during the previous month.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading
+        should be taken as negative/bearish for the EUR, while lower than expected
+        reading should be taken as positive/bullish for the EUR.\"},{\"gmt\":\"03:55\",\"country\":\"Germany\",\"eventName\":\"German
+        Unemployment Rate\",\"actual\":\"&nbsp;\",\"consensus\":\"5.9%\",\"previous\":\"5.9%\",\"description\":\"The
+        German unemployment rate measures the percentage of the total work force that
+        is unemployed and actively seeking employment during the reported month. \\r\\n&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as negative/bearish for the EUR,\\r\\nwhile
+        a lower than expected reading should be taken as positive/bullish for the
+        EUR.\"},{\"gmt\":\"03:55\",\"country\":\"Germany\",\"eventName\":\"German
+        Unemployment\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"2.762M\",\"description\":\"The
+        unemployment rate represents the number of unemployed persons expressed as
+        a percentage of the labour force. The unemployment rate for a particular age/sex
+        group is the number of unemployed in that group expressed as a percentage
+        of the labour force for that group.The definition for an unemployed person
+        is: Persons (16-65 years) who were available for work (except for temporary
+        illness) but did\\r\\nnot work during the survey week, and who made specific
+        efforts to find a job within the previous 4 weeks by going to an employment
+        agency, by applying directly to an employer, by answering a job ad, or being
+        on a union or professional register. The percentage number is calculated unemployed
+        / (employed + unemployed).\"},{\"gmt\":\"03:55\",\"country\":\"Germany\",\"eventName\":\"German
+        Unemployment n.s.a.\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"2.723M\",\"description\":\"The
+        definition for an unemployed person is: Persons (16-65 years) who were available
+        for work (except for temporary illness) but did not work during the survey
+        week, and who made specific efforts to find a job within the previous 4 weeks
+        by going to an employment agency, by applying directly to an employer, by
+        answering a job ad, or being on a union or professional register. The percentagenumber
+        is calculated unemployed / (employed + unemployed).\"},{\"gmt\":\"04:00\",\"country\":\"Italy\",\"eventName\":\"Italian
+        Industrial Sales\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-2.90%\",\"description\":\"The
+        Data showes the monthly change in the total turnover of the Italian industry.\"},{\"gmt\":\"04:00\",\"country\":\"Italy\",\"eventName\":\"Italian
+        Industrial Sales\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-5.10%\",\"description\":\"The
+        Data showes the monthly change in the total turnover of the Italian industry.\"},{\"gmt\":\"04:00\",\"country\":\"Spain\",\"eventName\":\"Spanish
+        Current account\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"3.29B\",\"description\":\"The
+        Current Account index measures the difference in value between exported and
+        imported goods, services and interest payments during the reported month.
+        The goods portion is the same as the monthly Trade Balance figure&lt;/BR&gt;A
+        higher than expected reading should be taken as positive/bullish for the EUR
+        , while a lower than expected reading should be taken as negative/bearish
+        for the EUR.\"},{\"gmt\":\"04:30\",\"country\":\"Hong Kong\",\"eventName\":\"M3
+        Money Supply\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.5%\",\"description\":\"\"},{\"gmt\":\"05:00\",\"country\":\"Italy\",\"eventName\":\"Italian
+        CPI\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.8%\",\"description\":\"The
+        Italian Consumer Price Index (CPI) measures the change in the price of goods\\nand
+        services from the perspective of the consumer. It is a key way to measure
+        changes in purchasing trends and <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the EUR,
+        while a lower than expected reading should be taken as negative/bearish for
+        the EUR.\"},{\"gmt\":\"05:00\",\"country\":\"Italy\",\"eventName\":\"Italian
+        CPI\",\"actual\":\"&nbsp;\",\"consensus\":\"0.2%\",\"previous\":\"0.2%\",\"description\":\"The
+        Italian Consumer Price Index (CPI) measures the change in the price of goods\\nand
+        services from the perspective of the consumer. It is a key way to measure
+        changes in purchasing trends and <a href=\\\"https://www.investing.com/academy/trading/inflation-definition/\\\">inflation</a>.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the EUR,
+        while a lower than expected reading should be taken as negative/bearish for
+        the EUR.\"},{\"gmt\":\"05:00\",\"country\":\"Italy\",\"eventName\":\"Italian
+        HICP\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.8%\",\"description\":\"Harmonised
+        Index of Consumer Prices, is the same as CPI, but with a joint basket of products
+        for all Eurozone member countries. The impact on the currency may go both
+        ways, a rise in CPI may lead to a rise in interest rates and a rise in local
+        currency, on the other hand, during recession, a rise in CPI may lead to a
+        deepened recession and therefore a fall in local currency.\"},{\"gmt\":\"05:00\",\"country\":\"Italy\",\"eventName\":\"Italian
+        HICP\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"0.2%\",\"description\":\"Harmonised
+        Index of Consumer Prices, is the same as CPI, but with a joint basket of products
+        for all Eurozone member countries. The impact on the currency may go both
+        ways, a rise in CPI may lead to a rise in interest rates and a rise in local
+        currency, on the other hand, during recession, a rise in CPI may lead to a
+        deepened recession and therefore a fall in local currency.\"},{\"gmt\":\"06:00\",\"country\":\"Italy\",\"eventName\":\"Italian
+        Trade Balance Non-EU\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"4.91B\",\"description\":\"The
+        Trade Balance measures the difference in value between imported and exported
+        goods sand services, from and to Non-Eu countries, over the reported period.
+        A positive number indicates that more goods and services were exported than
+        imported.&lt;/BR&gt;A higher than expected reading should be taken as positive/bullish
+        for the EUR , while a lower than expected reading should be taken as negative/bearish
+        for the EUR.\"},{\"gmt\":\"06:00\",\"country\":\"India\",\"eventName\":\"Federal
+        Fiscal Deficit\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"2,101.36B\",\"description\":\"The
+        accounts compiled by the Pay and Accounts Offices are consolidated on a monthly
+        basis in the Principal Accounts Offices at the Ministry's headquarters. The
+        consolidated accounts of the Ministry are rendered to the Controller Generalof
+        Accounts. The accounts received from various Ministries are consolidated in
+        the office of the Controller General of Accounts to generate the accounts
+        of theGovernment of India as a whole.\"},{\"gmt\":\"06:00\",\"country\":\"Euro
+        Zone\",\"eventName\":\"EU Leaders Summit\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"&nbsp;\",\"description\":\"\"},{\"gmt\":\"06:00\",\"country\":\"Euro
+        Zone\",\"eventName\":\"Eurogroup Meetings\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"&nbsp;\",\"description\":\"\"},{\"gmt\":\"06:40\",\"country\":\"United
+        States\",\"eventName\":\"FOMC Member Barkin Speaks\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"&nbsp;\",\"description\":\"Richmond Fed President Thomas
+        Barkin. His public engagements are often used to drop subtle clues regarding
+        future monetary policy.\"},{\"gmt\":\"07:00\",\"country\":\"Spain\",\"eventName\":\"Spanish
+        Consumer Confidence\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"84.5\",\"description\":\"The
+        Consumer Confidence measures the level of consumer confidence in economic
+        activity.\\r\\nIt is a leading indicator as it can predict the consumer spending,
+        which is a major\\r\\npart in the total economic activity. Higher readings
+        point to higher consumer optimism.\\r\\n&lt;br/&gt;A higher than expected
+        reading should be taken as positive/bullish for the EUR,\\r\\nwhile a lower
+        than expected reading should be taken as negative/bearish for the EUR.\"},{\"gmt\":\"07:30\",\"country\":\"India\",\"eventName\":\"Bank
+        Loan Growth\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"19.8%\",\"description\":\"Bank
+        Loan Growth measures the change in the total value of outstanding bank loans
+        issued to consumers and businesses. Borrowing and spending are closely correlated
+        with consumer confidence.&lt;/BR&gt;A higher than expected reading should
+        be taken as positive/bullish for the INR , while a lower than expected reading
+        should be taken as negative/bearish for the INR.\"},{\"gmt\":\"07:30\",\"country\":\"India\",\"eventName\":\"Deposit
+        Growth\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"12.7%\",\"description\":\"\"},{\"gmt\":\"07:30\",\"country\":\"India\",\"eventName\":\"FX
+        Reserves, USD\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"652.90B\",\"description\":\"International
+        reserves are used to settle balance of payments deficits between countries.
+        International reserves are made up of foreign currency assets, gold, holdings
+        of SDRs and reserve position in the IMF.Usually includes foreign currencies
+        themselves, other assets denominated in foreign currencies, and particular
+        amount of special drawing rights (SDRs). A foreign exchange reserve is a useful
+        precaution for countries exposed to financial crises. It can be used for the
+        purpose of intervening in the exchange market to influence or peg the exchange
+        rate.&lt;/BR&gt;A higher than expected reading should be taken as positive/bullish
+        for the INR , while a lower than expected reading should be taken as negative/bearish
+        for the INR.\"},{\"gmt\":\"07:30\",\"country\":\"India\",\"eventName\":\"RBI
+        Monetary and Credit Information Review\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"&nbsp;\",\"description\":\"\"},{\"gmt\":\"07:30\",\"country\":\"Brazil\",\"eventName\":\"Net
+        Debt-to-GDP ratio\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"61.2%\",\"description\":\"Debt-to-GDP
+        ratio is one of the indicators of the health of an economy. It is the amount
+        of national debt of a country as a percentage of its Gross Domestic Product
+        (GDP). A low debt-to-GDP ratio indicates an economy that produces a large
+        number of goods and services and probably profits that are high enough to
+        pay back debts. &lt;/BR&gt;&lt;/BR&gt;A higher than expected reading should
+        be taken as negative/bearish for the BRL , while a lower than expected reading
+        should be taken as positive/bullish for the BRL.\"},{\"gmt\":\"07:30\",\"country\":\"Brazil\",\"eventName\":\"Budget
+        Balance\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-69.638B\",\"description\":\"Brazil's
+        consolidated public sector comprises the Central Government, regional governments
+        and public enterprises. The nominal (fiscal) budget balance includesdebt servicing
+        costs. For calculation of the nominal result, nominal interest ofthe federal
+        government is included on an accrual basis. Fiscal statistics presented according
+        to the \\\"above the line\\\" criterion applied by the National Treasury Secretariat
+        to consolidate, compile and produce the data.\"},{\"gmt\":\"07:30\",\"country\":\"Brazil\",\"eventName\":\"Budget
+        Surplus\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"6.688B\",\"description\":\"Brazil's
+        consolidated public sector comprises the Central Government, regional governments
+        and public enterprises. The primary budget balance excludes debt servicing
+        costs (payments of interest and amortizations of the public debt, as well
+        as state and municipal loans). Moreover, the following items are excluded
+        from the calculation of the primary result: interest, earnings on deposits,
+        privatization revenues, cash and credit operations. Fiscal statistics presented
+        according to the \\\"above the line\\\" criterion applied by the National
+        Treasury Secretariat to consolidate, compile and produce the data.\"},{\"gmt\":\"07:30\",\"country\":\"Brazil\",\"eventName\":\"Gross
+        Debt-to-GDP ratio\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"76.0%\",\"description\":\"Gross
+        Debt-to-GDP ratio is one of the indicators of the health of an economy. It
+        is the amount of national debt of a country as a percentage of its Gross Domestic
+        Product (GDP). A low Gross Debt-to-GDP ratio indicates an economy that produces
+        a large number of goods and services and probably profits that are high enough
+        to pay back debts. A higher than expected reading should be taken as negative/bearish
+        for the BRL, while a lower than expected reading should be taken as positive/bullish
+        for the BRL.\"},{\"gmt\":\"08:00\",\"country\":\"India\",\"eventName\":\"Infrastructure
+        Output\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"6.2%\",\"description\":\"The
+        infrastructure sector accounts for 26.68 percent of India&#039;s industrial
+        output.&lt;/BR&gt;A higher than expected reading should be taken as positive/bullish
+        for the INR , while a lower than expected reading should be taken as negative/bearish
+        for the INR.\"},{\"gmt\":\"08:00\",\"country\":\"Brazil\",\"eventName\":\"Unemployment
+        Rate\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"7.5%\",\"description\":\"The
+        Unemployment Rate measures the percentage of the total work force that is
+        unemployed and actively seeking employment.&lt;BR/&gt;&lt;BR/&gt;A higher
+        than expected reading should be taken as negative/bearish for the BRL, while
+        a lower than expected reading should be taken as positive/bullish for the
+        BRL.\"},{\"gmt\":\"08:00\",\"country\":\"South Africa\",\"eventName\":\"Trade
+        Balance\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"10.47B\",\"description\":\"Exports
+        free on board (f.o.b.) and Imports cost insurance freight (c.i.f.) are,in
+        general, customs statistics reported under the general trade statistics according
+        to the recommendations of the UN International Trade Statistics. For some
+        countries Imports are reported as f.o.b. instead of c.i.f. which is generally
+        accepted. When reporting Imports as f.o.b. you will have the effect of reducing
+        the value of Imports by the amount of the cost of insurance and freight. Monthly
+        import and export figures are unaudited figures obtained from declarations
+        made by importers and exporters of goods. The Customs and Excise Act allows
+        for revisions by importers and exporters for a period up to two years retrospectively.
+        It is not possible to see exactly for what month a particular revision has
+        been made. Revisions are only made to the cumulative figures.&lt;/BR&gt;A
+        higher than expected reading should be taken as positive/bullish for the ZAR
+        , while a lower than expected reading should be taken as negative/bearish
+        for the ZAR.\"},{\"gmt\":\"08:30\",\"country\":\"United States\",\"eventName\":\"Core
+        PCE Price Index\",\"actual\":\"&nbsp;\",\"consensus\":\"0.1%\",\"previous\":\"0.2%\",\"description\":\"The
+        Core Personal Consumption Expenditure (PCE) Price Index measures the changes
+        in the price of goods and services purchased by consumers for the purpose
+        of consumption, excluding food and energy. Prices are weighted according to
+        total expenditure per item. It measures price change from the perspective
+        of the consumer. It is a key way to measure changes in purchasing trends and
+        inflation. \\r\\n&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should
+        be taken as positive/bullish for the USD, while a lower than expected reading
+        should be taken as negative/bearish for the USD.\"},{\"gmt\":\"08:30\",\"country\":\"United
+        States\",\"eventName\":\"Core PCE Price Index\",\"actual\":\"&nbsp;\",\"consensus\":\"2.6%\",\"previous\":\"2.8%\",\"description\":\"The
+        Core PCE price Index is the less volatile measure of the PCE price index which
+        excludes the more volatile and seasonal\_food\_and\_energy\_prices. The impact
+        on the currency may go both ways, a rise in inflation may lead to a rise in
+        interest rates and a rise in local currency, on the other hand, during recession,
+        a rise in inflation may lead to a deepened recession and therefore a fall
+        in local currency.\"},{\"gmt\":\"08:30\",\"country\":\"United States\",\"eventName\":\"PCE
+        Price index\",\"actual\":\"&nbsp;\",\"consensus\":\"2.6%\",\"previous\":\"2.7%\",\"description\":\"The
+        PCE price index, also referred to as the PCE deflator, is a United States-wide
+        indicator of the average increase in prices for all domestic personal consumption.
+        The impact on the currency may go both ways: a rise in CPI may lead to a rise
+        in interest rates and a rise in local currency; on the other hand, during
+        recession, a rise in CPI may lead to a deepened recession and therefore a
+        fall in local currency.\"},{\"gmt\":\"08:30\",\"country\":\"United States\",\"eventName\":\"PCE
+        price index\",\"actual\":\"&nbsp;\",\"consensus\":\"0.0%\",\"previous\":\"0.3%\",\"description\":\"The\_PCE
+        price index, also referred to as the\_PCE deflator, is a United States-wide
+        indicator of the average increase in prices for all domestic personal consumption.
+        The impact on the currency may go both ways, a rise in inflation may lead
+        to a rise in interest rates and a rise in local currency, on the other hand,
+        during recession, a rise in inflation may lead to a deepened recession and
+        therefore a fall in local currency.\"},{\"gmt\":\"08:30\",\"country\":\"United
+        States\",\"eventName\":\"Personal Income\",\"actual\":\"&nbsp;\",\"consensus\":\"0.4%\",\"previous\":\"0.3%\",\"description\":\"Personal
+        Income measures the change in the total value of income received from all
+        sources by consumers. Income is closely correlated with consumer spending,
+        which accounts for a majority of overall economic activity.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the USD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the USD.\"},{\"gmt\":\"08:30\",\"country\":\"United States\",\"eventName\":\"Personal
+        Spending\",\"actual\":\"&nbsp;\",\"consensus\":\"0.3%\",\"previous\":\"0.2%\",\"description\":\"Personal
+        Spending measures the change in the inflation-adjusted value of all spending
+        by consumers. Consumer spending accounts for a majority of overall economic
+        activity. However, this report tends to have a mild impact, as government
+        data on retail sales is released about two weeks earlier.\\r\\n&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the USD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the USD.\"},{\"gmt\":\"08:30\",\"country\":\"United States\",\"eventName\":\"Real
+        Personal Consumption\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-0.1%\",\"description\":\"Personal
+        consumption adjusted for inflation, Personal consumption is divided into two
+        key categories: goods and services. The category of &quot;goods&quot; is further
+        broken down into &quot;durable&quot; goods, which are big-ticket items (refrigerators,
+        television sets, cars, mobile phones, etc.) that will last more than three
+        years, and &quot;non-durable&quot; goods that are more transitory (e.g., cosmetics,
+        fuel, clothing, etc.). A higher than expected number should be taken as positive
+        to the USD, while a lower than expected number as negative.\"},{\"gmt\":\"08:30\",\"country\":\"Canada\",\"eventName\":\"GDP\",\"actual\":\"&nbsp;\",\"consensus\":\"0.3%\",\"previous\":\"0.0%\",\"description\":\"Gross
+        Domestic Product (GDP) measures the annualized change in the inflation-adjusted
+        value of all goods and services produced by the economy. It is the broadest
+        measure of economic activity and the primary indicator of the economy&#039;s
+        health. Canada releases fresh GDP data on a monthly basis.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the CAD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the CAD.\"},{\"gmt\":\"09:00\",\"country\":\"United States\",\"eventName\":\"Dallas
+        Fed PCE\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"2.70%\",\"description\":\"In
+        any given month, the rate of inflation in a price index like the Consumer
+        Price Index or Personal Consumption Expenditures (PCE) can be thought of as
+        a weighted average, or mean, of the rates of change in the prices of all the
+        goods and services that make up the index. Calculating the trimmed-mean PCE
+        inflation rate for a given month involves looking at the price changes for
+        each of the individual components of personal consumption expenditures. The
+        individual price changes are sorted in ascending order from fell the most
+        to rose the most, and a certain fraction of the most extreme observations
+        at both ends of the spectrum are like a skaters best and worst marks thrown
+        out, or trimmed. The inflation rate is then calculated as a weighted average
+        of the remaining components. For the series presented here, 19.4 percent of
+        the weight from the lower tail and 25.4 percent of the weight in the upper
+        tail are trimmed. Those proportions have been chosen, based on historical
+        data, to give the best fit between the trimmed-mean inflation rate and proxies
+        for the true core PCE inflation rate. The resulting inflation measure has
+        been shown to outperform the more conventional excluding food and energy measure
+        as a gauge of core inflation.\"},{\"gmt\":\"09:00\",\"country\":\"Brazil\",\"eventName\":\"CAGED
+        Net Payroll Jobs\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"240.03K\",\"description\":\"Employment
+        is the total number of persons above a specified age, who in a short reference
+        period (e.g. a week or a day), were in paid employment or self-employment.
+        Paid employment includes persons who worked in the reference period or who
+        had a job but were temporarily absent from work. Self-employment \\r\\nincludes
+        persons who either worked in the reference period or were temporarily absent
+        from work.Series data show evolution of formal employment in Brazil. It is
+        measured by the movements declared in CAGED - Cadastro Geral de Empregados
+        e Desempregados (General Register of Employment and Unemployment) of the Ministry
+        of Labour. There are separate series for thousands of admitted and dismissed
+        employees per month (registered in CAGED), as well as for net, i.e. admitted
+        less dismissed. Totals of admitted, dismissed and net are also broken down
+        to eight main sectors of economic activity according to the IBGE.\"},{\"gmt\":\"09:45\",\"country\":\"United
+        States\",\"eventName\":\"Chicago PMI\",\"actual\":\"&nbsp;\",\"consensus\":\"40.0\",\"previous\":\"35.4\",\"description\":\"The
+        Chicago Purchasing Managers&#039; Index (PMI) determines the economic health
+        of the manufacturing sector in Chicago region.\\r\\nA reading above 50 indicates
+        expansion of the manufacturing sector; a reading below indicates contraction.
+        The Chicago PMI can be of some help in forecasting the ISM manufacturing PMI.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the USD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the USD.\"},{\"gmt\":\"10:00\",\"country\":\"United States\",\"eventName\":\"Michigan
+        1-Year Inflation Expectations\",\"actual\":\"&nbsp;\",\"consensus\":\"3.3%\",\"previous\":\"3.3%\",\"description\":\"University
+        of Michigan (UoM) Inflation Expectations measures the percentage that consumers
+        expect the price of goods and services to change during the next 12 months.
+        There are two versions of this data released two weeks apart,Preliminary and
+        Revised. The preliminary release is the earliest so tends to have more impact.&lt;BR/&gt;&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the USD,
+        while a lower than expected reading should be taken as negative/bearish for
+        the USD.\"},{\"gmt\":\"10:00\",\"country\":\"United States\",\"eventName\":\"Michigan
+        5-Year Inflation Expectations\",\"actual\":\"&nbsp;\",\"consensus\":\"3.1%\",\"previous\":\"3.1%\",\"description\":\"The
+        University of Michigan Inflation Expectations survey of consumers presents
+        the median expected price changes for the next 5 years. &lt;BR/&gt;\\r\\nA
+        reading that is stronger than forecast is generally supportive (bullish) for
+        the USD,  while a weaker than forecast reading is generally negative (bearish)
+        for the USD. \\r\\n\"},{\"gmt\":\"10:00\",\"country\":\"United States\",\"eventName\":\"Michigan
+        Consumer Expectations\",\"actual\":\"&nbsp;\",\"consensus\":\"67.6\",\"previous\":\"67.6\",\"description\":\"The
+        Michigan sentiment index includes two major components, a &quot;current conditions&quot;
+        component and an &quot;expectations&quot; component. The current conditions
+        component index is based on the answers to two standard questions and the
+        expectations component index is based on three standard questions. This number
+        is the expectations part of the overall index. A higher than expected number
+        should be taken as positive to the USD, while a lower than expected number
+        as negative. This is the final number.\"},{\"gmt\":\"10:00\",\"country\":\"United
+        States\",\"eventName\":\"Michigan Consumer Sentiment\",\"actual\":\"&nbsp;\",\"consensus\":\"65.9\",\"previous\":\"65.6\",\"description\":\"The
+        University of Michigan Consumer Sentiment Index rates the relative level of
+        current and future economic conditions. There are two versions of this data
+        released two weeks apart, preliminary and revised. The preliminary data tends
+        to have a greater impact. The reading is compiled from a survey of around
+        500 consumers.&lt;BR/&gt;&lt;BR/&gt;A higher than expected reading should
+        be taken as positive/bullish for the USD, while a lower than expected reading
+        should be taken as negative/bearish for the USD.\"},{\"gmt\":\"10:00\",\"country\":\"United
+        States\",\"eventName\":\"Michigan Current Conditions\",\"actual\":\"&nbsp;\",\"consensus\":\"62.5\",\"previous\":\"62.5\",\"description\":\"The
+        Michigan sentiment index includes two major components, a &quot;current conditions&quot;
+        component and an &quot;expectations&quot; component. The current conditions
+        component index is based on the answers to two standard questions and the
+        expectations component index is based on three standard questions. All five
+        questions have equal weight in determining the overall index. A higher than
+        expected number should be taken as positive to the USD, while a lower than
+        expected number as negative. This is the final number. This is the preliminary
+        number.\"},{\"gmt\":\"10:30\",\"country\":\"United States\",\"eventName\":\"Atlanta
+        Fed GDPNow\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"&nbsp;\",\"description\":\"\"},{\"gmt\":\"11:00\",\"country\":\"United
+        States\",\"eventName\":\"Fed Monetary Policy Report\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"&nbsp;\",\"description\":\"The Federal Reserve Act requires
+        the Federal Reserve Board to submit written reports to Congress containing
+        discussions of \\\"the conduct of monetary policy and economic developments
+        and prospects for the future.\\\" This report--called the Monetary Policy
+        Report--is submitted semiannually to the Senate Committee on Banking, Housing,
+        and Urban Affairs and to the House Committee on Financial Services, along
+        with testimony from the Federal Reserve Board Chair.\"},{\"gmt\":\"12:00\",\"country\":\"United
+        States\",\"eventName\":\"FOMC Member Bowman Speaks\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"&nbsp;\",\"description\":\"Michelle W. Bowman took office
+        as a member of the Board of Governors of the Federal Reserve System on November
+        26, 2018, to fill an unexpired term ending January 31, 2020. Her public engagements
+        are often used to drop subtle clues regarding future monetary policy.\"},{\"gmt\":\"12:00\",\"country\":\"Russia\",\"eventName\":\"Industrial
+        Production\",\"actual\":\"&nbsp;\",\"consensus\":\"2.5%\",\"previous\":\"3.9%\",\"description\":\"The
+        Russian Industrial Production measures the change in the total outputs of
+        the Russian factories, mines, and utilities.\\r\\nIt gives us a good indicator
+        of strength in the manufacturing sector. It can be a leading indicator of
+        manufacturing employment, average earnings, and personal income.\\r\\n&lt;BR/&gt;A
+        higher than expected reading should be taken as positive/bullish for the RUB,\\r\\nwhile
+        a lower than expected reading should be taken as negative/bearish for the
+        RUB.\"},{\"gmt\":\"13:00\",\"country\":\"United States\",\"eventName\":\"U.S.
+        Baker Hughes Oil Rig Count\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"485\",\"description\":\"The
+        Baker Hughes rig count is an important business barometer for the oil drilling
+        industry. When drilling rigs are active they consume products and services
+        produced by the oil service industry.\\r\\nThe active rig count acts as a
+        leading indicator of demand for oil products.\"},{\"gmt\":\"13:00\",\"country\":\"United
+        States\",\"eventName\":\"U.S. Baker Hughes Total Rig Count\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"588\",\"description\":\"\"},{\"gmt\":\"15:18\",\"country\":\"South
+        Africa\",\"eventName\":\"Budget Balance\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"-78.05B\",\"description\":\"Government deficit or surplus
+        is the net of operating surplus and public debt charges.The budget of a government
+        is a summary or plan of the intended revenues and expenditures of that government.Surplus
+        in general refers to an excess of income over expenditure.Deficit refers to
+        the negative of the budget surplus, thus the excess of expenditure over income.&lt;/BR&gt;A
+        higher than expected reading should be taken as positive/bullish for the CAD
+        , while a lower than expected reading should be taken as negative/bearish
+        for the CAD.\"},{\"gmt\":\"15:30\",\"country\":\"United Kingdom\",\"eventName\":\"CFTC
+        GBP speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"47.6K\",\"description\":\"The
+        Commodity Futures Trading Commission's (CFTC) weekly Commitments of Traders
+        (COT) report provides a breakdown of the net positions for \\\"non-commercial\\\"
+        (speculative) traders in U.S. futures markets.</br>\\r\\nAll data corresponds
+        to positions held by participants primarily based in Chicago and New York
+        futures markets.</br>\\r\\nThe Commitments of Traders report is considered
+        an indicator for analyzing market sentiment and many speculative traders use
+        the data to help them decide whether or not to take a long or short position.</br>\\r\\nCommitments
+        of Traders (COT) data is released each Friday at 3:30pm Eastern Time, pending
+        a holiday in the U.S., to reflect the commitments of traders on the prior
+        Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"United States\",\"eventName\":\"CFTC
+        Aluminium speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"1.6K\",\"description\":\"The Commodity Futures Trading Commission's
+        (CFTC) weekly Commitments of Traders (COT) report provides a breakdown of
+        the net positions for \\\"\\\"non-commercial\\\"\\\" (speculative) traders
+        in U.S. futures markets.</br>\\r\\nAll data corresponds to positions held
+        by participants primarily based in Chicago and New York futures markets.</br>\\r\\nThe
+        Commitments of Traders report is considered an indicator for analyzing market
+        sentiment and many speculative traders use the data to help them decide whether
+        or not to take a long or short position.</br>\\r\\nCommitments of Traders
+        (COT) data is released each Friday at 3:30pm Eastern Time, pending a holiday
+        in the U.S., to reflect the commitments of traders on the prior Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC Copper speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"52.6K\",\"description\":\"The Commodity Futures Trading
+        Commission's (CFTC) weekly Commitments of Traders (COT) report provides a
+        breakdown of the net positions for \\\"non-commercial\\\" (speculative) traders
+        in U.S. futures markets.</br>\\r\\nAll data corresponds to positions held
+        by participants primarily based in Chicago and New York futures markets.</br>\\r\\nThe
+        Commitments of Traders report is considered an indicator for analyzing market
+        sentiment and many speculative traders use the data to help them decide whether
+        or not to take a long or short position.</br>\\r\\nCommitments of Traders
+        (COT) data is released each Friday at 3:30pm Eastern Time, pending a holiday
+        in the U.S., to reflect the commitments of traders on the prior Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC Corn speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"-76.7K\",\"description\":\"\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC Crude Oil speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"246.8K\",\"description\":\"\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC Gold speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"243.1K\",\"description\":\"The Commodity Futures Trading
+        Commission's (CFTC) weekly Commitments of Traders (COT) report provides a
+        breakdown of the net positions for \\\"non-commercial\\\" (speculative) traders
+        in U.S. futures markets.</br>\\r\\nAll data corresponds to positions held
+        by participants primarily based in Chicago and New York futures markets.</br>\\r\\nThe
+        Commitments of Traders report is considered an indicator for analyzing market
+        sentiment and many speculative traders use the data to help them decide whether
+        or not to take a long or short position.</br>\\r\\nCommitments of Traders
+        (COT) data is released each Friday at 3:30pm Eastern Time, pending a holiday
+        in the U.S., to reflect the commitments of traders on the prior Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC Nasdaq 100 speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"-3.8K\",\"description\":\"\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC Natural Gas speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"-104.1K\",\"description\":\"The Commodity Futures Trading
+        Commission's (CFTC) weekly Commitments of Traders (COT) report provides a
+        breakdown of the net positions for \\\"\\\"non-commercial\\\"\\\" (speculative)
+        traders in U.S. futures markets.</br>\\r\\nAll data corresponds to positions
+        held by participants primarily based in Chicago and New York futures markets.</br>\\r\\nThe
+        Commitments of Traders report is considered an indicator for analyzing market
+        sentiment and many speculative traders use the data to help them decide whether
+        or not to take a long or short position.</br>\\r\\nCommitments of Traders
+        (COT) data is released each Friday at 3:30pm Eastern Time, pending a holiday
+        in the U.S., to reflect the commitments of traders on the prior Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC S&P 500 speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"-114.1K\",\"description\":\"The Commodity Futures Trading
+        Commission's (CFTC) weekly Commitments of Traders (COT) report provides a
+        breakdown of the net positions for \\\"non-commercial\\\" (speculative) traders
+        in U.S. futures markets.</br>\\r\\nAll data corresponds to positions held
+        by participants primarily based in Chicago and New York futures markets.</br>\\r\\nThe
+        Commitments of Traders report is considered an indicator for analyzing market
+        sentiment and many speculative traders use the data to help them decide whether
+        or not to take a long or short position.</br>\\r\\nCommitments of Traders
+        (COT) data is released each Friday at 3:30pm Eastern Time, pending a holiday
+        in the U.S., to reflect the commitments of traders on the prior Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC Silver speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"51.9K\",\"description\":\"The Commodity Futures Trading
+        Commission's (CFTC) weekly Commitments of Traders (COT) report provides a
+        breakdown of the net positions for \\\"non-commercial\\\" (speculative) traders
+        in U.S. futures markets.</br>\\r\\nAll data corresponds to positions held
+        by participants primarily based in Chicago and New York futures markets.</br>\\r\\nThe
+        Commitments of Traders report is considered an indicator for analyzing market
+        sentiment and many speculative traders use the data to help them decide whether
+        or not to take a long or short position.</br>\\r\\nCommitments of Traders
+        (COT) data is released each Friday at 3:30pm Eastern Time, pending a holiday
+        in the U.S., to reflect the commitments of traders on the prior Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC Soybeans speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"-74.3K\",\"description\":\"\"},{\"gmt\":\"15:30\",\"country\":\"United
+        States\",\"eventName\":\"CFTC Wheat speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\"
+        \",\"previous\":\"-26.6K\",\"description\":\"\"},{\"gmt\":\"15:30\",\"country\":\"Canada\",\"eventName\":\"CFTC
+        CAD speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-147.9K\",\"description\":\"The
+        Commodity Futures Trading Commission's (CFTC) weekly Commitments of Traders
+        (COT) report provides a breakdown of the net positions for \\\"non-commercial\\\"
+        (speculative) traders in U.S. futures markets.</br>\\r\\nAll data corresponds
+        to positions held by participants primarily based in Chicago and New York
+        futures markets.</br>\\r\\nThe Commitments of Traders report is considered
+        an indicator for analyzing market sentiment and many speculative traders use
+        the data to help them decide whether or not to take a long or short position.</br>\\r\\nCommitments
+        of Traders (COT) data is released each Friday at 3:30pm Eastern Time, pending
+        a holiday in the U.S., to reflect the commitments of traders on the prior
+        Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"Switzerland\",\"eventName\":\"CFTC
+        CHF speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-37.4K\",\"description\":\"The
+        Commodity Futures Trading Commission's (CFTC) weekly Commitments of Traders
+        (COT) report provides a breakdown of the net positions for \\\"non-commercial\\\"
+        (speculative) traders in U.S. futures markets.</br>\\r\\nAll data corresponds
+        to positions held by participants primarily based in Chicago and New York
+        futures markets.</br>\\r\\nThe Commitments of Traders report is considered
+        an indicator for analyzing market sentiment and many speculative traders use
+        the data to help them decide whether or not to take a long or short position.</br>\\r\\nCommitments
+        of Traders (COT) data is released each Friday at 3:30pm Eastern Time, pending
+        a holiday in the U.S., to reflect the commitments of traders on the prior
+        Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"Australia\",\"eventName\":\"CFTC
+        AUD speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-41.7K\",\"description\":\"The
+        Commodity Futures Trading Commission's (CFTC) weekly Commitments of Traders
+        (COT) report provides a breakdown of the net positions for \\\"non-commercial\\\"
+        (speculative) traders in U.S. futures markets.</br>\\r\\nAll data corresponds
+        to positions held by participants primarily based in Chicago and New York
+        futures markets.</br>\\r\\nThe Commitments of Traders report is considered
+        an indicator for analyzing market sentiment and many speculative traders use
+        the data to help them decide whether or not to take a long or short position.</br>\\r\\nCommitments
+        of Traders (COT) data is released each Friday at 3:30pm Eastern Time, pending
+        a holiday in the U.S., to reflect the commitments of traders on the prior
+        Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"Brazil\",\"eventName\":\"CFTC
+        BRL speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-19.8K\",\"description\":\"The
+        Commodity Futures Trading Commission's (CFTC) weekly Commitments of Traders
+        (COT) report provides a breakdown of the net positions for \\\"\\\"non-commercial\\\"\\\"
+        (speculative) traders in U.S. futures markets.</br> \\r\\nAll data corresponds
+        to positions held by participants primarily based in Chicago and New York
+        futures markets.</br> \\r\\nThe Commitments of Traders report is considered
+        an indicator for analyzing market sentiment and many speculative traders use
+        the data to help them decide whether or not to take a long or short position.</br>
+        \\r\\nCommitments of Traders (COT) data is released each Friday at 3:30pm
+        Eastern Time, pending a holiday in the U.S., to reflect the commitments of
+        traders on the prior Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"Japan\",\"eventName\":\"CFTC
+        JPY speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"-147.8K\",\"description\":\"The
+        Commodity Futures Trading Commission's (CFTC) weekly Commitments of Traders
+        (COT) report provides a breakdown of the net positions for \\\"non-commercial\\\"
+        (speculative) traders in U.S. futures markets.</br>\\r\\nAll data corresponds
+        to positions held by participants primarily based in Chicago and New York
+        futures markets.</br>\\r\\nThe Commitments of Traders report is considered
+        an indicator for analyzing market sentiment and many speculative traders use
+        the data to help them decide whether or not to take a long or short position.</br>\\r\\nCommitments
+        of Traders (COT) data is released each Friday at 3:30pm Eastern Time, pending
+        a holiday in the U.S., to reflect the commitments of traders on the prior
+        Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"New Zealand\",\"eventName\":\"CFTC
+        NZD speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"20.3K\",\"description\":\"The
+        Commodity Futures Trading Commission's (CFTC) weekly Commitments of Traders
+        (COT) report provides a breakdown of the net positions for \\\"non-commercial\\\"
+        (speculative) traders in U.S. futures markets.</br>\\r\\nAll data corresponds
+        to positions held by participants primarily based in Chicago and New York
+        futures markets.</br>\\r\\nThe Commitments of Traders report is considered
+        an indicator for analyzing market sentiment and many speculative traders use
+        the data to help them decide whether or not to take a long or short position.</br>\\r\\nCommitments
+        of Traders (COT) data is released each Friday at 3:30pm Eastern Time, pending
+        a holiday in the U.S., to reflect the commitments of traders on the prior
+        Tuesday.\"},{\"gmt\":\"15:30\",\"country\":\"Euro Zone\",\"eventName\":\"CFTC
+        EUR speculative net positions\",\"actual\":\"&nbsp;\",\"consensus\":\" \",\"previous\":\"8.0K\",\"description\":\"The
+        Commodity Futures Trading Commission's (CFTC) weekly Commitments of Traders
+        (COT) report provides a breakdown of the net positions for \\\"non-commercial\\\"
+        (speculative) traders in U.S. futures markets.</br>\\r\\nAll data corresponds
+        to positions held by participants primarily based in Chicago and New York
+        futures markets.</br>\\r\\nThe Commitments of Traders report is considered
+        an indicator for analyzing market sentiment and many speculative traders use
+        the data to help them decide whether or not to take a long or short position.</br>\\r\\nCommitments
+        of Traders (COT) data is released each Friday at 3:30pm Eastern Time, pending
+        a holiday in the U.S., to reflect the commitments of traders on the prior
+        Tuesday.\"},{\"gmt\":\"All Day\",\"country\":\"New Zealand\",\"eventName\":\"New
+        Zealand - New Year's Day\",\"actual\":\" \",\"consensus\":\" \",\"previous\":\"
+        \",\"description\":\"\"}]},\"message\":null,\"status\":{\"rCode\":200,\"bCodeMessage\":null,\"developerMessage\":null}}"
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '9306'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 11:01:26 GMT
+      Expires:
+      - Thu, 27 Jun 2024 11:01:26 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=57~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=d8477fba777dd251fdfcca7031947a41;
+        path=/; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '10'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '837'
+      gid:
+      - '204'
+      lang:
+      - en
+      rid:
+      - bb948371-93dc-4551-80bc-c2f9d76e6b9b
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

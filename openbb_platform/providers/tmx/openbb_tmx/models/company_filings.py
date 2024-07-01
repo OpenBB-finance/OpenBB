@@ -1,4 +1,4 @@
-"""TMX Company Filings Model"""
+"""TMX Company Filings Model."""
 
 # pylint: disable=unused-argument
 
@@ -39,7 +39,9 @@ class TmxCompanyFilingsData(CompanyFilingsData):
     }
 
     description: str = Field(description="The description of the filing.")
-    size: str = Field(description="The file size of the PDF document.")
+    size: Optional[str] = Field(
+        description="The file size of the PDF document.", default=None
+    )
 
 
 class TmxCompanyFilingsFetcher(

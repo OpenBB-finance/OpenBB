@@ -1,0 +1,450 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?displayOutput=full&page=0&pageSize=20&sort=created%3Adesc&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":39519753,\"author\":\"Benzinga Newsdesk\",\"created\":\"Thu,
+        27 Jun 2024 06:11:23 -0400\",\"updated\":\"Thu, 27 Jun 2024 06:11:24 -0400\",\"title\":\"JinkoSolar
+        Has Repurchased 4.5M ADSs In An Aggregate Amount Of Approximately $110.7M
+        In The Open Market Under Its Share Repurchase Program Announced In July 2022
+        And The Extended Share Repurchase Program Announced In December 2023\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/24/06/39519753/jinkosolar-has-repurchased-4-5m-adss-in-an-aggregate-amount-of-approximately-110-7m-in-the-open-mark\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Commodities\"},{\"name\":\"Buybacks\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"JKS\"}],\"tags\":[]},{\"id\":39519696,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Thu, 27 Jun 2024 06:09:18 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:09:19 -0400\",\"title\":\"Fundstrat's Tom Lee Predicts S&P
+        500 Will Hit 15,000 By 2030 Driven By Gen Z And AI Wave\",\"teaser\":\"Tom
+        Lee, the managing partner and head of research at Fundstrat Global Advisors,
+        shared his bullish prediction for the S&amp;P 500, foreseeing it reaching
+        15,000 by 2030.\",\"body\":\"<p><strong>Tom Lee</strong>, the managing partner
+        and head of research at<strong> Fundstrat Global Advisors</strong>, shared
+        his <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/06/39350137/s-p-500-poised-to-extend-bull-run-market-strategist-sees-ai-fervor-and-ebbing-infla\\\">bullish
+        prediction</a> for the S&amp;P 500, foreseeing it reaching 15,000 by 2030
+        riding the AI wave.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>: Lee&#8217;s
+        forecast is based on the emergence of a new cycle in the stock market, where
+        annual returns are expected to compound at a high rate. This cycle is being
+        driven by the younger generations, particularly millennials and Gen Z.</p>\\n\\n\\n\\n<p>&#8220;This
+        will be the 3rd time that stocks entered a cycle where annual returns compound
+        at high teens,&#8221; Lee said in an interview with CNBC&#8217;s Last Call.
+        </p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed is-type-rich is-provider-twitter
+        wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">.<a href=\\\"https://twitter.com/fundstrat?ref_src=twsrc%5Etfw\\\">@fundstrat</a>&#39;s
+        Tom Lee says the S&amp;P 500 will hit 15,000 by 2030. &quot;This will be the
+        3rd time that stocks entered a cycle where annual returns compound at high
+        teens.&quot;  <a href=\\\"https://twitter.com/search?q=%24SPX&amp;src=ctag&amp;ref_src=twsrc%5Etfw\\\">$SPX</a>
+        <a href=\\\"https://t.co/31vzaEaGpo\\\">pic.twitter.com/31vzaEaGpo</a></p>&mdash;
+        Last Call (@LastCallCNBC) <a href=\\\"https://twitter.com/LastCallCNBC/status/1806110011669549190?ref_src=twsrc%5Etfw\\\">June
+        26, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>The growth
+        of companies focused on artificial intelligence is expected to yield high
+        returns, according to Lee. Additionally, the increasing number of digital
+        laborers investing in the economy is contributing to this cycle.</p>\\n\\n\\n\\n<p>S&amp;P
+        500 ETF options provide investors with <a href=\\\"https://www.benzinga.com/money/best-sp-500-etfs\\\">multiple
+        ways to invest</a> in America&#8217;s largest 500 companies. Interested investors
+        may check out the <strong>Schwab U.S. Large-Cap ETF</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/SCHX#NYSE\\\">SCHX</a>), <strong>Vanguard
+        S&amp;P 500 ETF</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/VOO#NYSE\\\">VOO</a>),
+        and<strong> iShares Core S&amp;P 500 ETF</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/IVV#NYSE\\\">IVV</a>) to diversify
+        their portfolios.</p>\\n\\n\\n\\n<p><em>See Also: <a href=\\\"https://www.benzinga.com/news/24/06/39493328/hillary-clinton-offers-advice-to-biden-ahead-of-presidential-debate-its-a-waste-of-time-to-try-to-re?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Hillary Clinton Offers
+        Advice To Biden Ahead Of Presidential Debate: &#8216;It&#8217;s A Waste Of
+        Time To Try To Refute Mr. Trump&#8217;s Arguments&#8217;</a></em></p>\\n\\n\\n\\n<p><strong>Why
+        It Matters</strong>: Lee&#8217;s prediction is in stark contrast to the forecasts
+        of other financial experts. In May, <strong>Goldman Sachs</strong> predicted
+        a <a href=\\\"https://www.benzinga.com/markets/equities/24/05/38863242/stock-market-rally-for-2024-has-peaked-goldman-sachs-forecasts-flat-return-from-now-till-the-end\\\">flat
+        return for the S&amp;P 500</a> for the remainder of 2024, suggesting that
+        the stock market rally had peaked. However, Lee&#8217;s forecast indicates
+        a more extended period of growth.</p>\\n\\n\\n\\n<p>Another analyst, <strong>Gene
+        Munster</strong>, predicted that the stock market would continue to rise for
+        <a href=\\\"https://www.benzinga.com/markets/equities/24/05/38910879/stock-market-to-rally-for-3-5-years-before-ai-bubble-bursts-predicts-veteran-analyst-gene-munste\\\">another
+        three to five years</a> before an AI bubble bursts. This aligns with Lee&#8217;s
+        forecast of a sustained period of growth driven by AI-focused companies.</p>\\n\\n\\n\\n<p>However,
+        not all experts share this optimistic outlook. Economist <strong>Harry Dent</strong>
+        warned of a <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/06/39257592/economist-warns-crash-of-a-lifetime-is-coming-predicts-s-p-500-to-plummet-86-from-t\\\">looming
+        &#8220;crash of a lifetime&#8221;</a> due to the current &#8220;everything&#8221;
+        bubble, which he believes has yet to burst. Despite this, Lee&#8217;s prediction
+        suggests a period of sustained growth, particularly in the AI sector.</p>\\n\\n\\n\\n<p><em>Read
+        Next: <a href=\\\"https://www.benzinga.com/news/24/06/39516013/mark-cuban-accuses-trump-of-ripping-off-thousands-of-hard-working-americans-and-not-wanting-to-leave?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Mark Cuban Accuses Trump
+        Of Ripping Off &#8216;Thousands Of Hard Working Americans&#8217; And Not Wanting
+        To Leave The White House</a></em></p>\\n\\n\\n\\n<p>Image Via Shutterstock
+        </p>\\n\\n\\n\\n<p>This story was generated using <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\">Benzinga
+        Neuro</a> and edited by <u><a href=\\\"https://www.benzinga.com/topic/Kaustubh-Bagalkote\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Kaustubh Bagalkote</a></u></p>\",\"url\":\"https://www.benzinga.com/markets/equities/24/06/39519696/fundstrats-tom-lee-predicts-s-p-500-will-hit-15-000-by-2030-driven-by-gen-z-and-ai-wave\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/27/Southwest-Gas-Holdings-Inc-.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/27/Southwest-Gas-Holdings-Inc-.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/27/Southwest-Gas-Holdings-Inc-.jpeg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Guidance\"},{\"name\":\"Economics\"},{\"name\":\"Markets\"},{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"IVV\"},{\"name\":\"SCHX\"},{\"name\":\"VOO\"}],\"tags\":[{\"name\":\"Fundstrat
+        Global Advisors\"},{\"name\":\"Kaustubh Bagalkote\"},{\"name\":\"Tom Lee\"}]},{\"id\":39519681,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:08:36 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:08:37 -0400\",\"title\":\"Assure Holdings  On Wednesday Filed
+        Two Form RWs, Requesting Withdrawal Of Offering And Business Combination Filings\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/m-a/24/06/39519681/assure-holdings-on-wednesday-filed-two-form-rws-requesting-withdrawal-of-offering-and-business-combi\",\"image\":[],\"channels\":[{\"name\":\"M&A\"},{\"name\":\"News\"},{\"name\":\"Offerings\"}],\"stocks\":[{\"name\":\"IONM\"}],\"tags\":[]},{\"id\":39519678,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:07:25 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:07:25 -0400\",\"title\":\"LanzaTech and LanzaJet Introduce
+        CirculAir for Sustainable Aviation Fuel\",\"teaser\":\"LanzaTech Global, Inc.\_(NASDAQ:LNZA),
+        the carbon recycling company transforming waste carbon into sustainable fuels,
+        chemicals, and materials, and\_LanzaJet, Inc., a leading sustainable fuels
+        technology company\",\"body\":\"<p><a href=\\\"https://www.globenewswire.com/Tracker?data=hzva6c58Hgdr-3ljzxFh_1jkzXsUHnGwpJbfp6TLLSEmnrWYDKw2rZCvnI1CtH1f5Mx1-EZsjnrJjJdNSuPA69Q9niQny5l2i_yGWp5vkZQ=\\\"
+        target=\\\"_blank\\\">LanzaTech Global, Inc.</a>&nbsp;(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/LNZA#NASDAQ\\\">LNZA</a>), the carbon
+        recycling company transforming waste carbon into sustainable fuels, chemicals,
+        and materials, and&nbsp;<a href=\\\"https://www.globenewswire.com/Tracker?data=hzva6c58Hgdr-3ljzxFh_07GxgCzPvFFKv5K8IRKKsqDthIMnkO744UmX8P-jxV_ABEPwTAZKNl_1zU9b0Asvg==\\\"
+        target=\\\"_blank\\\">LanzaJet, Inc.</a>, a leading sustainable fuels technology
+        company and fuels producer, are launching CirculAir&trade;, a new joint offering
+        to convert waste, carbon, and renewable power into sustainable aviation fuel
+        (SAF) and immediately accelerate decarbonization of the aviation industry
+        globally. CirculAir is a breakthrough offering that provides an economical
+        and commercialized alternative to Fischer-Tropsch technology to create eFuels,
+        Power-to-Liquids (PtL), and Waste-to-Fuels leveraging the already ASTM-approved
+        SAF production pathway that uses ethanol as the biointermediate and Alcohol-to-Jet
+        (ATJ) technology to produce SAF and Renewable Diesel (RD).<br />\\n&nbsp;</p>\\n\\n<p>CirculAir
+        is a formalized joint offering and end-to-end technology solution that turns
+        nearly any waste source including municipal solid waste (MSW), agricultural
+        residues, carbon emissions from industrial and refining processes, carbon
+        dioxide (CO2) through direct air capture, and renewable power into SAF. CirculAir
+        combines the groundbreaking technologies of LanzaTech and LanzaJet to form
+        an efficient and economically compelling offering that provides the aviation
+        industry with a solution to produce waste-based SAF on a global scale. CirculAir
+        will combine LanzaTech and LanzaJet&#39;s technologies; first incorporating
+        LanzaTech&#39;s novel gas fermentation technology to convert nearly any waste
+        resource into CarbonSmart&trade; ethanol and then second, executing LanzaJet&#39;s
+        Alcohol-to-Jet (ATJ) technology by taking the ethanol and converting it to
+        drop-in SAF. The SAF made through this process is expected to reduce aviation
+        emissions by at least&nbsp;85%&nbsp;and can also produce carbon negative results,
+        depending on the feedstock.</p>\\n\\n<p>SAF is estimated to account for 65&ndash;70%&nbsp;of
+        overall aviation emissions reduction to achieve net zero by 2050, making it
+        a critical tool for this hard-to-abate industry; however, historic supply
+        constraints, high costs, and technical barriers have made it difficult for
+        the industry to default to SAF as the primary fuel source. CirculAir breaks
+        down these barriers. The technology is able to turn a wide range of waste-based
+        feedstocks into SAF, and it is being adopted by a range of customers across
+        the globe. This widespread adoption is projected to accelerate the production
+        and economies of scale necessary to bring down the global cost of SAF.</p>\",\"url\":\"https://www.benzinga.com/news/24/06/39519678/lanzatech-and-lanzajet-introduce-circulair-for-sustainable-aviation-fuel\",\"image\":[],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"LNZA\"}],\"tags\":[]},{\"id\":39519665,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:06:55 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:06:56 -0400\",\"title\":\"Needham Reiterates Buy on Sarepta
+        Therapeutics, Maintains $235 Price Target\",\"teaser\":\"Needham  analyst
+        Gil Blum   reiterates Sarepta Therapeutics (NASDAQ:SRPT) with a Buy and maintains
+        $235 price target.\",\"body\":\"Needham  analyst Gil Blum   reiterates Sarepta
+        Therapeutics (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SRPT#NASDAQ\\\">SRPT</a>)
+        with a Buy and maintains $235 price target.\",\"url\":\"https://www.benzinga.com/news/24/06/39519665/needham-reiterates-buy-on-sarepta-therapeutics-maintains-235-price-target\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Price
+        Target\"},{\"name\":\"Reiteration\"},{\"name\":\"Analyst Ratings\"}],\"stocks\":[{\"name\":\"SRPT\"}],\"tags\":[]},{\"id\":39519662,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:05:52 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:05:53 -0400\",\"title\":\"GNL Reduces Debt with $170M Sale
+        of Americold-Leased Properties\",\"teaser\":\"Global Net Lease, Inc. (NYSE:GNL)
+        (&#34;GNL&#34; or the &#34;Company&#34;) today announced the successful disposition
+        of a portfolio of nine cold storage properties that are currently leased to
+        subsidiaries of\",\"body\":\"<p>Global Net Lease, Inc. (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/GNL#NYSE\\\">GNL</a>) (&quot;GNL&quot;
+        or the &quot;Company&quot;) today announced the successful disposition of
+        a portfolio of nine cold storage properties that are currently leased to subsidiaries
+        of Americold Realty Trust, Inc. (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/COLD#NYSE\\\">COLD</a>)
+        for&nbsp;$170 million, at a&nbsp;7.88%&nbsp;cash cap rate on 3.3 years of
+        weighted average remaining lease-term.</p>\\n\\n<p>This disposition is a significant
+        achievement in GNL&#39;s ongoing strategic disposition initiative and aligns
+        with the Company&#39;s 2024 full-year&nbsp;guidance, which projected a disposition
+        cash cap rate range of&nbsp;7%&nbsp;to&nbsp;8%. GNL plans to use the net proceeds
+        from this sale to reduce outstanding debt and further lower the Company&#39;s
+        leverage. The sale of this portfolio, which GNL acquired for&nbsp;$153.4 million,
+        is part of the previously announced&nbsp;$567 million1&nbsp;of closed and
+        pipeline dispositions at a cash cap rate of&nbsp;7.2%.</p>\",\"url\":\"https://www.benzinga.com/news/24/06/39519662/gnl-reduces-debt-with-170m-sale-of-americold-leased-properties\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Asset
+        Sales\"}],\"stocks\":[{\"name\":\"COLD\"},{\"name\":\"GNL\"}],\"tags\":[]},{\"id\":39519629,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:04:50 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:04:51 -0400\",\"title\":\"Nkarta Begins Ntrust-1 Clinical Trial
+        Of NKX019 In Lupus Nephritis, With The First Patient In Screening; Says IND
+        Cleared For Ntrust-2\",\"teaser\":\"The company also announced the clearance
+        by the U.S. Food and Drug Administration (FDA) of its second Investigational
+        New Drug (IND) application for NKX019 in autoimmune disease.\\n\\nWith this
+        new IND, Nkarta plans to\",\"body\":\"<p>The company also announced the clearance
+        by the U.S. Food and Drug Administration (FDA) of its second Investigational
+        New Drug (IND) application for NKX019 in autoimmune disease.</p>\\n\\n<p>With
+        this new IND, Nkarta plans to initiate Ntrust-2, an open-label, multi-center
+        clinical trial of NKX019 for the treatment of systemic sclerosis (SSc, scleroderma),
+        idiopathic inflammatory myopathy (IIM, myositis) and ANCA-associated vasculitis
+        (AAV).</p>\\n\\n<p>Clinical data from Ntrust-1 and Ntrust-2 planned for 2025.</p>\",\"url\":\"https://www.benzinga.com/news/24/06/39519629/nkarta-begins-ntrust-1-clinical-trial-of-nkx019-in-lupus-nephritis-with-the-first-patient-in-screeni\",\"image\":[],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"NKTX\"}],\"tags\":[]},{\"id\":39519626,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:04:18 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:04:19 -0400\",\"title\":\"Entero Therapeutics Publishes Innovative
+        Celiac Disease Research in Top Gastroenterology Journal\",\"teaser\":\"Entero
+        Therapeutics, Inc., (NASDAQ:ENTO), (&#34;Entero Therapeutics&#34; or the &#34;Company&#34;),
+        a clinical-stage biopharmaceutical company specializing in the development
+        of targeted, non-systemic therapies\",\"body\":\"<p>Entero Therapeutics, Inc.,
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ENTO#NASDAQ\\\">ENTO</a>),
+        (&quot;Entero Therapeutics&quot; or the &quot;Company&quot;), a clinical-stage
+        biopharmaceutical company specializing in the development of targeted, non-systemic
+        therapies for&nbsp;gastrointestinal (GI) diseases, today announced the publication
+        of &quot;<a href=\\\"https://www.globenewswire.com/Tracker?data=h1ge28PUKiAz2IQRtYAA0SJfZUgHAckbiDzteTYi9l8E2W0CnDTx_7ezI5x8VIMa_Wg2k3zipLcko2Av_SJvn_YqB86D2_mvrekcSAqxiQ6X9xBpjdri1PzvYFtLCS5UyIAfampZnL10YfhDRNPNN_QRw5fCtj5xjAdou5NqsB0k9gt5BdDl8iwvU7rc-8SH18hztI6ucqenOv4l7Y52Po1PwNhmZshxk4x1WTRu1EZPz5H5PVvedeWlwxDhfzf2EotxEigcF8uAmCKc-SX9nQ==\\\"
+        target=\\\"_blank\\\">A Composite Morphometric Duodenal Biopsy Mucosal Scale
+        for Celiac Disease Encompassing Both Morphology and Inflammation</a>&quot;
+        in&nbsp;<em>Clinical Gastroenterology and Hepatology</em>, a pre-eminent journal
+        of the American Gastroenterological Association (AGA) that publishes innovative
+        diagnostic and therapeutic advances in clinical gastroenterology<em>.</em></p>\\n\\n<p>As
+        the number of promising therapies for celiac disease (CeD) grows, so does
+        the need to improve the measurement of clinically relevant histological endpoints.
+        The new approach presented in a peer-reviewed publication, led by Jack Syage,
+        Ph.D., President and Chief Scientific Officer of Entero Therapeutics, recognized
+        the need to advance beyond qualitative measures of histologic small intestinal
+        health and to develop a more accurate and sensitive scale based on the independent
+        quantitative measures of architectural changes (villus height to crypt depth
+        ratio, Vh:Cd) and inflammation (intraepithelial lymphocyte count, IEL) already
+        in use. The team created a composite score (VCIEL) for these two measures
+        that helps overcome the individual variances to improve the overall accuracy
+        of histological evaluation. The publication demonstrated the significant benefits
+        of the VCIEL scale based on the results of four previous clinical trials.
+        The significance of this achievement was highlighted in a special editorial
+        feature by the journal, demonstrating the importance of this novel metric
+        to CeD researchers.</p>\",\"url\":\"https://www.benzinga.com/news/24/06/39519626/entero-therapeutics-publishes-innovative-celiac-disease-research-in-top-gastroenterology-journal\",\"image\":[],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"ENTO\"}],\"tags\":[]},{\"id\":39519625,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:04:17 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:04:17 -0400\",\"title\":\"Nkarta Initiates Ntrust-1 Of NKX019
+        In Lupus Nephritis, With First Patient In Screening. FDA Also Clears Second
+        Investigational New Drug Application For NKX019 In Autoimmune Disease\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/general/biotech/24/06/39519625/nkarta-initiates-ntrust-1-of-nkx019-in-lupus-nephritis-with-first-patient-in-screening-fda-also-c\",\"image\":[],\"channels\":[{\"name\":\"Biotech\"},{\"name\":\"News\"},{\"name\":\"Health
+        Care\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"NKTX\"}],\"tags\":[]},{\"id\":39519611,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Thu, 27 Jun 2024 06:03:50 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:06:56 -0400\",\"title\":\"International Paper Shares Dip 15%
+        In Pre-Market After Suzano Drops Acquisition Pursuit\",\"teaser\":\" \",\"body\":\"<p><strong>Suzano
+        SA</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SUZ#NYSE\\\">SUZ</a>)
+        has decided to abandon its pursuit to acquire <strong>International Paper
+        Co.</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/IP#NYSE\\\">IP</a>),&nbsp;one
+        of&nbsp;North America&#8217;s&nbsp;largest recyclers and a global producer
+        of packaging, pulp and other fiber-based products. This news triggered a nearly
+        15% drop in International Paper&#8217;s shares during pre-market trading on
+        Thursday.</p>\\n\\n\\n\\n<p>Suzano&#8217;s decision was prompted by International
+        Paper&#8217;s rejection of its advances, Bloomberg <a href=\\\"https://www.bloomberg.com/news/articles/2024-06-26/suzano-drops-its-pursuit-of-international-paper-acquisition\\\">reported</a>
+        on Thursday. Instead, International Paper has chosen to focus on its own merger
+        plans with a different competitor.</p>\\n\\n\\n\\n<p>At the time of writing,
+        International Paper&#8217;s shares were trading at $39.67, a significant drop
+        from Wednesday&#8217;s close of $46.61, according to <a href=\\\"https://pro.benzinga.com\\\">Benzinga
+        Pro</a>.</p>\\n\\n\\n\\n<p><em>See Also: <a href=\\\"https://www.benzinga.com/markets/cryptocurrency/24/06/39448955/dogecoin-killer-shiba-inu-falters-here-is-what-these-key-indicators-reveal-about-its-short?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">&#8216;Dogecoin Killer&#8217;
+        Shiba Inu Falters \u2014 Here Is What These Key Indicators Reveal About Its
+        Short-Term Prosp</a></em></p>\\n\\n\\n\\n<p>Suzano, a Brazil-based company,
+        had initially proposed a $15 billion acquisition offer to International Paper.
+        However, the deal was based on the condition that International Paper abandon
+        its plans to acquire British packaging firm <strong>DS Smith.</strong></p>\\n\\n\\n\\n<p>Suzano
+        stated that it was unable to engage International Paper in serious discussions
+        and was not willing to increase its offer. This announcement led Suzano&#8217;s
+        U.S.-listed shares to see an 11.94% jump in the pre-market on Thursday.</p>\\n\\n\\n\\n<p>Suzano
+        had hoped to negotiate on &#8220;private, confidential and amicable terms,&#8221;
+        as per its statement. However, as this was not feasible, the company decided
+        to terminate the talks.</p>\\n\\n\\n\\n<p>This development simplifies International
+        Paper&#8217;s plan to acquire DS Smith Plc, a deal that is expected to close
+        in the fourth quarter. If Suzano&#8217;s acquisition had been successful,
+        the world&#8217;s largest pulp producer would have had the chance to expand
+        internationally and diversify into the more stable packaging sector. However,
+        there were investor concerns about Suzano&#8217;s ability to maintain its
+        investment grade if it took on additional debt for the deal.</p>\\n\\n\\n\\n<p><em>Read
+        Next: <a href=\\\"https://www.benzinga.com/markets/equities/24/06/39493523/rivian-lucid-micron-technology-novo-nordisk-tesla-why-these-5-stocks-are-on-investors-radars-tod?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">RIVN, LCID, MU, NVO,
+        TSLA: Top 5 Trending Stocks Today</a></em></p>\\n\\n\\n\\n<p><em>Image via
+        Shutterstock</em></p>\\n\\n\\n\\n<p>This story was generated using <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\">Benzinga
+        Neuro</a> and edited by <u><a href=\\\"https://www.benzinga.com/topic/Pooja-Rajkumari\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Pooja Rajkumari</a></u></p>\",\"url\":\"https://www.benzinga.com/markets/equities/24/06/39519611/international-paper-shares-dip-15-in-pre-market-after-suzano-drops-acquisition-pursuit\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/27/Down-Crisis-Financial-Business-Market-Gr.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/27/Down-Crisis-Financial-Business-Market-Gr.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/27/Down-Crisis-Financial-Business-Market-Gr.jpeg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"M&A\"},{\"name\":\"News\"},{\"name\":\"Pre-Market
+        Outlook\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"IP\"},{\"name\":\"SUZ\"}],\"tags\":[{\"name\":\"Pooja
+        Rajkumari\"},{\"name\":\"Stories That Matter\"}]},{\"id\":39519608,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:02:54 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:02:54 -0400\",\"title\":\"Wolfe Research Downgrades Agilent
+        Technologies to Peer Perform\",\"teaser\":\"Wolfe Research  analyst Doug Schenkel
+        \  downgrades Agilent Technologies (NYSE:A) from Outperform to Peer Perform.\",\"body\":\"Wolfe
+        Research  analyst Doug Schenkel   downgrades Agilent Technologies (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/A#NYSE\\\">A</a>)
+        from Outperform to Peer Perform.\",\"url\":\"https://www.benzinga.com/news/24/06/39519608/wolfe-research-downgrades-agilent-technologies-to-peer-perform\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Downgrades\"},{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"A\"}],\"tags\":[]},{\"id\":39519607,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:02:45 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:02:45 -0400\",\"title\":\"Acuity Brands Q3 2024 Adj EPS $4.15
+        Beats $4.13 Estimate\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/earnings/24/06/39519607/acuity-brands-q3-2024-adj-eps-4-15-beats-4-13-estimate\",\"image\":[],\"channels\":[{\"name\":\"Earnings\"},{\"name\":\"Earnings
+        Beats\"},{\"name\":\"Earnings Misses\"},{\"name\":\"News\"}],\"stocks\":[{\"name\":\"AYI\"}],\"tags\":[]},{\"id\":39519592,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:02:29 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:02:30 -0400\",\"title\":\"RH Chairman & CEO Gary Friedman Buys
+        $10M Of RH Stock At Average Price Per Share Of $216.10 Representing 46,274
+        Shares\",\"teaser\":\"With this purchase, Friedman beneficially owns as of
+        June 26, 2024, 5.05 million shares, or\_25.1%\_of the outstanding shares of
+        RH common stock, based on 18.44 million shares outstanding as of June 7, 2024,
+        as\",\"body\":\"<p>With this purchase, Friedman beneficially owns as of June
+        26, 2024, 5.05 million shares, or&nbsp;25.1%&nbsp;of the outstanding shares
+        of RH common stock, based on 18.44 million shares outstanding as of June 7,
+        2024, as reported in RH&#39;s&nbsp;first quarter&nbsp;fiscal 2024 Form 10-Q.
+        This represents an increase in Friedman&#39;s beneficial ownership by&nbsp;0.2%.&nbsp;</p>\",\"url\":\"https://www.benzinga.com/news/24/06/39519592/rh-chairman-ceo-gary-friedman-buys-10m-of-rh-stock-at-average-price-per-share-of-216-10-representing\",\"image\":[],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"RH\"}],\"tags\":[]},{\"id\":39519584,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 06:01:53 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 06:01:53 -0400\",\"title\":\"Acuity Brands Q3 2024 GAAP EPS $3.62
+        Misses $3.68 Estimate, Sales $968.100M Miss $1.009B Estimate\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/earnings/24/06/39519584/acuity-brands-q3-2024-gaap-eps-3-62-misses-3-68-estimate-sales-968-100m-miss-1-009b-estimate\",\"image\":[],\"channels\":[{\"name\":\"Earnings\"},{\"name\":\"Earnings
+        Misses\"},{\"name\":\"News\"}],\"stocks\":[{\"name\":\"AYI\"}],\"tags\":[]},{\"id\":39519493,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Thu, 27 Jun 2024 05:58:54 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 05:58:55 -0400\",\"title\":\"Morgan Stanley To Roll Out OpenAI-Powered
+        Assistant For Financial Advisors: 'Quality And Depth Of The Notes Are Just
+        Significantly Better'\",\"teaser\":\"Morgan Stanley is set to launch an AI-powered
+        assistant that will revolutionize the workflow of its financial advisors.\",\"body\":\"<p><strong>Morgan
+        Stanley</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MS#NYSE\\\">MS</a>)
+        is set to launch an AI-powered assistant to enhance the workflow of its financial
+        advisors.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>: The AI assistant,
+        named <strong>Debrief</strong>, will automate the note-taking process during
+        client meetings, creating draft emails and summaries of the discussions, CNBC
+        <a href=\\\"https://www.cnbc.com/2024/06/26/morgan-stanley-openai-powered-assistant-for-wealth-advisors.html\\\">reported</a>
+        on Thursday. The program, built using <strong>Microsoft Corp.-backed OpenAI&#8217;s</strong>
+        GPT-4, will be rolled out to the firm&#8217;s approximately 15,000 advisors
+        by early July.</p>\\n\\n\\n\\n<p>\\\"What we're finding is that the quality
+        and depth of the notes are just significantly better,\\\" <strong>Jeff McMillan</strong>,
+        Morgan Stanley&#8217;s head of firmwide artificial intelligence said. \\\"The
+        truth is, this does a better job of taking notes than the average human.\\\"</p>\\n\\n\\n\\n<p>The
+        AI assistant will also free up valuable time for advisors, potentially leading
+        to increased client engagement and business growth.</p>\\n\\n\\n\\n<p>Debrief
+        will initially be used in client meetings, with future versions allowing advisors
+        to use the program on corporate devices during in-person meetings. Clients
+        must consent to be recorded each time Debrief is used.</p>\\n\\n\\n\\n<p>\\\"As
+        a financial adviser I'm doing four, five or six meetings a day,\\\" said <strong>Don
+        Whitehead</strong>, a Houston-based advisor who's been testing the software.
+        By \\\"having the note-taking service built in through AI, you can really
+        be invested in the meeting, you're actually a lot more present.\\\"</p>\\n\\n\\n\\n<p><em>See
+        Also: <a href=\\\"https://www.benzinga.com/news/24/06/39450621/mark-cuban-falls-victim-to-this-common-account-takeover-tactic-by-hackers-and-loses-access-to-his-gm?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Mark Cuban Falls Victim
+        To This Common Account Takeover Tactic By Hackers And Loses Access To His
+        Gmail: Here&#8217;s How You Can Avoid It</a></em></p>\\n\\n\\n\\n<p><strong>Why
+        It Matters</strong>: This move by Morgan Stanley is in line with the increasing
+        adoption of AI in the financial sector. Earlier in May, a PricewaterhouseCoopers
+        report <a href=\\\"https://www.benzinga.com/news/24/05/38931261/pwc-report-shows-ai-driven-sectors-surging-in-productivity-signaling-economic-upswing\\\">highlighted
+        a significant surge in productivity</a> in AI-driven sectors, including professional
+        and financial services. This growth was nearly five times faster than in other
+        sectors.</p>\\n\\n\\n\\n<p>Moreover, OpenAI&#8217;s ChatGPT Enterprise has
+        been gaining traction in the industry, with PwC becoming <a href=\\\"https://www.benzinga.com/news/24/05/39058054/big-four-accounting-firm-becomes-openais-largest-chatgpt-enterprise-customer\\\">its
+        largest customer</a> in May. A study by the University of Chicago also found
+        that OpenAI&#8217;s GPT-4 had a relative advantage over humans in <a href=\\\"https://www.benzinga.com/news/24/05/39055523/openais-chatgpt-4-has-a-relative-advantage-over-humans-in-financial-analysis-study-finds-even-withou\\\">financial
+        analysis and forecasting</a>, further underlining the potential of AI in the
+        financial sector.</p>\\n\\n\\n\\n<p>This development comes at a time when
+        the financial services industry is increasingly relying on AI and machine
+        learning technologies to <a href=\\\"https://www.benzinga.com/partner/general/24/04/38278223/the-future-of-finance-how-ai-and-machine-learning-are-transforming-financial-call-center-operatio\\\">enhance
+        customer experiences and operational efficiency</a>. The integration of AI
+        in financial services is seen as crucial for adapting to remote working conditions
+        and meeting evolving consumer needs.</p>\\n\\n\\n\\n<p><em>Read Next: <a href=\\\"https://www.benzinga.com/general/education/24/06/39466991/michael-saylor-2012-apple-stock-prediction-goes-viral-heres-what-bitcoin-bull-got-right-whoever?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Michael Saylor 2012
+        Apple Stock Prediction Goes Viral, Here's What Bitcoin Bull Got Right: \u2018Whoever
+        Is Selling That Stock Must Be A Moron&#8217;</a></em></p>\\n\\n\\n\\n<p>Image
+        Via Shutterstock </p>\\n\\n\\n\\n<p>This story was generated using <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\">Benzinga
+        Neuro</a> and edited by <u><a href=\\\"https://www.benzinga.com/topic/Kaustubh-Bagalkote\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Kaustubh Bagalkote</a></u></p>\",\"url\":\"https://www.benzinga.com/news/24/06/39519493/morgan-stanley-to-roll-out-openai-powered-assistant-for-financial-advisors-quality-and-depth-of-the\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/27/morgan-stanley-shutter3.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/27/morgan-stanley-shutter3.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/27/morgan-stanley-shutter3.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Global\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"MS\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"ChatGPT\"},{\"name\":\"Kaustubh Bagalkote\"},{\"name\":\"Morgan
+        Stanley\"},{\"name\":\"OpenAi\"}]},{\"id\":39519482,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 05:56:34 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 05:56:35 -0400\",\"title\":\"Nokia Inks Deal With The French State
+        Regarding The Sale Of Submarine Networks Business ASN For An Enterprise Value
+        Of \u20AC350M\",\"teaser\":\"Nokia will retain a 20% shareholding with board
+        representation to ensure a smooth transition until targeted exit, at which
+        point the French State would acquire Nokia\u2019s remaining interest.\\n\\n\_\\n\\nThe
+        sale is\",\"body\":\"<div>Nokia will retain a 20% shareholding with board
+        representation to ensure a smooth transition until targeted exit, at which
+        point the French State would acquire Nokia&rsquo;s remaining interest.</div>\\n\\n<div>&nbsp;</div>\\n\\n<div>The
+        sale is expected to close at the end of 2024 or beginning of 2025, subject
+        to formal consultation of ASN&rsquo;s French Works Council and other customary
+        closing conditions and regulatory approvals.</div>\",\"url\":\"https://www.benzinga.com/news/24/06/39519482/nokia-inks-deal-with-the-french-state-regarding-the-sale-of-submarine-networks-business-asn-for-an-e\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Asset
+        Sales\"}],\"stocks\":[{\"name\":\"NOK\"}],\"tags\":[]},{\"id\":39519479,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 05:55:53 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 05:55:54 -0400\",\"title\":\"Stifel Initiates Coverage On Jasper
+        Therapeutics with Buy Rating, Announces Price Target of $86\",\"teaser\":\"Stifel
+        \ analyst Ben Burnett   initiates coverage on Jasper Therapeutics (NASDAQ:JSPR)
+        with a Buy rating and announces Price Target of $86.\",\"body\":\"Stifel  analyst
+        Ben Burnett   initiates coverage on Jasper Therapeutics (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/JSPR#NASDAQ\\\">JSPR</a>) with a Buy
+        rating and announces Price Target of $86.\",\"url\":\"https://www.benzinga.com/news/24/06/39519479/stifel-initiates-coverage-on-jasper-therapeutics-with-buy-rating-announces-price-target-of-86\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Price
+        Target\"},{\"name\":\"Initiation\"},{\"name\":\"Analyst Ratings\"}],\"stocks\":[{\"name\":\"JSPR\"}],\"tags\":[]},{\"id\":39519471,\"author\":\"Benzinga
+        Newsdesk\",\"created\":\"Thu, 27 Jun 2024 05:54:22 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 05:54:22 -0400\",\"title\":\"Roth MKM Initiates Coverage On Denison
+        Mines with Buy Rating, Announces Price Target of $2.6\",\"teaser\":\"Roth
+        MKM  analyst Joe Reagor   initiates coverage on Denison Mines (AMEX:DNN) with
+        a Buy rating and announces Price Target of $2.6.\",\"body\":\"Roth MKM  analyst
+        Joe Reagor   initiates coverage on Denison Mines (AMEX:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/DNN#AMEX\\\">DNN</a>) with a Buy rating
+        and announces Price Target of $2.6.\",\"url\":\"https://www.benzinga.com/news/24/06/39519471/roth-mkm-initiates-coverage-on-denison-mines-with-buy-rating-announces-price-target-of-2-6\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Price
+        Target\"},{\"name\":\"Initiation\"},{\"name\":\"Analyst Ratings\"}],\"stocks\":[{\"name\":\"DNN\"}],\"tags\":[]},{\"id\":39519449,\"author\":\"Lekha
+        Gupta\",\"created\":\"Thu, 27 Jun 2024 05:52:52 -0400\",\"updated\":\"Thu,
+        27 Jun 2024 05:52:53 -0400\",\"title\":\"Is BP Bailing on Green? Reportedly
+        Shifts Gears From Renewables To Oil And Gas\",\"teaser\":\"BP reportedly shifts
+        focus back to oil and gas, halting new offshore wind projects and implementing
+        hiring freeze, due to investor dissatisfaction with energy transition strategy.\",\"body\":\"<p><strong>BP
+        p.l.c.</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/BP#NYSE\\\">BP</a>)
+        reportedly implemented a hiring freeze and halted new offshore wind projects,
+        shifting focus back to oil and gas due to investor dissatisfaction with the
+        company&#8217;s energy transition strategy.</p>\\n\\n\\n\\n<p>These moves
+        are part of CEO Murray Auchincloss&#8217; strategy to reduce investments in
+        high-budget, low-carbon projects, especially offshore wind, which are not
+        expected to generate immediate cash flow, reported Reuters.</p>\\n\\n\\n\\n<p>These
+        actions signify a major departure from the approach of Auchincloss&#8217;
+        predecessor, Bernard Looney, who aimed to <a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/markets/equities/23/09/34526407/oil-giant-bps-ceo-resigns-amid-investigation-on-personal-conduct\\\"
+        rel=\\\"noreferrer noopener\\\">transition away from fossil fuels quickly</a>.</p>\\n\\n\\n\\n<p>The
+        shift has affected BP&#8217;s stock performance, as returns from renewable
+        energy projects have declined, while profits from oil and gas have soared
+        in the aftermath of the COVID-19 pandemic and Russia&#8217;s invasion of Ukraine.</p>\\n\\n\\n\\n<p>Auchincloss
+        and Chief Financial Officer Kate Thomson have prioritized investing in and
+        acquiring new oil and gas assets, with a particular focus on the Gulf of Mexico
+        and U.S. onshore shale basins, where BP already has significant operations,
+        the report added, citing people familiar with the matter.</p>\\n\\n\\n\\n<p><strong><em>Related</em></strong><em>:
+        <a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/markets/equities/24/06/39247864/bp-tightens-workplace-relationship-rules-after-ceo-firing-report\\\"
+        rel=\\\"noreferrer noopener\\\">BP Tightens Workplace Relationship Rules After
+        CEO Firing: Report</a></em></p>\\n\\n\\n\\n<p>BP said in a statement to Reuters
+        that Auchincloss introduced six priorities &#8220;to deliver as a simpler,
+        more focused and higher value company.&#8221;</p>\\n\\n\\n\\n<p>&#8220;The
+        actions we are taking are part of delivering this &#8211; and of course are
+        all in service of our aim of growing the value of BP.&#8221;</p>\\n\\n\\n\\n<p>As
+        per the report, BP has reassigned dozens of employees, who were previously
+        focused on identifying new renewable opportunities, to existing projects such
+        as offshore wind initiatives in Britain and Germany.</p>\\n\\n\\n\\n<p><strong><em>Read</em></strong><em>:
+        <a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/markets/equities/24/06/39416447/bp-doubles-down-on-biofuels-buys-out-bunge-bioenergia-for-1-4b\\\"
+        rel=\\\"noreferrer noopener\\\">BP Doubles Down On Biofuels: Buys Out Bunge
+        Bioenergia for $1.4B</a></em></p>\\n\\n\\n\\n<p>This week, BP said it plans
+        to expand and diversify its biofuel operations in Brazil after acquiring <a
+        target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/markets/equities/24/06/39452342/bp-eyes-biofuel-dominance-in-brazil-with-expansion-plans-report\\\"
+        rel=\\\"noreferrer noopener\\\">stake in BP Bunge Bioenergia</a>.</p>\\n\\n\\n\\n<p>Investors
+        can gain exposure to the stock via&nbsp;<strong>Direxion Hydrogen ETF&nbsp;</strong>(ARCA:&nbsp;HJEN)&nbsp;and&nbsp;<strong>First
+        Trust Exchange-Traded Fund IV FT Energy Income Partners Strategy ETF</strong>
+        (ARCA:&nbsp;EIPX).</p>\\n\\n\\n\\n<p><strong>Price Action</strong>: BP shares
+        closed lower by 1.00% at $35.72 on Wednesday.</p>\\n\\n\\n\\n<p><strong><em>Disclaimer:</em></strong><em>
+        This content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\",\"url\":\"https://www.benzinga.com/markets/equities/24/06/39519449/is-bp-bailing-on-green-reportedly-shifts-gears-from-renewables-to-oil-and-gas\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/06/27/BP-Logo.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/06/27/BP-Logo.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/06/27/BP-Logo.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"Large
+        Cap\"},{\"name\":\"News\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"BP\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"},{\"name\":\"Eurasia\"},{\"name\":\"Stories
+        That Matter\"}]},{\"id\":39519448,\"author\":\"Benzinga Newsdesk\",\"created\":\"Thu,
+        27 Jun 2024 05:52:51 -0400\",\"updated\":\"Thu, 27 Jun 2024 05:52:51 -0400\",\"title\":\"Piper
+        Sandler Initiates Coverage On Dynatrace with Neutral Rating, Announces Price
+        Target of $50\",\"teaser\":\"Piper Sandler  analyst Rob Owens   initiates
+        coverage on Dynatrace (NYSE:DT) with a Neutral rating and announces Price
+        Target of $50.\",\"body\":\"Piper Sandler  analyst Rob Owens   initiates coverage
+        on Dynatrace (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/DT#NYSE\\\">DT</a>)
+        with a Neutral rating and announces Price Target of $50.\",\"url\":\"https://www.benzinga.com/news/24/06/39519448/piper-sandler-initiates-coverage-on-dynatrace-with-neutral-rating-announces-price-target-of-50\",\"image\":[],\"channels\":[{\"name\":\"News\"},{\"name\":\"Price
+        Target\"},{\"name\":\"Initiation\"},{\"name\":\"Analyst Ratings\"}],\"stocks\":[{\"name\":\"DT\"}],\"tags\":[]}]\n"
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:11:56 GMT
+      Etag:
+      - 0s89sQhzSjYCAljvgqhRmS3_vrTWj3RTe3jnQPfA0cM=
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/3.5.0, 1.1 e94fc0df161940e9096df2b4fe60d4f8.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - HvN937tz80oUTJRSEBHZwEJUR19_RcgBLvoG9YMVRWFSB-fvgvjR6Q==
+      X-Amz-Cf-Pop:
+      - AMS58-P1
+      X-Bz-Request-Id:
+      - a9958c17-e64e-4cca-8325-d1b8cf90e19d#14564991
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '0'
+      X-Kong-Request-Id:
+      - 8d0e3c06517321657c7a4b3abf927d60
+      X-Kong-Upstream-Latency:
+      - '47'
+      X-Powered-By:
+      - Pentium
+    status:
+      code: 200
+      message: OK
+version: 1

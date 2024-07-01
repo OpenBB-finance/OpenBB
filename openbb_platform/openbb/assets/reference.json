@@ -2060,7 +2060,7 @@
                 "standard": [
                     {
                         "name": "underlying_symbol",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "Ticker symbol of the underlying asset.",
                         "default": "",
                         "optional": false,
@@ -2068,7 +2068,7 @@
                     },
                     {
                         "name": "contract_symbol",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "Symbol of the options contract.",
                         "default": "",
                         "optional": false,
@@ -2076,7 +2076,7 @@
                     },
                     {
                         "name": "expiration",
-                        "type": "date",
+                        "type": "List[date]",
                         "description": "Expiration date of the options contract.",
                         "default": "",
                         "optional": false,
@@ -2084,15 +2084,15 @@
                     },
                     {
                         "name": "dte",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Number of days to expiration of the options contract.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "strike",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Strike price of the options contract.",
                         "default": "",
                         "optional": false,
@@ -2100,7 +2100,7 @@
                     },
                     {
                         "name": "option_type",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "The type of option.",
                         "default": "",
                         "optional": false,
@@ -2108,73 +2108,73 @@
                     },
                     {
                         "name": "volume",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "The trading volume.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "open_interest",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Open interest at the time.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "last_price",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Last trade price at the time.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "last_size",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Lot size of the last trade.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "last_timestamp",
-                        "type": "datetime",
+                        "type": "List[datetime]",
                         "description": "Timestamp of the last price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "open",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The open price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "high",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The high price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "low",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The low price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The close price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     }
@@ -2182,97 +2182,97 @@
                 "intrinio": [
                     {
                         "name": "bid",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The last bid price at the time.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid_size",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "The size of the last bid price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid_timestamp",
-                        "type": "datetime",
+                        "type": "List[datetime]",
                         "description": "The timestamp of the last bid price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The last ask price at the time.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask_size",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "The size of the last ask price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask_timestamp",
-                        "type": "datetime",
+                        "type": "List[datetime]",
                         "description": "The timestamp of the last ask price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "total_bid_volume",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Total volume of bids.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid_high",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The highest bid price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid_low",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The lowest bid price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "total_ask_volume",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Total volume of asks.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask_high",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The highest ask price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask_low",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The lowest ask price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     }

@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerData,
