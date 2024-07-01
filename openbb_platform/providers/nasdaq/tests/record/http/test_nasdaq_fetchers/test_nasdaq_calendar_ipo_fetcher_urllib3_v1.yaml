@@ -1,0 +1,118 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/ipo/calendar?date=2024-06
+  response:
+    body:
+      string: !!binary |
+        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
+        9NX1nz//C0Bj8L1nNgAA
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2694'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:54:06 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:54:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=17~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=24821fae9978af0a673f1f50dbcdc249;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=B2C97B3C8DF06054F71460A597479BCE~000000000000000000000000000000~YAAQkkd7XPuvWUqQAQAArMdUWRi3kSclvo2a1P7mdV2Sq82MWaXTqxUPjik1pYBppcpCFXRO4VHnH/I2o3ars0uKXa0Rahkg2/QHBsGw4Z5ew9P4ds8wnn2GymXXg+GNK9G3o5pqTn8njAQyXT0a8u444zV8BHT78+FcFA2MvrPOPpQrbHmNYheMIJIsH4JInNayxhGaTGvePfXGRgZUvIMaD5Z99AQ3bYFHXnd3oznkz+yr839a6LlGKmZvl1PRcshV6T11qHZZfCjhAJYUCRheA2jDEuhjo/Auoqm8+zoJGa3wsSP1/8wxnX7mbJmnJvOF8/dzyekBQtpc+RYkjnDTJAjTK7v1NCT0jMDrHfcA1kxTgqX+VDO9Xg7uXA==;
+        Domain=.nasdaq.com; Path=/; Expires=Thu, 27 Jun 2024 12:54:06 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '0'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '127'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - 004d6149-2fa8-4e2e-98c9-720f0a91a1da
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

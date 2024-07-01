@@ -1,0 +1,89 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://markets.newyorkfed.org/api/rates/unsecured/effr/search.json?startDate=2023-01-01&endDate=2023-06-06
+  response:
+    body:
+      string: !!binary |
+        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
+        YHcAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Content-Disposition
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Disposition
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1828'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:22:35 GMT
+      Pragma:
+      - no-cache
+      Vary:
+      - Accept-Encoding
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains
+      x-amz-apigw-id:
+      - aBaIwHoWiYcFhkQ=
+      x-amzn-requestid:
+      - e7fb1759-2758-4603-93d2-6fd7dc6cb84e
+      x-amzn-trace-id:
+      - Root=1-667d3d6a-20954503ee4954595abe5cae;Parent=0c6de0f786049405;Sampled=0;lineage=e7c0e2ee:0
+      x-frame-options:
+      - SAMEORIGIN
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

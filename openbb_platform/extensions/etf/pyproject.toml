@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "openbb_etf" }]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.12"
+python = ">=3.9,<3.13"
 openbb-core = "^1.2.5"
 
 [build-system]

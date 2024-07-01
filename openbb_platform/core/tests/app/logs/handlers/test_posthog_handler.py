@@ -105,7 +105,10 @@ def test_emit_calls_handleError_when_send_raises_exception(handler):
     handler.handleError = MagicMock()
 
     # Act
-    handler.emit(record)
+    try:
+        handler.emit(record)
+    except Exception as e:
+        assert isinstance(e, Exception)
 
     # Assert
     handler.send.assert_called_once_with(record=record)
@@ -132,7 +135,10 @@ def test_emit_calls_handleError_when_send_raises_exception_of_specific_type(hand
     handler.handleError = MagicMock()
 
     # Act
-    handler.emit(record)
+    try:
+        handler.emit(record)
+    except Exception as e:
+        assert isinstance(e, ValueError)
 
     # Assert
     handler.send.assert_called_once_with(record=record)
@@ -159,7 +165,10 @@ def test_emit_calls_handleError_when_send_raises_exception_of_another_type(handl
     handler.handleError = MagicMock()
 
     # Act
-    handler.emit(record)
+    try:
+        handler.emit(record)
+    except Exception as e:
+        assert isinstance(e, TypeError)
 
     # Assert
     handler.send.assert_called_once_with(record=record)

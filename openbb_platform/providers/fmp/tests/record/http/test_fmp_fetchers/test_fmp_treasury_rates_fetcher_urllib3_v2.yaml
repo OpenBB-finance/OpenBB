@@ -1,0 +1,161 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/treasury?apikey=MOCK_API_KEY&from=2023-04-01&to=2023-05-10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62ZzY7TQBCE7/sUUc5sNPbM+IdXQRyQQOICSGgvCPHuTDztpNpV9hiJA5cmcTJf
+        qqurZz+8XC6/y7/L5fr509uX6/vLtQ99fA35teuu7+r/fPvx/e1rV/4v36YOa32ppdvUYy0ur3Ol
+        YSl1yWq/vnz62S3vHKFyf1a8TTOU4lLKA5TyUopYGmsJn9WFWsOH9bX2+LLLB9TaGEvpz7sDFEGg
+        yExinrFmJBLWDEU8gUKQyFDKfOxKwmGuB0z4eSuIiUFMDQ5hVhwGrPX1gK5mIBwcA4FfooJ4KGwl
+        kW4BSxXFgOeuKDK+auSSsciCxYzMVha5BWNSMKg/yiFHrFUY0b1uv0Gcgu8lIsEgEr7JQAgO2Agr
+        B9EcU2pxyIqD+7Erhz5izUThhLLfHe5HE9+1igJfZSxYFEmIIiHXtUEQ2uoUQwtGEjBG0SHeFvZh
+        BBZF3oqifC/3XeuRWBg9CyMixdU2nRcZDMGi5ZohEounzwGKeFIXgc3i3ADB9+3aphwg+E4j4Vpy
+        RdEi0QsSyjclCjFAAg5AQ+EkvHytGY+065uJh6lrh6MWUcO0b8HgXJGentXwzd7Vdn1zwjPVIeJe
+        VWG4Dq8wBnxVhTGIFvEtaOYp/KJhnum15yGSbpGiBRwSYIgZIoThNLxUAqMYGYWYp26yHOmCSQzH
+        PVJIjIJEL+yiEz3yyBGIwg295XGjYME94lRtsiAUWdiFihYqZjWmSGExEIuiLxEtgmiRjq2TQDiZ
+        78XNgTWhvEJkC5k3XYg745uFA0eL0siKg+sY40A7SAnoPEK2ThG9eRgKloQ7o6EQTiG6Y3SSs/Y4
+        TpsFBQeLIjhnCoZC7SCkCDlBhGlyyJrwRLvd4Z6+HzhlxjrOFQUFDxBYCR8o4NdGVahp6nr5uuMU
+        nXAKbBpjwTDkABEZSwWL442ssODN9Kk5VIUaHydlsQ1ZepZysBi4Q7IYIFm0yCRaZGy1SMfbKUxl
+        hKEmiFpEiIUTf2XRM4uZWYw8TAfRI64D91Uxt0hwqgCxNmShVOF+tuvOmt7xCHFLmqmClxAnlFUV
+        InrP+JmnWahcEc6yUBGL3UKYhRv7/8JCRG+lCrWpdy0UPEPS5lrmH41TbOrsFoFZTLyp/+chklos
+        1HIa3LmNhbjKIlUkn/4tWXC0mLFkyZtIqODtcoslC/zEg+DdbBC1nHLwThsDqSTCyZAl8iZfWQy8
+        qKvAKdzC3emsMUvIYmjKQi2np2FQi8CVMMAQLYJnMl3gyU0YvJxKYYj0LWEcb+pJXXun55LTgkEr
+        mVaGU/G9xCTEboo2YCTEQiZl4T7gJImghghf4KQbgUibBLLvFtuBKu9vRrGI8BBRO5n6Y4i7Vl1Z
+        tKZI4OU0PfMsqoKWsrRZYg0GT5HMMPxdU1UBx291sScmqugQ59ZxjaYtFmpBfeR9YDE6PpXF5PRT
+        WbhT1sf5dq6/Gyct9bch9s6zLET8zq1LC3H1DTMQdSFQCLNgr9haxWYZtSHCHLhBorDN6B5vDSJi
+        VpPDqWtv+NsOtofAcObKQjkFRyzlmmfnh0oW6U7i5eNf1EdZjkQeAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:12:42 GMT
+      Etag:
+      - W/"1e44-mbkbbrPOMn0B3/V+AiyEZuRI10M"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/treasury?apikey=MOCK_API_KEY&from=2023-01-01&to=2023-04-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WbzY7cNhCE73mKxZzthf5IafIqQQ4GYiCXJEDgSxDk3TMetrAs1idRuz7kwowF
+        8VN3dXWT+8tPLy//Pv57ebn99uXb19vPL7dpmObPw/x5Hm+fyv/5468/v/0+Pv7f8rou9dpU1u71
+        2vxc21K9lp9r9/3f/vP1y9/lcbleKk8bcrX0/WHz6zZWS+m5VP9ofa6kVD99eK4tW/34wR82l7W8
+        Ppb++3TCYrjKYnUWd1kLFpOzmI2FvGp5+7VaChTOItf/MFgIn51FzSdYrEuHxXQHFjOwkBCIsLhE
+        It3rVy1RIW96iKJeChTy+EBR/yxQ3CEs1q2HYgMUE6CYKUWAhaOQr1ZQ1DsKFHUaBYo6mgLFtaCo
+        X2IH0cuPaSUQU71WXn6h/BjrtUJik5ctKOovNJVXrfddUKz16xcUEk6rR8DOQvLvB1gsxEK+drCQ
+        tcJCNaWwWJ3FXMdAYbG6bqY6aQqLpYZYWIgqlz3OoJtrjWzXza5WzMQi12snLOZ6LeLCUci7HqJw
+        sZg9LGTpjAXoZs49FhOwGIFFkrVgIQISaiEVT/9plSMOQ/hEjtRREDlS58NZQa1/t8PoKieZi0HE
+        4bCIrBIrwcJzJLeB8aAtMVzweI6sIJ0Sd6EXUqWO9WLuoSBvgfUU4mIj7TQUc/11Iyy8iqyeIxJP
+        Jz4LCiqGReqwGKmOzLLHYCFrhUWSehPaKU7oJvLzBkM9oX/x0E7PkQVgzBAXqkgBo8ciX6ypGeKC
+        6gj478Wd1ug19e41da3DJ3KEaqqwjsCAQrKOPRiJYEiBOBFPaEYkyUOLWxiPnUsQ3yyu32cwxMAE
+        DEnDgNFjQQZjAe2kZmQj8XQWi/vOVjAeel3/KOKiTpuCYgWDoX1faCc58C4LMhgZkmQDwdiET9bf
+        vbHwvmyAsHC9yM4ig15gY1avXQ0LqiMbaOfdUKTXwepI0mpZHudy0bqLSq7fSNy9jKjBjx1CULyf
+        w0D96QZScTepSG8hXXEQsz0WNO4t5E1vIkU7iEq+dxDa4wcHyccniEfIAYmt57IG6k9XUApVhUAh
+        eAJFW0LS69QqRVJdCAlug6IxJcEC/LcYtIAxglT0YZC3gLYMWVg5xbCQz/tkYSCyB4UkTICA8nG3
+        9PgoCDIWWiOjfsDU4i6JlH3bo4dAcPUMyR4VUzvCqXqkXlSIc4nfTT0YVEAuwyDVbO130nIRMFw3
+        QS1a2XzsEQoIBgb4insPBTWohAJ69askfN5LYdFarGbgUVBM5iuaMWGgmCwsvhfwHgvqTzMpp3iN
+        gOEsIEPaNuRHMsTkYnmr6HVUgPW+n9fTiYecmcKCLJbZTfAVSWeazdPeYCSHITFWYAwGo+l2dxjA
+        4jwsJp5zYliITM76ed+tFjpvei5J55b86wYLmFsgiw/BoD4kywc/gQHuQlLisI4AjFRvKWC0PRk7
+        LfPeH2WBfQgM95AFuAvZ+GFgZC8j7VFAYx0jLuBUZAPtHKCkdvzFxIPOyz0ZsYAkkZp3yMILydgO
+        9w4E46IFv59PwCcedGYJgncmCagnwGgnnYuOrwKGGwxUDMoSMhi9yMDxXpYv/p7IWHQy9YThJAzE
+        7FExtFHRbHpPEZDOAeSimyI420O5uMjBZ76CJlD4CGduRzjNAXywgKAQB7uzgLFFx4FPPNqjoCAH
+        juciMLdws3URhs98dYwaMGC0J6+xB8b5AHzi2R7JxUqR8eHAcBRWUZ2DY5AThB0DlZDzce90MNaD
+        /EAM1ouAUCw6byxPSx4TUwuiqQ0xzYKYWE0s2lOX+N15XzbxYA9hwLyXEmRzGJsHhc8uxFMds6DJ
+        Hs174Uxk6/ksHO5dZgHzXkDhsz059gwWPvuWg42YfUOSZEoSCIueVOBwj3Qzk27CWdnmWiFbChYe
+        F+IZgoWfD61QULPZrCZ+Ls18J57tkeXMoBcr6AWlCMSFuyzpHoJFvfFgAQWV4gLPynoFFed7WTbZ
+        mMQPwHCjJf4yYDiLdtbZHLefxQVoZ+fi3sTjvcssAEU7yFk0x8vD/HhIxC75947jIWhR6VoS3sXp
+        SufVtkxnOwWFSmwcobbt+oL3OduhVqMEcbbe9qjNcXvAgDKSgUXqaid1ZUl0MlhAV4YsPEWkH30X
+        i3amNWsjGyzonsEHYIx80TeJUE76dTs54ihcOqd2vKdFMFLE3YWcte8pAk4Lr2h1SaDTugiCKiqo
+        hbvOqa2oLBceFXi3FU6TJTh3FufXT8aDUScpJ8GwU6JmoHsYF6OnCMSFu4sEFRXjgqTzfIjzYHG5
+        ooJ0UkUluQAWrb3AawbJAyORdIJciPjsMM7txQMG9uswA0cYkCUEw33n6IIB157pHiMU1cWGF02P
+        chkG9evEguwFKYZ8OXlahaJtUxvTfBwXIBiIQgzMVRRotaimUlyQYIB6GguoI3QVx22n3M44EQyq
+        I+cd+8hXOhHF1UJiJEguWgPOl9V8vIcZIs8/0c5eHRmxYycWUmjfp53ejZDV8hz5EasFRTWdtyMP
+        GNSzo++UIJgB2jEMPyaCv6mS6VTynQcMYAFtaoY6knpFlQ8DAAVYcOxSXS6ojLSjHNROyBEZKscW
+        qUuF44Cuv8BxJzlwDZVZN1mHhbytRs8biwnqCGins4BJDtoL8p3no98HC2pTk+zxhMXFNtVbM6ip
+        9KdEkCJgPBcIDKqpqSue1Jot1LODXlz1F64XzgI8uMcFji+gZd/IaXWlk2rqIjpwgoLsRXvCvjRj
+        6oLCi6qcaBQYF6/DC6B99AuC0fkbzJHH4DMlCc07gYUUvduBXlBv5gaDAgPigrSTbGcvRXDaOUOK
+        JLCdqJ1eUqlph7iAOlI/K1iAv8Ar4B9JkoF6Mzg9RBagndCzr2484Uhg9DriKLRiR+hTitCJwPkR
+        +wMF/hmmo1hALhTPYUmFsJhbp3X5RADmWpqCwQI8eOc4deQp+AhygTBAOwmG9E7laZfCwjv2DVis
+        xqK1tcHiGRc//fo/EktrwNlAAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:12:42 GMT
+      Etag:
+      - W/"40d9-5Z+NQG/GZQHc/uLuEdne6muP4Ao"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

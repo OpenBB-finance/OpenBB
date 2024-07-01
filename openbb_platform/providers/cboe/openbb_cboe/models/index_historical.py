@@ -139,9 +139,7 @@ class CboeIndexHistoricalFetcher(
                 )
                 url += f"{symbol.replace('^', '')}.json"
             else:
-                base_url: str = (  # type: ignore[no-redef]
-                    f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{interval_type}"
-                )
+                base_url: str = f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{interval_type}"  # type: ignore[no-redef]
                 url = (
                     base_url + f"/_{symbol.replace('^', '')}.json"
                     if symbol.replace("^", "") in TICKER_EXCEPTIONS
