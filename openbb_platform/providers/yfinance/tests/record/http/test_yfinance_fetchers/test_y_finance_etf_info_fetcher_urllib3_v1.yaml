@@ -14,19 +14,29 @@ interactions:
     uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/QQQ?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=QQQ
   response:
     body:
-      string: "{\"quoteSummary\":{\"result\":[{\"assetProfile\":{\"longBusinessSummary\":\"To
-        maintain the correspondence between the composition and weights of the securities
-        in the trust (the \\\"securities\\\") and the stocks in the NASDAQ-100 Index\xAE,
-        the adviser adjusts the securities from time to time to conform to periodic
-        changes in the identity and/or relative weights of index securities. The composition
-        and weighting of the securities portion of a portfolio deposit are also adjusted
-        to conform to changes in the index.\",\"companyOfficers\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":479.4185,\"open\":478.18,\"dayLow\":473.82,\"dayHigh\":479.92,\"regularMarketPreviousClose\":479.4185,\"regularMarketOpen\":478.18,\"regularMarketDayLow\":473.82,\"regularMarketDayHigh\":479.92,\"trailingPE\":38.648365,\"volume\":37076167,\"regularMarketVolume\":37076167,\"averageVolume\":37844670,\"averageVolume10days\":29866040,\"averageDailyVolume10Day\":29866040,\"bid\":473.5,\"ask\":473.98,\"bidSize\":100,\"askSize\":900,\"yield\":0.0058,\"totalAssets\":270069170176,\"fiftyTwoWeekLow\":342.35,\"fiftyTwoWeekHigh\":486.86,\"fiftyDayAverage\":448.8668,\"twoHundredDayAverage\":413.5304,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.0036919727,\"navPrice\":480.02,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
-        Growth\",\"ytdReturn\":0.1741271,\"beta3Year\":1.19,\"totalAssets\":270069170176,\"yield\":0.0058,\"fundFamily\":\"Invesco\",\"fundInceptionDate\":921024000,\"legalType\":\"Exchange
-        Traded Fund\",\"threeYearAverageReturn\":0.123906,\"fiveYearAverageReturn\":0.2137385,\"lastSplitFactor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
-        QQQ Trust, Series 1\",\"longName\":\"Invesco QQQ Trust\",\"firstTradeDateEpochUtc\":921076200,\"timeZoneFullName\":\"America/New_York\",\"timeZoneShortName\":\"EDT\",\"uuid\":\"714d32d4-5f6c-33bc-b36a-765119cb3c4c\",\"messageBoardId\":\"finmb_8108558\",\"gmtOffSetMilliseconds\":-14400000,\"maxAge\":1}}],\"error\":null}}"
+      string: !!binary |
+        H4sIAAAAAAAAAH1V23LbNhD9FQ6e2hmJ4VUU/aZYduyp49iR0o7bdDIQuaRQgQADgJJZj3+pH9Ev
+        64LUxVLtPGgo7NnL2QsWT+R7Iw3MmqqiqiVnT0SBbrghZ388Eao1mDslC8bBQlyK8n2jmQCt9xZk
+        Lp2KMmHw55glOJlU6KOWIgeRgbMAswHYQVUtNTNMCoeK3NkAK5dGO7LoYA1ZoxAF7Wx9GdVo4/xk
+        /34lB/gr+bmz74yMzFZ7g9vJbDq5H/qe51wjgcd//xl0cpqvmQaF37/Qoz4NVyhZOYZVGFHuv5kU
+        hVSV/VuDYjJnmZMtqSgP/BjmaJhpLZt3UjkKODVsDS8zY5bHi2CuM3+zFEyUrxSjlqrTQ4R2h0Jy
+        Jp0cOg8OVZgf13KbHOQn5E85Wz4uGRBLgYr2U1GwDJTGlv85IBV9nJTY7fEo8rznAdF9n6eA/eV2
+        CHYK/oDUCg2vsPXkLLAnWDPZ6HMuNeJRkro+KskaBJ7GnuuFA5LT9kZuLDpygzjuBFeYudUI3Cgd
+        4PyVDafqI1UrO3yv+jzS+XQU4AiankY7RY9DG4U5YgvuLshZmLpBmkTWaC15U2H0IByHUZp6J25+
+        /R9M16BoCTsgTIIwjbzxCeB7mDtWPfRSL0yDg90UWbQ7HST5UmXBcsvXd2MsA9Wrnvxo1CEz9rdt
+        jOd1UH+KQntsGXA0xBJ5MfIw0lA+sbcb4weJ541SP/H8BN0UrDDtfCN/A1h1tQujwA3jY2BXtsQN
+        tgDSnPTsUR4HbhLbfM1GXjUiV5Af4X6MjL0kOlR8IkRD+ZSt7YXKP1Nj83CT5C2Nh0M+4SiNLD9B
+        13d2Hm23x26KxPD+KFxBdkd9mU1x4O0tP98LRcO5LcWphFNt+s7uJJlkopec0/qGidUOoLyUeEeX
+        1d6bojnQhV2XBV5JwAuUQ0Fxof4C7czgbtCGZfqH9yjD7NGtpX1DVQnOByU3Zon8W5N/BtMoYTP3
+        kzBMceBxv9LwAaiyFfPTHzb3ZAwK7M0lrXDaMNa1WIPOJOnF17i6a7t0pl0v0sD3AlwIOEocSsrn
+        bY1ScvHY7xZnbvPOnUu0RAdmqQAspW3LX5D2gzTA2Yjs2Kxf1wn8OPLTOO07Mas5M5c0M1L1RcaS
+        dk9WT+GJwJYD0rn98JEcoeRifokS3VYLicuL3N/f4xFJguItDtXsGNBL3K231N7ZXTkcRDA7XKsD
+        Z4aPAK5RHzXtS/iWoq0gU9p0NbHlu6hltvxisr6MySiwZbSPzO9SwCWmtPU0qTBARt/dwubbg1Qr
+        ctCavWB2MZ3bJBq7CUjiR3kY5NEwLkbZMAwX2XARjugwGcW+n2aLMIsy1K7wxcYiv5dU5dfWrmCi
+        Wnwb+944jseoUFYG34EZmI+Mc3wp8fnIcXyGfmS7bgnv5/X5GZ8JUGrfkOf/AHkj2+RFCAAA
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -37,6 +47,8 @@ interactions:
       - max-age=31536000
       X-Content-Type-Options:
       - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
       X-XSS-Protection:
       - 1; mode=block
       cache-control:
@@ -44,11 +56,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1070'
+      - '1080'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 25 Jun 2024 02:13:51 GMT
+      - Mon, 01 Jul 2024 20:02:58 GMT
       server:
       - ATS
       vary:
@@ -58,7 +70,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '6'
       y-rid:
-      - 1famnvpj7k9uv
+      - 54hv7mhj862rj
     status:
       code: 200
       message: OK
@@ -91,6 +103,8 @@ interactions:
       - max-age=31536000
       X-Content-Type-Options:
       - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
       X-XSS-Protection:
       - 1; mode=block
       cache-control:
@@ -100,7 +114,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 25 Jun 2024 02:13:51 GMT
+      - Mon, 01 Jul 2024 20:02:59 GMT
       server:
       - ATS
       vary:
@@ -110,7 +124,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '1'
       y-rid:
-      - 040r7m5j7k9uv
+      - 4pmq6edj862rj
     status:
       code: 200
       message: OK

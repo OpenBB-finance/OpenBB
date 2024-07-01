@@ -14,36 +14,52 @@ interactions:
     uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=AAPL
   response:
     body:
-      string: '{"explains":[],"count":15,"quotes":[{"exchange":"NMS","shortname":"Apple
-        Inc.","quoteType":"EQUITY","symbol":"AAPL","index":"quotes","score":3554100.0,"typeDisp":"Equity","longname":"Apple
-        Inc.","exchDisp":"NASDAQ","sector":"Technology","sectorDisp":"Technology","industry":"Consumer
-        Electronics","industryDisp":"Consumer Electronics","dispSecIndFlag":true,"isYahooFinance":true},{"exchange":"MEX","shortname":"APPLE
-        INC","quoteType":"EQUITY","symbol":"AAPL.MX","index":"quotes","score":20047.0,"typeDisp":"Equity","longname":"Apple
-        Inc.","exchDisp":"Mexico","sector":"Technology","sectorDisp":"Technology","industry":"Consumer
-        Electronics","industryDisp":"Consumer Electronics","isYahooFinance":true},{"exchange":"NGM","shortname":"Direxion
-        Daily AAPL Bull 2X Sha","quoteType":"ETF","symbol":"AAPU","index":"quotes","score":20013.0,"typeDisp":"ETF","longname":"Direxion
-        Daily AAPL Bull 2X Shares","exchDisp":"NASDAQ","isYahooFinance":true},{"exchange":"ASE","shortname":"DIREXION
-        DAILY AAPL BULL 1.5X S","quoteType":"INDEX","symbol":"^AAPU-NV","index":"quotes","score":20008.0,"typeDisp":"Index","longname":"DIREXION
-        DAILY AAPL BULL 1.5X S","exchDisp":"NYSE MKT","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
-        Jan 2025 50.000 call","quoteType":"OPTION","symbol":"AAPL250117C00050000","index":"quotes","score":20007.0,"typeDisp":"Option","longname":"AAPL
-        Jan 2025 50.000 call","exchDisp":"OPR","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
-        Jun 2024 300.000 call","quoteType":"OPTION","symbol":"AAPL240621C00300000","index":"quotes","score":20007.0,"typeDisp":"Option","longname":"AAPL
-        Jun 2024 300.000 call","exchDisp":"OPR","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
-        Sep 2025 310.000 call","quoteType":"OPTION","symbol":"AAPL250919C00310000","index":"quotes","score":20007.0,"typeDisp":"Option","longname":"AAPL
-        Sep 2025 310.000 call","exchDisp":"OPR","isYahooFinance":true}],"news":[{"uuid":"88fb7f3b-fbb9-3a92-962d-1d772bdb0138","title":"Dow
-        Jones Futures: Stock Market Rotates As Nvidia Dives; Warren Buffett''s Berkshire
-        Is A Buy","publisher":"Investor''s Business Daily","link":"https://finance.yahoo.com/m/88fb7f3b-fbb9-3a92-962d-1d772bdb0138/dow-jones-futures%3A-stock.html","providerPublishTime":1719280309,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/91gDDVsy9LpezWuf22d.6Q--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/8b83b7bd0abe5445e998ba14f9770d0a","width":1000,"height":563,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/uiGmIlckA.oXHm9v8t3o9Q--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/8b83b7bd0abe5445e998ba14f9770d0a","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["NVDA","COMP","META","AAPL","^GSPC","^DJI","AVGO","SMCI"]},{"uuid":"d1ef4a65-ae7f-3cff-aaf1-800a526d287d","title":"Nvidia,
-        Microsoft, or Apple: Which $3 Trillion-Dollar Stock Is the Better Artificial
-        Intelligence (AI) Play?","publisher":"Motley Fool","link":"https://finance.yahoo.com/m/d1ef4a65-ae7f-3cff-aaf1-800a526d287d/nvidia%2C-microsoft%2C-or-apple%3A.html","providerPublishTime":1719274500,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/2sQnctKj8zQkxNn19i07Zw--~B/aD00NzM7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/0b1f068c0058a01549bca57218bc79de","width":720,"height":473,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/6gWGsRJv7SgWpj_9RyZKoA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/0b1f068c0058a01549bca57218bc79de","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["NVDA","AAPL","MSFT"]},{"uuid":"aab36595-35a6-307b-8497-f3d74216b918","title":"Apple,
-        Meta not in talks currently for AI partnership, Bloomberg News reports","publisher":"Reuters","link":"https://finance.yahoo.com/news/apple-meta-not-talks-currently-224745367.html","providerPublishTime":1719269265,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/JIIcw_nNaY_JJjjP6bdG_g--~B/aD01MzI7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/reuters-finance.com/c5604c292fbe0aceda3049357a38a4e9","width":800,"height":532,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/bzPZZ4iQZuDJ0GLxZSKEGg--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/reuters-finance.com/c5604c292fbe0aceda3049357a38a4e9","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL","META"]},{"uuid":"01b9b1f9-b838-38a3-aba1-0aaefbe53fcb","title":"Crypto
-        under pressure, Good Buy or Goodbye: Market Domination","publisher":"Yahoo
-        Finance Video","link":"https://finance.yahoo.com/video/crypto-under-pressure-good-buy-220224103.html","providerPublishTime":1719266544,"type":"VIDEO","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/86.XvZ3uj7NuEaGEWmH.5g--~B/aD0zMTg2O3c9NTY3MjthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-06/6880d210-3275-11ef-bfc3-6090907fef93","width":5672,"height":3186,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/I922vu2ZBTn9jFrIbPE_3A--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-06/6880d210-3275-11ef-bfc3-6090907fef93","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["SHOP","NVDA","BUD","BUDFF","MSFT","HUBS","AAPL","^DJI","PARA","PARAA","^GSPC","TGT","AFRM","LLY","BTC-USD","ZI","TDOC","ALT","COIN","^IXIC","NONOF","NVO"]},{"uuid":"da7e2c77-7866-310c-aa7b-ace86e98413e","title":"Where
-        Will Apple Stock Be in 3 Years?","publisher":"Motley Fool","link":"https://finance.yahoo.com/m/da7e2c77-7866-310c-aa7b-ace86e98413e/where-will-apple-stock-be-in.html","providerPublishTime":1719266400,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/ncsALyGuiTDxSkrgj0IFsw--~B/aD0xNDE0O3c9MjEyMTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/1e6486ddb1ca6489a8aabca596c2542b","width":2121,"height":1414,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/B8D1FvJJWdquwZHIHQUGHg--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/1e6486ddb1ca6489a8aabca596c2542b","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL"]},{"uuid":"92f5ab3c-6999-3b61-a80a-b6a69feea342","title":"Apple
-        Spurned Idea of iPhone AI Partnership With Meta Months Ago","publisher":"Bloomberg","link":"https://finance.yahoo.com/news/apple-spurned-idea-iphone-ai-214522244.html","providerPublishTime":1719265522,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/829g9aMnnbokAozH17GDvw--~B/aD0xMzMzO3c9MjAwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/bloomberg_technology_68/efffb508295dd9aa303af68eca74d154","width":2000,"height":1333,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/1oHukLpyJJJ8.acanlwS.g--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/bloomberg_technology_68/efffb508295dd9aa303af68eca74d154","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL","META","GOOG"]},{"uuid":"120a981c-934c-378b-9f0e-dc555fb60c21","title":"IBD
-        Stock Of The Day Meta Eyes Buy Point After Report Of AI Talks With Apple","publisher":"Investor''s
-        Business Daily","link":"https://finance.yahoo.com/m/120a981c-934c-378b-9f0e-dc555fb60c21/ibd-stock-of-the-day-meta.html","providerPublishTime":1719261726,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/To_o0y29rBWKp8taknnVhw--~B/aD00MzA7dz04MTY7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/264b4a64e29e3a89d1ee653bbe9a2aa0","width":816,"height":430,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/gvsEbKxpM5MxX48tm_L5_Q--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/264b4a64e29e3a89d1ee653bbe9a2aa0","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["META","AAPL"]},{"uuid":"8129198b-8646-35c3-972c-88dc61d2502d","title":"Yahoo
-        Video: Apple stock will see little impact from EU probe: Analyst","publisher":"MT
-        Newswires","link":"https://finance.yahoo.com/news/yahoo-video-apple-stock-see-203001113.html","providerPublishTime":1719261001,"type":"STORY","relatedTickers":["AAPL"]}],"nav":[],"lists":[],"researchReports":[],"screenerFieldResults":[],"totalTime":73,"timeTakenForQuotes":445,"timeTakenForNews":600,"timeTakenForAlgowatchlist":400,"timeTakenForPredefinedScreener":400,"timeTakenForCrunchbase":0,"timeTakenForNav":400,"timeTakenForResearchReports":0,"timeTakenForScreenerField":0,"timeTakenForCulturalAssets":0}'
+      string: !!binary |
+        H4sIAAAAAAAAAL1Z2XLjutF+FZSqUrkxJIA7nYuUbMm2YmuxRY+X1PmnQBAUYVEkh4tl+dSk8hp5
+        vTxJGqRmLGs2jZf/wmWSaABfN/rrBfqzJR6ymMmkaO3/84+9Fk+rpGztU3Ov9alKS6E+/wkyPGLJ
+        TLT2W6PhtLXXKqI0LxO2UF+6WRYLNEh4u7We5K0yNdA/vxx4N0p6tfDTWIl2J2fwLpNAPMDregcQ
+        4GkOMzTX0lxC2mSvVcISPVlkaplPlSxXIBWnyex7eyp0a9lRd9rrnqsVBS/THL54gkdJGqez1dev
+        a9lnIwCpKsp8Bd8P06SoFiJH/RjE8zSRvNiQWM/+gVQAo1PBB0lwFLNZa7/MKwFzixsWpemRTFjC
+        RfP1894zu3an/S279gYX/evBeIR63cHZDVK2QweXZ2eIts1rNN0y9mDU619v2vr/YMIlHn34mb0J
+        Ic6WtQe17DNj/xrI5gncTPtoeOq1dtJ6dDzc1lrm4kGmCeoxGa/Wm1VxjDTYKmLbLuYdbfnX5S/0
+        tbe9q15hU9ufA8jrBb/ncjuoO55cbJNHLf8PliCNaCYywfcJQZzF8Zai44kHJ7DNJc0klNqHMMeE
+        P/Kbqo+zEvTcItZP8Gwo3Sjyco271UztYCBN/12VDeJQC1SGmW+o8o8AvaHOU5E1VtXp7x+zS13Q
+        GWa+oc4/AvSGOq89yULUbbbIqnI3lS3wbGtCCEx8e8/exrObxpAeE7FsMmJVyQCkfTc0fEIY1qjv
+        Y10TBDvU0LDj6GbAGaV6YMNypSzjp7Q1lLOoRBdMFgJNcslFgcYJOoGvuJ8ESE6iNIFvXoqmlV/I
+        QD4KdBgJlkG2OWFJUIhS6Z9VfiyLSOR11L4XBaS2vxYQqwoJ04smfikbyGQOIlFZZsV+pxM2OrVX
+        SsE2TxedRWcXNTpMgccLBR7nCjzOavA4TdpRuVCek+XpvQxEPmmgeVJZntrUdUwHzN6cEWCZeuML
+        VRiUUbXwE8DZ2v+zBZE1jSt1cGsT5/EG7KK9kotZjbeqAIvsgHyHtrVOdXg9Ws4PZkfjExbRj97q
+        Y0SOuxj/66DDeoQOvb4dPJKHYa+7HGtHS34czyfXMbm5GqXiyq06X3ZYiECy9qNIwqLeRiQd6Qf1
+        o0YtYhs+Z9wlju3qWmgbQgS+oethwLkGqixlUEagLDjVXisSykqtfZNSUFLVAa00lzOwfNxSxNlV
+        tTwanqaDKMtuT67CQxrBIY+uz2vVbhdz93YRF36vTCdenwx75RLUWdzekeVY5+7QO///UNfY0LZ+
+        abSFxwf4a33+4/MeHGzMShF4ks9Frs62qQP/qC3R8MjQiCkYc3FoaQTrjPiYOZRhIhyN29wNA+Jv
+        8GjIZokMwfmSEqLYvUjQtEz5vNhHI/A/yZpXdAFDeQFUUtwS+d+QJ4oYBqt8Jt6YQbso0Fk8wcaF
+        go2LGvZf9O4ODLJN650YNP+gHXHz9FFfOdHIv44/PJxcnM++Mmh0d/lqBgWmL4Rh+GYgROgSzsPQ
+        DAzHCYVv2ZoW/JBBlvkqBg1X+rg9cHR6swpuiqQth+nl/fLdGfQb6r6MQaMPvS4ssm6ovOmZehv2
+        vfrf9Mh7xi5mhCY1uYmFAJc0XJtjnzshpq5JuS0ICxyxnaWAB4cRmBvJoqiAQtAYxgGK2EJloSZF
+        oYLFMCKbYnEfdeFwVkW5Raw6kaIvmXQHMqkc2ySbAnMFATcQcA0BNxCwzBQEXEPAMsEKAmYNAkxt
+        3dCJTugOtDI1m7wPrcwo08PKvDvl2fDwlFWnA/vs7iutHsbeZeNnd/PVyCsjfnKQ3faoGRwf3bGT
+        +N4H0c53dkmLDs8FK3NcZXHKAhFgCZEFNlUFLCZWx6A204gPcQgqR0ypCLEf+jZmuh9olIcsFO6T
+        B2quZm64oGuSVzEu9S6Ic2RP/fzx4JJ/eKT9lZm9Uc56Ryu8kIfH4/HxFx5uUk43hK/5gQN1lOZg
+        XRAduxZg9B2XGFANWYxa3xSGucigfhYBtJ3LNJ/LZIbKFPm5eugO1HMZCfRBFqo9neTpFtPUhcZh
+        XiU82i1n7YJxXfU9IcNrZLhMdyCX7tYV0HNy7VAPOIRwnQVwbKat0imgYpYlsA/HyPXAEI5JvxOx
+        oIavL7AKNEpL1E/SahYpsw1lKWewZ9PAo7O0qMNWHeD20OXBFE3ZarsiGHpoBKFoKZuW/zfiFmZZ
+        WuDgCxicpCUWNRhMLZ1CTjPsHYxHTWq9xHgQ95jpGgLrNNSxHuoUu1CMYE2DqG+7rqkZ2obx+lWe
+        ZuK///5PgaCgv2d8hWK2LFRrhIaiZMpSDJV101JkadkG4y6RBCOzBNbIq6JsJijTzlLlrDAjTPPa
+        W+ey7ik3DXsErlQlu+cCUQPEa3BY7YUBHF4AOHAQ3TVcqu9gUMPRHfd9Qr2Yr6IHazgOB+Xyqr1M
+        2V1+c/61B3kYPt7QJtR3ybj3i1D/nbIibCz2kdpmh3BoyQzNErZBrcBxOayrBz4JXd0hEMs3Ajuw
+        eCOm6a8spbqjNBidLTU9v518Gk+s21F+XczerZR6mc4vDOPryukbKvGAuw7XfWxahGODQ4Hv246F
+        TQocshmnjLANKl1Fq9rpvbxaZPgA3DBBgfBV5FH/OMR4WSRANWBSxJoAD+I8TUIlywVKQyQeuAR0
+        qIRwDkxq2pLt4PSyqmoZrTBsiMsan6/2xA0+vMYHtZZqThpwtewTOJyGeA0OK3D4KzgMpjVNh9hk
+        BxZqtum8DwvPgocVbeeO1hsG80DyU613dr38wsJV3b8ob3zsLoe/YuFvlRq+DhW2A+lKN4jRlBrM
+        t3xsQevnh4LSUNOffFR/1uFo9dsreCnIcV/OvbAq++bNJZdtyDDlG/HyHa3wmquDdY+z17RBzwoH
+        5lPbMHXsG0TDOjGg1dE1CpWfYZAgNE3TNTcvEsSMcZatrw/QiSzRheBpHtRXBsU+FAx133OTVuig
+        WqFBAtWEB5Q9Aff9+xYnD0TyCKxhO9Nx0ey+vgXAkSyh0FK7wyPsjilkckNlt1+zCjIbeafcdn2a
+        hu2zyf3lufZwUT5eVyM3uf/axkA+66rbAR1ym31zfbBkV+euuL6IbrTI9MExfhbj/bXFPtpuR1gm
+        CwkUeIxQy7J1IgLNsXTXMt2QEYs+eY6tbXiO4byyXZkNvSN6JR/oJ3o2NfOTT3Yy7L5bVnuZxq/j
+        yrpHORwPJ8AVdYvN7ptfe8GJyvUPv2APwXIeXdSV/vpjAYwXiciPpIiDC1FU8ZeRMi1Z3PifZSg+
+        LYTH5iKB2u58/buxYVjPB0b15blVh7uNz914li5ZySOFBqZtj09yEQhgkAimazjfEWr6Hp8VAGhr
+        aKS0/WbCxba+W+PTTdW/GT0ES1Q5i7tFfRm/Tz7/D3JDohxJHwAA
     headers:
       Age:
       - '0'
@@ -55,20 +71,22 @@ interactions:
       - no-referrer-when-downgrade
       Strict-Transport-Security:
       - max-age=31536000
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
       X-XSS-Protection:
       - 1; mode=block
       cache-control:
       - public, max-age=120, stale-while-revalidate=180
       content-encoding:
       - gzip
+      content-length:
+      - '2547'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 25 Jun 2024 02:13:38 GMT
+      - Mon, 01 Jul 2024 20:02:48 GMT
       server:
       - ATS
       vary:
@@ -76,9 +94,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-search--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '76'
+      - '69'
       y-rid:
-      - 3j071atj7k9ui
+      - 2v005etj862r8
     status:
       code: 200
       message: OK
@@ -97,35 +115,51 @@ interactions:
     uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=MSFT
   response:
     body:
-      string: "{\"explains\":[],\"count\":15,\"quotes\":[{\"exchange\":\"NMS\",\"shortname\":\"Microsoft
-        Corporation\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT\",\"index\":\"quotes\",\"score\":2760400.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
-        Corporation\",\"exchDisp\":\"NASDAQ\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"dispSecIndFlag\":true,\"isYahooFinance\":true},{\"exchange\":\"MEX\",\"shortname\":\"MICROSOFT
-        CORP\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT.MX\",\"index\":\"quotes\",\"score\":20048.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
-        Corporation\",\"exchDisp\":\"Mexico\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
-        Jan 2026 560.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116C00560000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
-        Jan 2026 560.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
-        Dec 2024 320.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT241220P00320000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
-        Dec 2024 320.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
-        Jan 2026 370.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116P00370000\",\"index\":\"quotes\",\"score\":20007.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
-        Jan 2026 370.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
-        Dec 2026 360.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT261218C00360000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
-        Dec 2026 360.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
-        Jul 2024 400.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT240719P00400000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
-        Jul 2024 400.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"d1ef4a65-ae7f-3cff-aaf1-800a526d287d\",\"title\":\"Nvidia,
-        Microsoft, or Apple: Which $3 Trillion-Dollar Stock Is the Better Artificial
-        Intelligence (AI) Play?\",\"publisher\":\"Motley Fool\",\"link\":\"https://finance.yahoo.com/m/d1ef4a65-ae7f-3cff-aaf1-800a526d287d/nvidia%2C-microsoft%2C-or-apple%3A.html\",\"providerPublishTime\":1719274500,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/2sQnctKj8zQkxNn19i07Zw--~B/aD00NzM7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/0b1f068c0058a01549bca57218bc79de\",\"width\":720,\"height\":473,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/6gWGsRJv7SgWpj_9RyZKoA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/0b1f068c0058a01549bca57218bc79de\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"NVDA\",\"AAPL\",\"MSFT\"]},{\"uuid\":\"12cb5431-b2f9-3f98-b8ba-8a667e874706\",\"title\":\"2
-        Top Artificial Intelligence Stocks to Buy Right Now\",\"publisher\":\"Motley
-        Fool\",\"link\":\"https://finance.yahoo.com/m/12cb5431-b2f9-3f98-b8ba-8a667e874706/2-top-artificial-intelligence.html\",\"providerPublishTime\":1719267300,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/UpxaFPOLUTqbKUXRb8s2OQ--~B/aD01MDc7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/d883e21cb06b65d037bd5485c7fbad8b\",\"width\":720,\"height\":507,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/QofdcKHs9dyyngLQNRqpHQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/d883e21cb06b65d037bd5485c7fbad8b\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AVGO\",\"ANET\",\"MSFT\"]},{\"uuid\":\"9da78b2a-1117-31ea-800d-b6eecf7eacc7\",\"title\":\"After
-        Nvidia's 10-for-1 Stock Split, Is It Still a Buy?\",\"publisher\":\"Motley
-        Fool\",\"link\":\"https://finance.yahoo.com/m/9da78b2a-1117-31ea-800d-b6eecf7eacc7/after-nvidia%27s-10-for-1-stock.html\",\"providerPublishTime\":1719266820,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/bzHZqDe5vRKHYePmAvPw.w--~B/aD00NzM7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/e991d19786f7e2adb91f028653dc504a\",\"width\":720,\"height\":473,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/uWbZ98BDW898Ooo2gmd1gQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/e991d19786f7e2adb91f028653dc504a\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"NVDA\",\"MSFT\",\"AMD\"]},{\"uuid\":\"08c0f070-7e2b-3982-aacd-53f396b18913\",\"title\":\"Nvidia\u2019s
-        13% Stock Rout Has Traders Scouring Charts for Support\",\"publisher\":\"Bloomberg\",\"link\":\"https://finance.yahoo.com/news/nvidia-13-stock-rout-traders-220607373.html\",\"providerPublishTime\":1719266767,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/uQzeYOwvooKId4TzGCadDQ--~B/aD02NzU7dz0xMjAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/bloomberg_markets_842/eb3e0816fb54ada1be96d28fce060da1\",\"width\":1200,\"height\":675,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/f.djSj7.SFxMjOcIUT7xNQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/bloomberg_markets_842/eb3e0816fb54ada1be96d28fce060da1\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"NVDA\",\"MSFT\"]},{\"uuid\":\"01b9b1f9-b838-38a3-aba1-0aaefbe53fcb\",\"title\":\"Crypto
-        under pressure, Good Buy or Goodbye: Market Domination\",\"publisher\":\"Yahoo
-        Finance Video\",\"link\":\"https://finance.yahoo.com/video/crypto-under-pressure-good-buy-220224103.html\",\"providerPublishTime\":1719266544,\"type\":\"VIDEO\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/86.XvZ3uj7NuEaGEWmH.5g--~B/aD0zMTg2O3c9NTY3MjthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-06/6880d210-3275-11ef-bfc3-6090907fef93\",\"width\":5672,\"height\":3186,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/I922vu2ZBTn9jFrIbPE_3A--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-06/6880d210-3275-11ef-bfc3-6090907fef93\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"SHOP\",\"NVDA\",\"BUD\",\"BUDFF\",\"MSFT\",\"HUBS\",\"AAPL\",\"^DJI\",\"PARA\",\"PARAA\",\"^GSPC\",\"TGT\",\"AFRM\",\"LLY\",\"BTC-USD\",\"ZI\",\"TDOC\",\"ALT\",\"COIN\",\"^IXIC\",\"NONOF\",\"NVO\"]},{\"uuid\":\"7eef2120-ebf5-3aff-b813-87830908b3bd\",\"title\":\"Why
-        Microsoft (MSFT) Dipped More Than Broader Market Today\",\"publisher\":\"Zacks\",\"link\":\"https://finance.yahoo.com/news/why-microsoft-msft-dipped-more-214518865.html\",\"providerPublishTime\":1719265518,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/AwCmIhR0z9Bg4cEkwuNQjw--~B/aD02MDE7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/8442d24e11d454aa89061259a9714d43\",\"width\":900,\"height\":601,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/n4.AbgyuCxTPgpWcYEizKw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/zacks.com/8442d24e11d454aa89061259a9714d43\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\",\"^GSPC\"]},{\"uuid\":\"124e2554-8473-351b-905a-284401914051\",\"title\":\"Microsoft
-        Stock Hits Record High But Pulls Back\",\"publisher\":\"Investor's Business
-        Daily\",\"link\":\"https://finance.yahoo.com/m/124e2554-8473-351b-905a-284401914051/microsoft-stock-hits-record.html\",\"providerPublishTime\":1719260169,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/9F_YeJOfMWyGH13Fp0UrYg--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/8068b347cb2e4f7b6a04d5e07aa7c208\",\"width\":1000,\"height\":563,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/EroEw2zMidvn_eMjzSXrZA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/8068b347cb2e4f7b6a04d5e07aa7c208\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"5b43b8a6-f622-477d-bc93-668f95bc799b\",\"title\":\"Nvidia
-        stock falls more than 6% as investors rotate out of chip heavyweight\",\"publisher\":\"Yahoo
-        Finance\",\"link\":\"https://finance.yahoo.com/news/nvidia-stock-falls-more-than-6-as-investors-rotate-out-of-chip-heavyweight-165458081.html\",\"providerPublishTime\":1719259668,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/QtqWvQUxnvm3Zgeov0zNEA--~B/aD0yMDAwO3c9MzAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-06/efef8f30-238d-11ef-9af7-63fec19364a0\",\"width\":3000,\"height\":2000,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/eOB9MS8mzf6SW.iTAWME7g--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-06/efef8f30-238d-11ef-9af7-63fec19364a0\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"NVDA\",\"^GSPC\",\"^IXIC\",\"AAPL\",\"MSFT\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":76,\"timeTakenForQuotes\":455,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0}"
+      string: !!binary |
+        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
     headers:
       Age:
       - '0'
@@ -141,6 +175,8 @@ interactions:
       - chunked
       X-Content-Type-Options:
       - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
       X-XSS-Protection:
       - 1; mode=block
       cache-control:
@@ -150,7 +186,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 25 Jun 2024 02:13:38 GMT
+      - Mon, 01 Jul 2024 20:02:48 GMT
       server:
       - ATS
       vary:
@@ -158,9 +194,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-search--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '79'
+      - '77'
       y-rid:
-      - 7269oddj7k9ui
+      - 3qu1dt1j862r8
     status:
       code: 200
       message: OK
