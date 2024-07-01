@@ -6,6 +6,7 @@ import sys
 from functools import partial
 from pathlib import Path
 from subprocess import PIPE, run
+from typing import Literal
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -63,6 +64,13 @@ def parse_args():
         default=False,
         dest="yes",
     )
+    parser.add_argument(
+        "--semver",
+        help="Semantic version.",
+        default="patch",
+        choices=["patch", "minor", "major"],
+        dest="semver",
+    )
     return parser.parse_args()
 
 
@@ -72,6 +80,7 @@ def publish(
     extensions: bool = False,
     openbb: bool = False,
     verbose: bool = False,
+    semver: Literal["patch", "minor", "major"] = "patch",
 ):
     """Publish the Platform to PyPi with optional core or extensions."""
     package_directories = []
@@ -119,7 +128,7 @@ def publish(
                     )
                 # Bump pyproject.toml version
                 partial_run(
-                    [sys.executable, "-m", "poetry", "version", "patch"],
+                    [sys.executable, "-m", "poetry", "version", semver],
                     cwd=path.parent,
                 )
                 # Publish (if not dry running)
@@ -222,6 +231,7 @@ if __name__ == "__main__":
                 extensions=args.extensions,
                 openbb=args.openbb,
                 verbose=args.verbose,
+                semver=args.semver,
             )
         except KeyboardInterrupt:
             sys.exit(1)
