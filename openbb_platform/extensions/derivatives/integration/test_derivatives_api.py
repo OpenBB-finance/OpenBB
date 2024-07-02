@@ -139,7 +139,7 @@ def test_derivatives_futures_historical(params, headers):
             {
                 "provider": "cboe",
                 "symbol": "VX_EOD",
-                "date": None,
+                "date": "2024-06-25",
             }
         ),
     ],
