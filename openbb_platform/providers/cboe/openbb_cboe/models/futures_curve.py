@@ -2,9 +2,8 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
-from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveData,
