@@ -10,8 +10,14 @@ from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveData,
     FuturesCurveQueryParams,
 )
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field
+from pydantic import Field, field_validator
+
+SymbolChoices = Literal["VX_AM", "VX_EOD"]
 
 
 class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
@@ -20,11 +26,32 @@ class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
     Source: https://www.cboe.com/
     """
 
+    __json_schema_extra__ = {"date": {"multiple_items_allowed": True}}
+
+    symbol: SymbolChoices = Field(
+        default="VX_EOD",
+        description=QUERY_DESCRIPTIONS.get("symbol", "")
+        + "Default is 'VX_EOD'. Entered dates return the data nearest to the entered date."
+        + "\n    'VX_AM' = Mid-Morning TWAP Levels"
+        + "\n    'VX_EOD' = 4PM Eastern Time Levels",
+        json_schema_extra={"choices": ["VX_AM", "VX_EOD"]},
+    )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def validate_symbol(cls, v):
+        """Validate the symbol."""
+        if not v or v.lower() in ["vx", "vix", "^vix", "vix_index"]:
+            return "VX_EOD"
+        return v.upper()
+
 
 class CboeFuturesCurveData(FuturesCurveData):
     """CBOE Futures Curve Data."""
 
-    symbol: str = Field(description="The trading symbol for the tenor of future.")
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
 
 
 class CboeFuturesCurveFetcher(
@@ -48,21 +75,20 @@ class CboeFuturesCurveFetcher(
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_cboe.utils.helpers import get_settlement_prices
+        from openbb_cboe.utils.vix import get_vx_by_date, get_vx_current
 
-        symbol = query.symbol.upper().split(",")[0]
-        FUTURES = await get_settlement_prices(**kwargs)
-        if len(FUTURES) == 0:
-            raise EmptyDataError()
-
-        if symbol not in FUTURES["product"].unique().tolist():
-            raise OpenBBError(
-                "The symbol, "
-                f"{symbol}"
-                ", is not valid.  Chose from: "
-                f"{FUTURES['product'].unique().tolist()}"
+        symbol = "am" if query.symbol == "VX_AM" else "eod"
+        if query.date is not None:
+            data = await get_vx_by_date(
+                date=query.date,  # type: ignore
+                vx_type=symbol,
+                use_cache=False,
             )
-        data = FUTURES[FUTURES["product"] == symbol][["expiration", "symbol", "price"]]
+        else:
+            data = await get_vx_current(vx_type=symbol, use_cache=False)
+
+        if data.empty:
+            raise EmptyDataError("The response was returned empty.")
 
         return data.to_dict("records")
 

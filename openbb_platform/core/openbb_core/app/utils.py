@@ -27,12 +27,16 @@ def basemodel_to_df(
     from pandas import DataFrame, to_datetime
 
     if isinstance(data, list):
-        df = DataFrame([d.model_dump() for d in data])
+        df = DataFrame(
+            [d.model_dump(exclude_none=True, exclude_unset=True) for d in data]
+        )
     else:
         try:
-            df = DataFrame(data.model_dump())
+            df = DataFrame(data.model_dump(exclude_none=True, exclude_unset=True))
         except ValueError:
-            df = DataFrame(data.model_dump(), index=["values"])
+            df = DataFrame(
+                data.model_dump(exclude_none=True, exclude_unset=True), index=["values"]
+            )
 
     if "is_multiindex" in df.columns:
         col_names = ast.literal_eval(df.multiindex_names.unique()[0])
