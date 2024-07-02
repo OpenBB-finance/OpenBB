@@ -128,8 +128,20 @@ def test_derivatives_futures_historical(params, headers):
 @parametrize(
     "params",
     [
-        ({"provider": "cboe", "symbol": "VX", "date": None}),
-        ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "ES",
+                "date": None,
+            }
+        ),
+        (
+            {
+                "provider": "cboe",
+                "symbol": "VX_EOD",
+                "date": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -139,7 +151,7 @@ def test_derivatives_futures_curve(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/curve?{query_str}"
-    result = requests.get(url, headers=headers, timeout=60)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 

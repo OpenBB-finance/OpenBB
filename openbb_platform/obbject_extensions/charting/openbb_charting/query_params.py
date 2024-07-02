@@ -396,10 +396,10 @@ class ChartParams:
     """Chart Query Params."""
 
     crypto_price_historical = EquityPriceHistoricalChartQueryParams
+    derivatives_futures_historical = EquityPriceHistoricalChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
     economy_fred_series = EconomyFredSeriesChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
-    derivatives_futures_historical = EquityPriceHistoricalChartQueryParams
     equity_price_performance = EquityPricePerformanceChartQueryParams
     etf_historical = EtfPricePerformanceChartQueryParams
     etf_holdings = EtfHoldingsChartQueryParams

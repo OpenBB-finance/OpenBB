@@ -121,10 +121,11 @@ class Charting:
             )
         return self._functions[adjusted_route]
 
-    def get_params(self) -> ChartParams:
+    def get_params(self) -> Union[ChartParams, None]:
         """Return the ChartQueryParams class for the function the OBBject was created from.
 
         Without assigning to a variable, it will print the docstring to the console.
+        If the class is not defined, the help for the function will be returned.
         """
         if self._obbject._route is None:  # pylint: disable=protected-access
             raise ValueError("OBBject was initialized with no function route.")
@@ -133,8 +134,13 @@ class Charting:
         ).replace("/", "_")[1:]
         if hasattr(ChartParams, charting_function):
             return getattr(ChartParams, charting_function)()
-        raise ValueError(
-            f"Error: No chart parameters are defined for the route: {charting_function}"
+
+        return help(  # type: ignore
+            self._get_chart_function(  # pylint: disable=protected-access
+                self._obbject.extra[  # pylint: disable=protected-access
+                    "metadata"
+                ].route
+            )
         )
 
     def _prepare_data_as_df(
