@@ -116,7 +116,7 @@ def test_derivatives_futures_historical(params, obb):
     "params",
     [
         ({"provider": "yfinance", "symbol": "ES", "date": None}),
-        ({"provider": "cboe", "symbol": "VX", "date": None}),
+        ({"provider": "cboe", "symbol": "VX", "date": "2024-06-25"}),
     ],
 )
 @pytest.mark.integration
