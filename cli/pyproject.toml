@@ -14,7 +14,7 @@ documentation = "https://docs.openbb.co/terminal"
 openbb = 'openbb_cli.cli:main'
 
 [tool.poetry.dependencies]
-python = "^3.9,<3.12"
+python = "^3.9,<3.13"
 
 # OpenBB dependencies
 openbb = { version = "^4.2.3", extras = ["all"] }
