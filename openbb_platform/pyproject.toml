@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "4.2.3"
+version = "4.2.4"
 description = "Investment research for everyone, anywhere."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
