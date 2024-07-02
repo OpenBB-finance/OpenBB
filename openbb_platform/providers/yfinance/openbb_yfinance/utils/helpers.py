@@ -212,7 +212,9 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
         try:
             exchange = futures_data[futures_data["Ticker"] == symbol][
                 "Exchange"
-            ].values[0]  # type: ignore
+            ].values[  # type: ignore
+                0
+            ]
         except IndexError as exc:
             raise ValueError(f"Symbol {symbol} was not found.") from exc
 
