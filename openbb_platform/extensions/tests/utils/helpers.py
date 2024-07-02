@@ -70,10 +70,10 @@ def check_docstring_examples() -> List[str]:
     return errors
 
 
-def filter_eps(eps: Union[EntryPoints, dict], group: str) -> List[EntryPoint]:
+def filter_eps(eps: Union[EntryPoints, dict], group: str) -> Tuple[EntryPoint, ...]:
     if version_info[:2] == (3, 12):
-        return eps.select(group=group) or []  # type: ignore[union-attr]
-    return eps.get(group, [])  # type: ignore[union-attr]
+        return eps.select(group=group) or ()  # type: ignore[union-attr]
+    return eps.get(group, ())  # type: ignore[union-attr]
 
 
 def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
