@@ -12,7 +12,7 @@ python = ">=3.9,<3.13"  # scipy forces python <4.0 explicitly
 scipy = "^1.10.1"
 statsmodels = "^0.14.0"
 arch = "^5.5.0"
-linearmodels = "<=4.25" # ^4.26 has setuptools-scm in setup_requires
+linearmodels = "^4.30" # pin v4 until someone tests later versions
 openbb-core = "^1.2.5"
 
 [build-system]

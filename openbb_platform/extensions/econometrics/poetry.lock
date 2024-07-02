@@ -812,46 +812,46 @@ i18n = ["Babel (>=2.7)"]
 
 [[package]]
 name = "linearmodels"
-version = "4.25"
+version = "4.31"
 description = "Linear Panel, Instrumental Variable, Asset Pricing, and System Regression models for Python"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "linearmodels-4.25-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:e8d3b34c62357701b60d043356563c247096ad79b8b95ac9bbafb1820a455f48"},
-    {file = "linearmodels-4.25-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:b1b2e7e4e27b12e9d5ec4e2de41e9aeaa685405bc37beaff0f080a2ad3e24f61"},
-    {file = "linearmodels-4.25-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:6e107d3d97819cdc4bfe64c85870e0ed655f2e1bd04911e22127dee0e3fab8d2"},
-    {file = "linearmodels-4.25-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:728d82fac702f65cc128742145b3702428b6aed5283450365ec5110f42e883dd"},
-    {file = "linearmodels-4.25-cp310-cp310-win_amd64.whl", hash = "sha256:c0aec5de380c4daf0596bb3be647a8cc8d0081c06715465df7a87efced08014e"},
-    {file = "linearmodels-4.25-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:db4c313127f3307a7c174ee12d9306fbc8dbb8a585b55234ebfa435fa5dd9ee9"},
-    {file = "linearmodels-4.25-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:339f01a68e504db1cccb4be9d4167c38c92ea5700cd3eba03ad0352d869c15eb"},
-    {file = "linearmodels-4.25-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f55f68eb675f863f80860526143451f516d9b77c580c0afb6c86f8bf7292da86"},
-    {file = "linearmodels-4.25-cp37-cp37m-win32.whl", hash = "sha256:ab9cb6a6fcad05bc5e790341c321713232883a8757aab4c7ce038a0a1af55728"},
-    {file = "linearmodels-4.25-cp37-cp37m-win_amd64.whl", hash = "sha256:f9fcb1eaaaf268ffcffbf4c2333bc9634d7a9ecf2ced0b5222bab6a8491d9fc6"},
-    {file = "linearmodels-4.25-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:397201c401f1d21bbfa9b2f4c44694c2f8c557d69271c244f43ac2ec5c6f2376"},
-    {file = "linearmodels-4.25-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:e989cc12320e4cc599f3ceb83e8fa16e27af2584c3f76020bc56c20f76866839"},
-    {file = "linearmodels-4.25-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c24f4aa2f44bf9e04606e15851b8874b2c8097f533c47bf11d6dab4954ecc6db"},
-    {file = "linearmodels-4.25-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6843e0a8971d4d0539f22967ebf7dc9b381e55f087b6ee7bb32ad7ee728c91a7"},
-    {file = "linearmodels-4.25-cp38-cp38-win32.whl", hash = "sha256:cced735e5c645902c3c2003826d75ff04dd5caa60096918e8f7f4fc0eb79ed31"},
-    {file = "linearmodels-4.25-cp38-cp38-win_amd64.whl", hash = "sha256:4d5d401d1c2c9b8c2e8fd2dd8b064e513bf4cb0d6a30b9198f33f67163cbc7d8"},
-    {file = "linearmodels-4.25-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:3bd3ddc0753d29fcd26ff80d87957904f7d91c3f7d898c8839b13a226ee5fede"},
-    {file = "linearmodels-4.25-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:11b3f66bdf17434b04be916f16ddb319bf8dae54b89b8c268cb37a8ad7b0f4ee"},
-    {file = "linearmodels-4.25-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f5a1b691e840189a2ed17796a806960166e30e86e6970c80e60fe10762456005"},
-    {file = "linearmodels-4.25-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:4abd59e3dda544807676d94ba1ea2ceba87624ab30491ea561430f31379229bc"},
-    {file = "linearmodels-4.25-cp39-cp39-win32.whl", hash = "sha256:061f2970191fcee284f600d5cc84a556a411729494325af8c557047ab733ae46"},
-    {file = "linearmodels-4.25-cp39-cp39-win_amd64.whl", hash = "sha256:19f8cb6237b61badb687a4a020527552a70e077cf1b303959c33faeb8cdde285"},
-    {file = "linearmodels-4.25.tar.gz", hash = "sha256:a73e94195f486f74be6176809a515bb498b5371d8acb9e4ae6f0e59a7c28210a"},
+    {file = "linearmodels-4.31-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:9b8099d476526bba1f8709ffbfaf868aac1db70e7c1607b6f1aa36913ab930d9"},
+    {file = "linearmodels-4.31-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:248b6c325997c9e322d7c270bc89d7f3c8c6bc394053bb3ccd0d061e57a9b398"},
+    {file = "linearmodels-4.31-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cac9aa59859834fea6d0db3ad3fdcf828aa40d6226ca0043e39bec108a171ce5"},
+    {file = "linearmodels-4.31-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3df2f7398d94ce25683c0a71c5b8c85fe588e8eae88303c4404b1391f7387195"},
+    {file = "linearmodels-4.31-cp310-cp310-win_amd64.whl", hash = "sha256:6b6f23d22b373f2be628bb5e3751c08ebb99cb7be6eb7698420596efd95bdd91"},
+    {file = "linearmodels-4.31-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:8b48da80ec81176745f125f1a10cb9cc549ea9dd7275da7406ad49092d925bd3"},
+    {file = "linearmodels-4.31-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:8b4452934fbbf969596028f4e3cfb68fc5b31feb39f2e8dcf90c60480b7dd80b"},
+    {file = "linearmodels-4.31-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:968720a990759afd7c37f8eb54c368f94e5b40b1491339b8a649f06677f67a61"},
+    {file = "linearmodels-4.31-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dc2dca305579129bb801aa3b1fa7471304c6b94400b80bf97345be5f38fa6566"},
+    {file = "linearmodels-4.31-cp311-cp311-win_amd64.whl", hash = "sha256:4cc382c922de7278e10e08f69aec18ecaf212fc86b4718eb36faf811509037b8"},
+    {file = "linearmodels-4.31-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:cb05a791250d6366099b14e9ad4ba9bb4fab5c2865dbedc4195feb599e17f699"},
+    {file = "linearmodels-4.31-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:18b4be70fffa7291c4058bf98ed1bd3309f8be8131c382811dd83a5f3122a4ff"},
+    {file = "linearmodels-4.31-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2a3762ff2ec4d413bf5ae97169d090ab8dc96becdf54d2b465711aa2b0e47e21"},
+    {file = "linearmodels-4.31-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e5bf38f464ba420780734ce1ed7b6ec396974458afbce698d63624727f0858e2"},
+    {file = "linearmodels-4.31-cp38-cp38-win32.whl", hash = "sha256:657647d22e4d05dbf444bd154fb40c9b01b516c3af7e9fe0b8624c2fcb5f9e6a"},
+    {file = "linearmodels-4.31-cp38-cp38-win_amd64.whl", hash = "sha256:663084a878b9e801f0aae261dfb999af37d385f5c7d8b67930cefab490d7b166"},
+    {file = "linearmodels-4.31-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:de2579b18a277d41b215292c7514a8c325b511c1f5a35aefbfe89fdd666a8c7f"},
+    {file = "linearmodels-4.31-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:15737df58e9a13f847f6f3e2e296255082bcf2cd8183b64e629d7252a50fbb91"},
+    {file = "linearmodels-4.31-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f7c9b245f33c573cdf983dc7eecc5d593ea51b9f17799fbd89902856797359e8"},
+    {file = "linearmodels-4.31-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9f0a033e66cdf336e682f8a48de44512362ae96fad6e0b3def7f83c01f1d346e"},
+    {file = "linearmodels-4.31-cp39-cp39-win32.whl", hash = "sha256:4222bd5748fa662173fc44214b7dcf04f68775550a7014045c6bb07741ae2153"},
+    {file = "linearmodels-4.31-cp39-cp39-win_amd64.whl", hash = "sha256:24cda8759583a7c3d179efee9e1e502092c8794774c6334f87b2b131869fd9dd"},
+    {file = "linearmodels-4.31.tar.gz", hash = "sha256:78a00ebd0360c2886357e8197faca174dc4521256a01e9f24114054bca676be9"},
 ]
 
 [package.dependencies]
 Cython = ">=0.29.21"
-formulaic = "*"
+formulaic = ">=0.3.2"
 mypy-extensions = ">=0.4"
 numpy = ">=1.16"
 pandas = ">=0.24"
-patsy = "*"
 property-cached = ">=1.6.3"
 pyhdfe = ">=0.1"
 scipy = ">=1.2"
+setuptools-scm = {version = ">=7.0.0", extras = ["toml"]}
 statsmodels = ">=0.11"
 
 [[package]]
@@ -1710,6 +1710,43 @@ doc = ["jupyterlite-pyodide-kernel", "jupyterlite-sphinx (>=0.12.0)", "jupytext"
 test = ["array-api-strict", "asv", "gmpy2", "hypothesis (>=6.30)", "mpmath", "pooch", "pytest", "pytest-cov", "pytest-timeout", "pytest-xdist", "scikit-umfpack", "threadpoolctl"]
 
 [[package]]
+name = "setuptools"
+version = "70.2.0"
+description = "Easily download, build, install, upgrade, and uninstall Python packages"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "setuptools-70.2.0-py3-none-any.whl", hash = "sha256:b8b8060bb426838fbe942479c90296ce976249451118ef566a5a0b7d8b78fb05"},
+    {file = "setuptools-70.2.0.tar.gz", hash = "sha256:bd63e505105011b25c3c11f753f7e3b8465ea739efddaccef8f0efac2137bac1"},
+]
+
+[package.extras]
+doc = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "pyproject-hooks (!=1.1)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+test = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "importlib-metadata", "ini2toml[lite] (>=0.14)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "jaraco.test", "mypy (==1.10.0)", "packaging (>=23.2)", "pip (>=19.1)", "pyproject-hooks (!=1.1)", "pytest (>=6,!=8.1.*)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-home (>=0.5)", "pytest-mypy", "pytest-perf", "pytest-ruff (>=0.3.2)", "pytest-subprocess", "pytest-timeout", "pytest-xdist (>=3)", "tomli", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+
+[[package]]
+name = "setuptools-scm"
+version = "8.1.0"
+description = "the blessed package to manage your versions by scm tags"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "setuptools_scm-8.1.0-py3-none-any.whl", hash = "sha256:897a3226a6fd4a6eb2f068745e49733261a21f70b1bb28fce0339feb978d9af3"},
+    {file = "setuptools_scm-8.1.0.tar.gz", hash = "sha256:42dea1b65771cba93b7a515d65a65d8246e560768a66b9106a592c8e7f26c8a7"},
+]
+
+[package.dependencies]
+packaging = ">=20"
+setuptools = "*"
+tomli = {version = ">=1", markers = "python_version < \"3.11\""}
+typing-extensions = {version = "*", markers = "python_version < \"3.10\""}
+
+[package.extras]
+docs = ["entangled-cli (>=2.0,<3.0)", "mkdocs", "mkdocs-entangled-plugin", "mkdocs-material", "mkdocstrings[python]", "pygments"]
+rich = ["rich"]
+test = ["build", "pytest", "rich", "typing-extensions", "wheel"]
+
+[[package]]
 name = "shellingham"
 version = "1.5.4"
 description = "Tool to Detect Surrounding Shell"
@@ -1812,6 +1849,17 @@ scipy = ">=1.4,<1.9.2 || >1.9.2"
 build = ["cython (>=0.29.33)"]
 develop = ["colorama", "cython (>=0.29.33)", "cython (>=0.29.33,<4.0.0)", "flake8", "isort", "joblib", "matplotlib (>=3)", "oldest-supported-numpy (>=2022.4.18)", "pytest (>=7.3.0)", "pytest-cov", "pytest-randomly", "pytest-xdist", "pywinpty", "setuptools-scm[toml] (>=8.0,<9.0)"]
 docs = ["ipykernel", "jupyter-client", "matplotlib", "nbconvert", "nbformat", "numpydoc", "pandas-datareader", "sphinx"]
+
+[[package]]
+name = "tomli"
+version = "2.0.1"
+description = "A lil' TOML parser"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
+    {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
+]
 
 [[package]]
 name = "typer"
@@ -2416,4 +2464,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "fca243fe6418f73ae060785672dac30332832aa114f7a397ee44500037efff01"
+content-hash = "b3c6d4f69496f8a225d6049e50431ac2680081afffa39901de631bffec955e50"
