@@ -316,7 +316,8 @@ class IntrinioOptionsSnapshotsFetcher(
             strike = f"{front}{_strike[0]}{_strike[1]}{back}"
             return symbol + exp + cp + strike
 
-        if symbols.str.contains("\.").any():  # noqa  # pylint: disable=W1401
+        # pandas_ta throwing a SyntaxWarning if Python 3.12
+        if symbols.str.contains(r"\.").any():  # noqa  # pylint: disable=W1401
             df["contract_symbol"] = df["contract_symbol"].apply(apply_contract_symbol)
         else:
             df["contract_symbol"] = symbols.str.replace("_", "")

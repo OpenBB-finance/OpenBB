@@ -9,10 +9,12 @@ import os
 import re
 from ast import AsyncFunctionDef, Call, FunctionDef, Name, parse, unparse
 from dataclasses import dataclass
-from importlib.metadata import entry_points
+from importlib.metadata import EntryPoint, entry_points
 from inspect import getmembers, isfunction
-from typing import Any, Dict, List, Optional, Set, Tuple
+from sys import version_info
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
+from importlib_metadata import EntryPoints
 from openbb_core.app.provider_interface import ProviderInterface
 
 pi = ProviderInterface()
@@ -68,6 +70,12 @@ def check_docstring_examples() -> List[str]:
     return errors
 
 
+def filter_eps(eps: Union[EntryPoints, dict], group: str) -> List[EntryPoint]:
+    if version_info[:2] == (3, 12):
+        return eps.select(group=group) or []  # type: ignore[union-attr]
+    return eps.get(group, [])  # type: ignore[union-attr]
+
+
 def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
     """List installed openbb extensions and providers.
 
@@ -82,15 +90,15 @@ def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
     core_extensions = set()
     provider_extensions = set()
     obbject_extensions = set()
-    entry_points_dict = entry_points()
+    entry_point_objects = entry_points()
 
-    for entry_point in entry_points_dict.get("openbb_core_extension", []):
+    for entry_point in filter_eps(entry_point_objects, "openbb_core_extension"):
         core_extensions.add(f"{entry_point.name}")
 
-    for entry_point in entry_points_dict.get("openbb_provider_extension", []):
+    for entry_point in filter_eps(entry_point_objects, "openbb_provider_extension"):
         provider_extensions.add(f"{entry_point.name}")
 
-    for entry_point in entry_points_dict.get("openbb_obbject_extension", []):
+    for entry_point in filter_eps(entry_point_objects, "openbb_obbject_extension"):
         obbject_extensions.add(f"{entry_point.name}")
 
     return core_extensions, provider_extensions, obbject_extensions
