@@ -350,7 +350,7 @@ async def test_static_command_runner_execute_func(
     mock_chart.return_value = None
 
     result = await StaticCommandRunner._execute_func(
-        "mock/route", (1, 2, 3, 4), execution_context, mock_func, {}
+        "mock/route", (1, 2, 3, 4), execution_context, mock_func, {"chart": True}
     )
 
     assert result.results == [1, 2, 3, 4]
