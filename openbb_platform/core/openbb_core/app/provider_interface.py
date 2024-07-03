@@ -291,7 +291,8 @@ class ProviderInterface(metaclass=SingletonMeta):
             default = field.default
 
         if (
-            annotation.__name__ in ["Dict", "dict", "Data"]  # type: ignore
+            hasattr(annotation, "__name__")
+            and annotation.__name__ in ["Dict", "dict", "Data"]  # type: ignore
             or field.kw_only is True
         ):
             return DataclassField(
