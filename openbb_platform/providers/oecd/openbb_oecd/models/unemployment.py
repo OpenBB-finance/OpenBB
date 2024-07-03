@@ -49,7 +49,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
         default="united_states",
-        json_schema_extra={"choices":CountriesList},  # type: ignore
+        json_schema_extra={"choices": CountriesList},  # type: ignore
     )
     sex: Literal["total", "male", "female"] = Field(
         description="Sex to get unemployment for.",
