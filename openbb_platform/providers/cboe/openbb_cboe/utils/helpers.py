@@ -92,7 +92,9 @@ async def get_cboe_data(url, use_cache: bool = True, **kwargs) -> Any:
     from openbb_core.app.utils import get_user_cache_directory
 
     cache_dir = get_user_cache_directory()
-    backend = SQLiteBackend(f"{cache_dir}/http/cboe_directories", expire_after=3600 * 24)
+    backend = SQLiteBackend(
+        f"{cache_dir}/http/cboe_directories", expire_after=3600 * 24
+    )
     data: Any = None
     if use_cache is True:
         async with CachedSession(cache=backend) as cached_session:
@@ -119,6 +121,7 @@ async def get_company_directory(use_cache: bool = True, **kwargs) -> "DataFrame"
     # pylint: disable=import-outside-toplevel
     from io import BytesIO  # noqa
     from pandas import read_csv  # noqa
+
     url = "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
 
     results = await get_cboe_data(url, use_cache)
