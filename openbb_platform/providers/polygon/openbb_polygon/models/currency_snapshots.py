@@ -183,7 +183,9 @@ class PolygonCurrencySnapshotsFetcher(
         for item in filtered_data:
             new_item = {}
             new_item["base_currency"] = item.get("base_currency")
-            new_item["counter_currency"] = item.get("counter_currency")
+            new_item["counter_currency"] = item.get("counter_currency") or item.get(
+                "index"
+            )
             new_item["change"] = item.get("todaysChange", None)
             change_percent = item.get("todaysChangePerc", None)
             new_item["change_percent"] = (

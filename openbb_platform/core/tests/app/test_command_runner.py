@@ -254,14 +254,12 @@ def test_parameters_builder_build(mock_func, execution_context):
         }
 
 
-@patch("openbb_core.app.command_runner.CommandRunner")
-def test_command_runner(_):
+def test_command_runner():
     """Test command runner."""
     assert CommandRunner()
 
 
-@patch("openbb_core.app.logs.logging_service.LoggingService")
-def test_command_runner_properties(mock_logging_service):
+def test_command_runner_properties():
     """Test properties."""
     sys = SystemSettings()
     user = UserSettings()
@@ -272,7 +270,6 @@ def test_command_runner_properties(mock_logging_service):
     assert runner.system_settings == sys
     assert runner.user_settings == user
     assert runner.command_map == cmd_map
-    assert mock_logging_service.called_once()
 
 
 @patch("openbb_core.app.command_runner.CommandRunner")
@@ -353,14 +350,14 @@ async def test_static_command_runner_execute_func(
     mock_chart.return_value = None
 
     result = await StaticCommandRunner._execute_func(
-        "mock/route", (1, 2, 3, 4), execution_context, mock_func, {}
+        "mock/route", (1, 2, 3, 4), execution_context, mock_func, {"chart": True}
     )
 
     assert result.results == [1, 2, 3, 4]
-    assert mock_logging_service.called_once()
-    assert mock_parameters_builder_build.called_once()
-    assert mock_command.called_once()
-    assert mock_chart.called_once()
+    mock_logging_service.assert_called_once()
+    mock_parameters_builder_build.assert_called_once()
+    mock_command.assert_called_once()
+    mock_chart.assert_called_once()
 
 
 def test_static_command_runner_chart():
