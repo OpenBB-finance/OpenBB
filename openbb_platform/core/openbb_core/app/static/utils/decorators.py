@@ -57,7 +57,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                 while tb.tb_next is not None:
                     tb = tb.tb_next
 
-            if isinstance(e, ValidationError):
+            if isinstance(e, ValidationError) and "Data" not in e.title:
                 error_list = []
                 validation_error = f"{e.error_count()} validations error(s)"
                 for err in e.errors(include_url=False):

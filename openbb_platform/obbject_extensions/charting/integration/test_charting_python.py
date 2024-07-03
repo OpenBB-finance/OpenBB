@@ -661,6 +661,7 @@ def test_charting_derivatives_futures_historical(params, obb):
             {
                 "provider": "cboe",
                 "symbol": "VX",
+                "date": "2024-06-25",
             }
         ),
     ],
