@@ -13,6 +13,7 @@ scipy = "^1.10.1"
 statsmodels = "^0.14.0"
 pandas-ta = "^0.3.14b"
 openbb-core = "^1.2.5"
+numpy = "^1"
 
 [build-system]
 requires = ["poetry-core"]
