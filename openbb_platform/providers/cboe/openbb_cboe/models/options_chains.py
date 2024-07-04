@@ -188,9 +188,6 @@ class CboeOptionsChainsFetcher(
         quotes["change_percent"] = quotes["change_percent"] / 100
 
         return AnnotatedResult(
-            result=[
-                CboeOptionsChainsData.model_validate(d)
-                for d in quotes.reset_index().to_dict("records")
-            ],
+            result=[CboeOptionsChainsData.model_validate(quotes.reset_index().to_dict("list"))],
             metadata=results_metadata,
         )
