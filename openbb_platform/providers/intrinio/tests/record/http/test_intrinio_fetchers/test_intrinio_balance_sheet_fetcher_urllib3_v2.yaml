@@ -1,0 +1,321 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/companies/AAPL/fundamentals?api_key=MOCK_API_KEY&statement_code=balance_sheet_statement&type=FY
+  response:
+    body:
+      string: !!binary |
+        H4sIAGM7fWYAA6zXS3PaMBAA4L/S0Rl7diU/JN2SKaElIQWGDCGdjscBp3VjzMukQzP57125kKYO
+        viAfJUt+fKx2l2f2sM1n8TzJizjbMP31maUzps1sNMnhfJyzFtsUcZGYJdF0MUvo6n2cxfk0iTY/
+        kqSIXi/T0od0M42zaJfEa6Y5cPE6tUzW6cLc+mJC64rd0txonZSbZ38fsi6iGY2YzrdZ1mJJPtuP
+        mbmTA8oRUD4jS/Pvby55DvgO8BHnGjzNfRcA7mhhuokyWrQpmC7W26TFtkuzafb/1sBBPkJPe6gF
+        d0MV3rGX1huG1XAc470dA2+MgRsG7h1jEA7igUFqHp7MgIGLvqgw+KrdX4EdAzbGgCWDf4yBOwgO
+        D0sG+hbvZAZPuCCCCsNVF3vnH+0YoDEGKBmCYwxYMsjDoZCnRwNtRVlhmK8mg3HXigFVUwyoSgZ5
+        jAFKBlUyBDa5AUNXhqrCsMN4cNm3Y5CNMciSQR1hICFiEGAYkGsRnJ4ilRsG73PDJG9f2zGEjTGE
+        tZWChEyK9EcoTG7wwIqBV6MB20GvbxkNQWMMQW2lICHDIEZYpkhhUSkkMUCFoZeM+VNox+A3xuDX
+        pkgSMrkhGHHQHjdVzyI3hFitFEGnf9X9ZcfgNcbglQzhMQb/UClAC9SgTi+YnuvLam7wBp5aDu0Y
+        GusiUdRWChLa9w30e6L2LbpIOhSqytAfrETHrpnGxrpI5PWVQuwrBVA0SJu+gVJk8C4aruUi7yo7
+        hsa6SMT6FFl2kQJNNECo0epQCO5XGOKs3Y4DO4bGukiE2mYa8V+KFL5N+0QMGFYrhZTeE8+sGKCx
+        LhJUfaWAQ24gBuoi0YYBVDUaVkP8Obb7hwmNdZEg6ysFBQpSoJhDwX3t2+UGH4nhW4tNF/NlnO+Y
+        3ovQOLq+DTq/v5jXT6ePCX0hOzvrX9E4j+fmhmfLZZZ8+JxPXZrLkpSmPo1v+pdD6PW/3MiLzu35
+        SChzsKfpI12k9wRh2mDBXl7+AAAA//8DAHuz76T0EAAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:13:55 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/fundamentals/AAPL-balance_sheet_statement-2022-FY/standardized_financials?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+        ET4/P/8DAAD//wMApZ0t//cYAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:13:55 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/fundamentals/AAPL-balance_sheet_statement-2019-FY/standardized_financials?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:13:55 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/fundamentals/AAPL-balance_sheet_statement-2020-FY/standardized_financials?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+        FUuVPj4+/gMAAP//AwCX2hTa9RgAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:13:55 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/fundamentals/AAPL-balance_sheet_statement-2023-FY/standardized_financials?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+        n5//AQAA//8DAPrFqvz2GAAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:13:55 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/fundamentals/AAPL-balance_sheet_statement-2021-FY/standardized_financials?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+        /A8AAP//AwB4qViN9BgAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:13:55 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

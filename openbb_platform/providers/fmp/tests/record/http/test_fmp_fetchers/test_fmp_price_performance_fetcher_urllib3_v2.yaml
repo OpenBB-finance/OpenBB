@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/stock-price-change/AAPL,SPY,QQQ,MSFT,AMZN,GOOG?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WUu26UMRCF+zzFautgzd0eukiINIQkCg0gChAlEQUURIh3Z3wlXrHF3xz5H883
+        53g+XhwOv+M7HI4/nh6/fP92fHk4Xl3dvTledhVfhYLJ3Xko2hVW5zIP3VSJEgllHRpXjTiBqODQ
+        rJ2DJGBCQ3v6+bWKkkqmkmfB91XjxC5ms2DVtCQimPdqlZhyAqR1CUJVS6iY2af6+PlXLWkGkhMp
+        W8h/Lv9H/3D3foOHFMXXjV0h4OILoeFTcmOeQ2r0kihHZxu8JClAs9yA1ySotABq/6QJrCytwQeS
+        IdsyonEGZu1lg8dckuZMc3QDHgXj9sJ+lv3+/v6EncCmo439RYwjgyCUWRw7qgL4sqpKOXlxnY52
+        eks5+p8Ag94To/tzeKYEjDKhGjxrKjBPNXTUHJQIs7/OLpHDGpt5cWcvAim7opxFv3l4/e6U3cpJ
+        6MOS1VXjDpey0mxrcJNjmacaN0GkOwzZuCleFZY8b8ABiZH4zXWLyJvwnG1DJ47Mq+r6uaF7rn4h
+        znR1dDHxHHXZ9Dz91c2Htxs9JwfcnI+n7Jy3zFtF1SkNejPKcyCdPo4ZTmnAezS0mBq7eAzJcDM9
+        vBT2tVO67RB7QUFWYnrkweMF4r85jcx7NirJStFyFv769vZ6g68hR55cg76o6EnmMTbWvu8iuEC4
+        7TuO2KgvrfNHwguJbqlXTdni9+cDEEtoedt3JPHYlHd8DTHsWcum02eue7VyX3z6C5mgg7/qBQAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:12:59 GMT
+      Etag:
+      - W/"5ea-Q3uo7ZyaRBCRfWLAMSz6/k0frvw"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

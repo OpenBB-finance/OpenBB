@@ -1,0 +1,193 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/GBR.A.N.CPI.PA._T.N.
+  response:
+    body:
+      string: <?xml version="1.0" encoding="utf-8"?><!--NSI Web Service v8.19.2.0--><message:GenericData
+        xmlns:footer="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer"
+        xmlns:generic="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic"
+        xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"
+        xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xml="http://www.w3.org/XML/1998/namespace"><message:Header><message:ID>IREF020005</message:ID><message:Test>true</message:Test><message:Prepared>2024-06-28T18:10:59</message:Prepared><message:Sender
+        id="Disseminate_Final_DMZ" /><message:Structure structureID="OECD_SDD_TPS_DSD_PRICES_at_DF_PRICES_ALL_1_0"
+        dimensionAtObservation="TIME_PERIOD"><common:StructureUsage><Ref agencyID="OECD.SDD.TPS"
+        id="DSD_PRICES@DF_PRICES_ALL" version="1.0" /></common:StructureUsage></message:Structure><message:DataSetAction>Information</message:DataSetAction><message:DataSetID>DSD_PRICES</message:DataSetID></message:Header><message:DataSet
+        action="Information" structureRef="OECD_SDD_TPS_DSD_PRICES_at_DF_PRICES_ALL_1_0"><generic:Series><generic:SeriesKey><generic:Value
+        id="REF_AREA" value="GBR" /><generic:Value id="FREQ" value="A" /><generic:Value
+        id="METHODOLOGY" value="N" /><generic:Value id="MEASURE" value="CPI" /><generic:Value
+        id="UNIT_MEASURE" value="PA" /><generic:Value id="EXPENDITURE" value="_T"
+        /><generic:Value id="ADJUSTMENT" value="N" /><generic:Value id="TRANSFORMATION"
+        value="GY" /></generic:SeriesKey><generic:Attributes><generic:Value id="DECIMALS"
+        value="2" /></generic:Attributes><generic:Obs><generic:ObsDimension id="TIME_PERIOD"
+        value="2007" /><generic:ObsValue value="2.4" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2008" /><generic:ObsValue value="3.5" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2009" /><generic:ObsValue value="2" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2010" /><generic:ObsValue value="2.5" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2011" /><generic:ObsValue value="3.8" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2012" /><generic:ObsValue value="2.6" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2013" /><generic:ObsValue value="2.3" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2014" /><generic:ObsValue value="1.5" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2015" /><generic:ObsValue value="0.4" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2016" /><generic:ObsValue value="1" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2017" /><generic:ObsValue value="2.6" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2018" /><generic:ObsValue value="2.3" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2019" /><generic:ObsValue value="1.7" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2020" /><generic:ObsValue value="1" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2021" /><generic:ObsValue value="2.5" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2022" /><generic:ObsValue value="7.9" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2023" /><generic:ObsValue value="6.8" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1976" /><generic:ObsValue value="16.55952" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1977" /><generic:ObsValue value="15.84027" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1978" /><generic:ObsValue value="8.263139" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1979" /><generic:ObsValue value="13.42129" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1980" /><generic:ObsValue value="17.96593" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1981" /><generic:ObsValue value="11.87662" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1982" /><generic:ObsValue value="8.59887" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1983" /><generic:ObsValue value="4.609302" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1984" /><generic:ObsValue value="4.960712" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1985" /><generic:ObsValue value="6.071394" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1986" /><generic:ObsValue value="3.427615" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1987" /><generic:ObsValue value="4.148918" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1988" /><generic:ObsValue value="4.2094" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="B" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1989" /><generic:ObsValue value="5.7" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1990" /><generic:ObsValue value="8" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1991" /><generic:ObsValue value="7.5" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1992" /><generic:ObsValue value="4.6" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1993" /><generic:ObsValue value="2.6" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1994" /><generic:ObsValue value="2.2" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1995" /><generic:ObsValue value="2.7" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1996" /><generic:ObsValue value="2.9" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1997" /><generic:ObsValue value="2.2" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1998" /><generic:ObsValue value="1.8" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1999" /><generic:ObsValue value="1.7" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2000" /><generic:ObsValue value="1.2" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2001" /><generic:ObsValue value="1.6" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2002" /><generic:ObsValue value="1.5" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2003" /><generic:ObsValue value="1.4" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2004" /><generic:ObsValue value="1.4" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2005" /><generic:ObsValue value="2.1" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="2006" /><generic:ObsValue value="2.5" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1962" /><generic:ObsValue value="4.1965" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1963" /><generic:ObsValue value="2.018544" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1964" /><generic:ObsValue value="3.281589" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1965" /><generic:ObsValue value="4.773771" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1966" /><generic:ObsValue value="3.909618" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1967" /><generic:ObsValue value="2.482117" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1968" /><generic:ObsValue value="4.697424" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1969" /><generic:ObsValue value="5.446667" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1970" /><generic:ObsValue value="6.366568" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1971" /><generic:ObsValue value="9.44484" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1972" /><generic:ObsValue value="7.071091" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1973" /><generic:ObsValue value="9.196044" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1974" /><generic:ObsValue value="16.04399" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1975" /><generic:ObsValue value="24.20729" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1956" /><generic:ObsValue value="4.980454" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1957" /><generic:ObsValue value="3.691303" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1958" /><generic:ObsValue value="2.992833" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1959" /><generic:ObsValue value="0.5811731" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1960" /><generic:ObsValue value="1.003573" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs><generic:Obs><generic:ObsDimension
+        id="TIME_PERIOD" value="1961" /><generic:ObsValue value="3.447497" /><generic:Attributes><generic:Value
+        id="OBS_STATUS" value="A" /></generic:Attributes></generic:Obs></generic:Series></message:DataSet></message:GenericData>
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/vnd.sdmx.genericdata+xml; charset=utf-8; version=2.1
+      Date:
+      - Fri, 28 Jun 2024 16:10:59 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 3
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

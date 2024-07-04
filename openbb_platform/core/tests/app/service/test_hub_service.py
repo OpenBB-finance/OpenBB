@@ -84,7 +84,7 @@ def test_v3tov4_map():
             keys = v3_keys[provider]
             keys_list = keys if isinstance(keys, list) else [keys]
             for k in keys_list:
-                assert k in HubService.V3TOV4
+                assert k.lower() in HubService.V3TOV4
 
 
 def test_connect_with_email_password():
@@ -256,9 +256,9 @@ def test_hub2platform_v3_only():
     """Test hub2platform."""
     mock_user_settings = MagicMock(spec=HubUserSettings)
     mock_user_settings.features_keys = {
-        "API_KEY_FINANCIALMODELINGPREP": "abc",
-        "API_POLYGON_KEY": "def",
-        "API_FRED_KEY": "ghi",
+        "api_key_financialmodelingprep": "abc",
+        "api_polygon_key": "def",
+        "api_fred_key": "ghi",
     }
     mock_user_settings.features_settings = {}
 
@@ -273,10 +273,10 @@ def test_hub2platform_v3v4():
     """Test hub2platform."""
     mock_user_settings = MagicMock(spec=HubUserSettings)
     mock_user_settings.features_keys = {
-        "API_KEY_FINANCIALMODELINGPREP": "abc",
+        "api_key_financialmodelingprep": "abc",
         "fmp_api_key": "other_key",
-        "API_POLYGON_KEY": "def",
-        "API_FRED_KEY": "ghi",
+        "api_polygon_key": "def",
+        "api_fred_key": "ghi",
     }
     mock_user_settings.features_settings = {}
 
@@ -291,9 +291,9 @@ def test_platform2hub():
     """Test platform2hub."""
     mock_user_settings = MagicMock(spec=HubUserSettings)
     mock_user_settings.features_keys = {  # Received from Hub
-        "API_KEY_FINANCIALMODELINGPREP": "abc",
+        "api_key_financialmodelingprep": "abc",
         "fmp_api_key": "other_key",
-        "API_FRED_KEY": "ghi",
+        "api_fred_key": "ghi",
     }
     mock_user_settings.features_settings = {}
     mock_hub_service = HubService()
@@ -309,10 +309,10 @@ def test_platform2hub():
     user_settings = mock_hub_service.platform2hub(mock_credentials, mock_defaults)
 
     assert isinstance(user_settings, HubUserSettings)
-    assert user_settings.features_keys["API_KEY_FINANCIALMODELINGPREP"] == "fmp"
+    assert user_settings.features_keys["api_key_financialmodelingprep"] == "fmp"
     assert user_settings.features_keys["fmp_api_key"] == "other_key"
     assert user_settings.features_keys["polygon_api_key"] == "polygon"
-    assert user_settings.features_keys["API_FRED_KEY"] == "fred"
+    assert user_settings.features_keys["api_fred_key"] == "fred"
     assert user_settings.features_keys["benzinga_api_key"] == "benzinga"
     assert "some_api_key" not in user_settings.features_keys
     assert "defaults" in user_settings.features_settings

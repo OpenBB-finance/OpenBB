@@ -21,12 +21,16 @@ def basemodel_to_df(
 ) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
     if isinstance(data, list):
-        df = pd.DataFrame([d.model_dump() for d in data])
+        df = pd.DataFrame(
+            [d.model_dump(exclude_none=True, exclude_unset=True) for d in data]
+        )
     else:
         try:
-            df = pd.DataFrame(data.model_dump())
+            df = pd.DataFrame(data.model_dump(exclude_none=True, exclude_unset=True))
         except ValueError:
-            df = pd.DataFrame(data.model_dump(), index=["values"])
+            df = pd.DataFrame(
+                data.model_dump(exclude_none=True, exclude_unset=True), index=["values"]
+            )
 
     if "is_multiindex" in df.columns:
         col_names = ast.literal_eval(df.multiindex_names.unique()[0])

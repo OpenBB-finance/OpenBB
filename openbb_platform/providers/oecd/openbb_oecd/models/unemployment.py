@@ -29,18 +29,12 @@ CountriesList = sorted(list(countries))  # type: ignore
 AGES = [
     "total",
     "15-24",
-    "25-54",
-    "55-64",
-    "15-64",
-    "15-74",
+    "25+",
 ]
 AgesLiteral = Literal[
     "total",
     "15-24",
-    "25-54",
-    "55-64",
-    "15-64",
-    "15-74",
+    "25+",
 ]
 
 
@@ -55,7 +49,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
         default="united_states",
-        choices=CountriesList,
+        json_schema_extra={"choices": CountriesList},  # type: ignore
     )
     sex: Literal["total", "male", "female"] = Field(
         description="Sex to get unemployment for.",
@@ -65,7 +59,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     age: Literal[AgesLiteral] = Field(
         description="Age group to get unemployment for. Total indicates 15 years or over",
         default="total",
-        json_schema_extra={"choices": AGES},
+        json_schema_extra={"choices": AGES},  # type: ignore
     )
     seasonal_adjustment: bool = Field(
         description="Whether to get seasonally adjusted unemployment. Defaults to False.",
@@ -131,10 +125,7 @@ class OECDUnemploymentFetcher(
         age = {
             "total": "Y_GE15",
             "15-24": "Y15T24",
-            "15-64": "Y15T64",
-            "15-74": "Y15T74",
-            "25-54": "Y25T54",
-            "55-64": "Y55T64",
+            "25+": "Y_GE25",
         }[query.age]
         seasonal_adjustment = "Y" if query.seasonal_adjustment else "N"
 

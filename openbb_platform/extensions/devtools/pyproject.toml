@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "openbb_devtools" }]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.12"               # scipy forces <4.0 explicitly
+python = ">=3.10,<3.13"              # scipy forces <4.0 explicitly
 ruff = "^0.4.4"
 pylint = "^3.0.2"
 mypy = "^1.6.1"
@@ -20,10 +20,10 @@ pre-commit = "^3.5.0"
 tox = "^4.11.3"
 pytest = "^7.4.3"
 pytest-subtests = "^0.11.0"
-pytest-recorder = "^0.2.4"
+pytest-recorder = "^0.3.0"
 pytest-asyncio = "^0.23.2"
 pytest-cov = "^4.1.0"
-ipykernel = "^6.26.0"
+ipykernel = "^6.29.4"
 types-python-dateutil = "^2.8.19.14"
 types-toml = "^0.10.8.7"
 poetry = "^1.7.0"

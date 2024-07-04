@@ -185,8 +185,7 @@ class LoggingService(metaclass=SingletonMeta):
         ],
         custom_headers: Optional[Dict[str, Any]] = None,
     ):
-        """
-        Log command output and relevant information.
+        """Log command output and relevant information.
 
         Parameters
         ----------
@@ -200,7 +199,10 @@ class LoggingService(metaclass=SingletonMeta):
             Callable representing the executed function.
         kwargs : Dict[str, Any]
             Keyword arguments passed to the function.
-        exec_info : Optional[Tuple[Type[BaseException], BaseException, Optional[TracebackType]]], optional
+        exec_info : Union[
+            Tuple[Type[BaseException], BaseException, TracebackType],
+            Tuple[None, None, None],
+        ]
             Exception information, by default None
         """
         self._user_settings = user_settings
@@ -223,7 +225,7 @@ class LoggingService(metaclass=SingletonMeta):
             kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
 
             # Get execution info
-            error = str(exec_info[1]) if exec_info and len(exec_info) > 1 else None
+            error = None if all(i is None for i in exec_info) else str(exec_info[1])
 
             # Construct message
             message_label = "ERROR" if error else "CMD"
@@ -237,7 +239,6 @@ class LoggingService(metaclass=SingletonMeta):
                 default=to_jsonable_python,
             )
             log_message = f"{message_label}: {log_message}"
-
             log_level = logger.error if error else logger.info
             log_level(
                 log_message,

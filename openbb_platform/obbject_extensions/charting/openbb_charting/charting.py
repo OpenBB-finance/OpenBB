@@ -26,7 +26,10 @@ from openbb_core.provider.abstract.data import Data
 from plotly.graph_objs import Figure
 
 from openbb_charting.charts.generic_charts import bar_chart, line_chart
-from openbb_charting.charts.helpers import get_charting_functions
+from openbb_charting.charts.helpers import (
+    get_charting_functions,
+    get_charting_functions_list,
+)
 from openbb_charting.core.backend import Backend, create_backend, get_backend
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.query_params import ChartParams, IndicatorsParams
@@ -88,7 +91,7 @@ class Charting:
         """Return a list of the available functions."""
         functions: List[str] = []
         for view in cls._extension_views:
-            functions.extend(get_charting_functions(view))
+            functions.extend(get_charting_functions_list(view))
 
         return functions
 
@@ -96,7 +99,7 @@ class Charting:
         """Return a dict with the available functions."""
         functions: Dict[str, Callable] = {}
         for view in self._extension_views:
-            functions.update(get_charting_functions(view, with_objects=True))
+            functions.update(get_charting_functions(view))
 
         return functions
 
@@ -118,10 +121,11 @@ class Charting:
             )
         return self._functions[adjusted_route]
 
-    def get_params(self) -> ChartParams:
+    def get_params(self) -> Union[ChartParams, None]:
         """Return the ChartQueryParams class for the function the OBBject was created from.
 
         Without assigning to a variable, it will print the docstring to the console.
+        If the class is not defined, the help for the function will be returned.
         """
         if self._obbject._route is None:  # pylint: disable=protected-access
             raise ValueError("OBBject was initialized with no function route.")
@@ -130,8 +134,13 @@ class Charting:
         ).replace("/", "_")[1:]
         if hasattr(ChartParams, charting_function):
             return getattr(ChartParams, charting_function)()
-        raise ValueError(
-            f"Error: No chart parameters are defined for the route: {charting_function}"
+
+        return help(  # type: ignore
+            self._get_chart_function(  # pylint: disable=protected-access
+                self._obbject.extra[  # pylint: disable=protected-access
+                    "metadata"
+                ].route
+            )
         )
 
     def _prepare_data_as_df(
@@ -339,7 +348,7 @@ class Charting:
             charting_function = self._get_chart_function(
                 self._obbject._route  # pylint: disable=protected-access
             )
-            kwargs["obbject_item"] = self._obbject
+            kwargs["obbject_item"] = self._obbject.results
             kwargs["charting_settings"] = self._charting_settings  #
             kwargs["standard_params"] = (
                 self._obbject._standard_params  # pylint: disable=protected-access
@@ -451,7 +460,7 @@ class Charting:
         kwargs["symbol"] = symbol
         kwargs["target"] = target
         kwargs["index"] = index
-        kwargs["obbject_item"] = self._obbject
+        kwargs["obbject_item"] = self._obbject.results
         kwargs["charting_settings"] = self._charting_settings
         kwargs["standard_params"] = (
             self._obbject._standard_params  # pylint: disable=protected-access

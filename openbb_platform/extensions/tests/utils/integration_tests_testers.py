@@ -203,7 +203,10 @@ def check_missing_params(
                         used_params = test_params[0].keys()
                     except KeyError:
                         used_params = test_params.keys()
-                    if expected_param not in used_params and expected_param != "return":
+                    if expected_param not in used_params and expected_param not in (
+                        "return",
+                        "chart",
+                    ):
                         missing_params.append(
                             f"Missing param {expected_param} in function {function}"
                         )
