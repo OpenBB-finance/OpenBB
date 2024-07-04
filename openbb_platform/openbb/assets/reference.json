@@ -3,7 +3,7 @@
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.2.7",
+        "core": "1.2.9",
         "extensions": {
             "openbb_core_extension": [
                 "commodity@1.1.3",
@@ -2443,8 +2443,8 @@
                     },
                     {
                         "name": "date",
-                        "type": "Union[date, str]",
-                        "description": "A specific date to get data for.",
+                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "description": "A specific date to get data for. Multiple items allowed for provider(s): yfinance.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -2491,6 +2491,14 @@
             "data": {
                 "standard": [
                     {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "expiration",
                         "type": "str",
                         "description": "Futures expiration month.",
@@ -2501,7 +2509,7 @@
                     {
                         "name": "price",
                         "type": "float",
-                        "description": "The close price.",
+                        "description": "The price of the futures contract.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5402,17 +5410,14 @@
                     },
                     {
                         "name": "age",
-                        "type": "Literal['total', '15-24', '25-54', '55-64', '15-64', '15-74']",
+                        "type": "Literal['total', '15-24', '25+']",
                         "description": "Age group to get unemployment for. Total indicates 15 years or over",
                         "default": "total",
                         "optional": true,
                         "choices": [
                             "total",
                             "15-24",
-                            "25-54",
-                            "55-64",
-                            "15-64",
-                            "15-74"
+                            "25+"
                         ]
                     },
                     {
