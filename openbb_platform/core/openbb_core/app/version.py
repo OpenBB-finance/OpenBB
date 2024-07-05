@@ -2,9 +2,11 @@
 
 import shutil
 import subprocess
+from importlib.metadata import (
+    PackageNotFoundError,
+    version as pkg_version,
+)
 from pathlib import Path
-
-import pkg_resources
 
 PACKAGE = "openbb"
 
@@ -13,15 +15,15 @@ def get_package_version(package: str):
     """Retrieve the version of a package from installed pip packages."""
     is_nightly = False
     try:
-        version = pkg_resources.get_distribution(package).version
-    except pkg_resources.DistributionNotFound:
+        version = pkg_version(package)
+    except PackageNotFoundError:
         package += "-nightly"
         is_nightly = True
         try:
-            version = pkg_resources.get_distribution(package).version
-        except pkg_resources.DistributionNotFound:
+            version = pkg_version(package)
+        except PackageNotFoundError:
             package = "openbb-core"
-            version = pkg_resources.get_distribution(package).version
+            version = pkg_version(package)
             version += "core"
 
     if is_git_repo(Path(__file__).parent.resolve()) and not is_nightly:
@@ -56,10 +58,10 @@ def get_major_minor(version: str) -> tuple[int, int]:
 
 try:
     VERSION = get_package_version(PACKAGE)
-except pkg_resources.DistributionNotFound:
+except PackageNotFoundError:
     VERSION = "unknown"
 
 try:
     CORE_VERSION = get_package_version("openbb-core")
-except pkg_resources.DistributionNotFound:
+except PackageNotFoundError:
     CORE_VERSION = "unknown"

@@ -2187,7 +2187,7 @@ class ROUTER_economy(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
         sex : Literal['total', 'male', 'female']
             Sex to get unemployment for. (provider: oecd)
-        age : Literal['total', '15-24', '25-54', '55-64', '15-64', '15-74']
+        age : Literal['total', '15-24', '25+']
             Age group to get unemployment for. Total indicates 15 years or over (provider: oecd)
         seasonal_adjustment : bool
             Whether to get seasonally adjusted unemployment. Defaults to False. (provider: oecd)
