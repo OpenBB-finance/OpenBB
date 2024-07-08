@@ -161,7 +161,7 @@ class OBBject(Tagged, Generic[T]):
                 r = dt[0] if isinstance(dt, list) else dt
                 if all(
                     prop.get("type") == "array"
-                    for prop in r.schema()["properties"].values()
+                    for prop in r.model_json_schema()["properties"].values()
                 ):
                     sort_columns = False
                     df = pd.DataFrame(r.model_dump(exclude_unset=True))
@@ -171,6 +171,13 @@ class OBBject(Tagged, Generic[T]):
             # str
             elif isinstance(res, str):
                 df = pd.DataFrame([res])
+            # Data[Dict[str, array]]
+            elif isinstance(res, Data) and all(
+                prop.get("type") == "array"
+                for prop in res.model_json_schema()["properties"].values()
+            ):
+                df = pd.DataFrame(res.model_dump(exclude_unset=True, exclude_none=True))
+                sort_columns = False
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:

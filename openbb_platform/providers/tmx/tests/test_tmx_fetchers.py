@@ -243,11 +243,25 @@ def test_tmx_insider_trading_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_tmx_options_chains_fetcher(credentials=test_credentials):
     """Test options chains fetcher."""
-    params = {"symbol": "SHOP", "use_cache": False}
+    # pylint: disable=import-outside-toplevel
+    import asyncio
+
+    params = {"symbol": "SHOP", "use_cache": False, "date": date(2023, 9, 15)}
 
     fetcher = TmxOptionsChainsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
+    result = asyncio.run(fetcher.fetch_data(params, credentials))
+    test_result = fetcher.test(params, credentials)
+    list_msg = "Unexpected data format, expected List"
+    oi_msg = "Unexpected keys in total_oi property, expected ['total', 'expiration', 'strike']"
+    assert test_result is None
+    assert isinstance(result.expirations, list), list_msg  # type: ignore
+    assert isinstance(result.strikes, list), list_msg  # type: ignore
+    assert isinstance(result.contract_symbol, list), list_msg  # type: ignore
+    assert hasattr(result, "total_oi"), "Missing total_oi property"  # type: ignore
+    assert isinstance(result.total_oi, dict), "Unexpected property format, expected dictionary."  # type: ignore
+    assert list(result.total_oi) == ["total", "expiration", "strike"], oi_msg  # type: ignore
+    assert hasattr(result, "dataframe"), "Missing dataframe attribute"  # type: ignore
+    assert len(getattr(result, "dataframe", [])) == len(result.contract_symbol)  # type: ignore
 
 
 @pytest.mark.record_http

@@ -40,7 +40,7 @@ def basemodel_to_df(
     # If the date column contains dates only, convert them to a date to avoid encoding time data.
     if "date" in df.columns:
         df["date"] = df["date"].apply(pd.to_datetime)
-        if all(t.time() == time(0, 0) for t in df["date"]):
+        if all(t.time() == time(0, 0) for t in df["date"] if t):
             df["date"] = df["date"].apply(lambda x: x.date())
 
     if index and index in df.columns:
