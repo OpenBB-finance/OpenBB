@@ -120,6 +120,8 @@ def test_cboe_options_chains_fetcher(credentials=test_credentials):
     assert hasattr(result, "total_oi"), "Missing total_oi property"  # type: ignore
     assert isinstance(result.total_oi, dict), "Unexpected property format, expected dictionary."  # type: ignore
     assert list(result.total_oi) == ["total", "expiration", "strike"], oi_msg  # type: ignore
+    assert result.has_iv, "Expected IV data."  # type: ignore
+    assert result.has_greeks, "Expected Greeks data."  # type: ignore
     assert hasattr(result, "dataframe"), "Missing dataframe attribute"  # type: ignore
     assert len(getattr(result, "dataframe", [])) == len(result.contract_symbol)  # type: ignore
 
