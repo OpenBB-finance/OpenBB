@@ -16,6 +16,7 @@ pywry = "^0.6.1"
 nbformat = "^5.9.2"
 pandas-ta = "^0.3.14b"
 openbb-core = "^1.2.4"
+numpy = "^1"
 
 [build-system]
 requires = ["poetry-core"]
