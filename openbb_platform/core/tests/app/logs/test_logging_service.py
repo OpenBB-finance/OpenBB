@@ -147,7 +147,7 @@ def test_log_startup(logging_service):
             (None, None, None),
             None,
             'CMD: {"route": "mock_route", "input": {}, "error": null, '
-            '"custom_headers": null,"provider":"not_passed_to_kwargs"}',
+            + '"provider": "not_passed_to_kwargs", "custom_headers": null}',
         ),
         (
             "mock_settings",
@@ -161,7 +161,7 @@ def test_log_startup(logging_service):
                 ...,
             ),  # ... is of TracebackType, but unnecessary for the test
             {"X-OpenBB-Test": "test"},
-            'ERROR: {"route": "mock_route", "input": {}, "error": "mock_error", "provider":"not_passed_to_kwargs","custom_headers": {"X-OpenBB-Test": "test"}}',  # noqa: E501
+            'ERROR: {"route": "mock_route", "input": {}, "error": "mock_error", "provider": "not_passed_to_kwargs", "custom_headers": {"X-OpenBB-Test": "test"}}',  # noqa: E501
         ),
         (
             "mock_settings",
