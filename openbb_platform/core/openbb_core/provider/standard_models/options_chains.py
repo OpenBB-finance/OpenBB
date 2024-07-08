@@ -839,7 +839,7 @@ class OptionsChainsData(Data):
         underlying_price: Optional[float] = None,
         moneyness: Optional[float] = None,
     ) -> Dict:
-        """Gets the nearest put and call strikes at a given percent OTM from the underlying price.
+        """Get the nearest put and call strikes at a given percent OTM from the underlying price.
         This method is not intended to be called directly.
 
         Parameters
@@ -908,7 +908,7 @@ class OptionsChainsData(Data):
         force_otm: bool = True,
     ) -> Union[float, None]:
         """
-        Gets the strike to the target option type, price, and number of days until expiry.
+        Get the strike to the target option type, price, and number of days until expiry.
         This method is not intended to be called directly.
 
         Parameters
@@ -984,7 +984,7 @@ class OptionsChainsData(Data):
         underlying_price: Optional[float] = None,
     ) -> "DataFrame":
         """
-        Calculates the cost of a straddle by DTE. Use a negative strike price for short options.
+        Calculate the cost of a straddle by DTE. Use a negative strike price for short options.
 
         Parameters
         ----------
@@ -1130,7 +1130,7 @@ class OptionsChainsData(Data):
         underlying_price: Optional[float] = None,
     ) -> "DataFrame":
         """
-        Calculates the cost of a strangle by DTE and % moneyness. Use a negative value for moneyness for short options.
+        Calculate the cost of a strangle by DTE and % moneyness. Use a negative value for moneyness for short options.
 
         Parameters
         ----------
@@ -1269,7 +1269,7 @@ class OptionsChainsData(Data):
         underlying_price: Optional[float] = None,
     ) -> "DataFrame":
         """
-        Calculates the vertical call spread for the target DTE.
+        Calculate the vertical call spread for the target DTE.
         A bull call spread is when the sold strike is above the bought strike.
 
         Parameters
@@ -1404,7 +1404,7 @@ class OptionsChainsData(Data):
         underlying_price: Optional[float] = None,
     ) -> "DataFrame":
         """
-        Calculates the vertical put spread for the target DTE.
+        Calculate the vertical put spread for the target DTE.
         A bear put spread is when the bought strike is above the sold strike.
 
         Parameters
@@ -1532,7 +1532,7 @@ class OptionsChainsData(Data):
         underlying_price: Optional[float] = None,
     ) -> "DataFrame":
         """
-        Calculates the cost of a synthetic long position at a given strike.
+        Calculate the cost of a synthetic long position at a given strike.
         It is expressed as the difference between a bought call and a sold put.
 
         Parameters
@@ -1635,7 +1635,7 @@ class OptionsChainsData(Data):
         underlying_price: Optional[float] = None,
     ) -> "DataFrame":
         """
-        Calculates the cost of a synthetic short position at a given strike.
+        Calculate the cost of a synthetic short position at a given strike.
         It is expressed as the difference between a sold call and a purchased put.
 
         Parameters
@@ -1744,7 +1744,7 @@ class OptionsChainsData(Data):
         underlying_price: Optional[float] = None,
     ) -> "DataFrame":
         """
-        Gets options strategies for all, or a list of, DTE(s).
+        Get options strategies for all, or a list of, DTE(s).
         Currently supports straddles, strangles, synthetic long and shorts, and vertical spreads.
 
         Multiple strategies, expirations, and % moneyness can be returned.
