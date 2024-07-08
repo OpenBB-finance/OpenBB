@@ -1,9 +1,9 @@
 """Cboe Options Chains Model."""
 
-# pylint: disable=invalid-name, unused-argument
+# pylint: disable= unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from openbb_cboe.utils.helpers import (
     TICKER_EXCEPTIONS,

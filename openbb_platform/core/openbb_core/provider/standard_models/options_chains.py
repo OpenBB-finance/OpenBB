@@ -651,9 +651,8 @@ class OptionsChainsData(Data):
                     + " the underlying price was not returned by the provider."
                     + " Set manually with 'underlying_price' property."
                 )
-            else:
-                df = DataFrame(self._get_stat(_stat, moneyness=moneyness, date=date)[by])  # type: ignore
-                return df.replace({nan: None})
+            df = DataFrame(self._get_stat(_stat, moneyness=moneyness, date=date)[by])  # type: ignore
+            return df.replace({nan: None})
 
         df = self.dataframe
 
