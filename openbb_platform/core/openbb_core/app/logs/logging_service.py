@@ -19,6 +19,8 @@ from pydantic_core import to_jsonable_python
 
 
 class DummyProvider(BaseModel):
+    """Dummy Provider for error handling with logs"""
+
     provider: str = "not_passed_to_kwargs"
 
 
