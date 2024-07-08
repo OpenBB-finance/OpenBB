@@ -639,9 +639,9 @@ class OptionsChainsData(Data):
         if stat is not None:
             if stat not in stats:
                 raise OpenBBError(f"Error: stat must be one of {stats}")
-            elif stat in ["volume", "open_interest"]:
+            if stat in ["volume", "open_interest"]:
                 return DataFrame(self._get_stat(stat, moneyness=moneyness, date=date)[by]).replace({nan: None})  # type: ignore
-            elif (
+            if (
                 _stat not in self.dataframe.columns
                 and self.has_greeks
                 and "underlying_price" not in self.dataframe.columns
@@ -2021,7 +2021,6 @@ class OptionsChainsData(Data):
         if date is not None:
             if date not in self.expirations:
                 expiration = self._get_nearest_expiration(date, df=data)
-            data[data.expiration.astype(str) == expiration]
             data = data[data.expiration.astype(str) == expiration]
 
         days = data.dte.unique().tolist()  # type: ignore
