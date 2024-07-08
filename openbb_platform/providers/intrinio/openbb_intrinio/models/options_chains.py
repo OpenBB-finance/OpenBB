@@ -242,7 +242,7 @@ class IntrinioOptionsChainsFetcher(
         # If the EOD chains are not available for the given date, try the previous day
         if not results and query.date is not None:
             date = get_weekday(date - timedelta(days=1)).strftime("%Y-%m-%d")
-            urls = await get_urls(date)
+            urls = await get_urls(date)  # type: ignore
             results = await amake_requests(urls, response_callback=callback, **kwargs)
 
         if not results:

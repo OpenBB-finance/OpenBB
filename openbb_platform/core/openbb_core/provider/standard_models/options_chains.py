@@ -72,6 +72,7 @@ class OptionsChainsData(Data):
     filter_data(
         date: Optional[Union[str, int]] = None, column: Optional[str] = None,
         option_type: Optional[Literal["call", "put"]] = None,
+        moneyness: Optional[Literal["otm", "itm"]] = None,
         value_min: Optional[float] = None,
         value_max: Optional[float] = None,
         stat: Optional[Literal["open_interest", "volume", "dex", "gex"]] = None,
@@ -608,6 +609,8 @@ class OptionsChainsData(Data):
         option_type: Optional[Literal["call", "put"]]
             The option type to filter by, None returns both.
             This is ignored if stat is not None.
+        moneyness: Optional[Literal["otm", "itm"]]
+            The moneyness to filter by, None returns both.
         column: Optional[str]
             The column to filter by.
             If no min/max are supplied it will sort all data by this column, in descending order.
@@ -720,17 +723,6 @@ class OptionsChainsData(Data):
                 raise OpenBBError("Greeks were not found within the data.")
             df[metric] = abs(df[metric])
 
-        if moneyness is not None:
-            df_calls = DataFrame(
-                df[df.strike >= df.underlying_price].query("option_type == 'call'")
-            )
-            df_puts = DataFrame(
-                df[df.strike <= df.underlying_price].query("option_type == 'put'")
-            )
-            df = concat([df_calls, df_puts])
-
-        df = df[df[metric].notnull()]  # type: ignore
-        df["expiration"] = df.expiration.astype(str)
         total_calls = df[df.option_type == "call"][metric].sum()
         total_puts = df[df.option_type == "put"][metric].sum()
         total_metric = total_calls + total_puts
@@ -740,6 +732,22 @@ class OptionsChainsData(Data):
             "Total": total_metric,
             "PCR": round(total_puts / total_calls, 4),
         }
+
+        df = DataFrame(df[df[metric].notnull()])  # type: ignore
+        df["expiration"] = df.expiration.astype(str)
+
+        if moneyness is not None:
+            df_calls = DataFrame(
+                df[df.strike >= df.underlying_price].query("option_type == 'call'")
+                if moneyness == "otm"
+                else df[df.strike <= df.underlying_price].query("option_type == 'call'")
+            )
+            df_puts = DataFrame(
+                df[df.strike <= df.underlying_price].query("option_type == 'put'")
+                if moneyness == "otm"
+                else df[df.strike >= df.underlying_price].query("option_type == 'put'")
+            )
+            df = concat([df_calls, df_puts])
 
         if date is not None:
             date = self._get_nearest_expiration(date)
