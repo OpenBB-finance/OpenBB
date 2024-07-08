@@ -61,6 +61,11 @@ class OptionsChainsData(Data):
     total_gex: Dict
         Return Gamma Exposure (GEX), if available, as a nested dictionary with keys: total, expiration, strike.
         Both, "expiration" and "strike", contain a list of records with fields: Calls, Puts, Total, Net Percent, PCR.
+    last_price: float
+        Manually set the underlying price by assigning a float value to this property.
+        Certain provider/symbol combinations may not return the underlying price,
+        and it may be necessary, or desirable, to set it post-initialization.
+        This property can be used to override the underlying price returned by the provider.
 
     Methods
     -------
@@ -104,6 +109,18 @@ class OptionsChainsData(Data):
         underlying_price: Optional[float] = None
     ) -> DataFrame:
         Calculates the cost of a vertical put spread, by nearest DTE and strike price to sold and bought levels.
+    strategies(
+        days: Optional[int] = None,
+        straddle_strike: Optional[float] = None,
+        strangle_moneyness: Optional[List[float]] = None,
+        synthetic_longs: Optional[List[float]] = None,
+        synthetic_shorts: Optional[List[float]] = None,
+        vertical_calls: Optional[List[tuple]] = None,
+        vertical_puts: Optional[List[tuple]] = None,
+        underlying_price: Optional[float] = None,
+    ) -> DataFrame:
+        Method for combining multiple strategies and parameters in a single DataFrame.
+        To get all expirations, set days to -1.
 
     Raises
     ------
@@ -115,6 +132,7 @@ class OptionsChainsData(Data):
         default_factory=list,
         description="Underlying symbol for the option.",
     )
+
     underlying_price: List[Union[float, None]] = Field(
         default_factory=list,
         description="Price of the underlying stock.",
@@ -334,8 +352,33 @@ class OptionsChainsData(Data):
         return v
 
     @property
+    def last_price(self):
+        """The manually-set price of the underlying asset."""
+        if hasattr(self, "_last_price"):
+            return self._last_price
+        return None
+
+    @last_price.setter
+    def last_price(self, price: float):
+        """Manually set the price of the underlying asset.
+
+        Use this property to override the underlying price returned by the provider.
+
+        Deleting the property will revert to the provider's underlying price.
+        """
+        self._last_price = price
+
+    @last_price.deleter
+    def last_price(self):
+        """Delete the last price property."""
+        if hasattr(self, "_last_price"):
+            del self._last_price
+
+    @property
     def dataframe(self) -> "DataFrame":
-        """Return all data as a Pandas DataFrame, with additional computed columns (Breakeven, GEX, DEX) if available."""
+        """Return all data as a Pandas DataFrame,
+        with additional computed columns (Breakeven, GEX, DEX) if available.
+        """
         # pylint: disable=import-outside-toplevel
         from numpy import nan
         from pandas import DataFrame, DatetimeIndex, Timedelta, concat, to_datetime
@@ -346,6 +389,17 @@ class OptionsChainsData(Data):
                 exclude_none=True,
             )
         )
+
+        if "underlying_price" not in chains_data.columns and not self.last_price:
+            raise OpenBBError(
+                "'underlying_price' was not returned in the provider data."
+                + "\n\n Please set the 'last_price' property and try again."
+                + "\n\n Note: This error does not impact the standard OBBject `to_df()` method."
+            )
+
+        # Add the underlying price to the DataFrame, or override the existing price.
+        if self.last_price:
+            chains_data.loc[:, "underlying_price"] = self.last_price
 
         if chains_data.empty:
             raise OpenBBError("Error: No validated data was found.")
@@ -368,7 +422,9 @@ class OptionsChainsData(Data):
             last_price = chains_data.underlying_price.iloc[0]
             _calls = DataFrame(chains_data[chains_data["option_type"] == "call"])
             _puts = DataFrame(chains_data[chains_data["option_type"] == "put"])
-            _ask = self._identify_price_col(chains_data, "call", "ask")  # pylint: disable=W0212
+            _ask = self._identify_price_col(
+                chains_data, "call", "ask"
+            )  # pylint: disable=W0212
             _calls.loc[:, ("Breakeven")] = (
                 _calls.loc[:, ("strike")] + _calls.loc[:, (_ask)]
             )
@@ -536,6 +592,7 @@ class OptionsChainsData(Data):
         self,
         date: Optional[Union[str, int]] = None,
         option_type: Optional[Literal["call", "put"]] = None,
+        moneyness: Optional[Literal["otm", "itm"]] = None,
         column: Optional[str] = None,
         value_min: Optional[float] = None,
         value_max: Optional[float] = None,
@@ -571,20 +628,40 @@ class OptionsChainsData(Data):
         """
         # pylint: disable=import-outside-toplevel
         from numpy import nan
-        from pandas import DataFrame
+        from pandas import DataFrame, concat
 
         stats = ["open_interest", "volume", "dex", "gex"]
-
+        _stat = stat.upper() if stat in ["dex", "gex"] else stat
+        by = "strike" if date is not None else by
         if stat is not None:
             if stat not in stats:
                 raise OpenBBError(f"Error: stat must be one of {stats}")
-            _stat = stat.upper() if stat in ["dex", "gex"] else stat
-            by = "strike" if date is not None else by
-            df = DataFrame(self._get_stat(_stat, date)[by])  # type: ignore
-
-            return df.replace({nan: None})
+            elif stat in ["volume", "open_interest"]:
+                return DataFrame(self._get_stat(stat, moneyness=moneyness, date=date)[by]).replace({nan: None})  # type: ignore
+            elif (
+                _stat not in self.dataframe.columns
+                and self.has_greeks
+                and "underlying_price" not in self.dataframe.columns
+            ):
+                raise OpenBBError(
+                    f"Error: '{stat}' could not be generated because"
+                    + " the underlying price was not returned by the provider."
+                    + " Set manually with 'underlying_price' property."
+                )
+            else:
+                df = DataFrame(self._get_stat(_stat, moneyness=moneyness, date=date)[by])  # type: ignore
+                return df.replace({nan: None})
 
         df = self.dataframe
+
+        if moneyness is not None:
+            df_calls = DataFrame(
+                df[df.strike >= df.underlying_price].query("option_type == 'call'")
+            )
+            df_puts = DataFrame(
+                df[df.strike <= df.underlying_price].query("option_type == 'put'")
+            )
+            df = concat([df_calls, df_puts])
 
         if date is not None:
             date = self._get_nearest_expiration(date)
@@ -616,6 +693,7 @@ class OptionsChainsData(Data):
     def _get_stat(
         self,
         metric: Literal["open_interest", "volume", "DEX", "GEX"],
+        moneyness: Optional[Literal["otm", "itm"]] = None,
         date: Optional[str] = None,
     ) -> Dict:
         """Return the metric with keys: "total", "expiration", "strike".
@@ -623,14 +701,33 @@ class OptionsChainsData(Data):
         """
         # pylint: disable=import-outside-toplevel
         from numpy import inf, nan
-        from pandas import DataFrame
+        from pandas import DataFrame, concat
 
-        df = self.dataframe
+        df = DataFrame()
+
+        if metric in ["volume", "open_interest"]:
+            df = DataFrame(
+                self.model_dump(
+                    exclude_unset=True,
+                    exclude_none=True,
+                )
+            )
+        else:
+            df = self.dataframe
 
         if metric in ["DEX", "GEX"]:
             if not self.has_greeks:
                 raise OpenBBError("Greeks were not found within the data.")
             df[metric] = abs(df[metric])
+
+        if moneyness is not None:
+            df_calls = DataFrame(
+                df[df.strike >= df.underlying_price].query("option_type == 'call'")
+            )
+            df_puts = DataFrame(
+                df[df.strike <= df.underlying_price].query("option_type == 'put'")
+            )
+            df = concat([df_calls, df_puts])
 
         df = df[df[metric].notnull()]  # type: ignore
         df["expiration"] = df.expiration.astype(str)
@@ -683,7 +780,9 @@ class OptionsChainsData(Data):
             "strike": by_strike_dict,
         }
 
-    def _get_nearest_expiration(self, date: Optional[Union[str, int]] = None) -> str:
+    def _get_nearest_expiration(
+        self, date: Optional[Union[str, int]] = None, df: Optional["DataFrame"] = None
+    ) -> str:
         """Return the nearest expiration date to the given date or number of days until expiry.
         This method is not intended to be called directly.
 
@@ -701,19 +800,20 @@ class OptionsChainsData(Data):
         from datetime import timedelta  # noqa
         from pandas import DataFrame, Series, to_datetime
 
+        df = df if df is not None else self.dataframe
         if isinstance(date, int):
-            if not hasattr(self.dataframe, "dte"):
+            if not hasattr(df, "dte"):
                 date = (datetime.today() + timedelta(days=date)).strftime("%Y-%m-%d")
             else:
-                dataframe = self.dataframe
+                dataframe = df
                 dataframe = dataframe[dataframe.dte >= 0]
                 days = -1 if date == 0 else date
                 nearest = (dataframe.dte - days).abs().idxmin()  # type: ignore
                 return dataframe.loc[nearest, "expiration"].strftime("%Y-%m-%d")
         elif date is None:
             date = to_datetime(
-                self.dataframe.eod_date.iloc[0]
-                if hasattr(self.dataframe, "eod_date")
+                df.eod_date.iloc[0]
+                if hasattr(df, "eod_date")
                 else datetime.today().strftime("%Y-%m-%d")
             )  # type: ignore
         else:
@@ -1912,8 +2012,8 @@ class OptionsChainsData(Data):
 
         if date is not None:
             if date not in self.expirations:
-                expiration = self._get_nearest_expiration(date)
-
+                expiration = self._get_nearest_expiration(date, df=data)
+            data[data.expiration.astype(str) == expiration]
             data = data[data.expiration.astype(str) == expiration]
 
         days = data.dte.unique().tolist()  # type: ignore
@@ -2007,7 +2107,7 @@ class OptionsChainsData(Data):
 
         for day in days:
             atm_call_strike = self._get_nearest_strike(
-                "call", day, force_otm=False
+                "call", day, underlying_price, force_otm=False
             )  # noqa:F841
             _calls = calls[calls["dte"] == day][
                 ["expiration", "option_type", "strike", "implied_volatility"]
