@@ -1,4 +1,4 @@
-"""TMX Company Filings Model"""
+"""TMX Company Filings Model."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -44,7 +44,9 @@ class TmxCompanyFilingsData(CompanyFilingsData):
     }
 
     description: str = Field(description="The description of the filing.")
-    size: str = Field(description="The file size of the PDF document.")
+    size: Optional[str] = Field(
+        description="The file size of the PDF document.", default=None
+    )
 
 
 class TmxCompanyFilingsFetcher(
@@ -78,7 +80,6 @@ class TmxCompanyFilingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-
         user_agent = get_random_agent()
         results: List[Dict] = []
 
@@ -148,8 +149,9 @@ class TmxCompanyFilingsFetcher(
             if isinstance(data, str):
                 data = await try_again()
 
-            if data != [] and data["data"].get("filings") is not None:
-                results.extend(data["data"]["filings"])
+            # TODO: @deeleramone
+            if data != [] and data["data"].get("filings") is not None:  # type: ignore
+                results.extend(data["data"]["filings"])  # type: ignore
 
             return results
 

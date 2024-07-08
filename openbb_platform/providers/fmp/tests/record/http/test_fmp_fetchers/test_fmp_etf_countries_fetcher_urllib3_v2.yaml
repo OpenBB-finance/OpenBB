@@ -1,0 +1,212 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/QQQ?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4vmUlCoBmIFBaXk/NK8kqJKJSsFpdC8zJLUFIXgksSS1GIlHYh8eWpmekZJQGpR
+        cmpeSWJ6KkihpbmegamqElBBrQ5Wk/xSSzJSi3IS81LwmmOoZ2CGzxjnjMy8RHwGGOiZWeAzwKko
+        sSozh4AJJvhMgIaJd2Zeekp+Ln6TTM0hJnHFAgAYy0GqYAEAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:00 GMT
+      Etag:
+      - W/"160-iFjtDAB5RW/TnT0Ntq9QU33+meY"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/IWM?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6XSPQvCMBAG4L2/IgTcRNqq+DHqoCIUoTqJw2GONqAXOSNFxf9uxI5yGRySJcfD
+        5b3bJ0o9w1FKH92NPN/1VOkdWY9GlR48XnX3+96grWq/QT4ieajwUzgZ9/J+R4eCV/enNGN42JNE
+        pL3BUBLmQGBAFvJcEgrHDdxlIRN7WF0ZMPKLLJOENtG1pcq4c0QSW2E8AZk/hC3YBkgG0pEkLJDP
+        QJFEUzHRAn2N/PmJuF+BEddr6ahS63BFEHE/yjAUuDjGv5AGDcZSbeeSHN6lDXuzdwMAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:00 GMT
+      Etag:
+      - W/"377-4qG4pI5c1g7/G7QTpmKl38gyGtQ"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/VOO?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4vmUlCoBmIFBaXk/NK8kqJKJSsFpdC8zJLUFIXgksSS1GIlHYh8eWpmekZJQGpR
+        cmpeSWJ6KkihpaWeibGqElBBrQ5Wk4LLM0uqUotyEvNS8JljoGdkic8Yv9SSDIgpeJ1joGdogs8Y
+        qL+8M/PSU/JzCZiE11tAExIL8otS8ZthAHUNVywAEXDLRmgBAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:00 GMT
+      Etag:
+      - W/"168-0GbxuYWVIJbcZWMc4sHFwj5Fwzc"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/VTI?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6XSwQqCQBAG4LtPsSx0E1ExyG7RpRAisE7RYXAHXbAx1hGp6N0z7Bgj1GH3sjMf
+        +zNz8pR6DEcpXTQdsbvppdJHsoxG5QyMrfbH9x5tWfEeXYHEUOK7ME2DZD7TQ8HT/yrlveU7uhrI
+        SE4YxCKzBgIDshDFkvCJlFkqTXORpXAhRhoIuDYOJ5BEQrZk7ESeMBKB1gHW/wgHsD2QKIgfcDg5
+        Val/h1yNiyFumGhsGipVNlw/C6uuZQf1xCxGwTu/AJNtR/kuAwAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:00 GMT
+      Etag:
+      - W/"32e-EveZZWXOpfzdjNd+MbnzFoHYm/s"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

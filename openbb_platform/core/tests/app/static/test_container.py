@@ -88,8 +88,8 @@ def test_container__check_credentials(container):
             ("provider_1", "provider_2"),
             OpenBBError,
             escape(
-                "Provider fallback failed, please specify the provider or update credentials."
-                "\n[Providers]\n  * 'x' -> not found\n  * 'y' -> not found\n  * 'z' -> not found"
+                "Provider fallback failed."
+                "\n[Providers]\n  * 'x' -> not installed, please install openbb-x\n  * 'y' -> not installed, please install openbb-y\n  * 'z' -> not installed, please install openbb-z"
             ),
         ),
     ],

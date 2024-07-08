@@ -29,14 +29,14 @@ jobs:
         if: always()
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Checkout specific ref
         if: github.event_name == 'pull_request'
         run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
 
       - name: Setup Python 3.10
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
           architecture: x64

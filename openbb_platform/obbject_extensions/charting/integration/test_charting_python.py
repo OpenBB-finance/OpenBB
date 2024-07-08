@@ -621,3 +621,57 @@ def test_charting_fixedincome_government_yield_curve(params, obb):
     assert len(result.results) > 0
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "ES",
+                "start_date": "2022-01-01",
+                "end_date": "2022-02-01",
+                "chart": True,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_derivatives_futures_historical(params, obb):
+    """Test chart derivatives futures historical."""
+    result = obb.derivatives.futures.historical(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "VX",
+            }
+        ),
+        (
+            {
+                "provider": "cboe",
+                "symbol": "VX",
+                "date": "2024-06-25",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_derivatives_futures_curve(params, obb):
+    """Test chart derivatives futures curve."""
+    result = obb.derivatives.futures.curve(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)

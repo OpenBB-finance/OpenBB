@@ -1,8 +1,13 @@
 """Module for the ReferenceToArgumentsProcessor class."""
 
+# `ForwardRef`needs to be imported because the usage of `eval()`,
+# which creates a ForwardRef
+# which would raise a not defined error if it's not imported here.
+# pylint: disable=unused-import
 from typing import (
     Any,
     Dict,
+    ForwardRef,  # noqa: F401
     List,
     Literal,
     Optional,

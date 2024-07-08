@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 import requests
+from openbb import obb
 from openbb_cli.config import constants
 from openbb_cli.config.constants import (
     ASSETS_DIRECTORY,
@@ -45,8 +46,6 @@ from openbb_cli.session import Session
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from pydantic import BaseModel
-
-from openbb import obb
 
 PLATFORM_ROUTERS = {
     d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
@@ -203,7 +202,15 @@ class CLIController(BaseController):
                 "-h": "--help",
             }
             choices["stop"] = {"--help": None, "-h": "--help"}
-            choices["results"] = {"--help": None, "-h": "--help"}
+            choices["results"] = {
+                "--help": None,
+                "-h": "--help",
+                "--export": {c: None for c in ["csv", "json", "xlsx", "png", "jpg"]},
+                "--index": None,
+                "--key": None,
+                "--chart": None,
+                "--sheet_name": None,
+            }
 
             self.update_completer(choices)
 

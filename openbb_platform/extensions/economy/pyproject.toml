@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-economy"
-version = "1.2.2"
+version = "1.2.3"
 description = "Economy extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -8,8 +8,8 @@ readme = "README.md"
 packages = [{ include = "openbb_economy" }]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-openbb-core = "^1.2.4"
+python = "^3.9"
+openbb-core = "^1.2.5"
 
 [build-system]
 requires = ["poetry-core"]
@@ -17,3 +17,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
 economy = "openbb_economy.economy_router:router"
+
+[tool.poetry.plugins."openbb_charting_extension"]
+economy = "openbb_economy.economy_views:EconomyViews"

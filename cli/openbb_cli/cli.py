@@ -25,7 +25,7 @@ if __name__ == "__main__":
     initial_logging_sub_app = change_logging_sub_app()
     try:
         main()
-    except Exception as e:
+    except Exception:
         pass
     finally:
         reset_logging_sub_app(initial_logging_sub_app)

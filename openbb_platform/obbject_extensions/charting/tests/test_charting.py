@@ -3,7 +3,7 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
-from openbb_charting import Charting
+from openbb_charting.charting import Charting
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from pydantic import BaseModel
@@ -96,22 +96,22 @@ def test_indicators(obbject):
     ]
 
 
-@patch("openbb_charting.get_charting_functions")
-def test_functions(mock_get_charting_functions):
+@patch("openbb_charting.charting.get_charting_functions_list")
+def test_functions(get_charting_functions_list):
     """Test functions method."""
     # Arrange
-    mock_get_charting_functions.return_value = ["function1", "function2", "function3"]
+    get_charting_functions_list.return_value = ["function1", "function2", "function3"]
 
     # Act
     result = Charting.functions()
 
     # Assert
-    assert result == ["function1", "function2", "function3"]
-    mock_get_charting_functions.assert_called_once()
+    assert set(result) == {"function1", "function2", "function3"}
+    assert get_charting_functions_list.call_count >= 1
 
 
-@patch("openbb_charting.get_backend")
-@patch("openbb_charting.create_backend")
+@patch("openbb_charting.charting.get_backend")
+@patch("openbb_charting.charting.create_backend")
 def test_handle_backend(mock_create_backend, mock_get_backend, obbject):
     """Test _handle_backend method."""
     # Act -> _handle backend is called in the constructor
@@ -122,23 +122,23 @@ def test_handle_backend(mock_create_backend, mock_get_backend, obbject):
     mock_get_backend.assert_called_once()
 
 
-@patch("openbb_charting.charting_router")
-def test_get_chart_function(mock_charting_router):
+def test_get_chart_function(obbject):
     """Test _get_chart_function method."""
     # Arrange
     mock_function = MagicMock()
-    mock_charting_router.some_function = mock_function
+    charting = Charting(obbject)
+    charting._functions = {"some_function": mock_function}
     route = "/some/function"
 
     # Act
-    result = Charting._get_chart_function(route)
+    result = charting._get_chart_function(route)
 
     # Assert
     assert result == mock_function
 
 
-@patch("openbb_charting.Charting._get_chart_function")
-@patch("openbb_charting.Chart")
+@patch("openbb_charting.charting.Charting._get_chart_function")
+@patch("openbb_charting.charting.Chart")
 def test_show(_, mock_get_chart_function, obbject):
     """Test show method."""
     # Arrange
@@ -156,9 +156,9 @@ def test_show(_, mock_get_chart_function, obbject):
     mock_function.assert_called_once()
 
 
-@patch("openbb_charting.Charting._prepare_data_as_df")
-@patch("openbb_charting.Charting._get_chart_function")
-@patch("openbb_charting.Chart")
+@patch("openbb_charting.charting.Charting._prepare_data_as_df")
+@patch("openbb_charting.charting.Charting._get_chart_function")
+@patch("openbb_charting.charting.Chart")
 def test_to_chart(_, mock_get_chart_function, mock_prepare_data_as_df, obbject):
     """Test to_chart method."""
     # Arrange

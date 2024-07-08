@@ -1,12 +1,13 @@
 """Hub manager class."""
 
-from typing import Optional
+from typing import Optional, Tuple
 from warnings import warn
 
 from fastapi import HTTPException
 from jwt import ExpiredSignatureError, PyJWTError, decode, get_unverified_header
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.credentials import Credentials
+from openbb_core.app.model.defaults import Defaults
 from openbb_core.app.model.hub.hub_session import HubSession
 from openbb_core.app.model.hub.hub_user_settings import HubUserSettings
 from openbb_core.app.model.profile import Profile
@@ -21,14 +22,14 @@ class HubService:
     TIMEOUT = 10
     # Mapping of V3 keys to V4 keys for backward compatibility
     V3TOV4 = {
-        "API_KEY_ALPHAVANTAGE": "alpha_vantage_api_key",
-        "API_BIZTOC_TOKEN": "biztoc_api_key",
-        "API_FRED_KEY": "fred_api_key",
-        "API_KEY_FINANCIALMODELINGPREP": "fmp_api_key",
-        "API_INTRINIO_KEY": "intrinio_api_key",
-        "API_POLYGON_KEY": "polygon_api_key",
-        "API_KEY_QUANDL": "nasdaq_api_key",
-        "API_TRADIER_TOKEN": "tradier_api_key",
+        "api_key_alphavantage": "alpha_vantage_api_key",
+        "api_biztoc_token": "biztoc_api_key",
+        "api_fred_key": "fred_api_key",
+        "api_key_financialmodelingprep": "fmp_api_key",
+        "api_intrinio_key": "intrinio_api_key",
+        "api_polygon_key": "polygon_api_key",
+        "api_key_quandl": "nasdaq_api_key",
+        "api_tradier_token": "tradier_api_key",
     }
     V4TOV3 = {v: k for k, v in V3TOV4.items()}
 
@@ -81,7 +82,9 @@ class HubService:
         """Push user settings to Hub."""
         if self._session:
             if user_settings.credentials:
-                hub_user_settings = self.platform2hub(user_settings.credentials)
+                hub_user_settings = self.platform2hub(
+                    user_settings.credentials, user_settings.defaults
+                )
                 return self._put_user_settings(self._session, hub_user_settings)
             return False
         raise OpenBBError(
@@ -93,8 +96,10 @@ class HubService:
         if self._session:
             self._hub_user_settings = self._get_user_settings(self._session)
             profile = Profile(hub_session=self._session)
-            credentials = self.hub2platform(self._hub_user_settings)
-            return UserSettings(profile=profile, credentials=credentials)
+            credentials, defaults = self.hub2platform(self._hub_user_settings)
+            return UserSettings(
+                profile=profile, credentials=credentials, defaults=defaults
+            )
         raise OpenBBError(
             "No session found. Login or provide a 'HubSession' on initialization."
         )
@@ -213,7 +218,7 @@ class HubService:
         response = put(
             url=self._base_url + "/user",
             headers={"Authorization": authorization},
-            json=settings.model_dump(),
+            json=settings.model_dump(exclude_defaults=True),
             timeout=self.TIMEOUT,
         )
 
@@ -223,15 +228,15 @@ class HubService:
         detail = response.json().get("detail", None)
         raise HTTPException(status_code, detail)
 
-    def hub2platform(self, settings: HubUserSettings) -> Credentials:
+    def hub2platform(self, settings: HubUserSettings) -> Tuple[Credentials, Defaults]:
         """Convert Hub user settings to Platform models."""
-        if any(k in settings.features_keys for k in self.V3TOV4):
-            deprecated = {
-                k: v for k, v in self.V3TOV4.items() if k in settings.features_keys
-            }
+        deprecated = {
+            k: v for k, v in self.V3TOV4.items() if k in settings.features_keys
+        }
+        if deprecated:
             msg = ""
             for k, v in deprecated.items():
-                msg += f"\n'{k}' -> '{v.upper()}', "
+                msg += f"\n'{k.upper()}' -> '{v.upper()}', "
             msg = msg.strip(", ")
             warn(
                 message=f"\nDeprecated v3 credentials found.\n{msg}"
@@ -242,18 +247,27 @@ class HubService:
             self.V3TOV4.get(k, k): settings.features_keys.get(self.V3TOV4.get(k, k), v)
             for k, v in settings.features_keys.items()
         }
-        return Credentials(**hub_credentials)
+        defaults = settings.features_settings.get("defaults", {})
+        return Credentials(**hub_credentials), Defaults(**defaults)
 
-    def platform2hub(self, credentials: Credentials) -> HubUserSettings:
+    def platform2hub(
+        self, credentials: Credentials, defaults: Defaults
+    ) -> HubUserSettings:
         """Convert Platform models to Hub user settings."""
         # Dump mode json ensures SecretStr values are serialized as strings
-        credentials = credentials.model_dump(mode="json", exclude_none=True)
+        credentials = credentials.model_dump(
+            mode="json", exclude_none=True, exclude_defaults=True
+        )
         settings = self._hub_user_settings or HubUserSettings()
         for v4_k, v in sorted(credentials.items()):
             v3_k = self.V4TOV3.get(v4_k, None)
             # If v3 key was in the hub already, we keep it
             k = v3_k if v3_k in settings.features_keys else v4_k
             settings.features_keys[k] = v
+        defaults_ = defaults.model_dump(
+            mode="json", exclude_none=True, exclude_defaults=True
+        )
+        settings.features_settings.update({"defaults": defaults_})
         return settings
 
     @staticmethod

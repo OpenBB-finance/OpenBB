@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-stockgrid"
-version = "1.2.2"
+version = "1.2.3"
 description = "stockgrid extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -8,8 +8,8 @@ readme = "README.md"
 packages = [{ include = "openbb_stockgrid" }]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-openbb-core = "^1.2.4"
+python = "^3.9"
+openbb-core = "^1.2.5"
 pytest-freezegun = "^0.4.2"
 
 [build-system]

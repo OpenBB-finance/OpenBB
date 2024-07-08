@@ -4,12 +4,13 @@ from argparse import SUPPRESS, ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
 from types import MethodType
-from typing import Callable, List, Literal
+from typing import Callable, List, Literal, Tuple
 from unittest.mock import patch
 
 from openbb_cli.controllers.utils import (
     check_file_type_saved,
     check_positive,
+    validate_register_key,
 )
 from openbb_cli.session import Session
 
@@ -93,8 +94,23 @@ def __mock_parse_known_args_and_warn(
             type=check_positive,
         )
 
+    parser.add_argument(
+        "--register_obbject",
+        dest="register_obbject",
+        action="store_false",
+        default=True,
+        help="Flag to store data in the OBBject registry, True by default.",
+    )
+    parser.add_argument(
+        "--register_key",
+        dest="register_key",
+        default="",
+        help="Key to reference data in the OBBject registry.",
+        type=validate_register_key,
+    )
 
-def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> None:
+
+def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> Tuple:
     """Add arguments.
 
     Add the arguments that would have normally added by:
@@ -111,6 +127,7 @@ def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> N
         "-h", "--help", action="store_true", help="show this help message"
     )
     _ = other_args
+    return None, None
 
 
 def __get_command_func(controller, command: str):
@@ -200,7 +217,7 @@ def __patch_controller_functions(controller):
             target=controller,
             attribute="parse_simple_args",
             side_effect=__mock_parse_simple_args,
-            return_value=None,
+            return_value=(None, None),
         ),
         patch.object(
             target=controller,

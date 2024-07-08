@@ -4,10 +4,16 @@ from openbb_core.provider.abstract.provider import Provider
 from openbb_federal_reserve.models.central_bank_holdings import (
     FederalReserveCentralBankHoldingsFetcher,
 )
-from openbb_federal_reserve.models.fed_rates import FederalReserveFEDFetcher
+from openbb_federal_reserve.models.federal_funds_rate import (
+    FederalReserveFederalFundsRateFetcher,
+)
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
+from openbb_federal_reserve.models.overnight_bank_funding_rate import (
+    FederalReserveOvernightBankFundingRateFetcher,
+)
+from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )
@@ -21,7 +27,9 @@ federal_reserve_provider = Provider(
         "CentralBankHoldings": FederalReserveCentralBankHoldingsFetcher,
         "TreasuryRates": FederalReserveTreasuryRatesFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
-        "FEDFUNDS": FederalReserveFEDFetcher,
+        "OvernightBankFundingRate": FederalReserveOvernightBankFundingRateFetcher,
+        "FederalFundsRate": FederalReserveFederalFundsRateFetcher,
+        "SOFR": FederalReserveSOFRFetcher,
         "YieldCurve": FederalReserveYieldCurveFetcher,
     },
     repr_name="Federal Reserve (FED)",

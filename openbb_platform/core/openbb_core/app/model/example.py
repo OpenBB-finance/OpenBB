@@ -64,7 +64,7 @@ class APIEx(Example):
             and type(type_)  # pylint: disable=unidiomatic-typecheck
             is not _GenericAlias
         ):
-            return set().union(*map(APIEx._unpack_type, type_.__args__))
+            return set().union(*map(APIEx._unpack_type, type_.__args__))  # type: ignore
         return {type_} if isinstance(type_, type) else {type(type_)}
 
     @staticmethod

@@ -18,9 +18,10 @@ class LoggingSettings:
         system_settings: Optional[SystemSettings] = None,
     ):
         """Initialize the logging settings."""
-        user_settings = user_settings or UserSettings()
-        system_settings = system_settings or SystemSettings()
-
+        user_settings = user_settings if user_settings is not None else UserSettings()
+        system_settings = (
+            system_settings if system_settings is not None else SystemSettings()
+        )
         user_data_directory = (
             str(Path.home() / "OpenBBUserData")
             if not user_settings.preferences

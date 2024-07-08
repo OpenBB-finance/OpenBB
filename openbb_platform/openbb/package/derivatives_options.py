@@ -43,7 +43,7 @@ class ROUTER_derivatives_options(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.
         date : Optional[datetime.date]
             The end-of-day date for options chains data. (provider: intrinio)
-        option_type : Literal[None, Union[ForwardRef('call'), ForwardRef('put')]]
+        option_type : Optional[Literal['call', 'put']]
             The option type, call or put, 'None' is both (default). (provider: intrinio)
         moneyness : Literal['otm', 'itm', 'all']
             Return only contracts that are in or out of the money, default is 'all'. Parameter is ignored when a date is supplied. (provider: intrinio)
@@ -253,59 +253,59 @@ class ROUTER_derivatives_options(Container):
 
         OptionsSnapshots
         ----------------
-        underlying_symbol : str
+        underlying_symbol : List[str]
             Ticker symbol of the underlying asset.
-        contract_symbol : str
+        contract_symbol : List[str]
             Symbol of the options contract.
-        expiration : date
+        expiration : List[date]
             Expiration date of the options contract.
-        dte : Optional[int]
+        dte : List[Optional[int]]
             Number of days to expiration of the options contract.
-        strike : float
+        strike : List[float]
             Strike price of the options contract.
-        option_type : str
+        option_type : List[str]
             The type of option.
-        volume : Optional[int]
-            Total trade volume from the beginning of the session.
-        open_interest : Optional[int]
+        volume : List[Optional[int]]
+            The trading volume.
+        open_interest : List[Optional[int]]
             Open interest at the time.
-        last_price : Optional[float]
+        last_price : List[Optional[float]]
             Last trade price at the time.
-        last_size : Optional[int]
+        last_size : List[Optional[int]]
             Lot size of the last trade.
-        last_timestamp : Optional[datetime]
+        last_timestamp : List[Optional[datetime]]
             Timestamp of the last price.
-        open : Optional[float]
+        open : List[Optional[float]]
             The open price.
-        high : Optional[float]
+        high : List[Optional[float]]
             The high price.
-        low : Optional[float]
+        low : List[Optional[float]]
             The low price.
-        close : Optional[float]
+        close : List[Optional[float]]
             The close price.
-        bid : Optional[float]
+        bid : List[Optional[float]]
             The last bid price at the time. (provider: intrinio)
-        bid_size : Optional[int]
+        bid_size : List[Optional[int]]
             The size of the last bid price. (provider: intrinio)
-        bid_timestamp : Optional[datetime]
+        bid_timestamp : List[Optional[datetime]]
             The timestamp of the last bid price. (provider: intrinio)
-        ask : Optional[float]
+        ask : List[Optional[float]]
             The last ask price at the time. (provider: intrinio)
-        ask_size : Optional[int]
+        ask_size : List[Optional[int]]
             The size of the last ask price. (provider: intrinio)
-        ask_timestamp : Optional[datetime]
+        ask_timestamp : List[Optional[datetime]]
             The timestamp of the last ask price. (provider: intrinio)
-        total_bid_volume : Optional[int]
+        total_bid_volume : List[Optional[int]]
             Total volume of bids. (provider: intrinio)
-        bid_high : Optional[float]
+        bid_high : List[Optional[float]]
             The highest bid price. (provider: intrinio)
-        bid_low : Optional[float]
+        bid_low : List[Optional[float]]
             The lowest bid price. (provider: intrinio)
-        total_ask_volume : Optional[int]
+        total_ask_volume : List[Optional[int]]
             Total volume of asks. (provider: intrinio)
-        ask_high : Optional[float]
+        ask_high : List[Optional[float]]
             The highest ask price. (provider: intrinio)
-        ask_low : Optional[float]
+        ask_low : List[Optional[float]]
             The lowest ask price. (provider: intrinio)
 
         Examples

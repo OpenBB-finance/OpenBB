@@ -8,7 +8,7 @@ import shlex
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 import pandas as pd
 from openbb_cli.config.completer import NestedCompleter
@@ -19,11 +19,14 @@ from openbb_cli.controllers.utils import (
     check_file_type_saved,
     check_positive,
     get_flair_and_username,
+    handle_obbject_display,
     parse_and_split_input,
+    parse_unknown_args_to_dict,
     print_guest_block_msg,
     print_rich_table,
     remove_file,
     system_clear,
+    validate_register_key,
 )
 from openbb_cli.session import Session
 from prompt_toolkit.formatted_text import HTML
@@ -372,7 +375,7 @@ class BaseController(metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
 
-        ns_parser = self.parse_simple_args(parser, other_args)
+        ns_parser, _ = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
             if not ns_parser.name:
@@ -471,7 +474,7 @@ class BaseController(metaclass=ABCMeta):
             description="Stop recording session into .openbb routine file",
         )
         # This is only for auto-completion purposes
-        _ = self.parse_simple_args(parser, other_args)
+        _, _ = self.parse_simple_args(parser, other_args)
 
         if "-h" not in other_args and "--help" not in other_args:
             global RECORD_SESSION  # noqa: PLW0603
@@ -602,7 +605,7 @@ class BaseController(metaclass=ABCMeta):
             prog="whoami",
             description="Show current user",
         )
-        ns_parser = self.parse_simple_args(parser, other_args)
+        ns_parser, _ = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
             current_user = session.user
@@ -628,22 +631,86 @@ class BaseController(metaclass=ABCMeta):
             "'OBBjects' where all execution results are stored. "
             "It is organized as a stack, with the most recent result at index 0.",
         )
-        ns_parser = self.parse_simple_args(parser, other_args)
+        parser.add_argument("--index", dest="index", help="Index of the result.")
+        parser.add_argument("--key", dest="key", help="Key of the result.")
+        parser.add_argument(
+            "--chart", action="store_true", dest="chart", help="Display chart."
+        )
+        parser.add_argument(
+            "--export",
+            default="",
+            type=check_file_type_saved(["csv", "json", "xlsx", "png", "jpg"]),
+            dest="export",
+            help="Export raw data into csv, json, xlsx and figure into png or jpg.",
+            nargs="+",
+        )
+        parser.add_argument(
+            "--sheet-name",
+            dest="sheet_name",
+            default=None,
+            nargs="+",
+            help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+        )
+
+        ns_parser, unknown_args = self.parse_simple_args(
+            parser, other_args, unknown_args=True
+        )
+
         if ns_parser:
-            results = session.obbject_registry.all
-            if results:
-                df = pd.DataFrame.from_dict(results, orient="index")
-                print_rich_table(
-                    df,
-                    show_index=True,
-                    index_name="stack index",
-                    title="OBBject Results",
-                )
-            else:
-                session.console.print("[info]No results found.[/info]")
+            kwargs = parse_unknown_args_to_dict(unknown_args)
+            if not ns_parser.index and not ns_parser.key:
+                results = session.obbject_registry.all
+                if results:
+                    df = pd.DataFrame.from_dict(results, orient="index")
+                    print_rich_table(
+                        df,
+                        show_index=True,
+                        index_name="stack index",
+                        title="OBBject Results",
+                    )
+                else:
+                    session.console.print("[info]No results found.[/info]")
+            elif ns_parser.index:
+                try:
+                    index = int(ns_parser.index)
+                    obbject = session.obbject_registry.get(index)
+                    if obbject:
+                        handle_obbject_display(
+                            obbject=obbject,
+                            chart=ns_parser.chart,
+                            export=ns_parser.export,
+                            sheet_name=ns_parser.sheet_name,
+                            **kwargs,
+                        )
+                    else:
+                        session.console.print(
+                            f"[info]No result found at index {index}.[/info]"
+                        )
+                except ValueError:
+                    session.console.print(
+                        f"[red]Index must be an integer, not '{ns_parser.index}'.[/red]"
+                    )
+            elif ns_parser.key:
+                obbject = session.obbject_registry.get(ns_parser.key)
+                if obbject:
+                    handle_obbject_display(
+                        obbject=obbject,
+                        chart=ns_parser.chart,
+                        export=ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
+                        **kwargs,
+                    )
+                else:
+                    session.console.print(
+                        f"[info]No result found with key '{ns_parser.key}'.[/info]"
+                    )
 
     @staticmethod
-    def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
+    def parse_simple_args(
+        parser: argparse.ArgumentParser,
+        other_args: List[str],
+        unknown_args: bool = False,
+    ) -> Tuple[Optional[argparse.Namespace], Optional[List[str]]]:
         """Parse list of arguments into the supplied parser.
 
         Parameters
@@ -652,11 +719,15 @@ class BaseController(metaclass=ABCMeta):
             Parser with predefined arguments
         other_args: List[str]
             List of arguments to parse
+        unknown_args: bool
+            Flag to indicate if unknown arguments should be returned
 
         Returns
         -------
-        ns_parser:
+        ns_parser: argparse.Namespace
             Namespace with parsed arguments
+        l_unknown_args: List[str]
+            List of unknown arguments
         """
         parser.add_argument(
             "-h", "--help", action="store_true", help="show this help message"
@@ -670,19 +741,18 @@ class BaseController(metaclass=ABCMeta):
         except SystemExit:
             # In case the command has required argument that isn't specified
             session.console.print("\n")
-            return None
+            return None, None
 
         if ns_parser.help:
             txt_help = parser.format_help()
             session.console.print(f"[help]{txt_help}[/help]")
-            return None
+            return None, None
 
-        if l_unknown_args:
+        if l_unknown_args and not unknown_args:
             session.console.print(
                 f"The following args couldn't be interpreted: {l_unknown_args}\n"
             )
-
-        return ns_parser
+        return ns_parser, l_unknown_args
 
     @classmethod
     def parse_known_args_and_warn(
@@ -774,6 +844,22 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
+
+        parser.add_argument(
+            "--register_obbject",
+            dest="register_obbject",
+            action="store_false",
+            default=True,
+            help="Flag to store data in the OBBject registry, True by default.",
+        )
+        parser.add_argument(
+            "--register_key",
+            dest="register_key",
+            default="",
+            help="Key to reference data in the OBBject registry.",
+            type=validate_register_key,
+        )
+
         if session.settings.USE_CLEAR_AFTER_CMD:
             system_clear()
 

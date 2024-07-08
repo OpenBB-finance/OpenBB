@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://sandbox.tradier.com/v1/markets/history?symbol=AAPL&interval=daily&start=2024-02-01&end=2024-02-29
+  response:
+    body:
+      string: '{"history":{"day":[{"date":"2024-02-01","open":183.985,"high":186.95,"low":183.82,"close":186.86,"volume":64885408},{"date":"2024-02-02","open":179.86,"high":187.33,"low":179.25,"close":185.85,"volume":102551680},{"date":"2024-02-05","open":188.15,"high":189.25,"low":185.84,"close":187.68,"volume":69668820},{"date":"2024-02-06","open":186.86,"high":189.31,"low":186.7695,"close":189.3,"volume":43490759},{"date":"2024-02-07","open":190.64,"high":191.05,"low":188.61,"close":189.41,"volume":53438955},{"date":"2024-02-08","open":189.385,"high":189.535,"low":187.35,"close":188.32,"volume":40962046},{"date":"2024-02-09","open":188.65,"high":189.99,"low":188.0,"close":188.85,"volume":45155216},{"date":"2024-02-12","open":188.415,"high":188.67,"low":186.79,"close":187.15,"volume":41781934},{"date":"2024-02-13","open":185.77,"high":186.21,"low":183.5128,"close":185.04,"volume":56529529},{"date":"2024-02-14","open":185.32,"high":185.53,"low":182.44,"close":184.15,"volume":54630517},{"date":"2024-02-15","open":183.55,"high":184.49,"low":181.35,"close":183.86,"volume":65434496},{"date":"2024-02-16","open":183.42,"high":184.85,"low":181.665,"close":182.31,"volume":49752465},{"date":"2024-02-20","open":181.79,"high":182.43,"low":180.0,"close":181.56,"volume":53665553},{"date":"2024-02-21","open":181.94,"high":182.8888,"low":180.66,"close":182.32,"volume":41529674},{"date":"2024-02-22","open":183.48,"high":184.955,"low":182.46,"close":184.37,"volume":52292208},{"date":"2024-02-23","open":185.01,"high":185.04,"low":182.23,"close":182.52,"volume":45119677},{"date":"2024-02-26","open":182.24,"high":182.76,"low":180.65,"close":181.16,"volume":40867421},{"date":"2024-02-27","open":181.1,"high":183.9225,"low":179.56,"close":182.63,"volume":54318851},{"date":"2024-02-28","open":182.51,"high":183.12,"low":180.13,"close":181.42,"volume":48953939},{"date":"2024-02-29","open":181.27,"high":182.57,"low":179.53,"close":180.75,"volume":136682600}]}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - accept, authorization
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 28 Jun 2024 16:06:00 GMT
+      Transfer-Encoding:
+      - chunked
+      X-Ratelimit-Allowed:
+      - '200'
+      X-Ratelimit-Available:
+      - '199'
+      X-Ratelimit-Expiry:
+      - '1719590820000'
+      X-Ratelimit-Used:
+      - '1'
+    status:
+      code: 200
+      message: ''
+version: 1
