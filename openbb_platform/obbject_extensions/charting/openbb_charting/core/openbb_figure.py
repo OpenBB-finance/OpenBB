@@ -19,20 +19,19 @@ from typing import (
 )
 from warnings import warn
 
-import numpy as np
-import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
 
 from openbb_charting.core.backend import PLOTLYJS_PATH, create_backend, get_backend
-from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.config.openbb_styles import (
     PLT_TBL_ROW_COLORS,
 )
 
 if TYPE_CHECKING:
+    from numpy import ndarray
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
+    from pandas import DataFrame, Series
 
     try:  # noqa: SIM105
         # pylint: disable=W0611 # noqa: F401
@@ -64,7 +63,7 @@ class OpenBBFigure(go.Figure):
     -------------
     create_subplots(rows: `int`, cols: `int`, **kwargs) -> `OpenBBFigure`
         Creates a subplots figure
-    to_table(data: `pd.DataFrame`, columnwidth: `list`, print_index: `bool`, ...)
+    to_table(data: `DataFrame`, columnwidth: `list`, print_index: `bool`, ...)
         Converts a DataFrame to a table figure
 
     Methods
@@ -87,6 +86,9 @@ class OpenBBFigure(go.Figure):
 
     def __init__(self, fig: Optional[go.Figure] = None, **kwargs) -> None:
         """Initialize the OpenBBFigure."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.chart_style import ChartStyle
+
         super().__init__()
         if fig:
             self.__dict__ = fig.__dict__
@@ -235,7 +237,7 @@ class OpenBBFigure(go.Figure):
 
     def add_trend(
         self,
-        data: pd.DataFrame,
+        data: "DataFrame",
         row: int = 1,
         col: int = 1,
         secondary_y: bool = False,
@@ -245,7 +247,7 @@ class OpenBBFigure(go.Figure):
 
         Parameters
         ----------
-        data : `pd.DataFrame`
+        data : `DataFrame`
             Data to plot
         row : `int`, optional
             Row number, by default 1
@@ -279,9 +281,9 @@ class OpenBBFigure(go.Figure):
         except Exception as e:
             raise ValueError(f"Error adding trend line: {e}") from e
 
-    def add_histplot(  # pylint: disable=too-many-arguments
+    def add_histplot(  # pylint: disable=too-many-arguments,too-many-locals
         self,
-        dataset: Union[np.ndarray, pd.Series, TimeSeriesT],
+        dataset: Union["ndarray", "Series", TimeSeriesT],
         name: Optional[Union[str, List[str]]] = None,
         colors: Optional[List[str]] = None,
         bins: Union[int, str] = 15,
@@ -297,7 +299,7 @@ class OpenBBFigure(go.Figure):
 
         Parameters
         ----------
-        dataset : `Union[np.ndarray, pd.Series, TimeSeriesT]`
+        dataset : `Union[ndarray, Series, TimeSeriesT]`
             Data to plot
         name : `Optional[Union[str, List[str]]]`, optional
             Name of the plot, by default None
@@ -320,16 +322,19 @@ class OpenBBFigure(go.Figure):
         col : `int`, optional
             Column of the subplot, by default 1
         """
-        from scipy import stats  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from numpy import linspace, mean, ndarray, std
+        from pandas import Series
+        from scipy import stats
 
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
 
-        def _validate_x(data: Union[np.ndarray, pd.Series, type[TimeSeriesT]]):
+        def _validate_x(data: Union[ndarray, Series, type[TimeSeriesT]]):
             if forecast:
                 data = data.univariate_values()  # type: ignore
-            if isinstance(data, pd.Series):
+            if isinstance(data, Series):
                 data = data.to_numpy()
-            if isinstance(data, np.ndarray):
+            if isinstance(data, ndarray):
                 data = data.tolist()
             if isinstance(data, list):
                 data = [data]
@@ -355,9 +360,9 @@ class OpenBBFigure(go.Figure):
                     self._theme.up_color if i % 2 == 0 else self._theme.down_color
                 )
 
-            res_mean, res_std = np.mean(x_i), np.std(x_i)
+            res_mean, res_std = mean(x_i), std(x_i)
             res_min, res_max = min(x_i), max(x_i)
-            x = np.linspace(res_min, res_max, 100)
+            x = linspace(res_min, res_max, 100)
             if show_hist:
                 if forecast:
                     components = list(dataset.components[:4])  # type: ignore
@@ -646,13 +651,13 @@ class OpenBBFigure(go.Figure):
 
     @staticmethod
     def chart_volume_scaling(
-        df_volume: pd.DataFrame, volume_ticks_x: int = 7
+        df_volume: "DataFrame", volume_ticks_x: int = 7
     ) -> Dict[str, list]:
         """Take df_volume and returns volume_ticks, tickvals for chart volume scaling.
 
         Parameters
         ----------
-        df_volume : pd.DataFrame
+        df_volume : DataFrame
             Dataframe of volume (e.g. df_volume = df["volume"])
         volume_ticks_x : int, optional
             Number to multiply volume, by default 7
@@ -662,10 +667,13 @@ class OpenBBFigure(go.Figure):
         Dict[str, list]
             {"range": volume_range, "ticks": tickvals}
         """
-        df_volume = df_volume.apply(lambda x: f"{x:.1f}")
-        df_volume = pd.to_numeric(df_volume.astype(float))
+        # pylint: disable=import-outside-toplevel
+        from pandas import Series, to_numeric
 
-        if isinstance(df_volume, pd.Series):
+        df_volume = df_volume.apply(lambda x: f"{x:.1f}")
+        df_volume = to_numeric(df_volume.astype(float))
+
+        if isinstance(df_volume, Series):
             df_volume = df_volume.to_frame()
 
         volume_ticks = int(df_volume.max().max())
@@ -689,7 +697,7 @@ class OpenBBFigure(go.Figure):
 
     def add_inchart_volume(  # noqa: PLR0913
         self,
-        df_stock: pd.DataFrame,
+        df_stock: "DataFrame",
         close_col: Optional[str] = "close",
         volume_col: Optional[str] = "volume",
         row: Optional[int] = 1,
@@ -700,7 +708,7 @@ class OpenBBFigure(go.Figure):
 
         Parameters
         ----------
-        df_stock : `pd.DataFrame`
+        df_stock : `DataFrame`
             Dataframe of the stock
         close_col : `str`, optional
             Name of the close column, by default "close"
@@ -713,7 +721,10 @@ class OpenBBFigure(go.Figure):
         volume_ticks_x : int, optional
             Number to multiply volume, by default 7
         """
-        colors = np.where(
+        # pylint: disable=import-outside-toplevel
+        from numpy import where
+
+        colors = where(
             df_stock.open < df_stock[close_col],
             self._theme.up_color,
             self._theme.down_color,
@@ -1006,6 +1017,10 @@ class OpenBBFigure(go.Figure):
         `list`
             The dateindex
         """
+        # pylint: disable=import-outside-toplevel
+        from numpy import datetime64
+        from pandas import DatetimeIndex, to_datetime
+
         output: Optional[List[datetime]] = None
         subplots = self.get_subplots_dict()
 
@@ -1024,7 +1039,7 @@ class OpenBBFigure(go.Figure):
 
             if trace.x is not None and len(trace.x) > 5:
                 for x in trace.x[:2]:
-                    if isinstance(x, (datetime, np.datetime64, pd.DatetimeIndex)):
+                    if isinstance(x, (datetime, datetime64, DatetimeIndex)):
                         output = trace.x
                         name = trace.name if hasattr(trace, "name") else f"{trace}"
 
@@ -1044,16 +1059,16 @@ class OpenBBFigure(go.Figure):
                         ).append(trace.x)
 
         # We convert the dateindex to a list of datetime objects if it's a numpy array
-        if output is not None and isinstance(output[0], np.datetime64):
+        if output is not None and isinstance(output[0], datetime64):
             output = (
-                pd.to_datetime(output).to_pydatetime().astype("datetime64[ms]").tolist()
+                to_datetime(output).to_pydatetime().astype("datetime64[ms]").tolist()
             )
 
         return output
 
     def hide_date_gaps(
         self,
-        df_data: pd.DataFrame,
+        df_data: "DataFrame",
         row: Optional[int] = None,
         col: Optional[int] = None,
     ) -> None:
@@ -1061,13 +1076,16 @@ class OpenBBFigure(go.Figure):
 
         Parameters
         ----------
-        df_data : `pandas.DataFrame`
+        df_data : `DataFrame`
             The dataframe with the data.
         row : `int`, optional
             The row of the subplot to hide the gaps, by default None
         col : `int`, optional
             The column of the subplot to hide the gaps, by default None
         """
+        # pylint: disable=import-outside-toplevel
+        from pandas import date_range, to_datetime
+
         # We get the min and max dates
         dt_start, dt_end = df_data.index.min(), df_data.index.max()
         rangebreaks: List[Dict[str, Any]] = []
@@ -1080,13 +1098,13 @@ class OpenBBFigure(go.Figure):
 
         # We get the missing days
         is_daily = df_data.index[-1].time() == df_data.index[-2].time()
-        dt_days = pd.date_range(start=dt_start, end=dt_end, normalize=True)
+        dt_days = date_range(start=dt_start, end=dt_end, normalize=True)
 
         # We get the dates that are missing
         dt_missing_days = list(
             set(dt_days.strftime("%Y-%m-%d")) - set(df_data.index.strftime("%Y-%m-%d"))
         )
-        dt_missing_days = pd.to_datetime(dt_missing_days)
+        dt_missing_days = to_datetime(dt_missing_days)
 
         if len(dt_missing_days) < 2_000:
             rangebreaks = [dict(values=dt_missing_days)]
@@ -1112,6 +1130,10 @@ class OpenBBFigure(go.Figure):
 
     def add_rangebreaks(self) -> None:
         """Add rangebreaks to hide datetime gaps on the xaxis."""
+        # pylint: disable=import-outside-toplevel
+        from numpy import concatenate
+        from pandas import DataFrame, to_datetime
+
         if self.get_dateindex() is None:
             return
 
@@ -1119,12 +1141,12 @@ class OpenBBFigure(go.Figure):
             for col, values in row_dict.items():
                 try:
                     x_values = (
-                        pd.to_datetime(np.concatenate(values))
+                        to_datetime(concatenate(values))
                         .to_pydatetime()
                         .astype("datetime64[ms]")
                     )
                     self.hide_date_gaps(
-                        pd.DataFrame(index=x_values.tolist()),
+                        DataFrame(index=x_values.tolist()),
                         row=row,
                         col=col,
                     )
@@ -1220,23 +1242,25 @@ class OpenBBFigure(go.Figure):
         Parameters
         ----------
         ndarray : `bool`, optional
-            If the plotly json should contain np.ndarray, by default False
+            If the plotly json should contain ndarray, by default False
 
         np_nan : `bool`, optional
-            If the plotly json should contain np.nan, by default False
+            If the plotly json should contain nan, by default False
         """
+        # pylint: disable=import-outside-toplevel
+        from numpy import ndarray as np_ndarray
 
         def remove_ndarrays(data):
             """Remove ndarrays from the plotly json."""
             if isinstance(data, dict):
                 for key, val in data.items():
-                    if isinstance(val, np.ndarray):
+                    if isinstance(val, np_ndarray):
                         data[key] = val.tolist()
                     elif isinstance(val, (dict, list)):
                         data[key] = remove_ndarrays(val)
             elif isinstance(data, list):
                 for i, val in enumerate(data):
-                    if isinstance(val, np.ndarray):
+                    if isinstance(val, np_ndarray):
                         data[i] = val.tolist()
                     elif isinstance(val, (dict, list)):
                         data[i] = remove_ndarrays(val)
@@ -1245,15 +1269,18 @@ class OpenBBFigure(go.Figure):
 
         def remove_nan(data):
             """Remove nan from the plotly json."""
+            # pylint: disable=import-outside-toplevel
+            from numpy import isnan
+
             if isinstance(data, dict):
                 for key, val in data.items():
-                    if isinstance(val, float) and np.isnan(val):
+                    if isinstance(val, float) and isnan(val):
                         data[key] = None
                     elif isinstance(val, (dict, list)):
                         data[key] = remove_nan(val)
             elif isinstance(data, list):
                 for i, val in enumerate(data):
-                    if isinstance(val, float) and np.isnan(val):
+                    if isinstance(val, float) and isnan(val):
                         data[i] = None
                     elif isinstance(val, (dict, list)):
                         data[i] = remove_nan(val)
@@ -1269,12 +1296,12 @@ class OpenBBFigure(go.Figure):
         return plotly_json
 
     @staticmethod
-    def row_colors(data: pd.DataFrame) -> Optional[List[str]]:
+    def row_colors(data: "DataFrame") -> Optional[List[str]]:
         """Return the row colors of the table.
 
         Parameters
         ----------
-        data : `pandas.DataFrame`
+        data : `DataFrame`
             The dataframe
 
         Returns
@@ -1296,12 +1323,12 @@ class OpenBBFigure(go.Figure):
         return color_list
 
     @staticmethod
-    def _tbl_values(data: pd.DataFrame, print_index: bool) -> Tuple[List[str], List]:
+    def _tbl_values(data: "DataFrame", print_index: bool) -> Tuple[List[str], List]:
         """Return the values of the table.
 
         Parameters
         ----------
-        data : `pandas.DataFrame`
+        data : `DataFrame`
             The dataframe to convert
         print_index : `bool`
             Whether to print the index
@@ -1328,7 +1355,7 @@ class OpenBBFigure(go.Figure):
     @classmethod
     def to_table(
         cls,
-        data: pd.DataFrame,
+        data: "DataFrame",
         columnwidth: Optional[List[Union[int, float]]] = None,
         print_index: bool = True,
         **kwargs,
@@ -1337,7 +1364,7 @@ class OpenBBFigure(go.Figure):
 
         Parameters
         ----------
-        data : `pandas.DataFrame`
+        data : `DataFrame`
             The dataframe to convert
         columnwidth : `list`, optional
             The width of each column, by default None (auto)
@@ -1558,7 +1585,7 @@ class OpenBBFigure(go.Figure):
 
     def add_corr_plot(  # pylint: disable=too-many-arguments
         self,
-        series: pd.DataFrame,
+        series: "DataFrame",
         max_lag: int = 20,
         m: Optional[int] = None,
         alpha: Optional[float] = 0.05,
@@ -1574,7 +1601,7 @@ class OpenBBFigure(go.Figure):
         ----------
         fig : OpenBBFigure
             Figure object to add plot to
-        series : pd.DataFrame
+        series : DataFrame
             Dataframe to look at
         max_lag : int, optional
             Number of lags to look at, by default 15
@@ -1589,7 +1616,9 @@ class OpenBBFigure(go.Figure):
         pacf : bool, optional
             Flag to indicate whether to use partial autocorrelation or not, by default False
         """
-        import statsmodels.api as sm
+        # pylint: disable=import-outside-toplevel
+        import statsmodels.api as sm  # noqa
+        from numpy import arange, asanyarray, ceil, log10, isscalar  # noqa
 
         mode = "markers+lines" if marker else "lines"
         line = kwargs.pop("line", None)
@@ -1600,15 +1629,15 @@ class OpenBBFigure(go.Figure):
             if lags is None:
                 # GH 4663 - use a sensible default value
                 nobs = x.shape[0]
-                lim = min(int(np.ceil(10 * np.log10(nobs))), nobs - 1)
-                lags = np.arange(not zero, lim + 1)
-            elif np.isscalar(lags):
-                lags = np.arange(
+                lim = min(int(ceil(10 * log10(nobs))), nobs - 1)
+                lags = arange(not zero, lim + 1)
+            elif isscalar(lags):
+                lags = arange(
                     not zero, int(lags) + 1  # type: ignore
                 )  # +1 for zero lag
             else:
                 irregular = True
-                lags = np.asanyarray(lags).astype(int)
+                lags = asanyarray(lags).astype(int)
             nlags = lags.max(0)
 
             return lags, nlags, irregular

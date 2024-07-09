@@ -48,8 +48,7 @@ async def historical(
     examples=[
         APIEx(parameters={"symbol": "VX", "provider": "cboe", "date": "2024-06-25"}),
         APIEx(
-            description="Enter a date to get the term structure from a historical date.",
-            parameters={"symbol": "NG", "provider": "yfinance", "date": "2023-01-01"},
+            parameters={"symbol": "NG", "provider": "yfinance"},
         ),
     ],
 )

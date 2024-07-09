@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
 
-import nasdaqdatalink
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.lbma_fixing import (
     LbmaFixingData,
@@ -53,6 +52,8 @@ class NasdaqLbmaFixingFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from Nasdaq Data Link."""
+        import nasdaqdatalink  # pylint: disable=import-outside-toplevel
+
         api_key = credentials.get("nasdaq_api_key") if credentials else ""
 
         dataset_dict = {

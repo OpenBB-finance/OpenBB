@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -81,13 +81,13 @@ interactions:
       Cache-Control:
       - private
       Content-Disposition:
-      - attachment;filename=DP_LIVE_29022024203625920.csv
+      - attachment;filename=DP_LIVE_01072024211332615.csv
       Content-Encoding:
       - gzip
       Content-Type:
       - text/csv
       Date:
-      - Thu, 29 Feb 2024 19:36:25 GMT
+      - Mon, 01 Jul 2024 19:13:32 GMT
       Transfer-Encoding:
       - chunked
       Vary:

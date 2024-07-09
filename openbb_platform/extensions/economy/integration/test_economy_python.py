@@ -514,7 +514,7 @@ def test_economy_long_term_interest_rate(params, obb):
                 "frequency": "w",
                 "units": "Number",
                 "region_type": "state",
-                "season": "NSA",
+                "season": "nsa",
                 "aggregation_method": "eop",
                 "transform": "ch1",
                 "provider": "fred",
@@ -532,7 +532,7 @@ def test_economy_long_term_interest_rate(params, obb):
                 "region_type": None,
                 "season": None,
                 "aggregation_method": "avg",
-                "transform": "lin",
+                "transform": "chg",
                 "provider": "fred",
                 "limit": None,
             }
@@ -871,6 +871,30 @@ def test_economy_survey_manufacturing_outlook_texas(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.survey.manufacturing_outlook_texas(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": "2024-01-01",
+                "end_date": "2024-04-01",
+                "category": "cmbs",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_primary_dealer_positioning(params, obb):
+    """Test the economy primary dealer positioning endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.primary_dealer_positioning(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

@@ -3,41 +3,39 @@
 # pylint: disable=too-many-arguments, too-many-instance-attributes, protected-access
 # pylint: disable=too-many-locals, too-few-public-methods, unused-argument
 
-import contextlib
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Union
 
-import numpy as np
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel, df_to_basemodel
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from pandas import DataFrame, Series, to_datetime
 from pydantic import Field, field_validator
 
+if TYPE_CHECKING:
+    from pandas import DataFrame, Series
 
-def absolute_maximum_scale(data: Series) -> Series:
+
+def absolute_maximum_scale(data: "Series") -> "Series":
     """Absolute Maximum Scale Normaliztion Method."""
     return data / data.abs().max()
 
 
-def min_max_scaling(data: Series) -> Series:
+def min_max_scaling(data: "Series") -> "Series":
     """Min/Max ScalingNormalization Method."""
     return (data - data.min()) / (data.max() - data.min())
 
 
-def z_score_standardization(data: Series) -> Series:
+def z_score_standardization(data: "Series") -> "Series":
     """Z-Score Standardization Method."""
     return (data - data.mean()) / data.std()
 
 
-def normalize(data: DataFrame, method: Literal["z", "m", "a"] = "z") -> DataFrame:
+def normalize(data: "DataFrame", method: Literal["z", "m", "a"] = "z") -> "DataFrame":
     """
     Normalize a Pandas DataFrame based on method.
 
     Parameters
     ----------
-    data: DataFrame
+    data: "DataFrame"
         Pandas DataFrame with any number of columns to be normalized.
     method: Literal["z", "m", "a"]
         Normalization method.
@@ -65,10 +63,10 @@ def normalize(data: DataFrame, method: Literal["z", "m", "a"] = "z") -> DataFram
 
 
 def standard_deviation(
-    data: DataFrame,
+    data: "DataFrame",
     window: int = 21,
     trading_periods: int = 252,
-) -> DataFrame:
+) -> "DataFrame":
     """
     Measures how widely returns are dispersed from the average return.
 
@@ -88,15 +86,19 @@ def standard_deviation(
     pd.DataFrame : results
         Dataframe with results.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import log, sqrt
+    from pandas import DataFrame
+
     data = data.copy()
     results = DataFrame()
     if window < 2:
         window = 21
 
     for col in data.columns.tolist():
-        log_return = (data[col] / data[col].shift(1)).apply(np.log)
+        log_return = (data[col] / data[col].shift(1)).apply(log)
 
-        result = log_return.rolling(window=window, center=False).std() * np.sqrt(
+        result = log_return.rolling(window=window, center=False).std() * sqrt(
             trading_periods
         )
         results[col] = result
@@ -105,8 +107,8 @@ def standard_deviation(
 
 
 def calculate_momentum(
-    data: Series, long_period: int = 252, short_period: int = 21
-) -> Series:
+    data: "Series", long_period: int = 252, short_period: int = 21
+) -> "Series":
     """
     Momentum is calculated as the log trailing 12-month return minus trailing one-month return.
 
@@ -116,7 +118,7 @@ def calculate_momentum(
 
     Parameters
     ----------
-    data: Series
+    data: "Series"
         Time series data to calculate the momentum for.
     long_period: Optional[int]
         Long period to base the calculation on. Default is one standard trading year.
@@ -128,18 +130,21 @@ def calculate_momentum(
     Series
         Pandas Series with the calculated momentum.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import log
+
     df = data.copy()
     epsilon = 1e-10
-    momentum_long = np.log(1 + df.pct_change(long_period) + epsilon)
-    momentum_short = np.log(1 + df.pct_change(short_period) + epsilon)
+    momentum_long = log(1 + df.pct_change(long_period) + epsilon)
+    momentum_short = log(1 + df.pct_change(short_period) + epsilon)
     data = momentum_long - momentum_short  # type: ignore
 
     return data
 
 
 def get_momentum(
-    data: DataFrame, long_period: int = 252, short_period: int = 21
-) -> DataFrame:
+    data: "DataFrame", long_period: int = 252, short_period: int = 21
+) -> "DataFrame":
     """
     Calculate the Relative-Strength Momentum Indicator.
 
@@ -147,7 +152,7 @@ def get_momentum(
 
     Parameters
     ----------
-    data: DataFrame
+    data: "DataFrame"
         Indexed time series data formatted with each column representing a ticker.
     long_period: Optional[int]
         Long period to base the calculation on. Default is one standard trading year.
@@ -159,6 +164,9 @@ def get_momentum(
     DataFrame
         Pandas DataFrame with the calculated historical momentum factor exposure score.
     """
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
+
     df = data.copy()
     rs_momentum = DataFrame()
     for ticker in df.columns.to_list():
@@ -170,9 +178,9 @@ def get_momentum(
 
 
 def calculate_relative_strength_ratio(
-    symbols_data: DataFrame,
-    benchmark_data: DataFrame,
-) -> DataFrame:
+    symbols_data: "DataFrame",
+    benchmark_data: "DataFrame",
+) -> "DataFrame":
     """Calculate the Relative Strength Ratio for each ticker (column) in a DataFrame against the benchmark.
 
     Symbols data and benchmark data should have the same index,
@@ -180,9 +188,9 @@ def calculate_relative_strength_ratio(
 
     Parameters
     ----------
-    symbols_data: DataFrame
+    symbols_data: "DataFrame"
         Pandas DataFrame with the symbols data to compare against the benchmark.
-    benchmark_data: DataFrame
+    benchmark_data: "DataFrame"
         Pandas DataFrame with the benchmark data.
 
     Returns
@@ -200,19 +208,19 @@ def calculate_relative_strength_ratio(
 
 
 def process_data(
-    symbols_data: DataFrame,
-    benchmark_data: DataFrame,
+    symbols_data: "DataFrame",
+    benchmark_data: "DataFrame",
     long_period: int = 252,
     short_period: int = 21,
     normalize_method: Literal["z", "m", "a"] = "z",
-) -> Tuple[DataFrame, DataFrame]:
+) -> Tuple["DataFrame", "DataFrame"]:
     """Process the raw data into normalized indicator values.
 
     Parameters
     ----------
-    symbols_data: DataFrame
+    symbols_data: "DataFrame"
         Indexed time series data formatted with each column representing a ticker.
-    benchmark_data: DataFrame
+    benchmark_data: "DataFrame"
         Indexed time series data of the benchmark symbol.
     long_period: Optional[int]
         Long period to base the calculation on. Default is one standard trading year.
@@ -238,7 +246,7 @@ class RelativeRotation:
 
     def __init__(
         self,
-        data: Union[List[Data], DataFrame],
+        data: Union[List[Data], "DataFrame"],
         benchmark: str,
         study: Optional[Literal["price", "volume", "volatility"]] = "price",
         long_period: Optional[int] = 252,
@@ -247,6 +255,16 @@ class RelativeRotation:
         trading_periods: Optional[int] = 252,
     ):
         """Initialize the class."""
+        # pylint: disable=import-outside-toplevel
+        import contextlib  # noqa
+        from openbb_core.app.model.obbject import OBBject  # noqa
+        from openbb_core.app.utils import (  # noqa
+            basemodel_to_df,
+            convert_to_basemodel,
+            df_to_basemodel,
+        )
+        from pandas import DataFrame  # noqa
+
         benchmark = benchmark.upper()
         df = DataFrame()
 
@@ -307,6 +325,10 @@ class RelativeRotation:
 
     def _process_data(self):
         """Process the data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.utils import df_to_basemodel
+        from pandas import to_datetime
+
         if self.study == "volatility":
             self.symbols_data = standard_deviation(
                 self.symbols_data,  # type: ignore
@@ -421,6 +443,11 @@ class RelativeRotationQueryParams(QueryParams):
     @classmethod
     def convert_data(cls, v):
         """Validate the data format."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.model.obbject import OBBject
+        from openbb_core.app.utils import convert_to_basemodel, df_to_basemodel
+        from pandas import DataFrame
+
         if isinstance(v, OBBject):
             return v.results
         if isinstance(v, Data):

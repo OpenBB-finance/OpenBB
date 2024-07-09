@@ -1,5 +1,7 @@
 """FRED Federal Funds Rate Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
 
@@ -11,7 +13,6 @@ from openbb_core.provider.standard_models.federal_funds_rate import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import DataFrame, to_datetime
 from pydantic import Field
 
 EFFR_SERIES_IDS = {
@@ -176,9 +177,12 @@ class FredFederalFundsRateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FredFederalFundsRateQueryParams, data: dict, **kwargs: Any
+        query: FredFederalFundsRateQueryParams, data: Dict, **kwargs: Any
     ) -> AnnotatedResult[List[FredFederalFundsRateData]]:
         """Transform and validate the data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, to_datetime
+
         metadata = data.get("metadata", {})
         df = DataFrame(data.get("data", [])).dropna()
         if df.empty:

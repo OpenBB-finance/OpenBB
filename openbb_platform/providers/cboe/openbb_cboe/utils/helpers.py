@@ -3,15 +3,12 @@
 # pylint: disable=expression-not-assigned, unused-argument
 
 from datetime import date as dateType
-from io import BytesIO, StringIO
-from typing import Any, List, Literal, Optional
+from typing import TYPE_CHECKING, Any, List, Literal, Optional
 
-from aiohttp_client_cache import SQLiteBackend
-from aiohttp_client_cache.session import CachedSession
-from openbb_core.app.utils import get_user_cache_directory
-from openbb_core.provider.utils.client import ClientResponse
 from openbb_core.provider.utils.helpers import amake_request, to_snake_case
-from pandas import DataFrame, read_csv
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
 
@@ -76,11 +73,8 @@ CONSTITUENTS_EU = Literal[  # pylint: disable=invalid-name
     "BUKUTL",
 ]
 
-cache_dir = get_user_cache_directory()
-backend = SQLiteBackend(f"{cache_dir}/http/cboe_directories", expire_after=3600 * 24)
 
-
-async def response_callback(response: ClientResponse, _: Any):
+async def response_callback(response, _):
     """Use callback for HTTP Client Response."""
     content_type = response.headers.get("Content-Type", "")
     if "application/json" in content_type:
@@ -92,6 +86,15 @@ async def response_callback(response: ClientResponse, _: Any):
 
 async def get_cboe_data(url, use_cache: bool = True, **kwargs) -> Any:
     """Use the generic Cboe HTTP request."""
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache import SQLiteBackend
+    from aiohttp_client_cache.session import CachedSession
+    from openbb_core.app.utils import get_user_cache_directory
+
+    cache_dir = get_user_cache_directory()
+    backend = SQLiteBackend(
+        f"{cache_dir}/http/cboe_directories", expire_after=3600 * 24
+    )
     data: Any = None
     if use_cache is True:
         async with CachedSession(cache=backend) as cached_session:
@@ -106,7 +109,7 @@ async def get_cboe_data(url, use_cache: bool = True, **kwargs) -> Any:
     return data
 
 
-async def get_company_directory(use_cache: bool = True, **kwargs) -> DataFrame:
+async def get_company_directory(use_cache: bool = True, **kwargs) -> "DataFrame":
     """Get the US Company Directory for Cboe options.
 
     If use_cache is True, the data will be cached for 24 hours.
@@ -115,6 +118,10 @@ async def get_company_directory(use_cache: bool = True, **kwargs) -> DataFrame:
     -------
     DataFrame: Pandas DataFrame of the Cboe listings directory
     """
+    # pylint: disable=import-outside-toplevel
+    from io import BytesIO  # noqa
+    from pandas import read_csv  # noqa
+
     url = "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
 
     results = await get_cboe_data(url, use_cache)
@@ -135,7 +142,7 @@ async def get_company_directory(use_cache: bool = True, **kwargs) -> DataFrame:
     return directory.astype(str)
 
 
-async def get_index_directory(use_cache: bool = True, **kwargs) -> DataFrame:
+async def get_index_directory(use_cache: bool = True, **kwargs) -> "DataFrame":
     """Get the Cboe Index Directory.
 
     If use_cache is True, the data will be cached for 24 hours.
@@ -144,6 +151,9 @@ async def get_index_directory(use_cache: bool = True, **kwargs) -> DataFrame:
     -------
     List[Dict]: A list of dictionaries containing the index information.
     """
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
+
     url = "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json"
 
     results = await get_cboe_data(url, use_cache=use_cache)
@@ -180,7 +190,7 @@ async def get_settlement_prices(
     archives: bool = False,
     final_settlement: bool = False,
     **kwargs,
-) -> DataFrame:
+) -> "DataFrame":
     """Get the settlement prices of CBOE futures.
 
     Parameters
@@ -199,6 +209,10 @@ async def get_settlement_prices(
     DataFrame
         Pandas DataFrame with results.
     """
+    # pylint: disable=import-outside-toplevel
+    from io import StringIO  # noqa
+    from pandas import DataFrame, read_csv  # noqa
+
     url = ""
     if settlement_date is not None:
         url = (

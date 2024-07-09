@@ -1,15 +1,14 @@
 """TMX ETF Search fetcher."""
 
 # pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_search import (
     EtfSearchData,
     EtfSearchQueryParams,
 )
-from openbb_tmx.utils.helpers import get_all_etfs
 from pydantic import Field, field_validator
 
 
@@ -220,8 +219,11 @@ class TmxEtfSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.utils.helpers import get_all_etfs
+        from pandas import DataFrame
 
-        etfs = pd.DataFrame(await get_all_etfs(use_cache=query.use_cache))
+        etfs = DataFrame(await get_all_etfs(use_cache=query.use_cache))
 
         if query.query:
             etfs = etfs[

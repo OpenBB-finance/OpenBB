@@ -2,8 +2,6 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
-import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -13,12 +11,8 @@ from openbb_core.provider.standard_models.eu_yield_curve import (
     EUYieldCurveQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
 from openbb_ecb.utils.yield_curve_series import get_yield_curve_ids
-from pandas import DataFrame, to_datetime
 from pydantic import Field, field_validator
-
-_warn = warnings.warn
 
 
 class ECBEUYieldCurveQueryParams(EUYieldCurveQueryParams):
@@ -69,8 +63,11 @@ class ECBEUYieldCurveFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
 
-        results = []
+        results: List = []
 
         IDS = get_yield_curve_ids(
             rating=query.rating,
@@ -87,7 +84,7 @@ class ECBEUYieldCurveFetcher(
             """Each maturity is a separate download."""
             url = f"{BASE_URL}/{YIELD_CURVE[maturity]}"
             response = await amake_request(url=url, timeout=10)
-            if isinstance(response, List):
+            if isinstance(response, list):
                 for item in response:
                     d = {
                         "date": item.get("PERIOD"),
@@ -97,13 +94,10 @@ class ECBEUYieldCurveFetcher(
 
                     results.append(d)
 
-        tasks = [get_one(maturity) for maturity in maturities]
-
-        await asyncio.gather(*tasks)
+        await asyncio.gather(*[get_one(maturity) for maturity in maturities])
 
         return results
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: ECBEUYieldCurveQueryParams,
@@ -111,6 +105,9 @@ class ECBEUYieldCurveFetcher(
         **kwargs: Any,
     ) -> List[ECBEUYieldCurveData]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, to_datetime  # noqa
+        from warnings import warn  # noqa
 
         if not data:
             raise EmptyDataError()
@@ -124,7 +121,7 @@ class ECBEUYieldCurveFetcher(
         df.index = df.index.astype(str)
 
         if nearest_date != date.strftime("%Y-%m-%d"):
-            _warn(f"Using nearest date: {nearest_date}")
+            warn(f"Using nearest date: {nearest_date}")
 
         df.index = df.index.astype(str)
         results = (

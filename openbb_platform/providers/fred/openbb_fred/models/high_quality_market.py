@@ -1,17 +1,15 @@
 """FRED High Quality Market Corporate Bond Model."""
 
-import asyncio
+# pylint: disable=unused-argument
+
 from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil import parser
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.high_quality_market import (
     HighQualityMarketCorporateBondData,
     HighQualityMarketCorporateBondQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request
-from pandas import Categorical, DataFrame
 from pydantic import Field, field_validator
 
 
@@ -75,6 +73,11 @@ class FredHighQualityMarketCorporateBondFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from dateutil import parser  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         element_id = "219299" if query.yield_curve == "spot" else "219294"
@@ -82,11 +85,11 @@ class FredHighQualityMarketCorporateBondFetcher(
         if query.date:
             if query.date and isinstance(query.date, dateType):
                 query.date = query.date.strftime("%Y-%m-%d")
-            dates = query.date.split(",")
+            dates = query.date.split(",")  # type: ignore
             dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
             dates = list(set(dates))
             dates = (
-                [f"&observation_date={date}" for date in dates if date] if dates else ""
+                [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
             )
         URLS = [
             f"https://api.stlouisfed.org/fred/release/tables?release_id=402&element_id={element_id}"
@@ -100,8 +103,8 @@ class FredHighQualityMarketCorporateBondFetcher(
             """Get the observations for a single date."""
             data = await amake_request(URL)
             if data:
-                elements = {k: v for k, v in data["elements"].items()}
-                for k, v in elements.items():
+                elements = dict(data.get("elements", {}).items())  # type: ignore
+                for k, v in elements.items():  # pylint: disable=W0612
                     value = v.get("observation_value")
                     if not value:
                         continue
@@ -129,6 +132,9 @@ class FredHighQualityMarketCorporateBondFetcher(
         **kwargs: Any,
     ) -> List[FredHighQualityMarketCorporateBondData]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame
+
         df = DataFrame(data)
         df["maturity_int"] = df["maturity"].str.replace("year_", "").astype(float)
         maturity_categories = sorted(df.maturity_int.unique().tolist())

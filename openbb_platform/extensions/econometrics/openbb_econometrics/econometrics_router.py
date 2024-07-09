@@ -1,31 +1,13 @@
 """Econometrics Router."""
 
-import re
 from itertools import combinations
 from typing import Dict, List, Literal
 
-import numpy as np
-import pandas as pd
-import statsmodels.api as sm  # type: ignore
-from linearmodels.panel import (
-    BetweenOLS,
-    FamaMacBeth,
-    FirstDifferenceOLS,
-    PanelOLS,
-    PooledOLS,
-    RandomEffects,
-)
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
-from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
 from openbb_core.provider.abstract.data import Data
 from pydantic import PositiveInt
-from statsmodels.stats.diagnostic import acorr_breusch_godfrey  # type: ignore
-from statsmodels.stats.stattools import durbin_watson  # type: ignore
-from statsmodels.tsa.stattools import adfuller, grangercausalitytests  # type: ignore
-
-from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_test
 
 router = Router(prefix="", description="Econometrics analysis tools.")
 
@@ -61,6 +43,10 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     OBBject[List[Data]]
         Correlation matrix.
     """
+    # pylint: disable=import-outside-toplevel
+    import numpy as np
+    from openbb_core.app.utils import basemodel_to_df
+
     df = basemodel_to_df(data)
     # remove non float columns from the dataframe to perform the correlation
     df = df.select_dtypes(include=["float64"])
@@ -123,6 +109,14 @@ def ols_regression(
     OBBject[Dict]
         OBBject with the results being model and results objects.
     """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
     model = sm.OLS(y, X)
@@ -172,6 +166,15 @@ def ols_regression_summary(
     OBBject[Data]
         OBBject with the results being summary object.
     """
+    # pylint: disable=import-outside-toplevel
+    import re  # noqa
+    import statsmodels.api as sm  # noqa
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
 
@@ -263,6 +266,15 @@ def autocorrelation(
     OBBject[Dict]
         OBBject with the results being the score from the test.
     """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+    from statsmodels.stats.stattools import durbin_watson
+
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
     results = sm.OLS(y, X).fit()
@@ -318,8 +330,21 @@ def residual_autocorrelation(
     Returns
     -------
     OBBject[Data]
-        OBBject with the results being the score from the test.
+    from statsmodels.stats.diagnostic import (
+        acorr_breusch_godfrey,  # type: ignore # pylint: disable=import-outside-toplevel
+    )
     """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+    from statsmodels.stats.diagnostic import (
+        acorr_breusch_godfrey,
+    )
+
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
     model = sm.OLS(y, X)
@@ -377,6 +402,12 @@ def cointegration(
     OBBject[Data]
         OBBject with the results being the score from the test.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import basemodel_to_df, get_target_columns  # noqa
+    from openbb_econometrics.utils import (  # noqa
+        get_engle_granger_two_step_cointegration_test,
+    )
+
     pairs = list(combinations(columns, 2))
     dataset = get_target_columns(basemodel_to_df(data), columns)
     result = {}
@@ -453,10 +484,15 @@ def causality(
     OBBject[Data]
         OBBject with the results being the score from the test.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import basemodel_to_df, get_target_column
+    from pandas import DataFrame, concat
+    from statsmodels.tsa.stattools import grangercausalitytests
+
     X = get_target_column(basemodel_to_df(data), x_column)
     y = get_target_column(basemodel_to_df(data), y_column)
 
-    granger = grangercausalitytests(pd.concat([y, X], axis=1), [lag], verbose=False)
+    granger = grangercausalitytests(concat([y, X], axis=1), [lag], verbose=False)
 
     for test in granger[lag][0]:
         # As ssr_chi2test and lrtest have one less value in the tuple, we fill
@@ -465,7 +501,7 @@ def causality(
             pars = granger[lag][0][test]
             granger[lag][0][test] = (pars[0], pars[1], "-", pars[2])
 
-    df = pd.DataFrame(granger[lag][0], index=["F-test", "P-value", "Count", "Lags"]).T
+    df = DataFrame(granger[lag][0], index=["F-test", "P-value", "Count", "Lags"]).T
     results = df.to_dict()
 
     return OBBject(results=results)
@@ -521,6 +557,10 @@ def unit_root(
     OBBject[Data]
         OBBject with the results being the score from the test.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import basemodel_to_df, get_target_column
+    from statsmodels.tsa.stattools import adfuller
+
     dataset = get_target_column(basemodel_to_df(data), column)
     adfstat, pvalue, usedlag, nobs, _, icbest = adfuller(dataset, regression=regression)
     results = {
@@ -571,6 +611,15 @@ def panel_random_effects(
     OBBject[Dict]
         OBBject with the fit model returned
     """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm
+    from linearmodels.panel import RandomEffects
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+
     X = get_target_columns(basemodel_to_df(data), x_columns)
     if len(X) < 3:
         raise ValueError("This analysis requires at least 3 items in the dataset.")
@@ -618,6 +667,15 @@ def panel_between(
     OBBject[Dict]
         OBBject with the fit model returned
     """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm
+    from linearmodels.panel import BetweenOLS
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
     exogenous = sm.add_constant(X)
@@ -664,6 +722,15 @@ def panel_pooled(
     OBBject[Dict]
         OBBject with the fit model returned
     """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm
+    from linearmodels.panel import PooledOLS
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
     exogenous = sm.add_constant(X)
@@ -709,6 +776,15 @@ def panel_fixed(
     OBBject[Dict]
         OBBject with the fit model returned
     """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm
+    from linearmodels.panel import PanelOLS
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
     exogenous = sm.add_constant(X)
@@ -754,6 +830,14 @@ def panel_first_difference(
     OBBject[Dict]
         OBBject with the fit model returned
     """
+    # pylint: disable=import-outside-toplevel
+    from linearmodels.panel import FirstDifferenceOLS
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
     exogenous = X
@@ -800,6 +884,15 @@ def panel_fmac(
     OBBject[Dict]
         OBBject with the fit model returned
     """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm
+    from linearmodels.panel import FamaMacBeth
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
+
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
     exogenous = sm.add_constant(X)

@@ -10,8 +10,6 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, model_validator
 
 
@@ -195,7 +193,7 @@ class PolygonBalanceSheetFetcher(
         List[PolygonBalanceSheetData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Balance Sheet Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonBalanceSheetQueryParams:
@@ -209,6 +207,10 @@ class PolygonBalanceSheetFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_polygon.utils.helpers import get_data_many
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"

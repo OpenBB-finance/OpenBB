@@ -1,12 +1,9 @@
 """US Government Treasury Prices."""
 
 # pylint: disable=unused-argument
-import asyncio
-from datetime import date, timedelta
-from io import StringIO
+
 from typing import Any, Dict, List, Literal, Optional
 
-import requests
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_prices import (
@@ -14,8 +11,6 @@ from openbb_core.provider.standard_models.treasury_prices import (
     TreasuryPricesQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_government_us.utils.helpers import get_random_agent
-from pandas import Index, read_csv, to_datetime
 from pydantic import Field
 
 
@@ -46,24 +41,28 @@ class GovernmentUSTreasuryPricesFetcher(
         params: Dict[str, Any]
     ) -> GovernmentUSTreasuryPricesQueryParams:
         """Transform query params."""
-        yesterday = date.today() - timedelta(days=1)
+        # pylint: disable=import-outside-toplevel
+        from datetime import date, timedelta
+
+        today = date.today()
         last_bd = (
-            yesterday - timedelta(yesterday.weekday() - 4)
-            if yesterday.weekday() > 4
-            else yesterday
+            today - timedelta(today.weekday() - 4) if today.weekday() > 4 else today
         )
         if params.get("date") is None:
             params["date"] = last_bd
         return GovernmentUSTreasuryPricesQueryParams(**params)
 
-    # pylint: disable=unused-argument
     @staticmethod
-    async def aextract_data(
+    def extract_data(
         query: GovernmentUSTreasuryPricesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> str:
         """Extract the raw data from US Treasury website."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import make_request
+        from openbb_government_us.utils.helpers import get_random_agent
+
         url = "https://treasurydirect.gov/GA-FI/FedInvest/securityPriceDetail"
 
         HEADERS = {
@@ -84,20 +83,16 @@ class GovernmentUSTreasuryPricesFetcher(
             "&csv=CSV+FORMAT"
         )
 
-        def fetch_data() -> str:
-            r = requests.post(url=url, headers=HEADERS, data=payload, timeout=5)
+        r = make_request(url=url, method="POST", headers=HEADERS, data=payload)
 
-            if r.status_code != 200:
-                raise OpenBBError("Error with the request: " + str(r.status_code))
+        if r.status_code != 200:
+            raise OpenBBError("Error with the request: " + str(r.status_code))
 
-            if r.encoding != "ISO-8859-1":
-                raise OpenBBError(f"Expected ISO-8859-1 encoding but got: {r.encoding}")
-            return r.content.decode("utf-8")
+        if r.encoding != "ISO-8859-1":
+            raise OpenBBError(f"Expected ISO-8859-1 encoding but got: {r.encoding}")
 
-        loop = asyncio.get_running_loop()
-        return await loop.run_in_executor(None, fetch_data)
+        return r.content.decode("utf-8")
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: GovernmentUSTreasuryPricesQueryParams,
@@ -105,6 +100,10 @@ class GovernmentUSTreasuryPricesFetcher(
         **kwargs: Any,
     ) -> List[GovernmentUSTreasuryPricesData]:
         """Transform the data."""
+        # pylint: disable=import-outside-toplevel
+        from io import StringIO  # noqa
+        from pandas import Index, read_csv, to_datetime  # noqa
+
         try:
             if not data:
                 raise EmptyDataError("Data not found")
@@ -134,7 +133,7 @@ class GovernmentUSTreasuryPricesFetcher(
                 )
 
         except Exception as e:
-            raise RuntimeError(e) from e
+            raise OpenBBError(e) from e
 
         if query.security_type is not None:
             results = results[

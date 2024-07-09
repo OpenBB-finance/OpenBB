@@ -1,15 +1,14 @@
 """TMX ETF Info fetcher."""
 
 # pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_info import (
     EtfInfoData,
     EtfInfoQueryParams,
 )
-from openbb_tmx.utils.helpers import get_all_etfs
 from pydantic import Field, field_validator
 
 
@@ -160,7 +159,7 @@ class TmxEtfInfoFetcher(
         List[TmxEtfInfoData],
     ]
 ):
-    """Transform the query, extract and transform the data from the TMX endpoints."""
+    """TMX ETF Info Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxEtfInfoQueryParams:
@@ -174,12 +173,15 @@ class TmxEtfInfoFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.utils.helpers import get_all_etfs
+        from pandas import DataFrame
 
         results = []
         symbols = (
             query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]
         )
-        _data = pd.DataFrame(await get_all_etfs(use_cache=query.use_cache))
+        _data = DataFrame(await get_all_etfs(use_cache=query.use_cache))
         COLUMNS = [
             "symbol",
             "inception_date",
@@ -214,7 +216,7 @@ class TmxEtfInfoFetcher(
 
         for symbol in symbols:
             result = {}
-            target = pd.DataFrame()
+            target = DataFrame()
             symbol = (  # noqa: PLW2901
                 symbol.replace(".TO", "").replace(".TSX", "").replace("-", ".")
             )

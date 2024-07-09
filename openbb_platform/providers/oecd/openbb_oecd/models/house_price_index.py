@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from io import StringIO
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
@@ -15,13 +14,11 @@ from openbb_core.provider.standard_models.house_price_index import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import check_item, make_request
+from openbb_core.provider.utils.helpers import check_item
 from openbb_oecd.utils.constants import (
     CODE_TO_COUNTRY_RGDP,
     COUNTRY_TO_CODE_RGDP,
 )
-from openbb_oecd.utils.helpers import oecd_date_to_python_date
-from pandas import read_csv
 from pydantic import Field, field_validator
 
 countries = tuple(CODE_TO_COUNTRY_RGDP.values()) + ("all",)
@@ -104,6 +101,12 @@ class OECDHousePriceIndexFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from io import StringIO  # noqa
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
+        from pandas import read_csv  # noqa
+
         frequency = frequency_dict.get(query.frequency, "Q")
         transform = transform_dict.get(query.transform, "PA")
 
@@ -130,7 +133,9 @@ class OECDHousePriceIndexFetcher(
                 url.replace(".M.RHPI.", ".Q.RHPI."), headers=headers
             )
         if response.status_code != 200:
-            raise Exception(f"Error with the OECD request: {response.status_code}")
+            raise OpenBBError(
+                f"Error with the OECD request (HTTP {response.status_code}): `{response.text}`"
+            )
         df = read_csv(StringIO(response.text)).get(
             ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
         )

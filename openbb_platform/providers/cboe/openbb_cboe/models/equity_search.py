@@ -1,8 +1,9 @@
 """CBOE Equity Search Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
-from openbb_cboe.utils.helpers import get_company_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
     EquitySearchData,
@@ -51,6 +52,9 @@ class CboeEquitySearchFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the CBOE endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_cboe.utils.helpers import get_company_directory
+
         data = {}
         symbols = await get_company_directory(query.use_cache, **kwargs)
         symbols = symbols.reset_index()

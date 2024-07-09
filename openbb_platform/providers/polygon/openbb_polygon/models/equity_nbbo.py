@@ -12,9 +12,6 @@ from openbb_core.provider.standard_models.equity_nbbo import (
     EquityNBBOQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_polygon.utils.helpers import get_data_one, map_tape
-from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
@@ -136,6 +133,9 @@ class PolygonEquityNBBOData(EquityNBBOData):
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         return (
             to_datetime(v, unit="ns", origin="unix", utc=True).tz_convert("US/Eastern")
             if v
@@ -146,7 +146,7 @@ class PolygonEquityNBBOData(EquityNBBOData):
 class PolygonEquityNBBOFetcher(
     Fetcher[PolygonEquityNBBOQueryParams, List[PolygonEquityNBBOData]]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Equity NBBO Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonEquityNBBOQueryParams:
@@ -160,6 +160,10 @@ class PolygonEquityNBBOFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the Polygon endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_polygon.utils.helpers import get_data_one, map_tape
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
         data: List[Dict] = []
         base_url = "https://api.polygon.io/v3"
