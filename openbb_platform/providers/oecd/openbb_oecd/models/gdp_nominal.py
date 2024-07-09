@@ -75,8 +75,8 @@ class OECDGdpNominalFetcher(
         data_df = data_df.rename(
             columns={
                 "LOCATION": "country",
-                "TIME": "date",
-                "Value": "value",
+                "TIME_PERIOD": "date",
+                "OBS_VALUE": "value",
                 "Location": "country",
             }
         )
