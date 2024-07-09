@@ -64,6 +64,7 @@ class Charting:
         entry_point.load()
         for entry_point in entry_points(group="openbb_charting_extension")
     ]
+    _format = "plotly"  # the charts computed by this extension will be in plotly format
 
     def __init__(self, obbject):
         """Initialize Charting extension."""
@@ -361,7 +362,7 @@ class Charting:
             fig, content = charting_function(**kwargs)
             fig = self._set_chart_style(fig)
             content = fig.show(external=True, **kwargs).to_plotly_json()
-            self._obbject.chart = Chart(fig=fig, content=content)
+            self._obbject.chart = Chart(fig=fig, content=content, format=self._format)
             if render:
                 fig.show(**kwargs)
         except Exception:  # pylint: disable=W0718
@@ -369,7 +370,9 @@ class Charting:
                 fig = self.create_line_chart(data=self._obbject.results, render=False, **kwargs)  # type: ignore
                 fig = self._set_chart_style(fig)
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
-                self._obbject.chart = Chart(fig=fig, content=content)
+                self._obbject.chart = Chart(
+                    fig=fig, content=content, format=self._format
+                )
                 if render:
                     return fig.show(**kwargs)  # type: ignore
             except Exception as e:
@@ -480,7 +483,9 @@ class Charting:
                 fig = self.create_line_chart(data=data_as_df, render=False, **kwargs)
                 fig = self._set_chart_style(fig)
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
-                self._obbject.chart = Chart(fig=fig, content=content)
+                self._obbject.chart = Chart(
+                    fig=fig, content=content, format=self._format
+                )
                 if render:
                     return fig.show(**kwargs)  # type: ignore
             except Exception as e:  # pylint: disable=W0718
