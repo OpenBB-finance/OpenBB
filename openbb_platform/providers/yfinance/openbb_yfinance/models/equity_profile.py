@@ -1,12 +1,7 @@
 """YFinance Equity Profile Model."""
 
 # pylint: disable=unused-argument
-import asyncio
-import warnings
-from datetime import (
-    date as dateType,
-    timezone,
-)
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -14,11 +9,7 @@ from openbb_core.provider.standard_models.equity_info import (
     EquityInfoData,
     EquityInfoQueryParams,
 )
-from openbb_core.provider.utils.helpers import safe_fromtimestamp
 from pydantic import Field, field_validator
-from yfinance import Ticker
-
-_warn = warnings.warn
 
 
 class YFinanceEquityProfileQueryParams(EquityInfoQueryParams):
@@ -101,8 +92,12 @@ class YFinanceEquityProfileData(EquityInfoData):
 
     @field_validator("first_stock_price_date", mode="before", check_fields=False)
     @classmethod
-    def validate_first_trade_date(cls, v: float) -> Optional[dateType]:
+    def validate_first_trade_date(cls, v):
         """Validate first stock price date."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timezone  # noqa
+        from openbb_core.provider.utils.helpers import safe_fromtimestamp  # noqa
+
         return safe_fromtimestamp(v, tz=timezone.utc).date() if v else None
 
 
@@ -123,6 +118,11 @@ class YFinanceEquityProfileFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from warnings import warn  # noqa
+        from yfinance import Ticker  # noqa
+
         symbols = query.symbol.split(",")
         results = []
         fields = [
@@ -156,12 +156,12 @@ class YFinanceEquityProfileFetcher(
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
-            result = {}
-            ticker = {}
+            result: Dict = {}
+            ticker: Dict = {}
             try:
                 ticker = Ticker(symbol).get_info()
             except Exception as e:
-                _warn(f"Error getting data for {symbol}: {e}")
+                warn(f"Error getting data for {symbol}: {e}")
             if ticker:
                 for field in fields:
                     if field in ticker:

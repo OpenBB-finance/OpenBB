@@ -26,7 +26,6 @@ from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWarning
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
-from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import filter_list
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -115,6 +114,9 @@ class CommandValidator:
     @classmethod
     def check_parameters(cls, func: Callable):
         """Check whether or not a parameter is a valid."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.model.command_context import CommandContext
+
         sig = signature(func)
         parameter_map = sig.parameters
 
@@ -140,6 +142,8 @@ class CommandValidator:
     @classmethod
     def check_return(cls, func: Callable):
         """Check whether or not a return type is a valid."""
+        # pylint: disable=import-outside-toplevel
+
         sig = signature(func)
         return_type = sig.return_annotation
 

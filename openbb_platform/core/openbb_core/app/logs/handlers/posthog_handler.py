@@ -2,8 +2,6 @@
 
 import json
 import logging
-import re
-from copy import deepcopy
 from enum import Enum
 from typing import Any, Dict
 
@@ -28,15 +26,19 @@ class PosthogHandler(logging.Handler):
 
     def __init__(self, settings: LoggingSettings):
         """Initialize Posthog Handler."""
+
         super().__init__()
         self._settings = settings
         self.logged_in = False
-        posthog.api_key = "phc_6FXLqu4uW9yxfyN8DpPdgzCdlYXOmIWdMGh6GnBgJLX"  # pragma: allowlist secret
-        posthog.host = "https://app.posthog.com"
+        posthog.api_key = "phc_6FXLqu4uW9yxfyN8DpPdgzCdlYXOmIWdMGh6GnBgJLX"  # pragma: allowlist secret  # noqa
+        posthog.host = "https://app.posthog.com"  # noqa
 
     @property
     def settings(self) -> LoggingSettings:
         """Get logging settings."""
+        # pylint: disable=import-outside-toplevel
+        from copy import deepcopy
+
         return deepcopy(self._settings)
 
     @settings.setter
@@ -78,6 +80,9 @@ class PosthogHandler(logging.Handler):
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict."""
+        # pylint: disable=import-outside-toplevel
+        import re
+
         log_regex = r"(STARTUP|CMD|ERROR): (.*)"
         log_dict: Dict[str, Any] = {}
 
@@ -88,6 +93,9 @@ class PosthogHandler(logging.Handler):
 
     def send(self, record: logging.LogRecord):
         """Send log record to Posthog."""
+        # pylint: disable=import-outside-toplevel
+        import re
+
         level_name = logging.getLevelName(record.levelno)
         log_line = FormatterWithExceptions.filter_log_line(text=record.getMessage())
 

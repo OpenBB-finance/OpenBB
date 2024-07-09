@@ -2,7 +2,6 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,7 +10,6 @@ from openbb_core.provider.standard_models.equity_ftd import (
     EquityFtdQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_sec.utils.helpers import download_zip_file, get_ftd_urls
 from pydantic import Field
 
 
@@ -53,7 +51,7 @@ class SecEquityFtdFetcher(
         List[SecEquityFtdData],
     ]
 ):
-    """Transform the query, extract and transform the data from the SEC endpoints."""
+    """SEC Equity FTD Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecEquityFtdQueryParams:
@@ -67,6 +65,10 @@ class SecEquityFtdFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the SEC website."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_sec.utils.helpers import download_zip_file, get_ftd_urls  # noqa
+
         results = []
         limit = query.limit if query.limit is not None and query.limit > 0 else 0
         urls_data = await get_ftd_urls()

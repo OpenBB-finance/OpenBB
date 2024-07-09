@@ -13,11 +13,6 @@ from openbb_core.provider.standard_models.historical_eps import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    ClientSession,
-    amake_requests,
-)
 from pydantic import Field, field_validator
 
 
@@ -101,6 +96,13 @@ class AVHistoricalEpsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the AlphaVantage endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (
+            ClientResponse,
+            ClientSession,
+            amake_requests,
+        )
+
         api_key = credentials.get("alpha_vantage_api_key") if credentials else ""
         BASE_URL = "https://www.alphavantage.co/query?function=EARNINGS&"
         # We are allowing multiple symbols to be passed in the query, so we need to handle that.

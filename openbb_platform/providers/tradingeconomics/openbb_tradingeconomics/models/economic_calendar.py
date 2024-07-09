@@ -15,10 +15,7 @@ from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_core.provider.utils.helpers import ClientResponse, amake_request, check_item
-from openbb_tradingeconomics.utils import url_generator
 from openbb_tradingeconomics.utils.countries import COUNTRIES
-from pandas import to_datetime
 from pydantic import Field, field_validator, model_validator
 
 IMPORTANCE_CHOICES = ["low", "medium", "high"]
@@ -92,9 +89,12 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
-    def validate_country(cls, c: str):  # pylint: disable=E0213
+    def validate_country(cls, c):
         """Validate country."""
-        result = []
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import check_item
+
+        result: List = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             check_item(v.lower(), COUNTRIES)
@@ -182,6 +182,9 @@ class TEEconomicCalendarData(EconomicCalendarData):
     @classmethod
     def validate_datetime(cls, v: str) -> datetime:
         """Validate the datetime values."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         dt = to_datetime(v, utc=True)
         return dt.replace(microsecond=0)
 
@@ -189,6 +192,9 @@ class TEEconomicCalendarData(EconomicCalendarData):
     @classmethod
     def validate_date(cls, v: str) -> dateType:
         """Validate the date."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         return to_datetime(v, utc=True).date() if v else None
 
     @model_validator(mode="before")
@@ -225,6 +231,10 @@ class TEEconomicCalendarFetcher(
         **kwargs: Any,
     ) -> Union[dict, List[dict]]:
         """Return the raw data from the TE endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import ClientResponse, amake_request
+        from openbb_tradingeconomics.utils import url_generator
+
         api_key = credentials.get("tradingeconomics_api_key") if credentials else ""
         if query.group is not None:
             query.group = query.group.replace("_", " ")  # type: ignore

@@ -335,7 +335,7 @@ def test_fred_regional_fetcher(credentials=test_credentials):
         "frequency": "q",
         "units": "Index 1980:Q1=100",
         "region_type": "state",
-        "season": "NSA",
+        "season": "nsa",
     }
 
     fetcher = FredRegionalDataFetcher()

@@ -1,5 +1,7 @@
 """FRED IORB Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -7,7 +9,6 @@ from openbb_core.provider.standard_models.iorb_rates import (
     IORBData,
     IORBQueryParams,
 )
-from openbb_fred.utils.fred_base import Fred
 from pydantic import field_validator
 
 
@@ -21,7 +22,8 @@ class FREDIORBData(IORBData):
     __alias_dict__ = {"rate": "value"}
 
     @field_validator("rate", mode="before", check_fields=False)
-    def value_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def value_validate(cls, v):
         """Validate rate."""
         try:
             return float(v)
@@ -29,12 +31,8 @@ class FREDIORBData(IORBData):
             return None
 
 
-class FREDIORBFetcher(
-    Fetcher[FREDIORBQueryParams, List[Dict[str, List[FREDIORBData]]]]
-):
-    """Transform the query, extract and transform the data from the FRED endpoints."""
-
-    data_type = FREDIORBData
+class FREDIORBFetcher(Fetcher[FREDIORBQueryParams, List[FREDIORBData]]):
+    """FRED IORB Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDIORBQueryParams:
@@ -44,8 +42,11 @@ class FREDIORBFetcher(
     @staticmethod
     def extract_data(
         query: FREDIORBQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
-    ) -> dict:
+    ) -> Dict:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fred.utils.fred_base import Fred
+
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = "IORB"
         fred = Fred(key)
@@ -54,8 +55,8 @@ class FREDIORBFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDIORBQueryParams, data: dict, **kwargs: Any
-    ) -> List[Dict[str, List[FREDIORBData]]]:
+        query: FREDIORBQueryParams, data: Dict, **kwargs: Any
+    ) -> List[FREDIORBData]:
         """Transform data."""
         keys = ["date", "value"]
         return [FREDIORBData(**{k: x[k] for k in keys}) for x in data]

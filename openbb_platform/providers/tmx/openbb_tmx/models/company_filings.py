@@ -1,23 +1,18 @@
 """TMX Company Filings Model."""
 
 # pylint: disable=unused-argument
-import asyncio
-import json
+
 from datetime import (
     date as dateType,
     datetime,
-    timedelta,
 )
 from typing import Any, Dict, List, Optional
 
-from dateutil import rrule
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_filings import (
     CompanyFilingsData,
     CompanyFilingsQueryParams,
 )
-from openbb_tmx.utils import gql
-from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent
 from pydantic import Field
 
 
@@ -52,11 +47,14 @@ class TmxCompanyFilingsData(CompanyFilingsData):
 class TmxCompanyFilingsFetcher(
     Fetcher[TmxCompanyFilingsQueryParams, List[TmxCompanyFilingsData]]
 ):
-    """Transform the query, extract and transform the data from the TMX endpoints."""
+    """TMX Company Filings Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxCompanyFilingsQueryParams:
         """Transform the query."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
             transformed_params["start_date"] = (
@@ -80,6 +78,14 @@ class TmxCompanyFilingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import json  # noqa
+        from dateutil import rrule  # noqa
+        from datetime import timedelta  # noqa
+        from openbb_tmx.utils import gql  # noqa
+        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+
         user_agent = get_random_agent()
         results: List[Dict] = []
 
@@ -149,8 +155,7 @@ class TmxCompanyFilingsFetcher(
             if isinstance(data, str):
                 data = await try_again()
 
-            # TODO: @deeleramone
-            if data != [] and data["data"].get("filings") is not None:  # type: ignore
+            if data and data.get("data", {}).get("filings"):  # type: ignore
                 results.extend(data["data"]["filings"])  # type: ignore
 
             return results

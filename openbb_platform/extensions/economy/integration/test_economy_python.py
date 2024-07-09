@@ -514,7 +514,7 @@ def test_economy_long_term_interest_rate(params, obb):
                 "frequency": "w",
                 "units": "Number",
                 "region_type": "state",
-                "season": "NSA",
+                "season": "nsa",
                 "aggregation_method": "eop",
                 "transform": "ch1",
                 "provider": "fred",

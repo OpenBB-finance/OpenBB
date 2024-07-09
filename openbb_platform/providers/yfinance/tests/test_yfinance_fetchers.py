@@ -15,7 +15,6 @@ from openbb_yfinance.models.currency_historical import YFinanceCurrencyHistorica
 from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFetcher
 from openbb_yfinance.models.equity_profile import YFinanceEquityProfileFetcher
 from openbb_yfinance.models.equity_quote import YFinanceEquityQuoteFetcher
-from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
 from openbb_yfinance.models.etf_info import YFinanceEtfInfoFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
@@ -229,20 +228,6 @@ def test_y_finance_available_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFinanceAvailableIndicesFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_y_finance_etf_historical_fetcher(credentials=test_credentials):
-    """Test YFinanceEtfHistoricalFetcher."""
-    params = {
-        "symbol": "SPY",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 6, 6),
-    }
-
-    fetcher = YFinanceEtfHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

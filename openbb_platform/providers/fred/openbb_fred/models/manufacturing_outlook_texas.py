@@ -13,7 +13,6 @@ from openbb_core.provider.standard_models.manufacturing_outlook_texas import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import Categorical, DataFrame
 from pydantic import Field, field_validator
 
 TEXAS_MANUFACTURING_OUTLOOK = {
@@ -188,14 +187,14 @@ TEXAS_MANUFACTURING_OUTLOOK = {
 }
 
 ID_TO_FIELD = {}
-for topic, subtopics in TEXAS_MANUFACTURING_OUTLOOK.items():
+for t, subtopics in TEXAS_MANUFACTURING_OUTLOOK.items():
     for subtopic, code in subtopics.items():
         ID_TO_FIELD[code] = subtopic
 
 ID_TO_TOPIC = {}
-for topic, subtopics in TEXAS_MANUFACTURING_OUTLOOK.items():
+for t, subtopics in TEXAS_MANUFACTURING_OUTLOOK.items():
     for subtopic, code in subtopics.items():
-        ID_TO_TOPIC[code] = topic
+        ID_TO_TOPIC[code] = t
 
 TEXAS_MANUFACTURING_OUTLOOK_CHOICES = [
     "business_activity",
@@ -292,6 +291,7 @@ class FredManufacturingOutlookTexasQueryParams(ManufacturingOutlookTexasQueryPar
     )
 
     @field_validator("topic", mode="before", check_fields=False)
+    @classmethod
     def validate_topic(cls, v):
         """Validate topic."""
         if v is None:
@@ -381,6 +381,9 @@ class FredManufacturingOutlookTexasFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[FredManufacturingOutlookTexasData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame
+
         df = DataFrame(data.get("data", []))
         if df.empty:
             raise EmptyDataError(

@@ -1,7 +1,7 @@
 """TMX Equity Historical Model."""
 
 # pylint: disable=unused-argument
-import asyncio
+
 from datetime import (
     date as dateType,
     datetime,
@@ -9,7 +9,6 @@ from datetime import (
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
-import pytz
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_historical import (
@@ -20,12 +19,6 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_tmx.utils.helpers import (
-    get_daily_price_history,
-    get_intraday_price_history,
-    get_weekly_or_monthly_price_history,
-)
-from pandas import DataFrame, to_datetime
 from pydantic import Field, field_validator
 
 
@@ -114,6 +107,9 @@ class TmxEquityHistoricalData(EquityHistoricalData):
     @classmethod
     def date_validate(cls, v):  # pylint: disable=W0221
         """Validate the datetime format."""
+        # pylint: disable=import-outside-toplevel
+        import pytz
+
         if isinstance(v, (datetime, dateType)):
             return v if v.hour != 0 and v.minute != 0 and v.second != 0 else v.date()  # type: ignore
         try:
@@ -147,6 +143,14 @@ class TmxEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_tmx.utils.helpers import (  # noqa
+            get_daily_price_history,
+            get_intraday_price_history,
+            get_weekly_or_monthly_price_history,
+        )
+
         results: List[Dict] = []
         symbols = query.symbol.split(",")
 
@@ -199,6 +203,9 @@ class TmxEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[TmxEquityHistoricalData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, to_datetime
+
         results = DataFrame(data)
         if results.empty or len(results) == 0:
             raise EmptyDataError()

@@ -14,7 +14,6 @@ from openbb_core.provider.standard_models.available_indicators import (
     AvailableIndicesQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_econdb.utils.helpers import download_indicators
 from pydantic import Field
 
 
@@ -86,6 +85,9 @@ class EconDbAvailableIndicatorsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_econdb.utils.helpers import download_indicators
+
         df = await download_indicators(query.use_cache)
         if df.empty:
             raise EmptyDataError("There was an error fetching the data.")

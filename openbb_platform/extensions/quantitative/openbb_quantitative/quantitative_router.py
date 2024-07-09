@@ -2,25 +2,12 @@
 
 from typing import List, Literal
 
-import pandas as pd
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
-from openbb_core.app.utils import (
-    basemodel_to_df,
-    get_target_column,
-    get_target_columns,
-)
 from openbb_core.provider.abstract.data import Data
 
-from openbb_quantitative.performance.performance_router import (
-    router as performance_router,
-)
-from openbb_quantitative.rolling.rolling_router import router as rolling_router
-from openbb_quantitative.stats.stats_router import router as stats_router
-
-from .helpers import get_fama_raw
-from .models import (
+from openbb_quantitative.models import (
     ADFTestModel,
     CAPMModel,
     KPSSTestModel,
@@ -29,6 +16,11 @@ from .models import (
     TestModel,
     UnitRootModel,
 )
+from openbb_quantitative.performance.performance_router import (
+    router as performance_router,
+)
+from openbb_quantitative.rolling.rolling_router import router as rolling_router
+from openbb_quantitative.stats.stats_router import router as stats_router
 
 router = Router(prefix="", description="Quantitative analysis tools.")
 router.include_router(rolling_router)
@@ -70,7 +62,12 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     OBBject[NormalityModel]
         Normality tests summary. See qa_models.NormalityModel for details.
     """
-    from scipy import stats  # pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
+    from scipy import stats  # noqa
+    from openbb_core.app.utils import (  # noqa
+        basemodel_to_df,
+        get_target_column,
+    )
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -126,7 +123,14 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     OBBject[CAPMModel]
         CAPM model summary.
     """
-    import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm  # noqa
+    from openbb_core.app.utils import (  # noqa``
+        basemodel_to_df,
+        get_target_columns,
+    )
+    from pandas import to_datetime  # noqa
+    from openbb_quantitative.helpers import get_fama_raw  # noqa
 
     df = basemodel_to_df(data)
 
@@ -134,7 +138,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     df_target = df_target.set_index("date")
     df_target.loc[:, "return"] = df_target.pct_change()
     df_target = df_target.dropna()
-    df_target.index = pd.to_datetime(df_target.index)
+    df_target.index = to_datetime(df_target.index)
     start_date = df_target.index.min().strftime("%Y-%m-%d")
     end_date = df_target.index.max().strftime("%Y-%m-%d")
     df_fama = get_fama_raw(start_date, end_date)
@@ -203,7 +207,11 @@ def unitroot_test(
         Unit root tests summary.
     """
     # pylint: disable=import-outside-toplevel
-    from statsmodels.tsa import stattools  # type: ignore
+    from openbb_core.app.utils import (  # noqa
+        basemodel_to_df,
+        get_target_column,
+    )
+    from statsmodels.tsa import stattools  # noqa
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -263,6 +271,12 @@ def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     OBBject[SummaryModel]
         Summary table.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+    )
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 

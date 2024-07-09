@@ -1,8 +1,9 @@
 """OpenBB Charting Styles."""
 
-from typing import Any, List, Optional
+from typing import TYPE_CHECKING, Any, List, Optional
 
-import pandas as pd
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 # Vsurf Plot Settings
 PLT_3DMESH_COLORSCALE = "Jet"
@@ -149,7 +150,7 @@ PLT_TBL_ROW_COLORS = (
 
 
 def de_increasing_color_list(
-    df_column: Optional[pd.DataFrame] = None,
+    df_column: Optional["DataFrame"] = None,
     text: Optional[str] = None,
     contains_str: str = "-",
     increasing_color: str = PLT_STYLE_INCREASING,
@@ -161,7 +162,7 @@ def de_increasing_color_list(
 
     Parameters
     ----------
-    df_column : pd.DataFrame, optional
+    df_column : DataFrame, optional
         Dataframe column to create colorlist. by default None
     text : str, optional
         Search in a string, by default None

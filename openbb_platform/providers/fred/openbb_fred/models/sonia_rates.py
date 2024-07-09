@@ -1,10 +1,11 @@
 """FRED SONIA Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.sonia_rates import SONIAData, SONIAQueryParams
-from openbb_fred.utils.fred_base import Fred
 from pydantic import Field, field_validator
 
 SONIA_PARAMETER_TO_FRED_ID = {
@@ -47,12 +48,8 @@ class FREDSONIAData(SONIAData):
             return None
 
 
-class FREDSONIAFetcher(
-    Fetcher[FREDSONIAQueryParams, List[Dict[str, List[FREDSONIAData]]]]
-):
-    """Transform the query, extract and transform the data from the FRED endpoints."""
-
-    data_type = FREDSONIAData
+class FREDSONIAFetcher(Fetcher[FREDSONIAQueryParams, List[FREDSONIAData]]):
+    """FRED SONIA Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDSONIAQueryParams:
@@ -64,8 +61,11 @@ class FREDSONIAFetcher(
         query: FREDSONIAQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> Dict:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fred.utils.fred_base import Fred
+
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = SONIA_PARAMETER_TO_FRED_ID[query.parameter]
         fred = Fred(key)
@@ -74,8 +74,8 @@ class FREDSONIAFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDSONIAQueryParams, data: dict, **kwargs: Any
-    ) -> List[Dict[str, List[FREDSONIAData]]]:
+        query: FREDSONIAQueryParams, data: Dict, **kwargs: Any
+    ) -> List[FREDSONIAData]:
         """Transform data."""
         keys = ["date", "value"]
         return [FREDSONIAData(**{k: x[k] for k in keys}) for x in data]

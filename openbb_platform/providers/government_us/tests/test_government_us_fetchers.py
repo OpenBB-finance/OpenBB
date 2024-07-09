@@ -43,7 +43,7 @@ def test_government_us_treasury_auctions_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_government_us_treasury_prices_fetcher(credentials=test_credentials):
     """Test GovernmentUSTreasuryAuctionsFetcher."""
-    params = {}
+    params = {"date": datetime.date(2024, 6, 25)}
 
     fetcher = GovernmentUSTreasuryPricesFetcher()
     result = fetcher.test(params, credentials)

@@ -8,7 +8,7 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, model_validator
 
-from openbb_charting.core.to_chart import ChartIndicators
+from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
 
 MAMODES = Literal["ema", "sma", "wma", "hna", "zlma", "rma"]
 
