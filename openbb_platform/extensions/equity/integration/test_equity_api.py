@@ -1128,7 +1128,7 @@ def test_equity_compare_groups(params, headers):
             {
                 "extended_hours": False,
                 "include_actions": False,
-                "adjustment": "splits_and_dividends",
+                "adjustment": "splits_only",
                 "provider": "yfinance",
                 "symbol": "AAPL",
                 "start_date": "2023-06-01",
