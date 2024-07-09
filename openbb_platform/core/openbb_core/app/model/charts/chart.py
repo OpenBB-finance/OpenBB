@@ -1,6 +1,5 @@
 """OpenBB Core Chart model."""
 
-from enum import Enum
 from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
