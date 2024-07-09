@@ -517,3 +517,25 @@ async def retail_prices(
 ) -> OBBject:
     """Get retail prices for common items."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="PrimaryDealerPositioning",
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(
+            parameters={
+                "category": "abs",
+                "provider": "federal_reserve",
+            },
+        ),
+    ],
+)
+async def primary_dealer_positioning(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Primary dealer positioning statistics."""
+    return await OBBject.from_query(Query(**locals()))

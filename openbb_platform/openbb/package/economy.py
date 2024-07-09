@@ -29,6 +29,7 @@ class ROUTER_economy(Container):
     indicators
     long_term_interest_rate
     money_measures
+    primary_dealer_positioning
     retail_prices
     risk_premium
     share_price_index
@@ -1754,6 +1755,91 @@ class ROUTER_economy(Container):
                     "start_date": start_date,
                     "end_date": end_date,
                     "adjusted": adjusted,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def primary_dealer_positioning(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get Primary dealer positioning statistics.
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['federal_reserve']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
+        category : Literal['treasuries', 'bills', 'coupons', 'notes', 'tips', 'mbs', 'cmbs', 'municipal', 'corporate', 'commercial_paper', 'corporate_ig', 'corporate_junk', 'abs']
+            The category of asset to return, defaults to 'treasuries'. (provider: federal_reserve)
+
+        Returns
+        -------
+        OBBject
+            results : List[PrimaryDealerPositioning]
+                Serializable results.
+            provider : Optional[Literal['federal_reserve']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        PrimaryDealerPositioning
+        ------------------------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        value : Optional[int]
+            The reported value of the net position (long - short), in millions of $USD. (provider: federal_reserve)
+        name : Optional[str]
+            Short name for the series. (provider: federal_reserve)
+        title : Optional[str]
+            Title of the series. (provider: federal_reserve)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.primary_dealer_positioning(provider='federal_reserve')
+        >>> obb.economy.primary_dealer_positioning(category='abs', provider='federal_reserve')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/primary_dealer_positioning",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.primary_dealer_positioning",
+                        ("federal_reserve",),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
                 },
                 extra_params=kwargs,
             )
