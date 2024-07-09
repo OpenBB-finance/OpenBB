@@ -898,3 +898,26 @@ def test_economy_primary_dealer_positioning(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": "2024-06-01,2023-06-01",
+                "category": "avg_earnings_hourly",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_nonfarm_payrolls(params, obb):
+    """Test the economy survery nonfarm payrolls endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.survey.nonfarm_payrolls(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
