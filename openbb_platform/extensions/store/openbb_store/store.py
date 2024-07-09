@@ -365,7 +365,7 @@ class Store(Data):
         if names:
             names = names.split(",")  # type: ignore
             for name in temp["directory"].copy():
-                if name not in names:
+                if name not in names:  # type: ignore
                     temp["directory"].pop(name)
                     temp["archives"].pop(name)
                     temp["schemas"].pop(name)
