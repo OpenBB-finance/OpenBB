@@ -1,7 +1,7 @@
 """TMX Insider Trading Model."""
 
 # pylint: disable=unused-argument
-import json
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,9 +10,6 @@ from openbb_core.provider.standard_models.insider_trading import (
     InsiderTradingQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import to_snake_case
-from openbb_tmx.utils import gql
-from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent
 from pydantic import Field, field_validator
 
 
@@ -67,6 +64,9 @@ class TmxInsiderTradingData(InsiderTradingData):
     @classmethod
     def period_to_snake_case(cls, v):
         """Convert the period to snake case."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import to_snake_case
+
         return to_snake_case(v) if v else None
 
 
@@ -90,7 +90,12 @@ class TmxInsiderTradingFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-        results = []
+        # pylint: disable=import-outside-toplevel
+        import json  # noqa
+        from openbb_tmx.utils import gql  # noqa
+        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+
+        results: List = []
         user_agent = get_random_agent()
         symbol = (
             query.symbol.upper()
@@ -117,12 +122,12 @@ class TmxInsiderTradingFetcher(
             timeout=5,
         )
 
-        if response.get("data") and response["data"].get(
+        if response.get("data") and response["data"].get(  # type: ignore
             "getCompanyInsidersActivities"
         ):
-            results = response["data"]["getCompanyInsidersActivities"]
+            results = response["data"]["getCompanyInsidersActivities"]  # type: ignore
 
-        if results == []:
+        if not results:
             raise EmptyDataError()
 
         return results

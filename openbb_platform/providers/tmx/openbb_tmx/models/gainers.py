@@ -1,7 +1,7 @@
 """TMX Equity Gainers Model."""
 
 # pylint: disable=unused-argument
-import json
+
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,8 +10,6 @@ from openbb_core.provider.standard_models.equity_performance import (
     EquityPerformanceQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_tmx.utils import gql
-from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent
 from pydantic import Field, field_validator, model_validator
 
 STOCK_LISTS_DICT = {
@@ -105,6 +103,11 @@ class TmxGainersFetcher(
         **kwargs: Any,
     ) -> List[TmxGainersData]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import json  # noqa
+        from openbb_tmx.utils import gql  # noqa
+        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+
         user_agent = get_random_agent()
         payload = gql.get_stock_list_payload.copy()
         payload["variables"]["stockListId"] = STOCK_LISTS_DICT[query.category]

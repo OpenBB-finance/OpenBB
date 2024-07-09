@@ -1,23 +1,18 @@
 """OpenBB Performance Extension router."""
 
-from typing import List
+from typing import TYPE_CHECKING, List
 
-import numpy as np
-import pandas as pd
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
-from openbb_core.app.utils import (
-    basemodel_to_df,
-    df_to_basemodel,
-    get_target_column,
-)
 from openbb_core.provider.abstract.data import Data
-from openbb_quantitative.helpers import validate_window
 from openbb_quantitative.models import (
     OmegaModel,
 )
 from pydantic import PositiveInt
+
+if TYPE_CHECKING:
+    from pandas import Series
 
 router = Router(prefix="/performance")
 
@@ -72,21 +67,28 @@ def omega_ratio(
     OBBject[List[OmegaModel]]
         Omega ratios.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import linspace, sqrt
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+    )
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
     epsilon = 1e-6  # to avoid division by zero
 
-    def get_omega_ratio(df_target: pd.Series, threshold: float) -> float:
+    def get_omega_ratio(df_target: "Series", threshold: float) -> float:
         """Get omega ratio."""
-        daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
+        daily_threshold = (threshold + 1) ** sqrt(1 / 252) - 1
         excess = df_target - daily_threshold
         numerator = excess[excess > 0].sum()
         denominator = -excess[excess < 0].sum() + epsilon
 
         return numerator / denominator
 
-    threshold = np.linspace(threshold_start, threshold_end, 50)
+    threshold = linspace(threshold_start, threshold_end, 50)
     results = []
     for i in threshold:
         omega_ = get_omega_ratio(series_target, i)
@@ -151,12 +153,21 @@ def sharpe_ratio(
     OBBject[List[Data]]
         Sharpe ratio.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import sqrt
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.helpers import validate_window
+
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     validate_window(series_target, window)
     series_target.name = f"sharpe_{window}"
     returns = series_target.pct_change().dropna().rolling(window).sum()
-    std = series_target.rolling(window).std() / np.sqrt(window)
+    std = series_target.rolling(window).std() / sqrt(window)
     results = ((returns - rfr) / std).dropna().reset_index(drop=False)
 
     results = df_to_basemodel(results)
@@ -229,12 +240,21 @@ def sortino_ratio(
     OBBject[List[Data]]
         Sortino ratio.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import sqrt
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.helpers import validate_window
+
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     validate_window(series_target, window)
     returns = series_target.pct_change().dropna().rolling(window).sum().dropna()
     downside_deviation = returns.rolling(window).apply(
-        lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
+        lambda x: (x.values[x.values < 0]).std() / sqrt(252) * 100
     )
     results = (
         ((returns - target_return) / downside_deviation)
@@ -243,9 +263,7 @@ def sortino_ratio(
     )
 
     if adjusted:
-        results = results.applymap(
-            lambda x: x / np.sqrt(2) if isinstance(x, float) else x
-        )
+        results = results.applymap(lambda x: x / sqrt(2) if isinstance(x, float) else x)
     results_ = df_to_basemodel(results)
 
     return OBBject(results=results_)

@@ -11,7 +11,6 @@ from openbb_core.provider.standard_models.sofr import (
     SOFRQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
 from pydantic import field_validator
 
 
@@ -78,14 +77,16 @@ class FederalReserveSOFRFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import amake_request
+
         url = (
             "https://markets.newyorkfed.org/api/rates/secured/sofr/search.json?"
             + f"startDate={query.start_date}&endDate={query.end_date}"
         )
         results: List[Dict] = []
         response = await amake_request(url, **kwargs)
-        if response.get("refRates"):
-            results = response["refRates"]
+        results = response.get("refRates")  # type: ignore
         if not results:
             raise EmptyDataError()
         return results

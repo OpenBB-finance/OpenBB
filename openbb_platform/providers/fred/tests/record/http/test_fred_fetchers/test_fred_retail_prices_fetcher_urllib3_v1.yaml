@@ -1,0 +1,111 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?aggregation_method=eop&api_key=MOCK_API_KEY&file_type=json&frequency=m&limit=100000&observation_start=2024-01-01&series_id=APU0000708111
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw0zUyUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaalraKRrDJIuzcssKVayUsrJzAMpLi0pKC2JL6ksSFWyMtRRSsvM
+        SYXylLKK88FKilJSi+KTKpWsUIxOSSxJVdJRKs4vKonPBylRslJKLE5W0lFKzi/NK1GyMtVRyk9L
+        K04tUbIy0FHKyczNLFGyMjQAARRHFitZRVMSIGCHwAIQGgZliTmlqaCQ0zM1MlKq1aGa+UaQMEaY
+        b2lpRk3zjTHNp6r7TdDNtzAzoab7TdHNB8zM0lKpNrYWAAUvUVryAgAA
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '270'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 25 Jun 2024 02:46:27 GMT
+      Expires:
+      - Tue, 25 Jun 2024 02:46:27 GMT
+      Last-Modified:
+      - Wed, 12 Jun 2024 12:34:02 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series?api_key=MOCK_API_KEY&file_type=json&series_id=APU0000708111
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw0zU0UtJByKbmpaDLFacWZaYWFytZ
+        RVcrZYJkHQNCDQwMDMwNLAwNDZE1k2x0SWZJTqqSlZJjWWpRYnqqQkBRZnKqlYJrenqxjoJ7UWJK
+        qoKjjoJPYlF6qoKGc35xiUJBapGCS35Vap6mQmaeQqhesJ6Cc2ZJpQLUBCUdpfyk4tSissSSzPw8
+        uF8NLS0MdA0MdQ1AzkVWgOxdU4h0WlFqYWlqXnKlkpWSb35eSUZOpZKOElw0vjgjHxx+vko6SqV5
+        mSXFSlZKYHe45OfkJBYVw4ThCsGSKko6SsWpicX5eYk58YkpWaXFJbmpeaB48MsvUQiGyuRUKjiC
+        5VJTsKuHG+oX7Kiko5STWFwSX1qQkliSCooYRJQqGJhbGZtYGRjpGpgq6SgV5BeU5iQWZZZUKlmZ
+        m+ko5eWXpILcDQnZ8ozMklR4eCskZ2QmZ6fmKaSCY6E4PycFFNSJCsmJRSX5eQr5aQqJCimgKNBT
+        8MxLzilNSS1WyC9KT8zLTNZRyMvP04VzkkFxmlaUmqqjACIVihLz0lN1FBLzUhRKihJTMkFxlJij
+        F5MXkweNP4Xk/Lzi0tzUIoUCUFIoVkgsSlVITsxJLs0B+VEhLb9IISO/tDg1A+SstNLUHB2F3PyS
+        /CIFCBtkdFp+fopCZklqbrFCWlF+rgLUpOT8nJzU5JLUFLAhJRmpCs4wu8DJTsEzLyW1QkHDOcBT
+        U08B5h6oZpAzklKLSxRKi1NTFEryFXJTE4tLi1IVQOaA1SjkpJal5kBCqiCxqCQT5OQihVxQCgIF
+        SwmyLoiO5AxQeCjkl6UWKYCypp6CZ4lCZrFCbn5RqkJiQUFRfkFRZmJJKkhnaXGqgnOAp0Im2JFl
+        iTmlqcVwjyDZB/K3QnJiSWp6PijXgrTCnIpsKTjMwd4u1lFIrUhOLSgBm5YKCqKizOTMkkodBZCn
+        EaEG9klOpUJSpYKTT7BCUWpBUWpxal5JYklmWWoxyOOgsDA3VSgtSkrMA2lOLIaEPVKIB3jqKbgi
+        7IDIQ2MZI35A1oAiHGRucWJuqoK5KdTY/DyFREjQghyUWJxZDHIWSJ1LKigwQFkLlFBd81KL0isV
+        Sosz89IVchMzcxQKS1OLQckuLzGzKLVYT8ExJwecdGAuycwDp2hQ8OdkJicm5aQquKWmpBYl5ugo
+        BJckgvIJKI3l5Ccn5iiUJFakFlvDtIKcmpdYUlqUmKOQnlgMTuZI4amQmFOcrwAzH5RcwSoKSouS
+        MxJBqQqsB5z7Qc4vBkeRWz4oCRWlKmTmpeUX5YJLNR2FgpzUxOJUhbLM4swScAp0Ki1KTSwF+dgn
+        MSm/COzSzOKSzORiBY2MkpKCYqsY/Rj98vJyvaScYr30/LIY/eSCzBj9tMTkkuKM1NSS4hj9REgZ
+        rAtOJoAV62WU5GrqKdXG1gIA1aMKpTsGAAA=
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1109'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 25 Jun 2024 02:46:27 GMT
+      Expires:
+      - Tue, 25 Jun 2024 02:46:27 GMT
+      Last-Modified:
+      - Wed, 12 Jun 2024 12:34:02 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

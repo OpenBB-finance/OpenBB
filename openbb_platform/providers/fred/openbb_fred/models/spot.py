@@ -1,5 +1,7 @@
 """FRED Spot Rate Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -8,8 +10,6 @@ from openbb_core.provider.standard_models.spot import (
     SpotRateData,
     SpotRateQueryParams,
 )
-from openbb_fred.utils.fred_base import Fred
-from openbb_fred.utils.fred_helpers import comma_to_float_list, get_spot_series_id
 from pydantic import field_validator
 
 
@@ -43,9 +43,7 @@ class FREDSpotRateFetcher(
         List[FREDSpotRateData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FRED endpoints."""
-
-    data_type = FREDSpotRateData
+    """FRED Spot Rate Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDSpotRateQueryParams:
@@ -57,8 +55,15 @@ class FREDSpotRateFetcher(
         query: FREDSpotRateQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
-    ) -> list:
+    ) -> List:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fred.utils.fred_base import Fred
+        from openbb_fred.utils.fred_helpers import (
+            comma_to_float_list,
+            get_spot_series_id,
+        )
+
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -94,7 +99,7 @@ class FREDSpotRateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDSpotRateQueryParams, data: list, **kwargs: Any
+        query: FREDSpotRateQueryParams, data: List, **kwargs: Any
     ) -> List[FREDSpotRateData]:
         """Transform data."""
         return [FREDSpotRateData.model_validate(d) for d in data]

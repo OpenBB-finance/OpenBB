@@ -9,8 +9,6 @@ import warnings
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, Union
 
-import pandas as pd
-
 from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.base import PltTA
@@ -23,6 +21,7 @@ PLUGINS_PATH = Path(__file__).parent / "plugins"
 PLOTLY_TA: Optional["PlotlyTA"] = None
 
 if TYPE_CHECKING:
+    import pandas as pd
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 
@@ -88,7 +87,7 @@ class PlotlyTA(PltTA):
 
     inchart_colors: List[str] = []
     plugins: List[Type[PltTA]] = []
-    df_ta: Optional[pd.DataFrame] = None
+    df_ta: Optional["pd.DataFrame"] = None
     close_column: Optional[str] = "close"
     has_volume: bool = True
     show_volume: bool = True
@@ -172,7 +171,7 @@ class PlotlyTA(PltTA):
     # pylint: disable=R0913
     def __plot__(
         self,
-        df_stock: Union[pd.DataFrame, pd.Series],
+        df_stock: Union["pd.DataFrame", "pd.Series"],
         indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
         symbol: str = "",
         candles: bool = True,
@@ -185,6 +184,9 @@ class PlotlyTA(PltTA):
 
         Use the PlotlyTA.plot() static method instead.
         """
+        # pylint: disable=import-outside-toplevel
+        import pandas as pd
+
         if isinstance(df_stock, pd.Series):
             df_stock = df_stock.to_frame()
 
@@ -216,7 +218,7 @@ class PlotlyTA(PltTA):
 
     @staticmethod
     def plot(
-        df_stock: Union[pd.DataFrame, pd.Series],
+        df_stock: Union["pd.DataFrame", "pd.Series"],
         indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
         symbol: str = "",
         candles: bool = True,

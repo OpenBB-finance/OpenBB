@@ -13,7 +13,7 @@ CLI_DIR = ROOT_DIR / "cli"
 CLI_TESTS = CLI_DIR / "tests"
 
 
-@nox.session(python=["3.9", "3.10", "3.11"])
+@nox.session(python=["3.9", "3.10", "3.11", "3.12"])
 def unit_test_platform(session):
     """Run the test suite."""
     session.install("poetry", "toml")
@@ -31,7 +31,7 @@ def unit_test_platform(session):
     )
 
 
-@nox.session(python=["3.9", "3.10", "3.11"])
+@nox.session(python=["3.9", "3.10", "3.11", "3.12"])
 def unit_test_cli(session):
     """Run the test suite."""
     session.install("poetry", "toml")

@@ -5,14 +5,13 @@
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerData,
     EquityScreenerQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import get_querystring, make_request
-from openbb_nasdaq.utils.helpers import HEADERS
 from pydantic import Field, field_validator
 
 EXCHANGE_CHOICES = ["all", "nasdaq", "nyse", "amex"]
@@ -436,7 +435,15 @@ class NasdaqEquityScreenerFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract data from the Nasdaq Equity Screener."""
-        base_url = f"https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit={query.limit if query.limit else 10000}&"
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_querystring, make_request
+        from openbb_nasdaq.utils.helpers import get_headers
+
+        HEADERS = get_headers(accept_type="text")
+        base_url = (
+            "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit="
+            + f"{query.limit if query.limit else 10000}&"
+        )
         exchange = query.exchange.split(",")
         exsubcategory = query.exsubcategory.split(",")
         marketcap = query.mktcap.split(",")
@@ -466,9 +473,9 @@ class NasdaqEquityScreenerFetcher(
         url = f"{base_url}{querystring}"
         try:
             response = make_request(url, headers=HEADERS)
-        except response.status_code != 200:
-            raise response.raise_for_status()
-        return response.json()
+            return response.json()
+        except Exception as error:
+            raise OpenBBError(f"Failed to get data from Nasdaq -> {error}") from error
 
     @staticmethod
     def transform_data(
@@ -482,7 +489,7 @@ class NasdaqEquityScreenerFetcher(
         rows = data.get("data", {}).get("table", {}).get("rows")
         if not rows:
             raise EmptyDataError("No results were found.")
-        results: NasdaqEquityScreenerData = []
+        results: List[NasdaqEquityScreenerData] = []
         for row in sorted(rows, key=lambda x: x["pctchange"], reverse=True):
             row.pop("url", None)
             results.append(NasdaqEquityScreenerData.model_validate(row))

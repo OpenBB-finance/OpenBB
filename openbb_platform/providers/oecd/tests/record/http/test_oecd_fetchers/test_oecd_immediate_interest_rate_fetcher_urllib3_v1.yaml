@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_FINMARK,4.0/GBR.M.IRSTCI.PA.....?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2024-01&startPeriod=2021-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ip4evzl+
+        9vzL745enT77/Y9fnR6Pnr06/YnRF6fHr796dTr66sXZm9/f/HF88ubsJ8/e/D6j46ff+er1my9O
+        X7wZvXl1/OL1sy9ffXH85uzLF6M3Z1+c/v7f/vLV2U8RiDff/vLpl8+//Pz3kY9fnr46+/Lp6Msn
+        r3//nzx+/tUp//b6zfGbr15rP189fzN6enpy9sXx89ejJ8ev+Z3fOPny9OTp+PVT+v+b09ePnr5+
+        Sm+dvv49nz77/Z+dvfji+NXvtbU/3rkz+vzJq9EXo7NXr9+cnI1eHo9+/59y/3sx2tvZ293e+XS0
+        M97Zf3gwoucbBfwAgO8TfHq+UcD3AHj/4JsHvP+zBfg+A354n+B+g4D3MHm7450Hnz4guN8s4AcE
+        ePfhzjfPFQcgxX0iNT3fKOCHDJigfihYgkn/U7C7Owx2Z4/gfrOAdwF4/9NvnMK7ewR4d3d/l+B+
+        g4CJJ4Dx7sP73zDGBBgY7+8+fEhwv1nA0BT3P927R3C/WcDQFJ8+JPGj5xsFDE3xcPebpjGJByaP
+        VNA3L3eYvG9eaRIpDkgFfbr3DQsewX1IcA/ufzrIbV8XMKmKvfHuwf1vXBmTqtgjjL95+SBVcW+8
+        ++DBNwz4Hrjt3nh/78E3rI4JMDB+SHxHcL9ZwPdG1HTn3jcPeJ8AE42/YcEjwPcJ8L37e9+wqiDA
+        nxLg+wcPvmHJI8APCPDDezSH9HyjgA9G98e7n5Jk0/PBgH3ADwH44P43PnmkKwD4wTfObqQrGPA3
+        LnmkKxgwgf0G4e5DVTBcRfj/AVo+JCR9DQAA
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en,en-US
+      Content-Type:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 19:13:47 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 2
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

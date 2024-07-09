@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M,1.0/USA..._Z.N._T.Y_GE15..M?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2023-06&startPeriod=2023-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ip4evzl+
+        9vzL745enT77/Y9fnR6Pvjg9fv3Vq9PRVy/O3vz+5o83r45fvH725asvjt+cfflidPz0O1+9fvPF
+        6Ys3o9env/fo+PPT0fHJm7OfPHvz+4yevTr9idGbsy9Of/+Xp6/Ovnw6+vLJ69//J4+ff3U6enL8
+        mj/lj16/OX7z1Wvt5qvnb0ZPT0/Ovjh+/vo3Tr48PXk6fv306fjNy9ePnr5++vs/f/b693z67Pc/
+        O6Zffv+vXpz+/l9s7Y537oy+en1MAE7p+9//i9HLN/j5+qsno9//p0YvRr//m9Hv8/t/frp7H39+
+        Mdrb2bu3vbM3ujd+OKLnZ7OT3R9GJ59SJwfUx89qJ/epk33q42e1k33qZJf6+Fnt5B518in1MfqN
+        k/8H2J+6svMCAAA=
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en,en-US
+      Content-Type:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 19:13:35 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 2
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

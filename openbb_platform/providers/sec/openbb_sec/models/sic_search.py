@@ -4,15 +4,9 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-import pandas as pd
-from aiohttp_client_cache import SQLiteBackend
-from aiohttp_client_cache.session import CachedSession
-from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cot_search import CotSearchQueryParams
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_sec.utils.helpers import SEC_HEADERS, sec_callback
 from pydantic import Field
 
 
@@ -40,7 +34,7 @@ class SecSicSearchFetcher(
         List[SecSicSearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the SEC endpoints."""
+    """SEC SIC Search Fetcher."""
 
     @staticmethod
     def transform_query(
@@ -56,7 +50,15 @@ class SecSicSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data from the SEC website table."""
-        data = pd.DataFrame()
+        # pylint: disable=import-outside-toplevel
+        from aiohttp_client_cache import SQLiteBackend
+        from aiohttp_client_cache.session import CachedSession
+        from openbb_core.app.utils import get_user_cache_directory
+        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_sec.utils.helpers import SEC_HEADERS, sec_callback
+        from pandas import DataFrame, read_html
+
+        data = DataFrame()
         results: List[Dict] = []
         url = (
             "https://www.sec.gov/corpfin/"
@@ -77,7 +79,7 @@ class SecSicSearchFetcher(
         else:
             response = await amake_request(url, headers=SEC_HEADERS, response_callback=sec_callback)  # type: ignore
 
-        data = pd.read_html(response)[0].astype(str)
+        data = read_html(response)[0].astype(str)
         if len(data) == 0:
             return results
         if query:

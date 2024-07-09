@@ -1,0 +1,464 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS1MO
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"5.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"5.49"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"5.51"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"5.56"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"5.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"5.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"5.48"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"5.48"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"5.49"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"5.48"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"5.48"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"5.48"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"5.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"5.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"5.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"5.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"5.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"5.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"5.45"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"5.4"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"5.42"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"5.42"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"5.42"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"5.43"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '421'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:12 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:12 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:17:58 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS3MO
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"5.45"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"5.45"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"5.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"5.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"5.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"5.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"5.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"5.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"5.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"5.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"5.51"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"5.51"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"5.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"5.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"5.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"5.51"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"5.51"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"5.51"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"5.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"5.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"5.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"5.49"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"5.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"5.49"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '402'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:12 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:12 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:18:01 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS6MO
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"5.42"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"5.43"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"5.44"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"5.44"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"5.43"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"5.43"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"5.42"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"5.42"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"5.39"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"5.38"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"5.37"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"5.36"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"5.4"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"5.4"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"5.39"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"5.38"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"5.36"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"5.36"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"5.39"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"5.37"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"5.37"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"5.36"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"5.37"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"5.37"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '417'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:13 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:13 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:18:03 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS1
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"5.14"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"5.16"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"5.2"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"5.21"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"5.21"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"5.22"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"5.19"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"5.18"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"5.14"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"5.11"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"5.08"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"5.08"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"5.17"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"5.16"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"5.17"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"5.13"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"5.07"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"5.07"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"5.11"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"5.09"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"5.1"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"5.1"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"5.1"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"5.1"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '429'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:13 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:13 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:17:55 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS2
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"4.82"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"4.86"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"4.91"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"4.93"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"4.94"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"4.96"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"4.92"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"4.89"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"4.82"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"4.77"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"4.72"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"4.72"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"4.87"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"4.87"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"4.81"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"4.75"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"4.68"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"4.67"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"4.75"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"4.69"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"4.7"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"4.7"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"4.71"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"4.65"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '434'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:14 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:14 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:17:58 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS3
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"4.61"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"4.64"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"4.71"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"4.71"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"4.75"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"4.79"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"4.74"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"4.69"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"4.62"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"4.55"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"4.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"4.49"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"4.65"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"4.62"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"4.57"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"4.48"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"4.42"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"4.41"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"4.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"4.43"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"4.45"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"4.45"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"4.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"4.45"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '435'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:14 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:14 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:18:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS5
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"4.43"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"4.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"4.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"4.53"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"4.56"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"4.63"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"4.57"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"4.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"4.42"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"4.35"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"4.31"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"4.29"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"4.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"4.48"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"4.41"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"4.32"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"4.24"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"4.22"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"4.3"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"4.24"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"4.26"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"4.26"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"4.27"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"4.25"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '446'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:15 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:15 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:18:02 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS7
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"4.42"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"4.44"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"4.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"4.49"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"4.56"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"4.63"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"4.57"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"4.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"4.41"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"4.33"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"4.29"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"4.28"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"4.45"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"4.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"4.4"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"4.31"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"4.23"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"4.2"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"4.28"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"4.22"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"4.25"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"4.25"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"4.25"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"4.23"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '447'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:15 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:15 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:18:03 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS10
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"4.41"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"4.43"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"4.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"4.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"4.54"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"4.61"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"4.55"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"4.51"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"4.41"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"4.33"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"4.29"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"4.28"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"4.43"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"4.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"4.39"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"4.31"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"4.24"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"4.2"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"4.28"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"4.22"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"4.25"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"4.25"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"4.25"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"4.23"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '444'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:16 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:16 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:17:55 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS20
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"4.65"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"4.63"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"4.67"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"4.65"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"4.74"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"4.82"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"4.76"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"4.73"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"4.63"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"4.56"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"4.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"4.51"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"4.64"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"4.68"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"4.62"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"4.56"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"4.5"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"4.46"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"4.52"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"4.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"4.49"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"4.49"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"4.48"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"4.46"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '446'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:16 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:16 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:17:59 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2024-05-21&series_id=DGS30
+  response:
+    body:
+      string: '{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","observation_start":"2024-05-21","observation_end":"9999-12-31","units":"lin","output_type":1,"file_type":"json","order_by":"observation_date","sort_order":"asc","count":26,"offset":0,"limit":100000,"observations":[{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-21","value":"4.55"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-22","value":"4.55"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-23","value":"4.58"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-24","value":"4.57"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-27","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-28","value":"4.66"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-29","value":"4.74"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-30","value":"4.69"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-05-31","value":"4.65"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-03","value":"4.55"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-04","value":"4.48"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-05","value":"4.44"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-06","value":"4.43"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-07","value":"4.55"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-10","value":"4.59"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-11","value":"4.53"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-12","value":"4.47"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-13","value":"4.4"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-14","value":"4.34"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-17","value":"4.4"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-18","value":"4.36"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-19","value":"."},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-20","value":"4.39"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-21","value":"4.39"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-24","value":"4.38"},{"realtime_start":"2024-06-27","realtime_end":"2024-06-27","date":"2024-06-25","value":"4.36"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '439'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:13:17 GMT
+      Expires:
+      - Thu, 27 Jun 2024 10:13:17 GMT
+      Last-Modified:
+      - Wed, 26 Jun 2024 20:18:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

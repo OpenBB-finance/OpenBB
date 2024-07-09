@@ -2,11 +2,9 @@
 
 # pylint: disable = unused-argument
 
-import asyncio
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from dateutil.parser import parse
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
@@ -14,11 +12,8 @@ from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
-from openbb_tradier.models.equity_quote import TradierEquityQuoteFetcher
 from openbb_tradier.utils.constants import OPTIONS_EXCHANGES, STOCK_EXCHANGES
 from pydantic import Field, field_validator, model_validator
-from pytz import timezone
 
 
 class TradierOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -101,6 +96,11 @@ class TradierOptionsChainsData(OptionsChainsData):
     @classmethod
     def validate_dates(cls, v):
         """Validate the dates."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.parser import parse
+        from openbb_core.provider.utils.helpers import safe_fromtimestamp
+        from pytz import timezone
+
         if v != 0 and v is not None and isinstance(v, int):
             v = int(v) / 1000  # milliseconds to seconds
             v = safe_fromtimestamp(v)
@@ -168,6 +168,11 @@ class TradierOptionsChainsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Tradier endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_tradier.models.equity_quote import TradierEquityQuoteFetcher  # noqa
+
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
 
@@ -257,9 +262,7 @@ class TradierOptionsChainsFetcher(
             for expiration in expirations  # type: ignore
         ]
 
-        tasks = [get_one(url, underlying_price) for url in urls]
-
-        await asyncio.gather(*tasks)
+        await asyncio.gather(*[get_one(url, underlying_price) for url in urls])
 
         if not results:
             raise EmptyDataError(f"No options chains data found for {query.symbol}.")

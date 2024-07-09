@@ -3,10 +3,8 @@
 import ast
 import json
 from datetime import time
-from typing import Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Dict, List, Optional, Union
 
-import numpy as np
-import pandas as pd
 from pydantic import ValidationError
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -14,19 +12,31 @@ from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.provider.abstract.data import Data
 
+if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
+    from numpy import ndarray
+    from pandas import DataFrame, Series
+
 
 def basemodel_to_df(
     data: Union[List[Data], Data],
     index: Optional[str] = None,
-) -> pd.DataFrame:
+) -> "DataFrame":
     """Convert list of BaseModel to a Pandas DataFrame."""
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame, to_datetime
+
     if isinstance(data, list):
-        df = pd.DataFrame([d.model_dump() for d in data])
+        df = DataFrame(
+            [d.model_dump(exclude_none=True, exclude_unset=True) for d in data]
+        )
     else:
         try:
-            df = pd.DataFrame(data.model_dump())
+            df = DataFrame(data.model_dump(exclude_none=True, exclude_unset=True))
         except ValueError:
-            df = pd.DataFrame(data.model_dump(), index=["values"])
+            df = DataFrame(
+                data.model_dump(exclude_none=True, exclude_unset=True), index=["values"]
+            )
 
     if "is_multiindex" in df.columns:
         col_names = ast.literal_eval(df.multiindex_names.unique()[0])
@@ -35,7 +45,7 @@ def basemodel_to_df(
 
     # If the date column contains dates only, convert them to a date to avoid encoding time data.
     if "date" in df.columns:
-        df["date"] = df["date"].apply(pd.to_datetime)
+        df["date"] = df["date"].apply(to_datetime)
         if all(t.time() == time(0, 0) for t in df["date"]):
             df["date"] = df["date"].apply(lambda x: x.date())
 
@@ -50,25 +60,28 @@ def basemodel_to_df(
 
 
 def df_to_basemodel(
-    df: Union[pd.DataFrame, pd.Series], index: bool = False
+    df: Union["DataFrame", "Series"], index: bool = False
 ) -> List[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
-    is_multiindex = isinstance(df.index, pd.MultiIndex)
+    # pylint: disable=import-outside-toplevel
+    from pandas import MultiIndex, Series, to_datetime
+
+    is_multiindex = isinstance(df.index, MultiIndex)
 
     if not is_multiindex and (index or df.index.name):
         df = df.reset_index()
-    if isinstance(df, pd.Series):
+    if isinstance(df, Series):
         df = df.to_frame()
 
     # Check if df has multiindex.  If so, add the index names to the df and a boolean column
-    if isinstance(df.index, pd.MultiIndex):
+    if isinstance(df.index, MultiIndex):
         df["is_multiindex"] = True
         df["multiindex_names"] = str(df.index.names)
         df = df.reset_index()
 
     # Converting to JSON will add T00:00:00.000 to all dates with no time element unless we format it as a string first.
     if "date" in df.columns:
-        df["date"] = df["date"].apply(pd.to_datetime)
+        df["date"] = df["date"].apply(to_datetime)
         if all(t.time() == time(0, 0) for t in df["date"]):
             df["date"] = df["date"].apply(lambda x: x.date().strftime("%Y-%m-%d"))
 
@@ -79,13 +92,16 @@ def df_to_basemodel(
 
 def list_to_basemodel(data_list: List) -> List[Data]:
     """Convert a list to a list of BaseModel."""
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame, Series
+
     base_models = []
     for item in data_list:
         if isinstance(item, Data) or issubclass(type(item), Data):
             base_models.append(item)
         elif isinstance(item, dict):
             base_models.append(Data(**item))
-        elif isinstance(item, (pd.DataFrame, pd.Series)):
+        elif isinstance(item, (DataFrame, Series)):
             base_models.extend(df_to_basemodel(item))
         else:
             raise ValueError(f"Unsupported list item type: {type(item)}")
@@ -102,7 +118,7 @@ def dict_to_basemodel(data_dict: Dict) -> Data:
         ) from e
 
 
-def ndarray_to_basemodel(array: np.ndarray) -> List[Data]:
+def ndarray_to_basemodel(array: "ndarray") -> List[Data]:
     """Convert a NumPy array to list of BaseModel."""
     # Assuming a 2D array where rows are records
     if array.ndim != 2:
@@ -114,20 +130,24 @@ def ndarray_to_basemodel(array: np.ndarray) -> List[Data]:
 
 def convert_to_basemodel(data) -> Union[Data, List[Data]]:
     """Dispatch function to convert different types to BaseModel."""
+    # pylint: disable=import-outside-toplevel
+    from numpy import ndarray
+    from pandas import DataFrame, Series
+
     if isinstance(data, Data) or issubclass(type(data), Data):
         return data
     if isinstance(data, list):
         return list_to_basemodel(data)
     if isinstance(data, dict):
         return dict_to_basemodel(data)
-    if isinstance(data, (pd.DataFrame, pd.Series)):
+    if isinstance(data, (DataFrame, Series)):
         return df_to_basemodel(data)
-    if isinstance(data, np.ndarray):
+    if isinstance(data, ndarray):
         return ndarray_to_basemodel(data)
     raise ValueError(f"Unsupported data type: {type(data)}")
 
 
-def get_target_column(df: pd.DataFrame, target: str) -> pd.Series:
+def get_target_column(df: "DataFrame", target: str) -> "Series":
     """Get target column from time series data."""
     if target not in df.columns:
         choices = ", ".join(df.columns)
@@ -137,9 +157,12 @@ def get_target_column(df: pd.DataFrame, target: str) -> pd.Series:
     return df[target]
 
 
-def get_target_columns(df: pd.DataFrame, target_columns: List[str]) -> pd.DataFrame:
+def get_target_columns(df: "DataFrame", target_columns: List[str]) -> "DataFrame":
     """Get target columns from time series data."""
-    df_result = pd.DataFrame()
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
+
+    df_result = DataFrame()
     for target in target_columns:
         df_result[target] = get_target_column(df, target).to_frame()
     return df_result
@@ -148,8 +171,10 @@ def get_target_columns(df: pd.DataFrame, target_columns: List[str]) -> pd.DataFr
 def get_user_cache_directory() -> str:
     """Get user cache directory."""
     file = SystemSettings().model_dump()["user_settings_path"]
+
     with open(file) as settings_file:
         contents = settings_file.read()
+
     try:
         settings = json.loads(contents)["preferences"]
     except KeyError:

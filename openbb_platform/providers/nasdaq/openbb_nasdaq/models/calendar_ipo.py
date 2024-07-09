@@ -1,20 +1,19 @@
 """Nasdaq IPO Calendar Model."""
 
-from concurrent.futures import ThreadPoolExecutor
+# pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
     datetime,
-    timedelta,
 )
 from typing import Any, Dict, List, Literal, Optional
 
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_ipo import (
     CalendarIpoData,
     CalendarIpoQueryParams,
 )
-from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
 
@@ -24,7 +23,7 @@ class NasdaqCalendarIpoQueryParams(CalendarIpoQueryParams):
     Source: https://www.nasdaq.com/market-activity/ipos
     """
 
-    status: Optional[Literal["upcoming", "priced", "filed", "withdrawn"]] = Field(
+    status: Literal["upcoming", "priced", "filed", "withdrawn"] = Field(
         default="priced",
         description="The status of the IPO.",
     )
@@ -85,7 +84,7 @@ class NasdaqCalendarIpoData(CalendarIpoData):
         check_fields=False,
     )
     @classmethod
-    def validate_date(cls, v: str):
+    def validate_date(cls, v):
         """Validate the date if available is a date object."""
         v = v.replace("N/A", "")
         return datetime.strptime(v, "%m/%d/%Y").date() if v else None
@@ -96,7 +95,7 @@ class NasdaqCalendarIpoData(CalendarIpoData):
         check_fields=False,
     )
     @classmethod
-    def validate_offer_amount(cls, v: str):
+    def validate_offer_amount(cls, v):
         """Validate the offer amount if available is a float."""
         return float(str(v).replace("$", "").replace(",", "")) if v else None
 
@@ -106,7 +105,7 @@ class NasdaqCalendarIpoData(CalendarIpoData):
         check_fields=False,
     )
     @classmethod
-    def validate_share_count(cls, v: str):
+    def validate_share_count(cls, v):
         """Validate the share count if available is an int."""
         return int(str(v).replace(",", "")) if v else None
 
@@ -124,6 +123,9 @@ class NasdaqCalendarIpoFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqCalendarIpoQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         now = datetime.today().date().strftime("%Y-%m-%d")
         transformed_params = params
 
@@ -137,12 +139,19 @@ class NasdaqCalendarIpoFetcher(
         return NasdaqCalendarIpoQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
-        query: NasdaqCalendarIpoQueryParams,  # pylint: disable=unused-argument
+    async def aextract_data(
+        query: NasdaqCalendarIpoQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Nasdaq endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+
+        IPO_HEADERS = get_headers(accept_type="json")
+
         data = []
         dates = sorted(
             list(
@@ -153,36 +162,38 @@ class NasdaqCalendarIpoFetcher(
             )
         )
 
-        def get_calendar_data(date: str) -> None:
-            response: List[Dict[Any, Any]] = [{}]
+        async def get_calendar_data(date: str):
+            """Get the calendar data for the given date."""
+            response: List = []
             url = (
                 f"https://api.nasdaq.com/api/ipo/calendar?date={date}"
                 if query.is_spo is False
                 else f"https://api.nasdaq.com/api/ipo/calendar?type=spo&date={date}"
             )
-            r = requests.get(url, headers=IPO_HEADERS, timeout=5)
-            r_json = r.json().get("data", {})
+            r_json = await amake_request(url, headers=IPO_HEADERS)
+            r_json = r_json.get("data", {})  # type: ignore
             if query.status in r_json:
                 response = (
-                    r_json["upcoming"]["upcomingTable"]["rows"]
+                    r_json["upcoming"]["upcomingTable"]["rows"]  # type: ignore
                     if query.status == "upcoming"
-                    else r_json[query.status]["rows"]
+                    else r_json[query.status]["rows"]  # type: ignore
                 )
-            if response is not None:
+            if response:
                 data.extend(response)
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(get_calendar_data, dates)
+        await asyncio.gather(*[get_calendar_data(date) for date in dates])
 
         return data
 
     @staticmethod
     def transform_data(
-        query: NasdaqCalendarIpoQueryParams,  # pylint: disable=unused-argument
+        query: NasdaqCalendarIpoQueryParams,
         data: List[Dict],
-        **kwargs: Any,  # pylint: disable=unused-argument
+        **kwargs: Any,
     ) -> List[NasdaqCalendarIpoData]:
         """Return the transformed data."""
+        if not data:
+            raise EmptyDataError("The request was returned empty.")
         if query.status == "priced":
             data = [
                 {

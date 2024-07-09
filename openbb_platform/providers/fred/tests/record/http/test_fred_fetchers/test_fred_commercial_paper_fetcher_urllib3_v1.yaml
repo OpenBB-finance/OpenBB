@@ -1,0 +1,101 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&limit=100000&observation_end=2024-02-01&observation_start=2024-01-01&series_id=RIFSPPAAAD30NB
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw0zUyUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVoCs3wgiXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK5SllFeeD
+        lRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkoqOUn5ZWnFqiZGWg
+        o5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayU9JRqdahptpGSjhLMbFM9Y3MqG2+M
+        arwZlY0HpS0k15tS2XhTVNdTO3AsUI2ntustUY2nctgbGqAaT+XAMQTlfNpFrSFauqdy2Bsipxwq
+        Z1lDM9oGvDmq8dRONmiJ3oS6WdaQtoneCDXZmBhS1/VGaMUllVMluCpGylNUjloj5ERP/brECC3d
+        UznlGKGlHCqHvTFacUlt49GKS6oGDrShhZRyADNVqo2tBQDffS8i9QkAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '385'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 25 Jun 2024 02:38:23 GMT
+      Expires:
+      - Tue, 25 Jun 2024 02:38:23 GMT
+      Last-Modified:
+      - Mon, 24 Jun 2024 17:04:07 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series?api_key=MOCK_API_KEY&file_type=json&series_id=RIFSPPAAAD30NB
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw0zUyUdJByKbmpaDLFacWZaYWFytZ
+        RVcrZYJkgzzdggMCHB0dXYwN/JyQdZNsdklmSU6qkpWSsYGuS2KlgqOjgmNxcWqJrlNicnZqioJz
+        fm5ualFyZmKOQkBiQWqRgmdeSWpRanGJQlBiSaqSjlJ+UnFqUVliSWZ+HpLHDAx1QcgITQGa3wyV
+        dJTSilILS1PzkiuVrJRcEjNzKpHF4osz8sFB5aKko1Sal1lSrGSlFJBalJyaVwITgatRVdJRKk5N
+        LM7PS8yJT0zJKi0uyQWps1Lyyy9RCIbK5FQqOILlUlOwq4eb5xfsqKSjlJNYXBJfWpCSWJIKCnlE
+        nCkYGlkZmFgZmOsamCrpKBXkF5TmJBZlllQqWRla6ijl5Zekglzrll+kkJtflKqQmZeWX5QLDigd
+        hYKc1MTiVIXi1FSFjJKSAqsY/Rj98vJyvbTUlNSixJyiVFCgpuql55fF6BelghUDVhyjn1wQo5+Y
+        lF9aopdRkqunVBtbCwD1Vq0TVgIAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '421'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 25 Jun 2024 02:38:23 GMT
+      Expires:
+      - Tue, 25 Jun 2024 02:38:23 GMT
+      Last-Modified:
+      - Mon, 24 Jun 2024 17:04:07 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

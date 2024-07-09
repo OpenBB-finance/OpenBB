@@ -6,7 +6,6 @@ from datetime import (
 )
 from typing import Optional, Union
 
-from dateutil import parser
 from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
@@ -59,8 +58,12 @@ class EquityHistoricalData(Data):
     )
 
     @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v):
         """Return formatted datetime."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil import parser
+
         if ":" in str(v):
             return parser.isoparse(str(v))
         return parser.parse(str(v)).date()

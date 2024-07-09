@@ -11,8 +11,6 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
-from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
@@ -38,7 +36,7 @@ class BiztocWorldNewsData(WorldNewsData):
         "images": "img",
     }
 
-    images: Optional[Dict[str, str]] = Field(
+    images: Optional[List[Dict[str, str]]] = Field(
         description="Images for the article.", alias="images", default=None
     )
     tags: Optional[List[str]] = Field(description="Tags for the article.", default=None)
@@ -50,6 +48,9 @@ class BiztocWorldNewsData(WorldNewsData):
     @classmethod
     def date_validate(cls, v):
         """Return formatted datetime."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         return to_datetime(v).strftime("%Y-%m-%d %H:%M:%S")
 
     @field_validator("title")
@@ -76,11 +77,14 @@ class BiztocWorldNewsFetcher(
 
     @staticmethod
     def extract_data(
-        query: BiztocWorldNewsQueryParams,  # pylint: disable=unused-argument
+        query: BiztocWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the Biztoc endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import make_request
+
         api_key = credentials.get("biztoc_api_key") if credentials else ""
         headers = {
             "X-RapidAPI-Key": f"{api_key}",
@@ -138,5 +142,8 @@ class BiztocWorldNewsFetcher(
             item.pop("body_preview", None)
             item.pop("site", None)
             item.pop("domain", None)
+            images = item.pop("img", [])
+            if images:
+                item["images"] = images if isinstance(images, list) else [images]
             results.append(BiztocWorldNewsData.model_validate(item))
         return results

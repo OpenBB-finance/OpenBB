@@ -1,29 +1,34 @@
 """Price historical charting utility."""
 
-from typing import Any, Dict, Tuple
+# pylint: disable=too-many-branches, too-many-locals, unused-argument
 
-import pandas as pd
-from openbb_core.app.utils import basemodel_to_df
 
-from openbb_charting.charts.helpers import (
-    calculate_returns,
-    heikin_ashi,
-    should_share_axis,
-    z_score_standardization,
-)
-from openbb_charting.core.chart_style import ChartStyle
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+from typing import TYPE_CHECKING, Any, Dict, Tuple
+
 from openbb_charting.styles.colors import LARGE_CYCLER
 
-# pylint: disable=too-many-branches
+if TYPE_CHECKING:
+    from openbb_charting.core.openbb_figure import OpenBBFigure
 
 
 def price_historical(  # noqa: PLR0912
     **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Equity Price Historical Chart."""
-    if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame  # noqa
+    from openbb_core.app.utils import basemodel_to_df  # noqa
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
+    from openbb_charting.core.plotly_ta.ta_class import PlotlyTA  # noqa
+    from openbb_charting.core.chart_style import ChartStyle  # noqa
+    from openbb_charting.charts.helpers import (  # noqa
+        calculate_returns,
+        heikin_ashi,
+        should_share_axis,
+        z_score_standardization,
+    )
+
+    if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
         data = kwargs["data"]
     elif "data" in kwargs and isinstance(kwargs["data"], list):
         data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))  # type: ignore

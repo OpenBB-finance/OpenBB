@@ -15,7 +15,7 @@ from typing import (
     Union,
 )
 
-from fastapi import Query
+from fastapi import Body, Query
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -289,6 +289,23 @@ class ProviderInterface(metaclass=SingletonMeta):
                 default = ...
         else:
             default = field.default
+
+        if (
+            hasattr(annotation, "__name__")
+            and annotation.__name__ in ["Dict", "dict", "Data"]  # type: ignore
+            or field.kw_only is True
+        ):
+            return DataclassField(
+                new_name,
+                annotation,
+                Body(
+                    default=default,
+                    title=provider_name,
+                    description=description,
+                    alias=field.alias or None,
+                    json_schema_extra=getattr(field, "json_schema_extra", None),
+                ),
+            )
 
         if query:
             # We need to use query if we want the field description to show
@@ -623,7 +640,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                 setattr(data, "_provider", provider)
             meta = Discriminator(get_provider) if len(args) > 1 else None
             inner = SerializeAsAny[Annotated[Union[tuple(args)], meta]]  # type: ignore[misc,valid-type]
-            full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type]
+            full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type,misc]
             annotations[name] = create_model(
                 f"OBBject_{name}",
                 __base__=OBBject[full],  # type: ignore[valid-type]

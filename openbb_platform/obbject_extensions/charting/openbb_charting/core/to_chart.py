@@ -1,23 +1,22 @@
 """Module containing the to_chart function."""
 
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple, Union
 
-import pandas as pd
-
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
-from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+if TYPE_CHECKING:
+    from openbb_charting.core.plotly_ta.data_classes import ChartIndicators  # noqa
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
+    from pandas import DataFrame, Series  # noqa
 
 
 def to_chart(
-    data: Union[pd.DataFrame, pd.Series],
-    indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
+    data: Union["DataFrame", "Series"],
+    indicators: Optional[Union["ChartIndicators", Dict[str, Dict[str, Any]]]] = None,
     symbol: str = "",
     candles: bool = True,
     volume: bool = True,
     prepost: bool = False,
     volume_ticks_x: int = 7,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Return the plotly json representation of the chart.
 
     This function is used so it can be called at the module level and used out of the box,
@@ -26,7 +25,7 @@ def to_chart(
 
     Parameters
     ----------
-    data : Union[pd.DataFrame, pd.Series]
+    data : Union[DataFrame, Series]
         Data to be plotted.
     indicators : Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]], optional
         Indicators to be plotted, by default None
@@ -46,6 +45,9 @@ def to_chart(
     Tuple[OpenBBFigure, Dict[str, Any]]
         Tuple containing the OpenBBFigure and the plotly json representation of the chart.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+
     try:
         ta = PlotlyTA()
         fig = ta.plot(

@@ -2,23 +2,16 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
 
-from aiohttp_client_cache import SQLiteBackend
-from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.yield_curve import (
     YieldCurveData,
     YieldCurveQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_ecb.utils.yield_curve_series import MATURITIES, get_yield_curve_ids
-from pandas import Categorical, DataFrame, DatetimeIndex
 from pydantic import Field, field_validator
 
 
@@ -73,6 +66,17 @@ class ECBYieldCurveFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from aiohttp_client_cache import SQLiteBackend  # noqa
+        from aiohttp_client_cache.session import CachedSession  # noqa
+        from openbb_core.app.utils import get_user_cache_directory  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_ecb.utils.yield_curve_series import (
+            MATURITIES,
+            get_yield_curve_ids,
+        )  # noqa
+
         results: List = []
 
         IDS = get_yield_curve_ids(
@@ -124,6 +128,10 @@ class ECBYieldCurveFetcher(
         **kwargs: Any,
     ) -> List[ECBYieldCurveData]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_ecb.utils.yield_curve_series import MATURITIES  # noqa
+        from pandas import Categorical, DataFrame, DatetimeIndex  # noqa
+
         if not data:
             raise EmptyDataError("The request was returned empty.")
         dates = (

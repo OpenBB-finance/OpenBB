@@ -1,19 +1,23 @@
 """Publish the OpenBB Platform to PyPi."""
 
 import argparse
-import subprocess
+import logging
 import sys
+from functools import partial
 from pathlib import Path
+from subprocess import PIPE, run
+from typing import Literal
 
-PLATFORM_PATH = Path(__file__).parent.parent.parent.parent.resolve() / "openbb_platform"
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+console = logging.StreamHandler()
+logger.addHandler(console)
+formatter = logging.Formatter("[%(levelname)s] %(message)s")
+console.setFormatter(formatter)
 
-CORE_PACKAGES = ["core"]
-EXTENSION_PACKAGES = ["extensions", "providers", "obbject_extensions"]
-
-CMD = [sys.executable, "-m", "poetry"]
-EXTENSION_DEPENDENCIES_UPDATE_CMD = ["add", "openbb-core=latest", "--lock"]
-VERSION_BUMP_CMD = ["version", "patch"]
-PUBLISH_CMD = ["publish", "--build"]
+DIR_PLATFORM = Path(__file__).parent.parent.parent.parent.resolve() / "openbb_platform"
+DIR_CORE = ["core"]
+DIR_EXTENSIONS = ["extensions", "providers", "obbject_extensions"]
 
 
 def parse_args():
@@ -27,8 +31,15 @@ def parse_args():
         "-e",
         "--extensions",
         action="store_true",
-        help="Publish extension packages.",
+        help="Publish extension packages, such as openbb-equity or openbb-fmp.",
         dest="extensions",
+    )
+    parser.add_argument(
+        "-o",
+        "--openbb",
+        action="store_true",
+        help="Publish openbb package.",
+        dest="openbb",
     )
     parser.add_argument(
         "--dry-run",
@@ -37,74 +48,191 @@ def parse_args():
         default=False,
         dest="dry_run",
     )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Run the tool in verbose mode.",
+        default=False,
+        dest="verbose",
+    )
+    parser.add_argument(
+        "-y",
+        "--yes",
+        action="store_true",
+        help="Answer input questions.",
+        default=False,
+        dest="yes",
+    )
+    parser.add_argument(
+        "--semver",
+        help="Semantic version.",
+        default="patch",
+        choices=["patch", "minor", "major"],
+        dest="semver",
+    )
     return parser.parse_args()
 
 
-def update_extension_dependencies(path: Path):
-    """Update the extension dependencies"""
-    subprocess.run(
-        CMD + EXTENSION_DEPENDENCIES_UPDATE_CMD,  # noqa: S603
-        cwd=path.parent,
+def publish(
+    dry_run: bool = False,
+    core: bool = False,
+    extensions: bool = False,
+    openbb: bool = False,
+    verbose: bool = False,
+    semver: Literal["patch", "minor", "major"] = "patch",
+):
+    """Publish the Platform to PyPi with optional core or extensions."""
+    package_directories = []
+    if core:
+        package_directories.extend(DIR_CORE)
+    if extensions:
+        package_directories.extend(DIR_EXTENSIONS)
+
+    partial_run = partial(
+        run,
         check=True,
+        stdout=None if verbose else PIPE,
+        stderr=None if verbose else PIPE,
     )
 
-
-def bump_version(path: Path):
-    """Bump the version of the package"""
-    print(f"\n> {path.parent.stem}")  # noqa: T201
-    subprocess.run(CMD + VERSION_BUMP_CMD, cwd=path.parent, check=True)  # noqa: S603
-
-
-def publish(dry_run: bool = False, core: bool = False, extensions: bool = False):
-    """Publish the Platform to PyPi with optional core or extensions."""
-    package_paths = []
-    if core:
-        print("Working with core packages...")  # noqa: T201
-        package_paths.extend(CORE_PACKAGES)
-    if extensions:
-        print("Working with extensions...")  # noqa: T201
-        package_paths.extend(EXTENSION_PACKAGES)
-
-    for sub_path in package_paths:
-        is_extension = sub_path in EXTENSION_PACKAGES
-
-        for path in sorted(PLATFORM_PATH.rglob(f"{sub_path}/**/pyproject.toml")):
+    for _dir in package_directories:
+        is_extension = _dir in DIR_EXTENSIONS
+        paths = [
+            p
+            for p in sorted(DIR_PLATFORM.rglob(f"{_dir}/**/pyproject.toml"))
+            if "devtools" not in str(p)
+        ]
+        total = len(paths)
+        logger.info("~~~ /%s ~~~", _dir)
+        for i, path in enumerate(paths):
+            logger.info(
+                "🚀 (%s/%s) Publishing openbb-%s...",
+                i + 1,
+                total,
+                path.parent.stem.replace("_", "-"),
+            )
             try:
-                # Update dependencies
-                if is_extension and "devtools" not in str(path):
-                    update_extension_dependencies(path)
-                # Bump version
-                bump_version(path)
-                # Publish (if not dry run)
-                if not dry_run:
-                    subprocess.run(
-                        CMD + PUBLISH_CMD,  # noqa: S603
+                # Update openbb-core to latest in each pyproject.toml
+                if is_extension:
+                    partial_run(
+                        [
+                            sys.executable,
+                            "-m",
+                            "poetry",
+                            "add",
+                            "openbb-core=latest",
+                            "--lock",
+                        ],
                         cwd=path.parent,
-                        check=True,  # noqa: S603
                     )
+                # Bump pyproject.toml version
+                partial_run(
+                    [sys.executable, "-m", "poetry", "version", semver],
+                    cwd=path.parent,
+                )
+                # Publish (if not dry running)
+                if not dry_run:
+                    partial_run(
+                        [
+                            sys.executable,
+                            "-m",
+                            "poetry",
+                            "publish",
+                            "--build",
+                        ],
+                        cwd=path.parent,
+                    )
+                logger.info("✅ Success")
             except Exception as e:
-                print(f"Error publishing {path.parent}:\n{e}")  # noqa: T201
+                logger.error("❌ Failed to publish %s:\n\n%s", path.parent.stem, e)
+
+    if openbb:
+        STEPS = 7
+        logger.info("~~~ /openbb ~~~")
+        logger.info("🧩 (1/%s) Installing poetry-plugin-up...", STEPS)
+        partial_run(
+            ["pip", "install", "poetry-plugin-up"],
+            cwd=DIR_PLATFORM,
+        )
+        logger.info("⏫ (2/%s) Updating openbb pyproject.toml...", STEPS)
+        partial_run(
+            [sys.executable, "-m", "poetry", "up", "--latest"],
+            cwd=DIR_PLATFORM,
+        )
+        logger.info("🔒 (3/%s) Writing openbb poetry.lock...", STEPS)
+        partial_run(
+            [sys.executable, "-m", "poetry", "up", "--latest"],
+            cwd=DIR_PLATFORM,
+        )
+        logger.info("📍 (4/%s) Installing openbb from /%s...", STEPS, DIR_PLATFORM.stem)
+        partial_run(
+            ["pip", "install", "-U", "--editable", "."],
+            cwd=DIR_PLATFORM,
+        )
+        logger.info("🚧 (5/%s) Building python interface...", STEPS)
+        result = run(
+            [sys.executable, "-c", "import openbb; openbb.build()"],  # noqa: S603
+            cwd=DIR_PLATFORM,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if verbose:
+            logger.info("Captured result -> %s", result)
+        if result.stderr:
+            logger.error("❌ stderr is not empty!")
+            raise Exception(result.stderr)
+        logger.info("🧪 (6/%s) Unit testing...", STEPS)
+        partial_run(
+            ["pytest", "tests", "-m", "not integration"],
+            cwd=DIR_PLATFORM,
+        )
+        logger.info("🚭 (7/%s) Smoke testing...", STEPS)
+        # TODO: Improve smoke test coverage here
+        result = run(  # noqa: S603
+            [  # noqa: S603
+                sys.executable,
+                "-c",
+                "from openbb import obb; obb.equity.price.historical('AAPL', provider='yfinance')",
+            ],
+            cwd=DIR_PLATFORM,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if verbose:
+            logger.info("Captured result -> %s", result)
+        if result.stderr:
+            logger.error("❌ stderr is not empty!")
+            raise Exception(result.stderr)
+        logger.info("👍 Great success! 👍")
+        logger.info(
+            "Confirm any files changed and run `poetry publish --build` from /openbb_platform"
+        )
 
 
 if __name__ == "__main__":
-    msg = """
-    You are about to publish a new version of OpenBB Platform to PyPI.
-    Please ensure you've read the "PUBLISH.md" file.
-    Also, please double check with `poetry config --list` if you're publishing to PyPI or TestPyPI.
-    """
+    msg = (
+        "\nYou are about to publish a new version of OpenBB Platform to PyPI."
+        + "\n\nPlease ensure you've read the PUBLISH.md file and double check with "
+        + "`poetry config --list` if you're publishing to PyPI or TestPyPI."
+    )
     args = parse_args()
-
-    res = input(f"{msg}\n\nDo you want to continue? [y/N] ")
-
+    if not args.dry_run:
+        msg += "\n\n🛑 You are NOT using the --dry-run flag!"
+    res = "y" if args.yes else input(f"{msg}\n\nDo you want to continue? [y/N] ")
+    print("")  # noqa: T201
     if res.lower() == "y":
-        publish(dry_run=args.dry_run, core=args.core, extensions=args.extensions)
-
-        openbb_package_msg = """
-        In order to publish the `openbb` package you need to manually update the
-        versions in the `pyproject.toml` file. Follow the steps below:
-        1. Bump version: `poetry version prerelease --next-phase`
-        2. Re-build the static assets that are bundled with the package
-        3. Publish: `poetry publish --build`
-        """
-
-        print(openbb_package_msg)  # noqa: T201
+        logger.info("Process started. Press Ctrl+C to abort.")
+        try:
+            publish(
+                dry_run=args.dry_run,
+                core=args.core,
+                extensions=args.extensions,
+                openbb=args.openbb,
+                verbose=args.verbose,
+                semver=args.semver,
+            )
+        except KeyboardInterrupt:
+            sys.exit(1)

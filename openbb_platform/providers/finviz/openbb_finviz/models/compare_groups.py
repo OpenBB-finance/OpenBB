@@ -4,9 +4,6 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-from finvizfinance.group.overview import Overview
-from finvizfinance.group.performance import Performance
-from finvizfinance.group.valuation import Valuation
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.compare_groups import (
@@ -15,8 +12,9 @@ from openbb_core.provider.standard_models.compare_groups import (
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_finviz.utils.definitions import GROUPS, GROUPS_DICT, METRICS
-from pandas import DataFrame
 from pydantic import Field, field_validator
+
+GROUPS_CHOICES = sorted(list(GROUPS_DICT))
 
 
 class FinvizCompareGroupsQueryParams(CompareGroupsQueryParams):
@@ -27,11 +25,13 @@ class FinvizCompareGroupsQueryParams(CompareGroupsQueryParams):
         description="US-listed stocks only."
         + " When a sector is selected, it is broken down by industry."
         + " The default is sector.",
+        json_schema_extra={"choices": GROUPS_CHOICES},  # type: ignore
     )
     metric: Union[METRICS, None] = Field(
         default="performance",
         description="Select from: performance, valuation, overview."
         + " The default is performance.",
+        json_schema_extra={"choices": ["performance", "valuation", "overview"]},
     )
 
 
@@ -224,7 +224,11 @@ class FinvizCompareGroupsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
-        results = []
+        # pylint: disable=import-outside-toplevel
+        from finvizfinance.group import Overview, Performance, Valuation
+        from pandas import DataFrame
+
+        results: List = []
         data = DataFrame()
         if query.metric == "performance":
             data = Performance().screener_view(

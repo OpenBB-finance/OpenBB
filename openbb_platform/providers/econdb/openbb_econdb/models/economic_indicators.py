@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
@@ -14,12 +14,7 @@ from openbb_core.provider.standard_models.economic_indicators import (
     EconomicIndicatorsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_econdb.utils import helpers
-from openbb_econdb.utils.main_indicators import get_main_indicators
-from pandas import DataFrame, concat
 from pydantic import Field, field_validator
-
-INDICATORS = list(helpers.INDICATORS_DESCRIPTIONS)
 
 
 class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
@@ -62,6 +57,9 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     @classmethod
     def validate_countries(cls, v):
         """Validate each country and convert to a two-letter ISO code."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_econdb.utils import helpers
+
         if v:
             country = v if isinstance(v, list) else v.split(",")
             for c in country.copy():
@@ -96,6 +94,10 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     @classmethod
     def validate_symbols(cls, v):
         """Validate each symbol to check if it is a valid indicator."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_econdb.utils import helpers
+
+        INDICATORS = list(helpers.INDICATORS_DESCRIPTIONS)
         if not v:
             v = "main"
         symbols = v if isinstance(v, list) else v.split(",")
@@ -143,6 +145,9 @@ class EconDbEconomicIndicatorsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> EconDbEconomicIndicatorsQueryParams:
         """Transform the query parameters."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         new_params = params.copy()
         if new_params.get("start_date") is None:
             new_params["start_date"] = (
@@ -168,8 +173,13 @@ class EconDbEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_econdb.utils import helpers
+        from openbb_econdb.utils.main_indicators import get_main_indicators
+
         if query.symbol.upper() == "MAIN":
             country = query.country.upper() if query.country else "US"
+
             return await get_main_indicators(
                 country,
                 query.start_date.strftime("%Y-%m-%d"),  # type: ignore
@@ -178,6 +188,7 @@ class EconDbEconomicIndicatorsFetcher(
                 query.transform,
                 query.use_cache,
             )
+
         token = credentials.get("econdb_api_key", "")  # type: ignore
         # Attempt to create a temporary token if one is not supplied.
         if not token:
@@ -333,6 +344,10 @@ class EconDbEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[EconDbEconomicIndicatorsData]]:
         """Transform the data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_econdb.utils import helpers
+        from pandas import DataFrame, concat
+
         if query.symbol.upper() == "MAIN":
             return AnnotatedResult(
                 result=[

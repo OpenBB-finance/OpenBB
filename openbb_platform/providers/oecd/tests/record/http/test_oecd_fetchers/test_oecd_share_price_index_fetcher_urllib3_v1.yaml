@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_FINMARK,4.0/GBR.M.SHARE......?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2024-04&startPeriod=2020-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ip4evzl+
+        9vzL745enT77/Y9fnR6Pnr06/YnRF6fHr796dTr66sXZm9/f/HF88ubsJ8/e/D6j46ff+er1my9O
+        X7wZvXl1/OL1sy9ffXH85uzLF6M3Z1+c/v7f/vLV2U8RiDff/vLpl8+//Pz3kY9fnr46+/Lp6Msn
+        r3//nzx+/tUp//b6zfGbr15rP189fzN6enpy9sXx89ejJ8ev+Z3fOPny9OTp+PVT+v+b09ePnr5+
+        Sm+dvv49nz77/Z+dvfji+NXvtbU/3rkz+vzJq9EXo9ffPiZUz37v0e//U+5/L0Z7O3u72zsHo92d
+        g/He/d39ET3fJOSHBPnBePfe7h4B/uYg72zv3BsdPBjvfPpg5z4B/kYh7zPke/cIeXq+Scj3Rw93
+        xgT43gEB/uYg3+MZ3N0bH3z64JudQYJMM7i7Pz54cPCAAH9zkIkaD0cHD8cPP72/S3C/ScC7O6OD
+        g/GDvYOHXx/lAci7o4f743v37+/dI5S/UZz3Rg8Pxgd7n376zU4gieAuieDueH+H6E3PNwmZcH5I
+        OD88+JQAf6OQ7zHOBzvfvELaJ8j7xBy73yxvEOT7BPnT8f6nD79xVUczSCJ4/+H9b5rraAZ3d3fG
+        JCjfNJ1JBmFSPt198E3TmWQQOO/ef/jN6g2CLNQgK/jp6JuEvCczeG/86f1Pv1nFT5CB8/5479N7
+        3yzXEWSSQaLGw92Db5brCDLJIOH86f69b5Y3CDLJIJnBhw8//WZ1HUH+lCDvjD/9htmZAD8gQXk4
+        Js74xskMn+DeeG/3029WPRNk8gkI552dg2+a6Vht3B8/2P2m54+1xi7p/Xu3I8Z7QIYE3hvf2/uG
+        9RG5XsD5Acn2N4syASaU93bGO7sH36w6IshQGvfHB7sH36xBIchQGgckJ984MaAzPh0/3D/4ZgMJ
+        ggydQXb74BsWbYJMSoN47uHug292Askj+BQe7qcPd+59s9QgyA9GD++RcT34hmeQIB+MHu6N6Tea
+        Snq+EciAfI/VEdF5f//Tb1q2WR9RwHb/3jfNG6yP7pMfevDN6tB90Uf3x/d2vuEZJMiC88E9Igs9
+        3yRkKKQH44f373+zkkKQSSGREn34KVlDer4xyBRJkN6gpMmne7vfLG8QZNIbFKOQCOoM/j89182d
+        5xIAAA==
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en,en-US
+      Content-Type:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 19:13:42 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 2
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

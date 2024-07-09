@@ -82,7 +82,7 @@ def test_fredcpi_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fred_us_yield_curve_fetcher(credentials=test_credentials):
     """Test FREDUSYieldCurveFetcher."""
-    params = {"date": datetime.date(2023, 12, 1)}
+    params = {"date": datetime.date(2024, 6, 20)}
 
     fetcher = FREDUSYieldCurveFetcher()
     result = fetcher.test(params, credentials)
@@ -334,7 +334,7 @@ def test_fred_regional_fetcher(credentials=test_credentials):
         "frequency": "q",
         "units": "Index 1980:Q1=100",
         "region_type": "state",
-        "season": "NSA",
+        "season": "nsa",
     }
 
     fetcher = FredRegionalDataFetcher()

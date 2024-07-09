@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -12,8 +12,6 @@ from openbb_core.provider.standard_models.currency_snapshots import (
     CurrencySnapshotsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
-from pandas import DataFrame, concat
 from pydantic import Field
 
 
@@ -112,6 +110,9 @@ class PolygonCurrencySnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import amake_request
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
         url = f"https://api.polygon.io/v2/snapshot/locale/global/markets/forex/tickers?apiKey={api_key}"
         results = await amake_request(url, **kwargs)
@@ -126,6 +127,11 @@ class PolygonCurrencySnapshotsFetcher(
         **kwargs: Any,
     ) -> List[PolygonCurrencySnapshotsData]:
         """Transform the data."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timezone  # noqa
+        from openbb_core.provider.utils.helpers import safe_fromtimestamp  # noqa
+        from pandas import DataFrame, concat  # noqa
+
         if not data:
             raise EmptyDataError("No data returned.")
         counter_currencies = (
@@ -177,7 +183,9 @@ class PolygonCurrencySnapshotsFetcher(
         for item in filtered_data:
             new_item = {}
             new_item["base_currency"] = item.get("base_currency")
-            new_item["counter_currency"] = item.get("counter_currency")
+            new_item["counter_currency"] = item.get("counter_currency") or item.get(
+                "index"
+            )
             new_item["change"] = item.get("todaysChange", None)
             change_percent = item.get("todaysChangePerc", None)
             new_item["change_percent"] = (

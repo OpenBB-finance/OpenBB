@@ -1,0 +1,206 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://markets.newyorkfed.org/api/soma/asofdates/list.json
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Content-Disposition
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Disposition
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '5006'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:22:35 GMT
+      Pragma:
+      - no-cache
+      Vary:
+      - Accept-Encoding
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains
+      x-amz-apigw-id:
+      - aA3xpHqSiYcFjnQ=
+      x-amzn-requestid:
+      - fcdac34d-710d-4be2-af46-792d9ed26c8e
+      x-amzn-trace-id:
+      - Root=1-667d0670-18c72df81c639990d129e0f5;Parent=27525fc962873525;Sampled=0;lineage=e7c0e2ee:0
+      x-frame-options:
+      - SAMEORIGIN
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://markets.newyorkfed.org/api/soma/agency/get/agency%20debts/asof/2019-01-02.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKs7PTVSyUqhWUMrIz0nJzEsvVrJSiAbxE4v901wSS1KVrBSUjAwMLXUNDHUN
+        jJR0FJSSS4szC0DCxobG5q6Ozo6mINHcxJLSosySSlQ9xrpG5iDZzOLi0tQikCY3Dx9fZ5BQcUFR
+        amIKSAjES84vLcjPA/GM9czBBhYkFoUl5pSCHWBmZAAGIJWZeWk5iSWZ+XnO+bkFqXnFYDZII0iy
+        ILUoOTWvxL+0pLgkMQ/kIZhMckZiXnqqW1F+bkBRZn5ReGpqNkjKAKQLTS4yNRHsVLBccWoy2F8h
+        lQVgpzimp+YlVyq4pCaVFCsp1OoQH1amlr6uocYg+zDDyshS18BU1xDscaSw8vN1BKnHFVRmekam
+        IHnkoDKxMAMHFdjxQzms3LzAKQczrIwNQGmR1LAy1zPEDCwzM9NhElgBOBIWKLBIT1jmephhZWQx
+        TMLK3Rt3WBkakpEJzTADy9hiOJRYJo4mjo7gMh9LLjTUNTDGDCxCpbsZltLd2HA4FFkmjibeEYag
+        4hhLYBnpGpiTE1iYKcvI0HiwFlmAKcTW1gIANAgYDFMIAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Content-Disposition
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Disposition
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '434'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:22:36 GMT
+      Pragma:
+      - no-cache
+      Vary:
+      - Accept-Encoding
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains
+      x-amz-apigw-id:
+      - aBaI-FAMCYcF_nw=
+      x-amzn-requestid:
+      - 8ffcfa84-16ba-46e5-9d09-42e8da2acd00
+      x-amzn-trace-id:
+      - Root=1-667d3d6c-3442d57f02ec8c1424ab574d;Parent=54f3710835abe975;Sampled=0;lineage=e7c0e2ee:0
+      x-frame-options:
+      - SAMEORIGIN
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

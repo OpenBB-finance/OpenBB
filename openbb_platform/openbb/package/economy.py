@@ -29,6 +29,7 @@ class ROUTER_economy(Container):
     indicators
     long_term_interest_rate
     money_measures
+    primary_dealer_positioning
     retail_prices
     risk_premium
     share_price_index
@@ -866,51 +867,73 @@ class ROUTER_economy(Container):
             When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)
         region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
             The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)
-        season : Optional[Literal['SA', 'NSA', 'SSA']]
+        season : Literal['sa', 'nsa', 'ssa']
             The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)
         units : Optional[str]
             The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
-        frequency : Optional[Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+            Frequency aggregation to convert high frequency data to lower frequency.
 
-                Frequency aggregation to convert high frequency data to lower frequency.
-                Parameter is only valid when `is_series_group` is True.
-                    a = Annual
-                    sa= Semiannual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    d = Daily
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
+            None = No change
+
+            a = Annual
+
+            q = Quarterly
+
+            m = Monthly
+
+            w = Weekly
+
+            d = Daily
+
+            wef = Weekly, Ending Friday
+
+            weth = Weekly, Ending Thursday
+
+            wew = Weekly, Ending Wednesday
+
+            wetu = Weekly, Ending Tuesday
+
+            wem = Weekly, Ending Monday
+
+            wesu = Weekly, Ending Sunday
+
+            wesa = Weekly, Ending Saturday
+
+            bwew = Biweekly, Ending Wednesday
+
+            bwem = Biweekly, Ending Monday
                  (provider: fred)
-        aggregation_method : Literal['avg', 'sum', 'eop']
-
-                A key that indicates the aggregation method used for frequency aggregation.
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+            A key that indicates the aggregation method used for frequency aggregation.
                 This parameter has no affect if the frequency parameter is not set.
-                Only valid when `is_series_group` is True.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
-        transform : Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
 
-                Transformation type. Only valid when `is_series_group` is True.
-                    lin = Levels (No transformation)
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
+            avg = Average
+
+            sum = Sum
+
+            eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+            Transformation type
+
+            None = No transformation
+
+            chg = Change
+
+            ch1 = Change from Year Ago
+
+            pch = Percent Change
+
+            pc1 = Percent Change from Year Ago
+
+            pca = Compounded Annual Rate of Change
+
+            cch = Continuously Compounded Rate of Change
+
+            cca = Continuously Compounded Annual Rate of Change
+
+            log = Natural Log
                  (provider: fred)
 
         Returns
@@ -1139,44 +1162,68 @@ class ROUTER_economy(Container):
         provider : Optional[Literal['fred', 'intrinio']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, intrinio.
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+            Frequency aggregation to convert high frequency data to lower frequency.
 
-                Frequency aggregation to convert high frequency data to lower frequency.
-                    None = No change
-                    a = Annual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    d = Daily
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
+            None = No change
+
+            a = Annual
+
+            q = Quarterly
+
+            m = Monthly
+
+            w = Weekly
+
+            d = Daily
+
+            wef = Weekly, Ending Friday
+
+            weth = Weekly, Ending Thursday
+
+            wew = Weekly, Ending Wednesday
+
+            wetu = Weekly, Ending Tuesday
+
+            wem = Weekly, Ending Monday
+
+            wesu = Weekly, Ending Sunday
+
+            wesa = Weekly, Ending Saturday
+
+            bwew = Biweekly, Ending Wednesday
+
+            bwem = Biweekly, Ending Monday
                  (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
-
-                A key that indicates the aggregation method used for frequency aggregation.
+            A key that indicates the aggregation method used for frequency aggregation.
                 This parameter has no affect if the frequency parameter is not set.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
+
+            avg = Average
+
+            sum = Sum
+
+            eop = End of Period
                  (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+            Transformation type
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
+            None = No transformation
+
+            chg = Change
+
+            ch1 = Change from Year Ago
+
+            pch = Percent Change
+
+            pc1 = Percent Change from Year Ago
+
+            pca = Compounded Annual Rate of Change
+
+            cch = Continuously Compounded Rate of Change
+
+            cca = Continuously Compounded Annual Rate of Change
+
+            log = Natural Log
                  (provider: fred)
         all_pages : Optional[bool]
             Returns all pages of data from the API call at once. (provider: intrinio)
@@ -1761,6 +1808,91 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def primary_dealer_positioning(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get Primary dealer positioning statistics.
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['federal_reserve']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
+        category : Literal['treasuries', 'bills', 'coupons', 'notes', 'tips', 'mbs', 'cmbs', 'municipal', 'corporate', 'commercial_paper', 'corporate_ig', 'corporate_junk', 'abs']
+            The category of asset to return, defaults to 'treasuries'. (provider: federal_reserve)
+
+        Returns
+        -------
+        OBBject
+            results : List[PrimaryDealerPositioning]
+                Serializable results.
+            provider : Optional[Literal['federal_reserve']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        PrimaryDealerPositioning
+        ------------------------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        value : Optional[int]
+            The reported value of the net position (long - short), in millions of $USD. (provider: federal_reserve)
+        name : Optional[str]
+            Short name for the series. (provider: federal_reserve)
+        title : Optional[str]
+            Title of the series. (provider: federal_reserve)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.primary_dealer_positioning(provider='federal_reserve')
+        >>> obb.economy.primary_dealer_positioning(category='abs', provider='federal_reserve')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/primary_dealer_positioning",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.primary_dealer_positioning",
+                        ("federal_reserve",),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
     def retail_prices(
         self,
         item: Annotated[
@@ -2187,7 +2319,7 @@ class ROUTER_economy(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
         sex : Literal['total', 'male', 'female']
             Sex to get unemployment for. (provider: oecd)
-        age : Literal['total', '15-24', '25-54', '55-64', '15-64', '15-74']
+        age : Literal['total', '15-24', '25+']
             Age group to get unemployment for. Total indicates 15 years or over (provider: oecd)
         seasonal_adjustment : bool
             Whether to get seasonally adjusted unemployment. Defaults to False. (provider: oecd)

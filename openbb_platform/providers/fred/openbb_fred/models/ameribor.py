@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.ameribor import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import Categorical, DataFrame
 from pydantic import Field
 
 MATURITY_TO_FRED_ID = {
@@ -192,6 +191,9 @@ class FredAmeriborFetcher(Fetcher[FredAmeriborQueryParams, List[FredAmeriborData
         **kwargs: Any,
     ) -> AnnotatedResult[List[FredAmeriborData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame
+
         if not data["data"]:
             raise EmptyDataError("The request was returned with no data.")
         metadata = data.get("metadata", {})

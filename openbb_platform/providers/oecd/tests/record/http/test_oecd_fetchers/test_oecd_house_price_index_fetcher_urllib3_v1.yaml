@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_RHPI_TARGET@DF_RHPI_TARGET,1.0/COU.GBR.Q.RHPI.IX....?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2024-04&startPeriod=2020-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ip4evzl+
+        9vzL745enT77/Y9fnR7//m9+n5en9q/Rs1enPzH64vT49VevTkdfvTh78/ubP46ffuer12++OH3x
+        ZvTm1fGL18++fPXF8ZuzL1+MfvLsxZvjz09HT797+vz52YvPX4/enH1x+vu/PH119uXT0ZdPXv/+
+        P3n8/KtT/u31m+M3X71WyF89fzN6enpy9sXx89ejJ8ev+Z3fOPny9OTp+PXTp+M3L18/evr66e//
+        6tsvz37/N8evPj9983s+feb/ubU73rkzOvnyq9HnT16NfmKEr0Znv/foxej3/6nR7/8G/9vb2dvZ
+        /ol7o929nfHB7t6Inp+FLva2f2J3tHvv0/H+PergZ6MHGsQ+DWJ/vLd/QD38bHSxy4PY+3S8e3Cf
+        evhZ6mKPujggOv1sEYq6oNm+tzN+sP+zOAqai3v3iFCfUg8/G10QQxGh7j0cP3z4TY6i0wURav/+
+        eO/hPg3iZ2kURCjqYv/+z9Yo7jHT7u+OD+7/bMkFdUFzQV3s7f4sjgJzcW/84GdLQ1EPmIq98f6n
+        P1t02pep2BvvPnhIPfxsdEFakLrYfTDe3fnZGgV1QbNNXdzbU+H+fwAbiKNkNQcAAA==
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en,en-US
+      Content-Type:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 19:13:45 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 2
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

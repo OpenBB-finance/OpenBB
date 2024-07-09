@@ -8,7 +8,7 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, model_validator
 
-from openbb_charting.core.to_chart import ChartIndicators
+from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
 
 MAMODES = Literal["ema", "sma", "wma", "hna", "zlma", "rma"]
 
@@ -96,7 +96,7 @@ class EtfPricePerformanceChartQueryParams(EquityPricePerformanceChartQueryParams
 
 
 class EtfHoldingsChartQueryParams(ChartQueryParams):
-    """ "ETF Holdings Chart Query Params."""
+    """ETF Holdings Chart Query Params."""
 
     title: Optional[str] = Field(
         default=None,
@@ -396,6 +396,7 @@ class ChartParams:
     """Chart Query Params."""
 
     crypto_price_historical = EquityPriceHistoricalChartQueryParams
+    derivatives_futures_historical = EquityPriceHistoricalChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
     economy_fred_series = EconomyFredSeriesChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams

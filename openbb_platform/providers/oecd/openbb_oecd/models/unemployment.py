@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
@@ -15,13 +14,11 @@ from openbb_core.provider.standard_models.unemployment import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import check_item, make_request
-from openbb_oecd.utils import helpers
+from openbb_core.provider.utils.helpers import check_item
 from openbb_oecd.utils.constants import (
     CODE_TO_COUNTRY_UNEMPLOYMENT,
     COUNTRY_TO_CODE_UNEMPLOYMENT,
 )
-from pandas import read_csv
 from pydantic import Field, field_validator
 
 countries = tuple(CODE_TO_COUNTRY_UNEMPLOYMENT.values()) + ("all",)
@@ -29,18 +26,12 @@ CountriesList = sorted(list(countries))  # type: ignore
 AGES = [
     "total",
     "15-24",
-    "25-54",
-    "55-64",
-    "15-64",
-    "15-74",
+    "25+",
 ]
 AgesLiteral = Literal[
     "total",
     "15-24",
-    "25-54",
-    "55-64",
-    "15-64",
-    "15-74",
+    "25+",
 ]
 
 
@@ -55,7 +46,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
         default="united_states",
-        choices=CountriesList,
+        json_schema_extra={"choices": CountriesList},  # type: ignore
     )
     sex: Literal["total", "male", "female"] = Field(
         description="Sex to get unemployment for.",
@@ -65,7 +56,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     age: Literal[AgesLiteral] = Field(
         description="Age group to get unemployment for. Total indicates 15 years or over",
         default="total",
-        json_schema_extra={"choices": AGES},
+        json_schema_extra={"choices": AGES},  # type: ignore
     )
     seasonal_adjustment: bool = Field(
         description="Whether to get seasonally adjusted unemployment. Defaults to False.",
@@ -126,15 +117,18 @@ class OECDUnemploymentFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from io import StringIO  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
+        from openbb_oecd.utils import helpers  # noqa
+        from pandas import read_csv  # noqa
+
         sex = {"total": "_T", "male": "M", "female": "F"}[query.sex]
         frequency = query.frequency[0].upper()
         age = {
             "total": "Y_GE15",
             "15-24": "Y15T24",
-            "15-64": "Y15T64",
-            "15-74": "Y15T74",
-            "25-54": "Y25T54",
-            "55-64": "Y55T64",
+            "25+": "Y_GE25",
         }[query.age]
         seasonal_adjustment = "Y" if query.seasonal_adjustment else "N"
 

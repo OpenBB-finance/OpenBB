@@ -1,9 +1,6 @@
 """Logging Formatter that includes formatting of Exceptions."""
 
 import logging
-import re
-from copy import deepcopy
-from pathlib import Path
 
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
@@ -46,6 +43,9 @@ class FormatterWithExceptions(logging.Formatter):
     @staticmethod
     def mock_ipv4(text: str) -> str:
         """Mock IPv4 addresses in the text."""
+        # pylint: disable=import-outside-toplevel
+        import re
+
         pattern = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
         replacement = " FILTERED_IP "
         text_mocked = re.sub(pattern, replacement, text)
@@ -55,6 +55,9 @@ class FormatterWithExceptions(logging.Formatter):
     @staticmethod
     def mock_email(text: str) -> str:
         """Mock email addresses in the text."""
+        # pylint: disable=import-outside-toplevel
+        import re
+
         pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
         replacement = " FILTERED_EMAIL "
         text_mocked = re.sub(pattern, replacement, text)
@@ -64,6 +67,9 @@ class FormatterWithExceptions(logging.Formatter):
     @staticmethod
     def mock_password(text: str) -> str:
         """Mock passwords in the text."""
+        # pylint: disable=import-outside-toplevel
+        import re
+
         pattern = r'("password": ")[^"]+'
         replacement = r"\1 FILTERED_PASSWORD "
         text_mocked = re.sub(pattern, replacement, text)
@@ -72,6 +78,9 @@ class FormatterWithExceptions(logging.Formatter):
     @staticmethod
     def mock_flair(text: str) -> str:
         """Mock flair in the text."""
+        # pylint: disable=import-outside-toplevel
+        import re
+
         pattern = r'("FLAIR": "\[)(.*?)\]'
         replacement = r"\1 FILTERED_FLAIR ]"
         text_mocked = re.sub(pattern, replacement, text)
@@ -81,6 +90,9 @@ class FormatterWithExceptions(logging.Formatter):
     @staticmethod
     def mock_home_directory(text: str) -> str:
         """Mock home directory in the text."""
+        # pylint: disable=import-outside-toplevel
+        from pathlib import Path
+
         user_home_directory = str(Path.home().as_posix())
         text_mocked = text.replace("\\", "/").replace(
             user_home_directory, "MOCKING_USER_PATH"
@@ -134,6 +146,9 @@ class FormatterWithExceptions(logging.Formatter):
     @property
     def settings(self) -> LoggingSettings:
         """Get the settings."""
+        # pylint: disable=import-outside-toplevel
+        from copy import deepcopy
+
         return deepcopy(self.__settings)
 
     @settings.setter

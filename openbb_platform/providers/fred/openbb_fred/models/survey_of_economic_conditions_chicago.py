@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.survey_of_economic_conditions_chicago 
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import DataFrame
 from pydantic import Field
 
 ID_TO_FIELD = {
@@ -41,9 +40,7 @@ class FredSurveyOfEconomicConditionsChicagoQueryParams(
         ],
     ] = Field(
         default=None,
-        description="""
-        Frequency aggregation to convert monthly data to lower frequency. None is monthly.
-        """,
+        description="Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
         json_schema_extra={
             "choices": [
                 "annual",
@@ -53,11 +50,10 @@ class FredSurveyOfEconomicConditionsChicagoQueryParams(
     )
     aggregation_method: Union[None, Literal["avg", "sum", "eop"]] = Field(
         default=None,
-        description="""
-        A key that indicates the aggregation method used for frequency aggregation.
-            avg = Average
-            sum = Sum
-            eop = End of Period
+        description="""A key that indicates the aggregation method used for frequency aggregation.
+        \n    avg = Average
+        \n    sum = Sum
+        \n    eop = End of Period
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
@@ -65,17 +61,16 @@ class FredSurveyOfEconomicConditionsChicagoQueryParams(
         None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
     ] = Field(
         default=None,
-        description="""
-        Transformation type
-            None = No transformation
-            chg = Change
-            ch1 = Change from Year Ago
-            pch = Percent Change
-            pc1 = Percent Change from Year Ago
-            pca = Compounded Annual Rate of Change
-            cch = Continuously Compounded Rate of Change
-            cca = Continuously Compounded Annual Rate of Change
-            log = Natural Log
+        description="""Transformation type
+        \n    None = No transformation
+        \n    chg = Change
+        \n    ch1 = Change from Year Ago
+        \n    pch = Percent Change
+        \n    pc1 = Percent Change from Year Ago
+        \n    pca = Compounded Annual Rate of Change
+        \n    cch = Continuously Compounded Rate of Change
+        \n    cca = Continuously Compounded Annual Rate of Change
+        \n    log = Natural Log
         """,
         json_schema_extra={
             "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
@@ -138,6 +133,9 @@ class FredSurveyOfEconomicConditionsChicagoFetcher(
         **kwargs: Any
     ) -> AnnotatedResult[List[FredSurveyOfEconomicConditionsChicagoData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         df = DataFrame(data["data"])
         metadata = data.get("metadata", {})
         if df.empty:

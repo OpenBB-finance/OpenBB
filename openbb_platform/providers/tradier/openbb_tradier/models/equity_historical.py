@@ -2,8 +2,7 @@
 
 # pylint: disable = unused-argument
 
-import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
@@ -17,11 +16,8 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
 from openbb_tradier.utils.constants import INTERVALS_DICT
-from pandas import to_datetime
 from pydantic import Field
-from pytz import timezone
 
 
 class TradierEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -57,6 +53,9 @@ class TradierEquityHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TradierEquityHistoricalQueryParams:
         """Transform the query."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         if params.get("interval") in ["1d", "1W", "1M"]:
             if params.get("start_date") is None:
                 params["start_date"] = (datetime.now() - timedelta(days=365)).date()
@@ -85,6 +84,14 @@ class TradierEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Tradier endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import (
+            amake_request,
+            safe_fromtimestamp,
+        )  # noqa
+        from pytz import timezone  # noqa
+
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
 
@@ -174,6 +181,9 @@ class TradierEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[TradierEquityHistoricalData]:
         """Transform and validate the data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         interval = "timestamp" if query.interval in ["1m", "5m", "15m"] else "date"
         return [
             TradierEquityHistoricalData.model_validate(d)

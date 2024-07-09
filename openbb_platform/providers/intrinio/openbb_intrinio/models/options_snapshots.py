@@ -2,25 +2,22 @@
 
 # pylint: disable=unused-argument
 
-import gzip
 from datetime import (
     date as dateType,
     datetime,
 )
-from io import BytesIO
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
-import numpy as np
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_snapshots import (
     OptionsSnapshotsData,
     OptionsSnapshotsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request
-from pandas import DataFrame, NaT, Series, read_csv, to_datetime
 from pydantic import Field
-from pytz import timezone
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 class IntrinioOptionsSnapshotsQueryParams(OptionsSnapshotsQueryParams):
@@ -45,57 +42,57 @@ class IntrinioOptionsSnapshotsQueryParams(OptionsSnapshotsQueryParams):
 class IntrinioOptionsSnapshotsData(OptionsSnapshotsData):
     """Intrinio Options Snapshots Data. Warning: This is a large file."""
 
-    bid: Optional[float] = Field(
-        default=None,
+    bid: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The last bid price at the time.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_size: Optional[int] = Field(
-        default=None,
+    bid_size: List[Union[int, None]] = Field(
+        default_factory=list,
         description="The size of the last bid price.",
     )
-    bid_timestamp: Optional[datetime] = Field(
-        default=None,
+    bid_timestamp: List[Union[datetime, None]] = Field(
+        default_factory=list,
         description="The timestamp of the last bid price.",
     )
-    ask: Optional[float] = Field(
-        default=None,
+    ask: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The last ask price at the time.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_size: Optional[int] = Field(
-        default=None,
+    ask_size: List[Union[int, None]] = Field(
+        default_factory=list,
         description="The size of the last ask price.",
     )
-    ask_timestamp: Optional[datetime] = Field(
-        default=None,
+    ask_timestamp: List[Union[datetime, None]] = Field(
+        default_factory=list,
         description="The timestamp of the last ask price.",
     )
-    total_bid_volume: Optional[int] = Field(
-        default=None,
+    total_bid_volume: List[Union[int, None]] = Field(
+        default_factory=list,
         description="Total volume of bids.",
     )
-    bid_high: Optional[float] = Field(
-        default=None,
+    bid_high: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The highest bid price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_low: Optional[float] = Field(
-        default=None,
+    bid_low: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The lowest bid price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    total_ask_volume: Optional[int] = Field(
-        default=None,
+    total_ask_volume: List[Union[int, None]] = Field(
+        default_factory=list,
         description="Total volume of asks.",
     )
-    ask_high: Optional[float] = Field(
-        default=None,
+    ask_high: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The highest ask price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_low: Optional[float] = Field(
-        default=None,
+    ask_low: List[Union[float, None]] = Field(
+        default_factory=list,
         description="The lowest ask price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
@@ -112,6 +109,9 @@ class IntrinioOptionsSnapshotsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioOptionsSnapshotsQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from pytz import timezone
+
         transformed_params = params.copy()
         if "date" in transformed_params:
             if isinstance(transformed_params["date"], datetime):
@@ -154,8 +154,14 @@ class IntrinioOptionsSnapshotsFetcher(
         query: IntrinioOptionsSnapshotsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import gzip  # noqa
+        from io import BytesIO  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from pandas import DataFrame, read_csv  # noqa
+
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         # This gets the URL to the actual file.
@@ -213,10 +219,15 @@ class IntrinioOptionsSnapshotsFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioOptionsSnapshotsQueryParams,
-        data: DataFrame,
+        data: "DataFrame",
         **kwargs: Any,
     ) -> List[IntrinioOptionsSnapshotsData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        import numpy as np
+        from pandas import NaT, Series, to_datetime
+        from pytz import timezone
+
         df = data
         if df.empty:
             raise OpenBBError("Empty CSV file")
@@ -316,14 +327,11 @@ class IntrinioOptionsSnapshotsFetcher(
             strike = f"{front}{_strike[0]}{_strike[1]}{back}"
             return symbol + exp + cp + strike
 
-        if symbols.str.contains("\.").any():  # noqa
+        if symbols.str.contains(r"\.").any():  # noqa  # pylint: disable=W1401
             df["contract_symbol"] = df["contract_symbol"].apply(apply_contract_symbol)
         else:
             df["contract_symbol"] = symbols.str.replace("_", "")
         df = df.replace({NaT: None, np.nan: None})
         df = df.sort_values(by="volume", ascending=False)
 
-        return [
-            IntrinioOptionsSnapshotsData.model_validate(d)
-            for d in df.to_dict(orient="records")
-        ]
+        return [IntrinioOptionsSnapshotsData.model_validate(df.to_dict(orient="list"))]
