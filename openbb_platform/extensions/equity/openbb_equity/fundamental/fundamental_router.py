@@ -1,7 +1,6 @@
 # pylint: disable=W0613:unused-argument
 """Fundamental Analysis Router."""
 
-from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -343,26 +342,6 @@ async def management_compensation(
 
 
 @router.command(
-    model="CompanyOverview",
-    deprecated=True,
-    deprecation=OpenBBDeprecationWarning(
-        message="This endpoint is deprecated; use `/equity/profile` instead.",
-        since=(4, 1),
-        expected_removal=(4, 3),
-    ),
-    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
-)
-async def overview(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get company general business and stock data for a given company."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
     model="FinancialRatios",
     examples=[
         APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
@@ -447,8 +426,9 @@ async def filings(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
-    filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
+    """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.
+
+    SEC filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
     Foreign Investment Disclosures and others. The annual 10-K report is required to be
     filed annually and includes the company's financial statements, management discussion and analysis,
     and audited financial statements.
