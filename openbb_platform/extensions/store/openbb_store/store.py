@@ -131,6 +131,7 @@ class Store(Data):
     def __init__(
         self, filename: Optional[str] = None, names: Optional[List[str]] = None, **data
     ):
+        """Initialize the Store object."""
         super().__init__(**data)
         if filename:
             self.load_store_from_file(filename, names)
