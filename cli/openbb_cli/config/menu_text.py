@@ -79,8 +79,8 @@ class MenuText:
                 self.warnings.append(
                     {
                         "warning": "Command name too long",
-                        "command": name,
-                        "trimmed_command": new_name,
+                        "actual command": f"`{name}`",
+                        "displayed command": f"`{new_name}`",
                     }
                 )
                 name = new_name

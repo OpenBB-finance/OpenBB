@@ -15,6 +15,6 @@ class ROUTER_regulators(Container):
     @property
     def sec(self):
         # pylint: disable=import-outside-toplevel
-        from . import regulators_sec
+        from . import regulators_sec  # type: ignore[attr-defined]
 
         return regulators_sec.ROUTER_regulators_sec(command_runner=self._command_runner)
