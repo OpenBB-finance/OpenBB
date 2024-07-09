@@ -5,13 +5,16 @@
 import hashlib
 import lzma
 import pickle
+import pickletools
 from functools import lru_cache
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.provider.abstract.data import Data
-from pandas import DataFrame
 from pydantic import Field
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 @lru_cache(maxsize=128)
@@ -126,10 +129,7 @@ class Store(Data):
     )
 
     def __init__(
-        self,
-        filename: Optional[str] = None,
-        names: Optional[List[str]] = None,
-        **data
+        self, filename: Optional[str] = None, names: Optional[List[str]] = None, **data
     ):
         super().__init__(**data)
         if filename:
@@ -143,7 +143,7 @@ class Store(Data):
     def add_store(
         self,
         name: str,
-        data: Union[OBBject, Data, DataFrame, Dict, List, str],
+        data: Union[OBBject, Data, "DataFrame", Dict, List, str],
         description: Optional[str] = None,
     ):
         """Add a stored data object."""
@@ -158,57 +158,57 @@ class Store(Data):
         schema_repr = ""
 
         if data_class == "OBBject":
-            fields_set = data.to_df().columns.to_list()
-            length = len(data.results) if isinstance(data.results, list) else 1
+            fields_set = data.to_df(index=None).columns.to_list()  # type: ignore
+            length = len(data.results) if isinstance(data.results, list) else 1  # type: ignore
             if fields_set[0] == 0:
-                fields_set = data.to_df().iloc[:, 0].to_list()
+                fields_set = data.to_df(index=None).iloc[:, 0].to_list()  # type: ignore
             schema = {
                 "length": length,
                 "fields_set": fields_set,
                 "data_model": (
-                    data.results.model_copy()
+                    data.results.model_copy()  # type: ignore
                     if length == 1
-                    else data.results[0].model_copy()
+                    else data.results[0].model_copy()  # type: ignore
                 ),
-                "created_at": str(data.extra["metadata"].timestamp),
-                "uid": data.id,
+                "created_at": str(data.extra["metadata"].timestamp),  # type: ignore
+                "uid": data.id,  # type: ignore
             }
             schema_repr = str(schema)[:80]
         elif data_class == "Data" or (
             data_class == "list"
-            and len(data) == 1
-            and data[0].__class__.__name__ == "Data"
+            and len(data) == 1  # type: ignore
+            and data[0].__class__.__name__ == "Data"  # type: ignore
         ):
-            schema = data.model_copy()
+            schema = data.model_copy()  # type: ignore
             schema_repr = schema.__repr__()[:80]
         elif data_class == "dict":
             schema = {
-                "length": len(data),
-                "keys": list(data.keys()),
-                "types": list(set([d.__class__.__name__ for d in data.values()])),
-                "types_map": {k: v.__class__.__name__ for k, v in data.items()},
+                "length": len(data),  # type: ignore
+                "keys": list(data.keys()),  # type: ignore
+                "types": list(set([d.__class__.__name__ for d in data.values()])),  # type: ignore
+                "types_map": {k: v.__class__.__name__ for k, v in data.items()},  # type: ignore
             }
             schema_repr = str(schema)[:80]
         elif data_class == "list":
             schema = {
-                "length": len(data),
+                "length": len(data),  # type: ignore
                 "types": list(set([d.__class__.__name__ for d in data])),
-                "first_value": data[0],
+                "first_value": data[0],  # type: ignore
             }
             schema_repr = str(schema)[:80]
         elif data_class == "DataFrame":
             schema = {
-                "length": len(data.index),
-                "width": len(data.columns),
-                "columns": data.columns,
-                "index": data.index,
-                "types_map": data.dtypes,
+                "length": len(data.index),  # type: ignore
+                "width": len(data.columns),  # type: ignore
+                "columns": data.columns,  # type: ignore
+                "index": data.index,  # type: ignore
+                "types_map": data.dtypes,  # type: ignore
             }
             schema_repr = str(schema)[:80]
         elif data_class == "str":
             schema = {
-                "length": len(data),
-                "first_80_chars": data[:80],
+                "length": len(data),  # type: ignore
+                "first_80_chars": data[:80],  # type: ignore
             }
             schema_repr = str(schema)
         else:
@@ -237,10 +237,25 @@ class Store(Data):
         pd_query: Optional[str] = None,
         dict_orient: str = "list",
         chart_params: Optional[Dict[str, Any]] = None,
-    ):
-        """Get a stored data object."""
+    ) -> Any:
+        """Get a stored data object.
+
+        Parameters
+        ----------
+        name: str
+            The name of the stored object.
+        element: Literal["OBBject", "dataframe", "dict", "llm", "chart"]
+            The element to retrieve. Ignored if the stored object is not an instance of "OBBject".
+        pd_query: Optional[str]
+            A Pandas query string to pass before output.
+        dict_orient: Optional[str]
+            The orientation of the dictionary.
+        chart_params: Optional[Dict[str, Any]]
+            Dictionary of `chart_params` to pass to `to_chart`.
+            Ignored if the stored object is not an instance of "OBBject".
+        """
         if not name:
-            name = self.list_stores()[0]
+            name = self.list_stores[0] if self.list_stores else ""  # type: ignore
         if name not in self.directory:
             raise ValueError(f"Data store '{name}' does not exist.")
         decompressed_data = self._decompress_store(self.archives[name])
@@ -257,18 +272,18 @@ class Store(Data):
                         "Charting extension is not installed. Install with `pip install openbb-charting`."
                     )
                 if hasattr(obbject.chart, "content") and not chart_params:
-                    return obbject.chart.content
+                    return obbject.chart.content  # type: ignore
                 chart_params = chart_params or {}
                 chart_params["render"] = False
-                _ = obbject.charting.to_chart(data=obbject.results, **chart_params)
-                return obbject.chart.fig
+                _ = obbject.charting.to_chart(data=obbject.results, **chart_params)  # type: ignore
+                return obbject.chart.fig  # type: ignore
             df = obbject.to_df()
             if pd_query:
                 df = df.query(pd_query)
             if element == "dataframe":
                 return df.convert_dtypes()
             if element == "dict":
-                return df.to_dict(orient=dict_orient)
+                return df.to_dict(orient=dict_orient)  # type: ignore
             raise ValueError(
                 "Invalid element type. Use: 'OBBject', 'dataframe', 'dict', 'llm', or 'chart'."
             )
@@ -299,7 +314,7 @@ class Store(Data):
 
     def save_store_to_file(self, filename, names: Optional[List[str]] = None):
         """Save the Store object, or a list of store names, to a compressed shelf file."""
-        names = names or self.list_stores()
+        names = names or self.list_stores
         temp = {
             "archives": {name: self.archives[name] for name in names},
             "schemas": {name: self.schemas[name] for name in names},
@@ -348,7 +363,7 @@ class Store(Data):
         temp = pickle.loads(pickled_data)  # noqa
 
         if names:
-            names = names.split(",")
+            names = names.split(",")  # type: ignore
             for name in temp["directory"].copy():
                 if name not in names:
                     temp["directory"].pop(name)
@@ -365,18 +380,18 @@ class Store(Data):
     def update_store(
         self,
         name: str,
-        data: Union[OBBject, Data, DataFrame, Dict, List, str],
+        data: Union[OBBject, Data, "DataFrame", Dict, List, str],
         description: Optional[str] = None,
     ):
         """Overwrite an existing stored data object."""
         if name not in self.directory:
             raise ValueError(f"Data store '{name}' does not exist.")
-        self.remove_store(name, verbose=False)
+        self.remove_store(name, verbose=False)  # type: ignore
         self.add_store(
             name=name,
             data=data,
             description=description,
-            verbose=False,
+            verbose=False,  # type: ignore
         )
         if self.verbose:
             return f"Data store '{name}' updated successfully."
@@ -401,7 +416,7 @@ class Store(Data):
 
     def _compress_store(self, data):
         """Compress a stored data object."""
-        pickled_data = pickle.dumps(data)
+        pickled_data = pickletools.optimize(pickle.dumps(data))
         signature = hashlib.sha1(pickled_data).hexdigest()  # noqa
         return {"archive": lzma.compress(pickled_data), "signature": signature}
 
@@ -415,7 +430,7 @@ class Store(Data):
 
     def __repr__(self):
         """Return a string representation of the object."""
-        names = self.list_stores()
+        names = self.list_stores  # type: ignore
         if names == [""]:
             return f"{self.__class__.__name__}\n\nNo archives added."
         stores: List = []

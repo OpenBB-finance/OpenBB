@@ -1,12 +1,14 @@
 """OBBject Store Extension."""
 
 import importlib
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.app.model.extension import Extension
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.provider.abstract.data import Data
-from pandas import DataFrame
+
+if TYPE_CHECKING:
+    from openbb_core.provider.abstract.data import Data
+    from pandas import DataFrame
 
 ext = Extension(name="store")
 
@@ -19,6 +21,7 @@ class Store:
 
     # Initialize the Store class as global.
     _store = store_module.Store()
+    __doc__ = _store.__doc__
 
     def __init__(self, obbject):
         """Initialize the Store extension."""
@@ -50,7 +53,7 @@ class Store:
     @property
     def list_stores(self) -> list:
         """List all keys to stored data objects."""
-        return self._store.list_stores()
+        return self._store.list_stores
 
     @property
     def directory(self) -> dict:
@@ -61,7 +64,7 @@ class Store:
     def add_store(
         cls,
         name: str,
-        data: Union[OBBject, Data, DataFrame, Dict, List, str],
+        data: Union[OBBject, "Data", "DataFrame", Dict, List, str],
         description: Optional[str] = None,
     ):
         """Add a stored data object."""
@@ -71,7 +74,7 @@ class Store:
     def update_store(
         cls,
         name: str,
-        data: Union[OBBject, Data, DataFrame, Dict, List, str],
+        data: Union[OBBject, "Data", "DataFrame", Dict, List, str],
         description: Optional[str] = None,
     ):
         """Update a stored data object."""
