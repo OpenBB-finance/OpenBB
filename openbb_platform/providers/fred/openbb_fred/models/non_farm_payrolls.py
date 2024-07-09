@@ -289,12 +289,12 @@ class FredNonFarmPayrollsFetcher(
         if query.date:
             if query.date and isinstance(query.date, dateType):
                 query.date = query.date.strftime("%Y-%m-%d")
-            dates = query.date.split(",")
+            dates = query.date.split(",")  # type: ignore
             dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
             dates = list(set(dates))
             dates = (
-                [f"&observation_date={date}" for date in dates if date] if dates else ""
-            )  # type: ignore
+                [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
+            )
 
         URLS = [
             f"https://api.stlouisfed.org/fred/release/tables?release_id=50&element_id={element_id}"
