@@ -799,13 +799,17 @@ def test_charting_derivatives_futures_historical(params, headers):
         (
             {
                 "provider": "yfinance",
-                "symbol": "VX",
+                "symbol": "ES",
+                "date": None,
+                "chart": True,
             }
         ),
         (
             {
                 "provider": "cboe",
                 "symbol": "VX",
+                "date": "2024-06-25",
+                "chart": True,
             }
         ),
     ],
