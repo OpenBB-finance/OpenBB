@@ -2,23 +2,10 @@
 
 from typing import List
 
-import pandas as pd
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
-from openbb_core.app.utils import (
-    basemodel_to_df,
-    df_to_basemodel,
-    get_target_column,
-)
 from openbb_core.provider.abstract.data import Data
-from openbb_quantitative.statistics import (
-    kurtosis_,
-    mean_,
-    skew_,
-    std_dev_,
-    var_,
-)
 from pydantic import NonNegativeFloat
 
 router = Router(prefix="/stats")
@@ -70,9 +57,18 @@ def skew(
     OBBject[List[Data]]
         Rolling skew.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.statistics import skew_
+    from pandas import DataFrame
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([skew_(series_target)], columns=["skew"])
+    results = DataFrame([skew_(series_target)], columns=["skew"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -118,9 +114,18 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
     OBBject[List[Data]]
         An object containing the rolling variance values.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.statistics import var_
+    from pandas import DataFrame
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([var_(series_target)], columns=["variance"])
+    results = DataFrame([var_(series_target)], columns=["variance"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -167,9 +172,18 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
     OBBject[List[Data]]
         An object containing the rolling standard deviation values.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.statistics import std_dev_
+    from pandas import DataFrame
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([std_dev_(series_target)], columns=["stdev"])
+    results = DataFrame([std_dev_(series_target)], columns=["stdev"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -217,9 +231,18 @@ def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
     OBBject[List[Data]]
         An object containing the kurtosis value
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.statistics import kurtosis_
+    from pandas import DataFrame
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([kurtosis_(series_target)], columns=["kurtosis"])
+    results = DataFrame([kurtosis_(series_target)], columns=["kurtosis"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -271,11 +294,19 @@ def quantile(
     OBBject[List[Data]]
         An object containing the rolling quantile values with the median.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from pandas import DataFrame
+
     df = basemodel_to_df(
         data,
     )
     series_target = get_target_column(df, target)
-    results = pd.DataFrame(
+    results = DataFrame(
         [series_target.quantile(quantile_pct)], columns=[f"{quantile_pct}_quantile"]
     )
     results = df_to_basemodel(results)
@@ -326,9 +357,18 @@ def mean(
         OBBject[List[Data]]
             An object containing the mean value.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.statistics import mean_
+    from pandas import DataFrame
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([mean_(series_target)], columns=["mean"])
+    results = DataFrame([mean_(series_target)], columns=["mean"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)

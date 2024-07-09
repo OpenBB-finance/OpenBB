@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.gdp_real import (
     GdpRealData,
     GdpRealQueryParams,
 )
-from openbb_oecd.utils import constants, helpers
+from openbb_oecd.utils import constants
 from pydantic import Field, field_validator
 
 rgdp_countries = tuple(constants.COUNTRY_TO_CODE_RGDP.keys()) + ("all",)
@@ -66,6 +66,9 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]])
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils import helpers
+
         units = {"qoq": "PC_CHGPP", "yoy": "PC_CHGPY", "idx": "IDX"}[query.units]
         url = (
             f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP.{'VOLIDX' if units == 'IDX' else 'TOT'}"

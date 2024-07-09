@@ -1,5 +1,7 @@
 """Tiingo Trailing Dividend Yield Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -7,7 +9,6 @@ from openbb_core.provider.standard_models.trailing_dividend_yield import (
     TrailingDivYieldData,
     TrailingDivYieldQueryParams,
 )
-from openbb_tiingo.utils.helpers import get_data_many
 
 
 class TiingoTrailingDivYieldQueryParams(TrailingDivYieldQueryParams):
@@ -37,7 +38,6 @@ class TiingoTrailingDivYieldFetcher(
         transformed_params = params
         return TiingoTrailingDivYieldQueryParams(**transformed_params)
 
-    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: TiingoTrailingDivYieldQueryParams,
@@ -45,14 +45,18 @@ class TiingoTrailingDivYieldFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Tiingo endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import make_request
+
         api_key = credentials.get("tiingo_token") if credentials else ""
         url = (
             f"https://api.tiingo.com/tiingo/corporate-actions/{query.symbol}/distribution-yield?"
             f"token={api_key}"
         )
-        return get_data_many(url)
+        data = make_request(url)
 
-    # pylint: disable=unused-argument
+        return data.json()
+
     @staticmethod
     def transform_data(
         query: TiingoTrailingDivYieldQueryParams,

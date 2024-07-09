@@ -8,25 +8,23 @@ from datetime import datetime
 from inspect import Parameter, signature
 from sys import exc_info
 from time import perf_counter_ns
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Type
 from warnings import catch_warnings, showwarning, warn
 
 from pydantic import BaseModel, ConfigDict, create_model
 
-from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import OpenBBWarning, cast_warning
-from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.system_settings import SystemSettings
-from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.provider_interface import ExtraParams
-from openbb_core.app.router import CommandMap
-from openbb_core.app.service.system_service import SystemService
-from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
+
+if TYPE_CHECKING:
+    from openbb_core.app.model.system_settings import SystemSettings
+    from openbb_core.app.model.user_settings import UserSettings
+    from openbb_core.app.router import CommandMap
 
 
 class ExecutionContext:
@@ -34,10 +32,10 @@ class ExecutionContext:
 
     def __init__(
         self,
-        command_map: CommandMap,
+        command_map: "CommandMap",
         route: str,
-        system_settings: SystemSettings,
-        user_settings: UserSettings,
+        system_settings: "SystemSettings",
+        user_settings: "UserSettings",
     ) -> None:
         """Initialize the execution context."""
         self.command_map = command_map
@@ -104,10 +102,13 @@ class ParametersBuilder:
     def update_command_context(
         func: Callable,
         kwargs: Dict[str, Any],
-        system_settings: SystemSettings,
-        user_settings: UserSettings,
+        system_settings: "SystemSettings",
+        user_settings: "UserSettings",
     ) -> Dict[str, Any]:
         """Update the command context with the available user and system settings."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.model.command_context import CommandContext
+
         argcount = func.__code__.co_argcount
         if "cc" in func.__code__.co_varnames[:argcount]:
             kwargs["cc"] = CommandContext(
@@ -281,6 +282,9 @@ class StaticCommandRunner:
         kwargs: Dict[str, Any],
     ) -> OBBject:
         """Execute a function and return the output."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.logs.logging_service import LoggingService
+
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
 
@@ -403,50 +407,60 @@ class CommandRunner:
 
     def __init__(
         self,
-        command_map: Optional[CommandMap] = None,
-        system_settings: Optional[SystemSettings] = None,
-        user_settings: Optional[UserSettings] = None,
+        command_map: Optional["CommandMap"] = None,
+        system_settings: Optional["SystemSettings"] = None,
+        user_settings: Optional["UserSettings"] = None,
     ) -> None:
         """Initialize the command runner."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.router import CommandMap
+        from openbb_core.app.service.system_service import SystemService
+        from openbb_core.app.service.user_service import UserService
+
         self._command_map = command_map or CommandMap()
         self._system_settings = system_settings or SystemService().system_settings
         self._user_settings = user_settings or UserService.read_from_file()
 
     def init_logging_service(self) -> None:
         """Initialize the logging service."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.logs.logging_service import LoggingService
+
         _ = LoggingService(
             system_settings=self._system_settings, user_settings=self._user_settings
         )
 
     @property
-    def command_map(self) -> CommandMap:
+    def command_map(self) -> "CommandMap":
         """Command map."""
         return self._command_map
 
     @property
-    def system_settings(self) -> SystemSettings:
+    def system_settings(self) -> "SystemSettings":
         """System settings."""
         return self._system_settings
 
     @property
-    def user_settings(self) -> UserSettings:
+    def user_settings(self) -> "UserSettings":
         """User settings."""
         return self._user_settings
 
     @user_settings.setter
-    def user_settings(self, user_settings: UserSettings) -> None:
+    def user_settings(self, user_settings: "UserSettings") -> None:
         self._user_settings = user_settings
 
     # pylint: disable=W1113
     async def run(
         self,
         route: str,
-        user_settings: Optional[UserSettings] = None,
+        user_settings: Optional["UserSettings"] = None,
         /,
         *args,
         **kwargs,
     ) -> OBBject:
         """Run a command and return the OBBject as output."""
+        # pylint: disable=import-outside-toplevel
+
         self._user_settings = user_settings or self._user_settings
 
         execution_context = ExecutionContext(
@@ -462,7 +476,7 @@ class CommandRunner:
     def sync_run(
         self,
         route: str,
-        user_settings: Optional[UserSettings] = None,
+        user_settings: Optional["UserSettings"] = None,
         /,
         *args,
         **kwargs,

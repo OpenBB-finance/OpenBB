@@ -5,18 +5,16 @@
 import sys
 import warnings
 from dataclasses import dataclass
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Union
 
-import pandas as pd
-import pandas_ta as ta
-
-from openbb_charting.core.plotly_ta.ta_helpers import check_columns
+if TYPE_CHECKING:
+    from pandas import DataFrame, Series
 
 # pylint: disable=E1123
 datacls_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
 
 
-def columns_regex(df_ta: pd.DataFrame, name: str) -> List[str]:
+def columns_regex(df_ta: "DataFrame", name: str) -> List[str]:
     """Return columns that match regex name."""
     column_name = df_ta.filter(regex=rf"{name}(?=[^\d]|$)").columns.tolist()
 
@@ -192,8 +190,8 @@ class ChartIndicators:
         )
 
     def to_dataframe(
-        self, df_ta: pd.DataFrame, ma_mode: Optional[List[str]] = None
-    ) -> pd.DataFrame:
+        self, df_ta: "DataFrame", ma_mode: Optional[List[str]] = None
+    ) -> "DataFrame":
         """Calculate technical analysis indicators and return dataframe."""
         output = df_ta.copy()
         if not output.empty and self.indicators:
@@ -204,7 +202,7 @@ class ChartIndicators:
 
         return output
 
-    def get_indicator_data(self, df_ta: pd.DataFrame, indicator: TAIndicator, **kwargs):
+    def get_indicator_data(self, df_ta: "DataFrame", indicator: TAIndicator, **kwargs):
         """Return dataframe with technical analysis indicators."""
         output = None
         if self.indicators:
@@ -233,7 +231,7 @@ class TA_Data:
 
     Parameters
     ----------
-    df_ta : pd.DataFrame
+    df_ta : DataFrame
         Dataframe with OHLCV data
     indicators : Union[ChartIndicators, Dict[str, Dict[str, Any]]]
         ChartIndicators object or dictionary with indicators and arguments
@@ -255,18 +253,22 @@ class TA_Data:
 
     def __init__(
         self,
-        df_ta: Union[pd.DataFrame, pd.Series],
+        df_ta: Union["DataFrame", "Series"],
         indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]],
         ma_mode: Optional[List[str]] = None,
     ):
         """Initialize."""
-        if isinstance(df_ta, pd.Series):
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, Series  # noqa
+        from openbb_charting.core.plotly_ta.ta_helpers import check_columns  # noqa
+
+        if isinstance(df_ta, Series):
             df_ta = df_ta.to_frame()
 
         if not isinstance(indicators, ChartIndicators):
             indicators = ChartIndicators.from_dict(indicators)
 
-        self.df_ta: pd.DataFrame = df_ta
+        self.df_ta: DataFrame = df_ta
         self.indicators: ChartIndicators = indicators
         self.ma_mode: List[str] = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
         self.close_col = check_columns(df_ta)
@@ -290,7 +292,7 @@ class TA_Data:
 
         self.has_volume = "volume" in df_ta.columns and bool(df_ta["volume"].sum() > 0)
 
-    def get_indicator_data(self, indicator: TAIndicator, **args) -> pd.DataFrame:
+    def get_indicator_data(self, indicator: TAIndicator, **args) -> "DataFrame":
         """
         Return dataframe with indicator data.
 
@@ -303,13 +305,17 @@ class TA_Data:
 
         Return
         -------
-        pd.DataFrame
+        DataFrame
             Dataframe with indicator data
         """
+        # pylint: disable=import-outside-toplevel
+        import pandas_ta as ta
+        from pandas import DataFrame
+
         output = None
         if indicator and indicator.name in self.ma_mode:
             if isinstance(indicator.get_argument_values("length"), list):
-                df_ta = pd.DataFrame()
+                df_ta = DataFrame()
 
                 for length in indicator.get_argument_values("length"):
                     df_ma = getattr(ta, indicator.name)(
@@ -353,7 +359,7 @@ class TA_Data:
 
         return output
 
-    def to_dataframe(self) -> pd.DataFrame:
+    def to_dataframe(self) -> "DataFrame":
         """Return dataframe with all indicators."""
         active_indicators = self.indicators.get_indicators()
 

@@ -7,11 +7,8 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
-import nasdaqdatalink
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cot import COTData, COTQueryParams
-from openbb_core.provider.utils.helpers import to_snake_case
 from openbb_nasdaq.utils.query_params import DataLinkQueryParams
 from openbb_nasdaq.utils.series_ids import CFTC
 from pydantic import Field, field_validator
@@ -104,11 +101,16 @@ class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the Nasdaq Data Link API."""
+        # pylint: disable=import-outside-toplevel
+        import nasdaqdatalink  # noqa
+        from pandas import DataFrame  # noqa
+        from openbb_core.provider.utils.helpers import to_snake_case  # noqa
+
         api_key = credentials.get("nasdaq_api_key") if credentials else ""
 
         # The "code" can be an exact name, a symbol, or a CFTC series code.
         series_id: str = ""
-        series_ids = pd.DataFrame(CFTC).transpose().reset_index(drop=True)
+        series_ids = DataFrame(CFTC).transpose().reset_index(drop=True)
         series_ids.columns = series_ids.columns.str.lower()
 
         if query.id in series_ids["code"].values:

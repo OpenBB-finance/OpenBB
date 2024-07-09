@@ -1,13 +1,13 @@
 """YFinance Share Statistics Model."""
 
 # pylint: disable=unused-argument
-import asyncio
-import warnings
+
 from datetime import (
     date as dateType,
     datetime,
 )
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.share_statistics import (
@@ -15,9 +15,6 @@ from openbb_core.provider.standard_models.share_statistics import (
     ShareStatisticsQueryParams,
 )
 from pydantic import Field, field_validator
-from yfinance import Ticker
-
-_warn = warnings.warn
 
 
 class YFinanceShareStatisticsQueryParams(ShareStatisticsQueryParams):
@@ -117,6 +114,10 @@ class YFinanceShareStatisticsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from yfinance import Ticker  # noqa
+
         symbols = query.symbol.split(",")
         results = []
         fields = [
@@ -147,7 +148,7 @@ class YFinanceShareStatisticsFetcher(
                 if major_holders:
                     ticker.update(major_holders)  # type: ignore
             except Exception as e:
-                _warn(f"Error getting data for {symbol}: {e}")
+                warn(f"Error getting data for {symbol}: {e}")
             if ticker:
                 for field in fields:
                     if field in ticker:

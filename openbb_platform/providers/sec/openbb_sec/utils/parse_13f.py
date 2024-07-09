@@ -2,8 +2,6 @@
 
 from typing import Any, Dict, Optional
 
-import xmltodict
-from bs4 import BeautifulSoup
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
@@ -65,6 +63,10 @@ async def get_complete_submission(url: str):
 
 def parse_header(filing_str: str) -> Dict:
     """Parse the header of a Complete Submission TXT file string."""
+    # pylint: disable=import-outside-toplevel
+    import xmltodict
+    from bs4 import BeautifulSoup
+
     header_dict = {}
     try:
         soup = BeautifulSoup(filing_str, "lxml-xml")
@@ -111,6 +113,10 @@ def get_period_ending(filing_str: str):
 
 async def parse_13f_hr(filing: str):
     """Parse a 13F-HR filing from the Complete Submission TXT file string."""
+    # pylint: disable=import-outside-toplevel
+    import xmltodict
+    from bs4 import BeautifulSoup
+
     data = DataFrame()
 
     # Check if the input string is a URL

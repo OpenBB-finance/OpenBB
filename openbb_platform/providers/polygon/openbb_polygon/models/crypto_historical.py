@@ -1,15 +1,11 @@
 """Polygon Crypto Historical Price Model."""
 
-# pylint: disable=unused-argument,protected-access,line-too-long
+# pylint: disable=unused-argument
 
-import warnings
-from datetime import (
-    datetime,
-    timezone,
-)
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
@@ -17,12 +13,6 @@ from openbb_core.provider.standard_models.crypto_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    ClientSession,
-    amake_requests,
-    safe_fromtimestamp,
-)
 from pydantic import (
     Field,
     PositiveInt,
@@ -30,13 +20,12 @@ from pydantic import (
     model_validator,
 )
 
-_warn = warnings.warn
-
 
 class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     """Polygon Crypto Historical Price Query.
 
-    Source: https://polygon.io/docs/crypto/get_v2_aggs_ticker__cryptoticker__range__multiplier___timespan___from___to
+    Source:
+    https://polygon.io/docs/crypto/get_v2_aggs_ticker__cryptoticker__range__multiplier___timespan___from___to
     """
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
@@ -74,8 +63,12 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
             "Y": "year",
         }
 
-        values._multiplier = int(values.interval[:-1])
-        values._timespan = intervals[values.interval[-1]]
+        values._multiplier = int(  # pylint: disable=protected-access
+            values.interval[:-1]
+        )
+        values._timespan = intervals[  # pylint: disable=protected-access
+            values.interval[-1]
+        ]
 
         return values
 
@@ -106,11 +99,14 @@ class PolygonCryptoHistoricalFetcher(
         List[PolygonCryptoHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Crypto Historical Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCryptoHistoricalQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -131,10 +127,19 @@ class PolygonCryptoHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract raw data from the Polygon endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timezone  # noqa
+        from openbb_core.provider.utils.helpers import (  # noqa
+            ClientResponse,
+            ClientSession,
+            amake_requests,
+            safe_fromtimestamp,
+        )
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         urls = [
-            (
+            (  # pylint: disable=protected-access
                 "https://api.polygon.io/v2/aggs/ticker/"
                 f"X:{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
                 f"{query.start_date}/{query.end_date}?"
@@ -161,7 +166,11 @@ class PolygonCryptoHistoricalFetcher(
             for r in results:
                 v = r["t"] / 1000  # milliseconds to seconds
                 r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore[arg-type]
-                if query._timespan not in ["second", "minute", "hour"]:
+                if query._timespan not in [  # pylint: disable=protected-access
+                    "second",
+                    "minute",
+                    "hour",
+                ]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")
@@ -169,7 +178,7 @@ class PolygonCryptoHistoricalFetcher(
                     r["symbol"] = symbol.replace("X:", "")
 
             if results == []:
-                _warn(f"Symbol Error: No data found for {symbol.replace('X:', '')}")
+                warn(f"Symbol Error: No data found for {symbol.replace('X:', '')}")
 
             return results
 

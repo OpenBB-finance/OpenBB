@@ -2,7 +2,6 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,10 +10,6 @@ from openbb_core.provider.standard_models.fred_search import (
     SearchQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import (
-    amake_request,
-    get_querystring,
-)
 from pydantic import Field, NonNegativeInt
 
 
@@ -118,12 +113,20 @@ class FredSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import (
+            amake_request,
+            get_querystring,
+        )  # noqa
+
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         if query.series_id is not None:
             results: List = []
 
             async def get_one(_id: str):
+                """Get data for one series."""
                 data: Dict = {}
                 url = f"https://api.stlouisfed.org/geofred/series/group?series_id={_id}&api_key={api_key}&file_type=json"
                 response = await amake_request(url)
@@ -132,8 +135,7 @@ class FredSearchFetcher(
                     data.update({"series_id": _id})
                     results.append(data)
 
-            tasks = [get_one(_id) for _id in query.series_id.split(",")]
-            await asyncio.gather(*tasks)
+            await asyncio.gather(*[get_one(_id) for _id in query.series_id.split(",")])
 
             if results:
                 return results

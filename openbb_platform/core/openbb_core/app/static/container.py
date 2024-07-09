@@ -1,17 +1,21 @@
 """Container class."""
 
-from typing import Any, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Optional, Tuple
 
-from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.model.obbject import OBBject
+
+if TYPE_CHECKING:
+    from openbb_core.app.command_runner import CommandRunner
 
 
 class Container:
     """Container class for the command runner session."""
 
-    def __init__(self, command_runner: CommandRunner) -> None:
+    def __init__(self, command_runner: "CommandRunner") -> None:
         """Initialize the container."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.model.obbject import OBBject
+
         self._command_runner = command_runner
         OBBject._user_settings = command_runner.user_settings
         OBBject._system_settings = command_runner.system_settings

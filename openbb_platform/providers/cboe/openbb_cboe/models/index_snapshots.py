@@ -12,8 +12,6 @@ from openbb_core.provider.standard_models.index_snapshots import (
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from pandas import DataFrame
 from pydantic import Field, field_validator
 
 
@@ -23,7 +21,7 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     Source: https://www.cboe.com/
     """
 
-    region: Optional[Literal["us", "eu"]] = Field(
+    region: Literal["us", "eu"] = Field(
         default="us",
     )
 
@@ -95,6 +93,9 @@ class CboeIndexSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Cboe endpoint"""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import amake_request
+
         url: str = ""
         if query.region == "us":
             url = "https://cdn.cboe.com/api/global/delayed_quotes/quotes/all_us_indices.json"
@@ -111,6 +112,9 @@ class CboeIndexSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         if not data:
             raise EmptyDataError()
         df = DataFrame(data)

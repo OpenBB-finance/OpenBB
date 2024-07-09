@@ -52,8 +52,8 @@ def test_nasdaq_equity_search_fetcher(credentials=test_credentials):
 def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
     """Test the Nasdaq Economic Calendar fetcher."""
     params = {
-        "start_date": datetime.date(2024, 6, 1),
-        "end_date": datetime.date(2024, 7, 10),
+        "start_date": datetime.date(2024, 7, 1),
+        "end_date": datetime.date(2024, 7, 7),
     }
 
     fetcher = NasdaqEconomicCalendarFetcher()
@@ -65,8 +65,8 @@ def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
 def test_nasdaq_calendar_dividend_fetcher(credentials=test_credentials):
     """Test the Nasdaq Calendar Dividend fetcher."""
     params = {
-        "start_date": datetime.date(2024, 6, 1),
-        "end_date": datetime.date(2024, 7, 1),
+        "start_date": datetime.date(2024, 7, 1),
+        "end_date": datetime.date(2024, 7, 7),
     }
 
     fetcher = NasdaqCalendarDividendFetcher()

@@ -2,11 +2,9 @@
 
 # pylint: disable=unused-argument,protected-access
 
-import warnings
-from datetime import (
-    datetime,
-)
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -16,22 +14,12 @@ from openbb_core.provider.standard_models.equity_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    ClientSession,
-    amake_requests,
-    safe_fromtimestamp,
-)
-from pandas import to_datetime
 from pydantic import (
     Field,
     PositiveInt,
     PrivateAttr,
     model_validator,
 )
-from pytz import timezone
-
-_warn = warnings.warn
 
 
 class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -115,7 +103,7 @@ class PolygonEquityHistoricalFetcher(
         List[PolygonEquityHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Equity Historical Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonEquityHistoricalQueryParams:
@@ -137,6 +125,15 @@ class PolygonEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Polygon endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (  # noqa
+            ClientResponse,
+            ClientSession,
+            amake_requests,
+            safe_fromtimestamp,
+        )
+        from pytz import timezone
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
         adjustment = query.adjustment == "splits_only"
         urls = [
@@ -175,7 +172,7 @@ class PolygonEquityHistoricalFetcher(
                     r["symbol"] = symbol
 
             if results == []:
-                _warn(f"Symbol Error: No data found for {symbol}")
+                warn(f"Symbol Error: No data found for {symbol}")
 
             return results
 
@@ -188,6 +185,9 @@ class PolygonEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[PolygonEquityHistoricalData]:
         """Transform the data from the Polygon endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         if not data:
             raise EmptyDataError()
         if query.extended_hours is True or query._timespan not in [

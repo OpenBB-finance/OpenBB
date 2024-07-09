@@ -1,5 +1,7 @@
 """FRED ICE BofA US Corporate Bond Indices Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -7,8 +9,6 @@ from openbb_core.provider.standard_models.ice_bofa import (
     ICEBofAData,
     ICEBofAQueryParams,
 )
-from openbb_fred.utils.fred_base import Fred
-from openbb_fred.utils.fred_helpers import get_ice_bofa_series_id
 from pydantic import Field, field_validator
 
 
@@ -63,9 +63,7 @@ class FREDICEBofAFetcher(
         List[FREDICEBofAData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FRED endpoints."""
-
-    data_type = FREDICEBofAData
+    """FRED ICE BofA Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDICEBofAQueryParams:
@@ -77,8 +75,12 @@ class FREDICEBofAFetcher(
         query: FREDICEBofAQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
-    ) -> list:
+    ) -> List:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fred.utils.fred_base import Fred
+        from openbb_fred.utils.fred_helpers import get_ice_bofa_series_id
+
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -89,7 +91,7 @@ class FREDICEBofAFetcher(
             grade=query.grade,
         )
 
-        data = []
+        data: List = []
 
         for s in series:
             id_ = s["FRED Series ID"]
@@ -108,7 +110,7 @@ class FREDICEBofAFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDICEBofAQueryParams, data: list, **kwargs: Any
+        query: FREDICEBofAQueryParams, data: List, **kwargs: Any
     ) -> List[FREDICEBofAData]:
         """Transform data."""
         return [FREDICEBofAData.model_validate(d) for d in data]

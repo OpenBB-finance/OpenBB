@@ -9,11 +9,6 @@ from openbb_core.provider.standard_models.equity_search import (
     EquitySearchData,
     EquitySearchQueryParams,
 )
-from openbb_sec.utils.helpers import (
-    get_all_companies,
-    get_mf_and_etf_map,
-)
-from pandas import DataFrame
 from pydantic import Field
 
 
@@ -41,7 +36,7 @@ class SecEquitySearchFetcher(
         List[SecEquitySearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the SEC endpoints."""
+    """SEC Equity Search Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecEquitySearchQueryParams:
@@ -55,6 +50,13 @@ class SecEquitySearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the SEC endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_sec.utils.helpers import (
+            get_all_companies,
+            get_mf_and_etf_map,
+        )
+        from pandas import DataFrame
+
         results = DataFrame()
 
         if query.is_fund is True:

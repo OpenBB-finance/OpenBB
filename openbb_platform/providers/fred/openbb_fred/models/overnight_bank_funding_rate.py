@@ -1,5 +1,7 @@
 """FRED Overnight Bank Funding Rate Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -181,7 +183,7 @@ class FredOvernightBankFundingRateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FredOvernightBankFundingRateQueryParams, data: dict, **kwargs: Any
+        query: FredOvernightBankFundingRateQueryParams, data: Dict, **kwargs: Any
     ) -> AnnotatedResult[List[FredOvernightBankFundingRateData]]:
         """Transform data"""
         if not data:

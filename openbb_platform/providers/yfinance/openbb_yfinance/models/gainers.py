@@ -2,18 +2,17 @@
 
 # pylint: disable=unused-argument
 
-import re
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
     EquityPerformanceData,
     EquityPerformanceQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
-from openbb_yfinance.utils.helpers import df_transform_numbers
 from pydantic import Field
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 class YFGainersQueryParams(EquityPerformanceQueryParams):
@@ -63,29 +62,41 @@ class YFGainersFetcher(Fetcher[YFGainersQueryParams, List[YFGainersData]]):
         query: YFGainersQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> pd.DataFrame:
+    ) -> "DataFrame":
         """Get data from YF."""
+        # pylint: disable=import-outside-toplevel
+        import io  # noqa
+        import re  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
+        from pandas import read_html  # noqa
+
         headers = {"user_agent": "Mozilla/5.0"}
         html = make_request(
             "https://finance.yahoo.com/screener/predefined/day_gainers",
             headers=headers,
         ).text
         html_clean = re.sub(r"(<span class=\"Fz\(0\)\">).*?(</span>)", "", html)
-        df = pd.read_html(html_clean, header=None)[0].dropna(how="all", axis=1)
+        df = read_html(io.StringIO(html_clean), header=None)[0].dropna(
+            how="all", axis=1
+        )
+
         return df
 
     @staticmethod
     def transform_data(
         query: EquityPerformanceQueryParams,
-        data: pd.DataFrame,
+        data: "DataFrame",
         **kwargs: Any,
     ) -> List[YFGainersData]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import df_transform_numbers
 
         columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
 
         data = df_transform_numbers(data=data, columns=columns)
         data = data.fillna("N/A").replace("N/A", None)
+        data["Name"] = data["Name"].fillna(data["Symbol"])
 
         return [
             YFGainersData.model_validate(d)

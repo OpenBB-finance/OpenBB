@@ -9,8 +9,6 @@ from openbb_core.provider.standard_models.equity_search import (
     EquitySearchData,
     EquitySearchQueryParams,
 )
-from openbb_tmx.utils.helpers import get_all_tmx_companies
-from pandas import DataFrame
 from pydantic import Field
 
 
@@ -36,7 +34,7 @@ class TmxEquitySearchFetcher(
         List[TmxEquitySearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the TMX endpoints."""
+    """TMX Equity Search Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxEquitySearchQueryParams:
@@ -50,6 +48,9 @@ class TmxEquitySearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.utils.helpers import get_all_tmx_companies
+        from pandas import DataFrame
 
         companies = await get_all_tmx_companies(use_cache=query.use_cache)
         results = DataFrame(index=companies, data=companies.values(), columns=["name"])

@@ -1,20 +1,19 @@
 """TMX Treasury Prices Fetcher."""
 
 # pylint: disable=unused-argument
-from datetime import (
-    date as dateType,
-    timedelta,
-)
-from typing import Any, Dict, List, Literal, Optional
+
+from datetime import date as dateType
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_prices import (
     TreasuryPricesData,
     TreasuryPricesQueryParams,
 )
-from openbb_tmx.utils.helpers import get_all_bonds
-from pandas import DataFrame
 from pydantic import Field, field_validator
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 class TmxTreasuryPricesQueryParams(TreasuryPricesQueryParams):
@@ -96,6 +95,9 @@ class TmxTreasuryPricesFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxTreasuryPricesQueryParams:
         """Transform query params."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         transformed_params = params.copy()
         yesterday = dateType.today() - timedelta(days=1)
         last_bd = (
@@ -112,15 +114,19 @@ class TmxTreasuryPricesFetcher(
         query: TmxTreasuryPricesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Get the raw data containing all bond data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.utils.helpers import get_all_bonds
+
         bonds = await get_all_bonds(use_cache=query.use_cache)
+
         return bonds
 
     @staticmethod
     def transform_data(
         query: TmxTreasuryPricesQueryParams,
-        data: DataFrame,
+        data: "DataFrame",
         **kwargs: Any,
     ) -> List[TmxTreasuryPricesData]:
         """Transform data."""

@@ -1,15 +1,11 @@
 """Polygon Currency Historical Price Model."""
 
-# pylint: disable=unused-argument,protected-access,line-too-long
+# pylint: disable=unused-argument
 
-import warnings
-from datetime import (
-    datetime,
-    timezone,
-)
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_historical import (
     CurrencyHistoricalData,
@@ -17,20 +13,12 @@ from openbb_core.provider.standard_models.currency_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    ClientSession,
-    amake_requests,
-    safe_fromtimestamp,
-)
 from pydantic import (
     Field,
     PositiveInt,
     PrivateAttr,
     model_validator,
 )
-
-_warn = warnings.warn
 
 
 class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
@@ -74,8 +62,12 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
             "Y": "year",
         }
 
-        values._multiplier = int(values.interval[:-1])
-        values._timespan = intervals[values.interval[-1]]
+        values._multiplier = int(  # pylint: disable=protected-access
+            values.interval[:-1]
+        )
+        values._timespan = intervals[  # pylint: disable=protected-access
+            values.interval[-1]
+        ]
 
         return values
 
@@ -106,11 +98,14 @@ class PolygonCurrencyHistoricalFetcher(
         List[PolygonCurrencyHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Currency Historical Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCurrencyHistoricalQueryParams:
         """Transform the query."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -128,10 +123,17 @@ class PolygonCurrencyHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the polygon endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (
+            amake_requests,
+            safe_fromtimestamp,
+        )
+        from pytz import timezone
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         urls = [
-            (
+            (  # pylint: disable=protected-access
                 "https://api.polygon.io/v2/aggs/ticker/"
                 f"C:{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
                 f"{query.start_date}/{query.end_date}?"
@@ -139,38 +141,41 @@ class PolygonCurrencyHistoricalFetcher(
             )
             for symbol in query.symbol.split(",")
         ]
+        results: List = []
 
-        async def callback(
-            response: ClientResponse, session: ClientSession
-        ) -> List[Dict]:
+        async def callback(response, session):
+            """Return the data from the response."""
             data = await response.json()
 
             symbol = response.url.parts[4]
-            next_url = data.get("next_url", None)  # type: ignore[union-attr]
-            results: list = data.get("results", [])  # type: ignore[union-attr]
-
+            next_url = data.get("next_url", None)  # type: ignore
+            results.extend(data.get("results", []))  # type: ignore
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
                 data = await session.get_json(url)
-                results.extend(data.get("results", []))  # type: ignore[union-attr]
-                next_url = data.get("next_url", None)  # type: ignore[union-attr]
+                results.extend(data.get("results", []))  # type: ignore
+                next_url = data.get("next_url", None)  # type: ignore
 
             for r in results:
-                v = r["t"] / 1000  # milliseconds to seconds
-                r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore[arg-type]
-                if query._timespan not in ["second", "minute", "hour"]:
+                v = r.get("t") / 1000  # milliseconds to seconds
+                r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore
+                if query._timespan not in [  # pylint: disable=protected-access
+                    "second",
+                    "minute",
+                    "hour",
+                ]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")
                 if "," in query.symbol:
                     r["symbol"] = symbol
 
-            if results == []:
-                _warn(f"Symbol Error: No data found for {symbol.replace('C:', '')}")
+            if not results:
+                warn(f"Symbol Error: No data found for {symbol.replace('C:', '')}")
 
-            return results
+        await amake_requests(urls=urls, response_callback=callback, **kwargs)
 
-        return await amake_requests(urls, callback, **kwargs)
+        return results
 
     @staticmethod
     def transform_data(
@@ -179,7 +184,4 @@ class PolygonCurrencyHistoricalFetcher(
         """Return the transformed data."""
         if not data:
             raise EmptyDataError()
-        return [
-            PolygonCurrencyHistoricalData.model_validate(d)
-            for d in sorted(data, key=lambda x: x["t"], reverse=False)
-        ]
+        return [PolygonCurrencyHistoricalData.model_validate(d) for d in data]

@@ -1,7 +1,7 @@
 """TMX ETF Sectors fetcher."""
 
 # pylint: disable=unused-argument
-import warnings
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,11 +9,7 @@ from openbb_core.provider.standard_models.etf_sectors import (
     EtfSectorsData,
     EtfSectorsQueryParams,
 )
-from openbb_tmx.utils.helpers import get_all_etfs
-from pandas import DataFrame
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class TmxEtfSectorsQueryParams(EtfSectorsQueryParams):
@@ -36,7 +32,7 @@ class TmxEtfSectorsFetcher(
         List[TmxEtfSectorsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the TMX endpoints."""
+    """TMX ETF Sectors Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxEtfSectorsQueryParams:
@@ -50,6 +46,9 @@ class TmxEtfSectorsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.utils.helpers import get_all_etfs
+        from pandas import DataFrame
 
         target = DataFrame()
         _data = DataFrame(await get_all_etfs(use_cache=query.use_cache))
@@ -73,6 +72,9 @@ class TmxEtfSectorsFetcher(
         **kwargs: Any,
     ) -> List[TmxEtfSectorsData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         target = DataFrame(data)
         target["weight"] = target["weight"] / 100
         target["sector"] = (

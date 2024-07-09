@@ -947,6 +947,7 @@ def test_technical_ema(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_relative_rotation(params, obb):
+    """Test relative rotation."""
     params["data"] = obb.equity.price.historical(
         "AAPL,MSFT,GOOGL,AMZN,SPY",
         provider="yfinance",
