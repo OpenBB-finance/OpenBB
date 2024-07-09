@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.gdp_nominal import (
     GdpNominalData,
     GdpNominalQueryParams,
 )
-from openbb_oecd.utils import constants, helpers
+from openbb_oecd.utils import constants
 from pydantic import Field, field_validator
 
 gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP.keys()) + ("all",)
@@ -60,6 +60,9 @@ class OECDGdpNominalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils import helpers
+
         unit = "MLN_USD" if query.units == "usd" else "USD_CAP"
         url = (
             f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.TOT.{unit}.A/OECD"

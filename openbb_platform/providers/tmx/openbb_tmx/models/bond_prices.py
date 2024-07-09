@@ -4,18 +4,18 @@
 from datetime import (
     date as dateType,
     datetime,
-    timedelta,
 )
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.bond_reference import (
     BondReferenceData,
     BondReferenceQueryParams,
 )
-from openbb_tmx.utils.helpers import get_all_bonds
-from pandas import DataFrame
 from pydantic import Field, field_validator
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 class TmxBondPricesQueryParams(BondReferenceQueryParams):
@@ -131,6 +131,9 @@ class TmxBondPricesFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxBondPricesQueryParams:
         """Transform query params."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         transformed_params = params.copy()
         now = datetime.now()
         if now.date().weekday() > 4:
@@ -146,15 +149,18 @@ class TmxBondPricesFetcher(
         query: TmxBondPricesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Get the raw data containing all bond data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.utils.helpers import get_all_bonds
+
         bonds = await get_all_bonds(use_cache=query.use_cache)
         return bonds
 
     @staticmethod
     def transform_data(
         query: TmxBondPricesQueryParams,
-        data: DataFrame,
+        data: "DataFrame",
         **kwargs: Any,
     ) -> List[TmxBondPricesData]:
         """Transform data."""

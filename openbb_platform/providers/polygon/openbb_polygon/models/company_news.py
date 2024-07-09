@@ -2,7 +2,6 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,7 +9,6 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request, get_querystring
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -81,7 +79,7 @@ class PolygonCompanyNewsFetcher(
         List[PolygonCompanyNewsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Company News Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCompanyNewsQueryParams:
@@ -95,6 +93,13 @@ class PolygonCompanyNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import (
+            amake_request,
+            get_querystring,
+        )  # noqa
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"

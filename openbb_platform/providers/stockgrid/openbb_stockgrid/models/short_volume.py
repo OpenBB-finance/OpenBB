@@ -3,7 +3,6 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.short_volume import (
     ShortVolumeData,
@@ -57,10 +56,11 @@ class StockgridShortVolumeFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Get data from Stockgrid."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import make_request
+
         url = f"https://www.stockgrid.io/get_dark_pool_individual_data?ticker={query.symbol}"
-        data = requests.get(
-            url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10
-        ).json()
+        data = make_request(url).json()
         return data["individual_short_volume_table"]["data"]
 
     @staticmethod

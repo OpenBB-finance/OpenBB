@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/geofred/regional/data?aggregation_method=avg&api_key=MOCK_API_KEY&file_type=json&frequency=q&region_type=state&season=NSA&series_group=942&start_date=1975-01-01&transformation=lin&units=Index+1980%3AQ1%3D100
+    uri: https://api.stlouisfed.org/geofred/regional/data?aggregation_method=eop&api_key=MOCK_API_KEY&file_type=json&frequency=q&region_type=state&season=NSA&series_group=942&start_date=1975-01-01&units=Index+1980%3AQ1%3D100
   response:
     body:
       string: !!binary |
@@ -1369,11 +1369,11 @@ interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Thu, 27 Jun 2024 10:13:35 GMT
+      - Mon, 01 Jul 2024 16:51:01 GMT
       Expires:
-      - Thu, 27 Jun 2024 10:13:35 GMT
+      - Mon, 01 Jul 2024 16:51:01 GMT
       Last-Modified:
-      - Thu, 27 Jun 2024 10:13:35 GMT
+      - Mon, 01 Jul 2024 16:51:01 GMT
       Pragma:
       - no-cache
       Server:

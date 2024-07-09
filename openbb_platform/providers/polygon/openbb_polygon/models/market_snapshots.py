@@ -10,8 +10,6 @@ from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
-from openbb_polygon.utils.helpers import get_data_many
-from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
@@ -80,6 +78,9 @@ class PolygonMarketSnapshotsData(MarketSnapshotsData):
     @classmethod
     def date_validate(cls, v):
         """Return formatted datetime."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         return (
             to_datetime(v, unit="ns", origin="unix", utc=True).tz_convert("US/Eastern")
             if v
@@ -93,7 +94,7 @@ class PolygonMarketSnapshotsFetcher(
         List[PolygonMarketSnapshotsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Market Snapshots Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonMarketSnapshotsQueryParams:
@@ -107,6 +108,9 @@ class PolygonMarketSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data from the Polygon endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_polygon.utils.helpers import get_data_many
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         url = f"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers?apiKey={api_key}"

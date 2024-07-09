@@ -1,9 +1,10 @@
 """Cboe Available Indices Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import time
 from typing import Any, Dict, List, Optional
 
-from openbb_cboe.utils.helpers import get_index_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.available_indices import (
     AvailableIndicesData,
@@ -99,6 +100,8 @@ class CboeAvailableIndicesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_cboe.utils.helpers import get_index_directory
 
         data = await get_index_directory(use_cache=query.use_cache, **kwargs)
         return data.to_dict("records")

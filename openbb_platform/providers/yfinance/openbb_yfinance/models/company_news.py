@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsQueryParams,
 )
 from pydantic import Field, field_validator
-from yfinance import Ticker
 
 
 class YFinanceCompanyNewsQueryParams(CompanyNewsQueryParams):
@@ -64,6 +63,8 @@ class YFinanceCompanyNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
+        from yfinance import Ticker  # pylint: disable=import-outside-toplevel
+
         results = []
         symbols = query.symbol.split(",")  # type: ignore
 

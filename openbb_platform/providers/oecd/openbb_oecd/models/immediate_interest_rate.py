@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
@@ -15,10 +14,8 @@ from openbb_core.provider.standard_models.immediate_interest_rate import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import check_item, make_request
+from openbb_core.provider.utils.helpers import check_item
 from openbb_oecd.utils.constants import CODE_TO_COUNTRY_IR, COUNTRY_TO_CODE_IR
-from openbb_oecd.utils.helpers import oecd_date_to_python_date
-from pandas import read_csv
 from pydantic import Field, field_validator
 
 countries = tuple(CODE_TO_COUNTRY_IR.values()) + ("all",)
@@ -104,6 +101,12 @@ class OECDImmediateInterestRateFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from io import StringIO  # noqa
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date  # noqa
+        from pandas import read_csv  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
+
         frequency = frequency_dict.get(query.frequency, "Q")
 
         def country_string(input_str: str):

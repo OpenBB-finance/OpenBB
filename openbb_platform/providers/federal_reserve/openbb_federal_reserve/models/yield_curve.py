@@ -2,17 +2,16 @@
 
 # pylint: disable=unused-argument
 
-from io import BytesIO
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
-from numpy import nan
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.yield_curve import (
     YieldCurveData,
     YieldCurveQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
-from pandas import Categorical, DataFrame, DatetimeIndex, read_csv
+
+if TYPE_CHECKING:
+    from pandas import DataFrame  # pylint: disable=import-outside-toplevel
 
 maturities = [
     "month_1",
@@ -57,8 +56,14 @@ class FederalReserveYieldCurveFetcher(
         query: FederalReserveYieldCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Extract the raw data."""
+        # pylint: disable=import-outside-toplevel
+        from io import BytesIO  # noqa
+        from numpy import nan  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
+        from pandas import read_csv  # noqa
+
         url = (
             "https://www.federalreserve.gov/datadownload/Output.aspx?"
             + "rel=H15&series=bf17364827e38702b42a58cf8eaa3f78&lastobs=&"
@@ -73,9 +78,12 @@ class FederalReserveYieldCurveFetcher(
 
     @staticmethod
     def transform_data(
-        query: FederalReserveYieldCurveQueryParams, data: DataFrame, **kwargs: Any
+        query: FederalReserveYieldCurveQueryParams, data: "DataFrame", **kwargs: Any
     ) -> List[FederalReserveYieldCurveData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DatetimeIndex
+
         df = data.copy()
         df.set_index("date", inplace=True)
         dates = query.date.split(",") if query.date else [df.index.max()]

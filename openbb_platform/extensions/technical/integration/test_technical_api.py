@@ -1,5 +1,7 @@
 """Test technical api."""
 
+# pylint: disable=use-dict-literal,too-many-lines
+
 import base64
 import json
 import random
@@ -980,6 +982,7 @@ def test_technical_ema(params, data_type):
 )
 @pytest.mark.integration
 def test_technical_relative_rotation(params):
+    """Test ta relative rotation."""
     params = {p: v for p, v in params.items() if v}
     data_params = dict(
         symbol="AAPL,MSFT,GOOGL,AMZN,SPY",

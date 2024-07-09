@@ -1,5 +1,7 @@
 """FRED PROJECTION Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -7,8 +9,6 @@ from openbb_core.provider.standard_models.fed_projections import (
     PROJECTIONData,
     PROJECTIONQueryParams,
 )
-from openbb_fred.utils.fred_base import Fred
-from openbb_fred.utils.fred_helpers import process_projections
 from pydantic import Field
 
 NAME_TO_ID_PROJECTION = {
@@ -35,11 +35,9 @@ class FREDPROJECTIONData(PROJECTIONData):
 
 
 class FREDPROJECTIONFetcher(
-    Fetcher[FREDPROJECTIONQueryParams, List[Dict[str, List[FREDPROJECTIONData]]]]
+    Fetcher[FREDPROJECTIONQueryParams, List[FREDPROJECTIONData]]
 ):
-    """Transform the query, extract and transform the data from the FRED endpoints."""
-
-    data_type = FREDPROJECTIONData
+    """FRED Federal Funds Rate Projections Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDPROJECTIONQueryParams:
@@ -51,11 +49,15 @@ class FREDPROJECTIONFetcher(
         query: FREDPROJECTIONQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
-    ) -> list:
+    ) -> List:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fred.utils.fred_base import Fred
+        from openbb_fred.utils.fred_helpers import process_projections
+
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
-        data_dict = {}
+        data_dict: Dict = {}
         for key, value in NAME_TO_ID_PROJECTION.items():
             data = fred.get_series(value[query.long_run], **kwargs)
             data_dict[key] = data
@@ -66,8 +68,8 @@ class FREDPROJECTIONFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDPROJECTIONQueryParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDPROJECTIONData]]]:
+        query: FREDPROJECTIONQueryParams, data: List, **kwargs: Any
+    ) -> List[FREDPROJECTIONData]:
         """Transform data"""
         keys = ["date"] + list(NAME_TO_ID_PROJECTION.keys())
         return [FREDPROJECTIONData(**{k: x[k] for k in keys}) for x in data]

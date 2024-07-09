@@ -15,8 +15,6 @@ from openbb_core.provider.standard_models.currency_pairs import (
     CurrencyPairsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_polygon.utils.helpers import get_data
-from pandas import DataFrame
 from pydantic import Field, field_validator
 
 
@@ -81,6 +79,9 @@ class PolygonCurrencyPairsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the Polygon API."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_polygon.utils.helpers import get_data
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
         request_url = (
             f"https://api.polygon.io/v3/reference/"
@@ -117,6 +118,9 @@ class PolygonCurrencyPairsFetcher(
         **kwargs: Any,
     ) -> List[PolygonCurrencyPairsData]:
         """Filter data by search query and validate the model."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         if not data:
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame(data)

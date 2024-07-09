@@ -14,7 +14,6 @@ from openbb_core.provider.standard_models.bond_indices import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import Categorical, DataFrame
 from pydantic import Field, PrivateAttr
 
 BAML_CATEGORIES = {
@@ -436,7 +435,7 @@ class FredBondIndicesFetcher(
             is_yield_curve = True
             if (
                 isinstance(values["index"], list)
-                and len(values["index"] > 1)
+                and len(values["index"] > 1)  # type: ignore
                 or isinstance(values["index"], str)
                 and "," in values["index"]
             ):
@@ -450,10 +449,10 @@ class FredBondIndicesFetcher(
             )
             for index in indices:
                 if values["category"] == "us":
-                    if index not in BAML_CATEGORIES.get("us"):
+                    if index not in BAML_CATEGORIES.get("us"):  # type: ignore
                         message = (
                             "Invalid index for category: 'us'."
-                            + f" Must be one of {','.join(BAML_CATEGORIES.get('us'))}."
+                            + f" Must be one of {','.join(BAML_CATEGORIES.get('us'))}."  # type: ignore
                         )
                         messages.append(message)
                     elif (
@@ -471,16 +470,16 @@ class FredBondIndicesFetcher(
                     if index not in ("us", "europe", "emerging"):
                         message = (
                             "Invalid index for category: 'high_yield'."
-                            + f" Must be one of {','.join(BAML_CATEGORIES.get('high_yield', ''))}."
+                            + f" Must be one of {','.join(BAML_CATEGORIES.get('high_yield', ''))}."  # type: ignore
                         )
                         messages.append(message)
                     else:
                         new_index.append(index)
                 if values["category"] == "emerging_markets":
-                    if index not in BAML_CATEGORIES.get("emerging_markets"):
+                    if index not in BAML_CATEGORIES.get("emerging_markets"):  # type: ignore
                         message = (
                             "Invalid index for category: 'emerging_markets'."
-                            + f" Must be one of {','.join(BAML_CATEGORIES.get('emerging_markets', ''))}."
+                            + f" Must be one of {','.join(BAML_CATEGORIES.get('emerging_markets', ''))}."  # type: ignore
                         )
                         messages.append(message)
                     else:
@@ -495,7 +494,7 @@ class FredBondIndicesFetcher(
 
         symbols: List = []
         if "yield_curve" in values["index"]:
-            maturities_dict = BAML_CATEGORIES[values["category"]][values["index"]]
+            maturities_dict = BAML_CATEGORIES[values["category"]][values["index"]]  # type: ignore
             maturities = list(maturities_dict)
             symbols = [
                 maturities_dict[item][values["index_type"]] for item in maturities
@@ -507,7 +506,7 @@ class FredBondIndicesFetcher(
                 else values["index"].split(",")
             )
             symbols = [
-                BAML_CATEGORIES[values["category"]]
+                BAML_CATEGORIES[values["category"]]  # type: ignore
                 .get(item, {})
                 .get(values["index_type"])
                 for item in items
@@ -533,7 +532,7 @@ class FredBondIndicesFetcher(
         """Extract data."""
         api_key = credentials.get("fred_api_key") if credentials else ""
         series_ids = query._symbols  # pylint: disable=protected-access
-        credentials = {"fred_api_key": api_key}
+        credentials = {"fred_api_key": api_key}  # type: ignore
         item_query = dict(  # pylint: disable=R1735
             symbol=series_ids,
             start_date=query.start_date,
@@ -554,8 +553,11 @@ class FredBondIndicesFetcher(
         query: FredBondIndicesQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> List[FredBondIndicesData]:
+    ) -> AnnotatedResult[List[FredBondIndicesData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame
+
         if not data:
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame.from_records(data["data"])
@@ -577,12 +579,14 @@ class FredBondIndicesFetcher(
 
         titles_dict = {
             symbol: data["metadata"][symbol].get("title")
-            for symbol in query._symbols.split(",")  # pylint: disable=protected-access
+            for symbol in query._symbols.split(  # type: ignore  # pylint: disable=protected-access
+                ","
+            )
         }
         df["title"] = df.symbol.map(titles_dict)
 
         if query.index == "yield_curve":
-            maturities_dict = BAML_CATEGORIES[query.category][query.index]
+            maturities_dict = BAML_CATEGORIES[query.category][query.index]  # type: ignore
             maturities = list(maturities_dict)
             maturity_dict = {
                 maturities_dict[item][query.index_type]: item for item in maturities

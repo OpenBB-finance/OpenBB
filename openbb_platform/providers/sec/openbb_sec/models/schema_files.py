@@ -1,12 +1,13 @@
 """SEC Schema Files List Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cot_search import CotSearchQueryParams
-from openbb_sec.utils.helpers import get_schema_filelist
 from pydantic import Field
 
 
@@ -28,14 +29,13 @@ class SecSchemaFilesData(Data):
 
 
 class SecSchemaFilesFetcher(Fetcher[SecSchemaFilesQueryParams, SecSchemaFilesData]):
-    """Transform the query, extract and transform the data from the SEC endpoints."""
+    """SEC Schema Files Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecSchemaFilesQueryParams:
         """Transform the query."""
         return SecSchemaFilesQueryParams(**params)
 
-    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: SecSchemaFilesQueryParams,
@@ -43,13 +43,15 @@ class SecSchemaFilesFetcher(Fetcher[SecSchemaFilesQueryParams, SecSchemaFilesDat
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_sec.utils.helpers import get_schema_filelist
+
         if query.url and ".xsd" in query.url or query.url and ".xml" in query.url:
             raise OpenBBError("Invalid URL. This endpoint does not parse the files.")
         results = get_schema_filelist(query.query, query.url)
 
         return {"files": results}
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: SecSchemaFilesQueryParams, data: Dict, **kwargs: Any

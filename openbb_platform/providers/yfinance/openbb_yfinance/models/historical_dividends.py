@@ -9,7 +9,6 @@ from openbb_core.provider.standard_models.historical_dividends import (
     HistoricalDividendsData,
     HistoricalDividendsQueryParams,
 )
-from yfinance import Ticker
 
 
 class YFinanceHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
@@ -41,6 +40,8 @@ class YFinanceHistoricalDividendsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
+        from yfinance import Ticker  # pylint: disable=import-outside-toplevel
+
         try:
             ticker = Ticker(query.symbol).get_dividends()
             if isinstance(ticker, List) and not ticker or ticker.empty:  # type: ignore

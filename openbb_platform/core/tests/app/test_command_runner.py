@@ -272,7 +272,7 @@ def test_command_runner_properties():
     assert runner.command_map == cmd_map
 
 
-@patch("openbb_core.app.command_runner.LoggingService")
+@patch("openbb_core.app.command_runner.CommandRunner")
 def test_command_runner_run(_):
     """Test run."""
     runner = CommandRunner()
@@ -285,7 +285,7 @@ def test_command_runner_run(_):
 
 
 @pytest.mark.asyncio
-@patch("openbb_core.app.command_runner.CommandMap.get_command")
+@patch("openbb_core.app.router.CommandMap.get_command")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._execute_func")
 async def test_static_command_runner_run(
     mock_execute_func, mock_get_command, execution_context
@@ -316,7 +316,7 @@ async def test_static_command_runner_run(
 
 
 @pytest.mark.asyncio
-@patch("openbb_core.app.command_runner.LoggingService")
+@patch("openbb_core.app.logs.logging_service.LoggingService")
 @patch("openbb_core.app.command_runner.ParametersBuilder.build")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._command")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._chart")

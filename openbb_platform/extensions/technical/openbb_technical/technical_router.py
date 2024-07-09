@@ -1,10 +1,9 @@
 """Technical Analysis Router."""
 
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,unused-import,too-many-arguments
+
 from typing import Any, Dict, List, Literal, Optional
 
-import pandas as pd
-import pandas_ta as ta
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
@@ -215,6 +214,10 @@ def atr(
     OBBject[List[Data]]
         List of data with the indicator applied.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
@@ -342,6 +345,10 @@ def obv(
     OBBject[List[Data]]
         List of data with the indicator applied.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "volume"])
     df_obv = pd.DataFrame(df_target.ta.obv(offset=offset))
@@ -395,6 +402,10 @@ def fisher(
     OBBject[List[Data]]
         List of data with the indicator applied.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, [length, signal])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
@@ -453,6 +464,10 @@ def adosc(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, [fast, slow])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["open", "high", "low", "close", "volume"])
@@ -523,6 +538,10 @@ def bbands(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -590,6 +609,10 @@ def zlma(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -657,6 +680,10 @@ def aroon(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
@@ -716,6 +743,10 @@ def sma(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -783,6 +814,9 @@ def demark(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas_ta as ta  # noqa
+
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     _demark = ta.td_seq(
@@ -838,6 +872,10 @@ def vwap(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     df = basemodel_to_df(data, index=index)
     if index == "date":
         df.index = pd.to_datetime(df.index)
@@ -910,6 +948,10 @@ def macd(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, [fast, slow, signal])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -972,6 +1014,10 @@ def hma(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -1042,6 +1088,10 @@ def donchian(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, [lower_length, upper_length])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
@@ -1168,6 +1218,10 @@ def clenow(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, period)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target)
@@ -1232,6 +1286,10 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     ad_df = pd.DataFrame(df_target.ta.ad(offset=offset).dropna())
@@ -1286,6 +1344,10 @@ def adx(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
@@ -1344,6 +1406,10 @@ def wma(
     OBBject[List[Data]]
         The WMA data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -1405,6 +1471,10 @@ def cci(
     OBBject[List[Data]]
         The CCI data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
@@ -1465,6 +1535,10 @@ def rsi(
     OBBject[List[Data]]
         The RSI data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -1530,6 +1604,10 @@ def stoch(
     OBBject[List[Data]]
         The Stochastic Oscillator data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, [fast_k_period, slow_d_period, slow_k_period])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
@@ -1596,6 +1674,10 @@ def kc(
     OBBject[List[Data]]
         The Keltner Channels data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
@@ -1651,6 +1733,10 @@ def cg(
     OBBject[List[Data]]
         The COG data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
@@ -1812,6 +1898,10 @@ def ema(
     OBBject[List[Data]]
         The calculated data.
     """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()

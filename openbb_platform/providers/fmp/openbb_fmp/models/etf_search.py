@@ -2,13 +2,11 @@
 
 from typing import Any, Dict, List, Literal, Optional
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_search import (
     EtfSearchData,
     EtfSearchQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import Field
 
 
@@ -79,7 +77,7 @@ class FMPEtfSearchFetcher(
         List[FMPEtfSearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP ETF Search Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPEtfSearchQueryParams:
@@ -93,6 +91,9 @@ class FMPEtfSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import create_url, get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -110,7 +111,10 @@ class FMPEtfSearchFetcher(
         query: FMPEtfSearchQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEtfSearchData]:
         """Return the transformed data."""
-        etfs = pd.DataFrame(data)
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
+        etfs = DataFrame(data)
         etfs.drop(columns="isEtf", inplace=True)
 
         if query.is_active:

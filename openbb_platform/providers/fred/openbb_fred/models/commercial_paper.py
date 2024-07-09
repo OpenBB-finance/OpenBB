@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.commercial_paper import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import Categorical, DataFrame
 from pydantic import Field
 
 CP_SERIES_IDS = {
@@ -332,6 +331,9 @@ class FREDCommercialPaperFetcher(
         **kwargs: Any,
     ) -> List[FREDCommercialPaperData]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame
+
         if not data:
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame(data["data"])

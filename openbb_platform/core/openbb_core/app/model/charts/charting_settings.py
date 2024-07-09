@@ -1,12 +1,15 @@
 """Charting settings."""
 
+import importlib
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from openbb_core.app.logs.utils.utils import get_app_id
-from openbb_core.app.model.system_settings import SystemSettings
-from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.env import Env
+
+if TYPE_CHECKING:
+    from openbb_core.app.model.system_settings import SystemSettings
+    from openbb_core.app.model.user_settings import UserSettings
 
 
 # pylint: disable=too-many-instance-attributes
@@ -15,10 +18,19 @@ class ChartingSettings:
 
     def __init__(
         self,
-        user_settings: Optional[UserSettings] = None,
-        system_settings: Optional[SystemSettings] = None,
+        user_settings: Optional["UserSettings"] = None,
+        system_settings: Optional["SystemSettings"] = None,
     ):
         """Initialize charting settings."""
+        user_settings_module = importlib.import_module(
+            "openbb_core.app.model.user_settings", "UserSettings"
+        )
+        system_settings_module = importlib.import_module(
+            "openbb_core.app.model.system_settings", "SystemSettings"
+        )
+
+        UserSettings = user_settings_module.UserSettings
+        SystemSettings = system_settings_module.SystemSettings
         user_settings = user_settings or UserSettings()
         system_settings = system_settings or SystemSettings()
 

@@ -13,34 +13,36 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU01DUwUtJByKbmpaDL5ScVpxaVJZZk
-        5uehajYw1DUwVNJRQlaApN/ATNfATElHqTQvs6RYyUopJzMPpLi0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUskIxOiWxJFVJR6k4v6gkPh+kRMlKKbE4WUlHKTm/NK9EycpMRyk/La04
-        tUTJykBHKSczN7NEycrQAARQHFmsZBVNSYCAHQINQFgYlCXmlKYqWSkZ6BkZKtXqUM14I0gQI4w3
-        sKCm8cYYxptQ03gTDOMtqWm8KW2NN8MwHjALpdrYWgB/4dlTTAMAAA==
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5uchazbWNTCEaEZWANdvrGtgpmtgpqSjVJqXWVKsZKWUk5mnpKOUX1pSUFoSX1JZkKpkZaijlJaZ
+        kwrlKWUV54OVFKWkFsUnVSpZKSEbnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGWmo5Sf
+        llacWqJkZaCjlJOZm1miZGVoAAI6yCYVK1lFUxIgYIeAAxARBmWJOaWpSlZKBnpGhkq1OlQz3ggS
+        xAjjDSyoaTzIA0o6SkjGm1DTeBMM11tS03hT2hpvhmE8YBZKtbG1AJDY7uZMAwAA
     headers:
-      Accept-Ranges:
-      - bytes
+      Cache-Control:
+      - max-age=0, no-cache
       Connection:
       - keep-alive
       Content-Encoding:
       - gzip
       Content-Length:
-      - '268'
+      - '276'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Thu, 02 Nov 2023 13:45:35 GMT
+      - Mon, 01 Jul 2024 21:12:29 GMT
       Expires:
-      - Thu, 02 Nov 2023 13:46:35 GMT
+      - Mon, 01 Jul 2024 21:12:29 GMT
       Last-Modified:
-      - Wed, 01 Nov 2023 21:01:16 GMT
+      - Mon, 01 Jul 2024 21:01:04 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
       Vary:
       - Accept-Encoding
-      x-rate-limit-limit:
-      - '120'
-      x-rate-limit-remaining:
-      - '90'
     status:
       code: 200
       message: OK

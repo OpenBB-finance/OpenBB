@@ -1,18 +1,15 @@
 """Nasdaq Economic Calendar Model."""
 
-import html
-from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta
-from itertools import repeat
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
-import requests
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range, remove_html_tags
 from pydantic import Field, field_validator
 
 
@@ -56,6 +53,10 @@ class NasdaqEconomicCalendarData(EconomicCalendarData):
     @classmethod
     def clean_html(cls, v: str):
         """Format HTML entities to normal."""
+        # pylint: disable=import-outside-toplevel
+        import html  # noqa
+        from openbb_nasdaq.utils.helpers import remove_html_tags  # noqa
+
         if v:
             v = (
                 html.unescape(v)
@@ -80,6 +81,9 @@ class NasdaqEconomicCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqEconomicCalendarQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import datetime, timedelta
+
         now = datetime.today().date()
         transformed_params = params
 
@@ -91,43 +95,54 @@ class NasdaqEconomicCalendarFetcher(
 
         return NasdaqEconomicCalendarQueryParams(**transformed_params)
 
-    # pylint: disable=unused-argument
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: NasdaqEconomicCalendarQueryParams,
-        credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
+        credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Nasdaq endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
+
+        IPO_HEADERS = get_headers(accept_type="json")
         data: List[Dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
             for date in date_range(query.start_date, query.end_date)
         ]
 
-        def get_calendar_data(date: str, data: List[Dict]) -> None:
+        async def get_calendar_data(date: str):
+            """Get the calendar data for a single date."""
+            response: List = []
             url = f"https://api.nasdaq.com/api/calendar/economicevents?date={date}"
-            r = requests.get(url, headers=IPO_HEADERS, timeout=5)
-            r_json = r.json()
-            if "data" in r_json and "rows" in r_json["data"]:
-                response = r_json["data"]["rows"]
-            response = [
-                {
-                    **{k: v for k, v in item.items() if k != "gmt"},
-                    "date": (
-                        f"{date} 00:00"
-                        if item.get("gmt") == "All Day"
-                        else f"{date} {item.get('gmt', '')}".replace(
-                            "Tentative", "00:00"
-                        ).replace("24H", "00:00")
-                    ),
-                }
-                for item in response
-            ]
-            data.extend(response)
+            r_json = await amake_request(url=url, headers=IPO_HEADERS)
+            if r_json is not None and r_json.get("data"):  # type: ignore
+                response = r_json["data"].get("rows")  # type: ignore
+            if response:
+                response = [
+                    {
+                        **{k: v for k, v in item.items() if k != "gmt"},
+                        "date": (
+                            f"{date} 00:00"
+                            if item.get("gmt") == "All Day"
+                            else f"{date} {item.get('gmt', '')}".replace(
+                                "Tentative", "00:00"
+                            ).replace("24H", "00:00")
+                        ),
+                    }
+                    for item in response
+                ]
+                data.extend(response)
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(get_calendar_data, dates, repeat(data))
+        await asyncio.gather(*[get_calendar_data(date) for date in dates])
+
+        if not data:
+            raise OpenBBError(
+                "There was an error with the request and it was returned empty."
+            )
 
         if query.country:
             country = (
@@ -143,7 +158,6 @@ class NasdaqEconomicCalendarFetcher(
 
         return data
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: NasdaqEconomicCalendarQueryParams,

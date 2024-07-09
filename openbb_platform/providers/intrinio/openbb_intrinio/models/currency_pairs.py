@@ -1,5 +1,7 @@
 """Intrinio Currency Available Pairs Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -8,8 +10,6 @@ from openbb_core.provider.standard_models.currency_pairs import (
     CurrencyPairsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_intrinio.utils.helpers import get_data_many
-from pandas import DataFrame
 from pydantic import Field
 
 
@@ -53,6 +53,9 @@ class IntrinioCurrencyPairsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_intrinio.utils.helpers import get_data_many
+
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
@@ -64,6 +67,9 @@ class IntrinioCurrencyPairsFetcher(
         query: IntrinioCurrencyPairsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioCurrencyPairsData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         if not data:
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame(data)

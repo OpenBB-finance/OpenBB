@@ -98,7 +98,7 @@ async def get_futures_quotes(symbols: List) -> "DataFrame":
     prices.price = prices.price.fillna(prices.prev_close)
     prices["expiration"] = [get_expiration_month(symbol) for symbol in prices.symbol]
 
-    return prices[["expiration", "price"]]
+    return prices[["expiration", "price"]]  # type: ignore
 
 
 async def get_historical_futures_prices(
@@ -212,7 +212,9 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
         try:
             exchange = futures_data[futures_data["Ticker"] == symbol][
                 "Exchange"
-            ].values[0]
+            ].values[  # type: ignore
+                0
+            ]
         except IndexError as exc:
             raise ValueError(f"Symbol {symbol} was not found.") from exc
 
@@ -250,7 +252,7 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
                         data.index = DatetimeIndex(data.index)
                         nearest_dates = [data.index.asof(date) for date in dates_list]
                         data = data[data.index.isin(nearest_dates)]
-                        data.index = data.index.strftime("%Y-%m-%d")
+                        data.index = data.index.strftime("%Y-%m-%d")  # type: ignore
                         for dt in dates:
                             try:
                                 historical_curve.append(data.loc[dt, "close"])
@@ -391,13 +393,13 @@ def yf_download(
                 )
             ]
         if intraday is True:
-            data["date"] = data["date"].dt.strftime("%Y-%m-%d %H:%M:%S")
+            data["date"] = data["date"].dt.strftime("%Y-%m-%d %H:%M:%S")  # type: ignore
         else:
-            data["date"] = data["date"].dt.strftime("%Y-%m-%d")
+            data["date"] = data["date"].dt.strftime("%Y-%m-%d")  # type: ignore
         if adjusted is False:
-            data = data.drop(columns=["Adj Close"])
-        data.columns = data.columns.str.lower().str.replace(" ", "_").to_list()
-    return data
+            data = data.drop(columns=["Adj Close"])  # type: ignore
+        data.columns = data.columns.str.lower().str.replace(" ", "_").to_list()  # type: ignore
+    return data  # type: ignore
 
 
 def df_transform_numbers(data: "DataFrame", columns: list) -> "DataFrame":
