@@ -13,6 +13,9 @@ from openbb_federal_reserve.models.money_measures import (
 from openbb_federal_reserve.models.overnight_bank_funding_rate import (
     FederalReserveOvernightBankFundingRateFetcher,
 )
+from openbb_federal_reserve.models.primary_dealer_positioning import (
+    FederalReservePrimaryDealerPositioningFetcher,
+)
 from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
@@ -25,11 +28,12 @@ federal_reserve_provider = Provider(
     description="""Access data provided by the Federal Reserve System, the Central Bank of the United States.""",
     fetcher_dict={
         "CentralBankHoldings": FederalReserveCentralBankHoldingsFetcher,
-        "TreasuryRates": FederalReserveTreasuryRatesFetcher,
+        "FederalFundsRate": FederalReserveFederalFundsRateFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
         "OvernightBankFundingRate": FederalReserveOvernightBankFundingRateFetcher,
-        "FederalFundsRate": FederalReserveFederalFundsRateFetcher,
+        "PrimaryDealerPositioning": FederalReservePrimaryDealerPositioningFetcher,
         "SOFR": FederalReserveSOFRFetcher,
+        "TreasuryRates": FederalReserveTreasuryRatesFetcher,
         "YieldCurve": FederalReserveYieldCurveFetcher,
     },
     repr_name="Federal Reserve (FED)",
