@@ -940,13 +940,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "1.2.7"
+version = "1.3.0"
 description = "OpenBB package with core functionality."
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "openbb_core-1.2.7-py3-none-any.whl", hash = "sha256:e34ac8df9d3c803d24e497552830af08c3a2afbcb99e32e8c3f38d2f6e118c23"},
-    {file = "openbb_core-1.2.7.tar.gz", hash = "sha256:9a711fdf3e4f8d739f6ec6e35b0550302fdcf749ac6d9d1b3bbd42a74620419d"},
+    {file = "openbb_core-1.3.0-py3-none-any.whl", hash = "sha256:cf9ed4b2438b896fd6a567fe17530a4c3de2e602f3bc29bf2082c0cb3c83ebdc"},
+    {file = "openbb_core-1.3.0.tar.gz", hash = "sha256:da75321d0fa4ecb85e0c49948927e72ebc3a6fce8ac146ffd4e3eff01dc8420c"},
 ]
 
 [package.dependencies]
@@ -2005,4 +2005,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "f4861467c27460864d68f6a138f6c768bbc2f425dd824aa244c8455b64c153b2"
+content-hash = "0accbd98ed4d9dd7b6cc61c93b94043c1b7c92770f62417155bce30984b62d46"

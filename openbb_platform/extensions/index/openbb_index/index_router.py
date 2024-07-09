@@ -1,6 +1,5 @@
 """Index Router."""
 
-from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -18,26 +17,6 @@ router = Router(prefix="", description="Indices data.")
 router.include_router(price_router)
 
 # pylint: disable=unused-argument
-
-
-@router.command(
-    model="MarketIndices",
-    deprecated=True,
-    deprecation=OpenBBDeprecationWarning(
-        message="This endpoint is deprecated; use `/index/price/historical` instead.",
-        since=(4, 1),
-        expected_removal=(4, 3),
-    ),
-    examples=[APIEx(parameters={"symbol": "^IBEX", "provider": "fmp"})],
-)
-async def market(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get Historical Market Indices."""
-    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(

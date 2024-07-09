@@ -2266,7 +2266,7 @@ class ROUTER_economy(Container):
     @property
     def survey(self):
         # pylint: disable=import-outside-toplevel
-        from . import economy_survey  # type: ignore[attr-defined]
+        from . import economy_survey
 
         return economy_survey.ROUTER_economy_survey(command_runner=self._command_runner)
 

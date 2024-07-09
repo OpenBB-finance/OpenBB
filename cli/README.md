@@ -1,7 +1,7 @@
 # OpenBB Platform CLI
 
 [![Downloads](https://static.pepy.tech/badge/openbb)](https://pepy.tech/project/openbb)
-[![LatestRelease](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBBTerminal)
+[![LatestRelease](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBB)
 
 | OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
 | :---------------------------------------------------------------------------------------------------------------------------------------------: |
@@ -34,7 +34,7 @@ openbb
 
 Which should result in the following output:
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/f606bb6e-fa00-4fc8-bad2-8269bb4fc38e)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/48914296/f606bb6e-fa00-4fc8-bad2-8269bb4fc38e)
 
 ## API keys
 
