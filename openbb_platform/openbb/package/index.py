@@ -306,6 +306,6 @@ class ROUTER_index(Container):
     @property
     def price(self):
         # pylint: disable=import-outside-toplevel
-        from . import index_price
+        from . import index_price  # type: ignore[attr-defined]
 
         return index_price.ROUTER_index_price(command_runner=self._command_runner)

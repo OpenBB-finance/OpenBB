@@ -7596,6 +7596,141 @@
             },
             "model": "RetailPrices"
         },
+        "/economy/primary_dealer_positioning": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get Primary dealer positioning statistics.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.primary_dealer_positioning(provider='federal_reserve')\nobb.economy.primary_dealer_positioning(category=abs, provider='federal_reserve')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['federal_reserve']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "category",
+                        "type": "Literal['treasuries', 'bills', 'coupons', 'notes', 'tips', 'mbs', 'cmbs', 'municipal', 'corporate', 'commercial_paper', 'corporate_ig', 'corporate_junk', 'abs']",
+                        "description": "The category of asset to return, defaults to 'treasuries'.",
+                        "default": "treasuries",
+                        "optional": true,
+                        "choices": [
+                            "treasuries",
+                            "bills",
+                            "coupons",
+                            "notes",
+                            "tips",
+                            "mbs",
+                            "cmbs",
+                            "municipal",
+                            "corporate",
+                            "commercial_paper",
+                            "corporate_ig",
+                            "corporate_junk",
+                            "abs"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PrimaryDealerPositioning]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['federal_reserve']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "value",
+                        "type": "int",
+                        "description": "The reported value of the net position (long - short), in millions of $USD.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Short name for the series.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "PrimaryDealerPositioning"
+        },
         "/equity/calendar/ipo": {
             "deprecated": {
                 "flag": null,

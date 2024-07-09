@@ -16,7 +16,7 @@ class ROUTER_derivatives(Container):
     @property
     def futures(self):
         # pylint: disable=import-outside-toplevel
-        from . import derivatives_futures
+        from . import derivatives_futures  # type: ignore[attr-defined]
 
         return derivatives_futures.ROUTER_derivatives_futures(
             command_runner=self._command_runner

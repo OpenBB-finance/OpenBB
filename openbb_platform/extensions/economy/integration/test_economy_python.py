@@ -874,3 +874,27 @@ def test_economy_survey_manufacturing_outlook_texas(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": "2024-01-01",
+                "end_date": "2024-04-01",
+                "category": "cmbs",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_primary_dealer_positioning(params, obb):
+    """Test the economy primary dealer positioning endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.primary_dealer_positioning(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
