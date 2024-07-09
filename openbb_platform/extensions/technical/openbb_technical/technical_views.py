@@ -334,7 +334,7 @@ class TechnicalViews:
     ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Relative Rotation Chart."""
         # pylint: disable=import-outside-toplevel
-        from opencc_charting.charts import relative_rotation  # noqa
+        from openbb_charting.charts import relative_rotation  # noqa
         from openbb_charting.core.chart_style import ChartStyle  # noqa
         from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
         from openbb_core.app.utils import basemodel_to_df  # noqa
