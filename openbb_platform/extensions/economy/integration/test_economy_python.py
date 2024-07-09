@@ -532,7 +532,7 @@ def test_economy_long_term_interest_rate(params, obb):
                 "region_type": None,
                 "season": None,
                 "aggregation_method": "avg",
-                "transform": "lin",
+                "transform": "chg",
                 "provider": "fred",
                 "limit": None,
             }
