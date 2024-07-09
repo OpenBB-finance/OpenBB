@@ -654,7 +654,9 @@ def test_charting_derivatives_futures_historical(params, obb):
         (
             {
                 "provider": "yfinance",
-                "symbol": "VX",
+                "symbol": "ES",
+                "date": None,
+                "chart": True,
             }
         ),
         (
@@ -662,6 +664,7 @@ def test_charting_derivatives_futures_historical(params, obb):
                 "provider": "cboe",
                 "symbol": "VX",
                 "date": "2024-06-25",
+                "chart": True,
             }
         ),
     ],
