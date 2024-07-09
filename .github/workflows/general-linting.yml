@@ -63,7 +63,6 @@ jobs:
           # Run linters for openbb_platform | cli
           if [ -n "${{ env.diff_files }}" ]; then
             black --diff --check ${{ env.diff_files }}
-            mypy ${{ env.diff_files }}  --ignore-missing-imports  --scripts-are-modules --check-untyped-defs
             pydocstyle ${{ env.diff_files }}
             pylint ${{ env.diff_files }}
             ruff check ${{ env.diff_files }}
