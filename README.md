@@ -4,6 +4,17 @@
 <br />
 <br />
 
+---
+If you are looking for the first AI financial terminal for professionals, the OpenBB Terminal Pro can be found at [pro.openbb.co](https://pro.openbb.co)
+
+<a href="https://pro.openbb.co">
+  <div align="center">
+  <img src="https://openbb.co/api/image?src=%2Fassets%2Fimages%2Fhome%2Fhero.png&width=2400&fit=cover&position=center&background[]=0&background[]=0&background[]=0&background[]=0&quality=100&compressionLevel=9&loop=0&delay=100&crop=null" alt="Logo" width="600">
+  </div>
+</a>
+
+---
+
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=Follow%20%40openbb_finance)](https://twitter.com/openbb_finance)
 ![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
 [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/OpenBB-finance/OpenBB)
@@ -20,17 +31,6 @@ The first financial Platform that is free and fully open source.
 Offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
 
 Sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
-
----
-If you are looking for the first AI financial terminal for professionals, the OpenBB Terminal Pro can be found at [pro.openbb.co](https://pro.openbb.co)
-
-<a href="https://pro.openbb.co">
-  <div align="center">
-  <img src="https://openbb.co/api/image?src=%2Fassets%2Fimages%2Fhome%2Fhero.png&width=2400&fit=cover&position=center&background[]=0&background[]=0&background[]=0&background[]=0&quality=100&compressionLevel=9&loop=0&delay=100&crop=null" alt="Logo" width="600">
-  </div>
-</a>
-
----
 
 <!-- TABLE OF CONTENTS -->
 <details closed="closed">
