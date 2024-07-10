@@ -74,9 +74,9 @@ class OECDGdpNominalFetcher(
         # Even changing the encoding on the fetch doesn't seem to help.
         data_df = data_df.rename(
             columns={
-                'ï»¿"LOCATION"': "country",
-                "TIME": "date",
-                "Value": "value",
+                "LOCATION": "country",
+                "TIME_PERIOD": "date",
+                "OBS_VALUE": "value",
                 "Location": "country",
             }
         )

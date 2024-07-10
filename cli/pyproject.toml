@@ -1,14 +1,14 @@
 [tool.poetry]
 name = "openbb-cli"
-version = "1.0.4"
+version = "1.1.0"
 description = "Investment Research for Everyone, Anywhere."
 authors = ["OpenBB <hello@openbb.co>"]
 packages = [{ include = "openbb_cli" }]
 license = "AGPL-3.0-only"
 readme = "README.md"
 homepage = "https://openbb.co"
-repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
-documentation = "https://docs.openbb.co/terminal"
+repository = "https://github.com/OpenBB-finance/OpenBB"
+documentation = "https://docs.openbb.co/cli"
 
 [tool.poetry.scripts]
 openbb = 'openbb_cli.cli:main'
@@ -17,7 +17,7 @@ openbb = 'openbb_cli.cli:main'
 python = "^3.9,<3.13"
 
 # OpenBB dependencies
-openbb = { version = "^4.2.3", extras = ["all"] }
+openbb = { version = "^4.3.0", extras = ["all"] }
 
 # CLI dependencies
 prompt-toolkit = "^3.0.16"

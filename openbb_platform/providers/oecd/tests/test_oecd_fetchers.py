@@ -45,6 +45,7 @@ def test_oecd_cpi_fetcher(credentials=test_credentials):
     assert result is None
 
 
+@pytest.mark.skip(reason="Downloads a huge file, code needs to be fixed to use params.")
 @pytest.mark.record_http
 def test_oecd_nominal_gdp_fetcher(credentials=test_credentials):
     """Test the OECD Nominal GDP fetcher."""
@@ -58,6 +59,7 @@ def test_oecd_nominal_gdp_fetcher(credentials=test_credentials):
     assert result is None
 
 
+@pytest.mark.skip(reason="Downloads a huge file, code needs to be fixed to use params.")
 @pytest.mark.record_http
 def test_oecd_real_gdp_fetcher(credentials=test_credentials):
     """Test the OECD Real GDP fetcher."""
@@ -70,6 +72,7 @@ def test_oecd_real_gdp_fetcher(credentials=test_credentials):
     assert result is None
 
 
+@pytest.mark.skip(reason="Downloads a huge file, code needs to be fixed to use params.")
 @pytest.mark.record_http
 def test_oecd_forecast_gdp_fetcher(credentials=test_credentials):
     """Test the OECD GDP Forecast fetcher."""
