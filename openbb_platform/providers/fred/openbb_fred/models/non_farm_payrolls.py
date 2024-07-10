@@ -1,4 +1,4 @@
-"""FRED High Quality Market Corporate Bond Model."""
+"""FRED Nonfarm Payrolls Model."""
 
 # pylint: disable=unused-argument
 
