@@ -427,7 +427,8 @@ class Store(Data):
             return "All data stores cleared."
         return None
 
-    def _compress_store(self, data):
+    @staticmethod
+    def _compress_store(data):
         """Compress a stored data object."""
         if hasattr(data, "charting"):
             # This is to prevent "cannot pickle '_contextvars.Context' object" error
@@ -438,7 +439,8 @@ class Store(Data):
         signature = hashlib.sha1(pickled_data).hexdigest()  # noqa
         return {"archive": lzma.compress(pickled_data), "signature": signature}
 
-    def _decompress_store(self, data):
+    @staticmethod
+    def _decompress_store(data):
         """Decompress a stored data object."""
         decompressed_data = lzma.decompress(data["archive"])
         signature = data["signature"]
