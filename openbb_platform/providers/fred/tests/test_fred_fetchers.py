@@ -27,6 +27,7 @@ from openbb_fred.models.manufacturing_outlook_texas import (
 )
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
+from openbb_fred.models.non_farm_payrolls import FredNonFarmPayrollsFetcher
 from openbb_fred.models.overnight_bank_funding_rate import (
     FredOvernightBankFundingRateFetcher,
 )
@@ -474,6 +475,19 @@ def test_fred_overnight_bank_funding_rate_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredOvernightBankFundingRateFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_non_farm_payrolls_fetcher(credentials=test_credentials):
+    """Test FredNonFarmPayrollsFetcher."""
+    params = {
+        "date": "2024-06-01",
+        "category": "avg_earnings_weekly",
+    }
+
+    fetcher = FredNonFarmPayrollsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
