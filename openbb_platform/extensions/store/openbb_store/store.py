@@ -1,6 +1,6 @@
 """Store Model for OpenBB Obbject Callbacks."""
 
-# pylint: disable=too-many-branches,too-many-return-statements,inconsistent-return-type,too-many-arguments
+# pylint: disable=too-many-branches,too-many-return-statements,too-many-arguments
 
 import hashlib
 import lzma
