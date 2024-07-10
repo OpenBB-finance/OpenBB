@@ -27,6 +27,9 @@ from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
 from openbb_fred.models.overnight_bank_funding_rate import (
     FredOvernightBankFundingRateFetcher,
 )
+from openbb_fred.models.personal_consumption_expenditures import (
+    FredPersonalConsumptionExpendituresFetcher,
+)
 from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
@@ -76,6 +79,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
         "MortgageIndices": FredMortgageIndicesFetcher,
         "OvernightBankFundingRate": FredOvernightBankFundingRateFetcher,
+        "PersonalConsumptionExpenditures": FredPersonalConsumptionExpendituresFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,
