@@ -417,6 +417,11 @@ class Store(Data):
 
     def _compress_store(self, data):
         """Compress a stored data object."""
+        if hasattr(data, "charting"):
+            # This is to prevent "cannot pickle '_contextvars.Context' object" error
+            # If the extension is installed, it will be activated again on restore.
+            del data.charting
+
         pickled_data = pickletools.optimize(pickle.dumps(data))
         signature = hashlib.sha1(pickled_data).hexdigest()  # noqa
         return {"archive": lzma.compress(pickled_data), "signature": signature}
