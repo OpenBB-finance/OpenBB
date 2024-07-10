@@ -318,9 +318,7 @@ class Store(Data):
         return decompressed_schema
 
     def save_store_to_file(
-        self,
-        filename,
-        names: Optional[List[str]] = None
+        self, filename, names: Optional[List[str]] = None
     ) -> Union[str, None]:
         """Save the Store object, or a list of store names, to a compressed shelf file."""
         names = names or self.list_stores
@@ -346,9 +344,7 @@ class Store(Data):
         return None
 
     def load_store_from_file(
-        self,
-        filename,
-        names: Optional[List[str]] = None
+        self, filename, names: Optional[List[str]] = None
     ) -> Union[str, None]:
         """Load the Store object from a file."""
         filename = (
