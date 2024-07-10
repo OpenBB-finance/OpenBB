@@ -1,4 +1,4 @@
-"""Store Model for OpenBB Obbject Callbacks."""
+"""Store Class."""
 
 # pylint: disable=too-many-branches,too-many-return-statements,too-many-arguments
 
