@@ -1,6 +1,6 @@
 """Store Model for OpenBB Obbject Callbacks."""
 
-# pylint: disable=too-many-branches,too-many-return-statements,inconsistent-return-type
+# pylint: disable=too-many-branches,too-many-return-statements,inconsistent-return-type,too-many-arguments
 
 import hashlib
 import lzma
@@ -146,7 +146,7 @@ class Store(Data):
         name: str,
         data: Union[OBBject, Data, "DataFrame", Dict, List, str],
         description: Optional[str] = None,
-    ):
+    ) -> Union[str, None]:
         """Add a stored data object."""
         if name in self.directory:
             raise ValueError(
@@ -181,19 +181,19 @@ class Store(Data):
             and data[0].__class__.__name__ == "Data"  # type: ignore
         ):
             schema = data.model_copy()  # type: ignore
-            schema_repr = schema.__repr__()[:80]
+            schema_repr = schema.__repr__()[:80]  # pylint: disable=C2801
         elif data_class == "dict":
             schema = {
                 "length": len(data),  # type: ignore
                 "keys": list(data.keys()),  # type: ignore
-                "types": list(set([d.__class__.__name__ for d in data.values()])),  # type: ignore
+                "types": list(set([d.__class__.__name__ for d in data.values()])),  # type: ignore  # pylint: disable=R1718
                 "types_map": {k: v.__class__.__name__ for k, v in data.items()},  # type: ignore
             }
             schema_repr = str(schema)[:80]
         elif data_class == "list":
             schema = {
                 "length": len(data),  # type: ignore
-                "types": list(set([d.__class__.__name__ for d in data])),
+                "types": list(set([d.__class__.__name__ for d in data])),  # type: ignore  # pylint: disable=R1718
                 "first_value": data[0],  # type: ignore
             }
             schema_repr = str(schema)[:80]
@@ -230,6 +230,7 @@ class Store(Data):
         self.directory.update(directory_entry)
         if self.verbose:
             return f"Data store '{name}' added successfully."
+        return None
 
     def get_store(
         self,
@@ -255,6 +256,9 @@ class Store(Data):
             Dictionary of `chart_params` to pass to `to_chart`.
             Ignored if the stored object is not an instance of "OBBject".
         """
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         if not name:
             name = self.list_stores[0] if self.list_stores else ""  # type: ignore
         if name not in self.directory:
@@ -313,7 +317,11 @@ class Store(Data):
 
         return decompressed_schema
 
-    def save_store_to_file(self, filename, names: Optional[List[str]] = None):
+    def save_store_to_file(
+        self,
+        filename,
+        names: Optional[List[str]] = None
+    ) -> Union[str, None]:
         """Save the Store object, or a list of store names, to a compressed shelf file."""
         names = names or self.list_stores
         temp = {
@@ -335,8 +343,13 @@ class Store(Data):
 
         if self.verbose:
             return f"{filename} saved successfully."
+        return None
 
-    def load_store_from_file(self, filename, names: Optional[List[str]] = None):
+    def load_store_from_file(
+        self,
+        filename,
+        names: Optional[List[str]] = None
+    ) -> Union[str, None]:
         """Load the Store object from a file."""
         filename = (
             filename + ".xz"
@@ -377,27 +390,28 @@ class Store(Data):
 
         if self.verbose:
             return f"{filename} loaded successfully."
+        return None
 
     def update_store(
         self,
         name: str,
         data: Union[OBBject, Data, "DataFrame", Dict, List, str],
         description: Optional[str] = None,
-    ):
+    ) -> Union[str, None]:
         """Overwrite an existing stored data object."""
         if name not in self.directory:
             raise ValueError(f"Data store '{name}' does not exist.")
-        self.remove_store(name, verbose=False)  # type: ignore
+        self.remove_store(name)
         self.add_store(
             name=name,
             data=data,
             description=description,
-            verbose=False,  # type: ignore
         )
         if self.verbose:
             return f"Data store '{name}' updated successfully."
+        return None
 
-    def remove_store(self, name: str):
+    def remove_store(self, name: str) -> Union[str, None]:
         """Remove a stored data object by name."""
         if name not in self.directory:
             raise ValueError(f"Data store '{name}' does not exist.")
@@ -406,14 +420,16 @@ class Store(Data):
         self.schemas.pop(name)
         if self.verbose:
             return f"Data store '{name}' removed successfully."
+        return None
 
-    def clear_stores(self):
+    def clear_stores(self) -> Union[str, None]:
         """Clear all stored data objects from memory."""
         self.directory = {}
         self.archives = {}
         self.schemas = {}
         if self.verbose:
             return "All data stores cleared."
+        return None
 
     def _compress_store(self, data):
         """Compress a stored data object."""
