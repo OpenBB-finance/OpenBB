@@ -28,6 +28,9 @@ from openbb_fred.models.non_farm_payrolls import FredNonFarmPayrollsFetcher
 from openbb_fred.models.overnight_bank_funding_rate import (
     FredOvernightBankFundingRateFetcher,
 )
+from openbb_fred.models.personal_consumption_expenditures import (
+    FredPersonalConsumptionExpendituresFetcher,
+)
 from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
@@ -78,6 +81,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "MortgageIndices": FredMortgageIndicesFetcher,
         "NonFarmPayrolls": FredNonFarmPayrollsFetcher,
         "OvernightBankFundingRate": FredOvernightBankFundingRateFetcher,
+        "PersonalConsumptionExpenditures": FredPersonalConsumptionExpendituresFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,

@@ -29,6 +29,7 @@ class ROUTER_economy(Container):
     indicators
     long_term_interest_rate
     money_measures
+    pce
     primary_dealer_positioning
     retail_prices
     risk_premium
@@ -1803,6 +1804,96 @@ class ROUTER_economy(Container):
                     "adjusted": adjusted,
                 },
                 extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def pce(
+        self,
+        date: Annotated[
+            Union[str, datetime.date, None, List[Union[str, datetime.date, None]]],
+            OpenBBField(
+                description="A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get Personal Consumption Expenditures (PCE) reports.
+
+        Parameters
+        ----------
+        date : Union[str, datetime.date, None, List[Union[str, datetime.d...
+            A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.
+        provider : Optional[Literal['fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        category : Literal['personal_income', 'wages_by_industry', 'real_pce_percent_change', 'real_pce_quantity_index', 'pce_price_index', 'pce_dollars', 'real_pce_chained_dollars', 'pce_price_percent_change']
+            The category to query. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[PersonalConsumptionExpenditures]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        PersonalConsumptionExpenditures
+        -------------------------------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        value : float
+
+        name : Optional[str]
+            The name of the series. (provider: fred)
+        element_id : Optional[str]
+            The element id in the parent/child relationship. (provider: fred)
+        parent_id : Optional[str]
+            The parent id in the parent/child relationship. (provider: fred)
+        children : Optional[str]
+            The element_id of each child, as a comma-separated string. (provider: fred)
+        level : Optional[int]
+            The indentation level of the element. (provider: fred)
+        line : Optional[int]
+            The line number of the series in the table. (provider: fred)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.pce(provider='fred')
+        >>> # Get reports for multiple dates, entered as a comma-separated string.
+        >>> obb.economy.pce(provider='fred', date='2024-05-01,2024-04-01,2023-05-01', category='pce_price_index')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/pce",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.pce",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "date": date,
+                },
+                extra_params=kwargs,
+                info={"date": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
