@@ -131,7 +131,7 @@ class FredPersonalConsumptionExpendituresFetcher(
         dates: List = [""]
 
         if query.date:
-            if query.date and isinstance(query.date, dateType):
+            if isinstance(query.date, dateType):
                 query.date = query.date.strftime("%Y-%m-%d")
             dates = query.date.split(",")  # type: ignore
             dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
