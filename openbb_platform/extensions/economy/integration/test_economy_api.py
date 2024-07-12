@@ -173,17 +173,19 @@ def test_economy_gdp_forecast(params, headers):
     [
         (
             {
-                "units": "usd",
+                "country": "united_states",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "provider": "oecd",
+                "provider": "econdb",
+                "use_cache": False,
             }
         ),
         (
             {
                 "country": "united_states",
                 "provider": "oecd",
-                "units": "usd",
+                "units": "level",
+                "price_base": "volume",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
