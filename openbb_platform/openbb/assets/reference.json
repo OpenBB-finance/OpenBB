@@ -2745,7 +2745,7 @@
                     {
                         "name": "country",
                         "type": "Union[str, List[str]]",
-                        "description": "The country to get data.Use 'all' to get data for all available countries. Multiple items allowed for provider(s): oecd.",
+                        "description": "The country to get data. Use 'all' to get data for all available countries. Multiple items allowed for provider(s): oecd.",
                         "default": "united_states",
                         "optional": true,
                         "choices": [
@@ -2813,7 +2813,7 @@
                         "name": "frequency",
                         "type": "Literal['quarter', 'annual']",
                         "description": "Frequency of the data.",
-                        "default": "quarterly",
+                        "default": "quarter",
                         "optional": true,
                         "choices": [
                             "quarter",

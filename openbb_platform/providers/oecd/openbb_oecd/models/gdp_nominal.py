@@ -36,13 +36,13 @@ class OECDGdpNominalQueryParams(GdpNominalQueryParams):
 
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", "")
-        + "Use 'all' to get data for all available countries.",
+        + " Use 'all' to get data for all available countries.",
         default="united_states",
         json_schema_extra={"choices": COUNTRIES},  # type: ignore
     )
     frequency: Literal["quarter", "annual"] = Field(
         description="Frequency of the data.",
-        default="quarterly",
+        default="quarter",
         json_schema_extra={"choices": ["quarter", "annual"]},
     )
     units: Literal["level", "index", "capita"] = Field(
@@ -176,11 +176,11 @@ class OECDGdpNominalFetcher(
 
         def apply_map(x):
             """Apply the country map."""
-            v = COUNTRY_TO_CODE_GDP.get(x, x)
+            v = CODE_TO_COUNTRY_GDP.get(x, x)
             v = v.replace("_", " ").title()
             return v
 
-        df["country"] = df["country"].apply(apply_map)
+        df["country"] = df["country"].apply(apply_map).str.replace("Oecd", "OECD")
         df["date"] = df["date"].apply(oecd_date_to_python_date)
         df = df[(df["date"] <= query.end_date) & (df["date"] >= query.start_date)]
         if query.units == "level":
