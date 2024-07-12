@@ -1,130 +1,234 @@
-"""OECD CLI Data."""
+"""OECD Composite Leading Indicator Data."""
+
+# pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
+from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.composite_leading_indicator import (
-    CLIData,
-    CLIQueryParams,
+    CompositeLeadingIndicatorData,
+    CompositeLeadingIndicatorQueryParams,
 )
-from openbb_oecd.utils.constants import CODE_TO_COUNTRY_CLI, COUNTRY_TO_CODE_CLI
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
-countries = tuple(CODE_TO_COUNTRY_CLI.values()) + ("all",)
-CountriesLiteral = Literal[countries]  # type: ignore
+COUNTRIES = {
+    "g20": "G20",
+    "g7": "G7",
+    "asia5": "A5M",
+    "north_america": "NAFTA",
+    "europe4": "G4E",
+    "australia": "AUS",
+    "brazil": "BRA",
+    "canada": "CAN",
+    "china": "CHN",
+    "france": "FRA",
+    "germany": "DEU",
+    "india": "IND",
+    "indonesia": "IDN",
+    "italy": "ITA",
+    "japan": "JPN",
+    "mexico": "MEX",
+    "spain": "ESP",
+    "south_africa": "ZAF",
+    "south_korea": "KOR",
+    "turkey": "TUR",
+    "united_states": "USA",
+    "united_kingdom": "GBR",
+}
+COUNTRY_CHOICES = list(COUNTRIES) + ["all"]
+Countries = Literal[
+    "g20",
+    "g7",
+    "asia5",
+    "north_america",
+    "europe4",
+    "australia",
+    "brazil",
+    "canada",
+    "china",
+    "france",
+    "germany",
+    "india",
+    "indonesia",
+    "italy",
+    "japan",
+    "mexico",
+    "south_africa",
+    "south_korea",
+    "spain",
+    "turkey",
+    "united_kingdom",
+    "united_states",
+    "all",
+]
 
 
-class OECDCLIQueryParams(CLIQueryParams):
-    """OECD CLI Query."""
+class OECDCompositeLeadingIndicatorQueryParams(CompositeLeadingIndicatorQueryParams):
+    """OECD Composite Leading Indicator Query."""
 
-    country: CountriesLiteral = Field(
-        description="Country to get GDP for.", default="united_states"
+    __json_schema_extra__ = {
+        "country": {"multiple_items_allowed": True},
+    }
+
+    country: Union[Countries, str] = Field(
+        description="Country to get the CLI for, default is G20.",
+        default="g20",
+        json_schema_extra={"choices": COUNTRY_CHOICES},  # type: ignore
+    )
+    adjustment: Literal["amplitude", "normalized"] = Field(
+        default="amplitude",
+        description="Adjustment of the data, either 'amplitude' or 'normalized'."
+        + " Default is amplitude.",
+    )
+    growth_rate: bool = Field(
+        default=False,
+        description="Return the 1-year growth rate (%) of the CLI, default is False.",
     )
 
-
-class OECDCLIData(CLIData):
-    """OECD CLI Data."""
-
-    @field_validator("date", mode="before")
+    @field_validator("country", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, in_date):
-        """Validate value."""
-        # pylint: disable=import-outside-toplevel
-        import re
-        from datetime import timedelta
-
-        if isinstance(in_date, str):
-            # i.e 2022-Q1
-            if re.match(r"\d{4}-Q[1-4]$", in_date):
-                year, quarter = in_date.split("-")
-                _year = int(year)
-                if quarter == "Q1":
-                    return date(_year, 3, 31)
-                if quarter == "Q2":
-                    return date(_year, 6, 30)
-                if quarter == "Q3":
-                    return date(_year, 9, 30)
-                if quarter == "Q4":
-                    return date(_year, 12, 31)
-            # Now match if it is monthly, i.e 2022-01
-            elif re.match(r"\d{4}-\d{2}$", in_date):
-                year, month = map(int, in_date.split("-"))  # type: ignore
-                if month == 12:
-                    return date(year, month, 31)  # type: ignore
-                next_month = date(year, month + 1, 1)  # type: ignore
-                return date(next_month.year, next_month.month, 1) - timedelta(days=1)
-            # Now match if it is yearly, i.e 2022
-            elif re.match(r"\d{4}$", in_date):
-                return date(int(in_date), 12, 31)
-        # If the input date is a year
-        if isinstance(in_date, int):
-            return date(in_date, 12, 31)
-
-        return in_date
+    def country_validate(cls, v):
+        """Validate countries."""
+        if v is None:
+            return "g20"
+        new_countries: List = []
+        if isinstance(v, str):
+            countries = v.split(",")
+        elif isinstance(v, list):
+            countries = v
+        if "all" in countries:
+            return "all"
+        for country in countries:
+            if country.lower() not in COUNTRY_CHOICES:
+                warn(f"Country {country} not supported, skipping...")
+            else:
+                new_countries.append(country)
+        if not new_countries:
+            raise OpenBBError("No valid countries found.")
+        return ",".join(new_countries)
 
 
-class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
-    """Transform the query, extract and transform the data from the OECD endpoints."""
+class OECDCompositeLeadingIndicatorData(CompositeLeadingIndicatorData):
+    """OECD Composite Leading Indicator Data."""
+
+
+class OECDCompositeLeadingIndicatorFetcher(
+    Fetcher[
+        OECDCompositeLeadingIndicatorQueryParams,
+        List[OECDCompositeLeadingIndicatorData],
+    ]
+):
+    """OECD Composite Leading Indicator Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDCLIQueryParams:
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> OECDCompositeLeadingIndicatorQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
-        if transformed_params["start_date"] is None:
-            transformed_params["start_date"] = date(1950, 1, 1)
-        if transformed_params["end_date"] is None:
+
+        if not transformed_params.get("start_date"):
+            transformed_params["start_date"] = (
+                date(2020, 1, 1)
+                if transformed_params.get("country") == "all"
+                else date(1947, 1, 1)
+            )
+
+        if not transformed_params.get("end_date"):
             transformed_params["end_date"] = date(date.today().year, 12, 31)
 
-        return OECDCLIQueryParams(**transformed_params)
+        if not transformed_params.get("country"):
+            transformed_params["country"] = "g20"
 
-    # pylint: disable=unused-argument
+        return OECDCompositeLeadingIndicatorQueryParams(**transformed_params)
+
     @staticmethod
-    def extract_data(
-        query: OECDCLIQueryParams,
+    async def aextract_data(
+        query: OECDCompositeLeadingIndicatorQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_oecd.utils import helpers
+        from io import StringIO  # noqa
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date
+        from pandas import read_csv
+        from openbb_core.provider.utils.helpers import amake_request
 
-        country = "" if query.country == "all" else COUNTRY_TO_CODE_CLI[query.country]
+        COUNTRY_MAP = {v: k.replace("_", " ").title() for k, v in COUNTRIES.items()}
 
-        # Note this is only available monthly from OECD
-        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/{country}.M.LI...."
+        growth_rate = "GY" if query.growth_rate is True else "IX"
+        adjustment = "AA" if query.adjustment == "amplitude" else "NOR"
 
-        query_dict = {
-            k: v
-            for k, v in query.__dict__.items()
-            if k not in ["start_date", "end_date"]
-        }
-        data = helpers.get_possibly_cached_data(
-            url, function="economy_composite_leading_indicator", query_dict=query_dict
+        if growth_rate == "GY":
+            adjustment = ""
+
+        def country_string(input_str: str):
+            if input_str == "all":
+                return ""
+            _countries = input_str.split(",")
+            return "+".join([COUNTRIES[country.lower()] for country in _countries])
+
+        country = country_string(query.country) if query.country else ""
+        url = (
+            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI,4.1"
+            + f"/{country}.M.LI...{adjustment}.{growth_rate}..H"
+            + f"?startPeriod={query.start_date}&endPeriod={query.end_date}"
+            + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly&format=csvfile"
         )
 
-        if query.country != "all":
-            data = data.query(f"REF_AREA == '{country}'")
+        async def response_callback(response, _):
+            """Response callback."""
+            if response.status != 200:
+                raise OpenBBError(f"Error with the OECD request: {response.status}")
+            return await response.text()
 
-        # Filter down
-        data = data.reset_index(drop=True)[["REF_AREA", "TIME_PERIOD", "VALUE"]].rename(
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "VALUE": "value"}
+        headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
+        response = await amake_request(
+            url, timeout=30, headers=headers, response_callback=response_callback
         )
-        data["country"] = data["country"].map(CODE_TO_COUNTRY_CLI)
 
-        data = data.to_dict(orient="records")
-        start_date = query.start_date.strftime("%Y-%m-%d")  # type: ignore
-        end_date = query.end_date.strftime("%Y-%m-%d")  # type: ignore
-        data = list(filter(lambda x: start_date <= x["date"] <= end_date, data))
+        df = read_csv(StringIO(response)).get(  # type: ignore
+            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
+        )
 
-        return data
+        if df.empty:  # type: ignore
+            raise EmptyDataError("No data was found.")
 
-    # pylint: disable=unused-argument
+        df = df.rename(  # type: ignore
+            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
+        )
+        df.country = [
+            (
+                COUNTRY_MAP.get(d, d)
+                .replace("Asia5", "Major 5 Asian Economies")
+                .replace("Europe4", "Major 4 European Economies")
+            )
+            for d in df.country
+        ]
+        df.date = df.date.apply(oecd_date_to_python_date)
+
+        if query.growth_rate is True:
+            df.value = df.value.astype(float) / 100
+
+        df = (
+            df.query("value.notnull()")
+            .set_index(["date", "country"])
+            .sort_index()
+            .reset_index()
+        )
+
+        return df.to_dict("records")
+
     @staticmethod
     def transform_data(
-        query: OECDCLIQueryParams,
+        query: OECDCompositeLeadingIndicatorQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[OECDCLIData]:
+    ) -> List[OECDCompositeLeadingIndicatorData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDCLIData.model_validate(d) for d in data]
+        return [OECDCompositeLeadingIndicatorData.model_validate(d) for d in data]

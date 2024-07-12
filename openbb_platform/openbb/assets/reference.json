@@ -5650,8 +5650,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Use the composite leading indicator (CLI).\n\nIt is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\n\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd')\n```\n\n",
+            "description": "Get the composite leading indicator (CLI).\n\nIt is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\n\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd', growth_rate=True)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -5681,9 +5681,49 @@
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']",
-                        "description": "Country to get GDP for.",
-                        "default": "united_states",
+                        "type": "Union[Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str], List[Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str]]]",
+                        "description": "Country to get the CLI for, default is G20. Multiple items allowed for provider(s): oecd.",
+                        "default": "g20",
+                        "optional": true,
+                        "choices": [
+                            "g20",
+                            "g7",
+                            "asia5",
+                            "north_america",
+                            "europe4",
+                            "australia",
+                            "brazil",
+                            "canada",
+                            "china",
+                            "france",
+                            "germany",
+                            "india",
+                            "indonesia",
+                            "italy",
+                            "japan",
+                            "mexico",
+                            "spain",
+                            "south_africa",
+                            "south_korea",
+                            "turkey",
+                            "united_states",
+                            "united_kingdom",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "adjustment",
+                        "type": "Literal['amplitude', 'normalized']",
+                        "description": "Adjustment of the data, either 'amplitude' or 'normalized'. Default is amplitude.",
+                        "default": "amplitude",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "growth_rate",
+                        "type": "bool",
+                        "description": "Return the 1-year growth rate (%) of the CLI, default is False.",
+                        "default": false,
                         "optional": true,
                         "choices": null
                     }
@@ -5693,7 +5733,7 @@
                 "OBBject": [
                     {
                         "name": "results",
-                        "type": "List[CLI]",
+                        "type": "List[CompositeLeadingIndicator]",
                         "description": "Serializable results."
                     },
                     {
@@ -5724,8 +5764,8 @@
                         "name": "date",
                         "type": "date",
                         "description": "The date of the data.",
-                        "default": null,
-                        "optional": true,
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     },
                     {
@@ -5739,15 +5779,15 @@
                     {
                         "name": "country",
                         "type": "str",
-                        "description": "Country for which CLI is given",
-                        "default": null,
-                        "optional": true,
+                        "description": "Country for the CLI value.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     }
                 ],
                 "oecd": []
             },
-            "model": "CLI"
+            "model": "CompositeLeadingIndicator"
         },
         "/economy/short_term_interest_rate": {
             "deprecated": {

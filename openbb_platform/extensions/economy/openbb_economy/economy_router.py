@@ -204,10 +204,10 @@ async def unemployment(
 
 
 @router.command(
-    model="CLI",
+    model="CompositeLeadingIndicator",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"country": "all", "provider": "oecd"}),
+        APIEx(parameters={"country": "all", "provider": "oecd", "growth_rate": True}),
     ],
 )
 async def composite_leading_indicator(
@@ -216,7 +216,7 @@ async def composite_leading_indicator(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Use the composite leading indicator (CLI).
+    """Get the composite leading indicator (CLI).
 
     It is designed to provide early signals of turning points
     in business cycles showing fluctuation of the economic activity around its long term potential level.
