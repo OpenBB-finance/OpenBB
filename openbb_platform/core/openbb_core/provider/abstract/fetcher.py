@@ -14,8 +14,6 @@ from typing import (
     get_origin,
 )
 
-from pandas import DataFrame
-
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -137,6 +135,9 @@ class Fetcher(Generic[Q, R]):
         AssertionError
             If any of the tests fail.
         """
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         query = cls.transform_query(params=params)
         data = run_async(
             cls.extract_data, query=query, credentials=credentials, **kwargs

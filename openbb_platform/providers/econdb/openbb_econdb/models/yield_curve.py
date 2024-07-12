@@ -14,9 +14,7 @@ from openbb_core.provider.standard_models.yield_curve import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_econdb.utils import helpers
 from openbb_econdb.utils.yield_curves import COUNTRIES, COUNTRIES_DICT, COUNTRIES_LIST
-from pandas import Categorical, DataFrame, DatetimeIndex
 from pydantic import Field, field_validator
 
 
@@ -74,6 +72,9 @@ class EconDbYieldCurveFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_econdb.utils import helpers
+
         token = credentials.get("econdb_api_key") if credentials else ""  # type: ignore
         # Attempt to create a temporary token if one is not supplied.
         if not token:
@@ -121,6 +122,9 @@ class EconDbYieldCurveFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[EconDbYieldCurveData]]:
         """Transform the data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame, DatetimeIndex
+
         maturity_order = list(COUNTRIES_DICT[query.country].values())
         dates = query.date.split(",")  # type: ignore
         dates_list = DatetimeIndex(dates)

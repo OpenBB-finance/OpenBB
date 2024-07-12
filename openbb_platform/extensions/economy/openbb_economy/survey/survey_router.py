@@ -86,3 +86,25 @@ async def manufacturing_outlook_texas(
 ) -> OBBject:
     """Get The Manufacturing Outlook Survey For The Texas Region."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="NonFarmPayrolls",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            parameters={
+                "category": "avg_hours",
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+async def nonfarm_payrolls(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Nonfarm Payrolls Survey."""
+    return await OBBject.from_query(Query(**locals()))

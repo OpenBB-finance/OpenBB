@@ -1,22 +1,19 @@
 """Cboe Equity Info Model."""
 
-# pylint: disable=invalid-name,too-many-locals, expression-not-assigned
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument,invalid-name,too-many-locals, expression-not-assigned
 
-from openbb_cboe.utils.helpers import (
-    TICKER_EXCEPTIONS,
-    get_company_directory,
-    get_index_directory,
-)
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteData,
     EquityQuoteQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_requests
-from pandas import DataFrame, concat
 from pydantic import Field
+
+if TYPE_CHECKING:
+    from pandas import DataFrame  # pylint: disable=import-outside-toplevel
 
 
 class CboeEquityQuoteQueryParams(EquityQuoteQueryParams):
@@ -114,11 +111,19 @@ class CboeEquityQuoteFetcher(
 
     @staticmethod
     async def aextract_data(
-        query: CboeEquityQuoteQueryParams,  # pylint: disable=unused-argument
+        query: CboeEquityQuoteQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Return the raw data from the Cboe endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_cboe.utils.helpers import (
+            TICKER_EXCEPTIONS,
+            get_company_directory,
+            get_index_directory,
+        )
+        from openbb_core.provider.utils.helpers import amake_requests
+        from pandas import DataFrame, concat
 
         symbols = query.symbol.split(",")
         # First get the index and company directories so we know how to handle the ticker symbols.
@@ -214,7 +219,7 @@ class CboeEquityQuoteFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeEquityQuoteQueryParams, data: DataFrame, **kwargs: Any
+        query: CboeEquityQuoteQueryParams, data: "DataFrame", **kwargs: Any
     ) -> List[CboeEquityQuoteData]:
         """Transform the data to the standard format."""
         data = data.replace(0, None).dropna(how="all", axis=1)

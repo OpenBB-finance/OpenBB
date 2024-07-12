@@ -16,20 +16,19 @@ from typing import (
     Union,
 )
 
-import pandas as pd
-from numpy import ndarray
 from pydantic import BaseModel, Field, PrivateAttr
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
-from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
-    from openbb_core.app.query import Query
+    from numpy import ndarray  # noqa
+    from pandas import DataFrame  # noqa
+    from openbb_core.app.query import Query  # noqa
 
     try:
         from polars import DataFrame as PolarsDataFrame  # type: ignore
@@ -86,13 +85,13 @@ class OBBject(Tagged, Generic[T]):
 
     def to_df(
         self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
-    ) -> pd.DataFrame:
+    ) -> "DataFrame":
         """Alias for `to_dataframe`."""
         return self.to_dataframe(index=index, sort_by=sort_by)
 
     def to_dataframe(
         self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
-    ) -> pd.DataFrame:
+    ) -> "DataFrame":
         """Convert results field to pandas dataframe.
 
         Supports converting creating pandas DataFrames from the following
@@ -120,9 +119,12 @@ class OBBject(Tagged, Generic[T]):
 
         Returns
         -------
-        pd.DataFrame
+        DataFrame
             Pandas dataframe.
         """
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, concat  # noqa
+        from openbb_core.app.utils import basemodel_to_df  # noqa
 
         def is_list_of_basemodel(items: Union[List[T], T]) -> bool:
             return isinstance(items, list) and all(
@@ -132,7 +134,7 @@ class OBBject(Tagged, Generic[T]):
         if self.results is None or not self.results:
             raise OpenBBError("Results not found.")
 
-        if isinstance(self.results, pd.DataFrame):
+        if isinstance(self.results, DataFrame):
             return self.results
 
         try:
@@ -152,9 +154,10 @@ class OBBject(Tagged, Generic[T]):
                         sort_columns = False
                     # Dict[str, Any]
                     else:
-                        dict_of_df[k] = pd.DataFrame(v)
+                        dict_of_df[k] = DataFrame(v)
 
-                df = pd.concat(dict_of_df, axis=1)
+                df = concat(dict_of_df, axis=1)
+
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: Union[List[Data], Data] = res  # type: ignore
@@ -164,24 +167,24 @@ class OBBject(Tagged, Generic[T]):
                     for prop in r.schema()["properties"].values()
                 ):
                     sort_columns = False
-                    df = pd.DataFrame(r.model_dump(exclude_unset=True))
+                    df = DataFrame(r.model_dump(exclude_unset=True))
                 else:
                     df = basemodel_to_df(dt, index)
                     sort_columns = False
             # str
             elif isinstance(res, str):
-                df = pd.DataFrame([res])
+                df = DataFrame([res])
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:
-                    df = pd.DataFrame(res)  # type: ignore[call-overload]
+                    df = DataFrame(res)  # type: ignore[call-overload]
                     # Set index, if any
                     if df is not None and index is not None and index in df.columns:
                         df.set_index(index, inplace=True)
 
                 except ValueError:
                     if isinstance(res, dict):
-                        df = pd.DataFrame([res])
+                        df = DataFrame([res])
 
             if df is None:
                 raise OpenBBError("Unsupported data format.")
@@ -221,7 +224,7 @@ class OBBject(Tagged, Generic[T]):
 
         return from_pandas(self.to_dataframe(index=None))
 
-    def to_numpy(self) -> ndarray:
+    def to_numpy(self) -> "ndarray":
         """Convert results field to numpy array."""
         return self.to_dataframe(index=None).to_numpy()
 

@@ -3,9 +3,7 @@
 # pylint: disable=protected-access,invalid-overridden-method
 import asyncio
 import random
-import re
 import warnings
-import zlib
 from typing import Any, Dict, Type, Union
 
 import aiohttp
@@ -16,6 +14,9 @@ FILTER_QUERY_REGEX = r".*key.*|.*token.*|.*auth.*|(c$)"
 
 def obfuscate(params: Union[CIMultiDict[str], MultiDict[str]]) -> Dict[str, Any]:
     """Obfuscate sensitive information."""
+    # pylint: disable=import-outside-toplevel
+    import re
+
     return {
         param: "********" if re.match(FILTER_QUERY_REGEX, param, re.IGNORECASE) else val
         for param, val in params.items()
@@ -110,6 +111,9 @@ class ClientSession(aiohttp.ClientSession):
         self, *args, raise_for_status: bool = False, **kwargs
     ) -> ClientResponse:
         """Send request."""
+        # pylint: disable=import-outside-toplevel
+        import zlib
+
         kwargs["headers"] = kwargs.get(
             "headers",
             # Default headers, makes sure we accept gzip

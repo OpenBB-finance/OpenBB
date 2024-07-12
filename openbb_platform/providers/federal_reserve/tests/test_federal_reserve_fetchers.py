@@ -16,6 +16,9 @@ from openbb_federal_reserve.models.money_measures import (
 from openbb_federal_reserve.models.overnight_bank_funding_rate import (
     FederalReserveOvernightBankFundingRateFetcher,
 )
+from openbb_federal_reserve.models.primary_dealer_positioning import (
+    FederalReservePrimaryDealerPositioningFetcher,
+)
 from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
@@ -104,5 +107,21 @@ def test_federal_reserve_overnight_bank_funding_rate_fetcher(
     params = {"start_date": date(2024, 6, 1), "end_date": date(2024, 6, 6)}
 
     fetcher = FederalReserveOvernightBankFundingRateFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_primary_dealer_positioning_fetcher(
+    credentials=test_credentials,
+):
+    """Test the Federal Reserve Primary Dealer Positioning Fetcher."""
+    params = {
+        "category": "cmbs",
+        "start_date": date(2024, 6, 1),
+        "end_date": date(2024, 6, 30),
+    }
+
+    fetcher = FederalReservePrimaryDealerPositioningFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

@@ -1,6 +1,5 @@
 """FMP ETF Countries Model."""
 
-import asyncio
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
@@ -10,9 +9,6 @@ from openbb_core.provider.standard_models.etf_countries import (
     EtfCountriesQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import create_url, response_callback
-from pandas import DataFrame
 
 
 class FMPEtfCountriesQueryParams(EtfCountriesQueryParams):
@@ -45,6 +41,12 @@ class FMPEtfCountriesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_fmp.utils.helpers import create_url, response_callback  # noqa
+        from pandas import DataFrame  # noqa
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
         results = {}

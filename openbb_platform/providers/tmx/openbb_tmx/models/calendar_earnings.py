@@ -1,9 +1,8 @@
 """TMX Earnings Calendar Model."""
 
 # pylint: disable=unused-argument
-import asyncio
-import json
-from datetime import datetime, timedelta
+
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,9 +10,6 @@ from openbb_core.provider.standard_models.calendar_earnings import (
     CalendarEarningsData,
     CalendarEarningsQueryParams,
 )
-from openbb_tmx.utils import gql
-from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent
-from pandas import date_range
 from pydantic import Field, field_validator
 
 
@@ -67,6 +63,9 @@ class TmxCalendarEarningsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxCalendarEarningsQueryParams:
         """Transform the query."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
             transformed_params["start_date"] = (
@@ -85,6 +84,13 @@ class TmxCalendarEarningsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import json  # noqa
+        from openbb_tmx.utils import gql  # noqa
+        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+        from pandas import date_range  # noqa
+
         results: List[Dict] = []
         user_agent = get_random_agent()
         dates = date_range(query.start_date, end=query.end_date)

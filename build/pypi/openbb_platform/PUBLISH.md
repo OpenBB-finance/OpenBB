@@ -12,7 +12,7 @@
 2. Bump `openbb` package version in `openbb_platform/pyproject.toml`.
 
 > [!WARNING]
-> The version must be incremented before running the tests in  4. and 5., since there are tests that rely of this to check for deprecated endpoints.
+> The version must be incremented before running the tests in  4. and 5., since there are tests that rely of this to check for deprecated endpoints. Pay attention to commands that should be deprecated in the version you will publish.
 
 3. Ensure all the CI workflows pass.
 4. Ensure all unit tests pass: `pytest openbb_platform -m "not integration"`

@@ -2,7 +2,6 @@
 
 # pylint: disable =unused-argument
 
-import asyncio
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,7 +9,6 @@ from openbb_core.provider.standard_models.form_13FHR import (
     Form13FHRData,
     Form13FHRQueryParams,
 )
-from openbb_sec.utils import parse_13f
 from pydantic import Field
 
 
@@ -52,6 +50,10 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, List[SecForm13FHRData
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the SEC endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_sec.utils import parse_13f  # noqa
+
         symbol = query.symbol
         urls = []
         cik = symbol.isnumeric()

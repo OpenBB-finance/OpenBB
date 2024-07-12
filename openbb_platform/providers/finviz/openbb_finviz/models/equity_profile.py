@@ -5,7 +5,6 @@
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
-from finvizfinance.quote import finvizfinance
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_info import (
     EquityInfoData,
@@ -97,6 +96,8 @@ class FinvizEquityProfileFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
+        # pylint: disable=import-outside-toplevel
+        from finvizfinance.quote import finvizfinance
 
         results: List = []
 

@@ -1,7 +1,7 @@
 """TMX Index Snapshots Model."""
 
 # pylint: disable=unused-argument
-import json
+
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,14 +10,6 @@ from openbb_core.provider.standard_models.index_snapshots import (
     IndexSnapshotsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_tmx.utils import gql
-from openbb_tmx.utils.helpers import (
-    NASDAQ_GIDS,
-    get_data_from_gql,
-    get_data_from_url,
-    get_random_agent,
-    tmx_indices_backend,
-)
 from pydantic import Field, field_validator
 
 
@@ -165,6 +157,17 @@ class TmxIndexSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import json  # noqa
+        from openbb_tmx.utils import gql  # noqa
+        from openbb_tmx.utils.helpers import (  # noqa
+            NASDAQ_GIDS,
+            get_data_from_gql,
+            get_data_from_url,
+            get_random_agent,
+            get_indices_backend,
+        )
+
         url = "https://tmxinfoservices.com/files/indices/sptsx-indices.json"
         user_agent = get_random_agent()
         results = []
@@ -172,7 +175,7 @@ class TmxIndexSnapshotsFetcher(
             data = await get_data_from_url(
                 url,
                 use_cache=query.use_cache,
-                backend=tmx_indices_backend,
+                backend=get_indices_backend(),
             )
             if not data:
                 raise EmptyDataError

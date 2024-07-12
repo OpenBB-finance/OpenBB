@@ -1,16 +1,15 @@
 """US Government Treasury Auctions Model."""
 
 # pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
-import requests
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_auctions import (
     USTreasuryAuctionsData,
     USTreasuryAuctionsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
 
 
 class GovernmentUSTreasuryAuctionsQueryParams(USTreasuryAuctionsQueryParams):
@@ -54,6 +53,13 @@ class GovernmentUSTreasuryAuctionsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from Treasury Direct API."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame  # noqa
+        from openbb_core.provider.utils.helpers import (
+            get_querystring,
+            make_request,
+        )  # noqa
+
         base_url = "https://www.treasurydirect.gov/TA_WS/securities/search?"
 
         _query = query.model_dump()
@@ -66,10 +72,10 @@ class GovernmentUSTreasuryAuctionsFetcher(
         query_string = get_querystring(_query, [])
 
         url = base_url + query_string + "&format=json"
-        r = requests.get(url, timeout=5)
+        r = make_request(url)
         if r.status_code != 200:
-            raise RuntimeError(r.status_code)
-        data = pd.DataFrame(r.json())
+            raise OpenBBError(f"{r.status_code}")
+        data = DataFrame(r.json())
         results = (
             data.fillna("N/A").replace("", None).replace("N/A", None).to_dict("records")
         )

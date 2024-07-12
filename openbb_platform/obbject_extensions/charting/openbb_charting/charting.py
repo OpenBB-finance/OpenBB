@@ -3,6 +3,7 @@
 # pylint: disable=too-many-arguments,unused-argument
 
 from typing import (
+    TYPE_CHECKING,
     Any,
     Callable,
     ClassVar,
@@ -16,23 +17,23 @@ from typing import (
 )
 from warnings import warn
 
-import numpy as np
-import pandas as pd
 from importlib_metadata import entry_points
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
-from plotly.graph_objs import Figure
 
-from openbb_charting.charts.generic_charts import bar_chart, line_chart
 from openbb_charting.charts.helpers import (
     get_charting_functions,
     get_charting_functions_list,
 )
-from openbb_charting.core.backend import Backend, create_backend, get_backend
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.query_params import ChartParams, IndicatorsParams
+
+if TYPE_CHECKING:
+    from numpy import ndarray  # noqa
+    from pandas import DataFrame, Series  # noqa
+    from plotly.graph_objs import Figure  # noqa
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
+    from openbb_charting.query_params import ChartParams  # noqa
+    from openbb_charting.core.backend import Backend  # noqa
 
 
 class Charting:
@@ -64,18 +65,24 @@ class Charting:
         entry_point.load()
         for entry_point in entry_points(group="openbb_charting_extension")
     ]
+    _format = "plotly"  # the charts computed by this extension will be in plotly format
 
     def __init__(self, obbject):
         """Initialize Charting extension."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.app.model.charts.charting_settings import ChartingSettings
+        import importlib  # noqa
+
+        charting_settings_module = importlib.import_module(
+            "openbb_core.app.model.charts.charting_settings", "ChartingSettings"
+        )
+        ChartingSettings = charting_settings_module.ChartingSettings
 
         self._obbject: OBBject = obbject
         self._charting_settings = ChartingSettings(
             user_settings=self._obbject._user_settings,  # type: ignore
             system_settings=self._obbject._system_settings,  # type: ignore
         )
-        self._backend: Backend = self._handle_backend()
+        self._backend = self._handle_backend()
         self._functions: Dict[str, Callable] = self._get_functions()
 
     @classmethod
@@ -84,6 +91,9 @@ class Charting:
 
         Without assigning to a variable, it will print the the information to the console.
         """
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.query_params import IndicatorsParams
+
         return IndicatorsParams()
 
     @classmethod
@@ -103,8 +113,11 @@ class Charting:
 
         return functions
 
-    def _handle_backend(self) -> Backend:
+    def _handle_backend(self) -> "Backend":
         """Create and start the backend."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.backend import create_backend, get_backend
+
         create_backend(self._charting_settings)
         backend = get_backend()
         backend.start(debug=self._charting_settings.debug_mode)
@@ -121,12 +134,15 @@ class Charting:
             )
         return self._functions[adjusted_route]
 
-    def get_params(self) -> Union[ChartParams, None]:
+    def get_params(self) -> Union["ChartParams", None]:
         """Return the ChartQueryParams class for the function the OBBject was created from.
 
         Without assigning to a variable, it will print the docstring to the console.
         If the class is not defined, the help for the function will be returned.
         """
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.query_params import ChartParams
+
         if self._obbject._route is None:  # pylint: disable=protected-access
             raise ValueError("OBBject was initialized with no function route.")
         charting_function = (
@@ -144,18 +160,22 @@ class Charting:
         )
 
     def _prepare_data_as_df(
-        self, data: Optional[Union[pd.DataFrame, pd.Series]]
-    ) -> Tuple[pd.DataFrame, bool]:
+        self, data: Optional[Union["DataFrame", "Series"]]
+    ) -> Tuple["DataFrame", bool]:
         """Convert supplied data to a DataFrame."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
+        from pandas import DataFrame, Series
+
         has_data = (
-            isinstance(data, (Data, pd.DataFrame, pd.Series)) and not data.empty  # type: ignore
+            isinstance(data, (Data, DataFrame, Series)) and not data.empty  # type: ignore
         ) or (bool(data))
         index = (
             data.index.name
-            if has_data and isinstance(data, (pd.DataFrame, pd.Series))
+            if has_data and isinstance(data, (DataFrame, Series))
             else None
         )
-        data_as_df: pd.DataFrame = (
+        data_as_df: DataFrame = (
             basemodel_to_df(convert_to_basemodel(data), index=index)
             if has_data
             else self._obbject.to_dataframe(index=index)
@@ -172,11 +192,11 @@ class Charting:
         data: Union[
             list,
             dict,
-            pd.DataFrame,
-            List[pd.DataFrame],
-            pd.Series,
-            List[pd.Series],
-            np.ndarray,
+            "DataFrame",
+            List["DataFrame"],
+            "Series",
+            List["Series"],
+            "ndarray",
             Data,
         ],
         index: Optional[str] = None,
@@ -195,12 +215,12 @@ class Charting:
         same_axis: bool = False,
         render: bool = True,
         **kwargs,
-    ) -> Union[OpenBBFigure, Figure, None]:
+    ) -> Union["OpenBBFigure", "Figure", None]:
         """Create a line chart from external data and render a chart or return the OpenBBFigure.
 
         Parameters
         ----------
-        data : Union[Data, pd.DataFrame, pd.Series]
+        data : Union[Data, DataFrame, Series]
             Data to be plotted (OHLCV data).
         index : Optional[str], optional
             Index column, by default None
@@ -238,6 +258,9 @@ class Charting:
         **kwargs: Dict[str, Any]
             Extra parameters to be passed to `figure.show()`
         """
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.generic_charts import line_chart
+
         fig = line_chart(
             data=data,
             index=index,
@@ -267,11 +290,11 @@ class Charting:
         data: Union[
             list,
             dict,
-            pd.DataFrame,
-            List[pd.DataFrame],
-            pd.Series,
-            List[pd.Series],
-            np.ndarray,
+            "DataFrame",
+            List["DataFrame"],
+            "Series",
+            List["Series"],
+            "ndarray",
             Data,
         ],
         x: str,
@@ -289,12 +312,12 @@ class Charting:
         bar_kwargs: Optional[Dict[str, Any]] = None,
         render: bool = True,
         **kwargs,
-    ) -> Union[OpenBBFigure, Figure, None]:
+    ) -> Union["OpenBBFigure", "Figure", None]:
         """Create a bar chart on a single x-axis with one or more values for the y-axis.
 
         Parameters
         ----------
-        data : Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], np.ndarray, Data]
+        data : Union[list, dict, DataFrame, List[DataFrame], Series, List[Series], ndarray, Data]
             Data to plot.
         x : str
             The x-axis column name.
@@ -321,6 +344,9 @@ class Charting:
         OpenBBFigure
             The OpenBBFigure object.
         """
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.generic_charts import bar_chart
+
         fig = bar_chart(
             data=data,
             x=x,
@@ -361,7 +387,7 @@ class Charting:
             fig, content = charting_function(**kwargs)
             fig = self._set_chart_style(fig)
             content = fig.show(external=True, **kwargs).to_plotly_json()
-            self._obbject.chart = Chart(fig=fig, content=content)
+            self._obbject.chart = Chart(fig=fig, content=content, format=self._format)
             if render:
                 fig.show(**kwargs)
         except Exception:  # pylint: disable=W0718
@@ -369,7 +395,9 @@ class Charting:
                 fig = self.create_line_chart(data=self._obbject.results, render=False, **kwargs)  # type: ignore
                 fig = self._set_chart_style(fig)
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
-                self._obbject.chart = Chart(fig=fig, content=content)
+                self._obbject.chart = Chart(
+                    fig=fig, content=content, format=self._format
+                )
                 if render:
                     return fig.show(**kwargs)  # type: ignore
             except Exception as e:
@@ -384,11 +412,11 @@ class Charting:
             Union[
                 list,
                 dict,
-                pd.DataFrame,
-                List[pd.DataFrame],
-                pd.Series,
-                List[pd.Series],
-                np.ndarray,
+                "DataFrame",
+                List["DataFrame"],
+                "Series",
+                List["Series"],
+                "ndarray",
                 Data,
             ]
         ] = None,
@@ -410,7 +438,7 @@ class Charting:
 
         Parameters
         ----------
-        data : Union[Data, pd.DataFrame, pd.Series]
+        data : Union[Data, DataFrame, Series]
             Data to be plotted.
         indicators : Dict[str, Dict[str, Any]], optional
             Indicators to be plotted, by default None
@@ -480,7 +508,9 @@ class Charting:
                 fig = self.create_line_chart(data=data_as_df, render=False, **kwargs)
                 fig = self._set_chart_style(fig)
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
-                self._obbject.chart = Chart(fig=fig, content=content)
+                self._obbject.chart = Chart(
+                    fig=fig, content=content, format=self._format
+                )
                 if render:
                     return fig.show(**kwargs)  # type: ignore
             except Exception as e:  # pylint: disable=W0718
@@ -488,7 +518,7 @@ class Charting:
                     "Failed to automatically create a generic chart with the data provided."
                 ) from e
 
-    def _set_chart_style(self, figure: Figure):
+    def _set_chart_style(self, figure: "Figure"):
         """Set the user preference for light or dark mode."""
         style = self._charting_settings.chart_style
         font_color = "black" if style == "light" else "white"
@@ -518,21 +548,24 @@ class Charting:
 
     def table(
         self,
-        data: Optional[Union[pd.DataFrame, pd.Series]] = None,
+        data: Optional[Union["DataFrame", "Series"]] = None,
         title: str = "",
     ):
         """Display an interactive table.
 
         Parameters
         ----------
-        data : Optional[Union[pd.DataFrame, pd.Series]], optional
+        data : Optional[Union[DataFrame, Series]], optional
             Data to be plotted, by default None.
             If no data is provided the OBBject results will be used.
         title : str, optional
             Title of the table, by default "".
         """
+        # pylint: disable=import-outside-toplevel
+        from pandas import RangeIndex
+
         data_as_df, _ = self._prepare_data_as_df(data)
-        if isinstance(data_as_df.index, pd.RangeIndex):
+        if isinstance(data_as_df.index, RangeIndex):
             data_as_df.reset_index(inplace=True, drop=True)
         else:
             data_as_df.reset_index(inplace=True)
@@ -548,9 +581,7 @@ class Charting:
                 warn(f"Failed to show figure with backend. {e}")
 
         else:
-            from plotly import (  # pylint:disable=import-outside-toplevel
-                optional_imports,
-            )
+            from plotly import optional_imports
 
             ipython_display = optional_imports.get_module("IPython.display")
             if ipython_display:

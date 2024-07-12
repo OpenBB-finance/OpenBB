@@ -549,7 +549,7 @@ def test_economy_long_term_interest_rate(params, headers):
                 "frequency": "w",
                 "units": "Number",
                 "region_type": "state",
-                "season": "NSA",
+                "season": "nsa",
                 "aggregation_method": "eop",
                 "transform": "ch1",
                 "provider": "fred",
@@ -921,6 +921,79 @@ def test_economy_survey_manufacturing_outlook_texas(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/survey/manufacturing_outlook_texas?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": "2024-01-01",
+                "end_date": "2024-04-01",
+                "category": "cmbs",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_primary_dealer_positioning(params, headers):
+    """Test the economy primary dealer positioning endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/primary_dealer_positioning?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": "2024-06-01,2023-06-01",
+                "category": "avg_earnings_hourly",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_nonfarm_payrolls(params, headers):
+    """Test the economy survey nonfarm payrolls endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/survey/nonfarm_payrolls?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": "2024-05-01,2024-04-01,2023-05-01",
+                "category": "pce_price_index",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_pce(params, headers):
+    """Test the economy pce endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/pce?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

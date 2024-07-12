@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.senior_loan_officer_survey import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import DataFrame
 from pydantic import Field
 
 SLOOS_CATEGORIES = {
@@ -23,7 +22,7 @@ SLOOS_CATEGORIES = {
     "firms": "DRISCFLM,DRISCFS,DRTSCILM,DRTSCIS",
     "mortgage": "DRTSSP,SUBLPDHMSGNQ,SUBLPDHMSENQ,SUBLPDHMSJNQ,SUBLPDHMSQNQ,SUBLPDHMSMNQ",
     "commercial_real_estate": "SUBLPDRCSN,SUBLPDRCSM,SUBLPDRCDCLGNQ,SUBLPFRCSNQ",
-    "standards": "DRTSCILM,DRTSCIS,DRTSCLCC,STDSAUTO,DRTSSP,SUBLPDHMSGNQ,STDSOTHCONS,SUBLPDHMSENQ,SUBLPDHMSJNQ,SUBLPDHMSQNQ,SUBLPDHMSMNQ,SUBLPDCLHSNQ,SUBLPDRCSN,SUBLPDRCSM,SUBLPFRCSNQ,SUBLPFCISNQ,SUBLPDMBSXWBNQ",
+    "standards": "DRTSCILM,DRTSCIS,DRTSCLCC,STDSAUTO,DRTSSP,SUBLPDHMSGNQ,STDSOTHCONS,SUBLPDHMSENQ,SUBLPDHMSJNQ,SUBLPDHMSQNQ,SUBLPDHMSMNQ,SUBLPDCLHSNQ,SUBLPDRCSN,SUBLPDRCSM,SUBLPFRCSNQ,SUBLPFCISNQ,SUBLPDMBSXWBNQ",  # noqa: E501  # pylint: disable=line-too-long
     "demand": "DEMCC,DEMAUTO,SUBLPDMODXWBNQ,SUBLPDMBDXWBNQ,SUBLPDRCDCLGNQ",
     "foreign_banks": "SUBLPFRCSNQ,SUBLPFCISNQ",
 }
@@ -93,7 +92,7 @@ class FredSeniorLoanOfficerSurveyFetcher(
         query: FredSeniorLoanOfficerSurveyQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> Dict:
         """Extract data."""
         ids = SLOOS_CATEGORIES[query.category]
         try:
@@ -121,6 +120,9 @@ class FredSeniorLoanOfficerSurveyFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[FredSeniorLoanOfficerSurveyData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         metadata = data.get("metadata", {})
         df = DataFrame(data.get("data", [])).dropna()
         if df.empty:

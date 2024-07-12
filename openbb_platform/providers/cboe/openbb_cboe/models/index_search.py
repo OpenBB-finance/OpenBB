@@ -1,9 +1,10 @@
 """CBOE Index Search Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import time
 from typing import Any, Dict, List, Optional
 
-from openbb_cboe.utils.helpers import get_index_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_search import (
     IndexSearchData,
@@ -87,6 +88,8 @@ class CboeIndexSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_cboe.utils.helpers import get_index_directory
 
         symbols = await get_index_directory(use_cache=query.use_cache, **kwargs)
         symbols.drop(columns=["source"], inplace=True)
@@ -105,7 +108,7 @@ class CboeIndexSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeIndexSearchQueryParams, data: dict, **kwargs: Any
+        query: CboeIndexSearchQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[CboeIndexSearchData]:
         """Transform the data to the standard format."""
         return [CboeIndexSearchData.model_validate(d) for d in data]

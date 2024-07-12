@@ -9,7 +9,6 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.symbol_map import SymbolMapQueryParams
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
-from openbb_sec.utils.helpers import cik_map
 from pydantic import Field
 
 
@@ -46,6 +45,9 @@ class SecSymbolMapFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_sec.utils.helpers import cik_map
+
         if not query.query.isdigit():
             raise OpenBBError("Query is required and must be a valid CIK.")
         symbol = await cik_map(int(query.query), query.use_cache)

@@ -14,7 +14,6 @@ from openbb_core.provider.standard_models.mortgage_indices import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import Categorical, DataFrame
 from pydantic import Field, field_validator
 
 MORTGAGE_ID_TO_TITLE = {
@@ -280,6 +279,9 @@ class FredMortgageIndicesFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[FredMortgageIndicesData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame
+
         if not data.get("data"):
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame.from_records(data["data"])

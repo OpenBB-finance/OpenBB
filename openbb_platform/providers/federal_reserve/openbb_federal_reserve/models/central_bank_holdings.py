@@ -14,14 +14,37 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from openbb_federal_reserve.utils.ny_fed_api import (
-    AGENCY_HOLDING_TYPES,
-    HOLDING_TYPE_CHOICES,
-    TREASURY_HOLDING_TYPES,
-    HoldingTypes,
-    SomaHoldings,
-)
 from pydantic import Field, field_validator, model_validator
+
+HoldingTypes = Literal[
+    "all_agency",
+    "agency_debts",
+    "mbs",
+    "cmbs",
+    "all_treasury",
+    "bills",
+    "notesbonds",
+    "frn",
+    "tips",
+]
+HOLDING_TYPE_CHOICES = [
+    "all_agency",
+    "agency_debts",
+    "mbs",
+    "cmbs",
+    "all_treasury",
+    "bills",
+    "notesbonds",
+    "frn",
+    "tips",
+]
+AGENCY_HOLDING_TYPES = {
+    "all": "all",
+    "agency_debts": "agency%20debts",
+    "mbs": "mbs",
+    "cmbs": "cmbs",
+}
+TREASURY_HOLDING_TYPES = ["all", "bills", "notesbonds", "frn", "tips"]
 
 
 class FederalReserveCentralBankHoldingsQueryParams(CentralBankHoldingsQueryParams):
@@ -290,6 +313,9 @@ class FederalReserveCentralBankHoldingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FederalReserve endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_federal_reserve.utils.ny_fed_api import SomaHoldings
+
         hold_type = "all" if "all" in query.holding_type else query.holding_type
         security_type = query.holding_type
         date = query.date.strftime("%Y-%m-%d") if query.date else None
@@ -297,12 +323,12 @@ class FederalReserveCentralBankHoldingsFetcher(
             query.holding_type == "all_agency"
             or query.holding_type in AGENCY_HOLDING_TYPES
         ):
-            security_type = "agency"
+            security_type = "agency"  # type: ignore
         if (
             query.holding_type == "all_treasury"
             or query.holding_type in TREASURY_HOLDING_TYPES
         ):
-            security_type = "treasury"
+            security_type = "treasury"  # type: ignore
         if query.cusip is not None:
             cusips = (
                 query.cusip if isinstance(query.cusip, str) else ",".join(query.cusip)

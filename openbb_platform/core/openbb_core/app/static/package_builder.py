@@ -12,6 +12,7 @@ from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
 from typing import (
+    TYPE_CHECKING,
     Any,
     Callable,
     Dict,
@@ -29,8 +30,6 @@ from typing import (
     get_type_hints,
 )
 
-import numpy as np
-import pandas as pd
 from importlib_metadata import entry_points
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
@@ -48,7 +47,12 @@ from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
 from openbb_core.app.version import CORE_VERSION, VERSION
 from openbb_core.env import Env
-from openbb_core.provider.abstract.data import Data
+
+if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
+    from numpy import ndarray  # noqa
+    from pandas import DataFrame, Series  # noqa
+    from openbb_core.provider.abstract.data import Data  # noqa
 
 try:
     from openbb_charting import Charting  # type: ignore
@@ -61,12 +65,12 @@ DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",
     list,
     dict,
-    pd.DataFrame,
-    List[pd.DataFrame],
-    pd.Series,
-    List[pd.Series],
-    np.ndarray,
-    Data,
+    "DataFrame",
+    List["DataFrame"],
+    "Series",
+    List["Series"],
+    "ndarray",
+    "Data",
 )
 
 TAB = "    "
@@ -359,31 +363,32 @@ class ImportDefinition:
         # ruff --fix the resulting code to remove unused imports.
         # TODO: Find a better way to handle this. This is a temporary solution.
         code += "\nimport openbb_core.provider"
+        code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nimport pandas"
+        code += "\nfrom pandas import DataFrame, Series"
         code += "\nimport numpy"
+        code += "\nfrom numpy import ndarray"
         code += "\nimport datetime"
         code += "\nfrom datetime import date"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
-        code += "\nfrom typing import List, Dict, Union, Optional, Literal, Any"
+        code += "\nfrom typing import TYPE_CHECKING, ForwardRef, List, Dict, Union, Optional, Literal, Any"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         code += "\nfrom warnings import warn, simplefilter"
         if sys.version_info < (3, 9):
             code += "\nimport typing_extensions"
         else:
             code += "\nfrom typing_extensions import Annotated, deprecated"
-        code += "\nfrom openbb_core.app.utils import df_to_basemodel"
+        # code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.utils.decorators import exception_handler, validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
-        code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         code += "\nfrom openbb_core.app.model.field import OpenBBField"
-        if path.startswith("/quantitative"):
-            code += "\nfrom openbb_quantitative.models import "
-            code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
-
+        # if path.startswith("/quantitative"):
+        #    code += "\nfrom openbb_quantitative.models import "
+        #    code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
         module_list.sort()
@@ -574,6 +579,7 @@ class MethodDefinition:
         path: str, parameter_map: Dict[str, Parameter]
     ) -> OrderedDict[str, Parameter]:
         """Format the params."""
+
         parameter_map.pop("cc", None)
         # we need to add the chart parameter here bc of the docstring generation
         if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
@@ -706,7 +712,10 @@ class MethodDefinition:
         func_params = func_params.replace(
             "openbb_core.provider.abstract.data.Data", "Data"
         )
-
+        func_params = func_params.replace("ForwardRef('Data')", "Data")
+        func_params = func_params.replace("ForwardRef('DataFrame')", "DataFrame")
+        func_params = func_params.replace("ForwardRef('Series')", "Series")
+        func_params = func_params.replace("ForwardRef('ndarray')", "ndarray")
         return func_params
 
     @staticmethod
@@ -730,6 +739,7 @@ class MethodDefinition:
         model_name: Optional[str] = None,
     ) -> str:
         """Build the command method signature."""
+
         MethodDefinition.add_field_custom_annotations(
             od=formatted_params, model_name=model_name
         )  # this modified `od` in place
@@ -738,7 +748,9 @@ class MethodDefinition:
 
         args = (
             "(config=dict(arbitrary_types_allowed=True))"
-            if "pandas.DataFrame" in func_params
+            if "DataFrame" in func_params
+            or "Series" in func_params
+            or "ndarray" in func_params
             else ""
         )
 
@@ -896,7 +908,6 @@ class MethodDefinition:
         parameter_map = dict(sig.parameters)
 
         formatted_params = cls.format_params(path=path, parameter_map=parameter_map)
-
         code = cls.build_command_method_signature(
             func_name=func_name,
             formatted_params=formatted_params,

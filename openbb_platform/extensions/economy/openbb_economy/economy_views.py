@@ -1,26 +1,32 @@
 """Views for the Economy Extension."""
 
-from typing import Any, Dict, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
 from warnings import warn
 
-import pandas as pd
-from openbb_charting.charts.generic_charts import bar_chart
-from openbb_charting.charts.helpers import (
-    z_score_standardization,
-)
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.styles.colors import LARGE_CYCLER
-from openbb_core.app.utils import basemodel_to_df
+if TYPE_CHECKING:
+    from openbb_charting.core.openbb_figure import (
+        OpenBBFigure,
+    )
 
 
 class EconomyViews:
     """economy Views."""
 
     @staticmethod
-    def economy_fred_series(  # noqa: PLR0912
+    def economy_fred_series(  # noqa: PLR0912  # pylint: disable=too-many-branches
         **kwargs,
-    ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """FRED Series Chart."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.generic_charts import bar_chart
+        from openbb_charting.charts.helpers import (
+            z_score_standardization,
+        )
+        from openbb_charting.core.openbb_figure import OpenBBFigure
+        from openbb_charting.styles.colors import LARGE_CYCLER
+        from openbb_core.app.utils import basemodel_to_df
+        from pandas import DataFrame
+
         ytitle_dict = {
             "chg": "Change",
             "ch1": "Change From Year Ago",
@@ -48,7 +54,7 @@ class EconomyViews:
         data_cols = []
         data = kwargs.get("data")
 
-        if isinstance(data, pd.DataFrame) and not data.empty:
+        if isinstance(data, DataFrame) and not data.empty:
             data_cols = data.columns.to_list()
             df_ta = data
 

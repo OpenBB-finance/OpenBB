@@ -2,16 +2,14 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
-from warnings import simplefilter, warn
 
 from annotated_types import Ge
-from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated, deprecated
+from typing_extensions import Annotated
 
 
 class ROUTER_equity_fundamental(Container):
@@ -33,7 +31,6 @@ class ROUTER_equity_fundamental(Container):
     management_compensation
     metrics
     multiples
-    overview
     ratios
     reported_financials
     revenue_per_geography
@@ -1176,8 +1173,9 @@ class ROUTER_equity_fundamental(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
-        filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
+        """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.
+
+        SEC filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
         Foreign Investment Disclosures and others. The annual 10-K report is required to be
         filed annually and includes the company's financial statements, management discussion and analysis,
         and audited financial statements.
@@ -2848,151 +2846,6 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
-            )
-        )
-
-    @exception_handler
-    @validate
-    @deprecated(
-        "This endpoint is deprecated; use `/equity/profile` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
-        category=OpenBBDeprecationWarning,
-    )
-    def overview(
-        self,
-        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
-            ),
-        ] = None,
-        **kwargs
-    ) -> OBBject:
-        """Get company general business and stock data for a given company.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
-
-        Returns
-        -------
-        OBBject
-            results : CompanyOverview
-                Serializable results.
-            provider : Optional[Literal['fmp']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
-
-        CompanyOverview
-        ---------------
-        symbol : str
-            Symbol representing the entity requested in the data.
-        price : Optional[float]
-            Price of the company.
-        beta : Optional[float]
-            Beta of the company.
-        vol_avg : Optional[int]
-            Volume average of the company.
-        mkt_cap : Optional[int]
-            Market capitalization of the company.
-        last_div : Optional[float]
-            Last dividend of the company.
-        range : Optional[str]
-            Range of the company.
-        changes : Optional[float]
-            Changes of the company.
-        company_name : Optional[str]
-            Company name of the company.
-        currency : Optional[str]
-            Currency of the company.
-        cik : Optional[str]
-            Central Index Key (CIK) for the requested entity.
-        isin : Optional[str]
-            ISIN of the company.
-        cusip : Optional[str]
-            CUSIP of the company.
-        exchange : Optional[str]
-            Exchange of the company.
-        exchange_short_name : Optional[str]
-            Exchange short name of the company.
-        industry : Optional[str]
-            Industry of the company.
-        website : Optional[str]
-            Website of the company.
-        description : Optional[str]
-            Description of the company.
-        ceo : Optional[str]
-            CEO of the company.
-        sector : Optional[str]
-            Sector of the company.
-        country : Optional[str]
-            Country of the company.
-        full_time_employees : Optional[str]
-            Full time employees of the company.
-        phone : Optional[str]
-            Phone of the company.
-        address : Optional[str]
-            Address of the company.
-        city : Optional[str]
-            City of the company.
-        state : Optional[str]
-            State of the company.
-        zip : Optional[str]
-            Zip of the company.
-        dcf_diff : Optional[float]
-            Discounted cash flow difference of the company.
-        dcf : Optional[float]
-            Discounted cash flow of the company.
-        image : Optional[str]
-            Image of the company.
-        ipo_date : Optional[date]
-            IPO date of the company.
-        default_image : bool
-            If the image is the default image.
-        is_etf : bool
-            If the company is an ETF.
-        is_actively_trading : bool
-            If the company is actively trading.
-        is_adr : bool
-            If the company is an ADR.
-        is_fund : bool
-            If the company is a fund.
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.equity.fundamental.overview(symbol='AAPL', provider='fmp')
-        """  # noqa: E501
-
-        simplefilter("always", DeprecationWarning)
-        warn(
-            "This endpoint is deprecated; use `/equity/profile` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
-
-        return self._run(
-            "/equity/fundamental/overview",
-            **filter_inputs(
-                provider_choices={
-                    "provider": self._get_provider(
-                        provider,
-                        "equity.fundamental.overview",
-                        ("fmp",),
-                    )
-                },
-                standard_params={
-                    "symbol": symbol,
-                },
-                extra_params=kwargs,
             )
         )
 

@@ -1,37 +1,52 @@
 """Views for the ETF Extension."""
 
-from typing import Any, Dict, Tuple, Union
+# pylint: disable=unused-argument
 
-import pandas as pd
-from openbb_charting.charts.generic_charts import bar_chart
-from openbb_charting.charts.price_historical import price_historical
-from openbb_charting.charts.price_performance import price_performance
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_core.app.utils import basemodel_to_df
-from plotly.graph_objs import Figure
+from typing import TYPE_CHECKING, Any, Dict, Tuple, Union
+
+if TYPE_CHECKING:
+    from openbb_charting.core.openbb_figure import (
+        OpenBBFigure,
+    )
+    from plotly.graph_objs import Figure
 
 
 class EtfViews:
     """Etf Views."""
 
     @staticmethod
-    def etf_historical(  # noqa: PLR0912
+    def etf_historical(
         **kwargs,
-    ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Etf Price Historical Chart."""
+        # pylint: disable=import-outside-toplevel
+
+        from openbb_charting.charts.price_historical import price_historical
+
         return price_historical(**kwargs)
 
     @staticmethod
-    def etf_price_performance(  # noqa: PLR0912
+    def etf_price_performance(
         **kwargs,
-    ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Etf Price Performance Chart."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.price_performance import price_performance
+
         return price_performance(**kwargs)
 
     @staticmethod
-    def etf_holdings(**kwargs) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
+    def etf_holdings(
+        **kwargs,
+    ) -> Tuple[Union["OpenBBFigure", "Figure"], Dict[str, Any]]:
         """Equity Compare Groups Chart."""
-        if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame  # noqa
+        from openbb_core.app.utils import basemodel_to_df  # noqa
+        from openbb_core.app.model.abstract.error import OpenBBError  # noqa
+        from openbb_charting.charts.generic_charts import bar_chart  # noqa
+
+        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
             data = kwargs["data"]
         elif "data" in kwargs and isinstance(kwargs["data"], list):
             data = basemodel_to_df(kwargs["data"], index=None)  # type: ignore
@@ -39,7 +54,7 @@ class EtfViews:
             data = basemodel_to_df(kwargs["obbject_item"], index=None)  # type: ignore
 
         if "weight" not in data.columns:
-            raise ValueError("No 'weight' column found in the data.")
+            raise OpenBBError("No 'weight' column found in the data.")
 
         orientation = kwargs.get("orientation", "h")
         limit = kwargs.get("limit", 20)
