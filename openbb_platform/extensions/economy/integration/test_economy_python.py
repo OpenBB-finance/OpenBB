@@ -175,6 +175,7 @@ def test_economy_gdp_forecast(params, obb):
                 "provider": "oecd",
                 "units": "level",
                 "price_base": "volume",
+                "frequency": "quarter",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
