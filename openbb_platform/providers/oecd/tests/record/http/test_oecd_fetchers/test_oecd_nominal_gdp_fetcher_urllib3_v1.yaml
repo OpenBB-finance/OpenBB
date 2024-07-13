@@ -3,89 +3,55 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
       - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.TOT.MLN_USD.A/OECD?contentType=csv&csv-lang=en&detail=code&endPeriod=2023-06-06&separator=comma&startPeriod=2020-01-01
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA_EXPENDITURE_USD,1.1/Q..USA.S1..B1GQ.....V..?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2023-06-06&format=csvfile&startPeriod=2020-01-01
   response:
     body:
       string: !!binary |
         H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
-        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
-        lBzB/wMA2DKSMiUAAA==
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ip4evzl+
+        9vzL746evTr9idHx0+989frNF6cv3oxenT77/Y9fnR6PXp+evPny1ejky69evDl99fL41ZvfXz96
+        8+r4xevjkzdnX74Ynb14/ebV73/8+vXpmxE++smzN7/P6PT3fnn64unZm69enY6+enH25vf/4vT4
+        Nf54+ers5PT3f3L8+lSAPPvy1RfHDOfN8ZPnp7//2VNC4ezZ2Sl1cvbF6e//8vTV2ZdPR18+ef37
+        /+Tx869OGbvf5/T41e/PkEaAhEaE5Ytnv//rN8dvvno9enp6cvbF8fPX/Jp+Jlh89fzN6OSrV69O
+        X5z8Pr9x8uXpydPx66dPxy+Onz56+vrp7//i+Ivjsxe7v+fTZ7//T7w4/v29Ufz+X71+urU73r0z
+        +onR7zP66jVRZxf/e7L7+U+Mfv+f0v9Ro9//5cuXo58cPT8evdnZ3dkb7e3s7W3/xP5o79P9nYP9
+        nfsjeX5one9s/8S90d7up/sPCAHqGM8PrfPd7Z/YHe3tfbqzs3vwQx85dU4/7+093Lv36R51jOeH
+        2TmR/d7B3sHDB/eoYzw/zM6J4fY/vb//6c5g5z9bnRO305zf39l7uLv7KY0azw9t5NQ5/bx/f39/
+        74dP9ns88k8Pdu99urNLHeP5oXVOIyeGu//w4f6n9x5Sx3h+aJ2TkqGR7z7Y+fT+7g+d7NT53mj3
+        4cPde7v7Pxedk6jRL/vE8dQxnt84+X8AYyF/4lwHAAA=
     headers:
-      Access-Control-Allow-Headers:
-      - Content-Type
-      Access-Control-Allow-Methods:
-      - POST,GET,OPTIONS
-      Access-Control-Allow-Origin:
-      - '*'
+      Accept-Ranges:
+      - values
       Cache-Control:
-      - private
+      - no-store,no-cache
       Content-Disposition:
-      - attachment;filename=DP_LIVE_01072024211330756.csv
+      - attachment; filename="OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA_EXPENDITURE_USD,1.1+Q..USA.S1..B1GQ.....V...csv"
       Content-Encoding:
       - gzip
+      Content-Language:
+      - en,en-US
       Content-Type:
-      - text/csv
+      - application/vnd.sdmx.data+csv; charset=utf-8
       Date:
-      - Mon, 01 Jul 2024 19:13:30 GMT
+      - Fri, 12 Jul 2024 19:06:48 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
       Transfer-Encoding:
       - chunked
       Vary:
-      - Accept-Encoding
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 3
+      api-supported-versions:
+      - '1'
     status:
       code: 200
       message: OK

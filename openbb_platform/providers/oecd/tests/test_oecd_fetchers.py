@@ -45,11 +45,11 @@ def test_oecd_cpi_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.skip(reason="Downloads a huge file, code needs to be fixed to use params.")
 @pytest.mark.record_http
 def test_oecd_nominal_gdp_fetcher(credentials=test_credentials):
     """Test the OECD Nominal GDP fetcher."""
     params = {
+        "country": "united_states",
         "start_date": datetime.date(2020, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
     }
