@@ -2630,7 +2630,7 @@
                     {
                         "name": "units",
                         "type": "Literal['current_prices', 'volume', 'capita', 'growth', 'deflator']",
-                        "description": "Units of the data, default is volume (chain linked volume, 2015).current_prices, volume, and capita are expressed in USD; growth as a percent; deflator as an index.",
+                        "description": "Units of the data, default is volume (chain linked volume, 2015). 'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent; 'deflator' as an index.",
                         "default": "volume",
                         "optional": true,
                         "choices": [

@@ -87,7 +87,8 @@ class OECDGdpForecastQueryParams(GdpForecastQueryParams):
     units: Literal["current_prices", "volume", "capita", "growth", "deflator"] = Field(
         default="volume",
         description="Units of the data, default is volume (chain linked volume, 2015)."
-        + "current_prices, volume, and capita are expressed in USD; growth as a percent; deflator as an index.",
+        + "\n'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent;"
+        + " 'deflator' as an index.",
         json_schema_extra={
             "choices": ["current_prices", "volume", "capita", "growth", "deflator"]
         },

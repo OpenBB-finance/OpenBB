@@ -56,7 +56,8 @@ class ROUTER_economy_gdp(Container):
         frequency : Literal['annual', 'quarter']
             Frequency of the data, default is annual. (provider: oecd)
         units : Literal['current_prices', 'volume', 'capita', 'growth', 'deflator']
-            Units of the data, default is volume (chain linked volume, 2015).current_prices, volume, and capita are expressed in USD; growth as a percent; deflator as an index. (provider: oecd)
+            Units of the data, default is volume (chain linked volume, 2015).
+        'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent; 'deflator' as an index. (provider: oecd)
 
         Returns
         -------
