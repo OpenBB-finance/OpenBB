@@ -177,7 +177,9 @@ COUNTRY_TO_CODE_GDP_FORECAST = {
     "turkey": "TUR",
     "united_kingdom": "GBR",
     "united_states": "USA",
-    "world": "WLD",
+    "other_major_oil_producers": "OIL_O",
+    "rest_of_the_world": "WXD",
+    "world": "W",
 }
 
 CODE_TO_COUNTRY_GDP_FORECAST = {v: k for k, v in COUNTRY_TO_CODE_GDP_FORECAST.items()}

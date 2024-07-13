@@ -128,20 +128,12 @@ def test_economy_risk_premium(params, obb):
     [
         (
             {
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
-            }
-        ),
-        (
-            {
                 "country": "united_states",
                 "provider": "oecd",
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
+                "frequency": "annual",
+                "start_date": None,
+                "end_date": None,
+                "units": "volume",
             }
         ),
     ],
