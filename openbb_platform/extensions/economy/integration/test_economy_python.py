@@ -438,10 +438,11 @@ def test_economy_unemployment(params, obb):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "country": "united_states",
+                "adjustment": "amplitude",
+                "growth_rate": False,
                 "provider": "oecd",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",

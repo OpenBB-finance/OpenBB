@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import (
 )
 
 
-class CLIQueryParams(QueryParams):
+class CompositeLeadingIndicatorQueryParams(QueryParams):
     """Composite Leading Indicator Query."""
 
     start_date: Optional[dateType] = Field(
@@ -24,14 +24,13 @@ class CLIQueryParams(QueryParams):
     )
 
 
-class CLIData(Data):
+class CompositeLeadingIndicatorData(Data):
     """Composite Leading Indicator Data."""
 
-    date: Optional[dateType] = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("date")
-    )
-    value: Optional[float] = Field(default=None, description="CLI value")
-    country: Optional[str] = Field(
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
+    value: float = Field(
         default=None,
-        description="Country for which CLI is given",
+        description="CLI value",
+        json_schema_extra={"x-unit_measurement": "index"},
     )
+    country: str = Field(description="Country for the CLI value.")

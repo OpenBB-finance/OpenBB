@@ -525,7 +525,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Use the composite leading indicator (CLI).
+        """Get the composite leading indicator (CLI).
 
         It is designed to provide early signals of turning points
         in business cycles showing fluctuation of the economic activity around its long term potential level.
@@ -541,13 +541,17 @@ class ROUTER_economy(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']
-            Country to get GDP for. (provider: oecd)
+        country : Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str]
+            Country to get the CLI for, default is G20. Multiple comma separated items allowed. (provider: oecd)
+        adjustment : Literal['amplitude', 'normalized']
+            Adjustment of the data, either 'amplitude' or 'normalized'. Default is amplitude. (provider: oecd)
+        growth_rate : bool
+            Return the 1-year growth rate (%) of the CLI, default is False. (provider: oecd)
 
         Returns
         -------
         OBBject
-            results : List[CLI]
+            results : List[CompositeLeadingIndicator]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -558,20 +562,20 @@ class ROUTER_economy(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        CLI
-        ---
-        date : Optional[date]
+        CompositeLeadingIndicator
+        -------------------------
+        date : date
             The date of the data.
         value : Optional[float]
             CLI value
-        country : Optional[str]
-            Country for which CLI is given
+        country : str
+            Country for the CLI value.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.economy.composite_leading_indicator(provider='oecd')
-        >>> obb.economy.composite_leading_indicator(country='all', provider='oecd')
+        >>> obb.economy.composite_leading_indicator(country='all', provider='oecd', growth_rate=True)
         """  # noqa: E501
 
         return self._run(
@@ -589,6 +593,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={"country": {"oecd": {"multiple_items_allowed": True}}},
             )
         )
 

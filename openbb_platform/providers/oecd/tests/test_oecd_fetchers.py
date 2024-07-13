@@ -4,7 +4,7 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher
+from openbb_oecd.models.composite_leading_indicator import OECDCompositeLeadingIndicatorFetcher
 from openbb_oecd.models.consumer_price_index import OECDCPIFetcher
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
@@ -100,14 +100,15 @@ def test_oecd_unemployment_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_oecdcli_fetcher(credentials=test_credentials):
+def test_oecd_composite_leading_indicator_fetcher(credentials=test_credentials):
     """Test the OECD Composite Leading Indicator fetcher."""
     params = {
+        "country": "G20",
         "start_date": datetime.date(2023, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
     }
 
-    fetcher = OECDCLIFetcher()
+    fetcher = OECDCompositeLeadingIndicatorFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
