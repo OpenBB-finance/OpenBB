@@ -160,13 +160,23 @@ def test_economy_gdp_forecast(params, obb):
 @parametrize(
     "params",
     [
-        ({"units": "usd", "start_date": "2021-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "econdb",
+                "use_cache": False,
+            }
+        ),
         (
             {
                 "country": "united_states",
                 "provider": "oecd",
-                "units": "usd",
-                "start_date": "2021-01-01",
+                "units": "level",
+                "price_base": "volume",
+                "frequency": "quarter",
+                "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
         ),
