@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -63,8 +63,9 @@ class YFinanceOptionsChainsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from pandas import concat  # noqa
-        from yfinance import Ticker  # noqa
+        from pandas import concat
+        from yfinance import Ticker
+        from pytz import timezone
 
         symbol = query.symbol.upper()
         symbol = "^" + symbol if symbol in ["VIX", "RUT", "SPX", "NDX"] else symbol
@@ -165,9 +166,13 @@ class YFinanceOptionsChainsFetcher(
             raise EmptyDataError()
         metadata = data.get("underlying", {})
         records = data.get("chains", [])
-        output = DataFrame(records).replace({nan: None})
+        output = DataFrame(records)
         for col in ["volume", "openInterest"]:
-            output[col] = output[col].replace({None: 0}).astype("int64")
+            output[col] = (
+                output[col].infer_objects(copy=False).replace({nan: 0}).astype("int64")
+            )
+
+        output = output.replace({nan: None})
 
         return AnnotatedResult(
             result=YFinanceOptionsChainsData.model_validate(output.to_dict("list")),
