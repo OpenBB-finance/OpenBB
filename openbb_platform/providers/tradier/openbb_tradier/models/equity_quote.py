@@ -8,7 +8,6 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil.parser import parse
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_quote import (
@@ -16,10 +15,8 @@ from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
 from openbb_tradier.utils.constants import OPTIONS_EXCHANGES, STOCK_EXCHANGES
 from pydantic import Field, field_validator, model_validator
-from pytz import timezone
 
 
 class TradierEquityQuoteQueryParams(EquityQuoteQueryParams):
@@ -157,6 +154,11 @@ class TradierEquityQuoteData(EquityQuoteData):
     @classmethod
     def validate_dates(cls, v):
         """Validate the dates."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.parser import parse
+        from openbb_core.provider.utils.helpers import safe_fromtimestamp
+        from pytz import timezone
+
         if v != 0 and v is not None and isinstance(v, int):
             v = int(v) / 1000  # milliseconds to seconds
             v = safe_fromtimestamp(v)
@@ -204,6 +206,9 @@ class TradierEquityQuoteFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Tradier endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import amake_request
+
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
 

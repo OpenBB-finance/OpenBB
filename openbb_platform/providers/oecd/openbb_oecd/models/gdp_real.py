@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.gdp_real import (
     GdpRealData,
     GdpRealQueryParams,
 )
-from openbb_oecd.utils import constants, helpers
+from openbb_oecd.utils import constants
 from pydantic import Field, field_validator
 
 rgdp_countries = tuple(constants.COUNTRY_TO_CODE_RGDP.keys()) + ("all",)
@@ -66,6 +66,9 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]])
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils import helpers
+
         units = {"qoq": "PC_CHGPP", "yoy": "PC_CHGPY", "idx": "IDX"}[query.units]
         url = (
             f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP.{'VOLIDX' if units == 'IDX' else 'TOT'}"
@@ -77,9 +80,9 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]])
         # Even changing the encoding on the fetch doesn't seem to help.
         data_df = data_df.rename(
             columns={
-                'ï»¿"LOCATION"': "country",
-                "TIME": "date",
-                "Value": "value",
+                "LOCATION": "country",
+                "TIME_PERIOD": "date",
+                "OBS_VALUE": "value",
                 "Location": "country",
             }
         )

@@ -595,41 +595,65 @@ class ROUTER_fixedincome_rate(Container):
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+            Frequency aggregation to convert daily data to lower frequency.
 
-                Frequency aggregation to convert daily data to lower frequency.
-                    a = Annual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
+            a = Annual
+
+            q = Quarterly
+
+            m = Monthly
+
+            w = Weekly
+
+            d = Daily
+
+            wef = Weekly, Ending Friday
+
+            weth = Weekly, Ending Thursday
+
+            wew = Weekly, Ending Wednesday
+
+            wetu = Weekly, Ending Tuesday
+
+            wem = Weekly, Ending Monday
+
+            wesu = Weekly, Ending Sunday
+
+            wesa = Weekly, Ending Saturday
+
+            bwew = Biweekly, Ending Wednesday
+
+            bwem = Biweekly, Ending Monday
                  (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+            A key that indicates the aggregation method used for frequency aggregation.
 
-                A key that indicates the aggregation method used for frequency aggregation.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
+            avg = Average
+
+            sum = Sum
+
+            eop = End of Period
                  (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+            Transformation type
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
+            None = No transformation
+
+            chg = Change
+
+            ch1 = Change from Year Ago
+
+            pch = Percent Change
+
+            pc1 = Percent Change from Year Ago
+
+            pca = Compounded Annual Rate of Change
+
+            cch = Continuously Compounded Rate of Change
+
+            cca = Continuously Compounded Annual Rate of Change
+
+            log = Natural Log
                  (provider: fred)
 
         Returns

@@ -22,7 +22,6 @@ from openbb_fred.utils.fred_helpers import (
     BOP_COUNTRY_CHOICES,
     get_bop_series,
 )
-from pandas import DataFrame
 from pydantic import Field, field_validator
 
 
@@ -97,6 +96,9 @@ class FredBalanceOfPaymentsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[FredBalanceOfPaymentsData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         if not data:
             raise EmptyDataError(f"No data was found for, {query.country}.")
         fred_fetcher = FredSeriesFetcher()

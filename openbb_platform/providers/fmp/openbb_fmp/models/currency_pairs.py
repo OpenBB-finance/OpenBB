@@ -10,8 +10,6 @@ from openbb_core.provider.standard_models.currency_pairs import (
     CurrencyPairsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fmp.utils.helpers import get_data_many
-from pandas import DataFrame
 from pydantic import Field
 
 
@@ -56,6 +54,9 @@ class FMPCurrencyPairsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-forex-currency-pairs?apikey={api_key}"
@@ -67,6 +68,9 @@ class FMPCurrencyPairsFetcher(
         query: FMPCurrencyPairsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCurrencyPairsData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         if not data:
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame(data)

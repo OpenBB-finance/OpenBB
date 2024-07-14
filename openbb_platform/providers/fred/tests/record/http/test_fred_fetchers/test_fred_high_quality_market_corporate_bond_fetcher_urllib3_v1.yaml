@@ -96,15 +96,18 @@ interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 11 Jun 2024 20:43:18 GMT
+      - Tue, 25 Jun 2024 02:38:27 GMT
       Expires:
-      - Tue, 11 Jun 2024 20:43:18 GMT
+      - Tue, 25 Jun 2024 02:38:27 GMT
       Last-Modified:
-      - Tue, 11 Jun 2024 20:43:15 GMT
+      - Tue, 25 Jun 2024 02:38:24 GMT
       Pragma:
       - no-cache
       Server:
       - Apache
+      Set-Cookie:
+      - ak_bmsc=8E1BCD12E2A0B531DC881E2069DE1AE1~000000000000000000000000000000~YAAQb/TVF+xI/DWQAQAASUZCTRhqwvwoDxb7BtMcj3UpnznyteLu9uCW45sWuRwYyxxy5AqOxUXY8sjrlDW1gToKg0MOhd8siw3uL+QEAjTs3tCv7+BdmZtxQv6iPHAoVBt5XLohUsSa44kiHHCXNWz6v4P6jZ5xQ1dn39a/64oFRKJBxsPVkKGU5PHlgPWYRHfqqn4FfC1Syk95/omsVpyf7/e/KDKz4Y+eFvlwrl1ByDWXeoFx5K2lWZQb92p2Ll1WlUGNPLR0RapYOuibTXAgOXCvTgkrJ04XbQQMO2I8XpUiwTEz9MILyPTQEA6iH9CwVv+POSNjsoTG6+rpZii9O4hZsb3L9xsrIDuI+zWWHpqGFOOvOTUZll0yxHFp;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 25 Jun 2024 04:38:24 GMT; Max-Age=7197
       Strict-Transport-Security:
       - max-age=86400
       Vary:

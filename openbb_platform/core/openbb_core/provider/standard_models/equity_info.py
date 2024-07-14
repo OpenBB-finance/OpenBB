@@ -1,7 +1,7 @@
 """Equity Info Standard Model."""
 
 from datetime import date as dateType
-from typing import List, Optional, Set, Union
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -141,11 +141,3 @@ class EquityInfoData(Data):
     last_stock_price_date: Optional[dateType] = Field(
         default=None, description="Date of the company's last stock price."
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def to_upper(cls, v: Union[str, List[str], Set[str]]):
-        """Convert field to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])

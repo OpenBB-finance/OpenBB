@@ -2,19 +2,15 @@
 
 # pylint: disable=unused-argument
 
-import warnings
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_countries import (
     EtfCountriesData,
     EtfCountriesQueryParams,
 )
-from openbb_tmx.utils.helpers import get_all_etfs
-from pandas import DataFrame
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class TmxEtfCountriesQueryParams(EtfCountriesQueryParams):
@@ -39,7 +35,7 @@ class TmxEtfCountriesFetcher(
         List[TmxEtfCountriesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the TMX endpoints."""
+    """TMX ETF Countries Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxEtfCountriesQueryParams:
@@ -53,6 +49,9 @@ class TmxEtfCountriesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.utils.helpers import get_all_etfs
+        from pandas import DataFrame
 
         symbols = (
             query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]
@@ -77,7 +76,7 @@ class TmxEtfCountriesFetcher(
                 if data:
                     results.update({symbol: data})
             else:
-                _warn(f"No data found for {symbol}")
+                warn(f"No data found for {symbol}")
 
         output = (
             DataFrame(results)
@@ -96,6 +95,9 @@ class TmxEtfCountriesFetcher(
         query: TmxEtfCountriesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[TmxEtfCountriesData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         output = DataFrame(data)
         for col in output.columns.to_list():
             if col != "country":

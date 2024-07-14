@@ -1,12 +1,12 @@
 """Relative Rotation Chart Helpers."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import TYPE_CHECKING, Literal, Optional
 from warnings import warn
 
-from pandas import DataFrame, to_datetime
-from plotly import graph_objects as go
-from plotly.graph_objects import Figure
+if TYPE_CHECKING:
+    from pandas import DataFrame
+    from plotly.graph_objects import Figure
 
 color_sequence = [
     "burlywood",
@@ -73,13 +73,13 @@ color_sequence = [
 
 
 def create_rrg_with_tails(
-    ratios_data: DataFrame,
-    momentum_data: DataFrame,
+    ratios_data: "DataFrame",
+    momentum_data: "DataFrame",
     study: str,
     benchmark_symbol: str,
     tail_periods: int,
     tail_interval: Literal["day", "week", "month"],
-) -> Figure:
+) -> "Figure":
     """Create The Relative Rotation Graph With Tails.
 
     Parameters
@@ -102,6 +102,10 @@ def create_rrg_with_tails(
     Figure
         Plotly GraphObjects Figure.
     """
+    # pylint: disable=import-outside-toplevel
+    from plotly import graph_objects as go  # noqa
+    from pandas import to_datetime  # noqa
+
     symbols = ratios_data.columns.to_list()
 
     tail_dict = {"week": "W", "month": "M"}
@@ -341,12 +345,12 @@ def create_rrg_with_tails(
 
 
 def create_rrg_without_tails(
-    ratios_data: DataFrame,
-    momentum_data: DataFrame,
+    ratios_data: "DataFrame",
+    momentum_data: "DataFrame",
     benchmark_symbol: str,
     study: str,
     date: Optional[dateType] = None,
-) -> Figure:
+) -> "Figure":
     """Create the Plotly Figure Object without Tails.
 
     Parameters
@@ -368,6 +372,10 @@ def create_rrg_without_tails(
     Figure
         Plotly GraphObjects Figure.
     """
+    # pylint: disable=import-outside-toplevel
+    from plotly import graph_objects as go  # noqa
+    from pandas import to_datetime  # noqa
+
     if date is not None and date not in ratios_data.index.astype(str):
         warn(f"Date {str(date)} not found in data, using the last available date.")
         date = ratios_data.index[-1]

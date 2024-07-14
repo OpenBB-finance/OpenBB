@@ -8,10 +8,7 @@ from datetime import (
 )
 from typing import Any, Dict, List, Optional, Union
 
-from aiohttp_client_cache import SQLiteBackend
-from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_filings import (
     CompanyFilingsData,
@@ -19,10 +16,7 @@ from openbb_core.provider.standard_models.company_filings import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request, amake_requests
 from openbb_sec.utils.definitions import FORM_TYPES, HEADERS
-from openbb_sec.utils.helpers import symbol_map
-from pandas import DataFrame
 from pydantic import Field, field_validator
 
 
@@ -138,7 +132,7 @@ class SecCompanyFilingsData(CompanyFilingsData):
 class SecCompanyFilingsFetcher(
     Fetcher[SecCompanyFilingsQueryParams, List[SecCompanyFilingsData]]
 ):
-    """Transform the query, extract and transform the data from the SEC endpoints."""
+    """SEC Company Filings Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecCompanyFilingsQueryParams:
@@ -152,6 +146,14 @@ class SecCompanyFilingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the SEC endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from aiohttp_client_cache import SQLiteBackend
+        from aiohttp_client_cache.session import CachedSession
+        from openbb_core.app.utils import get_user_cache_directory
+        from openbb_core.provider.utils.helpers import amake_request, amake_requests
+        from openbb_sec.utils.helpers import symbol_map
+        from pandas import DataFrame
+
         filings = DataFrame()
 
         if query.symbol and not query.cik:
@@ -236,6 +238,9 @@ class SecCompanyFilingsFetcher(
         query: SecCompanyFilingsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[SecCompanyFilingsData]:
         """Transform the data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         if not data:
             raise EmptyDataError(
                 f"No filings found for CIK {query.cik}, or symbol {query.symbol}"

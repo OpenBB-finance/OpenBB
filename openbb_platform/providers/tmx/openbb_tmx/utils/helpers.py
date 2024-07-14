@@ -1,60 +1,21 @@
 """TMX Helpers Module."""
 
-# pylint: disable=too-many-lines
-# pylint: disable=unused-argument
-# pylint: disable=simplifiable-if-expression
-import asyncio
-import json
+# pylint: disable=too-many-lines,unused-argument,simplifiable-if-expression
+
 from datetime import (
     date as dateType,
     datetime,
     time,
     timedelta,
 )
-from io import StringIO
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
 
-import exchange_calendars as xcals
-import pandas as pd
-import pytz
-from aiohttp_client_cache import SQLiteBackend
-from aiohttp_client_cache.session import CachedSession
-from dateutil import rrule
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.utils import get_user_cache_directory
-from openbb_core.provider.utils.helpers import amake_request, to_snake_case
 from openbb_tmx.utils import gql
-from pandas.tseries.holiday import next_workday
-from random_user_agent.user_agent import UserAgent
 
-cache_dir = get_user_cache_directory()
-
-
-def get_random_agent() -> str:
-    """Get a random user agent."""
-    user_agent_rotator = UserAgent(limit=100)
-    user_agent = user_agent_rotator.get_random_user_agent()
-    return user_agent
-
-
-# Only used for obtaining the directory of all valid company tickers.
-tmx_companies_backend = SQLiteBackend(
-    f"{cache_dir}/http/tmx_companies", expire_after=timedelta(days=2)
-)
-
-# Only used for obtaining the directory of all valid indices.
-tmx_indices_backend = SQLiteBackend(
-    f"{cache_dir}/http/tmx_indices", expire_after=timedelta(days=1)
-)
-
-# Only used for obtaining the all ETFs JSON file.
-tmx_etfs_backend = SQLiteBackend(
-    f"{cache_dir}/http/tmx_etfs", expire_after=timedelta(hours=4)
-)
-
-tmx_bonds_backend = SQLiteBackend(
-    f"{cache_dir}/http/tmx_bonds", expire_after=timedelta(days=1)
-)
+if TYPE_CHECKING:
+    from aiohttp_client_cache import SQLiteBackend
+    from pandas import DataFrame
 
 # Column map for ETFs.
 COLUMNS_DICT = {
@@ -265,6 +226,45 @@ NASDAQ_GIDS = {
 }
 
 
+def get_random_agent() -> str:
+    """Get a random user agent."""
+    # pylint: disable=import-outside-toplevel
+    from random_user_agent.user_agent import UserAgent
+
+    user_agent_rotator = UserAgent(limit=100)
+    user_agent = user_agent_rotator.get_random_user_agent()
+    return user_agent
+
+
+def get_companies_backend():
+    """Get the SQLiteBackend for the TMX companies."""
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache import SQLiteBackend  # noqa
+    from openbb_core.app.utils import get_user_cache_directory  # noqa
+
+    # Only used for obtaining the directory of all valid company tickers.
+    tmx_companies_backend = SQLiteBackend(
+        f"{get_user_cache_directory()}/http/tmx_companies",
+        expire_after=timedelta(days=2),
+    )
+
+    return tmx_companies_backend
+
+
+def get_indices_backend():
+    """Get the SQLiteBackend for the TMX indices."""
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache import SQLiteBackend  # noqa
+    from openbb_core.app.utils import get_user_cache_directory  # noqa
+
+    # Only used for obtaining the directory of all valid indices.
+    tmx_indices_backend = SQLiteBackend(
+        f"{get_user_cache_directory()}/http/tmx_indices", expire_after=timedelta(days=1)
+    )
+
+    return tmx_indices_backend
+
+
 async def response_callback(response, _: Any):
     """Use callback for HTTP Client Response."""
     content_type = response.headers.get("Content-Type", "")
@@ -278,10 +278,14 @@ async def response_callback(response, _: Any):
 async def get_data_from_url(
     url: str,
     use_cache: bool = True,
-    backend: Optional[SQLiteBackend] = None,
+    backend: Optional["SQLiteBackend"] = None,
     **kwargs: Any,
 ) -> Any:
     """Make an asynchronous HTTP request to a static file."""
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache.session import CachedSession
+    from openbb_core.provider.utils.helpers import amake_request
+
     data: Any = None
     if use_cache is True:
         async with CachedSession(cache=backend) as cached_session:
@@ -298,6 +302,9 @@ async def get_data_from_url(
 
 async def get_data_from_gql(url: str, headers, data, **kwargs: Any) -> Any:
     """Make an asynchronous GraphQL request."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_request
+
     response = await amake_request(
         url=url,
         method="POST",
@@ -342,8 +349,12 @@ def check_weekday(date) -> str:
     str
         Date in YYYY-MM-DD format.  If the date is a weekend, returns the date of the next weekday.
     """
-    if pd.to_datetime(date).weekday() > 4:
-        return next_workday(pd.to_datetime(date)).strftime("%Y-%m-%d")
+    # pylint: disable=import-outside-toplevel
+    from pandas import to_datetime
+    from pandas.tseries.holiday import next_workday
+
+    if to_datetime(date).weekday() > 4:
+        return next_workday(to_datetime(date)).strftime("%Y-%m-%d")
     return date
 
 
@@ -355,6 +366,16 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
     Dict
         Dictionary with all TMX-listed ETFs.
     """
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache import SQLiteBackend  # noqa
+    from openbb_core.app.utils import get_user_cache_directory  # noqa
+    from pandas import DataFrame  # noqa
+
+    # Only used for obtaining the all ETFs JSON file.
+    tmx_etfs_backend = SQLiteBackend(
+        f"{get_user_cache_directory()}/http/tmx_etfs", expire_after=timedelta(hours=4)
+    )
+
     url = "https://dgr53wu9i7rmp.cloudfront.net/etfs/etfs.json"
 
     response = await get_data_from_url(
@@ -366,7 +387,7 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
 
     response = replace_values_in_list_of_dicts(response)
 
-    etfs = pd.DataFrame(response).rename(columns=COLUMNS_DICT)
+    etfs = DataFrame(response).rename(columns=COLUMNS_DICT)
 
     etfs = etfs.drop(
         columns=[
@@ -400,13 +421,16 @@ async def get_tmx_tickers(
     exchange: Literal["tsx", "tsxv"] = "tsx", use_cache: bool = True
 ) -> Dict:
     """Get a dictionary of either TSX or TSX-V symbols and names."""
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
+
     tsx_json_url = "https://www.tsx.com/json/company-directory/search"
     url = f"{tsx_json_url}/{exchange}/*"
     response = await get_data_from_url(
-        url, use_cache=use_cache, backend=tmx_companies_backend
+        url, use_cache=use_cache, backend=get_companies_backend()
     )
     data = (
-        pd.DataFrame.from_records(response["results"])[["symbol", "name"]]
+        DataFrame.from_records(response["results"])[["symbol", "name"]]
         .set_index("symbol")
         .sort_index()
     )
@@ -424,17 +448,24 @@ async def get_all_tmx_companies(use_cache: bool = True) -> Dict:
     return all_tmx
 
 
-async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
+async def get_all_options_tickers(use_cache: bool = True) -> "DataFrame":
     """Return a DataFrame with all valid ticker symbols."""
+    # pylint: disable=import-outside-toplevel
+    from io import StringIO  # noqa
+    from pandas import concat, read_html  # noqa
+    from openbb_core.provider.utils.helpers import to_snake_case  # noqa
+
     url = "https://www.m-x.ca/en/trading/data/options-list"
 
-    r = await get_data_from_url(url, use_cache=use_cache, backend=tmx_companies_backend)
+    r = await get_data_from_url(
+        url, use_cache=use_cache, backend=get_companies_backend()
+    )
 
     if r is None or r == []:
         raise OpenBBError("Error with the request")  # mypy: ignore
 
-    options_listings = pd.read_html(StringIO(r))
-    listings = pd.concat(options_listings)
+    options_listings = read_html(StringIO(r))
+    listings = concat(options_listings)
     listings = listings.set_index("Option Symbol").drop_duplicates().sort_index()
     symbols = listings[:-1]
     symbols = symbols.fillna(value="")
@@ -449,10 +480,15 @@ async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
     return symbols.set_index("option_symbol")
 
 
-async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFrame:
+async def get_current_options(symbol: str, use_cache: bool = True) -> "DataFrame":
     """Get the current quotes for the complete options chain."""
+    # pylint: disable=import-outside-toplevel
+    from io import StringIO  # noqa
+    from pandas import DataFrame, DatetimeIndex, concat, read_html, to_datetime  # noqa
+    from openbb_core.provider.utils.helpers import to_snake_case  # noqa
+
     SYMBOLS = await get_all_options_tickers(use_cache=use_cache)
-    data = pd.DataFrame()
+    data = DataFrame()
     symbol = symbol.upper()
 
     # Remove exchange  identifiers from the symbol.
@@ -481,7 +517,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
     ]
 
     r = await get_data_from_url(QUOTES_URL, use_cache=False)
-    data = pd.read_html(StringIO(r))[0]
+    data = read_html(StringIO(r))[0]
     data = data.iloc[:-1]
 
     expirations = (
@@ -497,19 +533,19 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
         .rename(columns={"Strike": "strike"})
     )
 
-    calls = pd.concat([expirations, strikes, data["Calls"]], axis=1)
-    calls["expiration"] = pd.DatetimeIndex(calls["expiration"]).astype(str)
+    calls = concat([expirations, strikes, data["Calls"]], axis=1)
+    calls["expiration"] = DatetimeIndex(calls["expiration"]).astype(str)
     calls["optionType"] = "call"
     calls.columns = cols
     calls = calls.set_index(["expiration", "strike", "optionType"])
 
-    puts = pd.concat([expirations, strikes, data["Puts"]], axis=1)
-    puts["expiration"] = pd.DatetimeIndex(puts["expiration"]).astype(str)
+    puts = concat([expirations, strikes, data["Puts"]], axis=1)
+    puts["expiration"] = DatetimeIndex(puts["expiration"]).astype(str)
     puts["optionType"] = "put"
     puts.columns = cols
     puts = puts.set_index(["expiration", "strike", "optionType"])
 
-    chains = pd.concat([calls, puts])
+    chains = concat([calls, puts])
     chains["openInterest"] = chains["openInterest"].astype("int64")
     chains["volume"] = chains["volume"].astype("int64")
     chains["change"] = chains["change"].astype(float)
@@ -519,7 +555,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
     chains = chains.sort_index()
     chains = chains.reset_index()
     now = datetime.now()
-    temp = pd.DatetimeIndex(chains.expiration)
+    temp = DatetimeIndex(chains.expiration)
     temp_ = (temp - now).days + 1  # type: ignore
     chains["dte"] = temp_
 
@@ -537,7 +573,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
     chains["contract_symbol"] = (
         symbol
         + " " * (6 - len(symbol))
-        + pd.to_datetime(chains["expiration"]).dt.strftime("%y%m%d")
+        + to_datetime(chains["expiration"]).dt.strftime("%y%m%d")
         + (chains["optionType"].replace("call", "C").replace("put", "P"))
         + chains["strikes"]
     )
@@ -550,8 +586,14 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
 
 async def download_eod_chains(
     symbol: str, date: Optional[dateType] = None, use_cache: bool = False
-) -> pd.DataFrame:
+) -> "DataFrame":
     """Download EOD chains data for a given symbol and date."""
+    # pylint: disable=import-outside-toplevel
+    from io import StringIO  # noqa
+    import exchange_calendars as xcals  # noqa
+    from pandas import DatetimeIndex, Timedelta, read_csv, to_datetime  # noqa
+    from openbb_core.provider.utils.helpers import to_snake_case  # noqa
+
     symbol = symbol.upper()
     SYMBOLS = await get_all_options_tickers(use_cache=False)
     # Remove echange  identifiers from the symbol.
@@ -575,10 +617,10 @@ async def download_eod_chains(
     else:
         date = check_weekday(date)  # type: ignore
         if cal.is_session(date) is False:  # type: ignore
-            date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
+            date = (to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
         date = check_weekday(date)  # type: ignore
         if cal.is_session(date=date) is False:  # type: ignore
-            date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
+            date = (to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
 
         EOD_URL = (
             BASE_URL + f"{symbol}" "&from=" f"{date}" "&to=" f"{date}" "&dnld=1#quotes"
@@ -589,7 +631,7 @@ async def download_eod_chains(
     if r is None:
         raise OpenBBError("Error with the request, no data was returned.")
 
-    data = pd.read_csv(StringIO(r))
+    data = read_csv(StringIO(r))
     if data.empty:
         raise OpenBBError(
             f"No data found for, {symbol}, on, {date}."
@@ -637,21 +679,21 @@ async def download_eod_chains(
 
     data.columns = cols
     data["underlying_symbol"] = symbol + ":CA"
-    data["expiration"] = pd.to_datetime(data["expiration"], format="%Y-%m-%d")
-    data["eod_date"] = pd.to_datetime(data["eod_date"], format="%Y-%m-%d")
+    data["expiration"] = to_datetime(data["expiration"], format="%Y-%m-%d")
+    data["eod_date"] = to_datetime(data["eod_date"], format="%Y-%m-%d")
     data["impliedVolatility"] = 0.01 * data["impliedVolatility"]
 
     date_ = data["eod_date"]
-    temp = pd.DatetimeIndex(data.expiration)
+    temp = DatetimeIndex(data.expiration)
     temp_ = temp - date_  # type: ignore
-    data["dte"] = [pd.Timedelta(_temp_).days for _temp_ in temp_]
+    data["dte"] = [Timedelta(_temp_).days for _temp_ in temp_]
     data = data.set_index(["expiration", "strike", "optionType"]).sort_index()
     data["eod_date"] = data["eod_date"].astype(str)
     underlying_price = data.iloc[-1]["lastTradePrice"]
     data["underlyingPrice"] = underlying_price
     data = data.reset_index()
     data = data[data["strike"] != 0]
-    data["expiration"] = pd.to_datetime(data["expiration"]).dt.strftime("%Y-%m-%d")
+    data["expiration"] = to_datetime(data["expiration"]).dt.strftime("%Y-%m-%d")
 
     data.columns = [to_snake_case(c) for c in data.columns.to_list()]
 
@@ -667,6 +709,9 @@ async def get_company_filings(
     limit: int = 50,
 ) -> List[Dict]:
     """Get company filings."""
+    # pylint: disable=import-outside-toplevel
+    import json
+
     user_agent = get_random_agent()
     results: List[Dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
@@ -716,6 +761,11 @@ async def get_daily_price_history(
     ] = "splits_only",
 ):
     """Get historical price data."""
+    # pylint: disable=import-outside-toplevel
+    import json  # noqa
+    import asyncio  # noqa
+    from dateutil import rrule  # noqa
+
     start_date = (
         datetime.strptime(start_date, "%Y-%m-%d")
         if isinstance(start_date, str)
@@ -831,6 +881,9 @@ async def get_weekly_or_monthly_price_history(
     interval: Literal["month", "week"] = "month",
 ):
     """Get historical price data."""
+    # pylint: disable=import-outside-toplevel
+    import json
+
     if start_date:
         start_date = (
             datetime.strptime(start_date, "%Y-%m-%d")
@@ -919,6 +972,12 @@ async def get_intraday_price_history(
     interval: Optional[int] = 1,
 ):
     """Get historical price data."""
+    # pylint: disable=import-outside-toplevel
+    import json  # noqa
+    import asyncio  # noqa
+    import pytz  # noqa
+    from dateutil import rrule  # noqa
+
     if start_date:
         start_date = (
             datetime.strptime(start_date, "%Y-%m-%d")
@@ -1040,11 +1099,20 @@ async def get_intraday_price_history(
     return results
 
 
-async def get_all_bonds(use_cache: bool = True) -> pd.DataFrame:
+async def get_all_bonds(use_cache: bool = True) -> "DataFrame":
     """Get all bonds reference data published by CIRO.
 
     The complete list is approximately 70-100K securities.
     """
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache import SQLiteBackend  # noqa
+    from openbb_core.app.utils import get_user_cache_directory  # noqa
+    from pandas import DataFrame  # noqa
+
+    tmx_bonds_backend = SQLiteBackend(
+        f"{get_user_cache_directory()}/http/tmx_bonds", expire_after=timedelta(days=1)
+    )
+
     url = "https://bondtradedata.iiroc.ca/debtip/designatedbonds/list"
     response = await get_data_from_url(
         url, use_cache=use_cache, timeout=30, backend=tmx_bonds_backend
@@ -1053,7 +1121,7 @@ async def get_all_bonds(use_cache: bool = True) -> pd.DataFrame:
     # Convert the response to a DataFrame and set the types for proper filtering in-fetcher.
     # This is done here because multiple functions might share this response object.
     bonds_data = (
-        pd.DataFrame.from_records(response)
+        DataFrame.from_records(response)
         .replace("N/A", None)
         .sort_values(by=["lastTradedDate", "totalTrades"], ascending=False)
     )

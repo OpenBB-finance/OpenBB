@@ -67,7 +67,7 @@ spdrs = obb.equity.price.historical(SPDRS, start_date=start_date, provider="yfin
 spdrs.show()
 ```
 
-![SPDRs Cumulative Returns - 5 years](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/8884f4ed-b09c-4161-9dc6-87ad66d9fc8b)
+![SPDRs Cumulative Returns - 5 years](https://github.com/OpenBB-finance/OpenBB/assets/85772166/8884f4ed-b09c-4161-9dc6-87ad66d9fc8b)
 
 ### Redraw as YTD
 
@@ -84,7 +84,7 @@ spdrs.charting.to_chart(data=new_data, title="YTD")
 This replaces the chart that was already created.
 :::
 
-![SPDRs Cumulative Returns - YTD](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/22ed2588-1098-4712-aec1-54dd22c324ef)
+![SPDRs Cumulative Returns - YTD](https://github.com/OpenBB-finance/OpenBB/assets/85772166/22ed2588-1098-4712-aec1-54dd22c324ef)
 
 ## Price Performance Bar Chart
 
@@ -95,7 +95,7 @@ price_performance = obb.equity.price.performance(SPDRS, chart=True)
 price_performance.show()
 ```
 
-![Price Performance](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/0de3260d-7fce-490b-90e1-bdfa38d6ab23)
+![Price Performance](https://github.com/OpenBB-finance/OpenBB/assets/85772166/0de3260d-7fce-490b-90e1-bdfa38d6ab23)
 
 ### Create Bar Chart
 
@@ -114,7 +114,7 @@ price_performance.charting.create_bar_chart(
 )
 ```
 
-![Horizonontal Price Performance](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/8da01f73-d7a8-4168-846a-9fa9ed6a0e39)
+![Horizonontal Price Performance](https://github.com/OpenBB-finance/OpenBB/assets/85772166/8da01f73-d7a8-4168-846a-9fa9ed6a0e39)
 
 ## Create Your Own
 
@@ -163,4 +163,4 @@ create_bar_chart(
 )
 ```
 
-![S&P 500 Energy Sector Turnover Rate](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d29a1c17-6d3b-4925-8b7e-f661da404967)
+![S&P 500 Energy Sector Turnover Rate](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d29a1c17-6d3b-4925-8b7e-f661da404967)

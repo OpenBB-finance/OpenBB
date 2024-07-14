@@ -29,6 +29,7 @@ class ROUTER_economy(Container):
     indicators
     long_term_interest_rate
     money_measures
+    pce
     primary_dealer_positioning
     retail_prices
     risk_premium
@@ -524,7 +525,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Use the composite leading indicator (CLI).
+        """Get the composite leading indicator (CLI).
 
         It is designed to provide early signals of turning points
         in business cycles showing fluctuation of the economic activity around its long term potential level.
@@ -540,13 +541,17 @@ class ROUTER_economy(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']
-            Country to get GDP for. (provider: oecd)
+        country : Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str]
+            Country to get the CLI for, default is G20. Multiple comma separated items allowed. (provider: oecd)
+        adjustment : Literal['amplitude', 'normalized']
+            Adjustment of the data, either 'amplitude' or 'normalized'. Default is amplitude. (provider: oecd)
+        growth_rate : bool
+            Return the 1-year growth rate (%) of the CLI, default is False. (provider: oecd)
 
         Returns
         -------
         OBBject
-            results : List[CLI]
+            results : List[CompositeLeadingIndicator]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -557,20 +562,20 @@ class ROUTER_economy(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        CLI
-        ---
-        date : Optional[date]
+        CompositeLeadingIndicator
+        -------------------------
+        date : date
             The date of the data.
         value : Optional[float]
             CLI value
-        country : Optional[str]
-            Country for which CLI is given
+        country : str
+            Country for the CLI value.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.economy.composite_leading_indicator(provider='oecd')
-        >>> obb.economy.composite_leading_indicator(country='all', provider='oecd')
+        >>> obb.economy.composite_leading_indicator(country='all', provider='oecd', growth_rate=True)
         """  # noqa: E501
 
         return self._run(
@@ -588,6 +593,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={"country": {"oecd": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -867,51 +873,73 @@ class ROUTER_economy(Container):
             When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)
         region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
             The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)
-        season : Optional[Literal['SA', 'NSA', 'SSA']]
+        season : Literal['sa', 'nsa', 'ssa']
             The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)
         units : Optional[str]
             The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
-        frequency : Optional[Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+            Frequency aggregation to convert high frequency data to lower frequency.
 
-                Frequency aggregation to convert high frequency data to lower frequency.
-                Parameter is only valid when `is_series_group` is True.
-                    a = Annual
-                    sa= Semiannual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    d = Daily
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
+            None = No change
+
+            a = Annual
+
+            q = Quarterly
+
+            m = Monthly
+
+            w = Weekly
+
+            d = Daily
+
+            wef = Weekly, Ending Friday
+
+            weth = Weekly, Ending Thursday
+
+            wew = Weekly, Ending Wednesday
+
+            wetu = Weekly, Ending Tuesday
+
+            wem = Weekly, Ending Monday
+
+            wesu = Weekly, Ending Sunday
+
+            wesa = Weekly, Ending Saturday
+
+            bwew = Biweekly, Ending Wednesday
+
+            bwem = Biweekly, Ending Monday
                  (provider: fred)
-        aggregation_method : Literal['avg', 'sum', 'eop']
-
-                A key that indicates the aggregation method used for frequency aggregation.
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+            A key that indicates the aggregation method used for frequency aggregation.
                 This parameter has no affect if the frequency parameter is not set.
-                Only valid when `is_series_group` is True.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
-        transform : Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
 
-                Transformation type. Only valid when `is_series_group` is True.
-                    lin = Levels (No transformation)
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
+            avg = Average
+
+            sum = Sum
+
+            eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+            Transformation type
+
+            None = No transformation
+
+            chg = Change
+
+            ch1 = Change from Year Ago
+
+            pch = Percent Change
+
+            pc1 = Percent Change from Year Ago
+
+            pca = Compounded Annual Rate of Change
+
+            cch = Continuously Compounded Rate of Change
+
+            cca = Continuously Compounded Annual Rate of Change
+
+            log = Natural Log
                  (provider: fred)
 
         Returns
@@ -1140,44 +1168,68 @@ class ROUTER_economy(Container):
         provider : Optional[Literal['fred', 'intrinio']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, intrinio.
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+            Frequency aggregation to convert high frequency data to lower frequency.
 
-                Frequency aggregation to convert high frequency data to lower frequency.
-                    None = No change
-                    a = Annual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    d = Daily
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
+            None = No change
+
+            a = Annual
+
+            q = Quarterly
+
+            m = Monthly
+
+            w = Weekly
+
+            d = Daily
+
+            wef = Weekly, Ending Friday
+
+            weth = Weekly, Ending Thursday
+
+            wew = Weekly, Ending Wednesday
+
+            wetu = Weekly, Ending Tuesday
+
+            wem = Weekly, Ending Monday
+
+            wesu = Weekly, Ending Sunday
+
+            wesa = Weekly, Ending Saturday
+
+            bwew = Biweekly, Ending Wednesday
+
+            bwem = Biweekly, Ending Monday
                  (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
-
-                A key that indicates the aggregation method used for frequency aggregation.
+            A key that indicates the aggregation method used for frequency aggregation.
                 This parameter has no affect if the frequency parameter is not set.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
+
+            avg = Average
+
+            sum = Sum
+
+            eop = End of Period
                  (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+            Transformation type
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
+            None = No transformation
+
+            chg = Change
+
+            ch1 = Change from Year Ago
+
+            pch = Percent Change
+
+            pc1 = Percent Change from Year Ago
+
+            pca = Compounded Annual Rate of Change
+
+            cch = Continuously Compounded Rate of Change
+
+            cca = Continuously Compounded Annual Rate of Change
+
+            log = Natural Log
                  (provider: fred)
         all_pages : Optional[bool]
             Returns all pages of data from the API call at once. (provider: intrinio)
@@ -1762,6 +1814,96 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def pce(
+        self,
+        date: Annotated[
+            Union[str, datetime.date, None, List[Union[str, datetime.date, None]]],
+            OpenBBField(
+                description="A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get Personal Consumption Expenditures (PCE) reports.
+
+        Parameters
+        ----------
+        date : Union[str, datetime.date, None, List[Union[str, datetime.d...
+            A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.
+        provider : Optional[Literal['fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        category : Literal['personal_income', 'wages_by_industry', 'real_pce_percent_change', 'real_pce_quantity_index', 'pce_price_index', 'pce_dollars', 'real_pce_chained_dollars', 'pce_price_percent_change']
+            The category to query. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[PersonalConsumptionExpenditures]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        PersonalConsumptionExpenditures
+        -------------------------------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        value : float
+
+        name : Optional[str]
+            The name of the series. (provider: fred)
+        element_id : Optional[str]
+            The element id in the parent/child relationship. (provider: fred)
+        parent_id : Optional[str]
+            The parent id in the parent/child relationship. (provider: fred)
+        children : Optional[str]
+            The element_id of each child, as a comma-separated string. (provider: fred)
+        level : Optional[int]
+            The indentation level of the element. (provider: fred)
+        line : Optional[int]
+            The line number of the series in the table. (provider: fred)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.pce(provider='fred')
+        >>> # Get reports for multiple dates, entered as a comma-separated string.
+        >>> obb.economy.pce(provider='fred', date='2024-05-01,2024-04-01,2023-05-01', category='pce_price_index')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/pce",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.pce",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "date": date,
+                },
+                extra_params=kwargs,
+                info={"date": {"fred": {"multiple_items_allowed": True}}},
+            )
+        )
+
+    @exception_handler
+    @validate
     def primary_dealer_positioning(
         self,
         start_date: Annotated[
@@ -2220,7 +2362,7 @@ class ROUTER_economy(Container):
     @property
     def survey(self):
         # pylint: disable=import-outside-toplevel
-        from . import economy_survey  # type: ignore[attr-defined]
+        from . import economy_survey
 
         return economy_survey.ROUTER_economy_survey(command_runner=self._command_runner)
 

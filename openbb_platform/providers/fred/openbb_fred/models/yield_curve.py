@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.yield_curve import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
 from openbb_fred.utils.fred_helpers import YIELD_CURVES
-from pandas import Categorical, DataFrame, DatetimeIndex
 from pydantic import Field
 
 
@@ -84,6 +83,9 @@ class FREDYieldCurveFetcher(
         query: FREDYieldCurveQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FREDYieldCurveData]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame, DatetimeIndex
+
         df = DataFrame(data).set_index("date").sort_index()
         df.index = df.index.astype(str)
         dates = query.date.split(",") if query.date else [df.index.max()]

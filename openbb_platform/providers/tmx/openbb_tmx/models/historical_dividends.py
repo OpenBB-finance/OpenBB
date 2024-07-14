@@ -1,7 +1,7 @@
 """TMX Stock Dividends Model"""
 
 # pylint: disable=unused-argument
-import json
+
 from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
@@ -10,8 +10,6 @@ from openbb_core.provider.standard_models.historical_dividends import (
     HistoricalDividendsData,
     HistoricalDividendsQueryParams,
 )
-from openbb_tmx.utils import gql
-from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent
 from pydantic import Field
 
 
@@ -60,6 +58,11 @@ class TmxHistoricalDividendsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import json  # noqa
+        from openbb_tmx.utils import gql  # noqa
+        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+
         user_agent = get_random_agent()
         symbol = (
             query.symbol.upper()
@@ -89,9 +92,9 @@ class TmxHistoricalDividendsFetcher(
             timeout=5,
         )
         try:
-            if "data" in response and "dividends" in response["data"]:
-                data = response["data"].get("dividends")
-                data = sorted(data["dividends"], key=lambda d: d["exDate"])
+            if response.get("data", {}).get("dividends"):  # type: ignore
+                data = response["data"]["dividends"]  # type: ignore
+                data = sorted(data["dividends"], key=lambda d: d["exDate"])  # type: ignore
 
         except Exception as e:
             raise RuntimeError(e) from e

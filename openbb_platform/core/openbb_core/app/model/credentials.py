@@ -86,10 +86,10 @@ class CredentialsLoader:
         # We load providers first to give them priority choosing credential names
         self.from_providers()
         self.from_obbject()
-        model = create_model(  # type: ignore
+        model = create_model(
             "Credentials",
             __config__=ConfigDict(validate_assignment=True, populate_by_name=True),
-            **self.format_credentials(),
+            **self.format_credentials(),  # type: ignore
         )
         model.origins = self.credentials
         return model

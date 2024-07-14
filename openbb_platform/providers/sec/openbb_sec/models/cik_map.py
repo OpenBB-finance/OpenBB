@@ -6,7 +6,6 @@ from typing import Any, Dict, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cik_map import CikMapData, CikMapQueryParams
-from openbb_sec.utils.helpers import symbol_map
 from pydantic import Field
 
 
@@ -32,7 +31,7 @@ class SecCikMapFetcher(
         SecCikMapData,
     ]
 ):
-    """Transform the query, extract and transform the data from the SEC endpoints."""
+    """SEC CIK Map Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecCikMapQueryParams:
@@ -46,6 +45,9 @@ class SecCikMapFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_sec.utils.helpers import symbol_map
+
         results = {"cik": await symbol_map(query.symbol, query.use_cache)}
         if not results:
             return {"Error": "Symbol not found."}

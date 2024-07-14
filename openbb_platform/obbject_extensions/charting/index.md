@@ -120,7 +120,7 @@ extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'yfinance'},
 data.show()
 ```
 
-![candles with ema](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b427d68b-777e-4230-852a-df749c5dbc46)
+![candles with ema](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b427d68b-777e-4230-852a-df749c5dbc46)
 
 ### No Render
 
@@ -130,7 +130,7 @@ Setting as `False` will return the chart to itself, populating the `chart` attri
 
 ## What Endpoints Have Charts?
 
-The OpenBB Platform router, open_api.json, function signatures, and documentation are all generated based on your specific configuration. When the `openbb-charting` extension is installed, any function found in the "[charting_router](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/obbject_extensions/charting/openbb_charting/charting_router.py)" adds `chart: bool = False` to the command on build. For example, `obb.index.price.historical?`
+The OpenBB Platform router, open_api.json, function signatures, and documentation are all generated based on your specific configuration. When the `openbb-charting` extension is installed, any function found in the "[charting_router](https://github.com/OpenBB-finance/OpenBB/blob/develop/openbb_platform/obbject_extensions/charting/openbb_charting/charting_router.py)" adds `chart: bool = False` to the command on build. For example, `obb.index.price.historical?`
 
 ```python
 Signature:
@@ -244,7 +244,7 @@ If `chart=True` was not specified, it will need to be created.
 data.charting.to_chart()
 ```
 
-![obb.equity.price.historical()](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/9231c455-ee1b-47a8-a627-b0034ea52ecd)
+![obb.equity.price.historical()](https://github.com/OpenBB-finance/OpenBB/assets/85772166/9231c455-ee1b-47a8-a627-b0034ea52ecd)
 
 The extension recognized that multiple symbols were within the object, and made a determination to display cumulative returns by default.
 
@@ -260,7 +260,7 @@ obb.equity.price.historical(
 ).show()
 ```
 
-![obb.equity.price.historical()](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/13af30b3-7298-402d-ac32-1f7700cd08fd)
+![obb.equity.price.historical()](https://github.com/OpenBB-finance/OpenBB/assets/85772166/13af30b3-7298-402d-ac32-1f7700cd08fd)
 
 ## Endpoints Without Charts
 
@@ -277,7 +277,7 @@ qa = obb.quantitative.rolling.stdev(data.results, target="close")
 qa.charting.show(title="XLK Rolling 21 Day Standard Deviation")
 ```
 
-![auto chart](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f87a6648-7365-4529-a254-35897af448ca)
+![auto chart](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f87a6648-7365-4529-a254-35897af448ca)
 
 ## Charts From Any Data
 
@@ -340,7 +340,7 @@ data = obb.equity.price.quote("AAPL,MSFT,GOOGL,META,TSLA,AMZN", provider="yfinan
 data.charting.table()
 ```
 
-![Interactive Tables](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/77f5f812-b933-4ced-929c-c1e39b2a3eed)
+![Interactive Tables](https://github.com/OpenBB-finance/OpenBB/assets/85772166/77f5f812-b933-4ced-929c-c1e39b2a3eed)
 
 External data can also be supplied, providing an opportunity to filter or apply Pandas operations before display.
 
@@ -352,7 +352,7 @@ new_df.drop("symbol", inplace=True)
 data.charting.table(data=new_df)
 ```
 
-![Tables From External Data](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d02f8c34-e1d1-4001-a73e-d3b948a4c5c1)
+![Tables From External Data](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d02f8c34-e1d1-4001-a73e-d3b948a4c5c1)
 
 :::important
 This does not alter the contents of the original object, the displayed data is a copy.

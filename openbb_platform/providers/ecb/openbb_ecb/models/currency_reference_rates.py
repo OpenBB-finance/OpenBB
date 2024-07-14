@@ -1,17 +1,15 @@
 """ECB Currency Reference Rates Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, Optional
 
-import requests
-import xmltodict
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_reference_rates import (
     CurrencyReferenceRatesData,
     CurrencyReferenceRatesQueryParams,
 )
-
-# pylint: disable=unused-argument
 
 
 class ECBCurrencyReferenceRatesQueryParams(CurrencyReferenceRatesQueryParams):
@@ -43,9 +41,13 @@ class ECBCurrencyReferenceRatesFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract the raw data from the ECB website."""
+        # pylint: disable=import-outside-toplevel
+        import xmltodict
+        from openbb_core.provider.utils.helpers import make_request
+
         results = {}
         url = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
-        response = requests.get(url, timeout=5)
+        response = make_request(url)
         if response.status_code != 200:
             raise OpenBBError(
                 "Failed to fetch data from ECB."

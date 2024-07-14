@@ -13,7 +13,7 @@ class DerivativesViews:
     def derivatives_futures_historical(  # noqa: PLR0912
         **kwargs,
     ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-        """Get Derivatives Futures Historical Chart."""
+        """Get Derivatives Price Historical Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_historical import price_historical
 

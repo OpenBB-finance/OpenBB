@@ -1,21 +1,16 @@
 """YFinance ETF Info Model."""
 
 # pylint: disable=unused-argument
-import asyncio
-import warnings
-from datetime import datetime
+
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_info import (
     EtfInfoData,
     EtfInfoQueryParams,
 )
-from openbb_core.provider.utils.helpers import safe_fromtimestamp
 from pydantic import Field, field_validator
-from yfinance import Ticker
-
-_warn = warnings.warn
 
 
 class YFinanceEtfInfoQueryParams(EtfInfoQueryParams):
@@ -191,6 +186,8 @@ class YFinanceEtfInfoData(EtfInfoData):
     @classmethod
     def validate_date(cls, v):
         """Validate first stock price date."""
+        from datetime import datetime  # pylint: disable=import-outside-toplevel
+
         if isinstance(v, datetime):
             return v.date().strftime("%Y-%m-%d")
         return datetime.fromtimestamp(v).date().strftime("%Y-%m-%d") if v else None
@@ -213,6 +210,11 @@ class YFinanceEtfInfoFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from yfinance import Ticker  # noqa
+        from openbb_core.provider.utils.helpers import safe_fromtimestamp  # noqa
+
         symbols = query.symbol.split(",")
         results = []
         fields = [
@@ -257,12 +259,12 @@ class YFinanceEtfInfoFetcher(
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
-            result = {}
-            ticker = {}
+            result: Dict = {}
+            ticker: Dict = {}
             try:
                 ticker = Ticker(symbol).get_info()
             except Exception as e:
-                _warn(f"Error getting data for {symbol}: {e}")
+                warn(f"Error getting data for {symbol}: {e}")
             if ticker:
                 quote_type = ticker.pop("quoteType", "")
                 if quote_type == "ETF":
@@ -280,10 +282,10 @@ class YFinanceEtfInfoFetcher(
                                     _first_trade
                                 )
                     except Exception as e:
-                        _warn(f"Error processing data for {symbol}: {e}")
+                        warn(f"Error processing data for {symbol}: {e}")
                         result = {}
                 if quote_type != "ETF":
-                    _warn(f"{symbol} is not an ETF.")
+                    warn(f"{symbol} is not an ETF.")
                 if result:
                     results.append(result)
 

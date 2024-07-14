@@ -5,11 +5,6 @@
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from openbb_cboe.utils.helpers import (
-    TICKER_EXCEPTIONS,
-    get_company_directory,
-    get_index_directory,
-)
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -18,8 +13,6 @@ from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from pandas import DataFrame, DatetimeIndex, Series, to_datetime
 from pydantic import Field
 
 
@@ -63,6 +56,14 @@ class CboeOptionsChainsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Cboe endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_cboe.utils.helpers import (
+            TICKER_EXCEPTIONS,
+            get_company_directory,
+            get_index_directory,
+        )
+        from openbb_core.provider.utils.helpers import amake_request
+
         symbol = query.symbol.replace("^", "").split(",")[0].upper()
         INDEXES = await get_index_directory(use_cache=query.use_cache)
         SYMBOLS = await get_company_directory(use_cache=query.use_cache)
@@ -86,6 +87,9 @@ class CboeOptionsChainsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[CboeOptionsChainsData]:
         """Transform the data to the standard format."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, DatetimeIndex, Series, to_datetime
+
         if not data:
             raise EmptyDataError()
         results_metadata = {}

@@ -1,8 +1,5 @@
 """FMP Company Overview Model."""
 
-from datetime import (
-    date as dateType,
-)
 from typing import Any, Dict, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,7 +7,6 @@ from openbb_core.provider.standard_models.company_overview import (
     CompanyOverviewData,
     CompanyOverviewQueryParams,
 )
-from openbb_fmp.utils.helpers import get_data_one
 from pydantic import field_validator
 
 
@@ -28,9 +24,11 @@ class FMPCompanyOverviewData(CompanyOverviewData):
     @classmethod
     def ipoDate_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        if isinstance(v, dateType) or v is None:
+        from datetime import date  # pylint: disable=import-outside-toplevel
+
+        if isinstance(v, date) or v is None:
             return v
-        return dateType.fromisoformat(v) if v else None
+        return date.fromisoformat(v) if v else None
 
 
 class FMPCompanyOverviewFetcher(
@@ -53,6 +51,9 @@ class FMPCompanyOverviewFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_one
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"

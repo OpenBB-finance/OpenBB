@@ -11,7 +11,6 @@ from openbb_core.provider.standard_models.equity_search import (
     EquitySearchQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
 from openbb_tradier.utils.constants import OPTIONS_EXCHANGES, STOCK_EXCHANGES
 from pydantic import Field, field_validator
 
@@ -68,6 +67,9 @@ class TradierEquitySearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Tradier endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import amake_request
+
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
 

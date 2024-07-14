@@ -15,8 +15,6 @@ from openbb_core.provider.standard_models.options_chains import (
 from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
-from openbb_tmx.models.equity_quote import TmxEquityQuoteFetcher
-from openbb_tmx.utils.helpers import download_eod_chains, get_current_options
 from pydantic import Field, field_validator
 
 
@@ -67,7 +65,7 @@ class TmxOptionsChainsFetcher(
         TmxOptionsChainsData,
     ]
 ):
-    """Transform the query, extract and transform the data from the TMX endpoints."""
+    """TMX Options Chains Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxOptionsChainsQueryParams:
@@ -81,7 +79,13 @@ class TmxOptionsChainsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the data."""
-        results: Dict = {}
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.models.equity_quote import TmxEquityQuoteFetcher
+        from openbb_tmx.utils.helpers import download_eod_chains, get_current_options
+        from pandas import DataFrame
+
+        results: List = []
+        chains = DataFrame()
         if query.date is not None:
             chains = await download_eod_chains(
                 symbol=query.symbol, date=query.date, use_cache=query.use_cache
