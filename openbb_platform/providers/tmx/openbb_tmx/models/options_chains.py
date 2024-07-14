@@ -84,7 +84,7 @@ class TmxOptionsChainsFetcher(
         from openbb_tmx.utils.helpers import download_eod_chains, get_current_options
         from pandas import DataFrame
 
-        results: List = []
+        results: Dict = {}
         chains = DataFrame()
         if query.date is not None:
             chains = await download_eod_chains(
