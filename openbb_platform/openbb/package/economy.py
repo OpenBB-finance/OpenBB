@@ -29,6 +29,7 @@ class ROUTER_economy(Container):
     indicators
     long_term_interest_rate
     money_measures
+    pce
     primary_dealer_positioning
     retail_prices
     risk_premium
@@ -524,7 +525,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Use the composite leading indicator (CLI).
+        """Get the composite leading indicator (CLI).
 
         It is designed to provide early signals of turning points
         in business cycles showing fluctuation of the economic activity around its long term potential level.
@@ -540,13 +541,17 @@ class ROUTER_economy(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']
-            Country to get GDP for. (provider: oecd)
+        country : Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str]
+            Country to get the CLI for, default is G20. Multiple comma separated items allowed. (provider: oecd)
+        adjustment : Literal['amplitude', 'normalized']
+            Adjustment of the data, either 'amplitude' or 'normalized'. Default is amplitude. (provider: oecd)
+        growth_rate : bool
+            Return the 1-year growth rate (%) of the CLI, default is False. (provider: oecd)
 
         Returns
         -------
         OBBject
-            results : List[CLI]
+            results : List[CompositeLeadingIndicator]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -557,20 +562,20 @@ class ROUTER_economy(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        CLI
-        ---
-        date : Optional[date]
+        CompositeLeadingIndicator
+        -------------------------
+        date : date
             The date of the data.
         value : Optional[float]
             CLI value
-        country : Optional[str]
-            Country for which CLI is given
+        country : str
+            Country for the CLI value.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.economy.composite_leading_indicator(provider='oecd')
-        >>> obb.economy.composite_leading_indicator(country='all', provider='oecd')
+        >>> obb.economy.composite_leading_indicator(country='all', provider='oecd', growth_rate=True)
         """  # noqa: E501
 
         return self._run(
@@ -588,6 +593,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={"country": {"oecd": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -1803,6 +1809,96 @@ class ROUTER_economy(Container):
                     "adjusted": adjusted,
                 },
                 extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def pce(
+        self,
+        date: Annotated[
+            Union[str, datetime.date, None, List[Union[str, datetime.date, None]]],
+            OpenBBField(
+                description="A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get Personal Consumption Expenditures (PCE) reports.
+
+        Parameters
+        ----------
+        date : Union[str, datetime.date, None, List[Union[str, datetime.d...
+            A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.
+        provider : Optional[Literal['fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        category : Literal['personal_income', 'wages_by_industry', 'real_pce_percent_change', 'real_pce_quantity_index', 'pce_price_index', 'pce_dollars', 'real_pce_chained_dollars', 'pce_price_percent_change']
+            The category to query. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[PersonalConsumptionExpenditures]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        PersonalConsumptionExpenditures
+        -------------------------------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        value : float
+
+        name : Optional[str]
+            The name of the series. (provider: fred)
+        element_id : Optional[str]
+            The element id in the parent/child relationship. (provider: fred)
+        parent_id : Optional[str]
+            The parent id in the parent/child relationship. (provider: fred)
+        children : Optional[str]
+            The element_id of each child, as a comma-separated string. (provider: fred)
+        level : Optional[int]
+            The indentation level of the element. (provider: fred)
+        line : Optional[int]
+            The line number of the series in the table. (provider: fred)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.pce(provider='fred')
+        >>> # Get reports for multiple dates, entered as a comma-separated string.
+        >>> obb.economy.pce(provider='fred', date='2024-05-01,2024-04-01,2023-05-01', category='pce_price_index')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/pce",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.pce",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "date": date,
+                },
+                extra_params=kwargs,
+                info={"date": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
