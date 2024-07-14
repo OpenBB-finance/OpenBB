@@ -13,7 +13,7 @@ from openbb_core.provider.standard_models.options_chains import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_tradier.utils.constants import OPTIONS_EXCHANGES, STOCK_EXCHANGES
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field
 
 
 class TradierOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -85,71 +85,6 @@ class TradierOptionsChainsData(OptionsChainsData):
         description="Timestamp of the last greeks update."
         + " Greeks/IV data is updated once per hour.",
     )
-
-    @field_validator(
-        "last_trade_time",
-        "greeks_time",
-        "ask_time",
-        "bid_time",
-        mode="before",
-        check_fields=False,
-    )
-    @classmethod
-    def validate_dates(cls, v):
-        """Validate the dates."""
-        # pylint: disable=import-outside-toplevel
-        from dateutil.parser import parse
-        from openbb_core.provider.utils.helpers import safe_fromtimestamp
-        from pytz import timezone
-
-        if v != 0 and v is not None and isinstance(v, int):
-            v = int(v) / 1000  # milliseconds to seconds
-            v = safe_fromtimestamp(v)
-            v = v.replace(microsecond=0)
-            v = v.astimezone(timezone("America/New_York"))
-            return v
-        if v is not None and isinstance(v, str):
-            v = parse(v)
-            v = v.replace(microsecond=0, tzinfo=timezone("UTC"))
-            v = v.astimezone(timezone("America/New_York"))
-            return v
-        return None
-
-    @field_validator("change_percent", mode="before", check_fields=False)
-    @classmethod
-    def normalize_percent(cls, v):
-        """Normalize the percentage."""
-        return float(v) / 100 if v else None
-
-    @field_validator("bid_exchange", "ask_exchange", mode="before", check_fields=False)
-    @classmethod
-    def map_exchange(cls, v):
-        """Map the exchange from a code to a name."""
-        if v:
-            return (
-                OPTIONS_EXCHANGES.get(v, v)
-                if v in OPTIONS_EXCHANGES
-                else STOCK_EXCHANGES.get(v, v)
-            )
-        return None
-
-    @model_validator(mode="before")
-    @classmethod
-    def replace_zero(cls, values):
-        """Check for zero values and replace with None."""
-        return (
-            {
-                k: (
-                    None
-                    if (v == 0 or str(v) == "0")
-                    and k not in ["dte", "open_interest", "volume"]
-                    else v
-                )
-                for k, v in values.items()
-            }
-            if isinstance(values, dict)
-            else values
-        )
 
 
 class TradierOptionsChainsFetcher(
