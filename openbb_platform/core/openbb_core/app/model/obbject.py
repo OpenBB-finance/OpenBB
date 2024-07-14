@@ -84,17 +84,14 @@ class OBBject(Tagged, Generic[T]):
         return f"{self.__class__.__name__}\n\n" + "\n".join(items)
 
     def to_df(
-        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
+        self,
+        index: Optional[Union[str, None]] = "date",
+        sort_by: Optional[str] = None,
+        ascending: Optional[bool] = None,
     ) -> "DataFrame":
-        """Alias for `to_dataframe`."""
-        return self.to_dataframe(index=index, sort_by=sort_by)
+        """Alias for `to_dataframe`.
 
-    def to_dataframe(
-        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
-    ) -> "DataFrame":
-        """Convert results field to pandas dataframe.
-
-        Supports converting creating pandas DataFrames from the following
+        Supports converting creating Pandas DataFrames from the following
         serializable data formats:
 
         - List[BaseModel]
@@ -116,11 +113,53 @@ class OBBject(Tagged, Generic[T]):
             Column name to use as index.
         sort_by : Optional[str]
             Column name to sort by.
+        ascending: Optional[bool]
+            Sort by ascending for each column specified in `sort_by`.
 
         Returns
         -------
         DataFrame
-            Pandas dataframe.
+            Pandas DataFrame.
+        """
+        return self.to_dataframe(index=index, sort_by=sort_by, ascending=ascending)
+
+    def to_dataframe(
+        self,
+        index: Optional[Union[str, None]] = "date",
+        sort_by: Optional[str] = None,
+        ascending: Optional[bool] = None,
+    ) -> "DataFrame":
+        """Convert results field to Pandas DataFrame.
+
+        Supports converting creating Pandas DataFrames from the following
+        serializable data formats:
+
+        - List[BaseModel]
+        - List[Dict]
+        - List[List]
+        - List[str]
+        - List[int]
+        - List[float]
+        - Dict[str, Dict]
+        - Dict[str, List]
+        - Dict[str, BaseModel]
+
+        Other supported formats:
+        - str
+
+        Parameters
+        ----------
+        index : Optional[str]
+            Column name to use as index.
+        sort_by : Optional[str]
+            Column name to sort by.
+        ascending: Optional[bool]
+            Sort by ascending for each column specified in `sort_by`.
+
+        Returns
+        -------
+        DataFrame
+            Pandas DataFrame.
         """
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, concat  # noqa
@@ -142,8 +181,15 @@ class OBBject(Tagged, Generic[T]):
             df = None
             sort_columns = True
 
+            # BaseModel
+            if isinstance(res, BaseModel):
+                df = DataFrame(res.model_dump(exclude_unset=True, exclude_none=True))
+                sort_columns = False
+                if index is not None:
+                    df.set_index(index, inplace=True)
+
             # List[Dict]
-            if isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
+            elif isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
                 r = res[0]
                 dict_of_df = {}
 
@@ -167,7 +213,7 @@ class OBBject(Tagged, Generic[T]):
                     for prop in r.model_json_schema()["properties"].values()
                 ):
                     sort_columns = False
-                    df = DataFrame(r.model_dump(exclude_unset=True))
+                    df = DataFrame(r.model_dump(exclude_unset=True, exclude_none=True))
                 else:
                     df = basemodel_to_df(dt, index)
                     sort_columns = False
@@ -196,7 +242,11 @@ class OBBject(Tagged, Generic[T]):
 
             # Sort by specified column
             if sort_by:
-                df.sort_values(by=sort_by, inplace=True)
+                df.sort_values(
+                    by=sort_by,
+                    ascending=ascending if ascending is not None else True,
+                    inplace=True,
+                )
 
         except OpenBBError as e:
             raise e
@@ -213,7 +263,7 @@ class OBBject(Tagged, Generic[T]):
 
         return df
 
-    def to_polars(self) -> "PolarsDataFrame":
+    def to_polars(self) -> "PolarsDataFrame":  # type: ignore
         """Convert results field to polars dataframe."""
         try:
             from polars import from_pandas  # type: ignore # pylint: disable=import-outside-toplevel
@@ -234,13 +284,12 @@ class OBBject(Tagged, Generic[T]):
             "dict", "list", "series", "split", "tight", "records", "index"
         ] = "list",
     ) -> Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]:
-        """Convert results field to a dictionary using any of pandas to_dict options.
+        """Convert results field to a dictionary using any of Pandas `to_dict` options.
 
         Parameters
         ----------
         orient : Literal["dict", "list", "series", "split", "tight", "records", "index"]
             Value to pass to `.to_dict()` method
-
 
         Returns
         -------
@@ -278,7 +327,7 @@ class OBBject(Tagged, Generic[T]):
             date_unit="s",
         )
 
-        return results
+        return results  # type: ignore
 
     def show(self, **kwargs: Any) -> None:
         """Display chart."""
