@@ -1,12 +1,12 @@
 <br />
-<img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/images/platform-light.svg?raw=true#gh-light-mode-only" alt="OpenBB Terminal logo" width="600">
-<img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/images/platform-dark.svg?raw=true#gh-dark-mode-only" alt="OpenBB Terminal logo" width="600">
+<img src="https://github.com/OpenBB-finance/OpenBB/blob/develop/images/platform-light.svg?raw=true#gh-light-mode-only" alt="OpenBB Terminal logo" width="600">
+<img src="https://github.com/OpenBB-finance/OpenBB/blob/develop/images/platform-dark.svg?raw=true#gh-dark-mode-only" alt="OpenBB Terminal logo" width="600">
 <br />
 <br />
 
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=Follow%20%40openbb_finance)](https://twitter.com/openbb_finance)
 ![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
-[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/OpenBB-finance/OpenBBTerminal)
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/OpenBB-finance/OpenBB)
 <a href="https://codespaces.new/OpenBB-finance/OpenBBTerminal">
   <img src="https://github.com/codespaces/badge.svg" height="20" />
 </a>
@@ -20,6 +20,17 @@ The first financial Platform that is free and fully open source.
 Offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
 
 Sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
+
+---
+If you are looking for the first AI financial terminal for professionals, the OpenBB Terminal Pro can be found at [pro.openbb.co](https://pro.openbb.co)
+
+<a href="https://pro.openbb.co">
+  <div align="center">
+  <img src="https://openbb.co/api/image?src=%2Fassets%2Fimages%2Fhome%2Fhero.png&width=2400&fit=cover&position=center&background[]=0&background[]=0&background[]=0&background[]=0&quality=100&compressionLevel=9&loop=0&delay=100&crop=null" alt="Logo" width="600">
+  </div>
+</a>
+
+---
 
 <!-- TABLE OF CONTENTS -->
 <details closed="closed">
@@ -39,7 +50,7 @@ Sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of t
 
 The OpenBB Platform can be installed as a [PyPI package](https://pypi.org/project/openbb/) by running `pip install openbb`
 
-or by cloning the repository directly with `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`.
+or by cloning the repository directly with `git clone https://github.com/OpenBB-finance/OpenBB.git`.
 
 Please find more about the installation process in the [OpenBB Documentation](https://docs.openbb.co/platform/installation).
 
@@ -49,7 +60,7 @@ The OpenBB Platform CLI is a command-line interface that allows you to access th
 
 It can be installed by running `pip install openbb-cli`
 
-or by cloning the repository directly with  `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`.
+or by cloning the repository directly with  `git clone https://github.com/OpenBB-finance/OpenBB.git`.
 
 Please find more about the installation process in the [OpenBB Documentation](https://docs.openbb.co/cli/installation).
 
@@ -65,11 +76,11 @@ There are three main ways of contributing to this project. (Hopefully you have s
 
 ### Create a GitHub ticket
 
-Before creating a ticket make sure the one you are creating doesn't exist already [here](https://github.com/OpenBB-finance/OpenBBTerminal/issues)
+Before creating a ticket make sure the one you are creating doesn't exist already [here](https://github.com/OpenBB-finance/OpenBB/issues)
 
-* [Report bug](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D)
-* [Suggest improvement](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
-* [Request a feature](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
+* [Report bug](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D)
+* [Suggest improvement](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
+* [Request a feature](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
 
 ### Provide feedback
 
@@ -78,7 +89,7 @@ We are most active on [our Discord](https://openbb.co/discord), but feel free to
 ## 3. License
 
 Distributed under the AGPLv3 License. See
-[LICENSE](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE) for more information.
+[LICENSE](https://github.com/OpenBB-finance/OpenBB/blob/main/LICENSE) for more information.
 
 ## 4. Disclaimer
 
@@ -108,13 +119,13 @@ This is a proxy of our growth and that we are just getting started.
 
 But for more metrics important to us check [openbb.co/open](https://openbb.co/open).
 
-[![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date)](https://star-history.com/#openbb-finance/OpenBBTerminal&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date&theme=dark)](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date&theme=dark)
 
 ## 7. Contributors
 
 OpenBB wouldn't be OpenBB without you. If we are going to disrupt financial industry, every contribution counts. Thank you for being part of this journey.
 
-<a href="https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors">
+<a href="https://github.com/OpenBB-finance/OpenBB/graphs/contributors">
    <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" width="800"/>
 </a>
 
@@ -122,18 +133,18 @@ OpenBB wouldn't be OpenBB without you. If we are going to disrupt financial indu
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[contributors-url]: https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors
+[contributors-url]: https://github.com/OpenBB-finance/OpenBB/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[forks-url]: https://github.com/OpenBB-finance/OpenBBTerminal/network/members
+[forks-url]: https://github.com/OpenBB-finance/OpenBB/network/members
 [stars-shield]: https://img.shields.io/github/stars/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[stars-url]: https://github.com/OpenBB-finance/OpenBBTerminal/stargazers
+[stars-url]: https://github.com/OpenBB-finance/OpenBB/stargazers
 [issues-shield]: https://img.shields.io/github/issues/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge&color=blue
-[issues-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues
+[issues-url]: https://github.com/OpenBB-finance/OpenBB/issues
 [bugs-open-shield]: https://img.shields.io/github/issues/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=yellow
-[bugs-open-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aopen
+[bugs-open-url]: https://github.com/OpenBB-finance/OpenBB/issues?q=is%3Aissue+label%3Abug+is%3Aopen
 [bugs-closed-shield]: https://img.shields.io/github/issues-closed/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=success
-[bugs-closed-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
+[bugs-closed-url]: https://github.com/OpenBB-finance/OpenBB/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
 [license-shield]: https://img.shields.io/github/license/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE.txt
+[license-url]: https://github.com/OpenBB-finance/OpenBB/blob/main/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/DidierRLopes

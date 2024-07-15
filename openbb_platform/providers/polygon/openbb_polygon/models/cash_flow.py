@@ -10,8 +10,6 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, model_validator
 
 
@@ -152,6 +150,10 @@ class PolygonCashFlowStatementFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_polygon.utils.helpers import get_data_many
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"

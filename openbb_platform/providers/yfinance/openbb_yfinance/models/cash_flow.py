@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.cash_flow import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import Field, field_validator
-from yfinance import Ticker
 
 
 class YFinanceCashFlowStatementQueryParams(CashFlowStatementQueryParams):
@@ -68,6 +67,8 @@ class YFinanceCashFlowStatementFetcher(
         **kwargs: Any,
     ) -> List[YFinanceCashFlowStatementData]:
         """Extract the data from the Yahoo Finance endpoints."""
+        from yfinance import Ticker  # pylint: disable=import-outside-toplevel
+
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_cash_flow(
             as_dict=False, pretty=False, freq=period

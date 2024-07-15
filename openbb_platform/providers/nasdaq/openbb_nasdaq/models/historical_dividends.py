@@ -1,7 +1,7 @@
 """Nasdaq Historical Dividends Model."""
 
 # pylint: disable=unused-argument
-import asyncio
+
 from datetime import (
     date as dateType,
     datetime,
@@ -16,8 +16,6 @@ from openbb_core.provider.standard_models.historical_dividends import (
     HistoricalDividendsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_nasdaq.utils.helpers import IPO_HEADERS
 from pydantic import Field, field_validator
 
 
@@ -104,8 +102,14 @@ class NasdaqHistoricalDividendsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_nasdaq.utils.helpers import get_headers  # noqa
+
         results = []
         symbols = query.symbol.split(",")
+        IPO_HEADERS = get_headers("json")
 
         async def get_one(symbol):
             """Response Callback."""

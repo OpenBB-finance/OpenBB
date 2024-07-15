@@ -2,17 +2,11 @@
 
 # pylint: disable =[unused-argument,too-many-locals,too-many-branches]
 
-import asyncio
 from datetime import date as dateType
 from typing import Any, Dict, List, Optional, Union
 from warnings import warn
 
-import pandas as pd
-import xmltodict
-from aiohttp_client_cache import SQLiteBackend
-from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_holdings import (
@@ -21,9 +15,6 @@ from openbb_core.provider.standard_models.etf_holdings import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_sec.utils.helpers import HEADERS, get_nport_candidates
-from pandas.tseries.offsets import MonthEnd
 from pydantic import Field, field_validator, model_validator
 
 
@@ -316,7 +307,7 @@ class SecEtfHoldingsFetcher(
         List[SecEtfHoldingsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the SEC endpoints."""
+    """SEC ETF Holdings."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecEtfHoldingsQueryParams:
@@ -331,7 +322,17 @@ class SecEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
-        # Implement a retry mechanism in case of RemoteDiconnected Error.
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import xmltodict  # noqa
+        from aiohttp_client_cache import SQLiteBackend  # noqa
+        from aiohttp_client_cache.session import CachedSession  # noqa
+        from openbb_core.app.utils import get_user_cache_directory  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_sec.utils.helpers import HEADERS, get_nport_candidates  # noqa
+        from pandas import DataFrame, Series, to_datetime  # noqa
+
+        # Implement a retry mechanism in case of RemoteDisconnected Error.
         retries = 3
         for i in range(retries):
             filings = []
@@ -347,7 +348,7 @@ class SecEtfHoldingsFetcher(
                     await asyncio.sleep(1)
                     continue
                 raise e
-        filing_candidates = pd.DataFrame.from_records(filings)
+        filing_candidates = DataFrame.from_records(filings)
         if filing_candidates.empty:
             raise OpenBBError(f"No N-Port records found for {query.symbol}.")
         dates = filing_candidates.period_ending.to_list()
@@ -355,9 +356,9 @@ class SecEtfHoldingsFetcher(
         if query.date is not None:
             date = query.date
             # Gets the URL for the nearest date to the requested date.
-            __dates = pd.Series(pd.to_datetime(dates))
-            __date = pd.to_datetime(date)
-            __nearest = pd.DataFrame(__dates - __date)
+            __dates = Series(to_datetime(dates))
+            __date = to_datetime(date)
+            __nearest = DataFrame(__dates - __date)
             __nearest_date = abs(__nearest[0].astype("int64")).idxmin()
             new_date = __dates[__nearest_date].strftime("%Y-%m-%d")
             date = new_date if new_date else date
@@ -398,6 +399,10 @@ class SecEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[SecEtfHoldingsData]]:
         """Transform the data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, to_datetime
+        from pandas.tseries.offsets import MonthEnd
+
         if not data:
             raise EmptyDataError(f"No data was returned for the symbol, {query.symbol}")
         results = []
@@ -412,7 +417,7 @@ class SecEtfHoldingsFetcher(
             and "invstOrSecs" in response["edgarSubmission"]["formData"]
             and "invstOrSec" in response["edgarSubmission"]["formData"]["invstOrSecs"]
         ):
-            df = pd.DataFrame.from_records(
+            df = DataFrame.from_records(
                 response["edgarSubmission"]["formData"]["invstOrSecs"]["invstOrSec"]
             )
             # Conditionally flatten deeply nested values.
@@ -759,7 +764,7 @@ class SecEtfHoldingsFetcher(
                 metadata["lei"] = gen_info.get("seriesLei")
                 metadata["period_ending"] = gen_info.get("repPdDate")
                 metadata["fiscal_year_end"] = gen_info.get("repPdEnd")
-                current_month = pd.to_datetime(metadata["period_ending"])
+                current_month = to_datetime(metadata["period_ending"])
                 month_1 = (current_month - MonthEnd(2)).date().strftime("%Y-%m-%d")
                 month_2 = (current_month - MonthEnd(1)).date().strftime("%Y-%m-%d")
                 month_3 = current_month.strftime("%Y-%m-%d")

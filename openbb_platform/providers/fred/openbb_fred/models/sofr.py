@@ -1,5 +1,7 @@
 """FRED SOFR Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -201,7 +203,7 @@ class FREDSOFRFetcher(Fetcher[FREDSOFRQueryParams, List[FREDSOFRData]]):
 
     @staticmethod
     def transform_data(
-        query: FREDSOFRQueryParams, data: dict, **kwargs: Any
+        query: FREDSOFRQueryParams, data: Dict, **kwargs: Any
     ) -> AnnotatedResult[List[FREDSOFRData]]:
         """Transform data"""
         if not data:

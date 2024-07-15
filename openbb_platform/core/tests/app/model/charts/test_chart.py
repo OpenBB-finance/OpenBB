@@ -1,7 +1,7 @@
 """Test the chart model."""
 
 import pytest
-from openbb_core.app.model.charts.chart import Chart, ChartFormat
+from openbb_core.app.model.charts.chart import Chart
 
 
 def test_charting_default_values():
@@ -11,14 +11,14 @@ def test_charting_default_values():
 
     # Assert
     assert chart.content is None
-    assert chart.format == ChartFormat.plotly
+    assert chart.format is None
 
 
 def test_charting_custom_values():
     """Test the charting custom values."""
     # Arrange
     content = {"data": [1, 2, 3]}
-    chart_format = ChartFormat.plotly
+    chart_format = "plotly"
 
     # Act
     chart = Chart(content=content, format=chart_format)
@@ -42,7 +42,7 @@ def test_charting_config_validation():
     """Test the charting config validation."""
     # Arrange
     content = {"data": [1, 2, 3]}
-    chart_format = ChartFormat.plotly
+    chart_format = "plotly"
 
     chart = Chart(content=content, format=chart_format)
 

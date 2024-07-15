@@ -2,24 +2,10 @@
 
 from typing import List
 
-import pandas as pd
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
-from openbb_core.app.utils import (
-    basemodel_to_df,
-    df_to_basemodel,
-    get_target_column,
-)
 from openbb_core.provider.abstract.data import Data
-from openbb_quantitative.helpers import validate_window
-from openbb_quantitative.statistics import (
-    kurtosis_,
-    mean_,
-    skew_,
-    std_dev_,
-    var_,
-)
 from pydantic import NonNegativeFloat, PositiveInt
 
 router = Router(prefix="/rolling")
@@ -76,6 +62,15 @@ def skew(
         Rolling skew.
 
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.helpers import validate_window
+    from openbb_quantitative.statistics import skew_
+
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_skew_{window}"
@@ -136,6 +131,15 @@ def variance(
     OBBject[List[Data]]
         An object containing the rolling variance values.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.helpers import validate_window
+    from openbb_quantitative.statistics import var_
+
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_var_{window}"
@@ -195,6 +199,15 @@ def stdev(
     OBBject[List[Data]]
         An object containing the rolling standard deviation values.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.helpers import validate_window
+    from openbb_quantitative.statistics import std_dev_
+
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_stdev_{window}"
@@ -258,6 +271,15 @@ def kurtosis(
     OBBject[List[Data]]
         An object containing the rolling kurtosis values.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.helpers import validate_window
+    from openbb_quantitative.statistics import kurtosis_
+
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_kurtosis_{window}"
@@ -326,6 +348,15 @@ def quantile(
     OBBject[List[Data]]
         An object containing the rolling quantile values with the median.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.helpers import validate_window
+    from pandas import concat
+
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     validate_window(series_target, window)
@@ -333,7 +364,7 @@ def quantile(
     df_median = roll.median()
     df_quantile = roll.quantile(quantile_pct)
     results = (
-        pd.concat(
+        concat(
             [df_median, df_quantile],
             axis=1,
             keys=[
@@ -398,6 +429,15 @@ def mean(
     OBBject[List[Data]]
         An object containing the rolling mean values.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+        get_target_column,
+    )
+    from openbb_quantitative.helpers import validate_window
+    from openbb_quantitative.statistics import mean_
+
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_mean_{window}"

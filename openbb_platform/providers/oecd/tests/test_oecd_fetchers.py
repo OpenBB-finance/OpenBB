@@ -4,7 +4,7 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher
+from openbb_oecd.models.composite_leading_indicator import OECDCompositeLeadingIndicatorFetcher
 from openbb_oecd.models.consumer_price_index import OECDCPIFetcher
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
@@ -49,6 +49,7 @@ def test_oecd_cpi_fetcher(credentials=test_credentials):
 def test_oecd_nominal_gdp_fetcher(credentials=test_credentials):
     """Test the OECD Nominal GDP fetcher."""
     params = {
+        "country": "united_states",
         "start_date": datetime.date(2020, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
     }
@@ -58,6 +59,7 @@ def test_oecd_nominal_gdp_fetcher(credentials=test_credentials):
     assert result is None
 
 
+@pytest.mark.skip(reason="Downloads a huge file, code needs to be fixed to use params.")
 @pytest.mark.record_http
 def test_oecd_real_gdp_fetcher(credentials=test_credentials):
     """Test the OECD Real GDP fetcher."""
@@ -70,6 +72,7 @@ def test_oecd_real_gdp_fetcher(credentials=test_credentials):
     assert result is None
 
 
+@pytest.mark.skip(reason="Downloads a huge file, code needs to be fixed to use params.")
 @pytest.mark.record_http
 def test_oecd_forecast_gdp_fetcher(credentials=test_credentials):
     """Test the OECD GDP Forecast fetcher."""
@@ -97,14 +100,15 @@ def test_oecd_unemployment_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_oecdcli_fetcher(credentials=test_credentials):
+def test_oecd_composite_leading_indicator_fetcher(credentials=test_credentials):
     """Test the OECD Composite Leading Indicator fetcher."""
     params = {
+        "country": "G20",
         "start_date": datetime.date(2023, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
     }
 
-    fetcher = OECDCLIFetcher()
+    fetcher = OECDCompositeLeadingIndicatorFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

@@ -20,7 +20,6 @@ def vcr_config():
     }
 
 
-@pytest.mark.freeze_time("2023-11-08")
 @pytest.mark.record_http
 def test_stockgrid_short_volume_fetcher(credentials=test_credentials):
     """Test short volume fetcher."""

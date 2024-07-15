@@ -2,12 +2,12 @@
 
 import asyncio
 import os
-import re
 from datetime import date, datetime, timedelta, timezone
 from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
 from typing import (
+    TYPE_CHECKING,
     Awaitable,
     Callable,
     List,
@@ -18,7 +18,6 @@ from typing import (
     cast,
 )
 
-import requests
 from anyio.from_thread import start_blocking_portal
 from typing_extensions import ParamSpec
 
@@ -28,6 +27,9 @@ from openbb_core.provider.utils.client import (
     ClientSession,
     get_user_agent,
 )
+
+if TYPE_CHECKING:
+    from requests import Response  # pylint: disable=import-outside-toplevel
 
 T = TypeVar("T")
 P = ParamSpec("P")
@@ -205,7 +207,7 @@ async def amake_requests(
 
 def make_request(
     url: str, method: str = "GET", timeout: int = 10, **kwargs
-) -> requests.Response:
+) -> "Response":
     """Abstract helper to make requests from a url with potential headers and params.
 
     Parameters
@@ -219,7 +221,7 @@ def make_request(
 
     Returns
     -------
-    requests.Response
+    Response
         Request response object
 
     Raises
@@ -227,9 +229,12 @@ def make_request(
     ValueError
         If invalid method is passed
     """
+    import requests  # pylint: disable=import-outside-toplevel
+
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
+
     headers = kwargs.pop("headers", {})
     preferences = kwargs.pop("preferences", None)
     if preferences and "request_timeout" in preferences:
@@ -260,6 +265,8 @@ def make_request(
 
 def to_snake_case(string: str) -> str:
     """Convert a string to snake case."""
+    import re  # pylint: disable=import-outside-toplevel
+
     s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
     return (
         re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1)

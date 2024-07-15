@@ -1,13 +1,11 @@
 """Yahoo Finance Equity Historical Price Model."""
 
 # pylint: disable=unused-argument
-# ruff: noqa: SIM105
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional
 from warnings import warn
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
@@ -15,10 +13,11 @@ from openbb_core.provider.standard_models.equity_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS_DICT, PERIODS
-from pandas import DataFrame, Timestamp
-from pydantic import Field, PrivateAttr, field_validator, model_validator
+from pydantic import Field, PrivateAttr, model_validator
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -117,13 +116,6 @@ class YFinanceEquityHistoricalData(EquityHistoricalData):
         description="Dividend amount (split-adjusted), if a dividend was paid.",
     )
 
-    @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return formatted datetime."""
-        if isinstance(v, Timestamp):
-            return v.to_pydatetime()
-        return v
-
 
 class YFinanceEquityHistoricalFetcher(
     Fetcher[
@@ -136,6 +128,9 @@ class YFinanceEquityHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceEquityHistoricalQueryParams:
         """Transform the query."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+
         transformed_params = params
         now = datetime.now().date()
 
@@ -152,8 +147,11 @@ class YFinanceEquityHistoricalFetcher(
         query: YFinanceEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Return the raw data from the Yahoo Finance endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import yf_download
+
         adjusted = query.adjustment == "splits_and_dividends"
         kwargs = {"auto_adjust": True, "back_adjust": True} if adjusted is True else {}
         # pylint: disable=protected-access
@@ -183,7 +181,7 @@ class YFinanceEquityHistoricalFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceEquityHistoricalQueryParams,
-        data: DataFrame,
+        data: "DataFrame",
         **kwargs: Any,
     ) -> List[YFinanceEquityHistoricalData]:
         """Transform the data to the standard format."""

@@ -204,10 +204,10 @@ async def unemployment(
 
 
 @router.command(
-    model="CLI",
+    model="CompositeLeadingIndicator",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"country": "all", "provider": "oecd"}),
+        APIEx(parameters={"country": "all", "provider": "oecd", "growth_rate": True}),
     ],
 )
 async def composite_leading_indicator(
@@ -216,7 +216,7 @@ async def composite_leading_indicator(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Use the composite leading indicator (CLI).
+    """Get the composite leading indicator (CLI).
 
     It is designed to provide early signals of turning points
     in business cycles showing fluctuation of the economic activity around its long term potential level.
@@ -516,4 +516,50 @@ async def retail_prices(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get retail prices for common items."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="PrimaryDealerPositioning",
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(
+            parameters={
+                "category": "abs",
+                "provider": "federal_reserve",
+            },
+        ),
+    ],
+)
+async def primary_dealer_positioning(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Primary dealer positioning statistics."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="PersonalConsumptionExpenditures",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            description="Get reports for multiple dates, entered as a comma-separated string.",
+            parameters={
+                "provider": "fred",
+                "date": "2024-05-01,2024-04-01,2023-05-01",
+                "category": "pce_price_index",
+            },
+        ),
+    ],
+)
+async def pce(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Personal Consumption Expenditures (PCE) reports."""
     return await OBBject.from_query(Query(**locals()))

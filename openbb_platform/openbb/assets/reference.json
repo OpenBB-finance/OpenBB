@@ -1,36 +1,36 @@
 {
-    "openbb": "4.2.3",
+    "openbb": "4.3.0",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.2.9",
+        "core": "1.3.0",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.1.3",
-                "crypto@1.2.3",
-                "currency@1.2.3",
-                "derivatives@1.2.4",
-                "economy@1.2.3",
-                "equity@1.2.3",
-                "etf@1.2.3",
-                "fixedincome@1.2.3",
-                "index@1.2.3",
-                "news@1.2.3",
-                "regulators@1.2.3"
+                "commodity@1.2.0",
+                "crypto@1.3.0",
+                "currency@1.3.0",
+                "derivatives@1.3.0",
+                "economy@1.3.0",
+                "equity@1.3.0",
+                "etf@1.3.0",
+                "fixedincome@1.3.0",
+                "index@1.3.0",
+                "news@1.3.0",
+                "regulators@1.3.0"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.2.3",
-                "econdb@1.1.3",
-                "federal_reserve@1.2.3",
-                "fmp@1.2.3",
-                "fred@1.2.3",
-                "intrinio@1.2.4",
-                "oecd@1.2.3",
-                "polygon@1.2.3",
-                "sec@1.2.3",
-                "tiingo@1.2.3",
-                "tradingeconomics@1.2.3",
-                "yfinance@1.2.3"
+                "benzinga@1.3.0",
+                "econdb@1.2.0",
+                "federal_reserve@1.3.0",
+                "fmp@1.3.0",
+                "fred@1.3.0",
+                "intrinio@1.3.0",
+                "oecd@1.3.0",
+                "polygon@1.3.0",
+                "sec@1.3.0",
+                "tiingo@1.3.0",
+                "tradingeconomics@1.3.0",
+                "yfinance@1.3.0"
             ],
             "openbb_obbject_extension": []
         }
@@ -2430,7 +2430,7 @@
                 "message": null
             },
             "description": "Futures Term Structure, current or historical.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Enter a date to get the term structure from a historical date.\nobb.derivatives.futures.curve(symbol='NG', provider='yfinance', date='2023-01-01')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.futures.curve(symbol='NG', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -2637,17 +2637,9 @@
                 "message": null
             },
             "description": "Get Nominal GDP Data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.nominal(provider='oecd')\nobb.economy.gdp.nominal(units='usd', provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.nominal(provider='oecd')\nobb.economy.gdp.nominal(units=usd, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
-                    {
-                        "name": "units",
-                        "type": "Literal['usd', 'usd_cap']",
-                        "description": "The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
-                        "default": "usd",
-                        "optional": true,
-                        "choices": null
-                    },
                     {
                         "name": "start_date",
                         "type": "Union[date, str]",
@@ -2666,20 +2658,190 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
+                        "type": "Literal['econdb', 'oecd']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.",
                         "default": null,
                         "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data.Use 'all' to get data for all available countries. Multiple items allowed for provider(s): econdb, oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": [
+                            "oecd",
+                            "oecd_26",
+                            "oecd_europe",
+                            "g7",
+                            "g20",
+                            "euro_area",
+                            "european_union_27",
+                            "european_union_15",
+                            "nafta",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
                     }
                 ],
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'colombia', 'costa_rica', 'czech_republic', 'denmark', 'estonia', 'euro_area', 'european_union', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'russia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all']",
-                        "description": "Country to get GDP for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Use 'all' to get data for all available countries. Multiple items allowed for provider(s): oecd.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "oecd",
+                            "oecd_26",
+                            "oecd_europe",
+                            "g7",
+                            "g20",
+                            "euro_area",
+                            "european_union_27",
+                            "european_union_15",
+                            "nafta",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['quarter', 'annual']",
+                        "description": "Frequency of the data.",
+                        "default": "quarter",
+                        "optional": true,
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
+                    },
+                    {
+                        "name": "units",
+                        "type": "Literal['level', 'index', 'capita']",
+                        "description": "The unit of measurement for the data.Both 'level' and 'capita' (per) are measured in USD.",
+                        "default": "level",
+                        "optional": true,
+                        "choices": [
+                            "level",
+                            "index",
+                            "capita"
+                        ]
+                    },
+                    {
+                        "name": "price_base",
+                        "type": "Literal['current_prices', 'volume']",
+                        "description": "Price base for the data, volume is chain linked volume.",
+                        "default": "current_prices",
+                        "optional": true,
+                        "choices": [
+                            "current_prices",
+                            "volume"
+                        ]
                     }
                 ]
             },
@@ -2692,7 +2854,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['oecd']]",
+                        "type": "Optional[Literal['econdb', 'oecd']]",
                         "description": "Provider name."
                     },
                     {
@@ -2718,16 +2880,50 @@
                         "name": "date",
                         "type": "date",
                         "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country represented by the GDP value.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "real_growth_qoq",
                         "type": "float",
-                        "description": "Nominal GDP value on the date.",
-                        "default": null,
-                        "optional": true,
+                        "description": "Real GDP growth rate quarter over quarter.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "real_growth_yoy",
+                        "type": "float",
+                        "description": "Real GDP growth rate year over year.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     }
                 ],
@@ -3489,6 +3685,161 @@
                 "fred": []
             },
             "model": "ManufacturingOutlookTexas"
+        },
+        "/economy/survey/nonfarm_payrolls": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get Nonfarm Payrolls Survey.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.nonfarm_payrolls(provider='fred')\nobb.economy.survey.nonfarm_payrolls(category=avg_hours, provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "description": "A specific date to get data for. Default is the latest report. Multiple items allowed for provider(s): fred.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "category",
+                        "type": "Literal['employees_nsa', 'employees_sa', 'employees_production_and_nonsupervisory', 'employees_women', 'employees_women_percent', 'avg_hours', 'avg_hours_production_and_nonsupervisory', 'avg_hours_overtime', 'avg_hours_overtime_production_and_nonsupervisory', 'avg_earnings_hourly', 'avg_earnings_hourly_production_and_nonsupervisory', 'avg_earnings_weekly', 'avg_earnings_weekly_production_and_nonsupervisory', 'index_weekly_hours', 'index_weekly_hours_production_and_nonsupervisory', 'index_weekly_payrolls', 'index_weekly_payrolls_production_and_nonsupervisory']",
+                        "description": "The category to query.",
+                        "default": "employees_nsa",
+                        "optional": true,
+                        "choices": [
+                            "employees_nsa",
+                            "employees_sa",
+                            "employees_production_and_nonsupervisory",
+                            "employees_women",
+                            "employees_women_percent",
+                            "avg_hours",
+                            "avg_hours_production_and_nonsupervisory",
+                            "avg_hours_overtime",
+                            "avg_hours_overtime_production_and_nonsupervisory",
+                            "avg_earnings_hourly",
+                            "avg_earnings_hourly_production_and_nonsupervisory",
+                            "avg_earnings_weekly",
+                            "avg_earnings_weekly_production_and_nonsupervisory",
+                            "index_weekly_hours",
+                            "index_weekly_hours_production_and_nonsupervisory",
+                            "index_weekly_payrolls",
+                            "index_weekly_payrolls_production_and_nonsupervisory"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[NonFarmPayrolls]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "The name of the series.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "element_id",
+                        "type": "str",
+                        "description": "The element id in the parent/child relationship.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "parent_id",
+                        "type": "str",
+                        "description": "The parent id in the parent/child relationship.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "children",
+                        "type": "str",
+                        "description": "The element_id of each child, as a comma-separated string.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "level",
+                        "type": "int",
+                        "description": "The indentation level of the element.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "NonFarmPayrolls"
         },
         "/economy/calendar": {
             "deprecated": {
@@ -5025,7 +5376,22 @@
                         "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
                     },
                     {
                         "name": "aggregation_method",
@@ -5033,7 +5399,11 @@
                         "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.       avg = Average       sum = Sum       eop = End of Period",
                         "default": "eop",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
                     },
                     {
                         "name": "transform",
@@ -5041,7 +5411,16 @@
                         "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ],
                 "intrinio": [
@@ -5467,8 +5846,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Use the composite leading indicator (CLI).\n\nIt is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\n\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd')\n```\n\n",
+            "description": "Get the composite leading indicator (CLI).\n\nIt is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\n\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd', growth_rate=True)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -5498,9 +5877,49 @@
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']",
-                        "description": "Country to get GDP for.",
-                        "default": "united_states",
+                        "type": "Union[Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str], List[Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str]]]",
+                        "description": "Country to get the CLI for, default is G20. Multiple items allowed for provider(s): oecd.",
+                        "default": "g20",
+                        "optional": true,
+                        "choices": [
+                            "g20",
+                            "g7",
+                            "asia5",
+                            "north_america",
+                            "europe4",
+                            "australia",
+                            "brazil",
+                            "canada",
+                            "china",
+                            "france",
+                            "germany",
+                            "india",
+                            "indonesia",
+                            "italy",
+                            "japan",
+                            "mexico",
+                            "spain",
+                            "south_africa",
+                            "south_korea",
+                            "turkey",
+                            "united_states",
+                            "united_kingdom",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "adjustment",
+                        "type": "Literal['amplitude', 'normalized']",
+                        "description": "Adjustment of the data, either 'amplitude' or 'normalized'. Default is amplitude.",
+                        "default": "amplitude",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "growth_rate",
+                        "type": "bool",
+                        "description": "Return the 1-year growth rate (%) of the CLI, default is False.",
+                        "default": false,
                         "optional": true,
                         "choices": null
                     }
@@ -5510,7 +5929,7 @@
                 "OBBject": [
                     {
                         "name": "results",
-                        "type": "List[CLI]",
+                        "type": "List[CompositeLeadingIndicator]",
                         "description": "Serializable results."
                     },
                     {
@@ -5541,8 +5960,8 @@
                         "name": "date",
                         "type": "date",
                         "description": "The date of the data.",
-                        "default": null,
-                        "optional": true,
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     },
                     {
@@ -5556,15 +5975,15 @@
                     {
                         "name": "country",
                         "type": "str",
-                        "description": "Country for which CLI is given",
-                        "default": null,
-                        "optional": true,
+                        "description": "Country for the CLI value.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     }
                 ],
                 "oecd": []
             },
-            "model": "CLI"
+            "model": "CompositeLeadingIndicator"
         },
         "/economy/short_term_interest_rate": {
             "deprecated": {
@@ -5862,15 +6281,28 @@
                         "description": "The type of regional data. Parameter is only valid when `is_series_group` is True.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "bea",
+                            "msa",
+                            "frb",
+                            "necta",
+                            "state",
+                            "country",
+                            "county",
+                            "censusregion"
+                        ]
                     },
                     {
                         "name": "season",
-                        "type": "Literal['SA', 'NSA', 'SSA']",
+                        "type": "Literal['sa', 'nsa', 'ssa']",
                         "description": "The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True.",
-                        "default": "NSA",
+                        "default": "nsa",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "sa",
+                            "nsa",
+                            "ssa"
+                        ]
                     },
                     {
                         "name": "units",
@@ -5882,27 +6314,55 @@
                     },
                     {
                         "name": "frequency",
-                        "type": "Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert high frequency data to lower frequency.     Parameter is only valid when `is_series_group` is True.       a = Annual       sa= Semiannual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
                     },
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.     Only valid when `is_series_group` is True.       avg = Average       sum = Sum       eop = End of Period",
-                        "default": "avg",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": "eop",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
                     },
                     {
                         "name": "transform",
-                        "type": "Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type. Only valid when `is_series_group` is True.       lin = Levels (No transformation)       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
-                        "default": "lin",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ]
             },
@@ -7595,6 +8055,295 @@
                 "fred": []
             },
             "model": "RetailPrices"
+        },
+        "/economy/primary_dealer_positioning": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get Primary dealer positioning statistics.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.primary_dealer_positioning(provider='federal_reserve')\nobb.economy.primary_dealer_positioning(category=abs, provider='federal_reserve')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['federal_reserve']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "category",
+                        "type": "Literal['treasuries', 'bills', 'coupons', 'notes', 'tips', 'mbs', 'cmbs', 'municipal', 'corporate', 'commercial_paper', 'corporate_ig', 'corporate_junk', 'abs']",
+                        "description": "The category of asset to return, defaults to 'treasuries'.",
+                        "default": "treasuries",
+                        "optional": true,
+                        "choices": [
+                            "treasuries",
+                            "bills",
+                            "coupons",
+                            "notes",
+                            "tips",
+                            "mbs",
+                            "cmbs",
+                            "municipal",
+                            "corporate",
+                            "commercial_paper",
+                            "corporate_ig",
+                            "corporate_junk",
+                            "abs"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PrimaryDealerPositioning]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['federal_reserve']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "value",
+                        "type": "int",
+                        "description": "The reported value of the net position (long - short), in millions of $USD.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Short name for the series.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "PrimaryDealerPositioning"
+        },
+        "/economy/pce": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get Personal Consumption Expenditures (PCE) reports.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.pce(provider='fred')\n# Get reports for multiple dates, entered as a comma-separated string.\nobb.economy.pce(provider='fred', date='2024-05-01,2024-04-01,2023-05-01', category=pce_price_index)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "description": "A specific date to get data for. Default is the latest report. Multiple items allowed for provider(s): fred.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "category",
+                        "type": "Literal['personal_income', 'wages_by_industry', 'real_pce_percent_change', 'real_pce_quantity_index', 'pce_price_index', 'pce_dollars', 'real_pce_chained_dollars', 'pce_price_percent_change']",
+                        "description": "The category to query.",
+                        "default": "personal_income",
+                        "optional": true,
+                        "choices": [
+                            "personal_income",
+                            "wages_by_industry",
+                            "real_pce_percent_change",
+                            "real_pce_quantity_index",
+                            "pce_price_index",
+                            "pce_dollars",
+                            "real_pce_chained_dollars",
+                            "pce_price_percent_change"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PersonalConsumptionExpenditures]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "The name of the series.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "element_id",
+                        "type": "str",
+                        "description": "The element id in the parent/child relationship.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "parent_id",
+                        "type": "str",
+                        "description": "The parent id in the parent/child relationship.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "children",
+                        "type": "str",
+                        "description": "The element_id of each child, as a comma-separated string.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "level",
+                        "type": "int",
+                        "description": "The indentation level of the element.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "line",
+                        "type": "int",
+                        "description": "The line number of the series in the table.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "PersonalConsumptionExpenditures"
         },
         "/equity/calendar/ipo": {
             "deprecated": {
@@ -20662,357 +21411,6 @@
             },
             "model": "ExecutiveCompensation"
         },
-        "/equity/fundamental/overview": {
-            "deprecated": {
-                "flag": true,
-                "message": "This endpoint is deprecated; use `/equity/profile` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3."
-            },
-            "description": "Get company general business and stock data for a given company.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.overview(symbol='AAPL', provider='fmp')\n```\n\n",
-            "parameters": {
-                "standard": [
-                    {
-                        "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
-                "fmp": []
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "List[CompanyOverview]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['fmp']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[List[Warning_]]",
-                        "description": "List of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "Dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [
-                    {
-                        "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol representing the entity requested in the data.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "price",
-                        "type": "float",
-                        "description": "Price of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "beta",
-                        "type": "float",
-                        "description": "Beta of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "vol_avg",
-                        "type": "int",
-                        "description": "Volume average of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "mkt_cap",
-                        "type": "int",
-                        "description": "Market capitalization of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "last_div",
-                        "type": "float",
-                        "description": "Last dividend of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "range",
-                        "type": "str",
-                        "description": "Range of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "changes",
-                        "type": "float",
-                        "description": "Changes of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "company_name",
-                        "type": "str",
-                        "description": "Company name of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "currency",
-                        "type": "str",
-                        "description": "Currency of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "cik",
-                        "type": "str",
-                        "description": "Central Index Key (CIK) for the requested entity.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "isin",
-                        "type": "str",
-                        "description": "ISIN of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "cusip",
-                        "type": "str",
-                        "description": "CUSIP of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "exchange",
-                        "type": "str",
-                        "description": "Exchange of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "exchange_short_name",
-                        "type": "str",
-                        "description": "Exchange short name of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "industry",
-                        "type": "str",
-                        "description": "Industry of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "website",
-                        "type": "str",
-                        "description": "Website of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "description",
-                        "type": "str",
-                        "description": "Description of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "ceo",
-                        "type": "str",
-                        "description": "CEO of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "sector",
-                        "type": "str",
-                        "description": "Sector of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "country",
-                        "type": "str",
-                        "description": "Country of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "full_time_employees",
-                        "type": "str",
-                        "description": "Full time employees of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "phone",
-                        "type": "str",
-                        "description": "Phone of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "address",
-                        "type": "str",
-                        "description": "Address of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "city",
-                        "type": "str",
-                        "description": "City of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "state",
-                        "type": "str",
-                        "description": "State of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "zip",
-                        "type": "str",
-                        "description": "Zip of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "dcf_diff",
-                        "type": "float",
-                        "description": "Discounted cash flow difference of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "dcf",
-                        "type": "float",
-                        "description": "Discounted cash flow of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "image",
-                        "type": "str",
-                        "description": "Image of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "ipo_date",
-                        "type": "date",
-                        "description": "IPO date of the company.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "default_image",
-                        "type": "bool",
-                        "description": "If the image is the default image.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "is_etf",
-                        "type": "bool",
-                        "description": "If the company is an ETF.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "is_actively_trading",
-                        "type": "bool",
-                        "description": "If the company is actively trading.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "is_adr",
-                        "type": "bool",
-                        "description": "If the company is an ADR.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "is_fund",
-                        "type": "bool",
-                        "description": "If the company is a fund.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ],
-                "fmp": []
-            },
-            "model": "CompanyOverview"
-        },
         "/equity/fundamental/ratios": {
             "deprecated": {
                 "flag": null,
@@ -21836,7 +22234,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC\nfilings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,\nForeign Investment Disclosures and others. The annual 10-K report is required to be\nfiled annually and includes the company's financial statements, management discussion and analysis,\nand audited financial statements.",
+            "description": "Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.\n\nSEC filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,\nForeign Investment Disclosures and others. The annual 10-K report is required to be\nfiled annually and includes the company's financial statements, management discussion and analysis,\nand audited financial statements.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.filings(provider='fmp')\nobb.equity.fundamental.filings(limit=100, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -31938,7 +32336,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34654,233 +35052,6 @@
                 "yfinance": []
             },
             "model": "IndexHistorical"
-        },
-        "/index/market": {
-            "deprecated": {
-                "flag": true,
-                "message": "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3."
-            },
-            "description": "Get Historical Market Indices.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.index.market(symbol='^IBEX', provider='fmp')\n```\n\n",
-            "parameters": {
-                "standard": [
-                    {
-                        "name": "symbol",
-                        "type": "Union[str, List[str]]",
-                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, polygon, yfinance.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "start_date",
-                        "type": "Union[date, str]",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "interval",
-                        "type": "str",
-                        "description": "Time interval of the data to return.",
-                        "default": "1d",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
-                "fmp": [
-                    {
-                        "name": "interval",
-                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
-                        "description": "Time interval of the data to return.",
-                        "default": "1d",
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "intrinio": [
-                    {
-                        "name": "limit",
-                        "type": "int",
-                        "description": "The number of data entries to return.",
-                        "default": 10000,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "polygon": [
-                    {
-                        "name": "interval",
-                        "type": "str",
-                        "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
-                        "default": "1d",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "sort",
-                        "type": "Literal['asc', 'desc']",
-                        "description": "Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date.",
-                        "default": "asc",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "limit",
-                        "type": "int",
-                        "description": "The number of data entries to return.",
-                        "default": 49999,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "yfinance": [
-                    {
-                        "name": "interval",
-                        "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
-                        "description": "Time interval of the data to return.",
-                        "default": "1d",
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "List[MarketIndices]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[List[Warning_]]",
-                        "description": "List of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "Dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [
-                    {
-                        "name": "date",
-                        "type": "Union[date, datetime]",
-                        "description": "The date of the data.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "open",
-                        "type": "Annotated[float, Strict(strict=True)]",
-                        "description": "The open price.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "high",
-                        "type": "Annotated[float, Strict(strict=True)]",
-                        "description": "The high price.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "low",
-                        "type": "Annotated[float, Strict(strict=True)]",
-                        "description": "The low price.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "close",
-                        "type": "Annotated[float, Strict(strict=True)]",
-                        "description": "The close price.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "volume",
-                        "type": "int",
-                        "description": "The trading volume.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "fmp": [
-                    {
-                        "name": "vwap",
-                        "type": "float",
-                        "description": "Volume Weighted Average Price over the period.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "change",
-                        "type": "float",
-                        "description": "Change in the price from the previous close.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "change_percent",
-                        "type": "float",
-                        "description": "Change in the price from the previous close, as a normalized percent.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "intrinio": [],
-                "polygon": [
-                    {
-                        "name": "transactions",
-                        "type": "Annotated[int, Gt(gt=0)]",
-                        "description": "Number of transactions for the symbol in the time period.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "yfinance": []
-            },
-            "model": "MarketIndices"
         },
         "/index/constituents": {
             "deprecated": {

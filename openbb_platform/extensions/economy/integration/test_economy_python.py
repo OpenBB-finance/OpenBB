@@ -160,13 +160,23 @@ def test_economy_gdp_forecast(params, obb):
 @parametrize(
     "params",
     [
-        ({"units": "usd", "start_date": "2021-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "econdb",
+                "use_cache": False,
+            }
+        ),
         (
             {
                 "country": "united_states",
                 "provider": "oecd",
-                "units": "usd",
-                "start_date": "2021-01-01",
+                "units": "level",
+                "price_base": "volume",
+                "frequency": "quarter",
+                "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
         ),
@@ -428,10 +438,11 @@ def test_economy_unemployment(params, obb):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "country": "united_states",
+                "adjustment": "amplitude",
+                "growth_rate": False,
                 "provider": "oecd",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -514,7 +525,7 @@ def test_economy_long_term_interest_rate(params, obb):
                 "frequency": "w",
                 "units": "Number",
                 "region_type": "state",
-                "season": "NSA",
+                "season": "nsa",
                 "aggregation_method": "eop",
                 "transform": "ch1",
                 "provider": "fred",
@@ -532,7 +543,7 @@ def test_economy_long_term_interest_rate(params, obb):
                 "region_type": None,
                 "season": None,
                 "aggregation_method": "avg",
-                "transform": "lin",
+                "transform": "chg",
                 "provider": "fred",
                 "limit": None,
             }
@@ -871,6 +882,76 @@ def test_economy_survey_manufacturing_outlook_texas(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.survey.manufacturing_outlook_texas(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": "2024-01-01",
+                "end_date": "2024-04-01",
+                "category": "cmbs",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_primary_dealer_positioning(params, obb):
+    """Test the economy primary dealer positioning endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.primary_dealer_positioning(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": "2024-06-01,2023-06-01",
+                "category": "avg_earnings_hourly",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_nonfarm_payrolls(params, obb):
+    """Test the economy survery nonfarm payrolls endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.survey.nonfarm_payrolls(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": "2024-05-01,2024-04-01,2023-05-01",
+                "category": "pce_price_index",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_pce(params, obb):
+    """Test the economy pce endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.pce(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

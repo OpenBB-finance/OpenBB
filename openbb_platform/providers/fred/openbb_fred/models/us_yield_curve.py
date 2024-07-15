@@ -1,6 +1,7 @@
 """FRED US Yield Curve Model."""
 
-from datetime import datetime, timedelta
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -8,7 +9,6 @@ from openbb_core.provider.standard_models.us_yield_curve import (
     USYieldCurveData,
     USYieldCurveQueryParams,
 )
-from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import (
     YIELD_CURVE_NOMINAL_RATES,
     YIELD_CURVE_REAL_RATES,
@@ -26,11 +26,9 @@ class FREDYieldCurveData(USYieldCurveData):
 
 
 class FREDYieldCurveFetcher(
-    Fetcher[FREDYieldCurveQueryParams, List[Dict[str, List[FREDYieldCurveData]]]]
+    Fetcher[FREDYieldCurveQueryParams, List[FREDYieldCurveData]]
 ):
-    """Transform the query, extract and transform the data from the FRED endpoints."""
-
-    data_type = FREDYieldCurveData
+    """FRED Yield Curve Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDYieldCurveQueryParams:
@@ -44,6 +42,10 @@ class FREDYieldCurveFetcher(
         **kwargs: Any
     ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import datetime, timedelta  # noqa
+        from openbb_fred.utils.fred_base import Fred  # noqa
+
         api_key = credentials.get("fred_api_key") if credentials else ""
         date = query.date
         if query.inflation_adjusted:

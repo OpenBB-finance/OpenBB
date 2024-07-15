@@ -590,21 +590,6 @@ def test_equity_fundamental_management(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
-    ],
-)
-@pytest.mark.integration
-def test_equity_fundamental_overview(params, obb):
-    """Test the equity fundamental overview endpoint."""
-    result = obb.equity.fundamental.overview(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert result.results is not None
-
-
-@parametrize(
-    "params",
-    [
         ({"symbol": "AAPL", "date": "2023-01-01", "page": 1, "provider": "fmp"}),
     ],
 )

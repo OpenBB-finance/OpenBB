@@ -2,27 +2,20 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
-import json
-import warnings
 from datetime import (
     date as dateType,
     datetime,
 )
 from typing import Any, Dict, List, Optional, Union
+from warnings import warn
 
-from numpy import nan
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteData,
     EquityQuoteQueryParams,
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
-from openbb_tmx.utils import gql
-from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent
 from pydantic import Field, field_validator
-
-_warn = warnings.warn
 
 
 class TmxEquityQuoteQueryParams(EquityQuoteQueryParams):
@@ -267,7 +260,7 @@ class TmxEquityQuoteFetcher(
         List[TmxEquityQuoteData],
     ]
 ):
-    """Transform the query, extract and transform the data from the TMX endpoints."""
+    """TMX Equity Quote Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxEquityQuoteQueryParams:
@@ -281,6 +274,12 @@ class TmxEquityQuoteFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import json  # noqa
+        from openbb_tmx.utils import gql  # noqa
+        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+
         symbols = query.symbol.split(",")
 
         # The list where the results will be stored and appended to.
@@ -317,7 +316,7 @@ class TmxEquityQuoteFetcher(
                 data = r["data"]["getQuoteBySymbol"]
                 results.append(data)
             else:
-                _warn(f"Could not get data for {symbol}.")
+                warn(f"Could not get data for {symbol}.")
 
         tasks = [create_task(symbol, results) for symbol in symbols]
         await asyncio.gather(*tasks)
@@ -330,6 +329,9 @@ class TmxEquityQuoteFetcher(
         **kwargs: Any,
     ) -> List[TmxEquityQuoteData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from numpy import nan
+
         # Remove the items associated with `equity.profile()`.
         items_list = [
             "shortDescription",

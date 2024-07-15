@@ -1,59 +1,63 @@
 """Views for the technical Extension."""
 
-from typing import Any, Dict, Tuple
+# pylint: disable=too-many-locals,use-dict-literal
 
-import pandas as pd
-from openbb_charting.charts import relative_rotation
-from openbb_charting.core.chart_style import ChartStyle
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+from typing import TYPE_CHECKING, Any, Dict, Tuple
+
 from openbb_charting.core.to_chart import to_chart
 from openbb_charting.styles.colors import LARGE_CYCLER
-from openbb_core.app.utils import basemodel_to_df
+
+if TYPE_CHECKING:
+    from openbb_charting.core.openbb_figure import OpenBBFigure
 
 
 class TechnicalViews:
     """Technical Views."""
 
     @staticmethod
-    def technical_sma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_sma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Plot simple moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "sma"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_ema(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_ema(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Exponential moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "ema"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_hma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_hma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Hull moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "hma"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_wma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_wma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Weighted moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "wma"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_zlma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_zlma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Zero lag moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "zlma"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_aroon(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Technical Aroon Chart."""
-        if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+        from openbb_core.app.utils import basemodel_to_df
+        from pandas import DataFrame
+
+        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
             data = kwargs["data"]
         else:
             data = basemodel_to_df(
@@ -91,9 +95,14 @@ class TechnicalViews:
         return fig, content
 
     @staticmethod
-    def technical_macd(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Plot moving average convergence divergence chart."""
-        if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+        from openbb_core.app.utils import basemodel_to_df
+        from pandas import DataFrame
+
+        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
             data = kwargs["data"]
         else:
             data = basemodel_to_df(
@@ -129,9 +138,14 @@ class TechnicalViews:
         return fig, content
 
     @staticmethod
-    def technical_adx(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Average directional movement index chart."""
-        if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+        from openbb_core.app.utils import basemodel_to_df
+        from pandas import DataFrame
+
+        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
             data = kwargs["data"]
         else:
             data = basemodel_to_df(
@@ -164,9 +178,14 @@ class TechnicalViews:
         return fig, content
 
     @staticmethod
-    def technical_rsi(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Relative strength index chart."""
-        if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+        from openbb_core.app.utils import basemodel_to_df
+        from pandas import DataFrame
+
+        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
             data = kwargs["data"]
         else:
             data = basemodel_to_df(
@@ -199,15 +218,17 @@ class TechnicalViews:
         return fig, content
 
     @staticmethod
-    def technical_cones(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    def technical_cones(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Volatility Cones Chart."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.chart_style import ChartStyle
+        from openbb_charting.core.openbb_figure import OpenBBFigure
+        from openbb_core.app.utils import basemodel_to_df
+        from pandas import DataFrame
+
         data = kwargs.get("data")
 
-        if (
-            isinstance(data, pd.DataFrame)
-            and not data.empty
-            and "window" in data.columns
-        ):
+        if isinstance(data, DataFrame) and not data.empty and "window" in data.columns:
             df_ta = data.set_index("window")
         else:
             df_ta = basemodel_to_df(kwargs["obbject_item"], index="window")  # type: ignore
@@ -312,6 +333,12 @@ class TechnicalViews:
         **kwargs: Any,
     ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Relative Rotation Chart."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts import relative_rotation  # noqa
+        from openbb_charting.core.chart_style import ChartStyle  # noqa
+        from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
+        from openbb_core.app.utils import basemodel_to_df  # noqa
+
         ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")  # type: ignore
         momentum_df = basemodel_to_df(kwargs["obbject_item"].rs_momentum, index="date")  # type: ignore
         benchmark_symbol = kwargs["obbject_item"].benchmark  # type: ignore
@@ -379,6 +406,12 @@ class TechnicalViews:
 
 def _ta_ma(**kwargs):
     """Plot moving average helper."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_charting.core.chart_style import ChartStyle
+    from openbb_charting.core.openbb_figure import OpenBBFigure
+    from openbb_core.app.utils import basemodel_to_df
+    from pandas import DataFrame
+
     index = (
         kwargs.get("index")
         if "index" in kwargs and kwargs.get("index") is not None
@@ -392,7 +425,7 @@ def _ta_ma(**kwargs):
     )
     ma_types = ma_type.split(",") if isinstance(ma_type, str) else ma_type
 
-    if isinstance(data, pd.DataFrame) and not data.empty:
+    if isinstance(data, DataFrame) and not data.empty:
         data = data.set_index(index) if index in data.columns else data
 
     if data is None:
@@ -441,7 +474,7 @@ def _ta_ma(**kwargs):
     )
     fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
-    ma_df = pd.DataFrame()
+    ma_df = DataFrame()
     window = [window] if isinstance(window, int) else window
     for w in window:
         for ma_type in ma_types:

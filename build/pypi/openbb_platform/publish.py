@@ -138,7 +138,6 @@ def publish(
                             sys.executable,
                             "-m",
                             "poetry",
-                            "build",
                             "publish",
                             "--build",
                         ],

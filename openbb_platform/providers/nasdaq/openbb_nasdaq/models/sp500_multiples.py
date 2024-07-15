@@ -4,7 +4,6 @@
 
 from typing import Any, Dict, List, Optional
 
-import nasdaqdatalink
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.sp500_multiples import (
     SP500MultiplesData,
@@ -49,6 +48,8 @@ class NasdaqSP500MultiplesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Get the raw Nasdaq Data."""
+        import nasdaqdatalink  # pylint: disable=import-outside-toplevel
+
         api_key = credentials.get("nasdaq_api_key") if credentials else ""
 
         if "Year" in query.series_name:
@@ -73,7 +74,6 @@ class NasdaqSP500MultiplesFetcher(
 
         return data.to_dict("records")
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: NasdaqSP500MultiplesQueryParams,
