@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "openbb-installer"
+version = "1.0.0"
+description = "Installer environment metapackage. Used to produce requirements.txt."
+authors = ["OpenBB <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+homepage = "https://openbb.co"
+
+[tool.poetry.dependencies]
+python = "^3.9,<3.13"
+openbb = { path = "../../../openbb_platform", extras = ["all"] }
+openbb-cli = {path = "../../../cli"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

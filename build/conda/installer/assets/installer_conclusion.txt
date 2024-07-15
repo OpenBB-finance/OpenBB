@@ -1,0 +1,3 @@
+Thank you for installing OpenBB Platform!
+
+To get started, launch the OpenBB Platform CLI and explore the available commands.

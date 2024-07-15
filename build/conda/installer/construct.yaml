@@ -1,0 +1,39 @@
+name: OpenBB
+version: 4.2.1
+company: OpenBB, Inc.
+license_file: ./assets/installer_license.txt
+
+installer_type: pkg # [osx]
+installer_type: exe # [win]
+
+register_python: false # [win]
+register_python_default: false # [win]
+
+channels:
+  - defaults
+  - conda-forge
+
+specs:
+  - python=3.10
+  - pip
+
+post_install: post_install.sh  # [osx]
+post_install: post_install.bat  # [win]
+
+extra_files:
+  - requirements.txt: requirements.txt
+  # Bundle launcher assets
+  - ./assets/openbb: openbb # [osx]
+  - ../../../images/openbb.ico: assets/openbb.ico  # [win]
+  - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]
+
+icon_image: ../../../images/dmg_volume.icns  # [osx]
+icon_image: ../../../images/openbb.ico  # [win]
+
+welcome_image: ./assets/openbb_osx.png  # [osx]
+welcome_image: ./assets/openbb_win.png  # [win]
+header_image: ./assets/header_win.png  # [win]
+welcome_image_text: "OpenBB Platform"
+welcome_file: ./assets/installer_welcome.txt
+readme_file: ./assets/installer_readme.txt
+conclusion_file: ./assets/installer_conclusion.txt

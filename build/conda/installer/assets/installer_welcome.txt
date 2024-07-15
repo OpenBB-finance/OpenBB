@@ -1,0 +1,4 @@
+Welcome to the OpenBB Platform Installer.
+
+
+This application will install the OpenBB Platform on your computer.
