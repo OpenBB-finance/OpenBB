@@ -31,6 +31,9 @@ from openbb_fred.models.non_farm_payrolls import FredNonFarmPayrollsFetcher
 from openbb_fred.models.overnight_bank_funding_rate import (
     FredOvernightBankFundingRateFetcher,
 )
+from openbb_fred.models.personal_consumption_expenditures import (
+    FredPersonalConsumptionExpendituresFetcher,
+)
 from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
@@ -485,5 +488,18 @@ def test_fred_non_farm_payrolls_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredNonFarmPayrollsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_personal_consumption_expenditures_fetcher(credentials=test_credentials):
+    """Test FRED Personal Consumption Expenditures Fetcher."""
+    params = {
+        "date": "2024-05-01",
+        "category": "pce_price_index",
+    }
+
+    fetcher = FredPersonalConsumptionExpendituresFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
