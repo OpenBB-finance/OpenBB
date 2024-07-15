@@ -91,3 +91,5 @@ jobs:
       - name: json-yaml-validate
         id: json-yaml-validate
         uses: GrantBirki/json-yaml-validate@v2.0.0
+        with:
+          yaml_exclude_regex: "construct.yaml"
