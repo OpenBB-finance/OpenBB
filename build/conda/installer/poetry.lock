@@ -1693,52 +1693,54 @@ name = "openbb"
 version = "4.3.0"
 description = "Investment research for everyone, anywhere."
 optional = false
-python-versions = ">=3.9,<3.13"
-files = []
-develop = false
+python-versions = "<3.13,>=3.9"
+files = [
+    {file = "openbb-4.3.0-py3-none-any.whl", hash = "sha256:5dd960b6e11c48b50a91d7a9bea55f71bfa55b30ce4bb52b9978118fb4ec7abc"},
+    {file = "openbb-4.3.0.tar.gz", hash = "sha256:ebc067407e92c72ea4a3a1308dbe90a9f51b511a5a437d8e1a4e51086ebf56f9"},
+]
 
 [package.dependencies]
-openbb-alpha-vantage = {version = "^1.3.0", optional = true}
-openbb-benzinga = "^1.3.0"
-openbb-biztoc = {version = "^1.3.0", optional = true}
-openbb-cboe = {version = "^1.3.0", optional = true}
-openbb-charting = {version = "^2.2.0", optional = true}
-openbb-commodity = "^1.2.0"
-openbb-core = "^1.3.0"
-openbb-crypto = "^1.3.0"
-openbb-currency = "^1.3.0"
-openbb-derivatives = "^1.3.0"
-openbb-ecb = {version = "^1.3.0", optional = true}
-openbb-econdb = "^1.2.0"
-openbb-econometrics = {version = "^1.3.0", optional = true}
-openbb-economy = "^1.3.0"
-openbb-equity = "^1.3.0"
-openbb-etf = "^1.3.0"
-openbb-federal-reserve = "^1.3.0"
-openbb-finra = {version = "^1.3.0", optional = true}
-openbb-finviz = {version = "^1.2.0", optional = true}
-openbb-fixedincome = "^1.3.0"
-openbb-fmp = "^1.3.0"
-openbb-fred = "^1.3.0"
-openbb-government-us = {version = "^1.3.0", optional = true}
-openbb-index = "^1.3.0"
-openbb-intrinio = "^1.3.0"
-openbb-nasdaq = {version = "^1.3.0", optional = true}
-openbb-news = "^1.3.0"
-openbb-oecd = "^1.3.0"
-openbb-polygon = "^1.3.0"
-openbb-quantitative = {version = "^1.3.0", optional = true}
-openbb-regulators = "^1.3.0"
-openbb-sec = "^1.3.0"
-openbb-seeking-alpha = {version = "^1.3.0", optional = true}
-openbb-stockgrid = {version = "^1.3.0", optional = true}
-openbb-technical = {version = "^1.3.0", optional = true}
-openbb-tiingo = "^1.3.0"
-openbb-tmx = {version = "^1.2.0", optional = true}
-openbb-tradier = {version = "^1.2.0", optional = true}
-openbb-tradingeconomics = "^1.3.0"
-openbb-wsj = {version = "^1.3.0", optional = true}
-openbb-yfinance = "^1.3.0"
+openbb-alpha-vantage = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"alpha-vantage\" or extra == \"all\""}
+openbb-benzinga = ">=1.3.0,<2.0.0"
+openbb-biztoc = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"biztoc\" or extra == \"all\""}
+openbb-cboe = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"cboe\" or extra == \"all\""}
+openbb-charting = {version = ">=2.2.0,<3.0.0", optional = true, markers = "extra == \"charting\" or extra == \"all\""}
+openbb-commodity = ">=1.2.0,<2.0.0"
+openbb-core = ">=1.3.0,<2.0.0"
+openbb-crypto = ">=1.3.0,<2.0.0"
+openbb-currency = ">=1.3.0,<2.0.0"
+openbb-derivatives = ">=1.3.0,<2.0.0"
+openbb-ecb = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"ecb\" or extra == \"all\""}
+openbb-econdb = ">=1.2.0,<2.0.0"
+openbb-econometrics = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"econometrics\" or extra == \"all\""}
+openbb-economy = ">=1.3.0,<2.0.0"
+openbb-equity = ">=1.3.0,<2.0.0"
+openbb-etf = ">=1.3.0,<2.0.0"
+openbb-federal-reserve = ">=1.3.0,<2.0.0"
+openbb-finra = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"finra\" or extra == \"all\""}
+openbb-finviz = {version = ">=1.2.0,<2.0.0", optional = true, markers = "extra == \"finviz\" or extra == \"all\""}
+openbb-fixedincome = ">=1.3.0,<2.0.0"
+openbb-fmp = ">=1.3.0,<2.0.0"
+openbb-fred = ">=1.3.0,<2.0.0"
+openbb-government-us = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"government-us\" or extra == \"all\""}
+openbb-index = ">=1.3.0,<2.0.0"
+openbb-intrinio = ">=1.3.0,<2.0.0"
+openbb-nasdaq = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"nasdaq\" or extra == \"all\""}
+openbb-news = ">=1.3.0,<2.0.0"
+openbb-oecd = ">=1.3.0,<2.0.0"
+openbb-polygon = ">=1.3.0,<2.0.0"
+openbb-quantitative = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"quantitative\" or extra == \"all\""}
+openbb-regulators = ">=1.3.0,<2.0.0"
+openbb-sec = ">=1.3.0,<2.0.0"
+openbb-seeking-alpha = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"seeking-alpha\" or extra == \"all\""}
+openbb-stockgrid = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"stockgrid\" or extra == \"all\""}
+openbb-technical = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"technical\" or extra == \"all\""}
+openbb-tiingo = ">=1.3.0,<2.0.0"
+openbb-tmx = {version = ">=1.2.0,<2.0.0", optional = true, markers = "extra == \"tmx\" or extra == \"all\""}
+openbb-tradier = {version = ">=1.2.0,<2.0.0", optional = true, markers = "extra == \"tradier\" or extra == \"all\""}
+openbb-tradingeconomics = ">=1.3.0,<2.0.0"
+openbb-wsj = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"wsj\" or extra == \"all\""}
+openbb-yfinance = ">=1.3.0,<2.0.0"
 
 [package.extras]
 all = ["openbb-alpha-vantage (>=1.3.0,<2.0.0)", "openbb-biztoc (>=1.3.0,<2.0.0)", "openbb-cboe (>=1.3.0,<2.0.0)", "openbb-charting (>=2.2.0,<3.0.0)", "openbb-ecb (>=1.3.0,<2.0.0)", "openbb-econometrics (>=1.3.0,<2.0.0)", "openbb-finra (>=1.3.0,<2.0.0)", "openbb-finviz (>=1.2.0,<2.0.0)", "openbb-government-us (>=1.3.0,<2.0.0)", "openbb-nasdaq (>=1.3.0,<2.0.0)", "openbb-quantitative (>=1.3.0,<2.0.0)", "openbb-seeking-alpha (>=1.3.0,<2.0.0)", "openbb-stockgrid (>=1.3.0,<2.0.0)", "openbb-technical (>=1.3.0,<2.0.0)", "openbb-tmx (>=1.2.0,<2.0.0)", "openbb-tradier (>=1.2.0,<2.0.0)", "openbb-wsj (>=1.3.0,<2.0.0)"]
@@ -1759,10 +1761,6 @@ technical = ["openbb-technical (>=1.3.0,<2.0.0)"]
 tmx = ["openbb-tmx (>=1.2.0,<2.0.0)"]
 tradier = ["openbb-tradier (>=1.2.0,<2.0.0)"]
 wsj = ["openbb-wsj (>=1.3.0,<2.0.0)"]
-
-[package.source]
-type = "directory"
-url = "../../../openbb_platform"
 
 [[package]]
 name = "openbb-alpha-vantage"
@@ -1848,20 +1846,18 @@ name = "openbb-cli"
 version = "1.1.0"
 description = "Investment Research for Everyone, Anywhere."
 optional = false
-python-versions = "^3.9,<3.13"
-files = []
-develop = false
+python-versions = "<3.13,>=3.9"
+files = [
+    {file = "openbb_cli-1.1.0-py3-none-any.whl", hash = "sha256:cbfe65b37c15df12c43debf5dee4d94202dc80c17feb79d3bd394f669a5a8bbd"},
+    {file = "openbb_cli-1.1.0.tar.gz", hash = "sha256:f48382a93f7936f1a6bcd74291e3a62f34c7278c6f4c76122abfedc5dde15a2b"},
+]
 
 [package.dependencies]
-openbb = {version = "^4.3.0", extras = ["all"]}
-openpyxl = "^3.1.2"
-prompt-toolkit = "^3.0.16"
-python-dotenv = "^1.0.0"
-rich = "^13"
-
-[package.source]
-type = "directory"
-url = "../../../cli"
+openbb = {version = ">=4.3.0,<5.0.0", extras = ["all"]}
+openpyxl = ">=3.1.2,<4.0.0"
+prompt-toolkit = ">=3.0.16,<4.0.0"
+python-dotenv = ">=1.0.0,<2.0.0"
+rich = ">=13,<14"
 
 [[package]]
 name = "openbb-commodity"
@@ -4233,4 +4229,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9,<3.13"
-content-hash = "0113af20240d9722ac41d413887845151bf895742bb5d2018f5e40404a9d248b"
+content-hash = "200d008e28572eb569c1ed280abb2c9a81519f3cb203c01557b952666b285d81"
