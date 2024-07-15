@@ -379,7 +379,7 @@ def print_rich_table(  # noqa: PLR0912
             output = list(_headers)
         if len(output) != len(df.columns):
             raise ValueError("Length of headers does not match length of DataFrame.")
-        return output
+        return output  # type: ignore
 
     if session.settings.USE_INTERACTIVE_DF:
         df_outgoing = df.copy()
@@ -397,7 +397,7 @@ def print_rich_table(  # noqa: PLR0912
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        session._backend.send_table(  # type: ignore
+        session._backend.send_table(  # type: ignore  # pylint: disable=protected-access
             df_table=df_outgoing,
             title=title,
             theme=session.user.preferences.table_style,
