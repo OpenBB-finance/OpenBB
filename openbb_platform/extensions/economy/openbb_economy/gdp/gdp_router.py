@@ -20,7 +20,14 @@ router = Router(prefix="/gdp")
     model="GdpForecast",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"period": "annual", "type": "real", "provider": "oecd"}),
+        APIEx(
+            parameters={
+                "country": "united_states,germany,france",
+                "frequency": "annual",
+                "units": "capita",
+                "provider": "oecd",
+            }
+        ),
     ],
 )
 async def forecast(
@@ -37,7 +44,14 @@ async def forecast(
     model="GdpNominal",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"units": "usd", "provider": "oecd"}),
+        APIEx(
+            parameters={
+                "units": "capita",
+                "country": "all",
+                "frequency": "annual",
+                "provider": "oecd",
+            }
+        ),
     ],
 )
 async def nominal(
