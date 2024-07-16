@@ -186,7 +186,7 @@ class OECDGdpNominalFetcher(
         if query.units == "level":
             df["value"] = (df["value"].astype(float) * 1_000_000).astype("int64")
 
-        df = df.sort_values(by=["date", "value"], ascending=False)
+        df = df.sort_values(by=["date", "value"], ascending=[True, False])
 
         return df.replace({nan: None}).to_dict(orient="records")
 
