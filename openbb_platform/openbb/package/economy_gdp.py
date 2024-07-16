@@ -171,10 +171,10 @@ class ROUTER_economy_gdp(Container):
             The country represented by the GDP value.
         value : Union[int, float]
             GDP value for the country and date.
-        real_growth_qoq : Optional[float]
-            Real GDP growth rate quarter over quarter. (provider: econdb)
-        real_growth_yoy : Optional[float]
-            Real GDP growth rate year over year. (provider: econdb)
+        nominal_growth_qoq : Optional[float]
+            Nominal GDP growth rate quarter over quarter. (provider: econdb)
+        nominal_growth_yoy : Optional[float]
+            Nominal GDP growth rate year over year. (provider: econdb)
 
         Examples
         --------
@@ -211,12 +211,6 @@ class ROUTER_economy_gdp(Container):
     @validate
     def real(
         self,
-        units: Annotated[
-            Literal["idx", "qoq", "yoy"],
-            OpenBBField(
-                description="The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)"
-            ),
-        ] = "yoy",
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
@@ -226,9 +220,9 @@ class ROUTER_economy_gdp(Container):
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
-            Optional[Literal["oecd"]],
+            Optional[Literal["econdb", "oecd"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd."
             ),
         ] = None,
         **kwargs
@@ -237,23 +231,25 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
-        units : Literal['idx', 'qoq', 'yoy']
-            The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['oecd']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : Literal['G20', 'G7', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_20', 'euro_area_19', 'europe', 'european_union_27', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'oecd_total', 'poland', 'portugal', 'romania', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all']
-            Country to get GDP for. (provider: oecd)
+        provider : Optional[Literal['econdb', 'oecd']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
+        country : str
+            The country to get data.Use 'all' to get data for all available countries. Multiple comma separated items allowed. (provider: econdb, oecd)
+        use_cache : bool
+            If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
+        frequency : Literal['quarter', 'annual']
+            Frequency of the data. (provider: oecd)
 
         Returns
         -------
         OBBject
             results : List[GdpReal]
                 Serializable results.
-            provider : Optional[Literal['oecd']]
+            provider : Optional[Literal['econdb', 'oecd']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -264,16 +260,22 @@ class ROUTER_economy_gdp(Container):
 
         GdpReal
         -------
-        date : Optional[date]
+        date : date
             The date of the data.
-        value : Optional[float]
-            Nominal GDP value on the date.
+        country : Optional[str]
+            The country represented by the GDP value.
+        value : Union[int, float]
+            GDP value for the country and date.
+        real_growth_qoq : Optional[float]
+            Real GDP growth rate quarter over quarter. (provider: econdb)
+        real_growth_yoy : Optional[float]
+            Real GDP growth rate year over year. (provider: econdb)
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.economy.gdp.real(provider='oecd')
-        >>> obb.economy.gdp.real(units='yoy', provider='oecd')
+        >>> obb.economy.gdp.real(units=yoy, provider='oecd')
         """  # noqa: E501
 
         return self._run(
@@ -283,14 +285,19 @@ class ROUTER_economy_gdp(Container):
                     "provider": self._get_provider(
                         provider,
                         "economy.gdp.real",
-                        ("oecd",),
+                        ("econdb", "oecd"),
                     )
                 },
                 standard_params={
-                    "units": units,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={
+                    "country": {
+                        "econdb": {"multiple_items_allowed": True},
+                        "oecd": ["multiple_items_allowed"],
+                    }
+                },
             )
         )

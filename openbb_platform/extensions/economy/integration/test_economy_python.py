@@ -188,14 +188,21 @@ def test_economy_gdp_nominal(params, obb):
 @parametrize(
     "params",
     [
-        ({"units": "yoy", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "country": "united_states",
-                "provider": "oecd",
-                "units": "yoy",
+                "frequency": "quarter",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-12-31",
+                "provider": "oecd",
+            }
+        ),
+        (
+            {
+                "country": "united_states",
+                "provider": "econdb",
+                "start_date": "2023-01-01",
+                "end_date": "2023-12-31",
             }
         ),
     ],
