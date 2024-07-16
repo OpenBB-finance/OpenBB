@@ -2525,17 +2525,9 @@
                 "message": null
             },
             "description": "Get Forecasted GDP Data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.forecast(provider='oecd')\nobb.economy.gdp.forecast(period='annual', type='real', provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.forecast(provider='oecd')\nobb.economy.gdp.forecast(country=united_states,germany,france, frequency=annual, units=capita, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
-                    {
-                        "name": "period",
-                        "type": "Literal['quarter', 'annual']",
-                        "description": "Time period of the data to return. Units for nominal GDP period. Either quarter or annual.",
-                        "default": "annual",
-                        "optional": true,
-                        "choices": null
-                    },
                     {
                         "name": "start_date",
                         "type": "Union[date, str]",
@@ -2553,14 +2545,6 @@
                         "choices": null
                     },
                     {
-                        "name": "type",
-                        "type": "Literal['nominal', 'real']",
-                        "description": "Type of GDP to get forecast of. Either nominal or real.",
-                        "default": "real",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
                         "name": "provider",
                         "type": "Literal['oecd']",
                         "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
@@ -2571,11 +2555,88 @@
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['argentina', 'asia', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_17', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'non-oecd', 'norway', 'oecd_total', 'peru', 'poland', 'portugal', 'romania', 'russia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'world']",
-                        "description": "Country to get GDP for.",
-                        "default": "united_states",
+                        "type": "Union[str, List[str]]",
+                        "description": "Country, or countries, to get forward GDP projections for. Default is all. Multiple items allowed for provider(s): oecd.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "argentina",
+                            "asia",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "brazil",
+                            "bulgaria",
+                            "canada",
+                            "chile",
+                            "china",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "peru",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "other_major_oil_producers",
+                            "rest_of_the_world",
+                            "world",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "Frequency of the data, default is annual.",
+                        "default": "annual",
                         "optional": true,
                         "choices": null
+                    },
+                    {
+                        "name": "units",
+                        "type": "Literal['current_prices', 'volume', 'capita', 'growth', 'deflator']",
+                        "description": "Units of the data, default is volume (chain linked volume, 2015). 'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent; 'deflator' as an index.",
+                        "default": "volume",
+                        "optional": true,
+                        "choices": [
+                            "current_prices",
+                            "volume",
+                            "capita",
+                            "growth",
+                            "deflator"
+                        ]
                     }
                 ]
             },
@@ -2614,16 +2675,24 @@
                         "name": "date",
                         "type": "date",
                         "description": "The date of the data.",
-                        "default": null,
-                        "optional": true,
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "None",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     },
                     {
                         "name": "value",
-                        "type": "float",
-                        "description": "Nominal GDP value on the date.",
-                        "default": null,
-                        "optional": true,
+                        "type": "Union[int, float]",
+                        "description": "Forecasted GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     }
                 ],
@@ -2637,7 +2706,7 @@
                 "message": null
             },
             "description": "Get Nominal GDP Data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.nominal(provider='oecd')\nobb.economy.gdp.nominal(units=usd, provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.nominal(provider='oecd')\nobb.economy.gdp.nominal(units=capita, country=all, frequency=annual, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
