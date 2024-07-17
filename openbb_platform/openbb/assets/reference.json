@@ -3006,7 +3006,7 @@
                 "message": null
             },
             "description": "Get Real GDP Data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.real(provider='oecd')\nobb.economy.gdp.real(units=yoy, provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.real(provider='oecd')\nobb.economy.gdp.real(country=united_states,germany,japan, provider='econdb')\n```\n\n",
             "parameters": {
                 "standard": [
                     {

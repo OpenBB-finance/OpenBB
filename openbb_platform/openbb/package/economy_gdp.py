@@ -275,7 +275,7 @@ class ROUTER_economy_gdp(Container):
         --------
         >>> from openbb import obb
         >>> obb.economy.gdp.real(provider='oecd')
-        >>> obb.economy.gdp.real(units=yoy, provider='oecd')
+        >>> obb.economy.gdp.real(country='united_states,germany,japan', provider='econdb')
         """  # noqa: E501
 
         return self._run(

@@ -203,6 +203,7 @@ def test_economy_gdp_nominal(params, obb):
                 "provider": "econdb",
                 "start_date": "2023-01-01",
                 "end_date": "2023-12-31",
+                "use_cache": False,
             }
         ),
     ],
