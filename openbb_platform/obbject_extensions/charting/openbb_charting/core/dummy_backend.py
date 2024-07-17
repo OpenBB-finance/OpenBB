@@ -1,13 +1,11 @@
 """Dummy backend for charting to avoid import errors."""
 
 import asyncio
-import warnings
 from queue import Queue
 from typing import List
 
 import dotenv
 from openbb_core.app.constants import OPENBB_DIRECTORY
-from openbb_core.env import Env
 
 SETTINGS_ENV_FILE = OPENBB_DIRECTORY / ".env"
 
