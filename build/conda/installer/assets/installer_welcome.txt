@@ -1,4 +1,6 @@
-Welcome to the OpenBB Platform Installer.
+Welcome to the OpenBB Installer.
 
 
-This application will install the OpenBB Platform on your computer.
+This application will install Python and the latest version of OpenBB Platform on your computer.
+
+Note: In order to install you need access to the Internet.
