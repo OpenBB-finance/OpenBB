@@ -245,9 +245,7 @@ class Backend(PyWry):
 
         if img_path.exists():  # noqa: SIM102
             opener = "open" if sys.platform == "darwin" else "xdg-open"
-            subprocess.check_call(
-                [opener, export_image]  # nosec: B603 # noqa: S603
-            )
+            subprocess.check_call([opener, export_image])  # nosec: B603 # noqa: S603
 
     def send_table(
         self,
