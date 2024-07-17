@@ -1,5 +1,5 @@
-name: OpenBB
-version: 4.2.1
+name: "OpenBB"
+version: 4
 company: OpenBB, Inc.
 license_file: ./assets/installer_license.txt
 
@@ -14,7 +14,7 @@ channels:
   - conda-forge
 
 specs:
-  - python=3.10
+  - python=3.12
   - pip
 
 post_install: post_install.sh  # [osx]
@@ -23,7 +23,6 @@ post_install: post_install.bat  # [win]
 extra_files:
   - requirements.txt: requirements.txt
   # Bundle launcher assets
-  - ./assets/openbb: openbb # [osx]
   - ../../../images/openbb.ico: assets/openbb.ico  # [win]
   - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]
 
