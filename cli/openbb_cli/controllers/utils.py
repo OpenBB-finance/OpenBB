@@ -16,11 +16,8 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import requests
-from openbb import obb
-from openbb_charting.core.backend import create_backend, get_backend
 from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
 from openbb_cli.session import Session
-from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from openbb_core.app.model.obbject import OBBject
 from pytz import all_timezones, timezone
 from rich.table import Table
@@ -303,20 +300,6 @@ def return_colored_value(value: str):
     return f"{value}"
 
 
-def _get_backend():
-    """Get the Platform charting backend."""
-    try:
-        return get_backend()
-    except ValueError:
-        # backend might not be created yet
-        charting_settings = ChartingSettings(
-            system_settings=obb.system, user_settings=obb.user  # type: ignore
-        )
-        create_backend(charting_settings)
-        get_backend().start(debug=charting_settings.debug_mode)
-        return get_backend()
-
-
 # pylint: disable=too-many-arguments
 def print_rich_table(  # noqa: PLR0912
     df: pd.DataFrame,
@@ -385,7 +368,7 @@ def print_rich_table(  # noqa: PLR0912
                 isinstance(df[col].iloc[x], pd.Timestamp)
                 for x in range(min(10, len(df)))
             ):
-                df[col] = pd.to_numeric(df[col], errors="ignore")
+                df[col] = df[col].apply(pd.to_numeric)
         except (ValueError, TypeError):
             df[col] = df[col].astype(str)
 
@@ -396,7 +379,7 @@ def print_rich_table(  # noqa: PLR0912
             output = list(_headers)
         if len(output) != len(df.columns):
             raise ValueError("Length of headers does not match length of DataFrame.")
-        return output
+        return output  # type: ignore
 
     if session.settings.USE_INTERACTIVE_DF:
         df_outgoing = df.copy()
@@ -414,10 +397,7 @@ def print_rich_table(  # noqa: PLR0912
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        # ensure everything on the dataframe is a string
-        df_outgoing = df_outgoing.applymap(str)
-
-        _get_backend().send_table(
+        session._backend.send_table(  # type: ignore  # pylint: disable=protected-access
             df_table=df_outgoing,
             title=title,
             theme=session.user.preferences.table_style,
@@ -1014,12 +994,14 @@ def handle_obbject_display(
             if obbject.chart:
                 obbject.show(**kwargs)
             else:
-                obbject.charting.to_chart(**kwargs)
+                obbject.charting.to_chart(**kwargs)  # type: ignore
             if export:
-                fig = obbject.chart.fig
+                fig = obbject.chart.fig  # type: ignore
                 df = obbject.to_dataframe()
         except Exception as e:
             session.console.print(f"Failed to display chart: {e}")
+    elif session.settings.USE_INTERACTIVE_DF:
+        obbject.charting.table()  # type: ignore
     else:
         df = obbject.to_dataframe()
         print_rich_table(
