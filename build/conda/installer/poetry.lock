@@ -2210,6 +2210,21 @@ openbb-core = ">=1.3.0,<2.0.0"
 urllib3 = ">1.26.16"
 
 [[package]]
+name = "openbb-platform-pro-backend"
+version = "1.1.0"
+description = "Widgets JSON for OpenBB Terminal Pro"
+optional = false
+python-versions = "<3.13,>=3.9"
+files = [
+    {file = "openbb_platform_pro_backend-1.1.0-py3-none-any.whl", hash = "sha256:a79e5e5201b5c9fd90c9ee493866764a04821d2f9ed5de7f012a1cb6fb2fb148"},
+    {file = "openbb_platform_pro_backend-1.1.0.tar.gz", hash = "sha256:5693da618855ca13780d55298fc3168e8d2051a1f47b21bfe75230eb98c4dd26"},
+]
+
+[package.dependencies]
+openbb-charting = ">=2.2.0,<3.0.0"
+openbb_core = ">=1.3.0,<2.0.0"
+
+[[package]]
 name = "openbb-polygon"
 version = "1.3.0"
 description = "Polygon extension for OpenBB"
@@ -4229,4 +4244,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9,<3.13"
-content-hash = "200d008e28572eb569c1ed280abb2c9a81519f3cb203c01557b952666b285d81"
+content-hash = "c30e60580f270c814c8eab72d2a810097b619599b2a24833d505d4ca72cda504"
