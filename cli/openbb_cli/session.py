@@ -5,7 +5,9 @@ from pathlib import Path
 from typing import Optional
 
 from openbb import obb
+from openbb_charting.core.backend import create_backend, get_backend
 from openbb_core.app.model.abstract.singleton import SingletonMeta
+from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from openbb_core.app.model.user_settings import UserSettings as User
 from prompt_toolkit import PromptSession
 
@@ -17,11 +19,26 @@ from openbb_cli.config.style import Style
 from openbb_cli.models.settings import Settings
 
 
+def _get_backend():
+    """Get the Platform charting backend."""
+    try:
+        return get_backend()
+    except ValueError:
+        # backend might not be created yet
+        charting_settings = ChartingSettings(
+            system_settings=obb.system, user_settings=obb.user  # type: ignore
+        )
+        create_backend(charting_settings)
+        get_backend().start(debug=charting_settings.debug_mode)  # type: ignore
+        return get_backend()
+
+
 class Session(metaclass=SingletonMeta):
     """Session class."""
 
     def __init__(self):
         """Initialize session."""
+
         self._obb = obb
         self._settings = Settings()
         self._style = Style(
@@ -33,6 +50,8 @@ class Session(metaclass=SingletonMeta):
         )
         self._prompt_session = self._get_prompt_session()
         self._obbject_registry = Registry()
+
+        self._backend = _get_backend()
 
     @property
     def user(self) -> User:

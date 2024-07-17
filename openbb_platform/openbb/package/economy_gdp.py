@@ -25,12 +25,6 @@ class ROUTER_economy_gdp(Container):
     @validate
     def forecast(
         self,
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBField(
-                description="Time period of the data to return. Units for nominal GDP period. Either quarter or annual."
-            ),
-        ] = "annual",
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
@@ -39,12 +33,6 @@ class ROUTER_economy_gdp(Container):
             Union[datetime.date, None, str],
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
-        type: Annotated[
-            Literal["nominal", "real"],
-            OpenBBField(
-                description="Type of GDP to get forecast of. Either nominal or real."
-            ),
-        ] = "real",
         provider: Annotated[
             Optional[Literal["oecd"]],
             OpenBBField(
@@ -57,18 +45,19 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
-        period : Literal['quarter', 'annual']
-            Time period of the data to return. Units for nominal GDP period. Either quarter or annual.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        type : Literal['nominal', 'real']
-            Type of GDP to get forecast of. Either nominal or real.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : Literal['argentina', 'asia', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_17', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'non-oecd', 'norway', 'oecd_total', 'peru', 'poland', 'portugal', 'romania', 'russia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'world']
-            Country to get GDP for. (provider: oecd)
+        country : str
+            Country, or countries, to get forward GDP projections for. Default is all. Multiple comma separated items allowed. (provider: oecd)
+        frequency : Literal['annual', 'quarter']
+            Frequency of the data, default is annual. (provider: oecd)
+        units : Literal['current_prices', 'volume', 'capita', 'growth', 'deflator']
+            Units of the data, default is volume (chain linked volume, 2015).
+        'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent; 'deflator' as an index. (provider: oecd)
 
         Returns
         -------
@@ -86,16 +75,18 @@ class ROUTER_economy_gdp(Container):
 
         GdpForecast
         -----------
-        date : Optional[date]
+        date : date
             The date of the data.
-        value : Optional[float]
-            Nominal GDP value on the date.
+        country : str
+            None
+        value : Union[int, float]
+            Forecasted GDP value for the country and date.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.economy.gdp.forecast(provider='oecd')
-        >>> obb.economy.gdp.forecast(period='annual', type='real', provider='oecd')
+        >>> obb.economy.gdp.forecast(country='united_states,germany,france', frequency='annual', units='capita', provider='oecd')
         """  # noqa: E501
 
         return self._run(
@@ -109,12 +100,11 @@ class ROUTER_economy_gdp(Container):
                     )
                 },
                 standard_params={
-                    "period": period,
                     "start_date": start_date,
                     "end_date": end_date,
-                    "type": type,
                 },
                 extra_params=kwargs,
+                info={"country": {"oecd": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -190,7 +180,7 @@ class ROUTER_economy_gdp(Container):
         --------
         >>> from openbb import obb
         >>> obb.economy.gdp.nominal(provider='oecd')
-        >>> obb.economy.gdp.nominal(units='usd', provider='oecd')
+        >>> obb.economy.gdp.nominal(units='capita', country='all', frequency='annual', provider='oecd')
         """  # noqa: E501
 
         return self._run(

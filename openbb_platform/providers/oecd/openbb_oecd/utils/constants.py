@@ -140,7 +140,6 @@ COUNTRY_TO_CODE_GDP_FORECAST = {
     "czech_republic": "CZE",
     "denmark": "DNK",
     "estonia": "EST",
-    "euro_area_17": "EA17",
     "finland": "FIN",
     "france": "FRA",
     "germany": "DEU",
@@ -160,9 +159,7 @@ COUNTRY_TO_CODE_GDP_FORECAST = {
     "mexico": "MEX",
     "netherlands": "NLD",
     "new_zealand": "NZL",
-    "non-oecd": "NMEC",
     "norway": "NOR",
-    "oecd_total": "OECD",
     "peru": "PER",
     "poland": "POL",
     "portugal": "PRT",
@@ -177,7 +174,9 @@ COUNTRY_TO_CODE_GDP_FORECAST = {
     "turkey": "TUR",
     "united_kingdom": "GBR",
     "united_states": "USA",
-    "world": "WLD",
+    "other_major_oil_producers": "OIL_O",
+    "rest_of_the_world": "WXD",
+    "world": "W",
 }
 
 CODE_TO_COUNTRY_GDP_FORECAST = {v: k for k, v in COUNTRY_TO_CODE_GDP_FORECAST.items()}

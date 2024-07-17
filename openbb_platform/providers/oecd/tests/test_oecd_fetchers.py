@@ -4,7 +4,9 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_oecd.models.composite_leading_indicator import OECDCompositeLeadingIndicatorFetcher
+from openbb_oecd.models.composite_leading_indicator import (
+    OECDCompositeLeadingIndicatorFetcher,
+)
 from openbb_oecd.models.consumer_price_index import OECDCPIFetcher
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
@@ -72,13 +74,13 @@ def test_oecd_real_gdp_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.skip(reason="Downloads a huge file, code needs to be fixed to use params.")
 @pytest.mark.record_http
-def test_oecd_forecast_gdp_fetcher(credentials=test_credentials):
+def test_oecd_gdp_forecast_fetcher(credentials=test_credentials):
     """Test the OECD GDP Forecast fetcher."""
     params = {
-        "start_date": datetime.date(2020, 1, 1),
-        "end_date": datetime.date(2023, 6, 6),
+        "country": "united_states",
+        "start_date": datetime.date(2023, 1, 1),
+        "end_date": datetime.date(2024, 1, 1),
     }
 
     fetcher = OECDGdpForecastFetcher()
