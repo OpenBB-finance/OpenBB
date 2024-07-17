@@ -231,7 +231,6 @@ class Backend(PyWry):
         """Check if the image has been exported to the path."""
         # pylint: disable=import-outside-toplevel
         import asyncio
-        import os
         import subprocess
         import sys
 
@@ -245,14 +244,10 @@ class Backend(PyWry):
                 break
 
         if img_path.exists():  # noqa: SIM102
-            if self.charting_settings.plot_open_export:
-                if sys.platform == "win32":
-                    os.startfile(export_image)  # nosec: B606 # noqa: S606
-                else:
-                    opener = "open" if sys.platform == "darwin" else "xdg-open"
-                    subprocess.check_call(
-                        [opener, export_image]  # nosec: B603 # noqa: S603
-                    )
+            opener = "open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.check_call(
+                [opener, export_image]  # nosec: B603 # noqa: S603
+            )
 
     def send_table(
         self,
