@@ -11,27 +11,6 @@ from openbb_core.env import Env
 
 SETTINGS_ENV_FILE = OPENBB_DIRECTORY / ".env"
 
-pywry_missing = """
-[red]PyWry is not installed or missing required linux dependencies.[/]
-
-[yellow]Install PyWry[/]
-[green]pip install pywry --upgrade[/]
-
-[yellow]Platform-specific notes[/]
-Here is the underlying web engine each platform uses you might need to install.
-
-[green]Linux[/]
-Pywry uses gtk-rs and its related libraries for window creation and Wry also needs WebKitGTK for WebView.
-To activate interactive plots/tables in pywry window, please make sure the following packages are installed:
-
-[yellow]Arch Linux / Manjaro:[/]
-[green]sudo pacman -S webkit2gtk[/]\n
-[yellow]Debian / Ubuntu:[/]
-[green]sudo apt install libwebkit2gtk-4.0-dev[/]\n
-[yellow]Fedora / CentOS / AlmaLinux:[/]
-[green]sudo dnf install gtk3-devel webkit2gtk3-devel[/]\r
-"""
-
 
 class DummyBackend:
     """Dummy class to avoid import errors."""
@@ -63,8 +42,6 @@ class DummyBackend:
             self.loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.loop)
 
-        if Env().DEBUG_MODE:
-            warnings.warn(pywry_missing)
         dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
 
     def close(self, reset: bool = False):  # pylint: disable=W0613

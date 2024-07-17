@@ -3,8 +3,6 @@
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
-from openbb_core.env import Env
-
 if TYPE_CHECKING:
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
     from pandas import DataFrame
@@ -16,9 +14,9 @@ BACKEND = None
 
 try:
     from pywry import PyWry  # pylint: disable=import-outside-toplevel
-except ImportError as e:
-    if Env().DEBUG_MODE:
-        print(f"\033[91m{e}\033[0m")  # noqa: T201
+except ImportError:
+    # if Env().DEBUG_MODE:
+    #    print(f"\033[91m{e}\033[0m")  # noqa: T201
     from .dummy_backend import DummyBackend  # pylint: disable=import-outside-toplevel
 
     class PyWry(DummyBackend):  # type: ignore
@@ -89,8 +87,8 @@ class Backend(PyWry):
 
     def set_window_dimensions(self):
         """Set the window dimensions."""
-        width = self.charting_settings.plot_pywry_width or 1400
-        height = self.charting_settings.plot_pywry_height or 762
+        width = 1400
+        height = 762
 
         self.WIDTH, self.HEIGHT = int(width), int(height)
 
