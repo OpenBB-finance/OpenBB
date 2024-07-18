@@ -201,19 +201,20 @@ def test_economy_gdp_nominal(params, headers):
     [
         (
             {
-                "units": "yoy",
+                "country": "united_states",
+                "frequency": "quarter",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-12-31",
                 "provider": "oecd",
             }
         ),
         (
             {
                 "country": "united_states",
-                "provider": "oecd",
-                "units": "yoy",
+                "provider": "econdb",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-12-31",
+                "use_cache": False,
             }
         ),
     ],
