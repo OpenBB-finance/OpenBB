@@ -14,8 +14,8 @@ channels:
   - conda-forge
 
 specs:
+  - bash
   - python=3.12
-  - pip
 
 post_install: post_install.sh  # [osx]
 post_install: post_install.bat  # [win]
@@ -36,3 +36,4 @@ welcome_image_text: "OpenBB Platform"
 welcome_file: ./assets/installer_welcome.txt
 readme_file: ./assets/installer_readme.txt
 conclusion_file: ./assets/installer_conclusion.txt
+
