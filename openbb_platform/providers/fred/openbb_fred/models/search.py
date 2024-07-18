@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.fred_search import (
     SearchQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, NonNegativeInt
 
 
@@ -19,6 +20,11 @@ class FredSearchQueryParams(SearchQueryParams):
     __alias_dict__ = {
         "query": "search_text",
     }
+    __json_schema_extra__ = {
+        "tag_names": {"multiple_items_allowed": True},
+        "exclude_tag_names": {"multiple_items_allowed": True},
+    }
+
     is_release: Optional[bool] = Field(
         default=False,
         description="Is release?  If True, other search filter variables are ignored."
@@ -171,6 +177,8 @@ class FredSearchFetcher(
         query: FredSearchQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FredSearchData]:
         """Transform data."""
+        if not data:
+            raise EmptyDataError("No results were found with the supplied parameters.")
         if query.series_id is None:
             for observation in data:
                 id_column_name = (

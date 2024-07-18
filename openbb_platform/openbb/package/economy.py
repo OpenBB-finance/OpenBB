@@ -1037,9 +1037,9 @@ class ROUTER_economy(Container):
         filter_value : Optional[str]
             String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
         tag_names : Optional[str]
-            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' (provider: fred)
+            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed. (provider: fred)
         exclude_tag_names : Optional[str]
-            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. (provider: fred)
+            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed. (provider: fred)
         series_id : Optional[str]
             A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)
 
@@ -1120,6 +1120,10 @@ class ROUTER_economy(Container):
                     "query": query,
                 },
                 extra_params=kwargs,
+                info={
+                    "tag_names": {"fred": {"multiple_items_allowed": True}},
+                    "exclude_tag_names": {"fred": {"multiple_items_allowed": True}},
+                },
             )
         )
 
