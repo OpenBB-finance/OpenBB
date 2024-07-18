@@ -14,7 +14,8 @@ channels:
   - conda-forge
 
 specs:
-  - bash
+  - git-bash  # [win]
+  - bash  # [osx]
   - python=3.12
 
 post_install: post_install.sh  # [osx]
@@ -23,11 +24,12 @@ post_install: post_install.bat  # [win]
 extra_files:
   - requirements.txt: requirements.txt
   # Bundle launcher assets
-  - ../../../images/openbb.ico: assets/openbb.ico  # [win]
+  - ./assets/openbb.ico: assets/openbb_icon.ico  # [win]
+  - ./assets/openbb.icns: assets/openbb_icon.icns  # [osx]
   - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]
 
-icon_image: ../../../images/dmg_volume.icns  # [osx]
-icon_image: ../../../images/openbb.ico  # [win]
+icon_image: ./assets/openbb.icns  # [osx]
+icon_image: ./assets/openbb_icon.ico  # [win]
 
 welcome_image: ./assets/openbb_osx.png  # [osx]
 welcome_image: ./assets/openbb_win.png  # [win]
