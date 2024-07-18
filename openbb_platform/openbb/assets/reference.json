@@ -2974,23 +2974,23 @@
                     {
                         "name": "value",
                         "type": "Union[int, float]",
-                        "description": "GDP value for the country and date.",
+                        "description": "Nominal GDP value for the country and date.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     },
                     {
-                        "name": "real_growth_qoq",
+                        "name": "nominal_growth_qoq",
                         "type": "float",
-                        "description": "Real GDP growth rate quarter over quarter.",
+                        "description": "Nominal GDP growth rate quarter over quarter.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     },
                     {
-                        "name": "real_growth_yoy",
+                        "name": "nominal_growth_yoy",
                         "type": "float",
-                        "description": "Real GDP growth rate year over year.",
+                        "description": "Nominal GDP growth rate year over year.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -3006,17 +3006,9 @@
                 "message": null
             },
             "description": "Get Real GDP Data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.real(provider='oecd')\nobb.economy.gdp.real(units='yoy', provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.real(provider='oecd')\nobb.economy.gdp.real(country=united_states,germany,japan, provider='econdb')\n```\n\n",
             "parameters": {
                 "standard": [
-                    {
-                        "name": "units",
-                        "type": "Literal['idx', 'qoq', 'yoy']",
-                        "description": "The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)",
-                        "default": "yoy",
-                        "optional": true,
-                        "choices": null
-                    },
                     {
                         "name": "start_date",
                         "type": "Union[date, str]",
@@ -3035,20 +3027,167 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
+                        "type": "Literal['econdb', 'oecd']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.",
                         "default": null,
                         "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data.Use 'all' to get data for all available countries. Multiple items allowed for provider(s): econdb, oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": [
+                            "oecd",
+                            "oecd_26",
+                            "oecd_europe",
+                            "g7",
+                            "g20",
+                            "euro_area",
+                            "european_union_27",
+                            "european_union_15",
+                            "nafta",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
                     }
                 ],
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['G20', 'G7', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_20', 'euro_area_19', 'europe', 'european_union_27', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'oecd_total', 'poland', 'portugal', 'romania', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all']",
-                        "description": "Country to get GDP for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Use 'all' to get data for all available countries. Multiple items allowed for provider(s): oecd.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "oecd",
+                            "oecd_26",
+                            "oecd_europe",
+                            "g7",
+                            "g20",
+                            "euro_area",
+                            "european_union_27",
+                            "european_union_15",
+                            "nafta",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['quarter', 'annual']",
+                        "description": "Frequency of the data.",
+                        "default": "quarter",
+                        "optional": true,
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
                     }
                 ]
             },
@@ -3061,7 +3200,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['oecd']]",
+                        "type": "Optional[Literal['econdb', 'oecd']]",
                         "description": "Provider name."
                     },
                     {
@@ -3087,16 +3226,50 @@
                         "name": "date",
                         "type": "date",
                         "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country represented by the GDP value.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Real GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "real_growth_qoq",
                         "type": "float",
-                        "description": "Nominal GDP value on the date.",
-                        "default": null,
-                        "optional": true,
+                        "description": "Real GDP growth rate quarter over quarter.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "real_growth_yoy",
+                        "type": "float",
+                        "description": "Real GDP growth rate year over year.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     }
                 ],

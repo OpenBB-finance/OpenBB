@@ -8,6 +8,7 @@ from openbb_econdb.models.available_indicators import EconDbAvailableIndicatorsF
 from openbb_econdb.models.country_profile import EconDbCountryProfileFetcher
 from openbb_econdb.models.economic_indicators import EconDbEconomicIndicatorsFetcher
 from openbb_econdb.models.gdp_nominal import EconDbGdpNominalFetcher
+from openbb_econdb.models.gdp_real import EconDbGdpRealFetcher
 from openbb_econdb.models.yield_curve import EconDbYieldCurveFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -103,5 +104,18 @@ def test_econdb_gdp_nominal_fetcher(credentials=test_credentials):
     }
 
     fetcher = EconDbGdpNominalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_econdb_gdp_real_fetcher(credentials=test_credentials):
+    """Test EconDB GDP Real Fetcher."""
+    params = {
+        "country": "IN",
+        "use_cache": False,
+    }
+
+    fetcher = EconDbGdpRealFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
