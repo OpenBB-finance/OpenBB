@@ -5333,16 +5333,16 @@
                     },
                     {
                         "name": "tag_names",
-                        "type": "str",
-                        "description": "A semicolon delimited list of tag names that series match all of. Example: 'japan;imports'",
+                        "type": "Union[str, List[str]]",
+                        "description": "A semicolon delimited list of tag names that series match all of. Example: 'japan;imports' Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "exclude_tag_names",
-                        "type": "str",
-                        "description": "A semicolon delimited list of tag names that series match none of. Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series.",
+                        "type": "Union[str, List[str]]",
+                        "description": "A semicolon delimited list of tag names that series match none of. Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
