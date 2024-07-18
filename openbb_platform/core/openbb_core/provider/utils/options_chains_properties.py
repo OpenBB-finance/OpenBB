@@ -145,12 +145,12 @@ class OptionsChainsProperties(Data):
     @property
     def expirations(self) -> List[str]:
         """Return a list of unique expiration dates, as strings."""
-        return [d.strftime("%Y-%m-%d") for d in list(set(self.expiration))]  # type: ignore
+        return sorted([d.strftime("%Y-%m-%d") for d in list(set(self.expiration))])  # type: ignore
 
     @property
     def strikes(self) -> List[float]:
         """Return a list of unique strike prices."""
-        return list(set(self.strike))  # type: ignore
+        return sorted(list(set(self.strike)))  # type: ignore
 
     @property
     def has_iv(self) -> bool:
