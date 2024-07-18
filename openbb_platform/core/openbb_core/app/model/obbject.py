@@ -185,8 +185,6 @@ class OBBject(Tagged, Generic[T]):
             if isinstance(res, BaseModel):
                 df = DataFrame(res.model_dump(exclude_unset=True, exclude_none=True))
                 sort_columns = False
-                if index is not None:
-                    df.set_index(index, inplace=True)
 
             # List[Dict]
             elif isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
@@ -207,13 +205,13 @@ class OBBject(Tagged, Generic[T]):
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: Union[List[Data], Data] = res  # type: ignore
-                r = dt[0] if isinstance(dt, list) else dt
-                if all(
+                r = dt[0] if isinstance(dt, list) and len(dt) == 1 else None  # type: ignore
+                if r and all(
                     prop.get("type") == "array"
-                    for prop in r.model_json_schema()["properties"].values()
+                    for prop in r.model_json_schema()["properties"].values()  # type: ignore
                 ):
                     sort_columns = False
-                    df = DataFrame(r.model_dump(exclude_unset=True, exclude_none=True))
+                    df = DataFrame(r.model_dump(exclude_unset=True, exclude_none=True))  # type: ignore
                 else:
                     df = basemodel_to_df(dt, index)
                     sort_columns = False
@@ -224,16 +222,16 @@ class OBBject(Tagged, Generic[T]):
             else:
                 try:
                     df = DataFrame(res)  # type: ignore[call-overload]
-                    # Set index, if any
-                    if df is not None and index is not None and index in df.columns:
-                        df.set_index(index, inplace=True)
-
                 except ValueError:
                     if isinstance(res, dict):
                         df = DataFrame([res])
 
             if df is None:
                 raise OpenBBError("Unsupported data format.")
+
+            # Set index, if any
+            if index is not None and index in df.columns:
+                df.set_index(index, inplace=True)
 
             # Drop columns that are all NaN, but don't rearrange columns
             if sort_columns:

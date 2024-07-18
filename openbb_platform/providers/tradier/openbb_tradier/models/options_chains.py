@@ -249,12 +249,14 @@ class TradierOptionsChainsFetcher(
         for col in output:
             if col not in ["dte", "open_interest", "volume"]:
                 output[col] = output[col].replace({0: None})
-            if col in ["bid_date", "ask_date", "trade_date", "updated_at"]:
+            elif col in ["bid_date", "ask_date", "trade_date", "updated_at"]:
                 output[col] = output[col].apply(df_apply_dates)
-            if col == "change_percentage":
+            elif col == "change_percentage":
                 output[col] = [float(d) / 100 if d else None for d in output[col]]
-            if col in ["bidexch", "askexch"]:
+            elif col in ["bidexch", "askexch"]:
                 output[col] = output[col].apply(map_exchange)
+            else:
+                continue
 
         output = output.replace({nan: None}).dropna(how="all", axis=1)
 
