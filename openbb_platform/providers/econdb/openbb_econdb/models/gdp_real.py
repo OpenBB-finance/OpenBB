@@ -1,4 +1,4 @@
-"""EconDB GDP Nominal Model."""
+"""EconDB GDP Real Model."""
 
 # pylint: disable=unused-argument
 
@@ -18,8 +18,8 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
 
-class EconDbGdpNominalQueryParams(GdpNominalQueryParams):
-    """EconDB GDP Nominal Query."""
+class EconDbGdpRealQueryParams(GdpNominalQueryParams):
+    """EconDB GDP Real Query."""
 
     __json_schema_extra__ = {
         "country": {"multiple_items_allowed": True},
@@ -51,7 +51,7 @@ class EconDbGdpNominalQueryParams(GdpNominalQueryParams):
         country = v if isinstance(v, list) else v.split(",")
 
         if "all" in country:
-            return ",".join(INDICATOR_COUNTRIES.get("GDP"))
+            return ",".join(INDICATOR_COUNTRIES.get("RGDP"))
 
         for c in country.copy():
             if (
@@ -78,41 +78,41 @@ class EconDbGdpNominalQueryParams(GdpNominalQueryParams):
         return ",".join(country)
 
 
-class EconDbGdpNominalData(GdpNominalData):
-    """EconDB GDP Nominal Data."""
+class EconDbGdpRealData(GdpNominalData):
+    """EconDB GDP Real Data."""
 
-    nominal_growth_qoq: float = Field(
-        description="Nominal GDP growth rate quarter over quarter.",
+    real_growth_qoq: float = Field(
+        description="Real GDP growth rate quarter over quarter.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    nominal_growth_yoy: float = Field(
-        description="Nominal GDP growth rate year over year.",
+    real_growth_yoy: float = Field(
+        description="Real GDP growth rate year over year.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     value: Union[int, float] = Field(
-        description="Nominal GDP value for the country and date.",
+        description="Real GDP value for the country and date.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
 
 
-class EconDbGdpNominalFetcher(
+class EconDbGdpRealFetcher(
     Fetcher[
-        EconDbGdpNominalQueryParams,
-        List[EconDbGdpNominalData],
+        EconDbGdpRealQueryParams,
+        List[EconDbGdpRealData],
     ]
 ):
-    """EconDB GDP Nominal Fetcher."""
+    """EconDB GDP Real Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> EconDbGdpNominalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> EconDbGdpRealQueryParams:
         """Transform the query parameters."""
-        return EconDbGdpNominalQueryParams(**params)
+        return EconDbGdpRealQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: EconDbGdpNominalQueryParams,
+        query: EconDbGdpRealQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs,
     ) -> List[Dict]:
@@ -135,17 +135,17 @@ class EconDbGdpNominalFetcher(
             final_df = DataFrame()
             gdp_response, gdp_qoq_response, gdp_yoy_response = await asyncio.gather(
                 get_context(
-                    "GDP",
+                    "RGDP",
                     _country,
                     None if _country == "US" else "TUSD",
                     query.use_cache,
                 ),
-                get_context("GDP", _country, "TPOP", query.use_cache),
-                get_context("GDP", _country, "TOYA", query.use_cache),
+                get_context("RGDP", _country, "TPOP", query.use_cache),
+                get_context("RGDP", _country, "TOYA", query.use_cache),
             )
-            gdp = parse_context(gdp_response, latest=False).rename(columns={"GDP": "value"})  # type: ignore
-            gdp_qoq = parse_context(gdp_qoq_response, latest=False).rename(columns={"GDP": "nominal_growth_qoq"})  # type: ignore
-            gdp_yoy = parse_context(gdp_yoy_response, latest=False).rename(columns={"GDP": "nominal_growth_yoy"})  # type: ignore
+            gdp = parse_context(gdp_response, latest=False).rename(columns={"RGDP": "value"})  # type: ignore
+            gdp_qoq = parse_context(gdp_qoq_response, latest=False).rename(columns={"RGDP": "real_growth_qoq"})  # type: ignore
+            gdp_yoy = parse_context(gdp_yoy_response, latest=False).rename(columns={"RGDP": "real_growth_yoy"})  # type: ignore
             gdp = (
                 gdp.set_index("Country", append=True)
                 if "Country" in gdp.columns
@@ -185,10 +185,10 @@ class EconDbGdpNominalFetcher(
 
     @staticmethod
     def transform_data(
-        query: EconDbGdpNominalQueryParams,
+        query: EconDbGdpRealQueryParams,
         data: List[Dict],
         **kwargs,
-    ) -> List[EconDbGdpNominalData]:
+    ) -> List[EconDbGdpRealData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, to_datetime
@@ -208,11 +208,11 @@ class EconDbGdpNominalFetcher(
         df = df.set_index(["date", "country"])  # type: ignore
         df = df.dropna()
         df["value"] = (df["value"] * 1_000_000_000).astype("int64")
-        df["nominal_growth_qoq"] = df["nominal_growth_qoq"] / 100
-        df["nominal_growth_yoy"] = df["nominal_growth_yoy"] / 100
+        df["real_growth_qoq"] = df["real_growth_qoq"] / 100
+        df["real_growth_yoy"] = df["real_growth_yoy"] / 100
         df = df.reset_index()
         df = df.sort_values(by=["date", "value"], ascending=[True, False])
 
         return [
-            EconDbGdpNominalData.model_validate(d) for d in df.to_dict(orient="records")
+            EconDbGdpRealData.model_validate(d) for d in df.to_dict(orient="records")
         ]

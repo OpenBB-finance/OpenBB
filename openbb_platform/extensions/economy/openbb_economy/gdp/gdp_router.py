@@ -68,7 +68,9 @@ async def nominal(
     model="GdpReal",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"units": "yoy", "provider": "oecd"}),
+        APIEx(
+            parameters={"country": "united_states,germany,japan", "provider": "econdb"}
+        ),
     ],
 )
 async def real(
