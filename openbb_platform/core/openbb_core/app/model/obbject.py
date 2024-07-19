@@ -161,13 +161,13 @@ class OBBject(Tagged, Generic[T]):
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: Union[List[Data], Data] = res  # type: ignore
-                r = dt[0] if isinstance(dt, list) else dt
-                if all(
+                r = dt[0] if isinstance(dt, list) and len(dt) == 1 else None  # type: ignore
+                if r and all(
                     prop.get("type") == "array"
-                    for prop in r.schema()["properties"].values()
+                    for prop in r.model_json_schema()["properties"].values()  # type: ignore
                 ):
                     sort_columns = False
-                    df = DataFrame(r.model_dump(exclude_unset=True))
+                    df = DataFrame(r.model_dump(exclude_unset=True, exclude_none=True))  # type: ignore
                 else:
                     df = basemodel_to_df(dt, index)
                     sort_columns = False
