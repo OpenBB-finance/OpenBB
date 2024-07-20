@@ -1,4 +1,4 @@
-"""FRED ReleaseTable Standard Model."""
+"""FRED Release Table Standard Model."""
 
 from datetime import date as dateType
 from typing import Optional, Union
