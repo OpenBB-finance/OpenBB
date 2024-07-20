@@ -955,3 +955,35 @@ def test_economy_pce(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": None,
+                "release_id": "14",
+                "element_id": "7930",
+            }
+        ),
+        (
+            {
+                "provider": "fred",
+                "date": None,
+                "release_id": "14",
+                "element_id": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_fred_release_table(params, obb):
+    """Test the economy fred release table endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.fred_release_table(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
