@@ -93,7 +93,7 @@ class FredReleaseTableFetcher(
         if not release_info:
             raise OpenBBError(f"No release information found for, {query.release_id}.")
 
-        release_freq = list(set([d.model_dump().get("frequency_short") for d in release_info]))[0]  # type: ignore
+        release_freq = list(set([d.model_dump().get("frequency_short") for d in release_info]))[0]  # type: ignore  # pylint: disable=R1718
 
         if query.date is not None:
             if isinstance(query.date, dateType):
@@ -212,7 +212,7 @@ class FredReleaseTableFetcher(
                     "parent_id",
                     "level",
                 ]
-                for index_col in new_index_cols:
+                for index_col in new_index_cols.copy():
                     if index_col not in df.columns:
                         new_index_cols.remove(index_col)
                 df = (
