@@ -246,9 +246,9 @@ class FredReleaseTableFetcher(
                 + "\n\nReleases without tables will not return data,"
                 + " nor will this endpoint return individual line items."
                 + "\n\nTry a different 'element_id' and/or 'date'."
-                + " Exclude 'date' for the most recent observations."
-                + " Exclude 'element_id' to reveal the top-level element IDs."
-                + " Use `fred_series` for single series data."
+                + "\n\nExclude 'date' for the most recent observations."
+                + "\n\nExclude 'element_id' to reveal the top-level element IDs."
+                + "\n\nUse `fred_series` for single series data."
             )
 
         return [
