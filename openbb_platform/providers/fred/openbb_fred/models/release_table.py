@@ -241,11 +241,11 @@ class FredReleaseTableFetcher(
         """Transform data."""
         if not data:
             raise EmptyDataError(
-                "No tables were found for the supplied parameters."
-                + " Use `fred_search` to find 'release_id' elements."
-                + " This endpoint will not return single element data"
-                + " unless it has children, or is a table."
-                + "\n\nTry a different 'element_id' and 'date'."
+                f"No tables were found for the release, {query.release_id}."
+                + " Use `fred_search()` to list all release IDs."
+                + "\n\nReleases without tables will not return data,"
+                + " nor will this endpoint return individual line items."
+                + "\n\nTry a different 'element_id' and/or 'date'."
                 + " Exclude 'date' for the most recent observations."
                 + " Exclude 'element_id' to reveal the top-level element IDs."
                 + " Use `fred_series` for single series data."
