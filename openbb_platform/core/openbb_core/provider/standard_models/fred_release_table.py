@@ -61,7 +61,7 @@ class ReleaseTableData(Data):
     )
     symbol: Optional[str] = Field(
         default=None,
-        description=DATA_DESCRIPTIONS.get("date", ""),
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
     name: Optional[str] = Field(
         default=None,
