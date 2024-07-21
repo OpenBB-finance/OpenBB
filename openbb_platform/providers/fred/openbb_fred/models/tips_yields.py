@@ -141,9 +141,13 @@ class FredTipsYieldsFetcher(
         async def get_tips_series():
             """Get series IDs for the TIPS."""
             fetcher = FredSearchFetcher()
-            res = await fetcher.fetch_data(params={"release_id": 72}, credentials=credentials)
+            res = await fetcher.fetch_data(
+                params={"release_id": 72}, credentials=credentials
+            )
             df = DataFrame([d.model_dump() for d in res])  # type: ignore
-            df = df.query("not title.str.contains('DISCONTINUED')").set_index("series_id")
+            df = df.query("not title.str.contains('DISCONTINUED')").set_index(
+                "series_id"
+            )
             df.loc[:, "due"] = df.title.apply(
                 lambda x: x.split("Due ")[-1].strip()
             ).apply(to_datetime)
@@ -172,14 +176,16 @@ class FredTipsYieldsFetcher(
         )
 
         params = {
-            k: v for k, v in {
+            k: v
+            for k, v in {
                 "symbol": ",".join(ids),
                 "start_date": query.start_date,
                 "end_date": query.end_date,
                 "frequency": query.frequency,
                 "aggregation_method": query.aggregation_method,
                 "transform": query.transform,
-            }.items() if v is not None
+            }.items()
+            if v is not None
         }
 
         try:
