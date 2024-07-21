@@ -44,7 +44,7 @@ class ROUTER_fixedincome_government(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Current Treasury Inflation-Protected Securities Yields.
+        """Get current Treasury inflation-protected securities yields.
 
         Parameters
         ----------

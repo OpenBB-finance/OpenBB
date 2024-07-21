@@ -33815,7 +33815,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Current Treasury Inflation-Protected Securities Yields.",
+            "description": "Get current Treasury inflation-protected securities yields.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.tips_yields(provider='fred')\nobb.fixedincome.government.tips_yields(maturity=10, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [

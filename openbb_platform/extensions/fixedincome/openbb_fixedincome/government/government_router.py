@@ -182,5 +182,5 @@ async def tips_yields(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Current Treasury Inflation-Protected Securities Yields."""
+    """Get current Treasury inflation-protected securities yields."""
     return await OBBject.from_query(Query(**locals()))
