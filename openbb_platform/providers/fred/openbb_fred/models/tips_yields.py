@@ -123,27 +123,7 @@ class FredTipsYieldsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FredTipsYieldsQueryParams:
         """Transform the query."""
-        # pylint: disable=import-outside-toplevel
-        from datetime import timedelta
-
-        new_params = params.copy()
-        today = datetime.today().date()
-        start_date = new_params.get("start_date")
-        end_date = new_params.get("end_date")
-
-        if start_date is not None and start_date > today:
-            start_date = today
-        elif start_date is None and end_date is None:
-            new_params["end_date"] = today
-            new_params["start_date"] = today - timedelta(days=10)
-        elif start_date is not None and end_date is None:
-            new_params["end_date"] = start_date
-        elif end_date is not None and start_date is None:
-            new_params["start_date"] = end_date
-        else:
-            pass
-
-        return FredTipsYieldsQueryParams(**new_params)
+        return FredTipsYieldsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
