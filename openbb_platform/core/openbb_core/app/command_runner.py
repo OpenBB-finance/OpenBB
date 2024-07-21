@@ -148,7 +148,7 @@ class ParametersBuilder:
         try:
             if isinstance(obj, dict):
                 return obj
-            return asdict(obj) if is_dataclass(obj) else dict(obj)
+            return asdict(obj) if is_dataclass(obj) else dict(obj)  # type: ignore
         except Exception:
             return {}
 
