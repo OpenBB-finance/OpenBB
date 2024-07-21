@@ -120,6 +120,8 @@ class FredTipsYieldsFetcher(
 ):
     """FRED TIPS Yields Fetcher."""
 
+    credentials_required = False  # Trick for Pytest
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FredTipsYieldsQueryParams:
         """Transform the query."""
@@ -135,10 +137,6 @@ class FredTipsYieldsFetcher(
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.command_runner import CommandRunner
         from pandas import to_datetime
-
-        api_key = (  # pylint: disable=unused-variable  # noqa: F841
-            credentials.get("fred_api_key") if credentials else ""
-        )
 
         # We get the series IDs because they will change over time.
         async def get_tips_series():
