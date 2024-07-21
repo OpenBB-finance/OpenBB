@@ -120,7 +120,7 @@ class FredTipsYieldsFetcher(
 ):
     """FRED TIPS Yields Fetcher."""
 
-    credentials_required = False  # Trick for Pytest
+    require_credentials = False  # Trick for Pytest
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FredTipsYieldsQueryParams:
