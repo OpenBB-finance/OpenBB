@@ -33810,6 +33810,182 @@
             },
             "model": "TreasuryRates"
         },
+        "/fixedincome/government/tips_yields": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Current Treasury Inflation-Protected Securities Yields.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.tips_yields(provider='fred')\nobb.fixedincome.government.tips_yields(maturity=10, provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "maturity",
+                        "type": "Literal[5, 10, 20, 30]",
+                        "description": "The maturity of the security in years - 5, 10, 20, 30 - defaults to all. Note that the maturity is the tenor of the security, not the time to maturity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            5,
+                            10,
+                            20,
+                            30
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[TipsYields]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "due",
+                        "type": "date",
+                        "description": "The due date (maturation date) of the security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "The name of the security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "The yield value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "TipsYields"
+        },
         "/fixedincome/corporate/ice_bofa": {
             "deprecated": {
                 "flag": true,
