@@ -120,8 +120,6 @@ class FredTipsYieldsFetcher(
 ):
     """FRED TIPS Yields Fetcher."""
 
-    require_credentials = False  # Trick for Pytest
-
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FredTipsYieldsQueryParams:
         """Transform the query."""
@@ -135,27 +133,17 @@ class FredTipsYieldsFetcher(
     ) -> Dict:
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.app.command_runner import CommandRunner
-        from pandas import to_datetime
+        from openbb_fred.models.search import FredSearchFetcher
+        from openbb_fred.models.series import FredSeriesFetcher
+        from pandas import DataFrame, to_datetime
 
         # We get the series IDs because they will change over time.
         async def get_tips_series():
             """Get series IDs for the TIPS."""
-            res = await CommandRunner().run(  # type: ignore
-                "/economy/fred_search",
-                provider_choices={
-                    "provider": "fred",
-                },
-                standard_params={},
-                extra_params={
-                    "release_id": 72,
-                },
-            )
-            df = (
-                res.to_df()  # type: ignore
-                .query("not title.str.contains('DISCONTINUED')")
-                .set_index("series_id")
-            )
+            fetcher = FredSearchFetcher()
+            res = await fetcher.fetch_data(params={"release_id": 72}, credentials=credentials)
+            df = DataFrame([d.model_dump() for d in res])  # type: ignore
+            df = df.query("not title.str.contains('DISCONTINUED')").set_index("series_id")
             df.loc[:, "due"] = df.title.apply(
                 lambda x: x.split("Due ")[-1].strip()
             ).apply(to_datetime)
@@ -183,31 +171,28 @@ class FredTipsYieldsFetcher(
             .to_dict()
         )
 
+        params = {
+            k: v for k, v in {
+                "symbol": ",".join(ids),
+                "start_date": query.start_date,
+                "end_date": query.end_date,
+                "frequency": query.frequency,
+                "aggregation_method": query.aggregation_method,
+                "transform": query.transform,
+            }.items() if v is not None
+        }
+
         try:
-            res = await CommandRunner().run(  # type: ignore
-                "/economy/fred_series",
-                provider_choices={
-                    "provider": "fred",
-                },
-                standard_params={
-                    "symbol": ",".join(ids),
-                    "start_date": query.start_date,
-                    "end_date": query.end_date,
-                },
-                extra_params={
-                    "frequency": query.frequency,
-                    "aggregation_method": query.aggregation_method,
-                    "transform": query.transform,
-                },
-            )
-            df = res.to_df(index=None)  # type: ignore
-            meta = res.extra["results_metadata"]
+            fetcher = FredSeriesFetcher()
+            res = await fetcher.fetch_data(params=params, credentials=credentials)
+            df = DataFrame([d.model_dump() for d in res.result])  # type: ignore
+            meta = res.metadata  # type: ignore
         except Exception as e:
             raise OpenBBError(e) from e
 
         for k, v in title_map.items():
             if k in meta:
-                meta[k]["title"] = v
+                meta[k]["title"] = v  # type: ignore
 
         # We flatten the data and format the output with the metadata.
         df = (
