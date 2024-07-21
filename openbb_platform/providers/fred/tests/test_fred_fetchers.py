@@ -35,6 +35,7 @@ from openbb_fred.models.personal_consumption_expenditures import (
     FredPersonalConsumptionExpendituresFetcher,
 )
 from openbb_fred.models.regional import FredRegionalDataFetcher
+from openbb_fred.models.release_table import FredReleaseTableFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
@@ -502,6 +503,20 @@ def test_fred_personal_consumption_expenditures_fetcher(credentials=test_credent
     }
 
     fetcher = FredPersonalConsumptionExpendituresFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_release_table_fetcher(credentials=test_credentials):
+    """Test FredReleaseTableFetcher."""
+    params = {
+        "date": "2024-07-14",
+        "release_id": "483",
+        "element_id": "1217633",
+    }
+
+    fetcher = FredReleaseTableFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

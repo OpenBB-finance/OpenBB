@@ -156,6 +156,33 @@ async def fred_series(
 
 
 @router.command(
+    model="FredReleaseTable",
+    examples=[
+        APIEx(
+            description="Get the top-level elements of a release by not supplying an element ID.",
+            parameters={"release_id": "50", "provider": "fred"},
+        ),
+        APIEx(
+            description="Drill down on a specific section of the release.",
+            parameters={"release_id": "50", "element_id": "4880", "provider": "fred"},
+        ),
+        APIEx(
+            description="Drill down on a specific table of the release.",
+            parameters={"release_id": "50", "element_id": "4881", "provider": "fred"},
+        ),
+    ],
+)
+async def fred_release_table(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get economic release data by ID and/or element from FRED."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="MoneyMeasures",
     examples=[
         APIEx(parameters={"provider": "federal_reserve"}),

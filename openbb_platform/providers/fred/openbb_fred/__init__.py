@@ -32,6 +32,7 @@ from openbb_fred.models.personal_consumption_expenditures import (
     FredPersonalConsumptionExpendituresFetcher,
 )
 from openbb_fred.models.regional import FredRegionalDataFetcher
+from openbb_fred.models.release_table import FredReleaseTableFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
@@ -84,6 +85,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "OvernightBankFundingRate": FredOvernightBankFundingRateFetcher,
         "PersonalConsumptionExpenditures": FredPersonalConsumptionExpendituresFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
+        "FredReleaseTable": FredReleaseTableFetcher,
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,
         "FredRegional": FredRegionalDataFetcher,

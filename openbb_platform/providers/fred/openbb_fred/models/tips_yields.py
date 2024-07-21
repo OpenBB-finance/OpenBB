@@ -1,9 +1,9 @@
 """FRED TIPS Yields Model."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,too-many-locals
 
-from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -133,8 +133,12 @@ class FredTipsYieldsFetcher(
     ) -> Dict:
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
-        from pandas import to_datetime
         from openbb_core.app.command_runner import CommandRunner
+        from pandas import to_datetime
+
+        api_key = (  # pylint: disable=unused-variable  # noqa: F841
+            credentials.get("fred_api_key") if credentials else ""
+        )
 
         # We get the series IDs because they will change over time.
         async def get_tips_series():
