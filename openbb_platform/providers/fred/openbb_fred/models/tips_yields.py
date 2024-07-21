@@ -125,15 +125,23 @@ class FredTipsYieldsFetcher(
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
+
         new_params = params.copy()
         today = datetime.today().date()
-        if new_params.get("start_date") and not new_params.get("end_date"):
+        start_date = new_params.get("start_date")
+        end_date = new_params.get("end_date")
+
+        if start_date is not None and start_date > today:
+            start_date = today
+        elif start_date is None and end_date is None:
             new_params["end_date"] = today
-        elif new_params.get("end_date") and not new_params.get("start_date"):
-            new_params["start_date"] = new_params["end_date"]
-        elif not new_params.get("start_date") and not new_params.get("end_date"):
             new_params["start_date"] = today - timedelta(days=10)
-            new_params["end_date"] = today
+        elif start_date is not None and end_date is None:
+            new_params["end_date"] = start_date
+        elif end_date is not None and start_date is None:
+            new_params["start_date"] = end_date
+        else:
+            pass
 
         return FredTipsYieldsQueryParams(**new_params)
 
@@ -176,7 +184,7 @@ class FredTipsYieldsFetcher(
             ids_df = await get_tips_series()
             ids = ids_df.series_id.to_list()
         except Exception as e:
-            raise OpenBBError(e)
+            raise OpenBBError(e) from e
 
         # If we are looking for a specific tenor, the request will be smaller.
         if query.maturity:
@@ -213,7 +221,7 @@ class FredTipsYieldsFetcher(
             df = res.to_df(index=None)
             meta = res.extra["results_metadata"]
         except Exception as e:
-            raise OpenBBError(e)
+            raise OpenBBError(e) from e
 
         for k, v in title_map.items():
             if k in meta:
