@@ -5738,6 +5738,165 @@
             },
             "model": "FredSeries"
         },
+        "/economy/fred_release_table": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get economic release data by ID and/or element from FRED.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the top-level elements of a release by not supplying an element ID.\nobb.economy.fred_release_table(release_id='50', provider='fred')\n# Drill down on a specific section of the release.\nobb.economy.fred_release_table(release_id='50', element_id='4880', provider='fred')\n# Drill down on a specific table of the release.\nobb.economy.fred_release_table(release_id='50', element_id='4881', provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "release_id",
+                        "type": "str",
+                        "description": "The ID of the release. Use `fred_search` to find releases.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "element_id",
+                        "type": "str",
+                        "description": "The element ID of a specific table in the release.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "date",
+                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "description": "A specific date to get data for. Multiple items allowed for provider(s): fred.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[FredReleaseTable]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "level",
+                        "type": "int",
+                        "description": "The indentation level of the element.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "element_type",
+                        "type": "str",
+                        "description": "The type of the element.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "line",
+                        "type": "int",
+                        "description": "The line number of the element.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "element_id",
+                        "type": "str",
+                        "description": "The element id in the parent/child relationship.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "parent_id",
+                        "type": "str",
+                        "description": "The parent id in the parent/child relationship.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "children",
+                        "type": "str",
+                        "description": "The element_id of each child, as a comma-separated string.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "The name of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "The reported value of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "FredReleaseTable"
+        },
         "/economy/money_measures": {
             "deprecated": {
                 "flag": null,
