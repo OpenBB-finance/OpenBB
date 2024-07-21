@@ -148,9 +148,9 @@ class FredTipsYieldsFetcher(
                 extra_params={
                     "release_id": 72,
                 },
-            )
+            )  # type: ignore
             df = (
-                res.to_df()
+                res.to_df()  # type: ignore
                 .query("not title.str.contains('DISCONTINUED')")
                 .set_index("series_id")
             )
@@ -197,8 +197,8 @@ class FredTipsYieldsFetcher(
                     "aggregation_method": query.aggregation_method,
                     "transform": query.transform,
                 },
-            )
-            df = res.to_df(index=None)
+            )  # type: ignore
+            df = res.to_df(index=None)  # type: ignore
             meta = res.extra["results_metadata"]
         except Exception as e:
             raise OpenBBError(e) from e
