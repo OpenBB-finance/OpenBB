@@ -45,9 +45,9 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -132,9 +132,9 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['econdb', 'oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
@@ -231,9 +231,9 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['econdb', 'oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.

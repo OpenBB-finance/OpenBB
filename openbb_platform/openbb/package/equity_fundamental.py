@@ -998,9 +998,9 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
@@ -1351,11 +1351,11 @@ class ROUTER_equity_fundamental(Container):
             Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         tag : Union[str, List[str]]
             Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        frequency : Optional[Literal['daily', 'weekly', 'monthly', 'quarterly', 'year...
+        frequency : Optional[Literal['daily', 'weekly', 'monthly', 'quarterly', 'yearly']]
             The frequency of the data.
         limit : Optional[int]
             The number of data entries to return.

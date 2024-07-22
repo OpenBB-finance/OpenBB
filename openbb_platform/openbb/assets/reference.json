@@ -175,7 +175,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[date, datetime]",
+                        "type": "Union[Union[date, datetime], str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -523,7 +523,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[date, datetime]",
+                        "type": "Union[Union[date, datetime], str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -2373,7 +2373,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "datetime",
+                        "type": "Union[datetime, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -2443,7 +2443,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "type": "Union[Union[str, date], List[Union[str, date]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): yfinance.",
                         "default": null,
                         "optional": true,
@@ -2492,7 +2492,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -2627,7 +2627,7 @@
                     {
                         "name": "units",
                         "type": "Literal['current_prices', 'volume', 'capita', 'growth', 'deflator']",
-                        "description": "Units of the data, default is volume (chain linked volume, 2015). 'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent; 'deflator' as an index.",
+                        "description": "Units of the data, default is volume (chain linked volume, 2015).\n'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent; 'deflator' as an index.",
                         "default": "volume",
                         "optional": true,
                         "choices": [
@@ -2673,7 +2673,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -2947,7 +2947,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -3224,7 +3224,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -3333,7 +3333,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -3382,7 +3382,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -3465,7 +3465,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -3477,7 +3477,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -3526,7 +3526,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -3535,7 +3535,7 @@
                     {
                         "name": "consumer_sentiment",
                         "type": "float",
-                        "description": "Index of the results of the University of Michigan's monthly Survey of Consumers, which is used to estimate future spending and saving. (1966:Q1=100).",
+                        "description": "Index of the results of the University of Michigan's monthly Survey of Consumers, which is used to estimate future spending and saving.  (1966:Q1=100).",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -3601,7 +3601,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -3613,7 +3613,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -3662,7 +3662,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -3816,7 +3816,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -3828,7 +3828,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -3877,7 +3877,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -3939,7 +3939,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "type": "Union[Union[str, date], List[Union[str, date]]]",
                         "description": "A specific date to get data for. Default is the latest report. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -4015,7 +4015,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -4401,7 +4401,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "datetime",
+                        "type": "Union[datetime, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -4752,7 +4752,7 @@
                     {
                         "name": "country",
                         "type": "str",
-                        "description": "Country to get CPI for. This is the list of OECD supported countries",
+                        "description": "Country to get CPI for.  This is the list of OECD supported countries",
                         "default": "united_states",
                         "optional": true,
                         "choices": [
@@ -4885,7 +4885,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -5286,7 +5286,7 @@
                     {
                         "name": "is_release",
                         "type": "bool",
-                        "description": "Is release? If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True.",
+                        "description": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True.",
                         "default": false,
                         "optional": true,
                         "choices": null
@@ -5326,7 +5326,7 @@
                     {
                         "name": "filter_value",
                         "type": "str",
-                        "description": "String value to filter the variable by. Used in conjunction with filter_variable.",
+                        "description": "String value to filter the variable by.  Used in conjunction with filter_variable.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5334,7 +5334,7 @@
                     {
                         "name": "tag_names",
                         "type": "Union[str, List[str]]",
-                        "description": "A semicolon delimited list of tag names that series match all of. Example: 'japan;imports' Multiple items allowed for provider(s): fred.",
+                        "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5342,7 +5342,7 @@
                     {
                         "name": "exclude_tag_names",
                         "type": "Union[str, List[str]]",
-                        "description": "A semicolon delimited list of tag names that series match none of. Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple items allowed for provider(s): fred.",
+                        "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5615,7 +5615,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -5638,7 +5638,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                         "default": "eop",
                         "optional": true,
                         "choices": [
@@ -5650,7 +5650,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -5717,7 +5717,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -5765,7 +5765,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "type": "Union[Union[str, date], List[Union[str, date]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -5814,7 +5814,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -5871,7 +5871,7 @@
                     {
                         "name": "symbol",
                         "type": "str",
-                        "description": "The date of the data.",
+                        "description": "Symbol representing the entity requested in the data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -6215,7 +6215,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -6359,7 +6359,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -6471,7 +6471,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -6583,7 +6583,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -6716,7 +6716,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -6739,7 +6739,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                         "default": "eop",
                         "optional": true,
                         "choices": [
@@ -6751,7 +6751,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -6800,7 +6800,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -7266,7 +7266,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['toya', 'tpop', 'tusd', 'tpgp']",
-                        "description": "The transformation to apply to the data, default is None.   tpop: Change from previous period   toya: Change from one year ago   tusd: Values as US dollars   tpgp: Values as a percent of GDP   Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.   This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.   `tusd` should only be used where values are currencies.",
+                        "description": "The transformation to apply to the data, default is None.\n\n    tpop: Change from previous period\n    toya: Change from one year ago\n    tusd: Values as US dollars\n    tpgp: Values as a percent of GDP\n\n    Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.\n    This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.\n    `tusd` should only be used where values are currencies.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -7322,7 +7322,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -7476,7 +7476,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -7827,7 +7827,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -8021,7 +8021,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -8191,7 +8191,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -8365,7 +8365,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -8414,7 +8414,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -8548,7 +8548,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -8603,7 +8603,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "type": "Union[Union[str, date], List[Union[str, date]]]",
                         "description": "A specific date to get data for. Default is the latest report. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -8670,7 +8670,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -9247,7 +9247,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -9863,7 +9863,7 @@
                     {
                         "name": "instantaneous",
                         "type": "bool",
-                        "description": "Whether to retrieve instantaneous data. See the notes above for more information. Defaults to False. Some facts are only available as instantaneous data. The function will automatically attempt the inverse of this parameter if the initial fiscal quarter request fails. This parameter is ignored when a symbol is supplied.",
+                        "description": "Whether to retrieve instantaneous data. See the notes above for more information. Defaults to False. Some facts are only available as instantaneous data.\nThe function will automatically attempt the inverse of this parameter if the initial fiscal quarter request fails. This parameter is ignored when a symbol is supplied.",
                         "default": false,
                         "optional": true,
                         "choices": null
@@ -10517,7 +10517,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -11572,7 +11572,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -12099,7 +12099,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -13445,7 +13445,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "datetime",
+                        "type": "Union[datetime, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -14092,7 +14092,7 @@
                     {
                         "name": "fiscal_year",
                         "type": "int",
-                        "description": "The specific fiscal year. Reports do not go beyond 2008.",
+                        "description": "The specific fiscal year.  Reports do not go beyond 2008.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -16155,7 +16155,7 @@
                     {
                         "name": "fiscal_year",
                         "type": "int",
-                        "description": "The specific fiscal year. Reports do not go beyond 2008.",
+                        "description": "The specific fiscal year.  Reports do not go beyond 2008.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -17177,7 +17177,7 @@
                     {
                         "name": "fiscal_year",
                         "type": "int",
-                        "description": "The specific fiscal year. Reports do not go beyond 2008.",
+                        "description": "The specific fiscal year.  Reports do not go beyond 2008.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -17851,7 +17851,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -18440,7 +18440,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -18546,7 +18546,7 @@
                     {
                         "name": "fiscal_year",
                         "type": "int",
-                        "description": "The specific fiscal year. Reports do not go beyond 2008.",
+                        "description": "The specific fiscal year.  Reports do not go beyond 2008.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -21875,7 +21875,7 @@
                     {
                         "name": "fiscal_year",
                         "type": "int",
-                        "description": "The specific fiscal year. Reports do not go beyond 2008.",
+                        "description": "The specific fiscal year.  Reports do not go beyond 2008.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -22726,7 +22726,7 @@
                     {
                         "name": "use_cache",
                         "type": "bool",
-                        "description": "Whether or not to use cache. If True, cache will store for one day.",
+                        "description": "Whether or not to use cache.  If True, cache will store for one day.",
                         "default": true,
                         "optional": true,
                         "choices": null
@@ -23041,7 +23041,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -23168,7 +23168,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "datetime",
+                        "type": "Union[datetime, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -23255,7 +23255,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -23350,7 +23350,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -23758,7 +23758,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -24461,7 +24461,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -25393,7 +25393,7 @@
                     {
                         "name": "ask_size",
                         "type": "int",
-                        "description": "The ask size. This represents the number of round lot orders at the given ask price.     The normal round lot size is 100 shares.     An ask size of 2 means there are 200 shares available to purchase at the given ask price.",
+                        "description": "The ask size. This represents the number of round lot orders at the given ask price.\n        The normal round lot size is 100 shares.\n        An ask size of 2 means there are 200 shares available to purchase at the given ask price.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -25729,7 +25729,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[date, datetime]",
+                        "type": "Union[Union[date, datetime], str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -26274,7 +26274,7 @@
                     {
                         "name": "limit",
                         "type": "int",
-                        "description": "Limit the number of reports to parse, from most recent.     Approximately 24 reports per year, going back to 2009.",
+                        "description": "Limit the number of reports to parse, from most recent.\n        Approximately 24 reports per year, going back to 2009.",
                         "default": 24,
                         "optional": true,
                         "choices": null
@@ -28387,7 +28387,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[date, datetime]",
+                        "type": "Union[Union[date, datetime], str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -30193,7 +30193,7 @@
                     {
                         "name": "country",
                         "type": "str",
-                        "description": "The country of the exposure. Corresponding values are normalized percentage points.",
+                        "description": "The country of the exposure.  Corresponding values are normalized percentage points.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -30608,7 +30608,7 @@
                     {
                         "name": "date",
                         "type": "Union[Union[str, date], str]",
-                        "description": "A specific date to get data for. The date represents the period ending. The date entered will return the closest filing.",
+                        "description": "A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -31645,7 +31645,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -31811,7 +31811,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.\n            a = Annual\n            q = Quarterly\n            m = Monthly\n            w = Weekly\n            wef = Weekly, Ending Friday\n            weth = Weekly, Ending Thursday\n            wew = Weekly, Ending Wednesday\n            wetu = Weekly, Ending Tuesday\n            wem = Weekly, Ending Monday\n            wesu = Weekly, Ending Sunday\n            wesa = Weekly, Ending Saturday\n            bwew = Biweekly, Ending Wednesday\n            bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -31833,7 +31833,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -31845,7 +31845,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -31894,7 +31894,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -32014,7 +32014,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -32071,7 +32071,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.\n            a = Annual\n            q = Quarterly\n            m = Monthly\n            w = Weekly\n            wef = Weekly, Ending Friday\n            weth = Weekly, Ending Thursday\n            wew = Weekly, Ending Wednesday\n            wetu = Weekly, Ending Tuesday\n            wem = Weekly, Ending Monday\n            wesu = Weekly, Ending Sunday\n            wesa = Weekly, Ending Saturday\n            bwew = Biweekly, Ending Wednesday\n            bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -32093,7 +32093,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -32105,7 +32105,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -32154,7 +32154,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -32315,7 +32315,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -32372,7 +32372,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.\n            a = Annual\n            q = Quarterly\n            m = Monthly\n            w = Weekly\n            wef = Weekly, Ending Friday\n            weth = Weekly, Ending Thursday\n            wew = Weekly, Ending Wednesday\n            wetu = Weekly, Ending Tuesday\n            wem = Weekly, Ending Monday\n            wesu = Weekly, Ending Sunday\n            wesa = Weekly, Ending Saturday\n            bwew = Biweekly, Ending Wednesday\n            bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -32394,7 +32394,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -32406,7 +32406,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -32463,7 +32463,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -32633,7 +32633,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -32737,7 +32737,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -32759,7 +32759,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -32771,7 +32771,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -32820,7 +32820,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -32963,7 +32963,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -33059,7 +33059,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -33116,7 +33116,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.\n            a = Annual\n            q = Quarterly\n            m = Monthly\n            w = Weekly\n            wef = Weekly, Ending Friday\n            weth = Weekly, Ending Thursday\n            wew = Weekly, Ending Wednesday\n            wetu = Weekly, Ending Tuesday\n            wem = Weekly, Ending Monday\n            wesu = Weekly, Ending Sunday\n            wesa = Weekly, Ending Saturday\n            bwew = Biweekly, Ending Wednesday\n            bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -33138,7 +33138,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -33150,7 +33150,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -33199,7 +33199,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -33344,7 +33344,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -33439,7 +33439,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -33534,7 +33534,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -33564,7 +33564,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, str], List[Union[str, str]]]",
+                        "type": "Union[str, List[str]]",
                         "description": "A specific date to get data for. By default is the current data. Multiple items allowed for provider(s): econdb, federal_reserve, fmp, fred.",
                         "default": null,
                         "optional": true,
@@ -33667,7 +33667,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -33853,7 +33853,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -34019,7 +34019,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n            None = No change\n            a = Annual\n            q = Quarterly\n            m = Monthly\n            w = Weekly\n            d = Daily\n            wef = Weekly, Ending Friday\n            weth = Weekly, Ending Thursday\n            wew = Weekly, Ending Wednesday\n            wetu = Weekly, Ending Tuesday\n            wem = Weekly, Ending Monday\n            wesu = Weekly, Ending Sunday\n            wesa = Weekly, Ending Saturday\n            bwew = Biweekly, Ending Wednesday\n            bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34042,7 +34042,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34054,7 +34054,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34102,7 +34102,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -34254,7 +34254,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -34358,7 +34358,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -34388,7 +34388,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "type": "Union[Union[str, date], List[Union[str, date]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -34449,7 +34449,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -34563,7 +34563,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -34649,7 +34649,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.\n            a = Annual\n            q = Quarterly\n            m = Monthly\n            w = Weekly\n            wef = Weekly, Ending Friday\n            weth = Weekly, Ending Thursday\n            wew = Weekly, Ending Wednesday\n            wetu = Weekly, Ending Tuesday\n            wem = Weekly, Ending Monday\n            wesu = Weekly, Ending Sunday\n            wesa = Weekly, Ending Saturday\n            bwew = Biweekly, Ending Wednesday\n            bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34671,7 +34671,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34683,7 +34683,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34732,7 +34732,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -34822,7 +34822,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.\n            a = Annual\n            q = Quarterly\n            m = Monthly\n            w = Weekly\n            wef = Weekly, Ending Friday\n            weth = Weekly, Ending Thursday\n            wew = Weekly, Ending Wednesday\n            wetu = Weekly, Ending Tuesday\n            wem = Weekly, Ending Monday\n            wesu = Weekly, Ending Sunday\n            wesa = Weekly, Ending Saturday\n            bwew = Biweekly, Ending Wednesday\n            bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34844,7 +34844,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34856,7 +34856,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -34905,7 +34905,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -35090,7 +35090,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.\n            None = No change\n            a = Annual\n            q = Quarterly\n            m = Monthly\n            w = Weekly\n            d = Daily\n            wef = Weekly, Ending Friday\n            weth = Weekly, Ending Thursday\n            wew = Weekly, Ending Wednesday\n            wetu = Weekly, Ending Tuesday\n            wem = Weekly, Ending Monday\n            wesu = Weekly, Ending Sunday\n            wesa = Weekly, Ending Saturday\n            bwew = Biweekly, Ending Wednesday\n            bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -35113,7 +35113,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set, default is 'avg'.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set, default is 'avg'.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": "avg",
                         "optional": true,
                         "choices": [
@@ -35125,7 +35125,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -35174,7 +35174,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -35284,7 +35284,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.\n            None = No change\n            a = Annual\n            q = Quarterly\n            m = Monthly\n            w = Weekly\n            d = Daily\n            wef = Weekly, Ending Friday\n            weth = Weekly, Ending Thursday\n            wew = Weekly, Ending Wednesday\n            wetu = Weekly, Ending Tuesday\n            wem = Weekly, Ending Monday\n            wesu = Weekly, Ending Sunday\n            wesa = Weekly, Ending Saturday\n            bwew = Biweekly, Ending Wednesday\n            bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -35307,7 +35307,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set, default is 'avg'.       avg = Average       sum = Sum       eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set, default is 'avg'.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                         "default": "avg",
                         "optional": true,
                         "choices": [
@@ -35319,7 +35319,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -35368,7 +35368,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -35542,7 +35542,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[date, datetime]",
+                        "type": "Union[Union[date, datetime], str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
@@ -36140,7 +36140,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "datetime",
+                        "type": "Union[datetime, str]",
                         "description": "The date of the data. The published date of the article.",
                         "default": "",
                         "optional": false,
@@ -36692,7 +36692,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "datetime",
+                        "type": "Union[datetime, str]",
                         "description": "The date of the data. Here it is the published date of the article.",
                         "default": "",
                         "optional": false,

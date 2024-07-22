@@ -55,9 +55,9 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -189,7 +189,7 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        date : Union[str, datetime.date, None, List[Union[str, datetime.d...
+        date : Union[str, date, None, List[Union[str, date, None]]]
             A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -283,9 +283,9 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
             The type of series.
@@ -391,9 +391,9 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['aaa', 'baa']
             The type of series.
@@ -499,9 +499,9 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         maturity : Union[float, str, List[Union[float, str]]]
             Maturities in years. Multiple comma separated items allowed for provider(s): fred.

@@ -260,9 +260,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'tradingeconomics']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, tradingeconomics.
@@ -395,7 +395,7 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        date : Union[datetime.date, None, str]
+        date : Union[date, None, str]
             A specific date to get data for.
         provider : Optional[Literal['federal_reserve']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
@@ -536,9 +536,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -758,9 +758,9 @@ class ROUTER_economy(Container):
             The frequency of the data.
         harmonized : bool
             If true, returns harmonized data.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred', 'oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, oecd.
@@ -862,9 +862,9 @@ class ROUTER_economy(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         limit : Optional[int]
             The number of data entries to return.
@@ -1036,7 +1036,7 @@ class ROUTER_economy(Container):
             The ID of the release. Use `fred_search` to find releases.
         element_id : Optional[str]
             The element ID of a specific table in the release.
-        date : Union[str, datetime.date, None, List[Union[str, datetime.d...
+        date : Union[str, date, None, List[Union[str, date, None]]]
             A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -1072,7 +1072,7 @@ class ROUTER_economy(Container):
         children : Optional[str]
             The element_id of each child, as a comma-separated string.
         symbol : Optional[str]
-            The date of the data.
+            Symbol representing the entity requested in the data.
         name : Optional[str]
             The name of the series.
         value : Optional[float]
@@ -1275,9 +1275,9 @@ class ROUTER_economy(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         limit : Optional[int]
             The number of data entries to return.
@@ -1461,9 +1461,9 @@ class ROUTER_economy(Container):
             The frequency of the data.
         transform : Literal['index', 'yoy', 'period']
             Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -1553,9 +1553,9 @@ class ROUTER_economy(Container):
         ----------
         country : Union[str, List[str]]
             The country to get data. Multiple comma separated items allowed for provider(s): oecd.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -1653,9 +1653,9 @@ class ROUTER_economy(Container):
             Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed for provider(s): econdb.
         country : Union[str, None, List[Optional[str]]]
             The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['econdb']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.
@@ -1770,9 +1770,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -1860,9 +1860,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         adjusted : Optional[bool]
             Whether to return seasonally adjusted data.
@@ -1950,7 +1950,7 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        date : Union[str, datetime.date, None, List[Union[str, datetime.d...
+        date : Union[str, date, None, List[Union[str, date, None]]]
             A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -2042,9 +2042,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['federal_reserve']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
@@ -2138,9 +2138,9 @@ class ROUTER_economy(Container):
             The item or basket of items to query.
         country : str
             The country to get data.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -2325,9 +2325,9 @@ class ROUTER_economy(Container):
             The country to get data. Multiple comma separated items allowed for provider(s): oecd.
         frequency : Literal['monthly', 'quarter', 'annual']
             The frequency of the data.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -2416,9 +2416,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -2523,9 +2523,9 @@ class ROUTER_economy(Container):
             The country to get data. Multiple comma separated items allowed for provider(s): oecd.
         frequency : Literal['monthly', 'quarter', 'annual']
             The frequency of the data.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.

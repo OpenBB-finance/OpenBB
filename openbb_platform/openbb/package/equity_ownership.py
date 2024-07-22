@@ -67,7 +67,7 @@ class ROUTER_equity_ownership(Container):
         ----------
         symbol : str
             Symbol to get data for. A CIK or Symbol can be used.
-        date : Union[datetime.date, None, str]
+        date : Union[date, None, str]
             A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported.
         limit : Optional[int]
             The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter.
@@ -447,7 +447,7 @@ class ROUTER_equity_ownership(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        date : Union[datetime.date, None, str]
+        date : Union[date, None, str]
             A specific date to get data for.
         page : Optional[int]
             Page number of the data to fetch.

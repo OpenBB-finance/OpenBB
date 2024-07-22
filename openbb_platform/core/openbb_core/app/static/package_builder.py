@@ -1069,7 +1069,15 @@ class DocstringGenerator:
         def format_type(type_: str, char_limit: Optional[int] = None) -> str:
             """Format type in docstrings."""
             type_str = str(type_)
-            type_str = type_str.replace("NoneType", "None")
+            type_str = (
+                type_str.replace("<class '", "")
+                .replace("'>", "")
+                .replace("typing.", "")
+                .replace("pydantic.types.", "")
+                .replace("NoneType", "None")
+                .replace("datetime.date", "date")
+                .replace("datetime.datetime", "datetime")
+            )
             if char_limit:
                 type_str = type_str[:char_limit] + (
                     "..." if len(str(type_str)) > char_limit else ""
@@ -1109,7 +1117,7 @@ class DocstringGenerator:
             # Explicit parameters
             for param_name, param in explicit_params.items():
                 type_, description = get_param_info(param)
-                type_str = format_type(str(type_), char_limit=79)
+                type_str = format_type(str(type_), char_limit=86)
                 docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"
 
@@ -1484,21 +1492,15 @@ class ReferenceGenerator:
                 field_type, is_required, "website"
             )
 
-            if params_type == "QueryParams" and field in expanded_types:
-                expanded_type = DocstringGenerator.get_field_type(
-                    expanded_types[field], is_required, "website"
-                )
-                field_type = f"Union[{field_type}, {expanded_type}]"
             cleaned_description = (
                 str(field_info.description)
-                .strip().replace("\n", " ").replace("  ", " ").replace('"', "'")
+                .strip().replace('"', "'")
             )  # fmt: skip
 
             extra = field_info.json_schema_extra or {}
 
             # Add information for the providers supporting multiple symbols
             if params_type == "QueryParams" and extra:
-
                 providers = []
                 for p, v in extra.items():  # type: ignore[union-attr]
                     if isinstance(v, dict) and v.get("multiple_items_allowed"):
@@ -1515,6 +1517,12 @@ class ReferenceGenerator:
                     # Manually setting to List[<field_type>] for multiple items
                     # Should be removed if TYPE_EXPANSION is updated to include this
                     field_type = f"Union[{field_type}, List[{field_type}]]"
+            elif field in expanded_types:
+                expanded_type = DocstringGenerator.get_field_type(
+                    expanded_types[field], is_required, "website"
+                )
+                field_type = f"Union[{field_type}, {expanded_type}]"
+
             default_value = "" if field_info.default is PydanticUndefined else field_info.default  # fmt: skip
 
             provider_field_params.append(
