@@ -167,3 +167,20 @@ async def treasury_prices(
 ) -> OBBject:
     """Government Treasury Prices by date."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="TipsYields",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"maturity": 10, "provider": "fred"}),
+    ],
+)
+async def tips_yields(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get current Treasury inflation-protected securities yields."""
+    return await OBBject.from_query(Query(**locals()))
