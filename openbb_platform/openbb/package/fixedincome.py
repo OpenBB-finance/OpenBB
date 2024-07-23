@@ -342,7 +342,33 @@ class ROUTER_fixedincome(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "index": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                    "index": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "primary",
+                                "ltv_lte_80",
+                                "ltv_gt_80",
+                                "conforming_30y",
+                                "conforming_30y_na",
+                                "jumbo_30y",
+                                "fha_30y",
+                                "va_30y",
+                                "usda_30y",
+                                "conforming_15y",
+                                "ltv_lte80_fico_ge740",
+                                "ltv_lte80_fico_a720b739",
+                                "ltv_lte80_fico_a700b719",
+                                "ltv_lte80_fico_a680b699",
+                                "ltv_lte80_fico_lt680",
+                                "ltv_gt80_fico_ge740",
+                                "ltv_gt80_fico_a720b739",
+                                "ltv_gt80_fico_a700b719",
+                                "ltv_gt80_fico_a680b699",
+                                "ltv_gt80_fico_lt680",
+                            ],
+                        }
+                    }
                 },
             )
         )
