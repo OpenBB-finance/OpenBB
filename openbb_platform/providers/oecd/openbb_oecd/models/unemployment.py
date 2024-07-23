@@ -44,7 +44,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     __json_schema_extra__ = {
         "country": {
             "multiple_items_allowed": True,
-            "chocies": CountriesList,
+            "choices": CountriesList,
         },
     }
 
