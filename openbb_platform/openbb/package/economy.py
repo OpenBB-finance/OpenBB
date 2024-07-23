@@ -21,6 +21,7 @@ class ROUTER_economy(Container):
     country_profile
     cpi
     fred_regional
+    fred_release_table
     fred_search
     fred_series
     /gdp
@@ -999,6 +1000,117 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def fred_release_table(
+        self,
+        release_id: Annotated[
+            str,
+            OpenBBField(
+                description="The ID of the release. Use `fred_search` to find releases."
+            ),
+        ],
+        element_id: Annotated[
+            Optional[str],
+            OpenBBField(
+                description="The element ID of a specific table in the release."
+            ),
+        ] = None,
+        date: Annotated[
+            Union[str, datetime.date, None, List[Union[str, datetime.date, None]]],
+            OpenBBField(
+                description="A specific date to get data for. Multiple comma separated items allowed for provider(s): fred."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get economic release data by ID and/or element from FRED.
+
+        Parameters
+        ----------
+        release_id : str
+            The ID of the release. Use `fred_search` to find releases.
+        element_id : Optional[str]
+            The element ID of a specific table in the release.
+        date : Union[str, datetime.date, None, List[Union[str, datetime.d...
+            A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
+        provider : Optional[Literal['fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+
+        Returns
+        -------
+        OBBject
+            results : List[FredReleaseTable]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        FredReleaseTable
+        ----------------
+        date : Optional[date]
+            The date of the data.
+        level : Optional[int]
+            The indentation level of the element.
+        element_type : Optional[str]
+            The type of the element.
+        line : Optional[int]
+            The line number of the element.
+        element_id : Optional[str]
+            The element id in the parent/child relationship.
+        parent_id : Optional[str]
+            The parent id in the parent/child relationship.
+        children : Optional[str]
+            The element_id of each child, as a comma-separated string.
+        symbol : Optional[str]
+            The date of the data.
+        name : Optional[str]
+            The name of the series.
+        value : Optional[float]
+            The reported value of the series.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> # Get the top-level elements of a release by not supplying an element ID.
+        >>> obb.economy.fred_release_table(release_id='50', provider='fred')
+        >>> # Drill down on a specific section of the release.
+        >>> obb.economy.fred_release_table(release_id='50', element_id='4880', provider='fred')
+        >>> # Drill down on a specific table of the release.
+        >>> obb.economy.fred_release_table(release_id='50', element_id='4881', provider='fred')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/fred_release_table",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.fred_release_table",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "release_id": release_id,
+                    "element_id": element_id,
+                    "date": date,
+                },
+                extra_params=kwargs,
+                info={"date": {"fred": {"multiple_items_allowed": True}}},
+            )
+        )
+
+    @exception_handler
+    @validate
     def fred_search(
         self,
         query: Annotated[
@@ -1037,9 +1149,9 @@ class ROUTER_economy(Container):
         filter_value : Optional[str]
             String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
         tag_names : Optional[str]
-            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' (provider: fred)
+            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed. (provider: fred)
         exclude_tag_names : Optional[str]
-            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. (provider: fred)
+            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed. (provider: fred)
         series_id : Optional[str]
             A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)
 
@@ -1120,6 +1232,10 @@ class ROUTER_economy(Container):
                     "query": query,
                 },
                 extra_params=kwargs,
+                info={
+                    "tag_names": {"fred": {"multiple_items_allowed": True}},
+                    "exclude_tag_names": {"fred": {"multiple_items_allowed": True}},
+                },
             )
         )
 

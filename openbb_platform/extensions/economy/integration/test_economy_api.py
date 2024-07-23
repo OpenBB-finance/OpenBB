@@ -137,21 +137,12 @@ def test_economy_risk_premium(params, headers):
     [
         (
             {
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
-                "provider": "oecd",
-            }
-        ),
-        (
-            {
                 "country": "united_states",
                 "provider": "oecd",
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
+                "frequency": "annual",
+                "start_date": None,
+                "end_date": None,
+                "units": "volume",
             }
         ),
     ],
@@ -210,19 +201,20 @@ def test_economy_gdp_nominal(params, headers):
     [
         (
             {
-                "units": "yoy",
+                "country": "united_states",
+                "frequency": "quarter",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-12-31",
                 "provider": "oecd",
             }
         ),
         (
             {
                 "country": "united_states",
-                "provider": "oecd",
-                "units": "yoy",
+                "provider": "econdb",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-12-31",
+                "use_cache": False,
             }
         ),
     ],
@@ -998,6 +990,39 @@ def test_economy_pce(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/pce?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": None,
+                "release_id": "14",
+                "element_id": "7930",
+            }
+        ),
+        (
+            {
+                "provider": "fred",
+                "date": None,
+                "release_id": "14",
+                "element_id": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_fred_release_table(params, headers):
+    """Test the economy fred release table"""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/fred_release_table?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
