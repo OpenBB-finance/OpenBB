@@ -16,18 +16,18 @@ channels:
 specs:
   - python=3.12
   - pip
+  - compilers
 
 post_install: post_install.sh  # [osx]
 post_install: post_install.bat  # [win]
 
 extra_files:
-  - requirements.txt: requirements.txt
   # Bundle launcher assets
-  - ../../../images/openbb.ico: assets/openbb.ico  # [win]
+  - ../../../images/openbb_icon.ico: assets/openbb.ico  # [win]
   - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]
 
 icon_image: ../../../images/dmg_volume.icns  # [osx]
-icon_image: ../../../images/openbb.ico  # [win]
+icon_image: ../../../images/openbb_icon.ico  # [win]
 
 welcome_image: ./assets/openbb_osx.png  # [osx]
 welcome_image: ./assets/openbb_win.png  # [win]
