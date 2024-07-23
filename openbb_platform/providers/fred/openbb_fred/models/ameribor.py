@@ -30,7 +30,14 @@ class FredAmeriborQueryParams(AmeriborQueryParams):
     __json_schema_extra__ = {
         "maturity": {
             "multiple_items_allowed": True,
-            "choices": ["all", "overnight", "average_30d", "average_90d", "term_30d", "term_90d"],
+            "choices": [
+                "all",
+                "overnight",
+                "average_30d",
+                "average_90d",
+                "term_30d",
+                "term_90d",
+            ],
         }
     }
 
