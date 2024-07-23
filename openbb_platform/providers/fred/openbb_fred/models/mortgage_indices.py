@@ -115,7 +115,7 @@ class FredMortgageIndicesQueryParams(MortgageIndicesQueryParams):
     __json_schema_extra__ = {
         "index": {
             "multiple_items_allowed": True,
-            "chocies": list(MORTGAGE_CHOICES_TO_ID),
+            "choices": list(MORTGAGE_CHOICES_TO_ID),
         }
     }
 
