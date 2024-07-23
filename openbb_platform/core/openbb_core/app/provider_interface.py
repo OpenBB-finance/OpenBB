@@ -256,7 +256,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         choices: Dict = {}
         if extra := field.json_schema_extra:
             providers: List = []
-            for p, v in extra.items():  # type: ignore[union-attr])
+            for p, v in extra.items():  # type: ignore
                 if isinstance(v, dict) and v.get("multiple_items_allowed"):
                     providers.append(p)
                     choices[p] = {"multiple_items_allowed": True, "choices": v.get("choices")}  # type: ignore
