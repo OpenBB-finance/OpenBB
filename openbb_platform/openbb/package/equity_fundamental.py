@@ -1419,8 +1419,12 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
-                    "tag": {"intrinio": {"multiple_items_allowed": True}},
+                    "symbol": {
+                        "intrinio": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "tag": {
+                        "intrinio": {"multiple_items_allowed": True, "choices": None}
+                    },
                 },
             )
         )
@@ -2155,8 +2159,12 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
-                    "tag": {"intrinio": {"multiple_items_allowed": True}},
+                    "symbol": {
+                        "intrinio": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "tag": {
+                        "intrinio": {"multiple_items_allowed": True, "choices": None}
+                    },
                 },
             )
         )
@@ -2337,7 +2345,9 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -2651,9 +2661,9 @@ class ROUTER_equity_fundamental(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "fmp": {"multiple_items_allowed": True},
-                        "intrinio": {"multiple_items_allowed": True},
-                        "yfinance": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
                     }
                 },
             )
@@ -2845,7 +2855,9 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -3569,8 +3581,10 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"fmp": {"multiple_items_allowed": True}},
-                    "year": {"fmp": {"multiple_items_allowed": True}},
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "year": {"fmp": {"multiple_items_allowed": True, "choices": None}},
                 },
             )
         )

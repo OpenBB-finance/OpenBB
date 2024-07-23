@@ -94,7 +94,11 @@ class ROUTER_derivatives_futures(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={"date": {"yfinance": {"multiple_items_allowed": True}}},
+                info={
+                    "date": {
+                        "yfinance": {"multiple_items_allowed": True, "choices": None}
+                    }
+                },
             )
         )
 
@@ -201,6 +205,10 @@ class ROUTER_derivatives_futures(Container):
                     "expiration": expiration,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"yfinance": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {
+                        "yfinance": {"multiple_items_allowed": True, "choices": None}
+                    }
+                },
             )
         )

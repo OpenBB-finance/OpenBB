@@ -414,10 +414,13 @@ class ROUTER_fixedincome_government(Container):
                 extra_params=kwargs,
                 info={
                     "date": {
-                        "econdb": ["multiple_items_allowed"],
-                        "federal_reserve": {"multiple_items_allowed": True},
-                        "fmp": {"multiple_items_allowed": True},
-                        "fred": {"multiple_items_allowed": True},
+                        "econdb": {"multiple_items_allowed": True, "choices": None},
+                        "federal_reserve": {
+                            "multiple_items_allowed": True,
+                            "choices": None,
+                        },
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "fred": {"multiple_items_allowed": True, "choices": None},
                     }
                 },
             )

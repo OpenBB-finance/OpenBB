@@ -153,7 +153,21 @@ class ROUTER_fixedincome_rate(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"maturity": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "maturity": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "all",
+                                "overnight",
+                                "average_30d",
+                                "average_90d",
+                                "term_30d",
+                                "term_90d",
+                            ],
+                        }
+                    }
+                },
             )
         )
 

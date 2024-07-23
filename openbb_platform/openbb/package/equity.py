@@ -432,9 +432,9 @@ class ROUTER_equity(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "fmp": {"multiple_items_allowed": True},
-                        "intrinio": {"multiple_items_allowed": True},
-                        "yfinance": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
                     }
                 },
             )

@@ -133,7 +133,9 @@ class ROUTER_equity_compare(Container):
                     "fact": fact,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"sec": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {"sec": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 

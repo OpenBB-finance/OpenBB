@@ -42,8 +42,7 @@ class ROUTER_fixedincome(Container):
         index_type: Annotated[
             Literal["yield", "yield_to_worst", "total_return", "oas"],
             OpenBBField(
-                description="The type of series. OAS is the option-adjusted spread. Default is yield.",
-                choices=["yield", "yield_to_worst", "total_return", "oas"],
+                description="The type of series. OAS is the option-adjusted spread. Default is yield."
             ),
         ] = "yield",
         provider: Annotated[
@@ -165,7 +164,40 @@ class ROUTER_fixedincome(Container):
                     "index_type": index_type,
                 },
                 extra_params=kwargs,
-                info={"index": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "index": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "a",
+                                "aa",
+                                "aaa",
+                                "asia",
+                                "b",
+                                "bb",
+                                "bbb",
+                                "ccc",
+                                "corporate",
+                                "crossover",
+                                "emea",
+                                "high_grade",
+                                "high_yield",
+                                "latam",
+                                "liquid_aaa",
+                                "liquid_asia",
+                                "liquid_bbb",
+                                "liquid_corporate",
+                                "liquid_emea",
+                                "liquid_latam",
+                                "non_financial",
+                                "private_sector",
+                                "public_sector",
+                                "seasoned_corporate",
+                                "yield_curve",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -309,7 +341,9 @@ class ROUTER_fixedincome(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"index": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "index": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 

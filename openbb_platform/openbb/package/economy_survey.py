@@ -255,7 +255,29 @@ class ROUTER_economy_survey(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"topic": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "topic": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "business_activity",
+                                "business_outlook",
+                                "capex",
+                                "prices_paid",
+                                "production",
+                                "inventory",
+                                "new_orders",
+                                "new_orders_growth",
+                                "unfilled_orders",
+                                "shipments",
+                                "delivery_time",
+                                "employment",
+                                "wages",
+                                "hours_worked",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -342,7 +364,9 @@ class ROUTER_economy_survey(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={"date": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "date": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 

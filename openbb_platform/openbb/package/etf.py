@@ -93,7 +93,9 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -173,7 +175,9 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -341,13 +345,11 @@ class ROUTER_etf(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "fmp": {"multiple_items_allowed": True},
-                        "polygon": {"multiple_items_allowed": True},
-                        "tiingo": {"multiple_items_allowed": True},
-                        "yfinance": {"multiple_items_allowed": True},
-                    },
-                    "adjusted": {"deprecated": True},
-                    "prepost": {"deprecated": True},
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "polygon": {"multiple_items_allowed": True, "choices": None},
+                        "tiingo": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
+                    }
                 },
             )
         )
@@ -1063,9 +1065,9 @@ class ROUTER_etf(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "fmp": {"multiple_items_allowed": True},
-                        "intrinio": {"multiple_items_allowed": True},
-                        "yfinance": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
                     }
                 },
             )
@@ -1206,8 +1208,8 @@ class ROUTER_etf(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "fmp": {"multiple_items_allowed": True},
-                        "intrinio": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
                     }
                 },
             )

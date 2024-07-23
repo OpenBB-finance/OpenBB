@@ -1498,16 +1498,20 @@ class ReferenceGenerator:
             )  # fmt: skip
 
             extra = field_info.json_schema_extra or {}
+            choices = extra.get("choices")
 
             # Add information for the providers supporting multiple symbols
             if params_type == "QueryParams" and extra:
-                providers = []
+                providers: List = []
                 for p, v in extra.items():  # type: ignore[union-attr]
                     if isinstance(v, dict) and v.get("multiple_items_allowed"):
                         providers.append(p)
+                        choices = v.get("choices")  # type: ignore
                     elif isinstance(v, list) and "multiple_items_allowed" in v:
                         # For backwards compatibility, before this was a list
                         providers.append(p)
+                    elif isinstance(v, dict) and "choices" in v:
+                        choices = v.get("choices")
 
                 if providers:
                     multiple_items = ", ".join(providers)
@@ -1532,7 +1536,7 @@ class ReferenceGenerator:
                     "description": cleaned_description,
                     "default": default_value,
                     "optional": not is_required,
-                    "choices": extra.get("choices"),
+                    "choices": choices,
                 }
             )
 
@@ -1750,25 +1754,47 @@ class ReferenceGenerator:
                         provider_parameter_fields = cls._get_provider_parameter_info(
                             standard_model
                         )
-                        reference[path]["parameters"]["standard"].append(
-                            provider_parameter_fields
-                        )
 
                         # Add endpoint data fields for standard provider
                         reference[path]["data"]["standard"] = (
                             cls._get_provider_field_params(standard_model, "Data")
                         )
                         continue
+
                     # Adds provider specific parameter fields to the reference
                     reference[path]["parameters"][provider] = (
                         cls._get_provider_field_params(
                             standard_model, "QueryParams", provider
                         )
                     )
+
                     # Adds provider specific data fields to the reference
                     reference[path]["data"][provider] = cls._get_provider_field_params(
                         standard_model, "Data", provider
                     )
+
+                    # If choices for a parameter exist for both standard and provider, and are the same, remove choices from 'standard'
+                    standard = [
+                        {d["name"]: d["choices"]}
+                        for d in reference[path]["parameters"]["standard"]
+                        if d.get("choices")
+                    ]
+                    standard = standard[0] if standard else []
+                    provider = [
+                        {d["name"]: d["choices"]}
+                        for d in reference[path]["parameters"][provider]
+                        if d.get("choices")
+                    ]
+                    provider = provider[0] if provider else []
+                    if standard and provider and standard == provider:
+                        for i, d in enumerate(
+                            reference[path]["parameters"]["standard"]
+                        ):
+                            if d.get("name") in standard:
+                                reference[path]["parameters"]["standard"][i][
+                                    "choices"
+                                ] = None
+
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
                 providers = provider_parameter_fields["type"]

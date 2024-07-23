@@ -155,8 +155,32 @@ class ROUTER_fixedincome_corporate(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "maturity": {"fred": {"multiple_items_allowed": True}},
-                    "category": {"fred": {"multiple_items_allowed": True}},
+                    "maturity": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "all",
+                                "overnight",
+                                "7d",
+                                "15d",
+                                "30d",
+                                "60d",
+                                "90d",
+                            ],
+                        }
+                    },
+                    "category": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "all",
+                                "asset_backed",
+                                "financial",
+                                "nonfinancial",
+                                "a2p2",
+                            ],
+                        }
+                    },
                 },
             )
         )
@@ -240,7 +264,9 @@ class ROUTER_fixedincome_corporate(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={"date": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "date": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -477,8 +503,7 @@ class ROUTER_fixedincome_corporate(Container):
         category: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.",
-                choices=["par_yield", "spot_rate"],
+                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred."
             ),
         ] = "spot_rate",
         provider: Annotated[
@@ -556,8 +581,15 @@ class ROUTER_fixedincome_corporate(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "maturity": {"fred": {"multiple_items_allowed": True}},
-                    "category": {"fred": {"multiple_items_allowed": True}},
+                    "maturity": {
+                        "fred": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "category": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": ["par_yield", "spot_rate"],
+                        }
+                    },
                 },
             )
         )

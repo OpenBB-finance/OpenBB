@@ -367,9 +367,17 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "country": {"tradingeconomics": {"multiple_items_allowed": True}},
+                    "country": {
+                        "tradingeconomics": {
+                            "multiple_items_allowed": True,
+                            "choices": None,
+                        }
+                    },
                     "calendar_id": {
-                        "tradingeconomics": {"multiple_items_allowed": True}
+                        "tradingeconomics": {
+                            "multiple_items_allowed": True,
+                            "choices": None,
+                        }
                     },
                 },
             )
@@ -502,7 +510,14 @@ class ROUTER_economy(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={"cusip": {"federal_reserve": {"multiple_items_allowed": True}}},
+                info={
+                    "cusip": {
+                        "federal_reserve": {
+                            "multiple_items_allowed": True,
+                            "choices": None,
+                        }
+                    }
+                },
             )
         )
 
@@ -594,7 +609,38 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": {"multiple_items_allowed": True}}},
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "g20",
+                                "g7",
+                                "asia5",
+                                "north_america",
+                                "europe4",
+                                "australia",
+                                "brazil",
+                                "canada",
+                                "china",
+                                "france",
+                                "germany",
+                                "india",
+                                "indonesia",
+                                "italy",
+                                "japan",
+                                "mexico",
+                                "spain",
+                                "south_africa",
+                                "south_korea",
+                                "turkey",
+                                "united_states",
+                                "united_kingdom",
+                                "all",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -696,7 +742,11 @@ class ROUTER_economy(Container):
                     "country": country,
                 },
                 extra_params=kwargs,
-                info={"country": {"econdb": {"multiple_items_allowed": True}}},
+                info={
+                    "country": {
+                        "econdb": {"multiple_items_allowed": True, "choices": None}
+                    }
+                },
             )
         )
 
@@ -713,16 +763,12 @@ class ROUTER_economy(Container):
         transform: Annotated[
             Literal["index", "yoy", "period"],
             OpenBBField(
-                description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
-                choices=["index", "yoy", "period"],
+                description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy)."
             ),
         ] = "yoy",
         frequency: Annotated[
             Literal["annual", "quarter", "monthly"],
-            OpenBBField(
-                description="The frequency of the data.",
-                choices=["annual", "quarter", "monthly"],
-            ),
+            OpenBBField(description="The frequency of the data."),
         ] = "monthly",
         harmonized: Annotated[
             bool, OpenBBField(description="If true, returns harmonized data.")
@@ -821,8 +867,118 @@ class ROUTER_economy(Container):
                 extra_params=kwargs,
                 info={
                     "country": {
-                        "fred": ["multiple_items_allowed"],
-                        "oecd": ["multiple_items_allowed"],
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "bulgaria",
+                                "canada",
+                                "chile",
+                                "china",
+                                "croatia",
+                                "cyprus",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "euro_area",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "malta",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russian_federation",
+                                "slovak_republic",
+                                "slovakia",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                            ],
+                        },
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "G20",
+                                "G7",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "canada",
+                                "chile",
+                                "china",
+                                "colombia",
+                                "costa_rica",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "euro_area_20",
+                                "europe",
+                                "european_union_27",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "oecd_total",
+                                "poland",
+                                "portugal",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "all",
+                            ],
+                        },
                     }
                 },
             )
@@ -1105,7 +1261,9 @@ class ROUTER_economy(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={"date": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "date": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -1233,8 +1391,12 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "tag_names": {"fred": {"multiple_items_allowed": True}},
-                    "exclude_tag_names": {"fred": {"multiple_items_allowed": True}},
+                    "tag_names": {
+                        "fred": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "exclude_tag_names": {
+                        "fred": {"multiple_items_allowed": True, "choices": None}
+                    },
                 },
             )
         )
@@ -1400,7 +1562,11 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {
+                        "fred": {"multiple_items_allowed": True, "choices": None}
+                    }
+                },
             )
         )
 
@@ -1423,16 +1589,12 @@ class ROUTER_economy(Container):
         ] = "united_states",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
-            OpenBBField(
-                description="The frequency of the data.",
-                choices=["monthly", "quarter", "annual"],
-            ),
+            OpenBBField(description="The frequency of the data."),
         ] = "quarter",
         transform: Annotated[
             Literal["index", "yoy", "period"],
             OpenBBField(
-                description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
-                choices=["index", "yoy", "period"],
+                description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy)."
             ),
         ] = "index",
         start_date: Annotated[
@@ -1517,7 +1679,72 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": ["multiple_items_allowed"]}},
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "G20",
+                                "G7",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "bulgaria",
+                                "canada",
+                                "chile",
+                                "china",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "euro_area_20",
+                                "euro_area_19",
+                                "europe",
+                                "european_union_27",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "oecd_total",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "all",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -1609,7 +1836,64 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": ["multiple_items_allowed"]}},
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "belgium",
+                                "bulgaria",
+                                "brazil",
+                                "ireland",
+                                "mexico",
+                                "indonesia",
+                                "new_zealand",
+                                "japan",
+                                "united_kingdom",
+                                "france",
+                                "chile",
+                                "canada",
+                                "netherlands",
+                                "united_states",
+                                "south_korea",
+                                "norway",
+                                "austria",
+                                "south_africa",
+                                "denmark",
+                                "switzerland",
+                                "hungary",
+                                "luxembourg",
+                                "australia",
+                                "germany",
+                                "sweden",
+                                "iceland",
+                                "turkey",
+                                "greece",
+                                "israel",
+                                "czech_republic",
+                                "latvia",
+                                "slovenia",
+                                "poland",
+                                "estonia",
+                                "lithuania",
+                                "portugal",
+                                "costa_rica",
+                                "slovakia",
+                                "finland",
+                                "spain",
+                                "romania",
+                                "russia",
+                                "euro_area19",
+                                "colombia",
+                                "italy",
+                                "india",
+                                "china",
+                                "croatia",
+                                "all",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -1730,8 +2014,12 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"econdb": {"multiple_items_allowed": True}},
-                    "country": {"econdb": {"multiple_items_allowed": True}},
+                    "symbol": {
+                        "econdb": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "country": {
+                        "econdb": {"multiple_items_allowed": True, "choices": None}
+                    },
                 },
             )
         )
@@ -2014,7 +2302,9 @@ class ROUTER_economy(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={"date": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "date": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -2296,10 +2586,7 @@ class ROUTER_economy(Container):
         ] = "united_states",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
-            OpenBBField(
-                description="The frequency of the data.",
-                choices=["monthly", "quarter", "annual"],
-            ),
+            OpenBBField(description="The frequency of the data."),
         ] = "monthly",
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -2380,7 +2667,72 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": ["multiple_items_allowed"]}},
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "G20",
+                                "G7",
+                                "all",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "bulgaria",
+                                "canada",
+                                "chile",
+                                "china",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "euro_area_19",
+                                "euro_area_20",
+                                "europe",
+                                "european_union_27",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "oecd_total",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -2494,10 +2846,7 @@ class ROUTER_economy(Container):
         ] = "united_states",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
-            OpenBBField(
-                description="The frequency of the data.",
-                choices=["monthly", "quarter", "annual"],
-            ),
+            OpenBBField(description="The frequency of the data."),
         ] = "monthly",
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -2585,6 +2934,10 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": ["multiple_items_allowed"]}},
+                info={
+                    "country": {
+                        "oecd": {"multiple_items_allowed": True, "choices": None}
+                    }
+                },
             )
         )

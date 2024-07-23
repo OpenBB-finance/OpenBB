@@ -32,13 +32,17 @@ class OECDGdpNominalQueryParams(GdpNominalQueryParams):
     plus net trade (exports minus imports).
     """
 
-    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {
+        "country": {
+            "multiple_items_allowed": True,
+            "choices": COUNTRIES,
+        }
+    }
 
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", "")
         + " Use 'all' to get data for all available countries.",
         default="united_states",
-        json_schema_extra={"choices": COUNTRIES},  # type: ignore
     )
     frequency: Literal["quarter", "annual"] = Field(
         description="Frequency of the data.",

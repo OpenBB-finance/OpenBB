@@ -68,13 +68,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -304,13 +297,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -424,13 +410,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -635,13 +614,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'polygon']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -841,13 +813,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'polygon']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -1196,13 +1161,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": [
@@ -1790,13 +1748,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": [
@@ -1999,15 +1950,7 @@
             "description": "Get a snapshot of the options market universe.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.options.snapshots(provider='intrinio')\n```\n\n",
             "parameters": {
-                "standard": [
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
+                "standard": [],
                 "intrinio": [
                     {
                         "name": "date",
@@ -2320,13 +2263,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "yfinance": [
@@ -2448,13 +2384,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "yfinance": []
@@ -2543,13 +2472,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "oecd": [
@@ -2724,82 +2646,16 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['econdb', 'oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "econdb": [
                     {
                         "name": "country",
                         "type": "Union[str, List[str]]",
-                        "description": "The country to get data.Use 'all' to get data for all available countries. Multiple items allowed for provider(s): econdb, oecd.",
+                        "description": "The country to get data.Use 'all' to get data for all available countries. Multiple items allowed for provider(s): econdb.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": [
-                            "oecd",
-                            "oecd_26",
-                            "oecd_europe",
-                            "g7",
-                            "g20",
-                            "euro_area",
-                            "european_union_27",
-                            "european_union_15",
-                            "nafta",
-                            "argentina",
-                            "australia",
-                            "austria",
-                            "belgium",
-                            "bulgaria",
-                            "brazil",
-                            "canada",
-                            "chile",
-                            "colombia",
-                            "costa_rica",
-                            "croatia",
-                            "czech_republic",
-                            "denmark",
-                            "estonia",
-                            "finland",
-                            "france",
-                            "germany",
-                            "greece",
-                            "hungary",
-                            "iceland",
-                            "india",
-                            "indonesia",
-                            "ireland",
-                            "israel",
-                            "italy",
-                            "japan",
-                            "korea",
-                            "latvia",
-                            "lithuania",
-                            "luxembourg",
-                            "mexico",
-                            "netherlands",
-                            "new_zealand",
-                            "norway",
-                            "poland",
-                            "portugal",
-                            "romania",
-                            "russia",
-                            "saudi_arabia",
-                            "slovak_republic",
-                            "slovenia",
-                            "south_africa",
-                            "spain",
-                            "sweden",
-                            "switzerland",
-                            "turkey",
-                            "united_kingdom",
-                            "united_states",
-                            "all"
-                        ]
+                        "choices": null
                     },
                     {
                         "name": "use_cache",
@@ -3024,82 +2880,16 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['econdb', 'oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "econdb": [
                     {
                         "name": "country",
                         "type": "Union[str, List[str]]",
-                        "description": "The country to get data.Use 'all' to get data for all available countries. Multiple items allowed for provider(s): econdb, oecd.",
+                        "description": "The country to get data.Use 'all' to get data for all available countries. Multiple items allowed for provider(s): econdb.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": [
-                            "oecd",
-                            "oecd_26",
-                            "oecd_europe",
-                            "g7",
-                            "g20",
-                            "euro_area",
-                            "european_union_27",
-                            "european_union_15",
-                            "nafta",
-                            "argentina",
-                            "australia",
-                            "austria",
-                            "belgium",
-                            "bulgaria",
-                            "brazil",
-                            "canada",
-                            "chile",
-                            "colombia",
-                            "costa_rica",
-                            "croatia",
-                            "czech_republic",
-                            "denmark",
-                            "estonia",
-                            "finland",
-                            "france",
-                            "germany",
-                            "greece",
-                            "hungary",
-                            "iceland",
-                            "india",
-                            "indonesia",
-                            "ireland",
-                            "israel",
-                            "italy",
-                            "japan",
-                            "korea",
-                            "latvia",
-                            "lithuania",
-                            "luxembourg",
-                            "mexico",
-                            "netherlands",
-                            "new_zealand",
-                            "norway",
-                            "poland",
-                            "portugal",
-                            "romania",
-                            "russia",
-                            "saudi_arabia",
-                            "slovak_republic",
-                            "slovenia",
-                            "south_africa",
-                            "spain",
-                            "sweden",
-                            "switzerland",
-                            "turkey",
-                            "united_kingdom",
-                            "united_states",
-                            "all"
-                        ]
+                        "choices": null
                     },
                     {
                         "name": "use_cache",
@@ -3301,13 +3091,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -3441,13 +3224,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -3577,13 +3353,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -3769,13 +3538,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -3944,13 +3706,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -4107,13 +3862,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'tradingeconomics']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, tradingeconomics.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -4124,205 +3872,7 @@
                         "description": "Country of the event. Multiple items allowed for provider(s): tradingeconomics.",
                         "default": null,
                         "optional": true,
-                        "choices": [
-                            "afghanistan",
-                            "albania",
-                            "algeria",
-                            "andorra",
-                            "angola",
-                            "antigua_and_barbuda",
-                            "argentina",
-                            "armenia",
-                            "aruba",
-                            "australia",
-                            "austria",
-                            "azerbaijan",
-                            "bahamas",
-                            "bahrain",
-                            "bangladesh",
-                            "barbados",
-                            "belarus",
-                            "belgium",
-                            "belize",
-                            "benin",
-                            "bermuda",
-                            "bhutan",
-                            "bolivia",
-                            "bosnia_and_herzegovina",
-                            "botswana",
-                            "brazil",
-                            "brunei",
-                            "bulgaria",
-                            "burkina_faso",
-                            "burundi",
-                            "cambodia",
-                            "cameroon",
-                            "canada",
-                            "cape_verde",
-                            "cayman_islands",
-                            "central_african_republic",
-                            "chad",
-                            "chile",
-                            "china",
-                            "colombia",
-                            "comoros",
-                            "congo",
-                            "costa_rica",
-                            "croatia",
-                            "cuba",
-                            "cyprus",
-                            "czech_republic",
-                            "denmark",
-                            "djibouti",
-                            "dominica",
-                            "dominican_republic",
-                            "east_timor",
-                            "ecuador",
-                            "egypt",
-                            "el_salvador",
-                            "equatorial_guinea",
-                            "eritrea",
-                            "estonia",
-                            "ethiopia",
-                            "euro_area",
-                            "faroe_islands",
-                            "fiji",
-                            "finland",
-                            "france",
-                            "gabon",
-                            "gambia",
-                            "georgia",
-                            "germany",
-                            "ghana",
-                            "greece",
-                            "grenada",
-                            "guatemala",
-                            "guinea",
-                            "guinea_bissau",
-                            "guyana",
-                            "haiti",
-                            "honduras",
-                            "hong_kong",
-                            "hungary",
-                            "iceland",
-                            "india",
-                            "indonesia",
-                            "iran",
-                            "iraq",
-                            "ireland",
-                            "isle_of_man",
-                            "israel",
-                            "italy",
-                            "ivory_coast",
-                            "jamaica",
-                            "japan",
-                            "jordan",
-                            "kazakhstan",
-                            "kenya",
-                            "kiribati",
-                            "kosovo",
-                            "kuwait",
-                            "kyrgyzstan",
-                            "laos",
-                            "latvia",
-                            "lebanon",
-                            "lesotho",
-                            "liberia",
-                            "libya",
-                            "liechtenstein",
-                            "lithuania",
-                            "luxembourg",
-                            "macao",
-                            "madagascar",
-                            "malawi",
-                            "malaysia",
-                            "maldives",
-                            "mali",
-                            "malta",
-                            "mauritania",
-                            "mauritius",
-                            "mexico",
-                            "moldova",
-                            "monaco",
-                            "mongolia",
-                            "montenegro",
-                            "morocco",
-                            "mozambique",
-                            "myanmar",
-                            "namibia",
-                            "nepal",
-                            "netherlands",
-                            "new_caledonia",
-                            "new_zealand",
-                            "nicaragua",
-                            "niger",
-                            "nigeria",
-                            "north_korea",
-                            "north_macedonia",
-                            "norway",
-                            "oman",
-                            "pakistan",
-                            "palestine",
-                            "panama",
-                            "papua_new_guinea",
-                            "paraguay",
-                            "peru",
-                            "philippines",
-                            "poland",
-                            "portugal",
-                            "puerto_rico",
-                            "qatar",
-                            "republic_of_the_congo",
-                            "romania",
-                            "russia",
-                            "rwanda",
-                            "samoa",
-                            "sao_tome_and_principe",
-                            "saudi_arabia",
-                            "senegal",
-                            "serbia",
-                            "seychelles",
-                            "sierra_leone",
-                            "singapore",
-                            "slovakia",
-                            "slovenia",
-                            "solomon_islands",
-                            "somalia",
-                            "south_africa",
-                            "south_korea",
-                            "south_sudan",
-                            "spain",
-                            "sri_lanka",
-                            "sudan",
-                            "suriname",
-                            "swaziland",
-                            "sweden",
-                            "switzerland",
-                            "syria",
-                            "taiwan",
-                            "tajikistan",
-                            "tanzania",
-                            "thailand",
-                            "togo",
-                            "tonga",
-                            "trinidad_and_tobago",
-                            "tunisia",
-                            "turkey",
-                            "turkmenistan",
-                            "uganda",
-                            "ukraine",
-                            "united_arab_emirates",
-                            "united_kingdom",
-                            "united_states",
-                            "uruguay",
-                            "uzbekistan",
-                            "vanuatu",
-                            "venezuela",
-                            "vietnam",
-                            "yemen",
-                            "zambia",
-                            "zimbabwe"
-                        ]
+                        "choices": null
                     },
                     {
                         "name": "importance",
@@ -4630,131 +4180,6 @@
                         "description": "The country to get data. Multiple items allowed for provider(s): fred, oecd.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "transform",
-                        "type": "Literal['index', 'yoy', 'period']",
-                        "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
-                        "default": "yoy",
-                        "optional": true,
-                        "choices": [
-                            "index",
-                            "yoy",
-                            "period"
-                        ]
-                    },
-                    {
-                        "name": "frequency",
-                        "type": "Literal['annual', 'quarter', 'monthly']",
-                        "description": "The frequency of the data.",
-                        "default": "monthly",
-                        "optional": true,
-                        "choices": [
-                            "annual",
-                            "quarter",
-                            "monthly"
-                        ]
-                    },
-                    {
-                        "name": "harmonized",
-                        "type": "bool",
-                        "description": "If true, returns harmonized data.",
-                        "default": false,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "start_date",
-                        "type": "Union[date, str]",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred', 'oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, oecd.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
-                "fred": [
-                    {
-                        "name": "country",
-                        "type": "str",
-                        "description": "The country to get data.",
-                        "default": "united_states",
-                        "optional": true,
-                        "choices": [
-                            "australia",
-                            "austria",
-                            "belgium",
-                            "brazil",
-                            "bulgaria",
-                            "canada",
-                            "chile",
-                            "china",
-                            "croatia",
-                            "cyprus",
-                            "czech_republic",
-                            "denmark",
-                            "estonia",
-                            "euro_area",
-                            "finland",
-                            "france",
-                            "germany",
-                            "greece",
-                            "hungary",
-                            "iceland",
-                            "india",
-                            "indonesia",
-                            "ireland",
-                            "israel",
-                            "italy",
-                            "japan",
-                            "korea",
-                            "latvia",
-                            "lithuania",
-                            "luxembourg",
-                            "malta",
-                            "mexico",
-                            "netherlands",
-                            "new_zealand",
-                            "norway",
-                            "poland",
-                            "portugal",
-                            "romania",
-                            "russian_federation",
-                            "slovak_republic",
-                            "slovakia",
-                            "slovenia",
-                            "south_africa",
-                            "spain",
-                            "sweden",
-                            "switzerland",
-                            "turkey",
-                            "united_kingdom",
-                            "united_states"
-                        ]
-                    }
-                ],
-                "oecd": [
-                    {
-                        "name": "country",
-                        "type": "str",
-                        "description": "Country to get CPI for.  This is the list of OECD supported countries",
-                        "default": "united_states",
-                        "optional": true,
                         "choices": [
                             "G20",
                             "G7",
@@ -4810,6 +4235,74 @@
                             "united_states",
                             "all"
                         ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['index', 'yoy', 'period']",
+                        "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
+                        "default": "yoy",
+                        "optional": true,
+                        "choices": [
+                            "index",
+                            "yoy",
+                            "period"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter', 'monthly']",
+                        "description": "The frequency of the data.",
+                        "default": "monthly",
+                        "optional": true,
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "monthly"
+                        ]
+                    },
+                    {
+                        "name": "harmonized",
+                        "type": "bool",
+                        "description": "If true, returns harmonized data.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "Country to get CPI for.  This is the list of OECD supported countries",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
                     },
                     {
                         "name": "expenditure",
@@ -4930,15 +4423,7 @@
             "description": "Get Market Risk Premium by country.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.risk_premium(provider='fmp')\n```\n\n",
             "parameters": {
-                "standard": [
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
+                "standard": [],
                 "fmp": []
             },
             "returns": {
@@ -5017,15 +4502,7 @@
             "description": "Balance of Payments Reports.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.balance_of_payments(provider='fred')\nobb.economy.balance_of_payments(provider='fred', country=brazil)\n```\n\n",
             "parameters": {
-                "standard": [
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
+                "standard": [],
                 "fred": [
                     {
                         "name": "country",
@@ -5273,13 +4750,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -5594,13 +5064,6 @@
                         "default": 100000,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -5770,13 +5233,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": []
@@ -5929,13 +5385,6 @@
                         "default": true,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['federal_reserve']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "federal_reserve": []
@@ -6084,13 +5533,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "oecd": [
@@ -6100,53 +5542,7 @@
                         "description": "The country to get data.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": [
-                            "all",
-                            "australia",
-                            "austria",
-                            "belgium",
-                            "canada",
-                            "chile",
-                            "colombia",
-                            "costa_rica",
-                            "czech_republic",
-                            "denmark",
-                            "estonia",
-                            "euro_area20",
-                            "european_union27_2020",
-                            "finland",
-                            "france",
-                            "g7",
-                            "germany",
-                            "greece",
-                            "hungary",
-                            "iceland",
-                            "ireland",
-                            "israel",
-                            "italy",
-                            "japan",
-                            "korea",
-                            "latvia",
-                            "lithuania",
-                            "luxembourg",
-                            "mexico",
-                            "netherlands",
-                            "new_zealand",
-                            "norway",
-                            "oecd",
-                            "poland",
-                            "portugal",
-                            "russia",
-                            "slovakia",
-                            "slovenia",
-                            "south_africa",
-                            "spain",
-                            "sweden",
-                            "switzerland",
-                            "turkey",
-                            "united_kingdom",
-                            "united_states"
-                        ]
+                        "choices": null
                     },
                     {
                         "name": "sex",
@@ -6266,13 +5662,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "oecd": [
@@ -6410,13 +5799,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "oecd": [
@@ -6522,13 +5904,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "oecd": [
@@ -6650,13 +6025,6 @@
                         "default": 100000,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -6860,13 +6228,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['econdb']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "econdb": [
@@ -7044,15 +6405,7 @@
             "description": "Get the available economic indicators for a provider.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.available_indicators(provider='econdb')\n```\n\n",
             "parameters": {
-                "standard": [
-                    {
-                        "name": "provider",
-                        "type": "Literal['econdb']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
+                "standard": [],
                 "econdb": [
                     {
                         "name": "use_cache",
@@ -7253,13 +6606,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['econdb']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "econdb": [
@@ -7381,13 +6727,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['federal_reserve']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "federal_reserve": [
@@ -7687,51 +7026,6 @@
                         "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "frequency",
-                        "type": "Literal['monthly', 'quarter', 'annual']",
-                        "description": "The frequency of the data.",
-                        "default": "monthly",
-                        "optional": true,
-                        "choices": [
-                            "monthly",
-                            "quarter",
-                            "annual"
-                        ]
-                    },
-                    {
-                        "name": "start_date",
-                        "type": "Union[date, str]",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
-                "oecd": [
-                    {
-                        "name": "country",
-                        "type": "str",
-                        "description": "The country to get data.",
-                        "default": "united_states",
-                        "optional": true,
                         "choices": [
                             "G20",
                             "G7",
@@ -7791,6 +7085,44 @@
                             "united_kingdom",
                             "united_states"
                         ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['monthly', 'quarter', 'annual']",
+                        "description": "The frequency of the data.",
+                        "default": "monthly",
+                        "optional": true,
+                        "choices": [
+                            "monthly",
+                            "quarter",
+                            "annual"
+                        ]
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
                     }
                 ]
             },
@@ -7869,63 +7201,6 @@
                         "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "frequency",
-                        "type": "Literal['monthly', 'quarter', 'annual']",
-                        "description": "The frequency of the data.",
-                        "default": "quarter",
-                        "optional": true,
-                        "choices": [
-                            "monthly",
-                            "quarter",
-                            "annual"
-                        ]
-                    },
-                    {
-                        "name": "transform",
-                        "type": "Literal['index', 'yoy', 'period']",
-                        "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
-                        "default": "index",
-                        "optional": true,
-                        "choices": [
-                            "index",
-                            "yoy",
-                            "period"
-                        ]
-                    },
-                    {
-                        "name": "start_date",
-                        "type": "Union[date, str]",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
-                "oecd": [
-                    {
-                        "name": "country",
-                        "type": "str",
-                        "description": "The country to get data.",
-                        "default": "united_states",
-                        "optional": true,
                         "choices": [
                             "G20",
                             "G7",
@@ -7985,6 +7260,56 @@
                             "united_states",
                             "all"
                         ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['monthly', 'quarter', 'annual']",
+                        "description": "The frequency of the data.",
+                        "default": "quarter",
+                        "optional": true,
+                        "choices": [
+                            "monthly",
+                            "quarter",
+                            "annual"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['index', 'yoy', 'period']",
+                        "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
+                        "default": "index",
+                        "optional": true,
+                        "choices": [
+                            "index",
+                            "yoy",
+                            "period"
+                        ]
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
                     }
                 ]
             },
@@ -8063,39 +7388,6 @@
                         "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "start_date",
-                        "type": "Union[date, str]",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
-                "oecd": [
-                    {
-                        "name": "country",
-                        "type": "str",
-                        "description": "The country to get data.",
-                        "default": "united_states",
-                        "optional": true,
                         "choices": [
                             "belgium",
                             "bulgaria",
@@ -8147,6 +7439,32 @@
                             "croatia",
                             "all"
                         ]
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
                     },
                     {
                         "name": "frequency",
@@ -8258,13 +7576,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -8481,13 +7792,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['federal_reserve']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "federal_reserve": [
@@ -8608,13 +7912,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -8786,13 +8083,6 @@
                         "default": 100,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": [
@@ -9059,13 +8349,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -9203,13 +8486,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -9314,13 +8590,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -9466,13 +8735,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -9545,13 +8807,6 @@
                         "default": "",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "sec": [
@@ -10059,13 +9314,6 @@
                         "default": 200,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['benzinga', 'fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "benzinga": [
@@ -10448,13 +9696,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -10704,13 +9945,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -10926,13 +10160,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['benzinga']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "benzinga": [
@@ -11479,13 +10706,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": [
@@ -11752,13 +10972,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -11980,13 +11193,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -12248,13 +11454,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": []
@@ -12392,13 +11591,6 @@
                         "default": "desc",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "yfinance": []
@@ -12528,13 +11720,6 @@
                         "default": "desc",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "yfinance": []
@@ -12664,13 +11849,6 @@
                         "default": "desc",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "yfinance": []
@@ -12800,13 +11978,6 @@
                         "default": "desc",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "yfinance": []
@@ -12936,13 +12107,6 @@
                         "default": "desc",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "yfinance": []
@@ -13072,13 +12236,6 @@
                         "default": "desc",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "yfinance": []
@@ -13208,13 +12365,6 @@
                         "default": "desc",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "yfinance": []
@@ -13368,13 +12518,6 @@
                         "default": 100,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -13488,13 +12631,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -14055,13 +13191,6 @@
                         "default": 5,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -15680,13 +14809,6 @@
                         "default": 10,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -16116,13 +15238,6 @@
                         "default": 5,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -17148,13 +16263,6 @@
                         "default": 100,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": [
@@ -17276,13 +16384,6 @@
                         "default": 10,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -17640,13 +16741,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -17798,13 +16892,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -17951,13 +17038,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -18094,13 +17174,6 @@
                         "default": 1000,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": []
@@ -18253,13 +17326,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": []
@@ -18396,13 +17462,6 @@
                         "default": "desc",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": []
@@ -18507,13 +17566,6 @@
                         "default": 5,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -20022,13 +19074,6 @@
                         "default": 10,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -20354,13 +19399,6 @@
                         "default": 100,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -21497,13 +20535,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -21635,13 +20666,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -21844,13 +20868,6 @@
                         "default": 12,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -22424,13 +21441,6 @@
                         "default": "flat",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -22543,13 +21553,6 @@
                         "default": "flat",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -22662,13 +21665,6 @@
                         "default": 100,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -22997,13 +21993,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -23100,13 +22089,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -23211,13 +22193,6 @@
                         "default": 252,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['tiingo']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: tiingo.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "tiingo": []
@@ -23306,13 +22281,6 @@
                         "default": 0,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -23681,13 +22649,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -24058,13 +23019,6 @@
                         "default": 500,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -24407,13 +23361,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -24636,13 +23583,6 @@
                         "default": 1,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "sec": []
@@ -24796,13 +23736,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -25283,13 +24216,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['polygon']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: polygon.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "polygon": [
@@ -25524,13 +24450,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -26053,13 +24972,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -26261,13 +25173,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "sec": [
@@ -26413,13 +25318,6 @@
                         "default": true,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['intrinio', 'sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "intrinio": [
@@ -26546,15 +25444,7 @@
             "description": "Screen for companies meeting various criteria.\n\nThese criteria include market cap, price, beta, volume, and dividend yield.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.screener(provider='fmp')\n```\n\n",
             "parameters": {
-                "standard": [
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
+                "standard": [],
                 "fmp": [
                     {
                         "name": "mktcap_min",
@@ -26859,13 +25749,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -27425,15 +26308,7 @@
             "description": "Get an updated equity market snapshot. This includes price data for thousands of stocks.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.market_snapshots(provider='fmp')\n```\n\n",
             "parameters": {
-                "standard": [
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'polygon']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
+                "standard": [],
                 "fmp": [
                     {
                         "name": "market",
@@ -27913,13 +26788,6 @@
                         "default": "",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -28182,13 +27050,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -28711,13 +27572,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -30069,13 +28923,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -30148,13 +28995,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -30219,13 +29059,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [],
@@ -30567,13 +29400,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -31592,13 +30418,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -31672,13 +30491,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -31783,13 +30595,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -31961,13 +30766,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -32057,13 +30855,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['federal_reserve', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "federal_reserve": [],
@@ -32271,13 +31062,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": []
@@ -32358,13 +31142,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['federal_reserve', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "federal_reserve": [],
@@ -32580,15 +31357,7 @@
             "description": "Fed Funds Rate Projections.\n\nThe projections for the federal funds rate are the value of the midpoint of the\nprojected appropriate target range for the federal funds rate or the projected\nappropriate target level for the federal funds rate at the end of the specified\ncalendar year or over the longer run.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.effr_forecast(provider='fred')\nobb.fixedincome.rate.effr_forecast(long_run=True, provider='fred')\n```\n\n",
             "parameters": {
-                "standard": [
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
+                "standard": [],
                 "fred": [
                     {
                         "name": "long_run",
@@ -32724,13 +31493,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -32919,13 +31681,6 @@
                         "default": "lending",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": []
@@ -33006,13 +31761,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -33102,13 +31850,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['federal_reserve', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "federal_reserve": [],
@@ -33300,13 +32041,6 @@
                         "default": "3m",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": []
@@ -33395,13 +32129,6 @@
                         "default": "10y",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": []
@@ -33490,13 +32217,6 @@
                         "default": "3m",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": []
@@ -33569,13 +32289,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['econdb', 'federal_reserve', 'fmp', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "econdb": [
@@ -33721,13 +32434,6 @@
                         "default": false,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": []
@@ -33808,13 +32514,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['federal_reserve', 'fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "federal_reserve": [],
@@ -33993,13 +32692,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -34177,13 +32869,6 @@
                         "default": "yield",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -34305,13 +32990,6 @@
                         "default": "aaa",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -34393,13 +33071,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -34519,13 +33190,6 @@
                             "par_yield",
                             "spot_rate"
                         ]
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": []
@@ -34606,13 +33270,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -34808,13 +33465,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['federal_reserve', 'fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "federal_reserve": [],
@@ -35035,13 +33685,6 @@
                             "total_return",
                             "oas"
                         ]
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -35242,13 +33885,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fred": [
@@ -35258,28 +33894,7 @@
                         "description": "The specific index, or index group, to query. Default is the 'primary' group. Multiple items allowed for provider(s): fred.",
                         "default": "primary",
                         "optional": true,
-                        "choices": [
-                            "primary",
-                            "ltv_lte_80",
-                            "ltv_gt_80",
-                            "conforming_30y",
-                            "conforming_30y_na",
-                            "jumbo_30y",
-                            "fha_30y",
-                            "va_30y",
-                            "usda_30y",
-                            "conforming_15y",
-                            "ltv_lte80_fico_ge740",
-                            "ltv_lte80_fico_a720b739",
-                            "ltv_lte80_fico_a700b719",
-                            "ltv_lte80_fico_a680b699",
-                            "ltv_lte80_fico_lt680",
-                            "ltv_gt80_fico_ge740",
-                            "ltv_gt80_fico_a720b739",
-                            "ltv_gt80_fico_a700b719",
-                            "ltv_gt80_fico_a680b699",
-                            "ltv_gt80_fico_lt680"
-                        ]
+                        "choices": null
                     },
                     {
                         "name": "frequency",
@@ -35443,13 +34058,6 @@
                         "default": "1d",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'intrinio', 'polygon', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -35646,13 +34254,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -35775,15 +34376,7 @@
             "description": "All indices available from a given provider.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.index.available(provider='fmp')\nobb.index.available(provider='yfinance')\n```\n\n",
             "parameters": {
-                "standard": [
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
+                "standard": [],
                 "fmp": [],
                 "yfinance": []
             },
@@ -35906,13 +34499,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['benzinga', 'fmp', 'intrinio', 'tiingo']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, tiingo.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "benzinga": [
@@ -36438,13 +35024,6 @@
                         "default": 2500,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, polygon, tiingo, yfinance.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "benzinga": [
@@ -37018,13 +35597,6 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "sec": [
@@ -37106,13 +35678,6 @@
                         "default": true,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "sec": []
@@ -37193,13 +35758,6 @@
                         "default": true,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "sec": [
@@ -37281,13 +35839,6 @@
                         "default": true,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "sec": []
@@ -37344,15 +35895,7 @@
             "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.rss_litigation(provider='sec')\n```\n\n",
             "parameters": {
-                "standard": [
-                    {
-                        "name": "provider",
-                        "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
-                        "default": null,
-                        "optional": true
-                    }
-                ],
+                "standard": [],
                 "sec": []
             },
             "returns": {
@@ -37455,13 +35998,6 @@
                         "default": true,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['sec']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "sec": []

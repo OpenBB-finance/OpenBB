@@ -234,12 +234,12 @@ class ROUTER_news(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "benzinga": {"multiple_items_allowed": True},
-                        "fmp": {"multiple_items_allowed": True},
-                        "intrinio": {"multiple_items_allowed": True},
-                        "polygon": {"multiple_items_allowed": True},
-                        "tiingo": {"multiple_items_allowed": True},
-                        "yfinance": {"multiple_items_allowed": True},
+                        "benzinga": {"multiple_items_allowed": True, "choices": None},
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                        "polygon": {"multiple_items_allowed": True, "choices": None},
+                        "tiingo": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
                     }
                 },
             )

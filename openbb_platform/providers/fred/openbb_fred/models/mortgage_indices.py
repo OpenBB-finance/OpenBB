@@ -112,12 +112,16 @@ MortgageChoices = Literal[
 class FredMortgageIndicesQueryParams(MortgageIndicesQueryParams):
     """FRED Mortgage Indices Query."""
 
-    __json_schema_extra__ = {"index": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "index": {
+            "multiple_items_allowed": True,
+            "chocies": list(MORTGAGE_CHOICES_TO_ID),
+        }
+    }
 
     index: Union[MortgageChoices, str] = Field(
         default="primary",
         description="The specific index, or index group, to query. Default is the 'primary' group.",
-        choices=list(MORTGAGE_CHOICES_TO_ID.keys()),
     )
     frequency: Union[
         None,
