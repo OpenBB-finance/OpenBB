@@ -1773,7 +1773,8 @@ class ReferenceGenerator:
                         standard_model, "Data", provider
                     )
 
-                    # If choices for a parameter exist for both standard and provider, and are the same, remove choices from 'standard'
+                    # Remove choices from 'standard' if choices for a parameter exist
+                    # for both standard and provider, and are the same
                     standard = [
                         {d["name"]: d["choices"]}
                         for d in reference[path]["parameters"]["standard"]
