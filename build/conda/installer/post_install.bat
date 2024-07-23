@@ -3,7 +3,6 @@ echo Running post-installation environment setup.
 
 REM Full path to the Python executable inside the constructed environment
 SET PYTHON_EXEC="%PREFIX%\python.exe"
-SET REQUIREMENTS_FILE="%PREFIX%\requirements.txt"
 SET LOG_FILE="%PREFIX%\post_install_log.txt"
 
 REM Function to add timestamp
@@ -12,7 +11,7 @@ REM Function to add timestamp
     goto :eof
 
 REM Use the specific Python that comes bundled with the installer
-"%PYTHON_EXEC%" -m pip install -U -r "%REQUIREMENTS_FILE%" >> "%LOG_FILE%" 2>&1
+"%PYTHON_EXEC%" -m pip install -U openbb[all] openbb-cli openbb-platform-pro-backend >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
     call :log_with_timestamp "Error during post-installation: pip install failed."
     exit /b 1

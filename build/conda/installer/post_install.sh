@@ -2,7 +2,6 @@
 
 # Full path to the Python executable inside the constructed environment
 PYTHON_EXEC="$PREFIX/bin/python"
-REQUIREMENTS_FILE="$PREFIX/requirements.txt"
 LOG_FILE="$PREFIX/post_install_log.txt"
 
 # Function to add timestamp
@@ -11,7 +10,7 @@ log_with_timestamp() {
 }
 
 # Use the specific Python that comes bundled with the installer
-if "$PYTHON_EXEC" -m pip install -U -r "$REQUIREMENTS_FILE" >>"$LOG_FILE" 2>&1; then
+if "$PYTHON_EXEC" -m pip install -U "openbb[all]" openbb-cli openbb-platform-pro-backend >>"$LOG_FILE" 2>&1; then
     log_with_timestamp "pip install completed successfully."
 else
     log_with_timestamp "Error during post-installation: pip install failed."
