@@ -1780,13 +1780,13 @@ class ReferenceGenerator:
                         if d.get("choices")
                     ]
                     standard = standard[0] if standard else []  # type: ignore
-                    provider = [
+                    _provider = [
                         {d["name"]: d["choices"]}
                         for d in reference[path]["parameters"][provider]
                         if d.get("choices")
                     ]
-                    provider = provider[0] if provider else []  # type: ignore
-                    if standard and provider and standard == provider:
+                    _provider = _provider[0] if _provider else []  # type: ignore
+                    if standard and _provider and standard == _provider:
                         for i, d in enumerate(
                             reference[path]["parameters"]["standard"]
                         ):
