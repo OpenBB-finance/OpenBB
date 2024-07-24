@@ -7,7 +7,10 @@ from openbb_core.provider.standard_models.balance_sheet_growth import (
     BalanceSheetGrowthData,
     BalanceSheetGrowthQueryParams,
 )
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import Field, model_validator
 

@@ -20,6 +20,7 @@ class YFinanceBalanceSheetQueryParams(BalanceSheetQueryParams):
 
     Source: https://finance.yahoo.com/
     """
+
     __json_schema_extra__ = {
         "period": {
             "choices": ["annual", "quarter"],
@@ -30,6 +31,7 @@ class YFinanceBalanceSheetQueryParams(BalanceSheetQueryParams):
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
+
 
 class YFinanceBalanceSheetData(BalanceSheetData):
     """Yahoo Finance Balance Sheet Data."""

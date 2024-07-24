@@ -33,7 +33,7 @@ class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
         "symbol": {"multiple_items_allowed": True},
         "period": {
             "choices": ["annual", "quarter"],
-        }
+        },
     }
 
     period: Literal["annual", "quarter"] = Field(
