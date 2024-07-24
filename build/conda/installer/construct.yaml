@@ -16,12 +16,17 @@ specs:
   - bash  # [osx]
   - python=3.12
 
+pkg_domains:
+  enable_anywhere: false
+  enable_currentUserHome: true
+
 post_install: post_install.sh  # [osx]
 post install: post_install.sh  # [linux]
 post_install: post_install.bat  # [win]
 
 extra_files:
   # Bundle launcher assets
+  - ./requirements.txt: requirements.txt
   - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
   - ./assets/openbb.icns: assets/openbb_icon.icns  # [osx]
   - ./assets/openbb.icns: assets/openbb_icon.icns  # [linux]
