@@ -21,7 +21,6 @@ post install: post_install.sh  # [linux]
 post_install: post_install.bat  # [win]
 
 extra_files:
-  - requirements.txt: requirements.txt
   # Bundle launcher assets
   - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
   - ./assets/openbb.icns: assets/openbb_icon.icns  # [osx]

@@ -10,10 +10,10 @@ python -m pip install -U pip >> "%LOG_FILE%" 2>&1
 pip -m pip install -U setuptools >> "%LOG_FILE%" 2>&1
 pip install -U -r requirements.txt >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
-    call :log_with_timestamp "Error during post-installation: pip install failed."
+    echo %date% %time% "Error during post-installation: pip install failed." >> %LOG_FILE%
     exit /b 1
 ) ELSE (
-    call :log_with_timestamp "pip install completed successfully."
+    echo %date% %time% "pip install completed successfully." >> %LOG_FILE%
 )
 
 echo Package installation completed successfully. Building OpenBB's Python interface...
@@ -28,10 +28,10 @@ IF ERRORLEVEL 1 (
 
 cscript "%PREFIX%\assets\create_shortcut.vbs" >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
-    call :log_with_timestamp "Error during post-installation: creating shortcuts failed."
+    echo %date% %time% "Error during post-installation: creating shortcuts failed."  >> %LOG_FILE%
     exit /b 1
 ) ELSE (
-    call :log_with_timestamp "Shortcuts created successfully."
+    echo %date% %time% "Shortcuts created successfully."  >> %LOG_FILE%
 )
 
 echo Post-installation steps completed successfully.
