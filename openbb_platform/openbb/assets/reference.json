@@ -24880,22 +24880,6 @@
                         "default": "splits_only",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "adjusted",
-                        "type": "bool",
-                        "description": "This field is deprecated (4.1.5) and will be removed in a future version. Use 'adjustment' set as 'splits_and_dividends' instead.",
-                        "default": false,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "prepost",
-                        "type": "bool",
-                        "description": "This field is deprecated (4.1.5) and will be removed in a future version. Use 'extended_hours' as True instead.",
-                        "default": false,
-                        "optional": true,
-                        "choices": null
                     }
                 ]
             },
@@ -27500,22 +27484,6 @@
                         "type": "Literal['splits_only', 'splits_and_dividends']",
                         "description": "The adjustment factor to apply. Default is splits only.",
                         "default": "splits_only",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "adjusted",
-                        "type": "bool",
-                        "description": "This field is deprecated (4.1.5) and will be removed in a future version. Use 'adjustment' set as 'splits_and_dividends' instead.",
-                        "default": false,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "prepost",
-                        "type": "bool",
-                        "description": "This field is deprecated (4.1.5) and will be removed in a future version. Use 'extended_hours' as True instead.",
-                        "default": false,
                         "optional": true,
                         "choices": null
                     }

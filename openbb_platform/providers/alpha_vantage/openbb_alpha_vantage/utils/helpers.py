@@ -77,16 +77,20 @@ def calculate_adjusted_prices(
     # Reverse the DataFrame order, sorting by date in descending order
     df.sort_index(ascending=False, inplace=True)
 
-    price_col = df[column].values
-    split_col = df["volume_factor"] if column == "volume" else df["split_factor"].values
-    dividend_col = df["dividend"].values if dividends else zeros(len(price_col))
+    price_col = df[column]
+    split_col = df["volume_factor"] if column == "volume" else df["split_factor"]
+    dividend_col = df["dividend"] if dividends else zeros(len(price_col))
     adj_price_col = zeros(len(df.index))
-    adj_price_col[0] = price_col[0]
+    adj_price_col[0] = price_col.iloc[0]
 
     for i in range(1, len(price_col)):
         adj_price_col[i] = adj_price_col[i - 1] + adj_price_col[i - 1] * (
-            ((price_col[i] * split_col[i - 1]) - price_col[i - 1] - dividend_col[i - 1])
-            / price_col[i - 1]
+            (
+                (price_col.iloc[i] * split_col.iloc[i - 1])
+                - price_col.iloc[i - 1]
+                - dividend_col[i - 1]
+            )
+            / price_col.iloc[i - 1]
         )
     df[adj_column] = adj_price_col
 

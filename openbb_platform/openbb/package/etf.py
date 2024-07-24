@@ -239,10 +239,6 @@ class ROUTER_etf(Container):
             The number of data entries to return. (provider: polygon)
         include_actions : bool
             Include dividends and stock splits in results. (provider: yfinance)
-        adjusted : bool
-            This field is deprecated (4.1.5) and will be removed in a future version. Use 'adjustment' set as 'splits_and_dividends' instead. (provider: yfinance)
-        prepost : bool
-            This field is deprecated (4.1.5) and will be removed in a future version. Use 'extended_hours' as True instead. (provider: yfinance)
 
         Returns
         -------
