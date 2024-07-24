@@ -37,10 +37,6 @@ class ROUTER_index_price(Container):
             Union[datetime.date, None, str],
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
-        interval: Annotated[
-            Optional[str],
-            OpenBBField(description="Time interval of the data to return."),
-        ] = "1d",
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
             OpenBBField(
@@ -59,10 +55,10 @@ class ROUTER_index_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        interval : Optional[str]
-            Time interval of the data to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
+        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], str, Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
+            Time interval of the data to return. (provider: fmp, polygon, yfinance)
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio, polygon)
         sort : Literal['asc', 'desc']
@@ -127,7 +123,6 @@ class ROUTER_index_price(Container):
                     "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
-                    "interval": interval,
                 },
                 extra_params=kwargs,
                 info={
@@ -136,7 +131,31 @@ class ROUTER_index_price(Container):
                         "intrinio": {"multiple_items_allowed": True, "choices": None},
                         "polygon": {"multiple_items_allowed": True, "choices": None},
                         "yfinance": {"multiple_items_allowed": True, "choices": None},
-                    }
+                    },
+                    "interval": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+                        },
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "1m",
+                                "2m",
+                                "5m",
+                                "15m",
+                                "30m",
+                                "60m",
+                                "90m",
+                                "1h",
+                                "1d",
+                                "5d",
+                                "1W",
+                                "1M",
+                                "1Q",
+                            ],
+                        },
+                    },
                 },
             )
         )

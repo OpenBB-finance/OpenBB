@@ -29,7 +29,10 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://www.alphavantage.co/documentation/#time-series-data
     """
 
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "interval": {"choices": ["1m", "5m", "15m", "30m", "60m", "1d", "1W", "1M"]},
+    }
 
     interval: Literal["1m", "5m", "15m", "30m", "60m", "1d", "1W", "1M"] = Field(
         default="1d",
@@ -39,7 +42,7 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         description="The adjustment factor to apply. 'splits_only' is not supported for intraday data.",
         default="splits_only",
     )
-    extended_hours: Optional[bool] = Field(
+    extended_hours: bool = Field(
         description="Include Pre and Post market data.",
         default=False,
     )

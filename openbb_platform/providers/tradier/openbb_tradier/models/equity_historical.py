@@ -23,7 +23,10 @@ from pydantic import Field
 class TradierEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """Tradier Equity Historical Query."""
 
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "interval": {"choices": ["1m", "5m", "15m", "1d", "1W", "1M"]},
+    }
 
     interval: Literal["1m", "5m", "15m", "1d", "1W", "1M"] = Field(
         description=QUERY_DESCRIPTIONS.get("interval", ""),

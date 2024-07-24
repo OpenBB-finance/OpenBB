@@ -139,7 +139,35 @@ class ROUTER_crypto_price(Container):
                         "polygon": {"multiple_items_allowed": True, "choices": None},
                         "tiingo": {"multiple_items_allowed": True, "choices": None},
                         "yfinance": {"multiple_items_allowed": True, "choices": None},
-                    }
+                    },
+                    "interval": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+                        },
+                        "tiingo": {
+                            "multiple_items_allowed": False,
+                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+                        },
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "1m",
+                                "2m",
+                                "5m",
+                                "15m",
+                                "30m",
+                                "60m",
+                                "90m",
+                                "1h",
+                                "1d",
+                                "5d",
+                                "1W",
+                                "1M",
+                                "1Q",
+                            ],
+                        },
+                    },
                 },
             )
         )
