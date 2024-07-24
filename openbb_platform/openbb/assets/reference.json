@@ -2525,17 +2525,9 @@
                 "message": null
             },
             "description": "Get Forecasted GDP Data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.forecast(provider='oecd')\nobb.economy.gdp.forecast(period='annual', type='real', provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.forecast(provider='oecd')\nobb.economy.gdp.forecast(country=united_states,germany,france, frequency=annual, units=capita, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
-                    {
-                        "name": "period",
-                        "type": "Literal['quarter', 'annual']",
-                        "description": "Time period of the data to return. Units for nominal GDP period. Either quarter or annual.",
-                        "default": "annual",
-                        "optional": true,
-                        "choices": null
-                    },
                     {
                         "name": "start_date",
                         "type": "Union[date, str]",
@@ -2553,14 +2545,6 @@
                         "choices": null
                     },
                     {
-                        "name": "type",
-                        "type": "Literal['nominal', 'real']",
-                        "description": "Type of GDP to get forecast of. Either nominal or real.",
-                        "default": "real",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
                         "name": "provider",
                         "type": "Literal['oecd']",
                         "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
@@ -2571,11 +2555,88 @@
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['argentina', 'asia', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_17', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'non-oecd', 'norway', 'oecd_total', 'peru', 'poland', 'portugal', 'romania', 'russia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'world']",
-                        "description": "Country to get GDP for.",
-                        "default": "united_states",
+                        "type": "Union[str, List[str]]",
+                        "description": "Country, or countries, to get forward GDP projections for. Default is all. Multiple items allowed for provider(s): oecd.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "argentina",
+                            "asia",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "brazil",
+                            "bulgaria",
+                            "canada",
+                            "chile",
+                            "china",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "peru",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "other_major_oil_producers",
+                            "rest_of_the_world",
+                            "world",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "Frequency of the data, default is annual.",
+                        "default": "annual",
                         "optional": true,
                         "choices": null
+                    },
+                    {
+                        "name": "units",
+                        "type": "Literal['current_prices', 'volume', 'capita', 'growth', 'deflator']",
+                        "description": "Units of the data, default is volume (chain linked volume, 2015). 'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent; 'deflator' as an index.",
+                        "default": "volume",
+                        "optional": true,
+                        "choices": [
+                            "current_prices",
+                            "volume",
+                            "capita",
+                            "growth",
+                            "deflator"
+                        ]
                     }
                 ]
             },
@@ -2614,16 +2675,24 @@
                         "name": "date",
                         "type": "date",
                         "description": "The date of the data.",
-                        "default": null,
-                        "optional": true,
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "None",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     },
                     {
                         "name": "value",
-                        "type": "float",
-                        "description": "Nominal GDP value on the date.",
-                        "default": null,
-                        "optional": true,
+                        "type": "Union[int, float]",
+                        "description": "Forecasted GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     }
                 ],
@@ -2637,17 +2706,9 @@
                 "message": null
             },
             "description": "Get Nominal GDP Data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.nominal(provider='oecd')\nobb.economy.gdp.nominal(units='usd', provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.nominal(provider='oecd')\nobb.economy.gdp.nominal(units=capita, country=all, frequency=annual, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
-                    {
-                        "name": "units",
-                        "type": "Literal['usd', 'usd_cap']",
-                        "description": "The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
-                        "default": "usd",
-                        "optional": true,
-                        "choices": null
-                    },
                     {
                         "name": "start_date",
                         "type": "Union[date, str]",
@@ -2666,20 +2727,190 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
+                        "type": "Literal['econdb', 'oecd']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.",
                         "default": null,
                         "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data.Use 'all' to get data for all available countries. Multiple items allowed for provider(s): econdb, oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": [
+                            "oecd",
+                            "oecd_26",
+                            "oecd_europe",
+                            "g7",
+                            "g20",
+                            "euro_area",
+                            "european_union_27",
+                            "european_union_15",
+                            "nafta",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
                     }
                 ],
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'colombia', 'costa_rica', 'czech_republic', 'denmark', 'estonia', 'euro_area', 'european_union', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'russia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all']",
-                        "description": "Country to get GDP for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Use 'all' to get data for all available countries. Multiple items allowed for provider(s): oecd.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "oecd",
+                            "oecd_26",
+                            "oecd_europe",
+                            "g7",
+                            "g20",
+                            "euro_area",
+                            "european_union_27",
+                            "european_union_15",
+                            "nafta",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['quarter', 'annual']",
+                        "description": "Frequency of the data.",
+                        "default": "quarter",
+                        "optional": true,
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
+                    },
+                    {
+                        "name": "units",
+                        "type": "Literal['level', 'index', 'capita']",
+                        "description": "The unit of measurement for the data.Both 'level' and 'capita' (per) are measured in USD.",
+                        "default": "level",
+                        "optional": true,
+                        "choices": [
+                            "level",
+                            "index",
+                            "capita"
+                        ]
+                    },
+                    {
+                        "name": "price_base",
+                        "type": "Literal['current_prices', 'volume']",
+                        "description": "Price base for the data, volume is chain linked volume.",
+                        "default": "current_prices",
+                        "optional": true,
+                        "choices": [
+                            "current_prices",
+                            "volume"
+                        ]
                     }
                 ]
             },
@@ -2692,7 +2923,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['oecd']]",
+                        "type": "Optional[Literal['econdb', 'oecd']]",
                         "description": "Provider name."
                     },
                     {
@@ -2718,16 +2949,50 @@
                         "name": "date",
                         "type": "date",
                         "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country represented by the GDP value.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Nominal GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "nominal_growth_qoq",
                         "type": "float",
-                        "description": "Nominal GDP value on the date.",
-                        "default": null,
-                        "optional": true,
+                        "description": "Nominal GDP growth rate quarter over quarter.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "nominal_growth_yoy",
+                        "type": "float",
+                        "description": "Nominal GDP growth rate year over year.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     }
                 ],
@@ -2741,17 +3006,9 @@
                 "message": null
             },
             "description": "Get Real GDP Data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.real(provider='oecd')\nobb.economy.gdp.real(units='yoy', provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.real(provider='oecd')\nobb.economy.gdp.real(country=united_states,germany,japan, provider='econdb')\n```\n\n",
             "parameters": {
                 "standard": [
-                    {
-                        "name": "units",
-                        "type": "Literal['idx', 'qoq', 'yoy']",
-                        "description": "The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)",
-                        "default": "yoy",
-                        "optional": true,
-                        "choices": null
-                    },
                     {
                         "name": "start_date",
                         "type": "Union[date, str]",
@@ -2770,20 +3027,167 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
+                        "type": "Literal['econdb', 'oecd']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.",
                         "default": null,
                         "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data.Use 'all' to get data for all available countries. Multiple items allowed for provider(s): econdb, oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": [
+                            "oecd",
+                            "oecd_26",
+                            "oecd_europe",
+                            "g7",
+                            "g20",
+                            "euro_area",
+                            "european_union_27",
+                            "european_union_15",
+                            "nafta",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
                     }
                 ],
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['G20', 'G7', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_20', 'euro_area_19', 'europe', 'european_union_27', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'oecd_total', 'poland', 'portugal', 'romania', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all']",
-                        "description": "Country to get GDP for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Use 'all' to get data for all available countries. Multiple items allowed for provider(s): oecd.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "oecd",
+                            "oecd_26",
+                            "oecd_europe",
+                            "g7",
+                            "g20",
+                            "euro_area",
+                            "european_union_27",
+                            "european_union_15",
+                            "nafta",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['quarter', 'annual']",
+                        "description": "Frequency of the data.",
+                        "default": "quarter",
+                        "optional": true,
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
                     }
                 ]
             },
@@ -2796,7 +3200,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['oecd']]",
+                        "type": "Optional[Literal['econdb', 'oecd']]",
                         "description": "Provider name."
                     },
                     {
@@ -2822,16 +3226,50 @@
                         "name": "date",
                         "type": "date",
                         "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country represented by the GDP value.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Real GDP value for the country and date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "real_growth_qoq",
                         "type": "float",
-                        "description": "Nominal GDP value on the date.",
-                        "default": null,
-                        "optional": true,
+                        "description": "Real GDP growth rate quarter over quarter.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "real_growth_yoy",
+                        "type": "float",
+                        "description": "Real GDP growth rate year over year.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     }
                 ],
@@ -4895,16 +5333,16 @@
                     },
                     {
                         "name": "tag_names",
-                        "type": "str",
-                        "description": "A semicolon delimited list of tag names that series match all of. Example: 'japan;imports'",
+                        "type": "Union[str, List[str]]",
+                        "description": "A semicolon delimited list of tag names that series match all of. Example: 'japan;imports' Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "exclude_tag_names",
-                        "type": "str",
-                        "description": "A semicolon delimited list of tag names that series match none of. Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series.",
+                        "type": "Union[str, List[str]]",
+                        "description": "A semicolon delimited list of tag names that series match none of. Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5300,6 +5738,165 @@
             },
             "model": "FredSeries"
         },
+        "/economy/fred_release_table": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get economic release data by ID and/or element from FRED.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the top-level elements of a release by not supplying an element ID.\nobb.economy.fred_release_table(release_id='50', provider='fred')\n# Drill down on a specific section of the release.\nobb.economy.fred_release_table(release_id='50', element_id='4880', provider='fred')\n# Drill down on a specific table of the release.\nobb.economy.fred_release_table(release_id='50', element_id='4881', provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "release_id",
+                        "type": "str",
+                        "description": "The ID of the release. Use `fred_search` to find releases.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "element_id",
+                        "type": "str",
+                        "description": "The element ID of a specific table in the release.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "date",
+                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "description": "A specific date to get data for. Multiple items allowed for provider(s): fred.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[FredReleaseTable]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "level",
+                        "type": "int",
+                        "description": "The indentation level of the element.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "element_type",
+                        "type": "str",
+                        "description": "The type of the element.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "line",
+                        "type": "int",
+                        "description": "The line number of the element.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "element_id",
+                        "type": "str",
+                        "description": "The element id in the parent/child relationship.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "parent_id",
+                        "type": "str",
+                        "description": "The parent id in the parent/child relationship.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "children",
+                        "type": "str",
+                        "description": "The element_id of each child, as a comma-separated string.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "The name of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "The reported value of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "FredReleaseTable"
+        },
         "/economy/money_measures": {
             "deprecated": {
                 "flag": null,
@@ -5650,8 +6247,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Use the composite leading indicator (CLI).\n\nIt is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\n\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd')\n```\n\n",
+            "description": "Get the composite leading indicator (CLI).\n\nIt is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\n\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd', growth_rate=True)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -5681,9 +6278,49 @@
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']",
-                        "description": "Country to get GDP for.",
-                        "default": "united_states",
+                        "type": "Union[Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str], List[Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str]]]",
+                        "description": "Country to get the CLI for, default is G20. Multiple items allowed for provider(s): oecd.",
+                        "default": "g20",
+                        "optional": true,
+                        "choices": [
+                            "g20",
+                            "g7",
+                            "asia5",
+                            "north_america",
+                            "europe4",
+                            "australia",
+                            "brazil",
+                            "canada",
+                            "china",
+                            "france",
+                            "germany",
+                            "india",
+                            "indonesia",
+                            "italy",
+                            "japan",
+                            "mexico",
+                            "spain",
+                            "south_africa",
+                            "south_korea",
+                            "turkey",
+                            "united_states",
+                            "united_kingdom",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "adjustment",
+                        "type": "Literal['amplitude', 'normalized']",
+                        "description": "Adjustment of the data, either 'amplitude' or 'normalized'. Default is amplitude.",
+                        "default": "amplitude",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "growth_rate",
+                        "type": "bool",
+                        "description": "Return the 1-year growth rate (%) of the CLI, default is False.",
+                        "default": false,
                         "optional": true,
                         "choices": null
                     }
@@ -5693,7 +6330,7 @@
                 "OBBject": [
                     {
                         "name": "results",
-                        "type": "List[CLI]",
+                        "type": "List[CompositeLeadingIndicator]",
                         "description": "Serializable results."
                     },
                     {
@@ -5724,8 +6361,8 @@
                         "name": "date",
                         "type": "date",
                         "description": "The date of the data.",
-                        "default": null,
-                        "optional": true,
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     },
                     {
@@ -5739,15 +6376,15 @@
                     {
                         "name": "country",
                         "type": "str",
-                        "description": "Country for which CLI is given",
-                        "default": null,
-                        "optional": true,
+                        "description": "Country for the CLI value.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     }
                 ],
                 "oecd": []
             },
-            "model": "CLI"
+            "model": "CompositeLeadingIndicator"
         },
         "/economy/short_term_interest_rate": {
             "deprecated": {
@@ -33331,6 +33968,182 @@
                 "fmp": []
             },
             "model": "TreasuryRates"
+        },
+        "/fixedincome/government/tips_yields": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get current Treasury inflation-protected securities yields.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.tips_yields(provider='fred')\nobb.fixedincome.government.tips_yields(maturity=10, provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "maturity",
+                        "type": "Literal[5, 10, 20, 30]",
+                        "description": "The maturity of the security in years - 5, 10, 20, 30 - defaults to all. Note that the maturity is the tenor of the security, not the time to maturity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            5,
+                            10,
+                            20,
+                            30
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[TipsYields]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "due",
+                        "type": "date",
+                        "description": "The due date (maturation date) of the security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "The name of the security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "The yield value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "TipsYields"
         },
         "/fixedincome/corporate/ice_bofa": {
             "deprecated": {

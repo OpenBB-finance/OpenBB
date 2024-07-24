@@ -750,3 +750,28 @@ def test_fixedincome_rate_overnight_bank_funding(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "maturity": None,
+                "start_date": None,
+                "end_date": None,
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_government_tips_yields(params, obb):
+    """Test the TIPS Yields endpoint."""
+    result = obb.fixedincome.government.tips_yields(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

@@ -128,20 +128,12 @@ def test_economy_risk_premium(params, obb):
     [
         (
             {
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
-            }
-        ),
-        (
-            {
                 "country": "united_states",
                 "provider": "oecd",
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
+                "frequency": "annual",
+                "start_date": None,
+                "end_date": None,
+                "units": "volume",
             }
         ),
     ],
@@ -160,13 +152,23 @@ def test_economy_gdp_forecast(params, obb):
 @parametrize(
     "params",
     [
-        ({"units": "usd", "start_date": "2021-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "econdb",
+                "use_cache": False,
+            }
+        ),
         (
             {
                 "country": "united_states",
                 "provider": "oecd",
-                "units": "usd",
-                "start_date": "2021-01-01",
+                "units": "level",
+                "price_base": "volume",
+                "frequency": "quarter",
+                "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
         ),
@@ -186,14 +188,22 @@ def test_economy_gdp_nominal(params, obb):
 @parametrize(
     "params",
     [
-        ({"units": "yoy", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "country": "united_states",
-                "provider": "oecd",
-                "units": "yoy",
+                "frequency": "quarter",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-12-31",
+                "provider": "oecd",
+            }
+        ),
+        (
+            {
+                "country": "united_states",
+                "provider": "econdb",
+                "start_date": "2023-01-01",
+                "end_date": "2023-12-31",
+                "use_cache": False,
             }
         ),
     ],
@@ -428,10 +438,11 @@ def test_economy_unemployment(params, obb):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "country": "united_states",
+                "adjustment": "amplitude",
+                "growth_rate": False,
                 "provider": "oecd",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -941,6 +952,38 @@ def test_economy_pce(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.pce(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": None,
+                "release_id": "14",
+                "element_id": "7930",
+            }
+        ),
+        (
+            {
+                "provider": "fred",
+                "date": None,
+                "release_id": "14",
+                "element_id": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_fred_release_table(params, obb):
+    """Test the economy fred release table endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.fred_release_table(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

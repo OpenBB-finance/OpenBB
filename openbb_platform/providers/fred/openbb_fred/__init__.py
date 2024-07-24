@@ -32,6 +32,7 @@ from openbb_fred.models.personal_consumption_expenditures import (
     FredPersonalConsumptionExpendituresFetcher,
 )
 from openbb_fred.models.regional import FredRegionalDataFetcher
+from openbb_fred.models.release_table import FredReleaseTableFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
@@ -47,6 +48,7 @@ from openbb_fred.models.survey_of_economic_conditions_chicago import (
     FredSurveyOfEconomicConditionsChicagoFetcher,
 )
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
+from openbb_fred.models.tips_yields import FredTipsYieldsFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
 from openbb_fred.models.university_of_michigan import FredUofMichiganFetcher
 from openbb_fred.models.us_yield_curve import (
@@ -83,6 +85,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "OvernightBankFundingRate": FredOvernightBankFundingRateFetcher,
         "PersonalConsumptionExpenditures": FredPersonalConsumptionExpendituresFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
+        "FredReleaseTable": FredReleaseTableFetcher,
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,
         "FredRegional": FredRegionalDataFetcher,
@@ -94,6 +97,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "SelectedTreasuryConstantMaturity": FREDSelectedTreasuryConstantMaturityFetcher,
         "SelectedTreasuryBill": FREDSelectedTreasuryBillFetcher,
         "SurveyOfEconomicConditionsChicago": FredSurveyOfEconomicConditionsChicagoFetcher,
+        "TipsYields": FredTipsYieldsFetcher,
         "UniversityOfMichigan": FredUofMichiganFetcher,
         "YieldCurve": FREDYieldCurveFetcher,
     },

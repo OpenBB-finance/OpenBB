@@ -156,6 +156,33 @@ async def fred_series(
 
 
 @router.command(
+    model="FredReleaseTable",
+    examples=[
+        APIEx(
+            description="Get the top-level elements of a release by not supplying an element ID.",
+            parameters={"release_id": "50", "provider": "fred"},
+        ),
+        APIEx(
+            description="Drill down on a specific section of the release.",
+            parameters={"release_id": "50", "element_id": "4880", "provider": "fred"},
+        ),
+        APIEx(
+            description="Drill down on a specific table of the release.",
+            parameters={"release_id": "50", "element_id": "4881", "provider": "fred"},
+        ),
+    ],
+)
+async def fred_release_table(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get economic release data by ID and/or element from FRED."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="MoneyMeasures",
     examples=[
         APIEx(parameters={"provider": "federal_reserve"}),
@@ -204,10 +231,10 @@ async def unemployment(
 
 
 @router.command(
-    model="CLI",
+    model="CompositeLeadingIndicator",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"country": "all", "provider": "oecd"}),
+        APIEx(parameters={"country": "all", "provider": "oecd", "growth_rate": True}),
     ],
 )
 async def composite_leading_indicator(
@@ -216,7 +243,7 @@ async def composite_leading_indicator(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Use the composite leading indicator (CLI).
+    """Get the composite leading indicator (CLI).
 
     It is designed to provide early signals of turning points
     in business cycles showing fluctuation of the economic activity around its long term potential level.
