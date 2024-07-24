@@ -189,10 +189,10 @@ class IntrinioFinancialRatiosFetcher(
             """Return the response."""
             statement_data = await response.json()
             return {
-                "period_ending": statement_data["fundamental"]["end_date"],
-                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
-                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                "calculations": statement_data["standardized_financials"],
+                "period_ending": statement_data["fundamental"]["end_date"],  # type: ignore
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],  # type: ignore
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],  # type: ignore
+                "calculations": statement_data["standardized_financials"],  # type: ignore
             }
 
         urls = [
@@ -200,7 +200,7 @@ class IntrinioFinancialRatiosFetcher(
             for id in ids
         ]
 
-        return await amake_requests(urls, callback, **kwargs)
+        return await amake_requests(urls, callback, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
