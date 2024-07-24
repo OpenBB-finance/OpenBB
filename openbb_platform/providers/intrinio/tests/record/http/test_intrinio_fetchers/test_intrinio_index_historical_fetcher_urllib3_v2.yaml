@@ -9,11 +9,11 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2024-02-05&interval=1d&page_size=10000&start_date=2024-01-01
+    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2024-02-05&page_size=10000&start_date=2024-01-01
   response:
     body:
       string: !!binary |
-        H4sIAIp6oWYAA3TUPW/bMBAG4L8iEB1t4vgteTOQJRmytF1aFAJjMY0AmUolyo1j5L/3lBQFmVw3
+        H4sIAFmCoWYAA3TUPW/bMBAG4L8iEB1t4vgteTOQJRmytF1aFAJjMY0AmUolyo1j5L/3lBQFmVw3
         S3xA8l7d+cIe+jmNU3/wQ9v55Nnu+4Xhj8B2TILUW5BbMGzDTn5Y8KWqVQ1cyJfNRyZzZo3mmmQi
         Z0Y0vNYfmNiqggkDXFEKcqWt40oQTDZFBUpxbShmizOh4Zo6VBZ5gG64IJnOmKvBctVQTOWsAfOf
         uxXpAgheU5WKpjjUKl5Tqs6VtjW35GYuZ9Jabh3F8ticsoLqD2RZbHEZBorkRTrTSN6Q1897wzkh
@@ -30,7 +30,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 24 Jul 2024 22:04:58 GMT
+      - Wed, 24 Jul 2024 22:38:17 GMT
       Transfer-Encoding:
       - chunked
       Vary:
