@@ -13409,7 +13409,7 @@
                 "message": null
             },
             "description": "Get the balance sheet for a given company.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.balance(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.balance(symbol='AAPL', period='annual', limit=5, provider='intrinio')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.balance(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.balance(symbol='AAPL', period=annual, limit=5, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -13418,14 +13418,6 @@
                         "description": "Symbol to get data for.",
                         "default": "",
                         "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "period",
-                        "type": "str",
-                        "description": "Time period of the data to return.",
-                        "default": "annual",
-                        "optional": true,
                         "choices": null
                     },
                     {
@@ -13441,7 +13433,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -13454,7 +13446,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -13474,14 +13466,13 @@
                 "polygon": [
                     {
                         "name": "period",
-                        "type": "Literal['annual', 'quarter', 'ttm']",
-                        "description": "None",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
                             "annual",
-                            "quarter",
-                            "ttm"
+                            "quarter"
                         ]
                     },
                     {
@@ -13592,8 +13583,8 @@
                 "yfinance": [
                     {
                         "name": "period",
-                        "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "type": "Literal['annual', 'quarter', 'ttm']",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -15039,14 +15030,6 @@
                         "choices": null
                     },
                     {
-                        "name": "period",
-                        "type": "str",
-                        "description": "Time period of the data to return.",
-                        "default": "annual",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
                         "name": "limit",
                         "type": "int",
                         "description": "The number of data entries to return.",
@@ -15059,7 +15042,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -15456,7 +15439,7 @@
                 "message": null
             },
             "description": "Get the cash flow statement for a given company.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.cash(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.cash(symbol='AAPL', period='annual', limit=5, provider='intrinio')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.cash(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.cash(symbol='AAPL', period=annual, limit=5, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -15465,14 +15448,6 @@
                         "description": "Symbol to get data for.",
                         "default": "",
                         "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "period",
-                        "type": "str",
-                        "description": "Time period of the data to return.",
-                        "default": "annual",
-                        "optional": true,
                         "choices": null
                     },
                     {
@@ -15488,7 +15463,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -15501,7 +15476,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter', 'ttm', 'ytd']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -15524,7 +15499,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter', 'ttm']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -15642,10 +15617,13 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
                     }
                 ]
             },
@@ -16614,14 +16592,6 @@
                         "choices": null
                     },
                     {
-                        "name": "period",
-                        "type": "str",
-                        "description": "Time period of the data to return.",
-                        "default": "annual",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
                         "name": "limit",
                         "type": "int",
                         "description": "The number of data entries to return.",
@@ -16634,7 +16604,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -17784,7 +17754,7 @@
                 "message": null
             },
             "description": "Get the income statement for a given company.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.income(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.income(symbol='AAPL', period='annual', limit=5, provider='intrinio')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.income(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.income(symbol='AAPL', period=annual, limit=5, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -17793,14 +17763,6 @@
                         "description": "Symbol to get data for.",
                         "default": "",
                         "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "period",
-                        "type": "str",
-                        "description": "Time period of the data to return.",
-                        "default": "annual",
-                        "optional": true,
                         "choices": null
                     },
                     {
@@ -17816,7 +17778,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -17829,7 +17791,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter', 'ttm', 'ytd']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -17852,7 +17814,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter', 'ttm']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -17970,7 +17932,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -19292,7 +19254,7 @@
                 "message": null
             },
             "description": "Get the growth of a company's income statement items over time.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.income_growth(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.income_growth(symbol='AAPL', limit=10, period='annual', provider='fmp')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.income_growth(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.income_growth(symbol='AAPL', limit=10, period=annual, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -19301,14 +19263,6 @@
                         "description": "Symbol to get data for.",
                         "default": "",
                         "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "period",
-                        "type": "str",
-                        "description": "Time period of the data to return.",
-                        "default": "annual",
-                        "optional": true,
                         "choices": null
                     },
                     {
@@ -19324,7 +19278,7 @@
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
-                        "description": "None",
+                        "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
                         "choices": [
@@ -19617,7 +19571,7 @@
                 "message": null
             },
             "description": "Get fundamental metrics for a given company.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.metrics(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.metrics(symbol='AAPL', period='annual', limit=100, provider='intrinio')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.metrics(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.metrics(symbol='AAPL', period=annual, limit=100, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -19626,14 +19580,6 @@
                         "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.",
                         "default": "",
                         "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "period",
-                        "type": "Literal['annual', 'quarter']",
-                        "description": "Time period of the data to return.",
-                        "default": "annual",
-                        "optional": true,
                         "choices": null
                     },
                     {
@@ -19646,6 +19592,17 @@
                     }
                 ],
                 "fmp": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "Time period of the data to return.",
+                        "default": "annual",
+                        "optional": true,
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
+                    },
                     {
                         "name": "with_ttm",
                         "type": "bool",
@@ -21086,7 +21043,7 @@
                 "message": null
             },
             "description": "Get an extensive set of financial and accounting ratios for a given company over time.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.ratios(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.ratios(symbol='AAPL', period='annual', limit=12, provider='intrinio')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.ratios(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.ratios(symbol='AAPL', period=annual, limit=12, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -21095,14 +21052,6 @@
                         "description": "Symbol to get data for.",
                         "default": "",
                         "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "period",
-                        "type": "str",
-                        "description": "Time period of the data to return.",
-                        "default": "annual",
-                        "optional": true,
                         "choices": null
                     },
                     {
@@ -21121,7 +21070,11 @@
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "ttm"
+                        ]
                     }
                 ],
                 "intrinio": [
@@ -21131,7 +21084,12 @@
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "ttm",
+                            "ytd"
+                        ]
                     },
                     {
                         "name": "fiscal_year",

@@ -7,7 +7,7 @@ from openbb_core.provider.standard_models.income_statement_growth import (
     IncomeStatementGrowthData,
     IncomeStatementGrowthQueryParams,
 )
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import Field, model_validator
 
@@ -17,9 +17,15 @@ class FMPIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/financial-statements-growth-api/
     """
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter"],
+        }
+    }
 
     period: Literal["annual", "quarter"] = Field(
-        default="annual", json_schema_extra={"choices": ["annual", "quarter"]}
+        default="annual",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
     )
 
 

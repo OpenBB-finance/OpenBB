@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -27,9 +28,15 @@ class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter", "ttm", "ytd"],
+        }
+    }
+
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(
         default="annual",
-        json_schema_extra={"choices": ["annual", "quarter", "ttm", "ytd"]},
+        description=QUERY_DESCRIPTIONS.get("period", ""),
     )
     fiscal_year: Optional[int] = Field(
         default=None,

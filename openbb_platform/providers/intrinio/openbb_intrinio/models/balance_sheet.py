@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator, model_validator
@@ -22,9 +23,15 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter"],
+        }
+    }
+
     period: Literal["annual", "quarter"] = Field(
         default="annual",
-        json_schema_extra={"choices": ["annual", "quarter"]},
+        description=QUERY_DESCRIPTIONS.get("period", ""),
     )
     fiscal_year: Optional[int] = Field(
         default=None,
