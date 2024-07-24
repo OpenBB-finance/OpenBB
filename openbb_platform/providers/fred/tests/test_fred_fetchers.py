@@ -51,6 +51,7 @@ from openbb_fred.models.survey_of_economic_conditions_chicago import (
     FredSurveyOfEconomicConditionsChicagoFetcher,
 )
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
+from openbb_fred.models.tips_yields import FredTipsYieldsFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
 from openbb_fred.models.university_of_michigan import FredUofMichiganFetcher
 from openbb_fred.models.us_yield_curve import (
@@ -516,5 +517,19 @@ def test_fred_release_table_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredReleaseTableFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_tips_yields_fetcher(credentials=test_credentials):
+    """Test FRED TIPS Yields."""
+    params = {
+        "start_date": datetime.date(2024, 7, 17),
+        "end_date": datetime.date(2024, 7, 17),
+        "maturity": 5,
+    }
+
+    fetcher = FredTipsYieldsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
