@@ -42,7 +42,7 @@ cat > "$IPYTHON_WRAPPER_SCRIPT" <<EOF
 #!/bin/bash
 # Wrapper script to launch IPython with OpenBB
 export PATH="$PREFIX/bin:\$PATH"
-"$IPYTHON_EXEC" -c "from openbb import obb" -i
+"$IPYTHON_EXEC" -c "from openbb import obb;obb" -i
 EOF
 
 chmod +x "$IPYTHON_WRAPPER_SCRIPT"
@@ -78,7 +78,9 @@ if ln -s "$PREFIX/bin/openbb" "$PREFIX/openbb-cli" && \
    ln -s "$PREFIX/bin/jupyter-notebook" "$PREFIX/openbb-notebook" && \
    ln -s "$IPYTHON_WRAPPER_SCRIPT" "$PREFIX/openbb-ipython" && \
    ln -s "$SHELL_WRAPPER_SCRIPT" "$PREFIX/openbb-bash" && \
-   ln -s "$OPENBB_UPDATER_SCRIPT" "$PREFIX/openbb-updater"; then
+   ln -s "$OPENBB_UPDATER_SCRIPT" "$PREFIX/openbb-updater" && \
+   ln -s "$HOME/.openbb_platform" "$PREFIX/openbb-settings"
+   ln -s "$HOME/OpenBBUserData" "$PREFIX/openbb-userdata"; then
     log_with_timestamp "Symlinks created successfully." >>"$LOG_FILE" 2>&1
 else
     log_with_timestamp "Error during post-installation: creating symlinks failed." >>"$LOG_FILE" 2>&1
@@ -100,3 +102,5 @@ verify_symlink "$PREFIX/openbb-notebook"
 verify_symlink "$PREFIX/openbb-ipython"
 verify_symlink "$PREFIX/openbb-bash"
 verify_symlink "$PREFIX/openbb-updater"
+verify_symlink "$PREFIX/openbb-settings"
+verify_symlink "$PREFIX/openbb-userdata"
