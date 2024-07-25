@@ -1072,7 +1072,7 @@ class ROUTER_economy(Container):
         children : Optional[str]
             The element_id of each child, as a comma-separated string.
         symbol : Optional[str]
-            The date of the data.
+            Symbol representing the entity requested in the data.
         name : Optional[str]
             The name of the series.
         value : Optional[float]
