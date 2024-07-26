@@ -13,7 +13,7 @@ channels:
   - conda-forge
 
 specs:
-  - bash  # [osx]
+  - bash  # [unix]
   - python=3.12
   - clang
   - llvm
@@ -22,24 +22,20 @@ pkg_domains:
   enable_anywhere: false
   enable_currentUserHome: true
 
-post_install: post_install.sh  # [osx]
-post install: post_install.sh  # [linux]
+post_install: post_install.sh  # [unix]
 post_install: post_install.bat  # [win]
 
 extra_files:
   # Bundle launcher assets
   - ./requirements.txt: requirements.txt
   - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
-  - ./assets/openbb.icns: assets/openbb_icon.icns  # [osx]
-  - ./assets/openbb.icns: assets/openbb_icon.icns  # [linux]
+  - ./assets/openbb.icns: assets/openbb_icon.icns  # [unix]
   - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]
 
-icon_image: ./assets/openbb.icns  # [osx]
-icon_image: ./assets/openbb_icns  # [linux]
+icon_image: ./assets/openbb_icns  # [unix]
 icon_image: ./assets/openbb_icon.ico  # [win]
 
-welcome_image: ./assets/openbb_osx.png  # [osx]
-welcome_image: ./assets/openbb_osx.png  # [linux]
+welcome_image: ./assets/openbb_osx.png  # [unix]
 welcome_image: ./assets/openbb_win.png  # [win]
 header_image: ./assets/header_win.png  # [win]
 welcome_image_text: "OpenBB Platform"

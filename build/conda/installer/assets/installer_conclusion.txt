@@ -1,3 +1,7 @@
 Thank you for installing OpenBB Platform!
 
-To get started, launch the OpenBB Platform CLI and explore the available commands.
+To get started, open the shortcuts location (Windows: Desktop/OpenBB Shortcuts - Unix: $HOME/openbb) and launch the OpenBB CLI to explore the available commands.
+
+Documentation is found here: https://docs.openbb.co
+
+Bugs/Issues/Requests can be posted here: https://github.com/OpenBB-finance/OpenBB/issues
