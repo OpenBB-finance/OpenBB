@@ -145,42 +145,43 @@ trio = ["trio (>=0.23)"]
 
 [[package]]
 name = "arch"
-version = "5.6.0"
+version = "7.0.0"
 description = "ARCH for Python"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "arch-5.6.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:478d049fb18e022670952792ebaa6b66acff77580c0f691497b706ce9192e941"},
-    {file = "arch-5.6.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:f0da8a70e56759b469eeef52153e0a6eaf2e384c4f48427189433ea12fc8886a"},
-    {file = "arch-5.6.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9cd3035fc54b9718f889455d4f8aa58fda3077d223cc722f95a9a3ecdb4c2fce"},
-    {file = "arch-5.6.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3c838e92dd60367c0e5063bc98521aa341d20d97af7adf911526d1c819eef7ee"},
-    {file = "arch-5.6.0-cp310-cp310-win_amd64.whl", hash = "sha256:7b1f78ad63b288014c3d453b29c9a1886e10a27eb53c5e58d55d8dd49b1a3d9a"},
-    {file = "arch-5.6.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:05b232a45acc74930b8c700320b4a602431e1ae511bb2c081982ef6bde2fe118"},
-    {file = "arch-5.6.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:9ff873de28efd9af9e5a635c41745f783c40c5f771c6c322ace83164fefb0f9f"},
-    {file = "arch-5.6.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:81b3aea5fb7b4c4828bd2c855a91f8cc53d547b2a106dde2deaf331d17a485b7"},
-    {file = "arch-5.6.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ee81437074d0aed1522dd09166fccb1275eb17f45ca9dce0c03529eecaa59c0d"},
-    {file = "arch-5.6.0-cp311-cp311-win_amd64.whl", hash = "sha256:c686e23b28e9bbea7db601686c5f9e1f34135a4ef909b64ef821c1323f532fbc"},
-    {file = "arch-5.6.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:68758d5c0afcb38a7c284dd3ff1f563ed4e3d5307b41ce403471514f5e579285"},
-    {file = "arch-5.6.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:cb6e6fb14f36ddcd02a95e1629a7d28fd0eb291c5af99c679c7893663ae7914e"},
-    {file = "arch-5.6.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4ae9aff6b8b3fc8759de6e439b2e8b17e5345c939f082f89582e33a60293cef4"},
-    {file = "arch-5.6.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:39e896c4ccc79aae6799d98ccac1186d951eedbf8d7c4cf836ac2a3883da7cbb"},
-    {file = "arch-5.6.0-cp38-cp38-win32.whl", hash = "sha256:66a634dfbd03defcbe9696dc74bce77f02cafdfbb4e62910d484e5f07d2a1d61"},
-    {file = "arch-5.6.0-cp38-cp38-win_amd64.whl", hash = "sha256:e6253a88a6106ae381f220e2d55a99bb66893bb60b998bf1839c556ae5c10f69"},
-    {file = "arch-5.6.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:db9b12bdce62a4bd0431c2f13889b4e02ff89335061d0abac4d6589acdedabe2"},
-    {file = "arch-5.6.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:bd7e3d0ec56a405ae3bf9645768fa02549b70c3c5a4589f5bd489eae21d91599"},
-    {file = "arch-5.6.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e0384c8287681bd10cef2064bb9017dbdc10ded382f2ab5effa788f0d6b43600"},
-    {file = "arch-5.6.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d6a7028c8d25f64c64366410a7164317e748435280e074e427ab7efac65a0d4b"},
-    {file = "arch-5.6.0-cp39-cp39-win32.whl", hash = "sha256:6c604f082bc66144d51af6c31f7076ed768bc2f9e7eef0934c6689153ca8428c"},
-    {file = "arch-5.6.0-cp39-cp39-win_amd64.whl", hash = "sha256:84f56d139b42e8bfe6cc712b960a0cfd690b5bbf8bcb69e17713050ae6cba9d0"},
-    {file = "arch-5.6.0.tar.gz", hash = "sha256:556b046010642e1ab4f837e26edd4f832ff33330a5c5a899ea1b26149ad7dc14"},
+    {file = "arch-7.0.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:77eb815c182704f6cee51293a4888ab5ea094ff32ffaaf50e191ffb6bb7fe553"},
+    {file = "arch-7.0.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:2129194ed501feb9bea3283dda27a4285643f6083ed0b324009b2fe6c5537e72"},
+    {file = "arch-7.0.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e07207387b89b94ac74cfe68c2ef5969cc7a84a1f7b05d6913a4b1aef84418b7"},
+    {file = "arch-7.0.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9067049b4c036438360d4ec5eea5ef7d784ac3dddd0feb390ab0631b1d400159"},
+    {file = "arch-7.0.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:aa25f45d2e66902c8feeb8ce85d3fd476d9c5c885db5f227ee7e672820d6e61b"},
+    {file = "arch-7.0.0-cp310-cp310-win_amd64.whl", hash = "sha256:e31441bbe1d104eb3b09032c937be7ca633358f712f9c28be75750238867e38d"},
+    {file = "arch-7.0.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:50869a4a38ed410263d62ec0412b5d913f85e636f0e9a2a8486c12fd07df6e9c"},
+    {file = "arch-7.0.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:2c96463da782c0a25dae9decd3d348b04528dd60a6fdab6d881268d29e3d4bba"},
+    {file = "arch-7.0.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:eb7e2b427d7cb4b1ea6db12d7ecc221022d9481a430d7a8f15494bcaeebff21b"},
+    {file = "arch-7.0.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:aeb75e732e949eff324625bf76595f2bf3448fe288f62506c91c23e8d942ee4d"},
+    {file = "arch-7.0.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:39491a4661cd3ea4fdf8c9238efbefdcc08e28d6eb8b612e1f52a6edce4ab6ed"},
+    {file = "arch-7.0.0-cp311-cp311-win_amd64.whl", hash = "sha256:dda93494e89680d71940f192419d8145849e02c14cd1673a8dc04dcb2f28bea6"},
+    {file = "arch-7.0.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:0834ac42713338a9f81fe2ccd4d75122fcc74f41b34085172bc82c605e88e149"},
+    {file = "arch-7.0.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:8112708611ee0a16ec5df5ce0018ec108c644f5f6f4241f0644b03521a0dcba8"},
+    {file = "arch-7.0.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bdc3eec814ef0be4a7f42dae7fa4e8d14ddbe20f65abe7f19b5926c0f8488855"},
+    {file = "arch-7.0.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:49eb9a2f15914e0ad4593a1ab2023ecc489100aa94004b869d776b338afeab3d"},
+    {file = "arch-7.0.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:459823719100a3244ec80bd9338f92657087bb5f7184de8eb4f67b915ef4b4a2"},
+    {file = "arch-7.0.0-cp312-cp312-win_amd64.whl", hash = "sha256:ce4f93fae6a3017663b77873c1cb1928b9c74aa6760e98c02560bb312b68939f"},
+    {file = "arch-7.0.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:51a230870a4e9d22d14c1a8fb7a37ed27e7f2669f72d2f00a31faf0838079183"},
+    {file = "arch-7.0.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:ea816855bbbca8505bb5717447014895544bfcddfbb0de121c1b02ad2bb721a1"},
+    {file = "arch-7.0.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:95145758002517b8332834b9989c5b371cfdf2281df5aaa275ddf424388a9e8d"},
+    {file = "arch-7.0.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0c4795fdcb4cbd216e64a088e41dabcca39dc4a3403ea530e206bab116de0dea"},
+    {file = "arch-7.0.0-cp39-cp39-win32.whl", hash = "sha256:887214faa48347c0c8de31be2a07309c78f74b53a5c22e2c427c524b462d57a4"},
+    {file = "arch-7.0.0-cp39-cp39-win_amd64.whl", hash = "sha256:f390ff489853525da11165c0574c822a48549d79b70f5e87142a751e3e92ebe8"},
+    {file = "arch-7.0.0.tar.gz", hash = "sha256:353c0dba5242287b8b6b587a70250d788436630bf3b7ef6106f577e45d1ec247"},
 ]
 
 [package.dependencies]
-numpy = ">=1.17"
-pandas = ">=1.0"
-property-cached = ">=1.6.4"
-scipy = ">=1.3"
-statsmodels = ">=0.11"
+numpy = ">=1.22.3"
+pandas = ">=1.4"
+scipy = ">=1.8"
+statsmodels = ">=0.12"
 
 [[package]]
 name = "async-timeout"
@@ -1286,17 +1287,6 @@ sentry = ["django", "sentry-sdk"]
 test = ["coverage", "flake8", "freezegun (==0.3.15)", "mock (>=2.0.0)", "pylint", "pytest", "pytest-timeout"]
 
 [[package]]
-name = "property-cached"
-version = "1.6.4"
-description = "A decorator for caching properties in classes (forked from cached-property)."
-optional = false
-python-versions = ">= 3.5"
-files = [
-    {file = "property-cached-1.6.4.zip", hash = "sha256:3e9c4ef1ed3653909147510481d7df62a3cfb483461a6986a6f1dcd09b2ebb73"},
-    {file = "property_cached-1.6.4-py2.py3-none-any.whl", hash = "sha256:135fc059ec969c1646424a0db15e7fbe1b5f8c36c0006d0b3c91ba568c11e7d8"},
-]
-
-[[package]]
 name = "pydantic"
 version = "2.8.2"
 description = "Data validation using Python type hints"
@@ -2348,4 +2338,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "ee0a4f3e4ce0fb1002bd2c07ffd9bbe7f3016a6377a73f7f8442cdedd67defe2"
+content-hash = "99d1930d09873fb3d32309ac9d3c0d44e18b525456804b659e3622b9bc35a9c2"
