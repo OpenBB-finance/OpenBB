@@ -8,221 +8,72 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-    method: GET
-    uri: https://fc.yahoo.com/
-  response:
-    body:
-      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n  <head>\n    <meta http-equiv=\"content-type\"
-        content=\"text/html; charset=UTF-8\">\n    <meta charset=\"utf-8\">\n    <title>Yahoo</title>\n
-        \   <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimal-ui\">\n
-        \   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <style>\n
-        \     html {\n          height: 100%;\n      }\n      body {\n          background:
-        #fafafc url(https://s.yimg.com/nn/img/sad-panda-201402200631.png) 50% 50%;\n
-        \         background-size: cover;\n          height: 100%;\n          text-align:
-        center;\n          font: 300 18px \"helvetica neue\", helvetica, verdana,
-        tahoma, arial, sans-serif;\n          margin: 0;\n      }\n      table {\n
-        \         height: 100%;\n          width: 100%;\n          table-layout: fixed;\n
-        \         border-collapse: collapse;\n          border-spacing: 0;\n          border:
-        none;\n      }\n      h1 {\n          font-size: 42px;\n          font-weight:
-        400;\n          color: #400090;\n      }\n      p {\n          color: #1A1A1A;\n
-        \     }\n      #message-1 {\n          font-weight: bold;\n          margin:
-        0;\n      }\n      #message-2 {\n          display: inline-block;\n          *display:
-        inline;\n          zoom: 1;\n          max-width: 17em;\n          _width:
-        17em;\n      }\n      </style>\n      <script>\n      !function(){if(window==window.top){var
-        o=window.location.host;o.endsWith(\".yahoo.com\")&&window.location.replace(\"https://www.yahoo.com/\"),o.endsWith(\".aol.com\")&&window.location.replace(\"https://www.aol.com/\"),o.endsWith(\".huffpost.com\")&&window.location.replace(\"https://www.huffpost.com/\"),o.endsWith(\".engadget.com\")&&window.location.replace(\"https://www.engadget.com/\")}}();\n
-        \     </script>\n  </head>\n  <body>\n  <!-- status code : 404 -->\n  <!--
-        Not Found on Accelerator -->\n  <!-- host machine: e5.ycpi.swb.yahoo.com -->\n
-        \ <!-- timestamp: 1721972405.790 -->\n  <!-- url: https://fc.yahoo.com/-->\n
-        \ <script type=\"text/javascript\">\n    function buildUrl(url, parameters){\n
-        \     var qs = [];\n      for(var key in parameters) {\n        var value
-        = parameters[key];\n        qs.push(encodeURIComponent(key) + \"=\" + encodeURIComponent(value));\n
-        \     }\n      url = url + \"?\" + qs.join('&');\n      return url;\n    }\n\n
-        \   function generateBRBMarkup(site) {\n      params.source = 'brb';\n      generateBeaconMarkup(params);\n
-        \     var englishHeader = 'Will be right back...';\n      var englishMessage1
-        = 'Thank you for your patience.';\n      var englishMessage2 = 'Our engineers
-        are working quickly to resolve the issue.';\n      var defaultLogoStyle =
-        '';\n      var siteDataMap = {\n        'default': {\n          logo: 'https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_205x58_frontpage.png',\n
-        \         logoAlt: 'Yahoo Logo',\n          logoStyle: defaultLogoStyle,\n
-        \         header: englishHeader,\n          message1: englishMessage1,\n          message2:
-        englishMessage2\n        }\n      };\n\n      var siteDetails = siteDataMap['default'];\n\n
-        \     document.write('<table><tbody><tr><td>');\n      document.write('<div
-        id=\"content\">');\n      document.write('<img src=\"' + siteDetails['logo']
-        + '\" alt=\"' + siteDetails['logoAlt'] + '\" style=\"' + siteDetails['logoStyle']
-        + '\">');\n      document.write('<h1 style=\"margin-top:20px;\">' + siteDetails['header']
-        + '</h1>');\n      document.write('<p id=\"message-1\">' + siteDetails['message1']
-        + '</p>');\n      document.write('<p id=\"message-2\">' + siteDetails['message2']
-        + '</p>');\n      document.write('</div>');\n      document.write('</td></tr></tbody></table>');\n
-        \   }\n\n    function generateBeaconMarkup(params) {\n        document.write('<img
-        src=\"' + buildUrl('//geo.yahoo.com/b', params) + '\" style=\"display:none;\"
-        width=\"0px\" height=\"0px\"/>');\n        var beacon = new Image();\n        beacon.src
-        = buildUrl('//bcn.fp.yahoo.com/p', params);\n    }\n\n    var hostname = window.location.hostname;\n
-        \   var device = 'desktop';\n    var ynet = ('-' === '1');\n    var time =
-        new Date().getTime();\n    var params = {\n        s: '1197757129',\n        t:
-        time,\n        err_url: document.URL,\n        err: '404',\n        test:
-        '-',\n        ats_host: 'e5.ycpi.swb.yahoo.com',\n        rid: '-',\n        message:
-        'Not Found on Accelerator'\n    };\n\n    if(ynet) {\n        document.write('<div
-        style=\"height: 5px; background-color: red;\"></div>');\n    }\n    generateBRBMarkup(hostname,
-        params);\n\n  </script>\n  <noscript>\n  <table>\n    <tbody>\n      <tr>\n
-        \       <td>\n          <div id=\"englishContent\">\n            <h1 style=\"margin-top:20px;\">Will
-        be right back...</h1>\n            <p id=\"message-1\">Thank you for your
-        patience.</p>\n            <p id=\"message-2\">Our engineers are working quickly
-        to resolve the issue.</p>\n          </div>\n        </td>\n      </tr>\n
-        \   </tbody>\n  </table>\n  </noscript>\n  </body>\n</html>\n"
-    headers:
-      Cache-Control:
-      - no-store
-      Connection:
-      - keep-alive
-      Content-Language:
-      - en
-      Content-Length:
-      - '4742'
-      Content-Type:
-      - text/html
-      Date:
-      - Fri, 26 Jul 2024 05:40:05 GMT
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Server:
-      - ATS
-      Set-Cookie:
-      - A3=d=AQABBLU2o2YCEOHG5pCh3AALU0iH1_hfd2kFEgEBAQGIpGatZiXUxyMA_eMAAA&S=AQAAAvZHipPm4HauB02EFil4pxI;
-        Expires=Sat, 26 Jul 2025 11:40:05 GMT; Max-Age=31557600; Domain=.yahoo.com;
-        Path=/; SameSite=None; Secure; HttpOnly
-      X-Content-Type-Options:
-      - nosniff
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 404
-      message: Not Found on Accelerator
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query1.finance.yahoo.com/v1/test/getcrumb
-  response:
-    body:
-      string: RyUilFgA8pe
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - private, max-age=60, stale-while-revalidate=30
-      content-length:
-      - '11'
-      content-type:
-      - text/plain;charset=utf-8
-      date:
-      - Fri, 26 Jul 2024 05:40:05 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-external-services-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '1'
-      y-rid:
-      - 2f4vh9hja6dll
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Cookie:
-      - MOCK_COOKIE
-    method: GET
-    uri: https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?crumb=MOCK_CRUMB&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&symbol=AAPL&type=annualTaxEffectOfUnusualItems%2CannualTaxRateForCalcs%2CannualNormalizedEBITDA%2CannualNormalizedDilutedEPS%2CannualNormalizedBasicEPS%2CannualTotalUnusualItems%2CannualTotalUnusualItemsExcludingGoodwill%2CannualNetIncomeFromContinuingOperationNetMinorityInterest%2CannualReconciledDepreciation%2CannualReconciledCostOfRevenue%2CannualEBITDA%2CannualEBIT%2CannualNetInterestIncome%2CannualInterestExpense%2CannualInterestIncome%2CannualContinuingAndDiscontinuedDilutedEPS%2CannualContinuingAndDiscontinuedBasicEPS%2CannualNormalizedIncome%2CannualNetIncomeFromContinuingAndDiscontinuedOperation%2CannualTotalExpenses%2CannualRentExpenseSupplemental%2CannualReportedNormalizedDilutedEPS%2CannualReportedNormalizedBasicEPS%2CannualTotalOperatingIncomeAsReported%2CannualDividendPerShare%2CannualDilutedAverageShares%2CannualBasicAverageShares%2CannualDilutedEPS%2CannualDilutedEPSOtherGainsLosses%2CannualTaxLossCarryforwardDilutedEPS%2CannualDilutedAccountingChange%2CannualDilutedExtraordinary%2CannualDilutedDiscontinuousOperations%2CannualDilutedContinuousOperations%2CannualBasicEPS%2CannualBasicEPSOtherGainsLosses%2CannualTaxLossCarryforwardBasicEPS%2CannualBasicAccountingChange%2CannualBasicExtraordinary%2CannualBasicDiscontinuousOperations%2CannualBasicContinuousOperations%2CannualDilutedNIAvailtoComStockholders%2CannualAverageDilutionEarnings%2CannualNetIncomeCommonStockholders%2CannualOtherunderPreferredStockDividend%2CannualPreferredStockDividends%2CannualNetIncome%2CannualMinorityInterests%2CannualNetIncomeIncludingNoncontrollingInterests%2CannualNetIncomeFromTaxLossCarryforward%2CannualNetIncomeExtraordinary%2CannualNetIncomeDiscontinuousOperations%2CannualNetIncomeContinuousOperations%2CannualEarningsFromEquityInterestNetOfTax%2CannualTaxProvision%2CannualPretaxIncome%2CannualOtherIncomeExpense%2CannualOtherNonOperatingIncomeExpenses%2CannualSpecialIncomeCharges%2CannualGainOnSaleOfPPE%2CannualGainOnSaleOfBusiness%2CannualOtherSpecialCharges%2CannualWriteOff%2CannualImpairmentOfCapitalAssets%2CannualRestructuringAndMergernAcquisition%2CannualSecuritiesAmortization%2CannualEarningsFromEquityInterest%2CannualGainOnSaleOfSecurity%2CannualNetNonOperatingInterestIncomeExpense%2CannualTotalOtherFinanceCost%2CannualInterestExpenseNonOperating%2CannualInterestIncomeNonOperating%2CannualOperatingIncome%2CannualOperatingExpense%2CannualOtherOperatingExpenses%2CannualOtherTaxes%2CannualProvisionForDoubtfulAccounts%2CannualDepreciationAmortizationDepletionIncomeStatement%2CannualDepletionIncomeStatement%2CannualDepreciationAndAmortizationInIncomeStatement%2CannualAmortization%2CannualAmortizationOfIntangiblesIncomeStatement%2CannualDepreciationIncomeStatement%2CannualResearchAndDevelopment%2CannualSellingGeneralAndAdministration%2CannualSellingAndMarketingExpense%2CannualGeneralAndAdministrativeExpense%2CannualOtherGandA%2CannualInsuranceAndClaims%2CannualRentAndLandingFees%2CannualSalariesAndWages%2CannualGrossProfit%2CannualCostOfRevenue%2CannualTotalRevenue%2CannualExciseTaxes%2CannualOperatingRevenue
+    uri: https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?crumb=MOCK_CRUMB&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&symbol=AAPL&type=annualTaxEffectOfUnusualItems%2CannualTaxRateForCalcs%2CannualNormalizedEBITDA%2CannualNormalizedDilutedEPS%2CannualNormalizedBasicEPS%2CannualTotalUnusualItems%2CannualTotalUnusualItemsExcludingGoodwill%2CannualNetIncomeFromContinuingOperationNetMinorityInterest%2CannualReconciledDepreciation%2CannualReconciledCostOfRevenue%2CannualEBITDA%2CannualEBIT%2CannualNetInterestIncome%2CannualInterestExpense%2CannualInterestIncome%2CannualContinuingAndDiscontinuedDilutedEPS%2CannualContinuingAndDiscontinuedBasicEPS%2CannualNormalizedIncome%2CannualNetIncomeFromContinuingAndDiscontinuedOperation%2CannualTotalExpenses%2CannualRentExpenseSupplemental%2CannualReportedNormalizedDilutedEPS%2CannualReportedNormalizedBasicEPS%2CannualTotalOperatingIncomeAsReported%2CannualDividendPerShare%2CannualDilutedAverageShares%2CannualBasicAverageShares%2CannualDilutedEPS%2CannualDilutedEPSOtherGainsLosses%2CannualTaxLossCarryforwardDilutedEPS%2CannualDilutedAccountingChange%2CannualDilutedExtraordinary%2CannualDilutedDiscontinuousOperations%2CannualDilutedContinuousOperations%2CannualBasicEPS%2CannualBasicEPSOtherGainsLosses%2CannualTaxLossCarryforwardBasicEPS%2CannualBasicAccountingChange%2CannualBasicExtraordinary%2CannualBasicDiscontinuousOperations%2CannualBasicContinuousOperations%2CannualDilutedNIAvailtoComStockholders%2CannualAverageDilutionEarnings%2CannualNetIncomeCommonStockholders%2CannualOtherunderPreferredStockDividend%2CannualPreferredStockDividends%2CannualNetIncome%2CannualMinorityInterests%2CannualNetIncomeIncludingNoncontrollingInterests%2CannualNetIncomeFromTaxLossCarryforward%2CannualNetIncomeExtraordinary%2CannualNetIncomeDiscontinuousOperations%2CannualNetIncomeContinuousOperations%2CannualEarningsFromEquityInterestNetOfTax%2CannualTaxProvision%2CannualPretaxIncome%2CannualOtherIncomeExpense%2CannualOtherNonOperatingIncomeExpenses%2CannualSpecialIncomeCharges%2CannualGainOnSaleOfPPE%2CannualGainOnSaleOfBusiness%2CannualOtherSpecialCharges%2CannualWriteOff%2CannualImpairmentOfCapitalAssets%2CannualRestructuringAndMergernAcquisition%2CannualSecuritiesAmortization%2CannualEarningsFromEquityInterest%2CannualGainOnSaleOfSecurity%2CannualNetNonOperatingInterestIncomeExpense%2CannualTotalOtherFinanceCost%2CannualInterestExpenseNonOperating%2CannualInterestIncomeNonOperating%2CannualOperatingIncome%2CannualOperatingExpense%2CannualOtherOperatingExpenses%2CannualOtherTaxes%2CannualProvisionForDoubtfulAccounts%2CannualDepreciationAmortizationDepletionIncomeStatement%2CannualDepletionIncomeStatement%2CannualDepreciationAndAmortizationInIncomeStatement%2CannualAmortization%2CannualAmortizationOfIntangiblesIncomeStatement%2CannualDepreciationIncomeStatement%2CannualResearchAndDevelopment%2CannualSellingGeneralAndAdministration%2CannualSellingAndMarketingExpense%2CannualGeneralAndAdministrativeExpense%2CannualOtherGandA%2CannualInsuranceAndClaims%2CannualRentAndLandingFees%2CannualSalariesAndWages%2CannualGrossProfit%2CannualCostOfRevenue%2CannualTotalRevenue%2CannualExciseTaxes%2CannualOperatingRevenue%2CannualLossAdjustmentExpense%2CannualNetPolicyholderBenefitsAndClaims%2CannualPolicyholderBenefitsGross%2CannualPolicyholderBenefitsCeded%2CannualOccupancyAndEquipment%2CannualProfessionalExpenseAndContractServicesExpense%2CannualOtherNonInterestExpense
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -246,7 +97,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 26 Jul 2024 05:40:05 GMT
+      - Fri, 26 Jul 2024 05:57:04 GMT
       server:
       - ATS
       vary:
@@ -254,9 +105,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '68'
+      - '57'
       y-rid:
-      - 4khjeb5ja6dlm
+      - 17gcgmdja6elg
     status:
       code: 200
       message: OK
