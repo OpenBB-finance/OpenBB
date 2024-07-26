@@ -1134,8 +1134,6 @@ def test_equity_compare_groups(params, headers):
                 "start_date": "2023-06-01",
                 "end_date": "2023-06-03",
                 "interval": "1h",
-                "adjusted": False,
-                "prepost": False,
             }
         ),
         (
@@ -1148,8 +1146,6 @@ def test_equity_compare_groups(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
-                "adjusted": False,
-                "prepost": False,
             }
         ),
         (
