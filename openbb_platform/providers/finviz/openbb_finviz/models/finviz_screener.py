@@ -20,6 +20,8 @@ class FinvizScreenerQueryParams(QueryParams):
 
     """
 
+    presets: str = Field(description="name ofa pre-configured filter from presets config file.")
+
     filters: Dict[str, str] = Field(description="A dictionary of Finviz Filters.")
 
     @model_validator(mode='before')
