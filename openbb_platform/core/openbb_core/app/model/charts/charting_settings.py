@@ -49,10 +49,6 @@ class ChartingSettings:
         self.debug_mode: bool = system_settings.debug_mode or Env().DEBUG_MODE
         self.headless: bool = system_settings.headless
         # User
-        self.plot_enable_pywry: bool = user_settings.preferences.plot_enable_pywry
-        self.plot_pywry_width: int = user_settings.preferences.plot_pywry_width
-        self.plot_pywry_height: int = user_settings.preferences.plot_pywry_height
-        self.plot_open_export: bool = user_settings.preferences.plot_open_export
         self.user_email: Optional[str] = getattr(
             user_settings.profile.hub_session, "email", None
         )

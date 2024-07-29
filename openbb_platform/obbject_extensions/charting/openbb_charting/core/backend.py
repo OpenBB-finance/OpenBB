@@ -3,8 +3,6 @@
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
-from openbb_core.env import Env
-
 if TYPE_CHECKING:
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
     from pandas import DataFrame
@@ -16,9 +14,7 @@ BACKEND = None
 
 try:
     from pywry import PyWry  # pylint: disable=import-outside-toplevel
-except ImportError as e:
-    if Env().DEBUG_MODE:
-        print(f"\033[91m{e}\033[0m")  # noqa: T201
+except ImportError:
     from .dummy_backend import DummyBackend  # pylint: disable=import-outside-toplevel
 
     class PyWry(DummyBackend):  # type: ignore
@@ -89,8 +85,8 @@ class Backend(PyWry):
 
     def set_window_dimensions(self):
         """Set the window dimensions."""
-        width = self.charting_settings.plot_pywry_width or 1400
-        height = self.charting_settings.plot_pywry_height or 762
+        width = 1400
+        height = 762
 
         self.WIDTH, self.HEIGHT = int(width), int(height)
 
@@ -233,7 +229,6 @@ class Backend(PyWry):
         """Check if the image has been exported to the path."""
         # pylint: disable=import-outside-toplevel
         import asyncio
-        import os
         import subprocess
         import sys
 
@@ -247,14 +242,8 @@ class Backend(PyWry):
                 break
 
         if img_path.exists():  # noqa: SIM102
-            if self.charting_settings.plot_open_export:
-                if sys.platform == "win32":
-                    os.startfile(export_image)  # nosec: B606 # noqa: S606
-                else:
-                    opener = "open" if sys.platform == "darwin" else "xdg-open"
-                    subprocess.check_call(
-                        [opener, export_image]  # nosec: B603 # noqa: S603
-                    )
+            opener = "open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.check_call([opener, export_image])  # nosec: B603 # noqa: S603
 
     def send_table(
         self,
