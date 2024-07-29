@@ -570,9 +570,8 @@ class FinvizEquityScreenerFetcher(
         except Exception as e:
             if preset is not None:
                 raise e from e
-            else:
-                warn(f"Error loading presets: {e}")
-                preset = None
+            warn(f"Error loading presets: {e}")
+            preset = None
 
         data_type = query.metric
         ascend = False
