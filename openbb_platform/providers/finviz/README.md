@@ -49,7 +49,7 @@ The `metric` parameter defines the type of data fields to return. Choices are:
 - `overview`
 - `ownership`
 - `performance`
-- `techincal`
+- `technical`
 - `valuation`
 
 Default is, "overview".
