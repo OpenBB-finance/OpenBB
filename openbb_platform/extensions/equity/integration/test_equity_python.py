@@ -1398,6 +1398,7 @@ def test_equity_search(params, obb):
                 "filters_dict": None,
                 "sector": "consumer_defensive",
                 "industry": "grocery_stores",
+                "index": "all",
                 "exchange": "all",
                 "mktcap": "all",
                 "recommendation": "all",
