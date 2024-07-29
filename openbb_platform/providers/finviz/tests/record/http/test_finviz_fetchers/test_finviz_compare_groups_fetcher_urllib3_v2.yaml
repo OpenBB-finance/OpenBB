@@ -29,7 +29,7 @@ interactions:
         = function () {};\r\n                };\r\n            </script>\r\n        <link
         rel=\"stylesheet\" href=\"/assets/dist-legacy/redesign.434ddfac.css\" type=\"text/css\"
         onerror=\"window.handleScriptNotLoaded(this)\">\n<link rel=\"stylesheet\"
-        href=\"/assets/dist-legacy/main.a7b34d07.css\" type=\"text/css\" onerror=\"window.handleScriptNotLoaded(this)\">\n<link
+        href=\"/assets/dist-legacy/main.bf7d091b.css\" type=\"text/css\" onerror=\"window.handleScriptNotLoaded(this)\">\n<link
         rel=\"icon\" type=\"image/png\" href=\"/favicon_2x.png\" sizes=\"32x32\">\n<link
         rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"16x16\">\n  <script
         type=\"text/javascript\" async=true>\r\n  (function() {\r\n    var host =
@@ -99,15 +99,15 @@ interactions:
         true,\r\n                quoteSearchExt: '',\r\n                isJoinBannerVisible:
         false,\r\n            };\r\n        </script><script src=\"/assets/dist-legacy/script/browser_check.fca380bf.js\"></script><script
         src=\"/assets/dist-legacy/script/vendor/boxover.bd6045ad.js\"></script>\n<script
-        src=\"/assets/dist-legacy/runtime.40c1b634.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/libs_init.6c24f8e6.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/4448.4d6ce3b6.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/7808.bfd72543.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/1556.75067b82.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/3988.202a9cce.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/7603.96a170ed.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/1756.6bddc02b.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/header.4cae93ed.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script></head>\n<body
+        src=\"/assets/dist-legacy/runtime.e8e2a71d.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/libs_init.edd97563.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/4331.c294779f.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7000.1d247042.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/6457.20fa6770.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/2725.c93fe3ff.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7898.27164289.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/830.a8c13e73.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/header.9b887649.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script></head>\n<body
         class=\"m-0 yellow-tooltip is-groups min-w-[1000px] chart-tooltip\">\r\n            <script>\r\n
         \               var cookieName = 'fv_block';\r\n                var selector
         = '[data-google-query-id]';\r\n                var selectorFrame = selector
@@ -419,549 +419,549 @@ interactions:
         Volume</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=change'\">Change</th>\n<th
         class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=volume'\">Volume</th>\n</thead>\n<tr
         valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_malaysia&v=141'\">\n<td
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_cyprus&v=141'\">\n<td
         height=\"10\" align=\"right\" class=\"groups_index-cell\">1</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_malaysia&v=141\" class=\"tab-link\">Malaysia</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-11.80%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-21.78%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-37.95%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-69.72%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-96.57%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-72.61%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.70</span></td><td
-        height=\"10\" align=\"right\" class=\"\">1.19M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.46</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.65%</span></td><td height=\"10\" align=\"right\" class=\"\">548.24K</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_argentina&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">2</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_argentina&v=141\"
-        class=\"tab-link\">Argentina</a></td><td height=\"10\" align=\"right\" class=\"\"><span
-        class=\"color-text is-negative\">-6.36%</span></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-negative\">-3.75%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.79%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">22.56%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">40.34%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">25.35%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.58</td><td height=\"10\" align=\"right\"
-        class=\"\">9.75M</td><td height=\"10\" align=\"right\" class=\"\">0.72</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.84%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">6.99M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_colombia&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">3</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_colombia&v=141\" class=\"tab-link\">Colombia</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.25%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.13%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.70%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.53%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.37%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.75%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">3.16</span></td><td
-        height=\"10\" align=\"right\" class=\"\">3.55M</td><td height=\"10\" align=\"right\"
-        class=\"\">1.60</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-positive\">1.39%</span></td><td height=\"10\" align=\"right\" class=\"\">5.69M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_taiwan&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">4</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_taiwan&v=141\" class=\"tab-link\">Taiwan</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.12%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.97%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">21.96%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">60.06%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">63.96%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">58.22%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.49</span></td><td
-        height=\"10\" align=\"right\" class=\"\">34.87M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.73</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.32%</span></td><td height=\"10\" align=\"right\" class=\"\">25.36M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_netherlands&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">5</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_netherlands&v=141\"
-        class=\"tab-link\">Netherlands</a></td><td height=\"10\" align=\"right\" class=\"\"><span
-        class=\"color-text is-negative\">-2.16%</span></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-positive\">2.02%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.48%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">19.34%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">33.38%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">18.76%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.75</span></td><td
-        height=\"10\" align=\"right\" class=\"\">23.08M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.77</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.42%</span></td><td height=\"10\" align=\"right\" class=\"\">17.69M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_mexico&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">6</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_mexico&v=141\" class=\"tab-link\">Mexico</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.46%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-12.88%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-11.76%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-11.13%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-12.02%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-10.43%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.91</span></td><td
-        height=\"10\" align=\"right\" class=\"\">13.06M</td><td height=\"10\" align=\"right\"
-        class=\"\">1.30</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-1.15%</span></td><td height=\"10\" align=\"right\" class=\"\">17.04M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_spain&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">7</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_spain&v=141\" class=\"tab-link\">Spain</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.40%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.62%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.12%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.88%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">30.18%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.76%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.09</td><td height=\"10\" align=\"right\"
-        class=\"\">6.80M</td><td height=\"10\" align=\"right\" class=\"\">0.75</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.57%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">5.12M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_china&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">8</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_china&v=141\" class=\"tab-link\">China</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.34%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.26%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.24%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-5.22%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.36%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.55%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.41</span></td><td
-        height=\"10\" align=\"right\" class=\"\">307.55M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.72</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-positive\">0.22%</span></td><td height=\"10\" align=\"right\" class=\"\">220.25M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_switzerland&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">9</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_switzerland&v=141\"
-        class=\"tab-link\">Switzerland</a></td><td height=\"10\" align=\"right\" class=\"\"><span
-        class=\"color-text is-negative\">-1.01%</span></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-positive\">0.57%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.84%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.22%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">24.80%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.80%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.35</td><td height=\"10\" align=\"right\"
-        class=\"\">44.86M</td><td height=\"10\" align=\"right\" class=\"\">0.95</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.74%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">42.81M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_turkey&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">10</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_turkey&v=141\" class=\"tab-link\">Turkey</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.82%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.52%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">42.31%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">49.38%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">64.25%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">48.07%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.08</span></td><td
-        height=\"10\" align=\"right\" class=\"\">1.00M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.72</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-1.07%</span></td><td height=\"10\" align=\"right\" class=\"\">723.04K</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_singapore&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">11</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_singapore&v=141\"
-        class=\"tab-link\">Singapore</a></td><td height=\"10\" align=\"right\" class=\"\"><span
-        class=\"color-text is-negative\">-0.80%</span></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-positive\">0.69%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-positive\">23.52%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">42.08%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.54%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">37.76%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.56</span></td><td
-        height=\"10\" align=\"right\" class=\"\">59.24M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.57</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-positive\">1.02%</span></td><td height=\"10\" align=\"right\" class=\"\">34.01M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_hongkong&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">12</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_hongkong&v=141\" class=\"tab-link\">Hong
-        Kong</a></td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.73%</span></td><td height=\"10\" align=\"right\" class=\"\"><span
-        class=\"color-text is-negative\">-3.17%</span></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-positive\">9.89%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.71%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.10%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.55%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.21</span></td><td
-        height=\"10\" align=\"right\" class=\"\">35.90M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.62</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.73%</span></td><td height=\"10\" align=\"right\" class=\"\">22.19M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_unitedarabemirates&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">13</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_unitedarabemirates&v=141\"
-        class=\"tab-link\">United Arab Emirates</a></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-negative\">-0.69%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-negative\">-41.58%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-57.01%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-63.02%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-70.09%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-64.29%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.94</span></td><td
-        height=\"10\" align=\"right\" class=\"\">1.52M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.19</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-positive\">0.59%</span></td><td height=\"10\" align=\"right\" class=\"\">295.20K</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_ireland&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">14</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_ireland&v=141\" class=\"tab-link\">Ireland</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.56%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.72%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.08%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.14%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">11.26%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.01%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.11</td><td height=\"10\" align=\"right\"
-        class=\"\">58.40M</td><td height=\"10\" align=\"right\" class=\"\">1.05</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.43%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">61.08M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_unitedkingdom&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">15</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_unitedkingdom&v=141\"
-        class=\"tab-link\">United Kingdom</a></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-negative\">-0.33%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.89%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.26%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.86%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.16%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.14%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.86</span></td><td
-        height=\"10\" align=\"right\" class=\"\">221.58M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.68</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.50%</span></td><td height=\"10\" align=\"right\" class=\"\">151.40M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_southkorea&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">16</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_southkorea&v=141\"
-        class=\"tab-link\">South Korea</a></td><td height=\"10\" align=\"right\" class=\"\"><span
-        class=\"color-text is-negative\">-0.32%</span></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-negative\">-2.67%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.63%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.67%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.59%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.38%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.58</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.74M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.92</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.52%</span></td><td height=\"10\" align=\"right\" class=\"\">2.51M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_israel&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">17</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_israel&v=141\" class=\"tab-link\">Israel</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.18%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.41%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.47%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.63%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.92%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.49%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.78</span></td><td
-        height=\"10\" align=\"right\" class=\"\">79.30M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.63</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-positive\">1.24%</span></td><td height=\"10\" align=\"right\" class=\"\">49.74M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_chile&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">18</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_chile&v=141\" class=\"tab-link\">Chile</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.02%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.93%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.52%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-9.67%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-11.17%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-9.75%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.30</td><td height=\"10\" align=\"right\"
-        class=\"\">2.10M</td><td height=\"10\" align=\"right\" class=\"\">0.88</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.30%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">1.86M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_usa&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">19</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_usa&v=141\" class=\"tab-link\">USA</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.11%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.62%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.74%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.75%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">25.53%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.54%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.84</span></td><td
-        height=\"10\" align=\"right\" class=\"\">7.08B</td><td height=\"10\" align=\"right\"
-        class=\"\">1.08</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-positive\">0.14%</span></td><td height=\"10\" align=\"right\" class=\"\">7.62B</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_bermuda&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">20</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_bermuda&v=141\" class=\"tab-link\">Bermuda</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.30%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.76%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.23%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.96%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.78%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.82%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.84</span></td><td
-        height=\"10\" align=\"right\" class=\"\">29.90M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.86</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.72%</span></td><td height=\"10\" align=\"right\" class=\"\">25.68M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_italy&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">21</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_italy&v=141\" class=\"tab-link\">Italy</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.58%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.18%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.66%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.00%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.57%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.94%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.25</td><td height=\"10\" align=\"right\"
-        class=\"\">1.84M</td><td height=\"10\" align=\"right\" class=\"\">0.47</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.76%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">866.05K</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_france&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">22</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_france&v=141\" class=\"tab-link\">France</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.59%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-5.51%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.46%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.24%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.34%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.13%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.78</span></td><td
-        height=\"10\" align=\"right\" class=\"\">6.70M</td><td height=\"10\" align=\"right\"
-        class=\"\">1.27</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-2.60%</span></td><td height=\"10\" align=\"right\" class=\"\">8.52M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_belgium&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">23</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_belgium&v=141\" class=\"tab-link\">Belgium</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.60%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.27%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.25%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.96%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.88%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.14%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.67</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.27M</td><td height=\"10\" align=\"right\"
-        class=\"\">1.00</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-1.12%</span></td><td height=\"10\" align=\"right\" class=\"\">2.27M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_canada&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">24</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_canada&v=141\" class=\"tab-link\">Canada</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.71%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.04%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.77%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.76%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.10%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.16%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.10</td><td height=\"10\" align=\"right\"
-        class=\"\">483.78M</td><td height=\"10\" align=\"right\" class=\"\">0.66</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.24%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">319.40M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_sweden&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">25</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_sweden&v=141\" class=\"tab-link\">Sweden</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.72%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.43%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.87%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.52%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.82%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.25%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.63</td><td height=\"10\" align=\"right\"
-        class=\"\">26.53M</td><td height=\"10\" align=\"right\" class=\"\">1.24</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.60%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">32.90M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_luxembourg&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">26</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_luxembourg&v=141\"
-        class=\"tab-link\">Luxembourg</a></td><td height=\"10\" align=\"right\" class=\"\"><span
-        class=\"color-text is-positive\">0.73%</span></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-negative\">-3.18%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.89%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.21%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">34.78%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.91%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.83</span></td><td
-        height=\"10\" align=\"right\" class=\"\">11.44M</td><td height=\"10\" align=\"right\"
-        class=\"\">1.00</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.89%</span></td><td height=\"10\" align=\"right\" class=\"\">11.46M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_brazil&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">27</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_brazil&v=141\" class=\"tab-link\">Brazil</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.21%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.72%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-12.24%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-19.30%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.95%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-19.80%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.83</span></td><td
-        height=\"10\" align=\"right\" class=\"\">147.63M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.81</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.52%</span></td><td height=\"10\" align=\"right\" class=\"\">120.09M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_australia&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">28</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_australia&v=141\"
-        class=\"tab-link\">Australia</a></td><td height=\"10\" align=\"right\" class=\"\"><span
-        class=\"color-text is-positive\">1.63%</span></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-negative\">-2.70%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.87%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-14.02%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-5.97%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-14.44%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.24</td><td height=\"10\" align=\"right\"
-        class=\"\">19.93M</td><td height=\"10\" align=\"right\" class=\"\">0.84</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.58%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">16.76M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_peru&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">29</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_peru&v=141\" class=\"tab-link\">Peru</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.91%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.18%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.17%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.90%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">21.92%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.98%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.02</td><td height=\"10\" align=\"right\"
-        class=\"\">2.20M</td><td height=\"10\" align=\"right\" class=\"\">0.62</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.32%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">1.36M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_denmark&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">30</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_denmark&v=141\" class=\"tab-link\">Denmark</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.04%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.02%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.47%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">36.01%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">72.37%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">34.98%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.87</span></td><td
-        height=\"10\" align=\"right\" class=\"\">4.89M</td><td height=\"10\" align=\"right\"
-        class=\"\">1.11</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-2.15%</span></td><td height=\"10\" align=\"right\" class=\"\">5.43M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_greece&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">31</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_greece&v=141\" class=\"tab-link\">Greece</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.13%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.83%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">12.58%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">15.00%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">20.82%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">17.11%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.47</span></td><td
-        height=\"10\" align=\"right\" class=\"\">6.96M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.51</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.21%</span></td><td height=\"10\" align=\"right\" class=\"\">3.56M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_germany&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">32</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_germany&v=141\" class=\"tab-link\">Germany</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.55%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.24%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.03%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">19.91%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">34.35%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">18.86%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.04</td><td height=\"10\" align=\"right\"
-        class=\"\">16.22M</td><td height=\"10\" align=\"right\" class=\"\">1.01</td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.93%</span></td><td
-        height=\"10\" align=\"right\" class=\"\">16.32M</td></tr><tr valign=\"top\"
-        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
-        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_japan&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">33</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_japan&v=141\" class=\"tab-link\">Japan</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.84%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.52%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-9.64%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">11.66%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">23.43%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.56%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.85</span></td><td
-        height=\"10\" align=\"right\" class=\"\">11.67M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.62</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.47%</span></td><td height=\"10\" align=\"right\" class=\"\">7.19M</td></tr><tr
-        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_caymanislands&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">34</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_caymanislands&v=141\"
-        class=\"tab-link\">Cayman Islands</a></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-positive\">3.94%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.84%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.17%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">24.92%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">40.64%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">23.58%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.87</span></td><td
-        height=\"10\" align=\"right\" class=\"\">39.38M</td><td height=\"10\" align=\"right\"
-        class=\"\">1.26</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-positive\">0.27%</span></td><td height=\"10\" align=\"right\" class=\"\">49.58M</td></tr><tr
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_cyprus&v=141\" class=\"tab-link\">Cyprus</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.71%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-11.20%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.57%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.29%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">49.58%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">17.58%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.29</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.56M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.22</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.25%</span></td><td height=\"10\" align=\"right\" class=\"\">1.90M</td></tr><tr
         valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
         has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_monaco&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">35</td><td height=\"10\"
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">2</td><td height=\"10\"
         align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_monaco&v=141\" class=\"tab-link\">Monaco</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.09%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.74%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">24.02%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">42.76%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">96.56%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">49.03%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.59</span></td><td
-        height=\"10\" align=\"right\" class=\"\">2.10M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.88</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.31%</span></td><td height=\"10\" align=\"right\" class=\"\">1.85M</td></tr><tr
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.93%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.43%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">19.59%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">38.00%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">76.20%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">42.26%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.62</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.13M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.95</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.09%</span></td><td height=\"10\" align=\"right\" class=\"\">2.03M</td></tr><tr
         valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_southafrica&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">36</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_southafrica&v=141\"
-        class=\"tab-link\">South Africa</a></td><td height=\"10\" align=\"right\"
-        class=\"\"><span class=\"color-text is-positive\">4.52%</span></td><td height=\"10\"
-        align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.62%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.33%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.31%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.78%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.22%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">3.07</span></td><td
-        height=\"10\" align=\"right\" class=\"\">16.59M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.67</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-positive\">0.12%</span></td><td height=\"10\" align=\"right\" class=\"\">11.12M</td></tr><tr
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_greece&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">3</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_greece&v=141\" class=\"tab-link\">Greece</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.16%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.64%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.46%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.53%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">20.99%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.31%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.47</span></td><td
+        height=\"10\" align=\"right\" class=\"\">8.52M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.70</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.30%</span></td><td height=\"10\" align=\"right\" class=\"\">5.92M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_unitedarabemirates&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">4</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_unitedarabemirates&v=141\"
+        class=\"tab-link\">United Arab Emirates</a></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-negative\">-3.56%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-negative\">-21.20%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-63.14%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-64.24%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-72.34%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-66.45%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.94</span></td><td
+        height=\"10\" align=\"right\" class=\"\">747.43K</td><td height=\"10\" align=\"right\"
+        class=\"\">0.55</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.91%</span></td><td height=\"10\" align=\"right\" class=\"\">414.33K</td></tr><tr
         valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
         has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_india&v=141'\">\n<td
-        height=\"10\" align=\"right\" class=\"groups_index-cell\">37</td><td height=\"10\"
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">5</td><td height=\"10\"
         align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_india&v=141\" class=\"tab-link\">India</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.53%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.18%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">11.72%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.18%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.64%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.32%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.65</span></td><td
-        height=\"10\" align=\"right\" class=\"\">29.08M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.85</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-negative\">-0.10%</span></td><td height=\"10\" align=\"right\" class=\"\">24.60M</td></tr><tr
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.39%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.41%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.17%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.16%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.70%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.69</span></td><td
+        height=\"10\" align=\"right\" class=\"\">33.09M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.89</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.51%</span></td><td height=\"10\" align=\"right\" class=\"\">29.39M</td></tr><tr
         valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
-        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_cyprus&v=141'\">\n<td
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_hongkong&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">6</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_hongkong&v=141\" class=\"tab-link\">Hong
+        Kong</a></td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-2.35%</span></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-negative\">-4.86%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">4.36%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.14%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.84%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.04%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.21</span></td><td
+        height=\"10\" align=\"right\" class=\"\">37.11M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.35</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.89%</span></td><td height=\"10\" align=\"right\" class=\"\">12.85M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_australia&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">7</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_australia&v=141\"
+        class=\"tab-link\">Australia</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-negative\">-1.75%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">1.40%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.99%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.13%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.65%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-12.49%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.20</td><td height=\"10\" align=\"right\"
+        class=\"\">31.30M</td><td height=\"10\" align=\"right\" class=\"\">10.29</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.17%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">321.96M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_luxembourg&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">8</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_luxembourg&v=141\"
+        class=\"tab-link\">Luxembourg</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-negative\">-1.62%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-negative\">-2.57%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.88%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">14.83%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">27.60%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">12.39%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.89</span></td><td
+        height=\"10\" align=\"right\" class=\"\">11.70M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.99</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.48%</span></td><td height=\"10\" align=\"right\" class=\"\">11.60M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_malaysia&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">9</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_malaysia&v=141\" class=\"tab-link\">Malaysia</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.52%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-18.83%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-43.72%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-68.86%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-96.71%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-73.78%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.64</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.17M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.65</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">2.08%</span></td><td height=\"10\" align=\"right\" class=\"\">759.78K</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_germany&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">10</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_germany&v=141\" class=\"tab-link\">Germany</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.05%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.33%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.39%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">22.93%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">33.78%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">21.71%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.92</span></td><td
+        height=\"10\" align=\"right\" class=\"\">17.02M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.68</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.10%</span></td><td height=\"10\" align=\"right\" class=\"\">28.60M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_israel&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">11</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_israel&v=141\" class=\"tab-link\">Israel</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.26%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.23%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.02%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.53%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.11%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.47%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.74</span></td><td
+        height=\"10\" align=\"right\" class=\"\">73.82M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.97</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.09%</span></td><td height=\"10\" align=\"right\" class=\"\">71.61M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_colombia&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">12</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_colombia&v=141\" class=\"tab-link\">Colombia</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.42%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.57%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-5.48%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.24%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.60%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.66%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">3.15</span></td><td
+        height=\"10\" align=\"right\" class=\"\">3.27M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.84</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.73%</span></td><td height=\"10\" align=\"right\" class=\"\">2.74M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_netherlands&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">13</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_netherlands&v=141\"
+        class=\"tab-link\">Netherlands</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-positive\">0.53%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">1.36%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.79%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">29.71%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">33.94%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">23.31%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.75</span></td><td
+        height=\"10\" align=\"right\" class=\"\">24.74M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.41</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-2.02%</span></td><td height=\"10\" align=\"right\" class=\"\">34.98M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_denmark&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">14</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_denmark&v=141\" class=\"tab-link\">Denmark</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.79%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.66%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.47%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">27.38%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">73.19%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">31.68%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.87</span></td><td
+        height=\"10\" align=\"right\" class=\"\">4.96M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.98</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-1.90%</span></td><td height=\"10\" align=\"right\" class=\"\">4.85M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_italy&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">15</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_italy&v=141\" class=\"tab-link\">Italy</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.05%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.97%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.07%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.04%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.42%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.75%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.24</td><td height=\"10\" align=\"right\"
+        class=\"\">1.71M</td><td height=\"10\" align=\"right\" class=\"\">0.92</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.17%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.58M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_usa&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">16</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_usa&v=141\" class=\"tab-link\">USA</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.07%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.20%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.79%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.55%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">24.60%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.00%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.84</span></td><td
+        height=\"10\" align=\"right\" class=\"\">7.17B</td><td height=\"10\" align=\"right\"
+        class=\"\">1.04</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.54%</span></td><td height=\"10\" align=\"right\" class=\"\">7.42B</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_japan&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">17</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_japan&v=141\" class=\"tab-link\">Japan</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.09%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.48%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.92%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.81%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">26.14%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">14.81%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.89</span></td><td
+        height=\"10\" align=\"right\" class=\"\">11.54M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.83</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.13%</span></td><td height=\"10\" align=\"right\" class=\"\">9.55M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_france&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">18</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_france&v=141\" class=\"tab-link\">France</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.12%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.29%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.97%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.20%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.44%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.39%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.77</span></td><td
+        height=\"10\" align=\"right\" class=\"\">6.82M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.76</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.32%</span></td><td height=\"10\" align=\"right\" class=\"\">5.19M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_taiwan&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">19</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_taiwan&v=141\" class=\"tab-link\">Taiwan</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.20%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.92%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">23.99%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">72.50%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">74.58%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">68.59%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.47</span></td><td
+        height=\"10\" align=\"right\" class=\"\">35.81M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.41</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-3.17%</span></td><td height=\"10\" align=\"right\" class=\"\">50.35M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_unitedkingdom&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">20</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_unitedkingdom&v=141\"
+        class=\"tab-link\">United Kingdom</a></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">1.43%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.57%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.94%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">12.97%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.26%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">12.41%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.86</span></td><td
+        height=\"10\" align=\"right\" class=\"\">208.10M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.11</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.03%</span></td><td height=\"10\" align=\"right\" class=\"\">231.45M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_bermuda&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">21</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_bermuda&v=141\" class=\"tab-link\">Bermuda</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.53%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.17%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.86%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.84%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.32%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">11.94%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.83</span></td><td
+        height=\"10\" align=\"right\" class=\"\">30.80M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.81</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">1.27%</span></td><td height=\"10\" align=\"right\" class=\"\">24.94M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_canada&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">22</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_canada&v=141\" class=\"tab-link\">Canada</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.59%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.65%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.06%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.91%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.98%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.36%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.09</td><td height=\"10\" align=\"right\"
+        class=\"\">430.99M</td><td height=\"10\" align=\"right\" class=\"\">1.02</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.89%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">438.03M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_china&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">23</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_china&v=141\" class=\"tab-link\">China</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.73%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.02%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.30%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.93%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.05%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.24%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.44</span></td><td
+        height=\"10\" align=\"right\" class=\"\">315.18M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.02</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">2.14%</span></td><td height=\"10\" align=\"right\" class=\"\">321.41M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_ireland&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">24</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_ireland&v=141\" class=\"tab-link\">Ireland</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.82%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.99%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.21%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.86%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.45%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.06</td><td height=\"10\" align=\"right\"
+        class=\"\">63.85M</td><td height=\"10\" align=\"right\" class=\"\">1.08</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.40%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">69.15M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_spain&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">25</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_spain&v=141\" class=\"tab-link\">Spain</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.04%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.39%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.00%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.59%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">28.22%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">14.43%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.10</td><td height=\"10\" align=\"right\"
+        class=\"\">6.78M</td><td height=\"10\" align=\"right\" class=\"\">0.88</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.04%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">6.00M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_belgium&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">26</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_belgium&v=141\" class=\"tab-link\">Belgium</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.12%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.39%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.15%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-5.96%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.26%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-5.32%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.70</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.12M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.66</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">1.50%</span></td><td height=\"10\" align=\"right\" class=\"\">1.41M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_singapore&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">27</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_singapore&v=141\"
+        class=\"tab-link\">Singapore</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-positive\">2.18%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">0.01%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">19.17%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">42.23%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.31%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">36.40%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.62</span></td><td
+        height=\"10\" align=\"right\" class=\"\">91.98M</td><td height=\"10\" align=\"right\"
+        class=\"\">3.65</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.59%</span></td><td height=\"10\" align=\"right\" class=\"\">336.00M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_sweden&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">28</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_sweden&v=141\" class=\"tab-link\">Sweden</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.27%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.14%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">12.60%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.50%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.03%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.45%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.61</td><td height=\"10\" align=\"right\"
+        class=\"\">29.11M</td><td height=\"10\" align=\"right\" class=\"\">1.28</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.08%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">37.22M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_southkorea&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">29</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_southkorea&v=141\"
+        class=\"tab-link\">South Korea</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-positive\">2.55%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">6.68%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.61%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">11.73%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">17.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.10%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.62</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.44M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.02</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">2.03%</span></td><td height=\"10\" align=\"right\" class=\"\">2.50M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_switzerland&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">30</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_switzerland&v=141\"
+        class=\"tab-link\">Switzerland</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-positive\">2.70%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">0.65%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.97%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.20%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">26.01%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.56%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.34</td><td height=\"10\" align=\"right\"
+        class=\"\">48.67M</td><td height=\"10\" align=\"right\" class=\"\">0.97</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.96%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">47.27M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_brazil&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">31</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_brazil&v=141\" class=\"tab-link\">Brazil</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.08%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.75%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-13.01%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.78%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-15.45%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.81</span></td><td
+        height=\"10\" align=\"right\" class=\"\">147.35M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.02</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.43%</span></td><td height=\"10\" align=\"right\" class=\"\">150.14M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_argentina&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">32</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_argentina&v=141\"
+        class=\"tab-link\">Argentina</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-positive\">3.67%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-negative\">-1.72%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.35%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">38.82%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">51.71%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">28.04%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.72</td><td height=\"10\" align=\"right\"
+        class=\"\">9.39M</td><td height=\"10\" align=\"right\" class=\"\">0.59</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.23%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">5.50M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_peru&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">33</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_peru&v=141\" class=\"tab-link\">Peru</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.17%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.31%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.37%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.80%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">23.03%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">11.84%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.03</td><td height=\"10\" align=\"right\"
+        class=\"\">1.98M</td><td height=\"10\" align=\"right\" class=\"\">1.17</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.34%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.32M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_southafrica&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">34</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_southafrica&v=141\"
+        class=\"tab-link\">South Africa</a></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">4.26%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.24%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.89%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">19.56%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.32%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.50%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">3.04</span></td><td
+        height=\"10\" align=\"right\" class=\"\">15.08M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.91</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">1.54%</span></td><td height=\"10\" align=\"right\" class=\"\">13.78M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_turkey&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">35</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_turkey&v=141\" class=\"tab-link\">Turkey</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.60%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.98%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">47.48%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">58.71%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">92.28%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">70.41%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.09</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.11M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.82</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.71%</span></td><td height=\"10\" align=\"right\" class=\"\">2.02M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_chile&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">36</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_chile&v=141\" class=\"tab-link\">Chile</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.78%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.66%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.39%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.80%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-10.15%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.59%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.35</td><td height=\"10\" align=\"right\"
+        class=\"\">2.11M</td><td height=\"10\" align=\"right\" class=\"\">1.03</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.49%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.18M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_caymanislands&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">37</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_caymanislands&v=141\"
+        class=\"tab-link\">Cayman Islands</a></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">4.87%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.53%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">12.40%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">24.70%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">40.37%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">28.68%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.86</span></td><td
+        height=\"10\" align=\"right\" class=\"\">43.41M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.76</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.69%</span></td><td height=\"10\" align=\"right\" class=\"\">33.08M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_mexico&v=141'\">\n<td
         height=\"10\" align=\"right\" class=\"groups_index-cell\">38</td><td height=\"10\"
-        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_cyprus&v=141\" class=\"tab-link\">Cyprus</a></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.03%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.23%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">15.58%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">22.38%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">90.75%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">31.08%</span></td><td
-        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.29</span></td><td
-        height=\"10\" align=\"right\" class=\"\">1.60M</td><td height=\"10\" align=\"right\"
-        class=\"\">0.70</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
-        is-positive\">2.11%</span></td><td height=\"10\" align=\"right\" class=\"\">1.12M</td></tr></table></td>\n</tr>\n<tr>\n<td>\n<table
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_mexico&v=141\" class=\"tab-link\">Mexico</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.46%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.20%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.81%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.29%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.90%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.44%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.89</span></td><td
+        height=\"10\" align=\"right\" class=\"\">13.12M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.51</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.96%</span></td><td height=\"10\" align=\"right\" class=\"\">19.76M</td></tr></table></td>\n</tr>\n<tr>\n<td>\n<table
         width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" class=\"body-table\" border=\"0\">\n<tr>\n<td
         align=\"right\"><a href=\"grp_export.ashx?g=country&v=140&o=perf1w\" class=\"tab-link\">export</a></td></tr>\n</table>\n</td>\n</tr>\n<div
         class=\"my-3\"><div id=\"IC_D_3x3_1\"class=\"relative overflow-hidden flex
@@ -1040,7 +1040,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 89a4b847dc380a57-AMS
+      - 8a1efb51b87d94cf-LHR
       Cache-Control:
       - no-cache
       Connection:
@@ -1050,7 +1050,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:23:07 GMT
+      - Fri, 12 Jul 2024 06:29:56 GMT
       Request-Context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       Server:

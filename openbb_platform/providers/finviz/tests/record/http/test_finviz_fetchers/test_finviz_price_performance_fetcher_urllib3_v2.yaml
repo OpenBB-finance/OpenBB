@@ -29,7 +29,7 @@ interactions:
         = function () {};\r\n                };\r\n            </script>\r\n        <link
         rel=\"stylesheet\" href=\"/assets/dist-legacy/redesign.434ddfac.css\" type=\"text/css\"
         onerror=\"window.handleScriptNotLoaded(this)\">\n<link rel=\"stylesheet\"
-        href=\"/assets/dist-legacy/main.a7b34d07.css\" type=\"text/css\" onerror=\"window.handleScriptNotLoaded(this)\">\n<link
+        href=\"/assets/dist-legacy/main.bf7d091b.css\" type=\"text/css\" onerror=\"window.handleScriptNotLoaded(this)\">\n<link
         rel=\"icon\" type=\"image/png\" href=\"/favicon_2x.png\" sizes=\"32x32\">\n<link
         rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"16x16\">\n  <script
         type=\"text/javascript\" async=true>\r\n  (function() {\r\n    var host =
@@ -99,15 +99,15 @@ interactions:
         true,\r\n                quoteSearchExt: '',\r\n                isJoinBannerVisible:
         false,\r\n            };\r\n        </script><script src=\"/assets/dist-legacy/script/browser_check.fca380bf.js\"></script><script
         src=\"/assets/dist-legacy/script/vendor/boxover.bd6045ad.js\"></script>\n<script
-        src=\"/assets/dist-legacy/runtime.40c1b634.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/libs_init.6c24f8e6.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/4448.4d6ce3b6.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/7808.bfd72543.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/1556.75067b82.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/3988.202a9cce.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/7603.96a170ed.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/1756.6bddc02b.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/header.4cae93ed.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/runtime.e8e2a71d.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/libs_init.edd97563.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/4331.c294779f.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7000.1d247042.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/6457.20fa6770.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/2725.c93fe3ff.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7898.27164289.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/830.a8c13e73.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/header.9b887649.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
         type=\"text/javascript\">\r\n            var portfolioRowsLimit=50;\r\n            function
         ScreenerSelectOnChange() {}\r\n            FinvizSettings.screenerCurrentTimeframe
         = {timeframe: \"d\", dateRange: null}\r\n\r\n            function trackPagination(source)
@@ -119,12 +119,12 @@ interactions:
         type=\"text/javascript\" onerror=\"window.handleScriptNotLoaded(this)\"></script>\n<script>FinvizSettings.defaultPeriod
         = 'd'</script>\n<script src=\"/assets/dist-legacy/script/screener_free.31df4c86.js\"
         type=\"text/javascript\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/8460.5e045e55.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/4064.55437d8e.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/5061.779fe29d.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/2112.f66fba07.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/7704.936c7a4c.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
-        src=\"/assets/dist-legacy/screener.fa52bdcf.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script></head>\n\r\n
+        src=\"/assets/dist-legacy/5959.721deb1f.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/1528.59da484a.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/1028.7573c3cb.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7530.0e58f8e1.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/5621.ff3280b4.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/screener.8136a615.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script></head>\n\r\n
         \         <script>\r\n            const channelIdToLabel = {\r\n                '1':
         'MarketWatch',\r\n                '2': 'WSJ',\r\n                '3': 'Reuters',\r\n
         \               '4': 'Yahoo Finance',\r\n                '5': 'CNN',\r\n                '6':
@@ -410,6 +410,7 @@ interactions:
         value=\"screener.ashx?v=141&t=AAPL&o=shortinterestratio\">Short Interest Ratio</option><option
         value=\"screener.ashx?v=141&t=AAPL&o=shortInterest\">Short Interest</option><option
         value=\"screener.ashx?v=141&t=AAPL&o=earningsdate\">Earnings Date</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=news_date\">Latest News</option><option
         value=\"screener.ashx?v=141&t=AAPL&o=roa\">Return on Assets</option><option
         value=\"screener.ashx?v=141&t=AAPL&o=roe\">Return on Equity</option><option
         value=\"screener.ashx?v=141&t=AAPL&o=roi\">Return on Investment</option><option
@@ -546,6 +547,7 @@ interactions:
         screener_filter-tab has-badge is-selected\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=ticker'\">Descriptive</div>\n<div
         class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=141&ft=2&t=AAPL&o=ticker'\">Fundamental</div>\n<div
         class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=141&ft=3&t=AAPL&o=ticker'\">Technical</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=141&ft=6&t=AAPL&o=ticker'\">News</div>\n<div
         class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=141&ft=5&t=AAPL&o=ticker'\">ETF</div>\n<div
         class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=141&ft=4&t=AAPL&o=ticker'\">All</div>\n
         \   </div>\r\n    <div class=\"w-full screener_filter-tabs-filler\"></div>\r\n</div></td>\n</tr>\n<tr>\n<td
@@ -961,7 +963,7 @@ interactions:
         width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
         style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
         header=[Earnings Date] body=[<table width=300><tr><td class='tooltip_tab'>Date
-        when company reports earnings</td></tr></table>] delay=[500]\">Earnings Date</span></td>\n<td
+        when company reports earnings.</td></tr></table>] delay=[500]\">Earnings Date</span></td>\n<td
         width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
         id=\"fsm_earningsdate\" class=\"js-custom-modal\" style=\"display: none\">\r\n
         \                   <table class=\"screener_custom-input-table is-modal\"
@@ -1271,34 +1273,34 @@ interactions:
         1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
         2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
         loading='lazy'><div><b>Apple Inc</b>Consumer Electronics <span>\u2022</span>
-        USA <span>\u2022</span> 3270.00B</div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        USA <span>\u2022</span> 3489.58B</div>] offsetx=[100] offsety=[0] delay=[0]\"><a
         href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" class=\"tab-link\">AAPL</a></td><td
         height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span
-        class=\"color-text is-negative\">-0.49%</span></a></td><td height=\"10\" align=\"right\"><a
-        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">12.25%</span></a></td><td
+        class=\"color-text is-positive\">2.72%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">17.84%</span></a></td><td
         height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span
-        class=\"color-text is-positive\">25.66%</span></a></td><td height=\"10\" align=\"right\"><a
-        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">10.15%</span></a></td><td
+        class=\"color-text is-positive\">35.64%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">22.92%</span></a></td><td
         height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span
-        class=\"color-text is-positive\">15.10%</span></a></td><td height=\"10\" align=\"right\"><a
-        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">10.76%</span></a></td><td
-        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">2.24%</a></td><td
-        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">2.33%</a></td><td
+        class=\"color-text is-positive\">21.00%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">18.20%</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">2.03%</a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">2.63%</a></td><td
         height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span
         class=\"color-text is-positive\">1.98</span></a></td><td height=\"10\" align=\"right\"><a
-        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">68.26M</a></td><td height=\"10\"
-        align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">0.95</a></td><td
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">69.75M</a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">0.92</a></td><td
         height=\"10\" align=\"right\" data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
         body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d'
         srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d
         1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
         2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
         loading='lazy'><div><b>Apple Inc</b>Consumer Electronics <span>\u2022</span>
-        USA <span>\u2022</span> 3270.00B</div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
-        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">213.25</span></a></td><td
+        USA <span>\u2022</span> 3489.58B</div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-negative\">227.57</span></a></td><td
         height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span
-        class=\"color-text is-positive\">2.00%</span></a></td><td height=\"10\" align=\"right\"><a
-        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">66,213,184</a></td></tr></table></td></tr></table>\n</td>\n</tr>\n<tr>\n<td>\n<table
+        class=\"color-text is-negative\">-2.32%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">64,407,399</a></td></tr></table></td></tr></table>\n</td>\n</tr>\n<tr>\n<td>\n<table
         width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n<tr>\n<td
         align=\"left\" class=\"count-text\"><b>Tickers:</b> AAPL</td><td align=\"right\"
         style=\"color:#1E6DC0\"><a href=\"elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-export\"
@@ -1310,7 +1312,7 @@ interactions:
         src=\"gfx/nic2x2.gif\" style=\"width:2px;height:10px\" alt=\"\" border=\"0\"></td></tr>\n</table>\n<div
         id=\"IC_D_3x3_1\"class=\"relative overflow-hidden flex items-center justify-center
         w-full mx-auto\" style=\"width:970px;height:250px;max-height:250px\"></div></div>\n</td></tr><!--
-        TS\nAAPL|213.25|66213184\nTE -->\n\r\n            <script type=\"text/javascript\">\r\n
+        TS\nAAPL|227.57|64407399\nTE -->\n\r\n            <script type=\"text/javascript\">\r\n
         \               ScreenerRefreshInit(0);\r\n            </script>\r\n        </table></div></div>\r\n
         \           <div class=\"footer\" style=\"margin-top: 20px;padding-bottom:
         115px\">\r\n                <div class=\"footer_links\">\r\n                    <a
@@ -1386,7 +1388,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 89a4b83b4d409fae-AMS
+      - 8a1efb48ee49643c-LHR
       Cache-Control:
       - no-cache
       Connection:
@@ -1396,13 +1398,13 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:23:05 GMT
+      - Fri, 12 Jul 2024 06:29:54 GMT
       Request-Context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       Server:
       - cloudflare
       Set-Cookie:
-      - screenerUrl=v%3D141%26t%3DAAPL%26o%3Dticker; expires=Fri, 27 Jun 2025 10:23:05
+      - screenerUrl=v%3D141%26t%3DAAPL%26o%3Dticker; expires=Sat, 12 Jul 2025 06:29:54
         GMT; domain=.finviz.com; path=/; samesite=lax
       Transfer-Encoding:
       - chunked

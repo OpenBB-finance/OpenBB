@@ -7,6 +7,7 @@ from openbb_finviz.models.equity_profile import FinvizEquityProfileFetcher
 from openbb_finviz.models.key_metrics import FinvizKeyMetricsFetcher
 from openbb_finviz.models.price_performance import FinvizPricePerformanceFetcher
 from openbb_finviz.models.price_target import FinvizPriceTargetFetcher
+from openbb_finviz.models.finviz_screener import FinvizScreenerFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -75,5 +76,23 @@ def test_finviz_compare_groups_fetcher(credentials=test_credentials):
     params = {"group": "country", "metric": "performance"}
 
     fetcher = FinvizCompareGroupsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+@pytest.mark.record_http
+def test_finviz_finviz_screener(credentials=test_credentials):
+    generic_filter_dct = {'Market Cap.' : '+Small (over $300mln)',
+                    'Average Volume' : 'Over 200K',
+                    'Price' : 'Over $10',
+                    'EPS growththis year' : 'Over 20%',
+                    'EPS growthnext year' : 'Positive (>0%)',
+                    'Gross Margin' : 'Positive (>0%)',
+                    'EPS growthqtr over qtr' : 'Over 20%',
+                    'Sales growthqtr over qtr' : 'Over 20%',
+                    'Return on Equity' : 'Positive (>0%)'
+                          }
+
+    params = {'filters' : generic_filter_dct}
+    fetcher = FinvizScreenerFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

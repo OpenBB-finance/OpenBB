@@ -11,3 +11,5 @@ pip install openbb-finviz
 ```
 
 Documentation available [here](https://docs.openbb.co/platform/developer_guide/contributing).
+
+### Added Finviz Screener,which leverages Finviz 
