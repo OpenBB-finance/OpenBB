@@ -53,7 +53,6 @@ class FinvizEquityScreenerQueryParams(EquityScreenerQueryParams):
         "industry": {"choices": list(INDUSTRY_MAP)},
         "market_cap": {"choices": list(MARKET_CAP_MAP)},
         "recommendation": {"choices": list(RECOMMENDATION_MAP)},
-        "filters_dict": {"exclude_from_api": True},
     }
 
     metric: Literal[
