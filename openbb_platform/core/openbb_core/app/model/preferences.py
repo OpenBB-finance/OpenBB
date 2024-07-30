@@ -21,12 +21,6 @@ class Preferences(BaseModel):
         description="Python default output type.",
         validate_default=True,
     )
-    plot_enable_pywry: bool = True
-    plot_open_export: bool = (
-        False  # Whether to open plot image exports after they are created
-    )
-    plot_pywry_height: PositiveInt = 762
-    plot_pywry_width: PositiveInt = 1400
     request_timeout: PositiveInt = 60
     show_warnings: bool = True
     table_style: Literal["dark", "light"] = "dark"
