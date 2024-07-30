@@ -15,8 +15,6 @@ channels:
 specs:
   - bash  # [unix]
   - python=3.12
-  - clang
-  - llvm
 
 pkg_domains:
   enable_anywhere: false
