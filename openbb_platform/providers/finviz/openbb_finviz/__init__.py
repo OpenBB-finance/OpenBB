@@ -3,6 +3,7 @@
 from openbb_core.provider.abstract.provider import Provider
 from openbb_finviz.models.compare_groups import FinvizCompareGroupsFetcher
 from openbb_finviz.models.equity_profile import FinvizEquityProfileFetcher
+from openbb_finviz.models.equity_screener import FinvizEquityScreenerFetcher
 from openbb_finviz.models.key_metrics import FinvizKeyMetricsFetcher
 from openbb_finviz.models.price_performance import FinvizPricePerformanceFetcher
 from openbb_finviz.models.price_target import FinvizPriceTargetFetcher
@@ -16,6 +17,7 @@ finviz_provider = Provider(
         "CompareGroups": FinvizCompareGroupsFetcher,
         "EtfPricePerformance": FinvizPricePerformanceFetcher,
         "EquityInfo": FinvizEquityProfileFetcher,
+        "EquityScreener": FinvizEquityScreenerFetcher,
         "KeyMetrics": FinvizKeyMetricsFetcher,
         "PricePerformance": FinvizPricePerformanceFetcher,
         "PriceTarget": FinvizPriceTargetFetcher,

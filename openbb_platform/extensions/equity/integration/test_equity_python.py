@@ -1390,6 +1390,22 @@ def test_equity_search(params, obb):
                 "provider": "nasdaq",
             }
         ),
+        (
+            {
+                "metric": "overview",
+                "signal": None,
+                "preset": None,
+                "filters_dict": None,
+                "sector": "consumer_defensive",
+                "industry": "grocery_stores",
+                "index": "all",
+                "exchange": "all",
+                "mktcap": "all",
+                "recommendation": "all",
+                "limit": None,
+                "provider": "finviz",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
