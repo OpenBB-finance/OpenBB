@@ -28,12 +28,12 @@ else
     exit 1
 fi
 
-# Build static assets.
+# Build OpenBB Python interface.
 "$PYTHON_EXEC" - <<EOF >>"$LOG_FILE" 2>&1
 import openbb
 openbb.build()
 EOF
-log_with_timestamp "Python Interface built successfully."
+log_with_timestamp "OpenBB's Python Interface built successfully."
 
 # IPython launcher script initialized with OpenBB.
 IPYTHON_WRAPPER_SCRIPT="$PREFIX/bin/openbb-ipython-launcher"

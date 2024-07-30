@@ -7,7 +7,7 @@ PATH %PREFIX%;%PREFIX%\Scripts;%PREFIX%\Library\bin;%PATH%
 SET LOG_FILE="%PREFIX%\post_install_log.txt"
 
 python -m pip install -U pip >> "%LOG_FILE%" 2>&1
-pip -m pip install -U setuptools >> "%LOG_FILE%" 2>&1
+pip install -U setuptools >> "%LOG_FILE%" 2>&1
 pip install -U -r requirements.txt >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
     echo %date% %time% "Error during post-installation: pip install failed." >> %LOG_FILE%

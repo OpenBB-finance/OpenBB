@@ -4,6 +4,4 @@ openbb-platform-pro-backend
 openbb-cli
 notebook
 nbclassic
-voila
 jedi-language-server
-pyright

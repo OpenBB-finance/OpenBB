@@ -29,10 +29,10 @@ extra_files:
   # Bundle launcher assets
   - ./requirements.txt: requirements.txt
   - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
-  - ./assets/openbb.icns: assets/openbb_icon.icns  # [unix]
+  - ./assets/openbb.icns: assets/openbb_icon.icns  # [osx]
   - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]
 
-icon_image: ./assets/openbb_icns  # [unix]
+icon_image: ./assets/openbb_icon.icns  # [osx]
 icon_image: ./assets/openbb_icon.ico  # [win]
 
 welcome_image: ./assets/openbb_osx.png  # [unix]
