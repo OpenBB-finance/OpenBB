@@ -1,5 +1,6 @@
 """Economy Router."""
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -255,6 +256,12 @@ async def composite_leading_indicator(
 
 @router.command(
     model="STIR",
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint will be removed in a future version. Use, `/economy/country_interest_rates`, instead.",
+        since=(4, 3),
+        expected_removal=(4, 5),
+    ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
@@ -282,6 +289,12 @@ async def short_term_interest_rate(
 
 @router.command(
     model="LTIR",
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint will be removed in a future version. Use, `/economy/country_interest_rates`, instead.",
+        since=(4, 3),
+        expected_removal=(4, 5),
+    ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
@@ -492,6 +505,12 @@ async def house_price_index(
 
 @router.command(
     model="ImmediateInterestRate",
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint will be removed in a future version. Use, `/economy/country_interest_rates`, instead.",
+        since=(4, 3),
+        expected_removal=(4, 5),
+    ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
@@ -511,6 +530,41 @@ async def immediate_interest_rate(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get immediate interest rates by country."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CountryInterestRates",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            description="For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate."
+            + " Overnight interbank rate is 'immediate', and 10-year rate is 'long'.",
+            parameters={
+                "provider": "oecd",
+                "country": "all",
+                "duration": "immediate",
+                "frequency": "quarter",
+            },
+        ),
+        APIEx(
+            description="Multiple countries can be passed in as a list.",
+            parameters={
+                "duration": "long",
+                "country": "united_kingdom,germany",
+                "frequency": "monthly",
+                "provider": "oecd",
+            },
+        ),
+    ],
+)
+async def country_interest_rates(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get interest rates by country(s) and duration. Most OECD countries publish short-term, a long-term, and immediate rates monthly."""
     return await OBBject.from_query(Query(**locals()))
 
 

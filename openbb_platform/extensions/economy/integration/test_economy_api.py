@@ -790,6 +790,33 @@ def test_economy_immediate_interest_rate(params, headers):
         (
             {
                 "country": "united_states",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "duration": "long",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_country_interest_rates(params, headers):
+    """Test the economy interest rates endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/country_interest_rates?{query_str}"
+    result = requests.get(url, headers=headers, timeout=30)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "country": "united_states",
                 "item": "meats",
                 "region": "all_city",
                 "frequency": "annual",

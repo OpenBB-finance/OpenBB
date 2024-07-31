@@ -762,6 +762,32 @@ def test_economy_immediate_interest_rate(params, obb):
         (
             {
                 "country": "united_states",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "duration": "long",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_country_interest_rates(params, obb):
+    """Test economy country interest rates endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.country_interest_rates(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "country": "united_states",
                 "item": "meats",
                 "region": "all_city",
                 "frequency": "annual",
