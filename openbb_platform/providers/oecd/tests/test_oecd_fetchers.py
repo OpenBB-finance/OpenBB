@@ -19,7 +19,9 @@ from openbb_oecd.models.share_price_index import OECDSharePriceIndexFetcher
 from openbb_oecd.models.short_term_interest_rate import OECDSTIRFetcher
 from openbb_oecd.models.unemployment import OECDUnemploymentFetcher
 
-test_credentials = UserService().default_user_settings.credentials.model_dump(mode="json")
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
