@@ -400,22 +400,23 @@ class ArgparseTranslator:
         """
         kwargs = self._unflatten_args(vars(parsed_args))
         kwargs = self._update_with_custom_types(kwargs)
-
         provider = kwargs.get("provider")
-        provider_args = []
+        provider_args: List = []
         if provider and provider in self.provider_parameters:
             provider_args = self.provider_parameters[provider]
         else:
             for args in self.provider_parameters.values():
                 provider_args.extend(args)
 
-        # remove kwargs that doesn't match the signature or provider parameters
+        # remove kwargs not matching the signature, provider parameters, or are empty.
         kwargs = {
             key: value
             for key, value in kwargs.items()
-            if key in self.signature.parameters or key in provider_args
+            if (
+                (key in self.signature.parameters or key in provider_args)
+                and (value or value is False)
+            )
         }
-
         return self.func(**kwargs)
 
     def parse_args_and_execute(self) -> Any:
@@ -426,6 +427,7 @@ class ArgparseTranslator:
             Any: The return value of the original function.
         """
         parsed_args = self._parser.parse_args()
+
         return self.execute_func(parsed_args)
 
     def translate(self) -> Callable:
