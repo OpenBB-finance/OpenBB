@@ -538,7 +538,8 @@ async def immediate_interest_rate(
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
-            description="For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate."
+            description="For OECD, duration can be 'immediate', 'short', or 'long'."
+            + " Default is 'short', which is the 3-month rate."
             + " Overnight interbank rate is 'immediate', and 10-year rate is 'long'.",
             parameters={
                 "provider": "oecd",
@@ -564,7 +565,9 @@ async def country_interest_rates(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get interest rates by country(s) and duration. Most OECD countries publish short-term, a long-term, and immediate rates monthly."""
+    """Get interest rates by country(s) and duration.
+    Most OECD countries publish short-term, a long-term, and immediate rates monthly.
+    """
     return await OBBject.from_query(Query(**locals()))
 
 

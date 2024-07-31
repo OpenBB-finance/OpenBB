@@ -8,12 +8,11 @@ from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.standard_models.country_interest_rates import (
     CountryInterestRatesData,
     CountryInterestRatesQueryParams,
 )
-
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_oecd.utils.constants import CODE_TO_COUNTRY_IR, COUNTRY_TO_CODE_IR
 from pydantic import Field, field_validator
 
