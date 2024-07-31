@@ -9,7 +9,6 @@ from warnings import warn
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.country_interest_rates import (
     CountryInterestRatesData,
     CountryInterestRatesQueryParams,
@@ -84,9 +83,7 @@ class OecdCountryInterestRatesData(CountryInterestRatesData):
     """OECD Country Interest Rates Data."""
 
 
-class OecdCountryInterestRatesFetcher(
-    Fetcher[OecdCountryInterestRatesQueryParams, List[OecdCountryInterestRatesData]]
-):
+class OecdCountryInterestRatesFetcher(Fetcher[OecdCountryInterestRatesQueryParams, List[OecdCountryInterestRatesData]]):
     """OECD Country Interest Rates Fetcher."""
 
     @staticmethod
@@ -95,9 +92,7 @@ class OecdCountryInterestRatesFetcher(
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
             transformed_params["start_date"] = (
-                date(2020, 1, 1)
-                if transformed_params.get("country") == "all"
-                else date(1954, 1, 1)
+                date(2020, 1, 1) if transformed_params.get("country") == "all" else date(1954, 1, 1)
             )
         if transformed_params.get("end_date") is None:
             transformed_params["end_date"] = date(date.today().year, 12, 31)
@@ -141,23 +136,14 @@ class OecdCountryInterestRatesFetcher(
         response = make_request(url, headers=headers, timeout=20)
         if response.status_code != 200:
             raise Exception(f"Error with the OECD request: {response.status_code}")
-        df = read_csv(StringIO(response.text)).get(
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
+        df = read_csv(StringIO(response.text)).get(["REF_AREA", "TIME_PERIOD", "OBS_VALUE"])
         if df.empty:
             raise EmptyDataError()
-        df = df.rename(
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
-        )
+        df = df.rename(columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"})
         df.country = [CODE_TO_COUNTRY_IR.get(d, d) for d in df.country]
         df.date = df.date.apply(oecd_date_to_python_date)
         df.value = df.value.astype(float) / 100
-        df = (
-            df.query("value.notnull()")
-            .set_index(["date", "country"])
-            .sort_index()
-            .reset_index()
-        )
+        df = df.query("value.notnull()").set_index(["date", "country"]).sort_index().reset_index()
 
         return df.to_dict("records")
 
