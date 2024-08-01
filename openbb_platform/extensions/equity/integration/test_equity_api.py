@@ -1134,8 +1134,6 @@ def test_equity_compare_groups(params, headers):
                 "start_date": "2023-06-01",
                 "end_date": "2023-06-03",
                 "interval": "1h",
-                "adjusted": False,
-                "prepost": False,
             }
         ),
         (
@@ -1148,8 +1146,6 @@ def test_equity_compare_groups(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
-                "adjusted": False,
-                "prepost": False,
             }
         ),
         (
@@ -1457,6 +1453,22 @@ def test_equity_search(params, headers):
                 "recommendation": "all",
                 "limit": None,
                 "provider": "nasdaq",
+            }
+        ),
+        (
+            {
+                "metric": "overview",
+                "signal": None,
+                "preset": None,
+                "filters_dict": None,
+                "sector": "consumer_defensive",
+                "industry": "grocery_stores",
+                "index": "all",
+                "exchange": "all",
+                "mktcap": "all",
+                "recommendation": "all",
+                "limit": None,
+                "provider": "finviz",
             }
         ),
     ],

@@ -19,7 +19,6 @@ from pydantic import (
     Field,
     NonNegativeFloat,
     PositiveFloat,
-    model_validator,
 )
 
 
@@ -39,29 +38,10 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         description="The adjustment factor to apply. 'splits_only' is not supported for intraday data.",
         default="splits_only",
     )
-    extended_hours: Optional[bool] = Field(
+    extended_hours: bool = Field(
         description="Include Pre and Post market data.",
         default=False,
     )
-    adjusted: bool = Field(
-        default=False,
-        exclude=True,
-        description="This field is deprecated (4.1.5) and will be removed in a future version."
-        + " Use 'adjustment' set as 'splits_and_dividends' instead.",
-        json_schema_extra={"deprecated": True},
-    )
-
-    @model_validator(mode="before")
-    @classmethod
-    def validate_deprecated_params(cls, values):
-        """Validate the deprecated parameters."""
-        for k, v in values.copy().items():
-            if k in ["adjusted"] and v is True:
-                warn(
-                    f"The '{k}' parameter is deprecated and will be removed in a future version."
-                )
-                values["adjustment"] = "splits_and_dividends"
-        return values
 
 
 class AVEquityHistoricalData(EquityHistoricalData):
@@ -287,7 +267,11 @@ class AVEquityHistoricalFetcher(
                         if len(query.symbol.split(",")) > 1:
                             data.loc[:, "symbol"] = symbol
 
-                        results.extend(data.reset_index().to_dict("records"))
+                        data = data.reset_index()
+                        if intraday is False:
+                            data["date"] = data["date"].dt.date
+
+                        results.extend(data.to_dict("records"))
 
             return results
 
