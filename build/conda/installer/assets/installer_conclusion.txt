@@ -1,6 +1,6 @@
 Thank you for installing OpenBB Platform!
 
-To get started, open the shortcuts location (Windows: Desktop/OpenBB Shortcuts - Unix: $HOME/openbb) and launch the OpenBB CLI to explore the available commands.
+To get started, open the shortcuts location - at the root of your operating system user account profile - and launch the OpenBB CLI to explore the available commands.
 
 Documentation is found here: https://docs.openbb.co
 
