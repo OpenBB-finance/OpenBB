@@ -20,8 +20,12 @@ class CountryInterestRatesQueryParams(QueryParams):
         default="united_states",
         description=QUERY_DESCRIPTIONS.get("country"),
     )
-    start_date: Optional[dateType] = Field(default=None, description=QUERY_DESCRIPTIONS.get("start_date"))
-    end_date: Optional[dateType] = Field(default=None, description=QUERY_DESCRIPTIONS.get("end_date"))
+    start_date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date")
+    )
+    end_date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date")
+    )
 
 
 class CountryInterestRatesData(Data):
