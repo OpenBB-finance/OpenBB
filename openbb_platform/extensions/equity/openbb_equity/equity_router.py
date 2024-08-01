@@ -100,3 +100,16 @@ async def market_snapshots(
 ) -> OBBject:
     """Get an updated equity market snapshot. This includes price data for thousands of stocks."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="HistoricalMarketCap", examples=[APIEx(parameters={"provider": "fmp"})]
+)
+async def historical_market_cap(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the historical market cap of a ticker symbol."""
+    return await OBBject.from_query(Query(**locals()))
