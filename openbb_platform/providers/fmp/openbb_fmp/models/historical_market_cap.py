@@ -112,7 +112,7 @@ class FmpHistoricalMarketCapFetcher(
         from pandas import DataFrame
 
         if not data:
-            return EmptyDataError("The request was returned empty.")
+            raise EmptyDataError("The request was returned empty.")
 
         symbols = query.symbol.split(",")
         df = DataFrame(data)
