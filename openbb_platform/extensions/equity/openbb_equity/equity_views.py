@@ -63,13 +63,22 @@ class EquityViews:
 
         df = data.pivot(columns="symbol", values="market_cap")
 
+        scatter_kwargs = kwargs.pop("scatter_kwargs", {})
+
+        if "hovertemplate" not in scatter_kwargs:
+            scatter_kwargs["hovertemplate"] = "%{y}"
+
+        ytital = kwargs.pop("ytitle", "Market Cap ($)")
+        y = kwargs.pop("y", df.columns.tolist())
+
         fig = line_chart(
             data=df,
             title=title,
-            y=df.columns.tolist(),
-            ytitle="Market Cap ($)",
+            y=y,
+            ytitle=ytital,
             same_axis=True,
-            scatter_kwargs={"hovertemplate": "%{y}"},
+            scatter_kwargs=scatter_kwargs,
+            **kwargs,
         )
         content = fig.show(external=True).to_plotly_json()
 
