@@ -37,13 +37,40 @@ class EquityViews:
     ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Equity Historical Market Cap Chart."""
         # pylint: disable=import-outside-toplevel
-        from openbb_charting.charts.price_historical import price_historical
+        from openbb_charting.charts.generic_charts import line_chart
+        from openbb_core.app.utils import basemodel_to_df
+        from pandas import DataFrame
 
         title = kwargs.pop("title", "Historical Market Cap")
 
-        return price_historical(
-            target="market_cap",
+        data = DataFrame()
+
+        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
+            data = kwargs["data"]
+        elif "data" in kwargs and isinstance(kwargs["data"], list):
+            data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))  # type: ignore
+        else:
+            data = basemodel_to_df(
+                kwargs["obbject_item"],
+                index=kwargs.get("index", "date"),  # type: ignore
+            )
+
+        if "date" in data.columns:
+            data = data.set_index("date")
+
+        if data.empty:
+            raise ValueError("Data is empty")
+
+        df = data.pivot(columns="symbol", values="market_cap")
+
+        fig = line_chart(
+            data=df,
             title=title,
+            y=df.columns.tolist(),
+            ytitle="Market Cap ($)",
             same_axis=True,
-            **kwargs,
+            scatter_kwargs={"hovertemplate": "%{y}"},
         )
+        content = fig.show(external=True).to_plotly_json()
+
+        return fig, content
