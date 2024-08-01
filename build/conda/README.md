@@ -23,3 +23,14 @@ Navigate into the `build/conda` folder and then begin.
     - `conda activate constructor`
 3. Build the installer.
     - `constructor installer/.`
+
+
+# For when we have a full NSIS 
+
+To check nsis file - run 
+
+miniconda3\\envs\\constructor\\NSIS\\makensis.exe /V2 assets\\installer.nsi
+
+gives better output 
+
+miniconda3\\envs\\constructor\\NSIS\\makensis.exe /V4 assets\\installer.nsi
