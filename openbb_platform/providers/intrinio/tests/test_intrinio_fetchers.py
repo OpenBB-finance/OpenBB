@@ -166,6 +166,7 @@ def test_intrinio_equity_quote_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_intrinio_options_chains_fetcher(credentials=test_credentials):
     """Test options chains fetcher."""
+
     params = {"symbol": "AAPL", "date": date(2023, 9, 15)}
 
     fetcher = IntrinioOptionsChainsFetcher()

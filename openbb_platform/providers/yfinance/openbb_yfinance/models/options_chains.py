@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -14,7 +14,6 @@ from openbb_core.provider.standard_models.options_chains import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
-from pytz import timezone
 
 
 class YFinanceOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -24,6 +23,7 @@ class YFinanceOptionsChainsQueryParams(OptionsChainsQueryParams):
 class YFinanceOptionsChainsData(OptionsChainsData):
     """YFinance Options Chains Data."""
 
+    __doc__ = OptionsChainsData.__doc__
     __alias_dict__ = {
         "contract_symbol": "contractSymbol",
         "last_trade_time": "lastTradeDate",
@@ -34,18 +34,18 @@ class YFinanceOptionsChainsData(OptionsChainsData):
         "in_the_money": "inTheMoney",
     }
 
-    in_the_money: Optional[bool] = Field(
-        default=None,
+    in_the_money: List[Union[bool, None]] = Field(
+        default_factory=list,
         description="Whether the option is in the money.",
     )
-    currency: Optional[str] = Field(
-        default=None,
+    currency: List[Union[str, None]] = Field(
+        default_factory=list,
         description="Currency of the option.",
     )
 
 
 class YFinanceOptionsChainsFetcher(
-    Fetcher[YFinanceOptionsChainsQueryParams, List[YFinanceOptionsChainsData]]
+    Fetcher[YFinanceOptionsChainsQueryParams, YFinanceOptionsChainsData]
 ):
     """YFinance Options Chains Fetcher."""
 
@@ -63,8 +63,9 @@ class YFinanceOptionsChainsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from pandas import concat  # noqa
-        from yfinance import Ticker  # noqa
+        from pandas import concat
+        from yfinance import Ticker
+        from pytz import timezone
 
         symbol = query.symbol.upper()
         symbol = "^" + symbol if symbol in ["VIX", "RUT", "SPX", "NDX"] else symbol
@@ -155,13 +156,25 @@ class YFinanceOptionsChainsFetcher(
         query: YFinanceOptionsChainsQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> List[YFinanceOptionsChainsData]:
+    ) -> AnnotatedResult[YFinanceOptionsChainsData]:
         """Transform the data."""
+        # pylint: disable=import-outside-toplevel
+        from numpy import nan
+        from pandas import DataFrame
+
         if not data:
             raise EmptyDataError()
         metadata = data.get("underlying", {})
         records = data.get("chains", [])
+        output = DataFrame(records)
+        for col in ["volume", "openInterest"]:
+            output[col] = (
+                output[col].infer_objects(copy=False).replace({nan: 0}).astype("int64")
+            )
+
+        output = output.replace({nan: None})
+
         return AnnotatedResult(
-            result=[YFinanceOptionsChainsData.model_validate(r) for r in records],
+            result=YFinanceOptionsChainsData.model_validate(output.to_dict("list")),
             metadata=metadata,
         )
