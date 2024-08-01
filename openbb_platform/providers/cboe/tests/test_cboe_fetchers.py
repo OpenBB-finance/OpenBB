@@ -102,6 +102,7 @@ def test_cboe_available_indices_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_cboe_options_chains_fetcher(credentials=test_credentials):
     """Test Cboe options chains fetcher."""
+
     params = {"symbol": "AAPL", "use_cache": False}
 
     fetcher = CboeOptionsChainsFetcher()
