@@ -69,7 +69,7 @@ class ROUTER_derivatives_options(Container):
         Returns
         -------
         OBBject
-            results : List[OptionsChains]
+            results : OptionsChains
                 Serializable results.
             provider : Optional[Literal['intrinio', 'yfinance']]
                 Provider name.
@@ -82,111 +82,111 @@ class ROUTER_derivatives_options(Container):
 
         OptionsChains
         -------------
-        underlying_symbol : Optional[str]
+        underlying_symbol : List[Optional[str]]
             Underlying symbol for the option.
-        underlying_price : Optional[float]
+        underlying_price : List[Optional[float]]
             Price of the underlying stock.
-        contract_symbol : str
+        contract_symbol : List[str]
             Contract symbol for the option.
-        eod_date : Optional[date]
+        eod_date : List[Optional[date]]
             Date for which the options chains are returned.
-        expiration : date
+        expiration : List[date]
             Expiration date of the contract.
-        dte : Optional[int]
+        dte : List[Optional[int]]
             Days to expiration of the contract.
-        strike : float
+        strike : List[float]
             Strike price of the contract.
-        option_type : str
+        option_type : List[str]
             Call or Put.
-        open_interest : Optional[int]
+        open_interest : List[Optional[int]]
             Open interest on the contract.
-        volume : Optional[int]
+        volume : List[Optional[int]]
             The trading volume.
-        theoretical_price : Optional[float]
+        theoretical_price : List[Optional[float]]
             Theoretical value of the option.
-        last_trade_price : Optional[float]
+        last_trade_price : List[Optional[float]]
             Last trade price of the option.
-        last_trade_size : Optional[int]
+        last_trade_size : List[Optional[int]]
             Last trade size of the option.
-        last_trade_time : Optional[datetime]
+        last_trade_time : List[Optional[datetime]]
             The timestamp of the last trade.
-        tick : Optional[str]
+        tick : List[Optional[str]]
             Whether the last tick was up or down in price.
-        bid : Optional[float]
+        bid : List[Optional[float]]
             Current bid price for the option.
-        bid_size : Optional[int]
+        bid_size : List[Optional[int]]
             Bid size for the option.
-        bid_time : Optional[datetime]
+        bid_time : List[Optional[datetime]]
             The timestamp of the bid price.
-        bid_exchange : Optional[str]
+        bid_exchange : List[Optional[str]]
             The exchange of the bid price.
-        ask : Optional[float]
+        ask : List[Optional[float]]
             Current ask price for the option.
-        ask_size : Optional[int]
+        ask_size : List[Optional[int]]
             Ask size for the option.
-        ask_time : Optional[datetime]
+        ask_time : List[Optional[datetime]]
             The timestamp of the ask price.
-        ask_exchange : Optional[str]
+        ask_exchange : List[Optional[str]]
             The exchange of the ask price.
-        mark : Optional[float]
+        mark : List[Optional[float]]
             The mid-price between the latest bid and ask.
-        open : Optional[float]
+        open : List[Optional[float]]
             The open price.
-        open_bid : Optional[float]
+        open_bid : List[Optional[float]]
             The opening bid price for the option that day.
-        open_ask : Optional[float]
+        open_ask : List[Optional[float]]
             The opening ask price for the option that day.
-        high : Optional[float]
+        high : List[Optional[float]]
             The high price.
-        bid_high : Optional[float]
+        bid_high : List[Optional[float]]
             The highest bid price for the option that day.
-        ask_high : Optional[float]
+        ask_high : List[Optional[float]]
             The highest ask price for the option that day.
-        low : Optional[float]
+        low : List[Optional[float]]
             The low price.
-        bid_low : Optional[float]
+        bid_low : List[Optional[float]]
             The lowest bid price for the option that day.
-        ask_low : Optional[float]
+        ask_low : List[Optional[float]]
             The lowest ask price for the option that day.
-        close : Optional[float]
+        close : List[Optional[float]]
             The close price.
-        close_size : Optional[int]
+        close_size : List[Optional[int]]
             The closing trade size for the option that day.
-        close_time : Optional[datetime]
+        close_time : List[Optional[datetime]]
             The time of the closing price for the option that day.
-        close_bid : Optional[float]
+        close_bid : List[Optional[float]]
             The closing bid price for the option that day.
-        close_bid_size : Optional[int]
+        close_bid_size : List[Optional[int]]
             The closing bid size for the option that day.
-        close_bid_time : Optional[datetime]
+        close_bid_time : List[Optional[datetime]]
             The time of the bid closing price for the option that day.
-        close_ask : Optional[float]
+        close_ask : List[Optional[float]]
             The closing ask price for the option that day.
-        close_ask_size : Optional[int]
+        close_ask_size : List[Optional[int]]
             The closing ask size for the option that day.
-        close_ask_time : Optional[datetime]
+        close_ask_time : List[Optional[datetime]]
             The time of the ask closing price for the option that day.
-        prev_close : Optional[float]
+        prev_close : List[Optional[float]]
             The previous close price.
-        change : Optional[float]
+        change : List[Optional[float]]
             The change in the price of the option.
-        change_percent : Optional[float]
+        change_percent : List[Optional[float]]
             Change, in normalized percentage points, of the option.
-        implied_volatility : Optional[float]
+        implied_volatility : List[Optional[float]]
             Implied volatility of the option.
-        delta : Optional[float]
+        delta : List[Optional[float]]
             Delta of the option.
-        gamma : Optional[float]
+        gamma : List[Optional[float]]
             Gamma of the option.
-        theta : Optional[float]
+        theta : List[Optional[float]]
             Theta of the option.
-        vega : Optional[float]
+        vega : List[Optional[float]]
             Vega of the option.
-        rho : Optional[float]
+        rho : List[Optional[float]]
             Rho of the option.
-        in_the_money : Optional[bool]
+        in_the_money : List[Optional[bool]]
             Whether the option is in the money. (provider: yfinance)
-        currency : Optional[str]
+        currency : List[Optional[str]]
             Currency of the option. (provider: yfinance)
 
         Examples
