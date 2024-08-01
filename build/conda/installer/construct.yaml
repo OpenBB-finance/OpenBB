@@ -1,0 +1,42 @@
+name: "OpenBB"
+version: "Platform"
+company: OpenBB, Inc.
+license_file: ./assets/installer_license.txt
+
+installer_type: all
+
+register_python: false # [win]
+register_python_default: false # [win]
+
+channels:
+  - defaults
+  - conda-forge
+
+specs:
+  - bash  # [unix]
+  - python=3.12
+
+pkg_domains:
+  enable_anywhere: false
+  enable_currentUserHome: true
+
+post_install: post_install.sh  # [unix]
+post_install: post_install.bat  # [win]
+
+extra_files:
+  # Bundle launcher assets
+  - ./requirements.txt: requirements.txt
+  - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
+  - ./assets/openbb.icns: assets/openbb_icon.icns  # [osx]
+  - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]
+
+icon_image: ./assets/openbb_icon.icns  # [osx]
+icon_image: ./assets/openbb_icon.ico  # [win]
+
+welcome_image: ./assets/openbb_osx.png  # [unix]
+welcome_image: ./assets/openbb_win.png  # [win]
+header_image: ./assets/header_win.png  # [win]
+welcome_image_text: "OpenBB Platform"
+welcome_file: ./assets/installer_welcome.txt
+readme_file: ./assets/installer_readme.txt
+conclusion_file: ./assets/installer_conclusion.txt

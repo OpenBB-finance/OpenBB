@@ -1,0 +1,13 @@
+Welcome to the OpenBB Platform Installer.
+
+
+This application will install the latest version of the OpenBB Platform on your computer in a self-contained, Python 3.12, environment.
+
+Several launch scripts are included; OpenBB CLI, OpenBB API, Jupyter Notebook, IPython, updater, and other shortcuts.
+
+Windows users can find a folder of shortcuts on the desktop following installation.
+
+Mac/Linux users can find them at the base of the installation folder, as files beginning with "openbb-".
+
+
+Note: In order to install you need access to the Internet.
