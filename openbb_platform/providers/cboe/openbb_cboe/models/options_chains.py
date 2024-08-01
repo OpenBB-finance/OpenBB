@@ -1,9 +1,9 @@
 """Cboe Options Chains Model."""
 
-# pylint: disable=invalid-name, unused-argument
+# pylint: disable= unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -33,11 +33,13 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
 class CboeOptionsChainsData(OptionsChainsData):
     """CBOE Options Chains Data."""
 
+    __doc__ = OptionsChainsData.__doc__
+
 
 class CboeOptionsChainsFetcher(
     Fetcher[
         CboeOptionsChainsQueryParams,
-        List[CboeOptionsChainsData],
+        CboeOptionsChainsData,
     ]
 ):
     """Cboe Options Chains Fetcher."""
@@ -83,7 +85,7 @@ class CboeOptionsChainsFetcher(
         query: CboeOptionsChainsQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[CboeOptionsChainsData]]:
+    ) -> AnnotatedResult[CboeOptionsChainsData]:
         """Transform the data to the standard format."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, DatetimeIndex, Series, to_datetime
@@ -92,13 +94,13 @@ class CboeOptionsChainsFetcher(
             raise EmptyDataError()
         results_metadata = {}
         options = data.get("data", {}).pop("options", [])
-        change_percent = data["data"].get("percent_change", None)
-        iv30_percent = data["data"].get("iv30_change_percent", None)
+        change_percent = data["data"].get("percent_change")
+        iv30_percent = data["data"].get("iv30_change_percent")
         if change_percent:
             change_percent = change_percent / 100
         if iv30_percent:
             iv30_percent = iv30_percent / 100
-        last_timestamp = data["data"].get("last_trade_time", None)
+        last_timestamp = data["data"].get("last_trade_time")
         if last_timestamp:
             last_timestamp = to_datetime(
                 last_timestamp, format="%Y-%m-%dT%H:%M:%S"
@@ -127,6 +129,7 @@ class CboeOptionsChainsFetcher(
                 "last_trade_timestamp": last_timestamp,
             }
         )
+        results_metadata = {k: v for k, v in results_metadata.items() if v is not None}
 
         options_df = DataFrame.from_records(options)
 
@@ -192,9 +195,8 @@ class CboeOptionsChainsFetcher(
         quotes["change_percent"] = quotes["change_percent"] / 100
 
         return AnnotatedResult(
-            result=[
-                CboeOptionsChainsData.model_validate(d)
-                for d in quotes.reset_index().to_dict("records")
-            ],
+            result=CboeOptionsChainsData.model_validate(
+                quotes.reset_index().to_dict("list")
+            ),
             metadata=results_metadata,
         )
