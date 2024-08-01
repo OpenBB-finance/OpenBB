@@ -2071,7 +2071,16 @@ def test_equity_compare_company_facts(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL,MSFT", "provider": "fmp"})],
+    [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+                "provider": "fmp",
+            }
+        )
+    ],
 )
 @pytest.mark.integration
 def test_equity_historical_market_cap(params, headers):

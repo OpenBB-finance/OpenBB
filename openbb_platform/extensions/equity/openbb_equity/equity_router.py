@@ -59,9 +59,7 @@ async def search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(
-    model="EquityScreener", examples=[APIEx(parameters={"provider": "fmp"})]
-)
+@router.command(model="EquityScreener", examples=[APIEx(parameters={"provider": "fmp"})])
 async def screener(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -89,9 +87,7 @@ async def profile(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(
-    model="MarketSnapshots", examples=[APIEx(parameters={"provider": "fmp"})]
-)
+@router.command(model="MarketSnapshots", examples=[APIEx(parameters={"provider": "fmp"})])
 async def market_snapshots(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -102,9 +98,7 @@ async def market_snapshots(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(
-    model="HistoricalMarketCap", examples=[APIEx(parameters={"provider": "fmp"})]
-)
+@router.command(model="HistoricalMarketCap", examples=[APIEx(parameters={"provider": "fmp", "symbol": "AAPL"})])
 async def historical_market_cap(
     cc: CommandContext,
     provider_choices: ProviderChoices,
