@@ -1,5 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+import datetime
 from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
@@ -17,6 +18,7 @@ class ROUTER_equity(Container):
     /discovery
     /estimates
     /fundamental
+    historical_market_cap
     market_snapshots
     /ownership
     /price
@@ -70,6 +72,94 @@ class ROUTER_equity(Container):
 
         return equity_fundamental.ROUTER_equity_fundamental(
             command_runner=self._command_runner
+        )
+
+    @exception_handler
+    @validate
+    def historical_market_cap(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+            ),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get the historical market cap of a ticker symbol.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fmp']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+
+        Returns
+        -------
+        OBBject
+            results : List[HistoricalMarketCap]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        HistoricalMarketCap
+        -------------------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        market_cap : Union[int, float]
+            Market capitalization of the security.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.historical_market_cap(provider='fmp', symbol='AAPL')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/historical_market_cap",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.historical_market_cap",
+                        ("fmp",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
+            )
         )
 
     @exception_handler
@@ -514,7 +604,7 @@ class ROUTER_equity(Container):
         --------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the company.
         market_cap : Optional[int]
             The market cap of ticker. (provider: fmp)

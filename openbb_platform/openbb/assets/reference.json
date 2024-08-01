@@ -27887,7 +27887,7 @@
                 "message": null
             },
             "description": "Get the historical market cap of a ticker symbol.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.historical_market_cap(provider='fmp')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.historical_market_cap(provider='fmp', symbol='AAPL')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -27974,7 +27974,7 @@
                     {
                         "name": "market_cap",
                         "type": "Union[int, float]",
-                        "description": "",
+                        "description": "Market capitalization of the security.",
                         "default": "",
                         "optional": false,
                         "choices": null

@@ -33,6 +33,6 @@ class HistoricalMarketCapData(Data):
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     market_cap: Union[int, float] = Field(
-        description=DATA_DESCRIPTIONS.get("market_cap", ""),
+        description="Market capitalization of the security.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
