@@ -30,3 +30,20 @@ class EquityViews:
         from openbb_charting.charts.price_performance import price_performance
 
         return price_performance(**kwargs)
+
+    @staticmethod
+    def equity_historical_market_cap(  # noqa: PLR0912
+        **kwargs,
+    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+        """Equity Historical Market Cap Chart."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.price_historical import price_historical
+
+        title = kwargs.pop("title", "Historical Market Cap")
+
+        return price_historical(
+            target="market_cap",
+            title=title,
+            same_axis=True,
+            **kwargs,
+        )
