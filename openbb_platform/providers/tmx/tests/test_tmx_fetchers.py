@@ -243,7 +243,8 @@ def test_tmx_insider_trading_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_tmx_options_chains_fetcher(credentials=test_credentials):
     """Test options chains fetcher."""
-    params = {"symbol": "SHOP", "use_cache": False}
+
+    params = {"symbol": "SHOP", "use_cache": False, "date": date(2023, 9, 15)}
 
     fetcher = TmxOptionsChainsFetcher()
     result = fetcher.test(params, credentials)
