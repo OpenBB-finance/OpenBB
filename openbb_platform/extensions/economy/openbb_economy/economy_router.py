@@ -207,7 +207,9 @@ async def money_measures(
     model="Unemployment",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"country": "all", "frequency": "quarter", "provider": "oecd"}),
+        APIEx(
+            parameters={"country": "all", "frequency": "quarter", "provider": "oecd"}
+        ),
         APIEx(
             description="Demographics for the statistics are selected with the `age` parameter.",
             parameters={
@@ -262,7 +264,9 @@ async def composite_leading_indicator(
     ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}),
+        APIEx(
+            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+        ),
     ],
 )
 async def short_term_interest_rate(
@@ -293,7 +297,9 @@ async def short_term_interest_rate(
     ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}),
+        APIEx(
+            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+        ),
     ],
 )
 async def long_term_interest_rate(
@@ -528,7 +534,7 @@ async def immediate_interest_rate(
 
 
 @router.command(
-    model="InterestRates",
+    model="CountryInterestRates",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(

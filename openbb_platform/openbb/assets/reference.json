@@ -8218,6 +8218,126 @@
             },
             "model": "ImmediateInterestRate"
         },
+        "/economy/interest_rates": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get interest rates by country(s) and duration.\nMost OECD countries publish short-term, a long-term, and immediate rates monthly.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.interest_rates(provider='oecd')\n# For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate. Overnight interbank rate is 'immediate', and 10-year rate is 'long'.\nobb.economy.interest_rates(provider='oecd', country='all', duration=immediate, frequency=quarter)\n# Multiple countries can be passed in as a list.\nobb.economy.interest_rates(duration=long, country='united_kingdom,germany', frequency=monthly, provider='oecd')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['oecd']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "duration",
+                        "type": "Literal['immediate', 'short', 'long']",
+                        "description": "Duration of the interest rate. 'immediate' is the overnight rate, 'short' is the 3-month rate, and 'long' is the 10-year rate.",
+                        "default": "short",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['monthly', 'quarter', 'annual']",
+                        "description": "Frequency to get interest rate for for.",
+                        "default": "monthly",
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CountryInterestRates]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['oecd']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "The interest rate value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "Country for which the interest rate is given.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "oecd": []
+            },
+            "model": "CountryInterestRates"
+        },
         "/economy/retail_prices": {
             "deprecated": {
                 "flag": null,
