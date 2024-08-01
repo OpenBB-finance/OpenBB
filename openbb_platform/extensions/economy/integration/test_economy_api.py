@@ -800,12 +800,12 @@ def test_economy_immediate_interest_rate(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_economy_country_interest_rates(params, headers):
+def test_economy_interest_rates(params, headers):
     """Test the economy interest rates endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/economy/country_interest_rates?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/economy/interest_rates?{query_str}"
     result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -861,9 +861,7 @@ def test_economy_survey_university_of_michigan(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = (
-        f"http://0.0.0.0:8000/api/v1/economy/survey/university_of_michigan?{query_str}"
-    )
+    url = f"http://0.0.0.0:8000/api/v1/economy/survey/university_of_michigan?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

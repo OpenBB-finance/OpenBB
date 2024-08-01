@@ -207,9 +207,7 @@ async def money_measures(
     model="Unemployment",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(
-            parameters={"country": "all", "frequency": "quarter", "provider": "oecd"}
-        ),
+        APIEx(parameters={"country": "all", "frequency": "quarter", "provider": "oecd"}),
         APIEx(
             description="Demographics for the statistics are selected with the `age` parameter.",
             parameters={
@@ -258,15 +256,13 @@ async def composite_leading_indicator(
     model="STIR",
     deprecated=True,
     deprecation=OpenBBDeprecationWarning(
-        message="This endpoint will be removed in a future version. Use, `/economy/country_interest_rates`, instead.",
+        message="This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead.",
         since=(4, 3),
         expected_removal=(4, 5),
     ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(
-            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
-        ),
+        APIEx(parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}),
     ],
 )
 async def short_term_interest_rate(
@@ -291,15 +287,13 @@ async def short_term_interest_rate(
     model="LTIR",
     deprecated=True,
     deprecation=OpenBBDeprecationWarning(
-        message="This endpoint will be removed in a future version. Use, `/economy/country_interest_rates`, instead.",
+        message="This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead.",
         since=(4, 3),
         expected_removal=(4, 5),
     ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(
-            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
-        ),
+        APIEx(parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}),
     ],
 )
 async def long_term_interest_rate(
@@ -507,7 +501,7 @@ async def house_price_index(
     model="ImmediateInterestRate",
     deprecated=True,
     deprecation=OpenBBDeprecationWarning(
-        message="This endpoint will be removed in a future version. Use, `/economy/country_interest_rates`, instead.",
+        message="This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead.",
         since=(4, 3),
         expected_removal=(4, 5),
     ),
@@ -534,7 +528,7 @@ async def immediate_interest_rate(
 
 
 @router.command(
-    model="CountryInterestRates",
+    model="InterestRates",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
@@ -559,7 +553,7 @@ async def immediate_interest_rate(
         ),
     ],
 )
-async def country_interest_rates(
+async def interest_rates(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,

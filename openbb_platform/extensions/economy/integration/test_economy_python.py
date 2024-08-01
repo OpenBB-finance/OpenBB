@@ -772,11 +772,11 @@ def test_economy_immediate_interest_rate(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_economy_country_interest_rates(params, obb):
+def test_economy_interest_rates(params, obb):
     """Test economy country interest rates endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.economy.country_interest_rates(**params)
+    result = obb.economy.interest_rates(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
