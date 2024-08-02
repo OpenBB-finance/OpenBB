@@ -86,7 +86,9 @@ class FredReleaseTableFetcher(
         dates: List = [""]
 
         # We'll verify that the release_id is valid and check the frequency for monthly/quarterly data.
-        release_info = await FredSearchFetcher.fetch_data({"release_id": query.release_id}, credentials)
+        release_info = await FredSearchFetcher.fetch_data(
+            {"release_id": query.release_id}, credentials
+        )
 
         if not release_info:
             raise OpenBBError(f"No release information found for, {query.release_id}.")
@@ -107,7 +109,9 @@ class FredReleaseTableFetcher(
                     date_obj = datetime.strptime(d, "%Y-%m-%d")
                     quarter = (date_obj.month - 1) // 3 + 1
                     start_month = (quarter - 1) * 3 + 1
-                    return date_obj.replace(month=start_month, day=1).strftime("%Y-%m-%d")
+                    return date_obj.replace(month=start_month, day=1).strftime(
+                        "%Y-%m-%d"
+                    )
 
                 dates = [to_quarter_start(d) for d in dates if len(d) == 10]
 
@@ -116,7 +120,9 @@ class FredReleaseTableFetcher(
                 [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
             )
 
-        element_id = f"&element_id={query.element_id}" if query.element_id is not None else ""
+        element_id = (
+            f"&element_id={query.element_id}" if query.element_id is not None else ""
+        )
 
         URLS = [
             f"https://api.stlouisfed.org/fred/release/tables?release_id={query.release_id}"
@@ -148,7 +154,11 @@ class FredReleaseTableFetcher(
                     v.pop("children", None)
                     v.pop("release_id", None)
                     res.append(v)
-                elif "observation_value" in v and v.get("observation_value") != "." and v.get("type") != "header":
+                elif (
+                    "observation_value" in v
+                    and v.get("observation_value") != "."
+                    and v.get("type") != "header"
+                ):
                     v["element_id"] = str(v["element_id"])
                     data.append(v)
             # When observation values are returned, we parse and collect the parent elements while flattening the data.
@@ -173,7 +183,9 @@ class FredReleaseTableFetcher(
                 )
                 df["parent_id"] = df.parent_id.astype(str)
                 df["element_id"] = df.element_id.astype(str)
-                df["observation_value"] = df.observation_value.str.replace(",", "").astype(float)
+                df["observation_value"] = df.observation_value.str.replace(
+                    ",", ""
+                ).astype(float)
 
                 if "line" in df.columns:
                     df["line"] = df.line.astype(int)
@@ -201,7 +213,9 @@ class FredReleaseTableFetcher(
 
                 df["observation_date"] = df.observation_date.apply(apply_date_format)
                 children = (
-                    df.groupby("parent_id")["element_id"].apply(lambda x: x.sort_values().unique().tolist()).to_dict()
+                    df.groupby("parent_id")["element_id"]
+                    .apply(lambda x: x.sort_values().unique().tolist())
+                    .to_dict()
                 )
                 children = {k: ",".join(v) for k, v in children.items()}
                 df["children"] = df.element_id.map(children)
@@ -215,7 +229,12 @@ class FredReleaseTableFetcher(
                 for index_col in new_index_cols.copy():
                     if index_col not in df.columns:
                         new_index_cols.remove(index_col)
-                df = df.set_index(new_index_cols).sort_index().reset_index().replace({nan: None})
+                df = (
+                    df.set_index(new_index_cols)
+                    .sort_index()
+                    .reset_index()
+                    .replace({nan: None})
+                )
                 results.extend(df.to_dict("records"))
             # If no observation values are returned, we collect the unique element IDs for the user.
             elif res:
