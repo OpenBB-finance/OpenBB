@@ -189,15 +189,29 @@ class FredReleaseTableFetcher(
 
                 if "line" in df.columns:
                     df["line"] = df.line.astype(int)
+
                 # Some dates are in the format 'Jan 2021' and others are '2021-01-01'.
-                try:
-                    df["observation_date"] = to_datetime(
-                        df["observation_date"], format="%b %Y"
-                    ).dt.date
-                except ValueError:
-                    df["observation_date"] = to_datetime(
-                        df["observation_date"], format="%Y-%m-%d"
-                    ).dt.date
+                def apply_date_format(x):
+                    """Apply the date format."""
+                    x = x.replace(" ", "-")
+                    if x.startswith("Q"):
+                        new_x = x.split("-")[-1]
+                        q_dict = {
+                            "Q1": "-03-31",
+                            "Q2": "-06-30",
+                            "Q3": "-09-30",
+                            "Q4": "-12-31",
+                        }
+                        return new_x + q_dict[x.split("-")[0]]
+                    try:
+                        return to_datetime(x).dt.date
+                    except ValueError:
+                        try:
+                            return to_datetime(x, format="%b-%Y").dt.date
+                        except ValueError:
+                            return x
+
+                df["observation_date"] = df.observation_date.apply(apply_date_format)
                 children = (
                     df.groupby("parent_id")["element_id"]
                     .apply(lambda x: x.sort_values().unique().tolist())
