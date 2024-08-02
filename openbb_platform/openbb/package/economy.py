@@ -2,13 +2,15 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
+from warnings import simplefilter, warn
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_economy(Container):
@@ -28,6 +30,7 @@ class ROUTER_economy(Container):
     house_price_index
     immediate_interest_rate
     indicators
+    interest_rates
     long_term_interest_rate
     money_measures
     pce
@@ -1948,6 +1951,10 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    @deprecated(
+        "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+        category=OpenBBDeprecationWarning,
+    )
     def immediate_interest_rate(
         self,
         country: Annotated[
@@ -2017,6 +2024,13 @@ class ROUTER_economy(Container):
         >>> # Multiple countries can be passed in as a list.
         >>> obb.economy.immediate_interest_rate(country='united_kingdom,germany', frequency='monthly', provider='oecd')
         """  # noqa: E501
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
 
         return self._run(
             "/economy/immediate_interest_rate",
@@ -2224,6 +2238,177 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def interest_rates(
+        self,
+        country: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): oecd."
+            ),
+        ] = "united_states",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get interest rates by country(s) and duration.
+        Most OECD countries publish short-term, a long-term, and immediate rates monthly.
+
+
+        Parameters
+        ----------
+        country : Union[str, List[str]]
+            The country to get data. Multiple comma separated items allowed for provider(s): oecd.
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['oecd']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+        duration : Literal['immediate', 'short', 'long']
+            Duration of the interest rate. 'immediate' is the overnight rate, 'short' is the 3-month rate, and 'long' is the 10-year rate. (provider: oecd)
+        frequency : Literal['monthly', 'quarter', 'annual']
+            Frequency to get interest rate for for. (provider: oecd)
+
+        Returns
+        -------
+        OBBject
+            results : List[CountryInterestRates]
+                Serializable results.
+            provider : Optional[Literal['oecd']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        CountryInterestRates
+        --------------------
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            The interest rate value.
+        country : Optional[str]
+            Country for which the interest rate is given.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.interest_rates(provider='oecd')
+        >>> # For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate. Overnight interbank rate is 'immediate', and 10-year rate is 'long'.
+        >>> obb.economy.interest_rates(provider='oecd', country='all', duration='immediate', frequency='quarter')
+        >>> # Multiple countries can be passed in as a list.
+        >>> obb.economy.interest_rates(duration='long', country='united_kingdom,germany', frequency='monthly', provider='oecd')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/interest_rates",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.interest_rates",
+                        ("oecd",),
+                    )
+                },
+                standard_params={
+                    "country": country,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "belgium",
+                                "bulgaria",
+                                "brazil",
+                                "ireland",
+                                "mexico",
+                                "indonesia",
+                                "new_zealand",
+                                "japan",
+                                "united_kingdom",
+                                "france",
+                                "chile",
+                                "canada",
+                                "netherlands",
+                                "united_states",
+                                "south_korea",
+                                "norway",
+                                "austria",
+                                "south_africa",
+                                "denmark",
+                                "switzerland",
+                                "hungary",
+                                "luxembourg",
+                                "australia",
+                                "germany",
+                                "sweden",
+                                "iceland",
+                                "turkey",
+                                "greece",
+                                "israel",
+                                "czech_republic",
+                                "latvia",
+                                "slovenia",
+                                "poland",
+                                "estonia",
+                                "lithuania",
+                                "portugal",
+                                "costa_rica",
+                                "slovakia",
+                                "finland",
+                                "spain",
+                                "romania",
+                                "russia",
+                                "euro_area19",
+                                "colombia",
+                                "italy",
+                                "india",
+                                "china",
+                                "croatia",
+                                "all",
+                            ],
+                        }
+                    },
+                    "duration": {
+                        "oecd": {
+                            "multiple_items_allowed": False,
+                            "choices": ["immediate", "short", "long"],
+                        }
+                    },
+                    "frequency": {
+                        "oecd": {
+                            "multiple_items_allowed": False,
+                            "choices": ["monthly", "quarter", "annual"],
+                        }
+                    },
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
+    @deprecated(
+        "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+        category=OpenBBDeprecationWarning,
+    )
     def long_term_interest_rate(
         self,
         start_date: Annotated[
@@ -2296,6 +2481,13 @@ class ROUTER_economy(Container):
         >>> obb.economy.long_term_interest_rate(provider='oecd')
         >>> obb.economy.long_term_interest_rate(country='all', frequency='quarterly', provider='oecd')
         """  # noqa: E501
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
 
         return self._run(
             "/economy/long_term_interest_rate",
@@ -2936,6 +3128,10 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    @deprecated(
+        "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+        category=OpenBBDeprecationWarning,
+    )
     def short_term_interest_rate(
         self,
         start_date: Annotated[
@@ -3006,6 +3202,13 @@ class ROUTER_economy(Container):
         >>> obb.economy.short_term_interest_rate(provider='oecd')
         >>> obb.economy.short_term_interest_rate(country='all', frequency='quarterly', provider='oecd')
         """  # noqa: E501
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
 
         return self._run(
             "/economy/short_term_interest_rate",
