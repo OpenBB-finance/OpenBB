@@ -6388,8 +6388,8 @@
         },
         "/economy/short_term_interest_rate": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5."
             },
             "description": "Get Short-term interest rates.\n\nThey are the rates at which short-term borrowings are effected between\nfinancial institutions or the rate at which short-term government paper is issued or traded in the market.\n\nShort-term interest rates are generally averages of daily rates, measured as a percentage.\nShort-term interest rates are based on three-month money market rates where available.\nTypical standardised names are \"money market rate\" and \"treasury bill rate\".",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.short_term_interest_rate(provider='oecd')\nobb.economy.short_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
@@ -6500,8 +6500,8 @@
         },
         "/economy/long_term_interest_rate": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5."
             },
             "description": "Get Long-term interest rates that refer to government bonds maturing in ten years.\n\nRates are mainly determined by the price charged by the lender, the risk from the borrower and the\nfall in the capital value. Long-term interest rates are generally averages of daily rates,\nmeasured as a percentage. These interest rates are implied by the prices at which the government bonds are\ntraded on financial markets, not the interest rates at which the loans were issued.\nIn all cases, they refer to bonds whose capital repayment is guaranteed by governments.\nLong-term interest rates are one of the determinants of business investment.\nLow long-term interest rates encourage investment in new equipment and high interest rates discourage it.\nInvestment is, in turn, a major source of economic growth.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.long_term_interest_rate(provider='oecd')\nobb.economy.long_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
@@ -8050,8 +8050,8 @@
         },
         "/economy/immediate_interest_rate": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5."
             },
             "description": "Get immediate interest rates by country.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.immediate_interest_rate(provider='oecd')\n# Multiple countries can be passed in as a list.\nobb.economy.immediate_interest_rate(country='united_kingdom,germany', frequency=monthly, provider='oecd')\n```\n\n",
@@ -8217,6 +8217,126 @@
                 "oecd": []
             },
             "model": "ImmediateInterestRate"
+        },
+        "/economy/interest_rates": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get interest rates by country(s) and duration.\nMost OECD countries publish short-term, a long-term, and immediate rates monthly.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.interest_rates(provider='oecd')\n# For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate. Overnight interbank rate is 'immediate', and 10-year rate is 'long'.\nobb.economy.interest_rates(provider='oecd', country='all', duration=immediate, frequency=quarter)\n# Multiple countries can be passed in as a list.\nobb.economy.interest_rates(duration=long, country='united_kingdom,germany', frequency=monthly, provider='oecd')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['oecd']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "duration",
+                        "type": "Literal['immediate', 'short', 'long']",
+                        "description": "Duration of the interest rate. 'immediate' is the overnight rate, 'short' is the 3-month rate, and 'long' is the 10-year rate.",
+                        "default": "short",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['monthly', 'quarter', 'annual']",
+                        "description": "Frequency to get interest rate for for.",
+                        "default": "monthly",
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CountryInterestRates]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['oecd']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "The interest rate value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "Country for which the interest rate is given.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "oecd": []
+            },
+            "model": "CountryInterestRates"
         },
         "/economy/retail_prices": {
             "deprecated": {
