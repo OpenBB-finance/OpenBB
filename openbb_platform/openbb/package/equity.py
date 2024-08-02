@@ -514,7 +514,7 @@ class ROUTER_equity(Container):
         --------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the company.
         market_cap : Optional[int]
             The market cap of ticker. (provider: fmp)
