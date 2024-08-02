@@ -42,11 +42,11 @@ welcome_image: ./assets/Installer_vertical2.bmp  # [win]
 header_image: ./assets/Installer_horizontal2.png  # [win]
 welcome_image_text: "OpenBB Platform"
 welcome_file: ./assets/installer_welcome.txt  # [unix]
-readme_file: ./assets/installer_readme.txt
-conclusion_file: ./assets/installer_conclusion.txt
+readme_file: ./assets/installer_readme.txt  # [unix]
+conclusion_file: ./assets/installer_conclusion.txt  # [unix]
 
-welcome_file: ./assets/custom_welcome.nsi # [win]
+welcome_file: ./assets/custom_welcome.nsi  # [win]
 
 # Add extra files to the installer - this is another way - was playing with this
 temp_extra_files:
-  - ./assets/Installer_vertical2.bmp: Installer_vertical2.bmp
+  - ./assets/Installer_vertical2.bmp: Installer_vertical2.bmp  # [win]
