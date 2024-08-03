@@ -198,7 +198,15 @@ def test_index_snapshots(params, headers):
                 "transform": "diff",
                 "provider": "nasdaq",
             }
-        )
+        ),
+        (
+            {
+                "series_name": "pe_month",
+                "start_date": None,
+                "end_date": None,
+                "provider": "multpl",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

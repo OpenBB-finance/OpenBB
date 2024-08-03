@@ -3,6 +3,7 @@
 # pylint: disable=unused-argument
 
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.sp500_multiples import (
@@ -50,6 +51,12 @@ class NasdaqSP500MultiplesFetcher(
         """Get the raw Nasdaq Data."""
         import nasdaqdatalink  # pylint: disable=import-outside-toplevel
 
+        # TODO: Remove this warning when removing from the fetcher_dict.
+        warn(
+            "This data set is no longer updated. Install `openbb-multpl` for replacement source of the same data."
+            + " This provider fetcher will be removed in a future version.",
+            category=FutureWarning,
+        )
         api_key = credentials.get("nasdaq_api_key") if credentials else ""
 
         if "Year" in query.series_name:
@@ -68,9 +75,10 @@ class NasdaqSP500MultiplesFetcher(
                 **kwargs,
             )
             .reset_index()
-            .rename(columns={"Date": "date", "Value": query.series_name})
+            .rename(columns={"Date": "date", "Value": "value"})
         )
         data["date"] = data["date"].dt.strftime("%Y-%m-%d")
+        data.loc[:, "name"] = query.series_name
 
         return data.to_dict("records")
 
