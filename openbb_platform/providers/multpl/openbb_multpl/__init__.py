@@ -6,7 +6,7 @@ from openbb_multpl.models.sp500_multiples import MultplSP500MultiplesFetcher
 multpl_provider = Provider(
     name="multpl",
     website="https://www.multpl.com/",
-    description="""Public broad-market data published to (https://multpl.com)[https;//multpl.com].""",
+    description="""Public broad-market data published to https://multpl.com.""",
     fetcher_dict={
         "SP500Multiples": MultplSP500MultiplesFetcher,
     },
