@@ -118,6 +118,7 @@ class MultplSP500MultiplesFetcher(
         import asyncio  # noqa
         from io import StringIO
         from openbb_core.provider.utils.helpers import amake_request
+        from numpy import nan
         from pandas import read_html, to_datetime
 
         series = query.series_name.split(",")
@@ -136,6 +137,10 @@ class MultplSP500MultiplesFetcher(
                 if not df.empty:
                     df["Date"] = to_datetime(df["Date"]).dt.date
                     df = df.sort_values("Date").reset_index(drop=True)
+                    if query.start_date:
+                        df = df[df["Date"] >= query.start_date]
+                    if query.end_date:
+                        df = df[df["Date"] <= query.end_date]
                     df["Value"] = df["Value"].apply(
                         lambda x: (
                             x.strip().replace("† ", "").replace("%", "")
@@ -147,7 +152,7 @@ class MultplSP500MultiplesFetcher(
                     if "growth" in series or "yield" in series:
                         df["Value"] = df["Value"].astype(float) / 100
 
-                    results.extend(df.to_dict(orient="records"))
+                    results.extend(df.replace({nan: None}).to_dict(orient="records"))
             else:
                 warn(f"Failed to get data for {series}.")
 
