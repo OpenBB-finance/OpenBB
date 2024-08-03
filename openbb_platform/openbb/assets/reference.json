@@ -1345,23 +1345,23 @@
                 "standard": [
                     {
                         "name": "underlying_symbol",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "Underlying symbol for the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "underlying_price",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Price of the underlying stock.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "contract_symbol",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "Contract symbol for the option.",
                         "default": "",
                         "optional": false,
@@ -1369,15 +1369,15 @@
                     },
                     {
                         "name": "eod_date",
-                        "type": "date",
+                        "type": "List[date]",
                         "description": "Date for which the options chains are returned.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "expiration",
-                        "type": "date",
+                        "type": "List[date]",
                         "description": "Expiration date of the contract.",
                         "default": "",
                         "optional": false,
@@ -1385,15 +1385,15 @@
                     },
                     {
                         "name": "dte",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Days to expiration of the contract.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "strike",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Strike price of the contract.",
                         "default": "",
                         "optional": false,
@@ -1401,7 +1401,7 @@
                     },
                     {
                         "name": "option_type",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "Call or Put.",
                         "default": "",
                         "optional": false,
@@ -1409,345 +1409,345 @@
                     },
                     {
                         "name": "open_interest",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Open interest on the contract.",
-                        "default": 0,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "volume",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "The trading volume.",
-                        "default": 0,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "theoretical_price",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Theoretical value of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "last_trade_price",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Last trade price of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "last_trade_size",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Last trade size of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "last_trade_time",
-                        "type": "datetime",
+                        "type": "List[datetime]",
                         "description": "The timestamp of the last trade.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "tick",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "Whether the last tick was up or down in price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Current bid price for the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid_size",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Bid size for the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid_time",
-                        "type": "datetime",
+                        "type": "List[datetime]",
                         "description": "The timestamp of the bid price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid_exchange",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "The exchange of the bid price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Current ask price for the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask_size",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "Ask size for the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask_time",
-                        "type": "datetime",
+                        "type": "List[datetime]",
                         "description": "The timestamp of the ask price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask_exchange",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "The exchange of the ask price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "mark",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The mid-price between the latest bid and ask.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "open",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The open price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "open_bid",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The opening bid price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "open_ask",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The opening ask price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "high",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The high price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid_high",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The highest bid price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask_high",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The highest ask price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "low",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The low price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "bid_low",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The lowest bid price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "ask_low",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The lowest ask price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The close price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close_size",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "The closing trade size for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close_time",
-                        "type": "datetime",
+                        "type": "List[datetime]",
                         "description": "The time of the closing price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close_bid",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The closing bid price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close_bid_size",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "The closing bid size for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close_bid_time",
-                        "type": "datetime",
+                        "type": "List[datetime]",
                         "description": "The time of the bid closing price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close_ask",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The closing ask price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close_ask_size",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "The closing ask size for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "close_ask_time",
-                        "type": "datetime",
+                        "type": "List[datetime]",
                         "description": "The time of the ask closing price for the option that day.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "prev_close",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The previous close price.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "change",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "The change in the price of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "change_percent",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Change, in normalized percentage points, of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "implied_volatility",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Implied volatility of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "delta",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Delta of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "gamma",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Gamma of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "theta",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Theta of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "vega",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Vega of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "rho",
-                        "type": "float",
+                        "type": "List[float]",
                         "description": "Rho of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     }
@@ -1756,17 +1756,17 @@
                 "yfinance": [
                     {
                         "name": "in_the_money",
-                        "type": "bool",
+                        "type": "List[bool]",
                         "description": "Whether the option is in the money.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "currency",
-                        "type": "str",
+                        "type": "List[str]",
                         "description": "Currency of the option.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     }
@@ -6388,8 +6388,8 @@
         },
         "/economy/short_term_interest_rate": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5."
             },
             "description": "Get Short-term interest rates.\n\nThey are the rates at which short-term borrowings are effected between\nfinancial institutions or the rate at which short-term government paper is issued or traded in the market.\n\nShort-term interest rates are generally averages of daily rates, measured as a percentage.\nShort-term interest rates are based on three-month money market rates where available.\nTypical standardised names are \"money market rate\" and \"treasury bill rate\".",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.short_term_interest_rate(provider='oecd')\nobb.economy.short_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
@@ -6500,8 +6500,8 @@
         },
         "/economy/long_term_interest_rate": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5."
             },
             "description": "Get Long-term interest rates that refer to government bonds maturing in ten years.\n\nRates are mainly determined by the price charged by the lender, the risk from the borrower and the\nfall in the capital value. Long-term interest rates are generally averages of daily rates,\nmeasured as a percentage. These interest rates are implied by the prices at which the government bonds are\ntraded on financial markets, not the interest rates at which the loans were issued.\nIn all cases, they refer to bonds whose capital repayment is guaranteed by governments.\nLong-term interest rates are one of the determinants of business investment.\nLow long-term interest rates encourage investment in new equipment and high interest rates discourage it.\nInvestment is, in turn, a major source of economic growth.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.long_term_interest_rate(provider='oecd')\nobb.economy.long_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
@@ -8050,8 +8050,8 @@
         },
         "/economy/immediate_interest_rate": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5."
             },
             "description": "Get immediate interest rates by country.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.immediate_interest_rate(provider='oecd')\n# Multiple countries can be passed in as a list.\nobb.economy.immediate_interest_rate(country='united_kingdom,germany', frequency=monthly, provider='oecd')\n```\n\n",
@@ -8217,6 +8217,126 @@
                 "oecd": []
             },
             "model": "ImmediateInterestRate"
+        },
+        "/economy/interest_rates": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get interest rates by country(s) and duration.\nMost OECD countries publish short-term, a long-term, and immediate rates monthly.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.interest_rates(provider='oecd')\n# For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate. Overnight interbank rate is 'immediate', and 10-year rate is 'long'.\nobb.economy.interest_rates(provider='oecd', country='all', duration=immediate, frequency=quarter)\n# Multiple countries can be passed in as a list.\nobb.economy.interest_rates(duration=long, country='united_kingdom,germany', frequency=monthly, provider='oecd')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['oecd']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "duration",
+                        "type": "Literal['immediate', 'short', 'long']",
+                        "description": "Duration of the interest rate. 'immediate' is the overnight rate, 'short' is the 3-month rate, and 'long' is the 10-year rate.",
+                        "default": "short",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['monthly', 'quarter', 'annual']",
+                        "description": "Frequency to get interest rate for for.",
+                        "default": "monthly",
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CountryInterestRates]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['oecd']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "The interest rate value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "Country for which the interest rate is given.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "oecd": []
+            },
+            "model": "CountryInterestRates"
         },
         "/economy/retail_prices": {
             "deprecated": {
@@ -26721,8 +26841,8 @@
                         "name": "name",
                         "type": "str",
                         "description": "Name of the company.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
                 ],

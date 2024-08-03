@@ -67,6 +67,7 @@ def test_tradier_equity_quote_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_tradier_derivatives_options_chains_fetcher(credentials=test_credentials):
     """Test the Tradier Derivatives Options Chains fetcher."""
+
     params = {"symbol": "PLTR"}
 
     fetcher = TradierOptionsChainsFetcher()
