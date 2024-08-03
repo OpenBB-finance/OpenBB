@@ -1,5 +1,7 @@
 """Install for development script."""
 
+# flake8: noqa: S603
+
 import subprocess
 import sys
 from pathlib import Path
@@ -141,12 +143,12 @@ def install_platform_local(_extras: bool = False):
         subprocess.run(
             CMD + ["lock", "--no-update"],
             cwd=PLATFORM_PATH,
-            check=True,  # noqa: S603
+            check=True,
         )
         subprocess.run(
             CMD + ["install"] + extras_args,
             cwd=PLATFORM_PATH,
-            check=True,  # noqa: S603
+            check=True,
         )
 
     except (Exception, KeyboardInterrupt) as e:
