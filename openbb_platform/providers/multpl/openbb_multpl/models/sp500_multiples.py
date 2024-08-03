@@ -126,7 +126,7 @@ class MultplSP500MultiplesFetcher(
         results: List = []
 
         async def response_callback(response, _):
-            """Callback for response."""
+            """Response callback."""
             return await response.text()
 
         async def get_one(url, series):
