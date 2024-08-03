@@ -81,7 +81,11 @@ def extract_dependencies(local_dep_path, dev: bool = False):
                 .get("dev", {})
                 .get("dependencies", {})
             )
-        return package_pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {})
+        return (
+            package_pyproject_toml.get("tool", {})
+            .get("poetry", {})
+            .get("dependencies", {})
+        )
     return {}
 
 
@@ -104,20 +108,26 @@ def install_platform_local(_extras: bool = False):
     local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
     with open(PYPROJECT) as f:
         pyproject_toml = load(f)
-    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(local_deps)
+    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(
+        local_deps
+    )
 
     # Extract and add devtools dependencies manually if Python version is 3.9
     if sys.version_info[:2] == (3, 9):
         devtools_deps = extract_dependencies(Path("./extensions/devtools"), dev=False)
         devtools_deps.remove("python")
-        pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(devtools_deps)
+        pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(
+            devtools_deps
+        )
 
     if _extras:
         dev_dependencies = get_all_dev_dependencies()
-        pyproject_toml.get("tool", {}).get("poetry", {}).setdefault("group", {}).setdefault("dev", {}).setdefault(
-            "dependencies", {}
-        )
-        pyproject_toml.get("tool", {}).get("poetry", {})["group"]["dev"]["dependencies"].update(dev_dependencies)
+        pyproject_toml.get("tool", {}).get("poetry", {}).setdefault(
+            "group", {}
+        ).setdefault("dev", {}).setdefault("dependencies", {})
+        pyproject_toml.get("tool", {}).get("poetry", {})["group"]["dev"][
+            "dependencies"
+        ].update(dev_dependencies)
 
     TEMP_PYPROJECT = dumps(pyproject_toml)
 
@@ -161,7 +171,9 @@ def install_platform_cli():
         pyproject_toml = load(f)
 
     # remove "openbb" from dependencies
-    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).pop("openbb", None)
+    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).pop(
+        "openbb", None
+    )
 
     TEMP_PYPROJECT = dumps(pyproject_toml)
 
