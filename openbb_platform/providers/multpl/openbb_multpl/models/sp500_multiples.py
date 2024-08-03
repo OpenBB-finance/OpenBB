@@ -74,10 +74,14 @@ class MultplSP500MultiplesQueryParams(SP500MultiplesQueryParams):
         new_values: List = []
         for s in series:
             if s not in URL_DICT:
-                raise OpenBBError(f"{s} is not a valid `series_name`. Choices are: \n{sorted(list(URL_DICT))}\n")
+                raise OpenBBError(
+                    f"{s} is not a valid `series_name`. Choices are: \n{sorted(list(URL_DICT))}\n"
+                )
             new_values.append(s)
         if not new_values:
-            raise OpenBBError(f"No valid series names provided. Choices are: \n{sorted(list(URL_DICT))}\n")
+            raise OpenBBError(
+                f"No valid series names provided. Choices are: \n{sorted(list(URL_DICT))}\n"
+            )
         return ",".join(new_values)
 
 
@@ -138,7 +142,11 @@ class MultplSP500MultiplesFetcher(
                     if query.end_date:
                         df = df[df["Date"] <= query.end_date]
                     df["Value"] = df["Value"].apply(
-                        lambda x: (x.strip().replace("† ", "").replace("%", "") if isinstance(x, str) else x)
+                        lambda x: (
+                            x.strip().replace("† ", "").replace("%", "")
+                            if isinstance(x, str)
+                            else x
+                        )
                     )
                     df["name"] = series
                     if "growth" in series or "yield" in series:
