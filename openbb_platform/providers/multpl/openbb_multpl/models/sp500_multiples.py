@@ -1,6 +1,6 @@
 """Multpl S&P 500 Multiples Model."""
 
-# pylint: disable=unused-import
+# pylint: disable=unused-argument
 
 from typing import Any, Dict, List, Optional
 from warnings import warn
