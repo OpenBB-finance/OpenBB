@@ -1932,3 +1932,27 @@ def test_equity_compare_company_facts(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+                "provider": "fmp",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_equity_historical_market_cap(params, obb):
+    """Test the equity historical market cap endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.historical_market_cap(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
