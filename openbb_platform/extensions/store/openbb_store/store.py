@@ -717,4 +717,4 @@ class Store(Data):
                 + f"\n        Schema Preview: {self.directory[name].get('schema_preview')}"
             )
             stores.append(string)
-        return f"\n{self.__class__.__name__} Archive {''.join(stores) if stores else '\n\nNo stores added.'}"
+        return f"\n{self.__class__.__name__} Archive {''.join(stores) if stores else 'No stores added.'}"
