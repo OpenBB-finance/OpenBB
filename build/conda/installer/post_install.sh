@@ -21,6 +21,8 @@ log_with_timestamp() {
 
 cd "$CWDIR/openbb" >>"$LOG_FILE" 2>&1
 
+"$POETRY_EXEC" config virtualenvs.create false --local >>"$LOG_FILE" 2>&1
+
 "$POETRY_EXEC" env use "$PYTHON_EXEC" >>"$LOG_FILE" 2>&1
 
 "$POETRY_EXEC" lock >>"$LOG_FILE" 2>&1
