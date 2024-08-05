@@ -10,7 +10,7 @@ python -m pip install -U pip >> "%LOG_FILE%" 2>&1
 pip install -U setuptools >> "%LOG_FILE%" 2>&1
 pip install poetry >> "%LOG_FILE%" 2>&1
 poetry config virtualenvs.create false --local >> "%LOG_FILE%" 2>&1
-poetry use python >> "%LOG_FILE%" 2>&1
+poetry env use python >> "%LOG_FILE%" 2>&1
 poetry lock >> "%LOG_FILE%" 2>&1
 poetry install >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (

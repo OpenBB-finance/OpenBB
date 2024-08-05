@@ -48,6 +48,6 @@ objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB CMD.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH%"
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH%" & " && cd " & userProfilePath & " && poetry env use python"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
