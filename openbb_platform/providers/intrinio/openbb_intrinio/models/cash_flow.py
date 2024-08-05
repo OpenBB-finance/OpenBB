@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator, model_validator
@@ -23,9 +24,15 @@ class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter", "ttm", "ytd"],
+        }
+    }
+
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(
         default="annual",
-        json_schema_extra={"choices": ["annual", "quarter", "ttm", "ytd"]},
+        description=QUERY_DESCRIPTIONS.get("period", ""),
     )
     fiscal_year: Optional[int] = Field(
         default=None,

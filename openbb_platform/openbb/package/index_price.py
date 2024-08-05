@@ -11,8 +11,8 @@ from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
-class ROUTER_currency_price(Container):
-    """/currency/price
+class ROUTER_index_price(Container):
+    """/index/price
     historical
     """
 
@@ -26,7 +26,7 @@ class ROUTER_currency_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, polygon, yfinance."
             ),
         ],
         start_date: Annotated[
@@ -38,45 +38,38 @@ class ROUTER_currency_price(Container):
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
-            Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]],
+            Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Currency Historical Price. Currency historical data.
-
-        Currency historical prices refer to the past exchange rates of one currency against
-        another over a specific period.
-        This data provides insight into the fluctuations and trends in the foreign exchange market,
-        helping analysts, traders, and economists understand currency performance,
-        evaluate economic health, and make predictions about future movements.
-
+        """Historical Index Levels.
 
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, polygon, yfinance.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance.
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
         interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], str, Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
-            Time interval of the data to return. (provider: fmp, polygon, tiingo, yfinance)
+            Time interval of the data to return. (provider: fmp, polygon, yfinance)
+        limit : Optional[int]
+            The number of data entries to return. (provider: intrinio, polygon)
         sort : Literal['asc', 'desc']
             Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)
-        limit : int
-            The number of data entries to return. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results : List[CurrencyHistorical]
+            results : List[IndexHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -85,24 +78,22 @@ class ROUTER_currency_price(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        CurrencyHistorical
-        ------------------
+        IndexHistorical
+        ---------------
         date : Union[date, datetime]
             The date of the data.
-        open : float
+        open : Optional[Annotated[float, Strict(strict=True)]]
             The open price.
-        high : float
+        high : Optional[Annotated[float, Strict(strict=True)]]
             The high price.
-        low : float
+        low : Optional[Annotated[float, Strict(strict=True)]]
             The low price.
-        close : float
+        close : Optional[Annotated[float, Strict(strict=True)]]
             The close price.
-        volume : Optional[float]
+        volume : Optional[int]
             The trading volume.
-        vwap : Optional[Annotated[float, Gt(gt=0)]]
-            Volume Weighted Average Price over the period.
-        adj_close : Optional[float]
-            The adjusted close price. (provider: fmp)
+        vwap : Optional[float]
+            Volume Weighted Average Price over the period. (provider: fmp)
         change : Optional[float]
             Change in the price from the previous close. (provider: fmp)
         change_percent : Optional[float]
@@ -113,21 +104,19 @@ class ROUTER_currency_price(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.currency.price.historical(symbol='EURUSD', provider='fmp')
-        >>> # Filter historical data with specific start and end date.
-        >>> obb.currency.price.historical(symbol='EURUSD', start_date='2023-01-01', end_date='2023-12-31', provider='fmp')
-        >>> # Get data with different granularity.
-        >>> obb.currency.price.historical(symbol='EURUSD', provider='polygon', interval='15m')
+        >>> obb.index.price.historical(symbol='^GSPC', provider='fmp')
+        >>> # Not all providers have the same symbols.
+        >>> obb.index.price.historical(symbol='SPX', provider='intrinio')
         """  # noqa: E501
 
         return self._run(
-            "/currency/price/historical",
+            "/index/price/historical",
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "currency.price.historical",
-                        ("fmp", "polygon", "tiingo", "yfinance"),
+                        "index.price.historical",
+                        ("fmp", "intrinio", "polygon", "yfinance"),
                     )
                 },
                 standard_params={
@@ -139,16 +128,12 @@ class ROUTER_currency_price(Container):
                 info={
                     "symbol": {
                         "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
                         "polygon": {"multiple_items_allowed": True, "choices": None},
-                        "tiingo": {"multiple_items_allowed": True, "choices": None},
                         "yfinance": {"multiple_items_allowed": True, "choices": None},
                     },
                     "interval": {
                         "fmp": {
-                            "multiple_items_allowed": False,
-                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
-                        },
-                        "tiingo": {
                             "multiple_items_allowed": False,
                             "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
                         },

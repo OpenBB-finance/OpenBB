@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import Field, field_validator
@@ -20,9 +21,15 @@ class YFinanceBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    period: Literal["annual", "quarter"] = Field(
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter"],
+        }
+    }
+
+    period: Literal["annual", "quarter", "ttm"] = Field(
         default="annual",
-        json_schema_extra={"choices": ["annual", "quarter"]},
+        description=QUERY_DESCRIPTIONS.get("period", ""),
     )
 
 

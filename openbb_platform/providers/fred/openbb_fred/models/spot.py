@@ -18,7 +18,10 @@ class FREDSpotRateQueryParams(SpotRateQueryParams):
 
     __json_schema_extra__ = {
         "maturity": {"multiple_items_allowed": True},
-        "category": {"multiple_items_allowed": True},
+        "category": {
+            "multiple_items_allowed": True,
+            "choices": ["par_yield", "spot_rate"],
+        },
     }
 
 

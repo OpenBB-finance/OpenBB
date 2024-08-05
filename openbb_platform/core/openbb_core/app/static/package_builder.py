@@ -1069,7 +1069,15 @@ class DocstringGenerator:
         def format_type(type_: str, char_limit: Optional[int] = None) -> str:
             """Format type in docstrings."""
             type_str = str(type_)
-            type_str = type_str.replace("NoneType", "None")
+            type_str = (
+                type_str.replace("<class '", "")
+                .replace("'>", "")
+                .replace("typing.", "")
+                .replace("pydantic.types.", "")
+                .replace("NoneType", "None")
+                .replace("datetime.date", "date")
+                .replace("datetime.datetime", "datetime")
+            )
             if char_limit:
                 type_str = type_str[:char_limit] + (
                     "..." if len(str(type_str)) > char_limit else ""
@@ -1109,7 +1117,7 @@ class DocstringGenerator:
             # Explicit parameters
             for param_name, param in explicit_params.items():
                 type_, description = get_param_info(param)
-                type_str = format_type(str(type_), char_limit=79)
+                type_str = format_type(str(type_), char_limit=86)
                 docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"
 
@@ -1484,28 +1492,26 @@ class ReferenceGenerator:
                 field_type, is_required, "website"
             )
 
-            if params_type == "QueryParams" and field in expanded_types:
-                expanded_type = DocstringGenerator.get_field_type(
-                    expanded_types[field], is_required, "website"
-                )
-                field_type = f"Union[{field_type}, {expanded_type}]"
             cleaned_description = (
                 str(field_info.description)
-                .strip().replace("\n", " ").replace("  ", " ").replace('"', "'")
+                .strip().replace('"', "'")
             )  # fmt: skip
 
             extra = field_info.json_schema_extra or {}
+            choices = extra.get("choices")
 
             # Add information for the providers supporting multiple symbols
             if params_type == "QueryParams" and extra:
-
-                providers = []
+                providers: List = []
                 for p, v in extra.items():  # type: ignore[union-attr]
                     if isinstance(v, dict) and v.get("multiple_items_allowed"):
                         providers.append(p)
+                        choices = v.get("choices")  # type: ignore
                     elif isinstance(v, list) and "multiple_items_allowed" in v:
                         # For backwards compatibility, before this was a list
                         providers.append(p)
+                    elif isinstance(v, dict) and "choices" in v:
+                        choices = v.get("choices")
 
                 if providers:
                     multiple_items = ", ".join(providers)
@@ -1515,6 +1521,12 @@ class ReferenceGenerator:
                     # Manually setting to List[<field_type>] for multiple items
                     # Should be removed if TYPE_EXPANSION is updated to include this
                     field_type = f"Union[{field_type}, List[{field_type}]]"
+            elif field in expanded_types:
+                expanded_type = DocstringGenerator.get_field_type(
+                    expanded_types[field], is_required, "website"
+                )
+                field_type = f"Union[{field_type}, {expanded_type}]"
+
             default_value = "" if field_info.default is PydanticUndefined else field_info.default  # fmt: skip
 
             provider_field_params.append(
@@ -1524,7 +1536,7 @@ class ReferenceGenerator:
                     "description": cleaned_description,
                     "default": default_value,
                     "optional": not is_required,
-                    "choices": extra.get("choices"),
+                    "choices": choices,
                 }
             )
 
@@ -1742,25 +1754,48 @@ class ReferenceGenerator:
                         provider_parameter_fields = cls._get_provider_parameter_info(
                             standard_model
                         )
-                        reference[path]["parameters"]["standard"].append(
-                            provider_parameter_fields
-                        )
 
                         # Add endpoint data fields for standard provider
                         reference[path]["data"]["standard"] = (
                             cls._get_provider_field_params(standard_model, "Data")
                         )
                         continue
+
                     # Adds provider specific parameter fields to the reference
                     reference[path]["parameters"][provider] = (
                         cls._get_provider_field_params(
                             standard_model, "QueryParams", provider
                         )
                     )
+
                     # Adds provider specific data fields to the reference
                     reference[path]["data"][provider] = cls._get_provider_field_params(
                         standard_model, "Data", provider
                     )
+
+                    # Remove choices from 'standard' if choices for a parameter exist
+                    # for both standard and provider, and are the same
+                    standard = [
+                        {d["name"]: d["choices"]}
+                        for d in reference[path]["parameters"]["standard"]
+                        if d.get("choices")
+                    ]
+                    standard = standard[0] if standard else []  # type: ignore
+                    _provider = [
+                        {d["name"]: d["choices"]}
+                        for d in reference[path]["parameters"][provider]
+                        if d.get("choices")
+                    ]
+                    _provider = _provider[0] if _provider else []  # type: ignore
+                    if standard and _provider and standard == _provider:
+                        for i, d in enumerate(
+                            reference[path]["parameters"]["standard"]
+                        ):
+                            if d.get("name") in standard:
+                                reference[path]["parameters"]["standard"][i][
+                                    "choices"
+                                ] = None
+
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
                 providers = provider_parameter_fields["type"]
