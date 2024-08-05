@@ -168,7 +168,7 @@ class Store:
         description: Optional[str] = None,
         **excel_file_kwargs,
     ) -> "ExcelFile":
-        """Loads an Excel spreadsheet from a file, adds it as a stored data object, and returns the ExcelFile object.
+        """Load an Excel spreadsheet from a file, adds it as a stored data object, and returns the ExcelFile object.
 
         Parameters
         ----------

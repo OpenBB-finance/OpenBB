@@ -107,7 +107,7 @@ class Store(Data):
         Load an exported Store from file.
 
     load_from_excel(file: Union[bytes, str], name: str, description: Optional[str] = None, **excel_file_kwargs):
-        Loads an Excel spreadsheet from a file or bytes object,
+        Load an Excel spreadsheet from a file or bytes object,
         adds it as a stored data object, and returns the ExcelFile object.
 
     load_defaults():
@@ -495,7 +495,7 @@ class Store(Data):
         description: Optional[str] = None,
         **excel_file_kwargs,
     ) -> "ExcelFile":
-        """Loads an Excel spreadsheet from a file, adds it as a stored data object, and returns the ExcelFile object.
+        """Load an Excel spreadsheet from a file, adds it as a stored data object, and returns the ExcelFile object.
 
         Parameters
         ----------
