@@ -192,7 +192,11 @@ class Store:
         """Clear all stores and load the defaults."""
         self._load_defaults()
         if self.verbose:
-            return "Defaults loaded." if self.defaults and len(self.defaults) > 0 else "No defaults saved."
+            return (
+                "Defaults loaded."
+                if self.defaults and len(self.defaults) > 0
+                else "No defaults saved."
+            )
 
     @classmethod
     def save_store_to_file(
