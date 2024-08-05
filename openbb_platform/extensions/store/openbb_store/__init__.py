@@ -65,7 +65,7 @@ class Store:
     @property
     def defaults(self) -> list:
         """Return the list of stores loaded by default."""
-        return self._store._defaults
+        return self._store._defaults  # pylint: disable=protected-access
 
     @classmethod
     def add_store(
@@ -197,6 +197,7 @@ class Store:
                 if self.defaults and len(self.defaults) > 0
                 else "No defaults saved."
             )
+        return None
 
     @classmethod
     def save_store_to_file(
@@ -223,7 +224,7 @@ class Store:
         if name not in defaults:
             defaults.append(name)
 
-        self._store._defaults = defaults
+        self._store._defaults = defaults  # pylint: disable=protected-access
         self.verbose = False
         try:
             self.save_store_to_file("defaults", defaults)
@@ -245,7 +246,7 @@ class Store:
         if name not in defaults:
             raise KeyError(f"{name} is not a default store.")
         defaults.remove(name)
-        self._store._defaults = defaults
+        self._store._defaults = defaults  # pylint: disable=protected-access
         self.verbose = False
         try:
             self.save_store_to_file("defaults", defaults)
@@ -271,8 +272,9 @@ class Store:
             self.verbose = verbose_setting
             return None
         for store in defaults:
-            self._store._defaults.append(store)
+            self._store._defaults.append(store)  # pylint: disable=protected-access
         self.verbose = verbose_setting
+        return None
 
     def __repr__(self):
         """Return a string representation of the Store class."""

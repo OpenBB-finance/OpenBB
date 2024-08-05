@@ -329,11 +329,11 @@ class Store(Data):
                 return obbject.to_llm()
 
             if element == "chart":
+                msg = "Charting extension is not installed. Install with `pip install openbb-charting`."
                 try:
                     # pylint: disable=unused-import,import-outside-toplevel
                     from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
 
-                    msg = "Charting extension is not installed. Install with `pip install openbb-charting`."
                 except ImportError as e:
                     raise ImportError(msg) from e
 
@@ -641,8 +641,8 @@ class Store(Data):
             try:
                 with open(Path(file), "rb") as f:
                     loaded_file = BytesIO(f.read())
-            except FileNotFoundError:
-                raise FileNotFoundError(f"File not found: {file}")
+            except FileNotFoundError as e:
+                raise FileNotFoundError(f"File not found: {file}") from e
             except Exception as e:
                 raise e from e
         elif isinstance(file, bytes):
