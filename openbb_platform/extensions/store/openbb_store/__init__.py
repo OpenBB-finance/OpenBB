@@ -218,7 +218,7 @@ class Store:
             warn(f"{name} is already in the defaults, overwriting.")
 
         if name not in self.list_stores:
-            raise (f"{name} is not a stored object.")
+            raise KeyError(f"{name} is not a stored object.")
 
         if name not in defaults:
             defaults.append(name)
@@ -243,7 +243,7 @@ class Store:
         verbose_setting = bool(self.verbose)
         defaults = self.defaults
         if name not in defaults:
-            raise (f"{name} is not a default store.")
+            raise KeyError(f"{name} is not a default store.")
         defaults.remove(name)
         self._store._defaults = defaults
         self.verbose = False
