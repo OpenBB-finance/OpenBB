@@ -43,7 +43,7 @@ objShortcut.Arguments = "-c ""from openbb import obb;obb"" -i"
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB Updater.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && cd " & prefixPath & " && poetry use python && poetry lock && poetry install && python -c ""import openbb; openbb.build()"" && echo OpenBB has been updated. Press any key to exit. && pause >nul && exit"
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && cd " & prefixPath & " && poetry env use python && poetry lock && poetry install && python -c ""import openbb; openbb.build()"" && echo OpenBB has been updated. Press any key to exit. && pause >nul && exit"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
