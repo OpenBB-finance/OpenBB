@@ -27160,6 +27160,109 @@
             },
             "model": "MarketSnapshots"
         },
+        "/equity/historical_market_cap": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the historical market cap of a ticker symbol.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.historical_market_cap(provider='fmp', symbol='AAPL')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fmp']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fmp": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[HistoricalMarketCap]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fmp']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "market_cap",
+                        "type": "Union[int, float]",
+                        "description": "Market capitalization of the security.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "fmp": []
+            },
+            "model": "HistoricalMarketCap"
+        },
         "/etf/search": {
             "deprecated": {
                 "flag": null,
