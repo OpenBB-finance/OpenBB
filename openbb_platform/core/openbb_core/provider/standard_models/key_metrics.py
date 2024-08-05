@@ -1,6 +1,6 @@
 """Key Metrics Standard Model."""
 
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -16,9 +16,6 @@ class KeyMetricsQueryParams(QueryParams):
     """Key Metrics Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Optional[Literal["annual", "quarter"]] = Field(
-        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
-    )
     limit: Optional[int] = Field(
         default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
@@ -28,12 +25,6 @@ class KeyMetricsQueryParams(QueryParams):
     def to_upper(cls, v: str) -> str:
         """Convert field to uppercase."""
         return v.upper()
-
-    @field_validator("period", mode="before", check_fields=False)
-    @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
-        """Convert field to lowercase."""
-        return v.lower() if v else v
 
 
 class KeyMetricsData(Data):

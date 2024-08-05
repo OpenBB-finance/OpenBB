@@ -2,9 +2,9 @@
 
 # pylint: disable=unused-argument
 
-import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -20,8 +20,6 @@ from openbb_core.provider.utils.helpers import (
 )
 from pydantic import Field, PrivateAttr, model_validator
 
-_warn = warnings.warn
-
 
 class TiingoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     """Tiingo Currency Historical Price Query.
@@ -35,7 +33,10 @@ class TiingoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
         "end_date": "endDate",
         "interval": "resampleFreq",
     }
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "interval": {"choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]},
+    }
 
     interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
@@ -112,7 +113,7 @@ class TiingoCurrencyHistoricalFetcher(
             result = await response.json()
             symbol = response.url.query.get("tickers", "")
             if not result:
-                _warn(f"No data found the the symbol: {symbol}")
+                warn(f"No data found the the symbol: {symbol}")
                 return results
             data = result
             if len(data) > 0:

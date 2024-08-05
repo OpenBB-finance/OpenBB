@@ -45,9 +45,9 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -104,7 +104,69 @@ class ROUTER_economy_gdp(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": {"multiple_items_allowed": True}}},
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "argentina",
+                                "asia",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "bulgaria",
+                                "canada",
+                                "chile",
+                                "china",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "peru",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "other_major_oil_producers",
+                                "rest_of_the_world",
+                                "world",
+                                "all",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -132,9 +194,9 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['econdb', 'oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
@@ -200,8 +262,70 @@ class ROUTER_economy_gdp(Container):
                 extra_params=kwargs,
                 info={
                     "country": {
-                        "econdb": {"multiple_items_allowed": True},
-                        "oecd": ["multiple_items_allowed"],
+                        "econdb": {"multiple_items_allowed": True, "choices": None},
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "oecd",
+                                "oecd_26",
+                                "oecd_europe",
+                                "g7",
+                                "g20",
+                                "euro_area",
+                                "european_union_27",
+                                "european_union_15",
+                                "nafta",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "bulgaria",
+                                "brazil",
+                                "canada",
+                                "chile",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "all",
+                            ],
+                        },
                     }
                 },
             )
@@ -231,9 +355,9 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['econdb', 'oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
@@ -295,8 +419,70 @@ class ROUTER_economy_gdp(Container):
                 extra_params=kwargs,
                 info={
                     "country": {
-                        "econdb": {"multiple_items_allowed": True},
-                        "oecd": ["multiple_items_allowed"],
+                        "econdb": {"multiple_items_allowed": True, "choices": None},
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "oecd",
+                                "oecd_26",
+                                "oecd_europe",
+                                "g7",
+                                "g20",
+                                "euro_area",
+                                "european_union_27",
+                                "european_union_15",
+                                "nafta",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "bulgaria",
+                                "brazil",
+                                "canada",
+                                "chile",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "all",
+                            ],
+                        },
                     }
                 },
             )

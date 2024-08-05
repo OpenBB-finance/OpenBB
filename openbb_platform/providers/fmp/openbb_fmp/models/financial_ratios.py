@@ -24,8 +24,15 @@ class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Company-Financial-Ratios
     """
 
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter", "ttm"],
+        }
+    }
+
     period: Literal["annual", "quarter", "ttm"] = Field(
-        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
+        default="annual",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
     )
 
 

@@ -288,8 +288,8 @@ class ROUTER_currency(Container):
                 extra_params=kwargs,
                 info={
                     "base": {
-                        "fmp": {"multiple_items_allowed": True},
-                        "polygon": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "polygon": {"multiple_items_allowed": True, "choices": None},
                     }
                 },
             )

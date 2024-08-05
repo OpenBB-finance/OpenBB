@@ -33,12 +33,16 @@ class OECDImmediateInterestRateQueryParams(ImmediateInterestRateQueryParams):
     Source: https://data-explorer.oecd.org/?lc=en
     """
 
-    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {
+        "country": {
+            "multiple_items_allowed": True,
+            "choices": CountriesList,
+        }
+    }
 
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
         default="united_states",
-        json_schema_extra={"choices": CountriesList},
     )
     frequency: Literal["monthly", "quarter", "annual"] = Field(
         description=QUERY_DESCRIPTIONS.get("frequency", ""),
