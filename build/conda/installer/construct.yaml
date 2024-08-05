@@ -26,7 +26,11 @@ post_install: post_install.bat  # [win]
 
 extra_files:
   # Bundle launcher assets
-  - ./requirements.txt: requirements.txt
+  - ./requirements.txt: ./requirements.txt
+  - ./assets/openbb_platform/pyproject.toml: ./pyproject.toml
+  - ./assets/openbb_platform/README.md: ./README.md
+  - ./assets/openbb_platform/poetry.lock: ./poetry.lock
+  - ./assets/openbb_platform/openbb_platform/__init__.py: ./openbb_platform/__init__.py
   - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
   - ./assets/openbb.icns: assets/openbb_icon.icns  # [osx]
   - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]

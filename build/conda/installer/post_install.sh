@@ -4,6 +4,7 @@
 export PATH="$PREFIX/bin:$PATH"
 PYTHON_EXEC="$PREFIX/bin/python"
 IPYTHON_EXEC="$PREFIX/bin/ipython"
+POETRY_EXEC="$PREFIX/bin/poetry"
 REQUIREMENTS_FILE="$PREFIX/requirements.txt"
 LOG_FILE="$PREFIX/post_install_log.txt"
 CWDIR=$(dirname "$PREFIX")
@@ -14,17 +15,21 @@ log_with_timestamp() {
 }
 
 # Update pip and setuptools.
-"$PYTHON_EXEC" -m pip install -U pip >>"$LOG_FILE" 2>&1
-
-"$PYTHON_EXEC" -m pip install -U setuptools >>"$LOG_FILE" 2>&1
+"$PYTHON_EXEC" -m pip install -U pip setuptools>>"$LOG_FILE" 2>&1
 
 "$PYTHON_EXEC" -m pip install poetry >>"$LOG_FILE" 2>&1
 
+cd "$CWDIR/openbb" >>"$LOG_FILE" 2>&1
+
+"$POETRY_EXEC" env use "$PYTHON_EXEC" >>"$LOG_FILE" 2>&1
+
+"$POETRY_EXEC" lock >>"$LOG_FILE" 2>&1
+
 # Install OpenBB packages.
-if "$PYTHON_EXEC" -m pip install -U -r "$REQUIREMENTS_FILE" >>"$LOG_FILE" 2>&1; then
-    log_with_timestamp "pip install completed successfully."
+if "$POETRY_EXEC" install >>"$LOG_FILE" 2>&1; then
+    log_with_timestamp "OpenBB Platform installation completed successfully."
 else
-    log_with_timestamp "Error during post-installation: pip install failed."
+    log_with_timestamp "Error during post-installation: poetry install failed."
     exit 1
 fi
 
@@ -39,8 +44,7 @@ log_with_timestamp "OpenBB's Python Interface built successfully."
 IPYTHON_WRAPPER_SCRIPT="$PREFIX/bin/openbb-ipython-launcher"
 
 cat > "$IPYTHON_WRAPPER_SCRIPT" <<EOF
-#!/bin/bash
-# Wrapper script to launch IPython with OpenBB
+#!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
 "$IPYTHON_EXEC" -c "from openbb import obb;obb" -i
 EOF
@@ -51,10 +55,11 @@ chmod +x "$IPYTHON_WRAPPER_SCRIPT"
 SHELL_WRAPPER_SCRIPT="$PREFIX/bin/openbb-bash"
 
 cat > "$SHELL_WRAPPER_SCRIPT" <<EOF
-#!/bin/bash
+#!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
-CWDIR=$(dirname "$PREFIX")
-exec "$PREFIX/bin/bash" -i
+cd "$PREFIX"
+"$POETRY_EXEC" env use "$PYTHON_EXEC"
+exec bin/bash -i
 EOF
 
 chmod +x "$SHELL_WRAPPER_SCRIPT"
@@ -63,19 +68,35 @@ chmod +x "$SHELL_WRAPPER_SCRIPT"
 OPENBB_UPDATER_SCRIPT="$PREFIX/bin/openbb-updater"
 
 cat > "$OPENBB_UPDATER_SCRIPT" <<EOF
-#!/bin/bash
+#!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
 "$PYTHON_EXEC" -m pip install -U pip
-"$PYTHON_EXEC" -m pip install -U -r "$REQUIREMENTS_FILE"
+cd "$PREFIX"
+"$POETRY_EXEC" env use "$PYTHON_EXEC"
+"$POETRY_EXEC" lock
+"$POETRY_EXEC" install
 "$PYTHON_EXEC" -c "import openbb; openbb.build()"
+echo "OpenBB Platform updated successfully."
 EOF
 
 chmod +x "$OPENBB_UPDATER_SCRIPT"
 
+NOTEBOOK_WRAPPER_SCRIPT="$PREFIX/bin/openbb-notebook"
+
+cat  > "$NOTEBOOK_WRAPPER_SCRIPT" <<EOF
+#!$PREFIX/bin/bash
+export PATH="$PREFIX/bin:\$PATH"
+cd "$CWDIR/openbb"
+"$POETRY_EXEC" env use "$PYTHON_EXEC"
+"$PREFIX/bin/jupyter-notebook"
+EOF
+
+chmod +x "$NOTEBOOK_WRAPPER_SCRIPT"
+
 # Create symlinks
 if ln -s "$PREFIX/bin/openbb" "$PREFIX/openbb-cli" && \
    ln -s "$PREFIX/bin/openbb-api" "$PREFIX/openbb-api" && \
-   ln -s "$PREFIX/bin/jupyter-notebook" "$PREFIX/openbb-notebook" && \
+   ln -s "$NOTEBOOK_WRAPPER_SCRIPT" "$PREFIX/openbb-notebook" && \
    ln -s "$IPYTHON_WRAPPER_SCRIPT" "$PREFIX/openbb-ipython" && \
    ln -s "$SHELL_WRAPPER_SCRIPT" "$PREFIX/openbb-bash" && \
    ln -s "$OPENBB_UPDATER_SCRIPT" "$PREFIX/openbb-updater" && \
