@@ -9,7 +9,16 @@ packages = [{ include = "openbb_store" }]
 [tool.poetry.dependencies]
 python = "^3.9,<3.13"
 openbb-core = "^1.3.0"
+openbb-charting = { version = "^2", optional = true }
+openpyxl = { version = "^3.1", optional = true }
+xlrd = { version = "^2", optional = true }
+random-user-agent = { version = "^1", optional = true }
 
+[tool.poetry.extras]
+
+excel = ["openpyxl", "xlrd", "random-user-agent"]
+charting = ["openbb-charting"]
+all = ["openpyxl", "xlrd", "random-user-agent", "openbb-charting"]
 
 [build-system]
 requires = ["poetry-core"]
