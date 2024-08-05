@@ -41,12 +41,16 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     Source: https://data-explorer.oecd.org/?lc=en
     """
 
-    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {
+        "country": {
+            "multiple_items_allowed": True,
+            "choices": CountriesList,
+        },
+    }
 
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
         default="united_states",
-        json_schema_extra={"choices": CountriesList},  # type: ignore
     )
     sex: Literal["total", "male", "female"] = Field(
         description="Sex to get unemployment for.",

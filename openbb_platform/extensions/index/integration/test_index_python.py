@@ -99,7 +99,6 @@ def test_index_constituents(params, obb):
         ),
         (
             {
-                "interval": "1d",
                 "provider": "intrinio",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",

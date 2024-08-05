@@ -12,6 +12,7 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, model_validator
 
@@ -22,8 +23,15 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Income-Statement
     """
 
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter"],
+        }
+    }
+
     period: Literal["annual", "quarter"] = Field(
-        default="annual", json_schema_extra={"choices": ["annual", "quarter"]}
+        default="annual",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
     )
 
 

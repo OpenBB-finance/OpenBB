@@ -26,7 +26,26 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "interval": {
+            "choices": [
+                "1m",
+                "2m",
+                "5m",
+                "15m",
+                "30m",
+                "60m",
+                "90m",
+                "1h",
+                "1d",
+                "5d",
+                "1W",
+                "1M",
+                "1Q",
+            ]
+        },
+    }
 
     interval: Literal[
         "1m",

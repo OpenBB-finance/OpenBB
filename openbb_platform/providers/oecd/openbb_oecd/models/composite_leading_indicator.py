@@ -71,13 +71,15 @@ class OECDCompositeLeadingIndicatorQueryParams(CompositeLeadingIndicatorQueryPar
     """OECD Composite Leading Indicator Query."""
 
     __json_schema_extra__ = {
-        "country": {"multiple_items_allowed": True},
+        "country": {
+            "multiple_items_allowed": True,
+            "choices": COUNTRY_CHOICES,
+        },
     }
 
     country: Union[Countries, str] = Field(
         description="Country to get the CLI for, default is G20.",
         default="g20",
-        json_schema_extra={"choices": COUNTRY_CHOICES},  # type: ignore
     )
     adjustment: Literal["amplitude", "normalized"] = Field(
         default="amplitude",

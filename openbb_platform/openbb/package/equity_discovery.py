@@ -237,9 +237,9 @@ class ROUTER_equity_discovery(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         form_type : Optional[str]
             Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.

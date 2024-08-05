@@ -234,12 +234,16 @@ TexasManufacturingOutlookChoices = Literal[
 class FredManufacturingOutlookTexasQueryParams(ManufacturingOutlookTexasQueryParams):
     """FRED Manufacturing Outlook - Texas - Query Params."""
 
-    __json_schema_extra__ = {"topic": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "topic": {
+            "multiple_items_allowed": True,
+            "choices": TEXAS_MANUFACTURING_OUTLOOK_CHOICES,
+        }
+    }
 
     topic: Union[TexasManufacturingOutlookChoices, str] = Field(
         default="new_orders_growth",
         description="The topic for the survey response.",
-        json_schema_extra={"choices": TEXAS_MANUFACTURING_OUTLOOK_CHOICES},
     )
     frequency: Union[
         None,
