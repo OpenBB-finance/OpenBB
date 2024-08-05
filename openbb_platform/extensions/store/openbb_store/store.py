@@ -591,7 +591,7 @@ class Store(Data):
             from openbb_store.utils import get_random_agent
 
         except ImportError as e:
-            raise e(
+            raise ImportError(
                 "The 'excel' extras are required for Excel IO. Install with `pip install openbb-store['excel']`."
             ) from e
 
@@ -648,7 +648,7 @@ class Store(Data):
         elif isinstance(file, bytes):
             loaded_file = BytesIO(file)
         else:
-            loaded_file = file
+            loaded_file = file  # type: ignore
         try:
             excel_file = ExcelFile(loaded_file, **excel_file_kwargs)
         except Exception as e:

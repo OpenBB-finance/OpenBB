@@ -188,12 +188,11 @@ class Store:
         """
         return cls._store.load_from_excel(file, name, description, **excel_file_kwargs)
 
-    @classmethod
-    def load_defaults(cls):
+    def load_defaults(self):
         """Clear all stores and load the defaults."""
-        cls._load_defaults()
-        if cls.verbose:
-            return "Defaults loaded." if cls.defaults else "No defaults saved."
+        self._load_defaults()
+        if self.verbose:
+            return "Defaults loaded." if self.defaults and len(self.defaults) > 0 else "No defaults saved."
 
     @classmethod
     def save_store_to_file(
@@ -226,10 +225,11 @@ class Store:
             self.save_store_to_file("defaults", defaults)
         except Exception as e:
             self.verbose = verbose_setting
-            raise e from e
+            raise Exception from e
         self.verbose = verbose_setting
         if self.verbose:
             return f"{name} added to defaults."
+        return None
 
     def remove_from_defaults(
         self,
@@ -251,6 +251,7 @@ class Store:
         self.verbose = verbose_setting
         if self.verbose:
             return f"{name} removed from defaults."
+        return None
 
     def _load_defaults(self):
         """Load the default stores."""
