@@ -8,7 +8,11 @@ SET LOG_FILE="%PREFIX%\post_install_log.txt"
 
 python -m pip install -U pip >> "%LOG_FILE%" 2>&1
 pip install -U setuptools >> "%LOG_FILE%" 2>&1
-pip install -U -r requirements.txt >> "%LOG_FILE%" 2>&1
+pip install poetry >> "%LOG_FILE%" 2>&1
+poetry config virtualenvs.create false --local >> "%LOG_FILE%" 2>&1
+poetry use python >> "%LOG_FILE%" 2>&1
+poetry lock >> "%LOG_FILE%" 2>&1
+poetry install >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
     echo %date% %time% "Error during post-installation: pip install failed." >> %LOG_FILE%
     exit /b 1
@@ -16,7 +20,7 @@ IF ERRORLEVEL 1 (
     echo %date% %time% "pip install completed successfully." >> %LOG_FILE%
 )
 
-echo Package installation completed successfully. Building OpenBB's Python interface...
+echo Poetry package installation completed successfully. Building OpenBB's Python interface...
 
 python -c "import openbb; openbb.build()" >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
