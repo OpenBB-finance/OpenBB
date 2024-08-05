@@ -32,10 +32,6 @@ class ROUTER_equity_price(Container):
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
             ),
         ],
-        interval: Annotated[
-            Optional[str],
-            OpenBBField(description="Time interval of the data to return."),
-        ] = "1d",
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
@@ -58,14 +54,14 @@ class ROUTER_equity_price(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.
-        interval : Optional[str]
-            Time interval of the data to return.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.
+        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'], str, Literal['1d', '1W', '1M', '1Y'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
+            Time interval of the data to return. (provider: fmp, intrinio, polygon, tiingo, yfinance)
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
         end_time : Optional[datetime.time]
@@ -173,18 +169,62 @@ class ROUTER_equity_price(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "interval": interval,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "fmp": {"multiple_items_allowed": True},
-                        "polygon": {"multiple_items_allowed": True},
-                        "tiingo": {"multiple_items_allowed": True},
-                        "yfinance": {"multiple_items_allowed": True},
-                    }
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "1m",
+                                "5m",
+                                "10m",
+                                "15m",
+                                "30m",
+                                "60m",
+                                "1h",
+                                "1d",
+                                "1W",
+                                "1M",
+                                "1Q",
+                                "1Y",
+                            ],
+                        },
+                        "polygon": {"multiple_items_allowed": True, "choices": None},
+                        "tiingo": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
+                    },
+                    "interval": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+                        },
+                        "tiingo": {
+                            "multiple_items_allowed": False,
+                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+                        },
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "1m",
+                                "2m",
+                                "5m",
+                                "15m",
+                                "30m",
+                                "60m",
+                                "90m",
+                                "1h",
+                                "1d",
+                                "5d",
+                                "1W",
+                                "1M",
+                                "1Q",
+                            ],
+                        },
+                    },
                 },
             )
         )
@@ -391,7 +431,9 @@ class ROUTER_equity_price(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -563,9 +605,9 @@ class ROUTER_equity_price(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "fmp": {"multiple_items_allowed": True},
-                        "intrinio": {"multiple_items_allowed": True},
-                        "yfinance": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
                     }
                 },
             )

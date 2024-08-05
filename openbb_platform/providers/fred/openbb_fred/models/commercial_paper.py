@@ -143,26 +143,27 @@ class FREDCommercialPaperParams(CommercialPaperParams):
     """FRED Commercial Paper Query."""
 
     __json_schema_extra__ = {
-        "maturity": {"multiple_items_allowed": True},
-        "category": {"multiple_items_allowed": True},
+        "maturity": {
+            "multiple_items_allowed": True,
+            "choices": ["all", "overnight", "7d", "15d", "30d", "60d", "90d"],
+        },
+        "category": {
+            "multiple_items_allowed": True,
+            "choices": ["all", "asset_backed", "financial", "nonfinancial", "a2p2"],
+        },
     }
+
     maturity: Union[
         str, Literal["all", "overnight", "7d", "15d", "30d", "60d", "90d"]
     ] = Field(
         default="all",
         description="A target maturity.",
-        json_schema_extra={
-            "choices": ["all", "overnight", "7d", "15d", "30d", "60d", "90d"]
-        },
     )
     category: Union[
         str, Literal["all", "asset_backed", "financial", "nonfinancial", "a2p2"]
     ] = Field(
         default="all",
         description="The category of asset.",
-        json_schema_extra={
-            "choices": ["all", "asset_backed", "financial", "nonfinancial", "a2p2"]
-        },
     )
     frequency: Union[
         None,

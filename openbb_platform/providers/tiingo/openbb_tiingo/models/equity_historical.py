@@ -2,9 +2,9 @@
 
 # pylint: disable=unused-argument
 
-import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -23,8 +23,6 @@ from openbb_core.provider.utils.helpers import (
 )
 from pydantic import Field, PrivateAttr, model_validator
 
-_warn = warnings.warn
-
 
 class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """Tiingo Equity Historical Price Query.
@@ -36,7 +34,10 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         "start_date": "startDate",
         "end_date": "endDate",
     }
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "interval": {"choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]},
+    }
 
     interval: Literal["1d", "1W", "1M", "1Y"] = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
@@ -144,7 +145,7 @@ class TiingoEquityHistoricalFetcher(
             symbol = response.url.parts[-2]
             results: List[dict] = []
             if not data:
-                _warn(f"No data found the the symbol: {symbol}")
+                warn(f"No data found the the symbol: {symbol}")
                 return results
 
             if isinstance(data, List):

@@ -42,8 +42,7 @@ class ROUTER_fixedincome(Container):
         index_type: Annotated[
             Literal["yield", "yield_to_worst", "total_return", "oas"],
             OpenBBField(
-                description="The type of series. OAS is the option-adjusted spread. Default is yield.",
-                choices=["yield", "yield_to_worst", "total_return", "oas"],
+                description="The type of series. OAS is the option-adjusted spread. Default is yield."
             ),
         ] = "yield",
         provider: Annotated[
@@ -58,9 +57,9 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['yield', 'yield_to_worst', 'total_return', 'oas']
             The type of series. OAS is the option-adjusted spread. Default is yield.
@@ -165,7 +164,40 @@ class ROUTER_fixedincome(Container):
                     "index_type": index_type,
                 },
                 extra_params=kwargs,
-                info={"index": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "index": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "a",
+                                "aa",
+                                "aaa",
+                                "asia",
+                                "b",
+                                "bb",
+                                "bbb",
+                                "ccc",
+                                "corporate",
+                                "crossover",
+                                "emea",
+                                "high_grade",
+                                "high_yield",
+                                "latam",
+                                "liquid_aaa",
+                                "liquid_asia",
+                                "liquid_bbb",
+                                "liquid_corporate",
+                                "liquid_emea",
+                                "liquid_latam",
+                                "non_financial",
+                                "private_sector",
+                                "public_sector",
+                                "seasoned_corporate",
+                                "yield_curve",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -211,9 +243,9 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -309,7 +341,35 @@ class ROUTER_fixedincome(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"index": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "index": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "primary",
+                                "ltv_lte_80",
+                                "ltv_gt_80",
+                                "conforming_30y",
+                                "conforming_30y_na",
+                                "jumbo_30y",
+                                "fha_30y",
+                                "va_30y",
+                                "usda_30y",
+                                "conforming_15y",
+                                "ltv_lte80_fico_ge740",
+                                "ltv_lte80_fico_a720b739",
+                                "ltv_lte80_fico_a700b719",
+                                "ltv_lte80_fico_a680b699",
+                                "ltv_lte80_fico_lt680",
+                                "ltv_gt80_fico_ge740",
+                                "ltv_gt80_fico_a720b739",
+                                "ltv_gt80_fico_a700b719",
+                                "ltv_gt80_fico_a680b699",
+                                "ltv_gt80_fico_lt680",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -354,9 +414,9 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['federal_reserve', 'fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
