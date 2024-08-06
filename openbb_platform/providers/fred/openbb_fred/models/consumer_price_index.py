@@ -21,12 +21,16 @@ from pydantic import Field, field_validator
 class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
     """FRED Consumer Price Index Query."""
 
-    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {
+        "country": {
+            "multiple_items_allowed": True,
+            "choices": CPI_COUNTRIES,
+        },
+    }
 
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country"),
         default="united_states",
-        json_schema_extra={"choices": CPI_COUNTRIES},  # type: ignore[dict-item]
     )
 
     @field_validator("country", mode="before", check_fields=False)

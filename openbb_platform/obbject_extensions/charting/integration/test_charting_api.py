@@ -600,9 +600,7 @@ def test_charting_technical_relative_rotation(params):
     )
     data_query_str = get_querystring(data_params, [])
     data_url = f"http://0.0.0.0:8000/api/v1/equity/price/historical?{data_query_str}"
-    data_result = requests.get(data_url, headers=get_headers(), timeout=10).json()[
-        "results"
-    ]
+    data_result = requests.get(data_url, headers=get_headers(), timeout=10).json()["results"]
     body = json.dumps({"data": data_result})
     query_str = get_querystring(params, ["data"])
     url = f"http://0.0.0.0:8000/api/v1/technical/relative_rotation?{query_str}"
@@ -634,11 +632,7 @@ def test_charting_technical_relative_rotation(params):
 def test_charting_equity_price_performance(params, headers):
     """Test chart equity price performance."""
     params = {p: v for p, v in params.items() if v}
-    body = (
-        json.dumps(
-            {"extra_params": {"chart_params": {"limit": 4, "orientation": "h"}}}
-        ),
-    )
+    body = (json.dumps({"extra_params": {"chart_params": {"limit": 4, "orientation": "h"}}}),)
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/price/performance?{query_str}"
     result = requests.get(url, headers=headers, timeout=10, json=body)
@@ -702,11 +696,7 @@ def test_charting_etf_price_performance(params, headers):
 def test_charting_etf_holdings(params, headers):
     """Test chart etf holdings."""
     params = {p: v for p, v in params.items() if v}
-    body = (
-        json.dumps(
-            {"extra_params": {"chart_params": {"orientation": "v", "limit": 10}}}
-        ),
-    )
+    body = (json.dumps({"extra_params": {"chart_params": {"orientation": "v", "limit": 10}}}),)
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/etf/holdings?{query_str}"
     result = requests.get(url, headers=headers, timeout=10, json=body)
@@ -821,6 +811,39 @@ def test_charting_derivatives_futures_curve(params, headers):
     body = (json.dumps({"extra_params": {"chart_params": {"title": "test chart"}}}),)
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/curve?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10, json=body)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "start_date": "2024-01-01",
+                "end_date": "2024-06-30",
+                "chart": True,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_equity_historical_market_cap(params, headers):
+    """Test chart equity historical market cap."""
+    params = {p: v for p, v in params.items() if v}
+    body = (json.dumps({"extra_params": {"chart_params": {"title": "test chart"}}}),)
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/historical_market_cap?{query_str}"
     result = requests.get(url, headers=headers, timeout=10, json=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

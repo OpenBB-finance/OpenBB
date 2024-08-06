@@ -294,7 +294,12 @@ INDEX_CHOICES = [
 class FredBondIndicesQueryParams(BondIndicesQueryParams):
     """FRED Bond Indices Query."""
 
-    __json_schema_extra__ = {"index": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "index": {
+            "multiple_items_allowed": True,
+            "choices": sorted(INDEX_CHOICES),
+        }
+    }
 
     category: BamlCategories = Field(
         default="us",
@@ -304,7 +309,6 @@ class FredBondIndicesQueryParams(BondIndicesQueryParams):
         default="yield_curve",
         description="The specific index to query."
         + " Used in conjunction with 'category' and 'index_type', default is 'yield_curve'.",
-        choices=sorted(INDEX_CHOICES),
     )
     frequency: Union[
         None,

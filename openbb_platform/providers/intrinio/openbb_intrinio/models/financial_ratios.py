@@ -1,7 +1,7 @@
 """Intrinio Financial Ratios Model."""
 
-import warnings
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -14,8 +14,6 @@ from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator
 
-_warn = warnings.warn
-
 
 class IntrinioFinancialRatiosQueryParams(FinancialRatiosQueryParams):
     """Intrinio Financial Ratios Query.
@@ -24,6 +22,11 @@ class IntrinioFinancialRatiosQueryParams(FinancialRatiosQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter", "ttm", "ytd"],
+        }
+    }
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
@@ -172,7 +175,7 @@ class IntrinioFinancialRatiosFetcher(
         )
         if query.fiscal_year is not None:
             if query.fiscal_year < 2008:
-                _warn("Financials data is only available from 2008 and later.")
+                warn("Financials data is only available from 2008 and later.")
                 query.fiscal_year = 2008
             fundamentals_url = fundamentals_url + f"&fiscal_year={query.fiscal_year}"
         fundamentals_url = fundamentals_url + f"&api_key={api_key}"
@@ -186,10 +189,10 @@ class IntrinioFinancialRatiosFetcher(
             """Return the response."""
             statement_data = await response.json()
             return {
-                "period_ending": statement_data["fundamental"]["end_date"],
-                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
-                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                "calculations": statement_data["standardized_financials"],
+                "period_ending": statement_data["fundamental"]["end_date"],  # type: ignore
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],  # type: ignore
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],  # type: ignore
+                "calculations": statement_data["standardized_financials"],  # type: ignore
             }
 
         urls = [
@@ -197,7 +200,7 @@ class IntrinioFinancialRatiosFetcher(
             for id in ids
         ]
 
-        return await amake_requests(urls, callback, **kwargs)
+        return await amake_requests(urls, callback, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(

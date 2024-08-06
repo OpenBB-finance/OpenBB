@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, model_validator
 
 
@@ -20,12 +21,16 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     """
 
     __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter", "ttm"],
+        }
+    }
 
     period: Literal["annual", "quarter", "ttm"] = Field(
         default="annual",
-        json_schema_extra={"choices": ["annual", "quarter", "ttm"]},
+        description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-
     filing_date: Optional[dateType] = Field(
         default=None, description="Filing date of the financial statement."
     )
