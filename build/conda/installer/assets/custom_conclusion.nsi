@@ -36,8 +36,7 @@ Function muiExtraPages_Create
     Pop $0
 FunctionEnd
 
-!define MUI_FINISHPAGE_TEXT "Conclusion. $\r$\n$\r$\n\
-Select a resource to open.$\r$\n$\r$\n\"
+!define MUI_FINISHPAGE_TEXT "Conclusion. $\r$\n$\r$\nSelect a resource to open.$\r$\n$\r$\n"
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT "OpenBB Platform Documentation"
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLinkTwo"
