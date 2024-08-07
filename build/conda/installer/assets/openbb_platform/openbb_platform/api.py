@@ -226,16 +226,10 @@ def main(**kwargs):
     openapi = app.openapi()
     build = kwargs.pop("build", True)
     build = False if kwargs.pop("no-build", None) else build
-
-    if Path(CURRENT_USER_SETTINGS).exists():
-        with open(CURRENT_USER_SETTINGS) as f:
-            current_settings = json.load(f)
-    else:
-        current_settings = {"credentials": {}, "preferences": {}, "defaults": {"commands": {}}}
-
     login = kwargs.pop("login", False)
-
-    current_settings = get_user_settings(login)
+    # We don't need the current settings,
+    # but we need to call the function to update login and/or identify the settings file.
+    current_settings = get_user_settings(login)  # noqa F841
 
     widgets_json = get_widgets_json(build, openapi)
 

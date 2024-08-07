@@ -30,6 +30,22 @@ IF ERRORLEVEL 1 (
     call :log_with_timestamp "OpenBB's Python interface built successfully."
 )
 
+REM Create a temporary batch file for the EXE launch script
+echo @echo off > %PREFIX%\Scripts\launch_openbb.bat
+echo "%PYTHON_EXEC%" -m openbb_platform.api --login True %%* >> %PREFIX%\Scripts\launch_openbb.bat
+
+REM Use pyinstaller to create an EXE from the batch file
+pip install pyinstaller >> "%LOG_FILE%" 2>&1
+pyinstaller --onefile --distpath %PREFIX%\Scripts --name openbb-api %PREFIX%\Scripts\launch_openbb.bat >> "%LOG_FILE%" 2>&1
+
+REM Clean up temporary batch file and build artifacts
+del %PREFIX%\Scripts\launch_openbb.bat
+rmdir /s /q %PREFIX%\Scripts\build
+rmdir /s /q %PREFIX%\Scripts\__pycache__
+del %PREFIX%\Scripts\openbb_launcher.spec
+
+echo EXE launch script created successfully.
+
 cscript "%PREFIX%\assets\create_shortcut.vbs" >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
     echo %date% %time% "Error during post-installation: creating shortcuts failed."  >> %LOG_FILE%
