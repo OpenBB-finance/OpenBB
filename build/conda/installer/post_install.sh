@@ -108,7 +108,7 @@ EOF
 
 chmod +x "$API_WRAPPER_SCRIPT"
 
-CLI_WRAPPER_SCRIPT="$PREFIX/bin/openbb"
+CLI_WRAPPER_SCRIPT="$PREFIX/bin/openbb-cli"
 
 cat  > "$CLI_WRAPPER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
