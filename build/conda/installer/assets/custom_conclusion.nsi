@@ -12,10 +12,10 @@ Function muiExtraPages_Create
 
     !insertmacro MUI_HEADER_TEXT_PAGE \
         "${PRODUCT_NAME}" \
-        "Installation Complete."
+        "Installation Successfully Complete"
 
     nsDialogs::Create /NOUNLOAD 1018
-    ${NSD_CreateLabel} 10u 10u 280u 40u "OpenBB Platform was installed successfully. $\r$\n$\r$\n$\r$\nHere is a link to the shortcuts folder:"
+    ${NSD_CreateLabel} 10u 10u 280u 40u "OpenBB Shorts.$\r$\n$\r$\n$\r$\nClick the link below to open the shortcuts folder:"
     Pop $IntroText
 
     ${NSD_CreateLink} 10u 55u 200u 10u "$DESKTOP\OpenBB Shortcuts"
@@ -36,14 +36,11 @@ Function muiExtraPages_Create
     Pop $0
 FunctionEnd
 
-!define MUI_FINISHPAGE_TEXT "The links below will help you get started using the OpenBB Platform.$\r$\n$\r$\n\"
+!define MUI_FINISHPAGE_TEXT "Conclusion. $\r$\n$\r$\n\
+Select a resource to open.$\r$\n$\r$\n\"
 !define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_RUN_TEXT "OpenBB Platform documentation."
+!define MUI_FINISHPAGE_RUN_TEXT "OpenBB Platform Documentation"
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLinkTwo"
-!define MUI_FINISHPAGE_RUN_TEXT "OpenBB CLI documentation."
-!define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLinkThree"
-!define MUI_FINISHPAGE_RUN_TEXT "OpenBB Pro documentation."
-!define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLinkFour"
 !define MUI_PAGE_CUSTOMFUNCTION_SHOW MyFinishShow
 !define MUI_PAGE_CUSTOMFUNCTION_LEAVE MyFinishLeave
 
@@ -57,16 +54,8 @@ Function LaunchLinkTwo
     ExecShell "open" "https://docs.openbb.co/platform"
 FunctionEnd
 
-Function LaunchLinkThree
-    ExecShell "open" "https://docs.openbb.co/cli"
-FunctionEnd
-
-Function LaunchLinkFour
-    ExecShell "open" "https://docs.openbb.co/pro"
-FunctionEnd
-
 Function MyFinishShow
-    ${NSD_CreateCheckbox} 120u 110u 100% 10u "OpenBB Shortcuts"
+    ${NSD_CreateCheckbox} 120u 110u 100% 10u "OpenBB CLI Documentation"
     Pop $CheckboxLinkThree
     ${NSD_Check} $CheckboxLinkThree
     SetCtlColors $CheckboxLinkThree "" "ffffff"
@@ -75,7 +64,7 @@ FunctionEnd
 Function MyFinishLeave
 ${NSD_GetState} $CheckboxLinkThree $0
 ${If} $0 <> 0
-    ExecShell "open" "$DESKTOP\OpenBB Shortcuts"
+    ExecShell "open" "https://docs.openbb.co/cli"
 ${EndIf}
 FunctionEnd
 
