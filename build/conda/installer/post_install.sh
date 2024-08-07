@@ -88,8 +88,9 @@ NOTEBOOK_WRAPPER_SCRIPT="$PREFIX/bin/openbb-notebook"
 cat  > "$NOTEBOOK_WRAPPER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
-cd "$CWDIR"
+cd "$CWDIR/openbb"
 "$POETRY_EXEC" env use "$PYTHON_EXEC"
+cd ..
 "$PREFIX/bin/jupyter-notebook"
 EOF
 
