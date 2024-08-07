@@ -40,10 +40,12 @@ objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB IPython.lnk")
 objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && poetry env use python && ipython -c ""from openbb import obb;obb"" -i"
+objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB API.lnk")
 objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && poetry env use python && openbb-api --login"
+objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 
