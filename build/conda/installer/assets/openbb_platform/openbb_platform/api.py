@@ -192,7 +192,12 @@ def get_widgets_json(build: bool, openapi):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
 
     python_path = Path(os.sys.executable)
-    widgets_json_path = python_path.parents[1].joinpath("assets").resolve().joinpath("widgets.json")
+    widgets_json_path = (
+        python_path.parents[0 if os.name == "nt" else 1]
+        .joinpath("assets")
+        .resolve()
+        .joinpath("widgets.json")
+    )
     json_exists = widgets_json_path.exists()
 
     if not json_exists:
