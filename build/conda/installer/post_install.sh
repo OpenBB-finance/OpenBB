@@ -105,10 +105,23 @@ cd "$CWDIR/openbb"
 "$PYTHON_EXEC" -m openbb_platform.api --login True "\$@"
 EOF
 
-chmod +x "$API_WRAPPER_SCRIPT"
+chmod +x "$CLI_WRAPPER_SCRIPT"
+
+CLI_WRAPPER_SCRIPT="$PREFIX/bin/openbb"
+
+cat  > "$CLI_WRAPPER_SCRIPT" <<EOF
+#!$PREFIX/bin/bash
+export PATH="$PREFIX/bin:\$PATH"
+cd "$CWDIR/openbb"
+"$POETRY_EXEC" env use "$PYTHON_EXEC"
+openbb
+EOF
+
+chmod +x "$CLI_WRAPPER_SCRIPT"
+
 
 # Create symlinks
-if ln -s "$PREFIX/bin/openbb" "$PREFIX/openbb-cli" && \
+if ln -s "$CLI_WRAPPER_SCRIPT" "$PREFIX/openbb-cli" && \
    ln -s "$API_WRAPPER_SCRIPT" "$PREFIX/openbb-api" && \
    ln -s "$NOTEBOOK_WRAPPER_SCRIPT" "$PREFIX/openbb-notebook" && \
    ln -s "$IPYTHON_WRAPPER_SCRIPT" "$PREFIX/openbb-ipython" && \

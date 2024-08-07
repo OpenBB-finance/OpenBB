@@ -15,7 +15,7 @@ Function muiExtraPages_Create
         "Installation Successfully Complete"
 
     nsDialogs::Create /NOUNLOAD 1018
-    ${NSD_CreateLabel} 10u 10u 280u 40u "OpenBB Shorts.$\r$\n$\r$\n$\r$\nClick the link below to open the shortcuts folder:"
+    ${NSD_CreateLabel} 10u 10u 280u 40u "Click the link below to open the shortcuts folder:"
     Pop $IntroText
 
     ${NSD_CreateLink} 10u 55u 200u 10u "$DESKTOP\OpenBB Shortcuts"
@@ -36,7 +36,7 @@ Function muiExtraPages_Create
     Pop $0
 FunctionEnd
 
-!define MUI_FINISHPAGE_TEXT "Conclusion. $\r$\n$\r$\nSelect a resource to open.$\r$\n$\r$\n"
+!define MUI_FINISHPAGE_TEXT "Select a resource to open.$\r$\n$\r$\n"
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT "OpenBB Platform Documentation"
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLinkTwo"
@@ -44,6 +44,7 @@ FunctionEnd
 !define MUI_PAGE_CUSTOMFUNCTION_LEAVE MyFinishLeave
 
 var CheckboxLinkThree
+var CheckboxLinkFour
 
 Function LaunchLinkOne
     ExecShell "open" "$DESKTOP\OpenBB Shortcuts"
@@ -58,13 +59,23 @@ Function MyFinishShow
     Pop $CheckboxLinkThree
     ${NSD_Check} $CheckboxLinkThree
     SetCtlColors $CheckboxLinkThree "" "ffffff"
+
+    ${NSD_CreateCheckbox} 120u 130u 100% 10u "OpenBB Pro Documentation"
+    Pop $CheckboxLinkFour
+    ${NSD_Check} $CheckboxLinkFour
+    SetCtlColors $CheckboxLinkFour "" "ffffff"
 FunctionEnd
 
 Function MyFinishLeave
-${NSD_GetState} $CheckboxLinkThree $0
-${If} $0 <> 0
-    ExecShell "open" "https://docs.openbb.co/cli"
-${EndIf}
+    ${NSD_GetState} $CheckboxLinkThree $0
+    ${If} $0 <> 0
+        ExecShell "open" "https://docs.openbb.co/cli"
+    ${EndIf}
+
+    ${NSD_GetState} $CheckboxLinkFour $0
+    ${If} $0 <> 0
+        ExecShell "open" "https://docs.openbb.co/pro"
+    ${EndIf}
 FunctionEnd
 
 !insertmacro MUI_PAGE_FINISH
