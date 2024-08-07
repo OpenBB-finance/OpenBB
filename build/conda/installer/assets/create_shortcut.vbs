@@ -36,6 +36,7 @@ CreateShortcut "Uninstall", prefixPath & "\Uninstall-OpenBB.exe", prefixPath & "
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB Notebook.lnk")
 objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && poetry env use python && cd " & userProfilePath & "jupyter-notebook"
+objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB IPython.lnk")
