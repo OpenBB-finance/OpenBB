@@ -106,7 +106,7 @@ cd "$CWDIR/openbb"
 "$PYTHON_EXEC" -m openbb_platform.api --login True "\$@"
 EOF
 
-chmod +x "$CLI_WRAPPER_SCRIPT"
+chmod +x "$API_WRAPPER_SCRIPT"
 
 CLI_WRAPPER_SCRIPT="$PREFIX/bin/openbb"
 
