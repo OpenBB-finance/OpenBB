@@ -411,7 +411,7 @@ def df_transform_numbers(data: "DataFrame", columns: list) -> "DataFrame":
 
     for col in columns:
         if col == "% Change":
-            data[col] = data[col].astype(str).str.replace("%", "").astype(float)
+            data[col] = data[col].astype(str).str.replace("%", "").astype(float) / 100
         else:
             for suffix, multiplier in multipliers.items():
                 data[col] = data[col].apply(replace_suffix, args=(suffix, multiplier))

@@ -32,7 +32,6 @@ class SpotRateQueryParams(QueryParams):
     category: str = Field(
         default="spot_rate",
         description="Rate category. Options: spot_rate, par_yield.",
-        json_schema_extra={"choices": ["par_yield", "spot_rate"]},
     )
 
     @field_validator("category", mode="before", check_fields=False)

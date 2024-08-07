@@ -72,13 +72,15 @@ class OECDGdpForecastQueryParams(GdpForecastQueryParams):
     """
 
     __json_schema_extra__ = {
-        "country": {"multiple_items_allowed": True},
+        "country": {
+            "multiple_items_allowed": True,
+            "choices": COUNTRIES,
+        },
     }
 
     country: str = Field(
         description="Country, or countries, to get forward GDP projections for. Default is all.",
         default="all",
-        json_schema_extra={"choices": COUNTRIES},  # type: ignore
     )
     frequency: Literal["annual", "quarter"] = Field(
         default="annual",

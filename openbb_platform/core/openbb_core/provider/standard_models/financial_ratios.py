@@ -16,9 +16,6 @@ class FinancialRatiosQueryParams(QueryParams):
     """Financial Ratios Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: str = Field(
-        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
-    )
     limit: NonNegativeInt = Field(
         default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
@@ -28,12 +25,6 @@ class FinancialRatiosQueryParams(QueryParams):
     def to_upper(cls, v: str):
         """Convert field to uppercase."""
         return v.upper()
-
-    @field_validator("period", mode="before", check_fields=False)
-    @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
-        """Convert field to lowercase."""
-        return v.lower() if v else v
 
 
 class FinancialRatiosData(Data):

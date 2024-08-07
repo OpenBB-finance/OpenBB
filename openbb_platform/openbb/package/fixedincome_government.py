@@ -48,9 +48,9 @@ class ROUTER_fixedincome_government(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -168,9 +168,9 @@ class ROUTER_fixedincome_government(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['federal_reserve', 'fmp']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fmp.
@@ -273,7 +273,7 @@ class ROUTER_fixedincome_government(Container):
 
         Parameters
         ----------
-        date : Union[datetime.date, None, str]
+        date : Union[date, None, str]
             A specific date to get data for. Defaults to the most recent FRED entry.
         inflation_adjusted : Optional[bool]
             Get inflation adjusted rates.
@@ -414,10 +414,13 @@ class ROUTER_fixedincome_government(Container):
                 extra_params=kwargs,
                 info={
                     "date": {
-                        "econdb": ["multiple_items_allowed"],
-                        "federal_reserve": {"multiple_items_allowed": True},
-                        "fmp": {"multiple_items_allowed": True},
-                        "fred": {"multiple_items_allowed": True},
+                        "econdb": {"multiple_items_allowed": True, "choices": None},
+                        "federal_reserve": {
+                            "multiple_items_allowed": True,
+                            "choices": None,
+                        },
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "fred": {"multiple_items_allowed": True, "choices": None},
                     }
                 },
             )

@@ -55,9 +55,9 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -155,8 +155,32 @@ class ROUTER_fixedincome_corporate(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "maturity": {"fred": {"multiple_items_allowed": True}},
-                    "category": {"fred": {"multiple_items_allowed": True}},
+                    "maturity": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "all",
+                                "overnight",
+                                "7d",
+                                "15d",
+                                "30d",
+                                "60d",
+                                "90d",
+                            ],
+                        }
+                    },
+                    "category": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "all",
+                                "asset_backed",
+                                "financial",
+                                "nonfinancial",
+                                "a2p2",
+                            ],
+                        }
+                    },
                 },
             )
         )
@@ -189,7 +213,7 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        date : Union[str, datetime.date, None, List[Union[str, datetime.d...
+        date : Union[str, date, None, List[Union[str, date, None]]]
             A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -240,7 +264,9 @@ class ROUTER_fixedincome_corporate(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={"date": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "date": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -283,9 +309,9 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
             The type of series.
@@ -391,9 +417,9 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['aaa', 'baa']
             The type of series.
@@ -477,8 +503,7 @@ class ROUTER_fixedincome_corporate(Container):
         category: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.",
-                choices=["par_yield", "spot_rate"],
+                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred."
             ),
         ] = "spot_rate",
         provider: Annotated[
@@ -499,9 +524,9 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         maturity : Union[float, str, List[Union[float, str]]]
             Maturities in years. Multiple comma separated items allowed for provider(s): fred.
@@ -556,8 +581,15 @@ class ROUTER_fixedincome_corporate(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "maturity": {"fred": {"multiple_items_allowed": True}},
-                    "category": {"fred": {"multiple_items_allowed": True}},
+                    "maturity": {
+                        "fred": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "category": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": ["par_yield", "spot_rate"],
+                        }
+                    },
                 },
             )
         )

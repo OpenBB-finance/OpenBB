@@ -69,6 +69,7 @@ def vcr_config():
 @pytest.mark.record_http
 def test_y_finance_options_chains_fetcher(credentials=test_credentials):
     """Test YFinanceOptionsChainsFetcher."""
+
     params = {"symbol": "OXY"}
 
     fetcher = YFinanceOptionsChainsFetcher()

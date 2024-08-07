@@ -31,9 +31,7 @@ def get_equity_data():
     symbol = "AAPL"
     provider = "fmp"
 
-    data["stocks_data"] = openbb.obb.equity.price.historical(
-        symbol=symbol, provider=provider
-    ).results
+    data["stocks_data"] = openbb.obb.equity.price.historical(symbol=symbol, provider=provider).results
     return data["stocks_data"]
 
 
@@ -673,6 +671,31 @@ def test_charting_derivatives_futures_historical(params, obb):
 def test_charting_derivatives_futures_curve(params, obb):
     """Test chart derivatives futures curve."""
     result = obb.derivatives.futures.curve(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "start_date": "2024-01-01",
+                "end_date": "2024-06-30",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_equity_historical_market_cap(params, obb):
+    """Test chart equity historical market cap."""
+    result = obb.equity.historical_market_cap(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

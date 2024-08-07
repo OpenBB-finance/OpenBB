@@ -24,7 +24,8 @@ prompt-toolkit = "^3.0.16"
 rich = "^13"
 python-dotenv = "^1.0.0"
 openpyxl = "^3.1.2"
+pywry = "^0.6.2"
 
 [build-system]
-requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

@@ -14,7 +14,7 @@ from openbb_core.provider.standard_models.equity_historical import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.references import INTERVALS_DICT, PERIODS
-from pydantic import Field, PrivateAttr, model_validator
+from pydantic import Field, PrivateAttr
 
 if TYPE_CHECKING:
     from pandas import DataFrame
@@ -26,7 +26,26 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "interval": {
+            "choices": [
+                "1m",
+                "2m",
+                "5m",
+                "15m",
+                "30m",
+                "60m",
+                "90m",
+                "1h",
+                "1d",
+                "5d",
+                "1W",
+                "1M",
+                "1Q",
+            ]
+        },
+    }
 
     interval: Literal[
         "1m",
@@ -58,20 +77,6 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         default="splits_only",
         description="The adjustment factor to apply. Default is splits only.",
     )
-    adjusted: bool = Field(
-        default=False,
-        exclude=True,
-        description="This field is deprecated (4.1.5) and will be removed in a future version."
-        + " Use 'adjustment' set as 'splits_and_dividends' instead.",
-        json_schema_extra={"deprecated": True},
-    )
-    prepost: bool = Field(
-        default=False,
-        exclude=True,
-        description="This field is deprecated (4.1.5) and will be removed in a future version."
-        + " Use 'extended_hours' as True instead.",
-        json_schema_extra={"deprecated": True},
-    )
 
     _ignore_tz: bool = PrivateAttr(default=True)
     _progress: bool = PrivateAttr(default=False)
@@ -80,23 +85,6 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     _rounding: bool = PrivateAttr(default=False)
     _repair: bool = PrivateAttr(default=False)
     _group_by: Literal["ticker", "column"] = PrivateAttr(default="ticker")
-
-    @model_validator(mode="before")
-    @classmethod
-    def validate_deprecated_params(cls, values):
-        """Validate the deprecated parameters."""
-        for k, v in values.copy().items():
-            if k in ["adjusted"] and v is True:
-                warn(
-                    f"The '{k}' parameter is deprecated and will be removed in a future version."
-                )
-                values["adjustment"] = "splits_and_dividends"
-            if k in ["prepost"] and v is True:
-                warn(
-                    f"The '{k}' parameter is deprecated and will be removed in a future version."
-                )
-                values["extended_hours"] = True
-        return values
 
 
 class YFinanceEquityHistoricalData(EquityHistoricalData):
@@ -191,6 +179,14 @@ class YFinanceEquityHistoricalFetcher(
                 if query.include_actions is False
                 else data
             )
+        query_symbols = query.symbol.upper().split(",")
+
+        if len(query_symbols) > 1:
+            symbols = data.symbol.unique().tolist()
+            for symbol in query_symbols:
+                if symbol not in symbols:
+                    warn(f"Data for '{symbol}' was not found.")
+
         return [
             YFinanceEquityHistoricalData.model_validate(d)
             for d in data.to_dict("records")
