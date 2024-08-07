@@ -71,15 +71,15 @@ class ROUTER_equity_discovery(Container):
         ------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the entity.
         price : float
             Last price.
         change : float
-            Change in price value.
+            Change in price.
         percent_change : float
             Percent change.
-        volume : float
+        volume : Union[int, float]
             The trading volume.
         market_cap : Optional[float]
             Market Cap displayed in billions. (provider: yfinance)
@@ -157,15 +157,15 @@ class ROUTER_equity_discovery(Container):
         -------------------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the entity.
         price : float
             Last price.
         change : float
-            Change in price value.
+            Change in price.
         percent_change : float
             Percent change.
-        volume : float
+        volume : Union[int, float]
             The trading volume.
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
@@ -352,20 +352,20 @@ class ROUTER_equity_discovery(Container):
         -------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the entity.
         price : float
             Last price.
         change : float
-            Change in price value.
+            Change in price.
         percent_change : float
             Percent change.
-        volume : float
+        volume : Union[int, float]
             The trading volume.
-        market_cap : Optional[float]
-            Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
+        market_cap : Optional[float]
+            Market Cap. (provider: yfinance)
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
@@ -438,15 +438,15 @@ class ROUTER_equity_discovery(Container):
         ------------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the entity.
         price : float
             Last price.
         change : float
-            Change in price value.
+            Change in price.
         percent_change : float
             Percent change.
-        volume : float
+        volume : Union[int, float]
             The trading volume.
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
@@ -524,15 +524,15 @@ class ROUTER_equity_discovery(Container):
         ------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the entity.
         price : float
             Last price.
         change : float
-            Change in price value.
+            Change in price.
         percent_change : float
             Percent change.
-        volume : float
+        volume : Union[int, float]
             The trading volume.
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
@@ -610,15 +610,15 @@ class ROUTER_equity_discovery(Container):
         -----------------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the entity.
         price : float
             Last price.
         change : float
-            Change in price value.
+            Change in price.
         percent_change : float
             Percent change.
-        volume : float
+        volume : Union[int, float]
             The trading volume.
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
@@ -696,15 +696,15 @@ class ROUTER_equity_discovery(Container):
         --------------------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the entity.
         price : float
             Last price.
         change : float
-            Change in price value.
+            Change in price.
         percent_change : float
             Percent change.
-        volume : float
+        volume : Union[int, float]
             The trading volume.
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)

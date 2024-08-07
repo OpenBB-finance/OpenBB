@@ -7855,7 +7855,57 @@
                         "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "ireland",
+                            "mexico",
+                            "indonesia",
+                            "new_zealand",
+                            "japan",
+                            "united_kingdom",
+                            "france",
+                            "chile",
+                            "canada",
+                            "netherlands",
+                            "united_states",
+                            "south_korea",
+                            "norway",
+                            "austria",
+                            "south_africa",
+                            "denmark",
+                            "switzerland",
+                            "hungary",
+                            "luxembourg",
+                            "australia",
+                            "germany",
+                            "sweden",
+                            "iceland",
+                            "turkey",
+                            "greece",
+                            "israel",
+                            "czech_republic",
+                            "latvia",
+                            "slovenia",
+                            "poland",
+                            "estonia",
+                            "lithuania",
+                            "portugal",
+                            "costa_rica",
+                            "slovakia",
+                            "finland",
+                            "spain",
+                            "romania",
+                            "russia",
+                            "euro_area19",
+                            "colombia",
+                            "italy",
+                            "india",
+                            "china",
+                            "croatia",
+                            "all"
+                        ]
                     },
                     {
                         "name": "start_date",
@@ -7872,13 +7922,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['oecd']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "oecd": [
@@ -7888,7 +7931,11 @@
                         "description": "Duration of the interest rate. 'immediate' is the overnight rate, 'short' is the 3-month rate, and 'long' is the 10-year rate.",
                         "default": "short",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "immediate",
+                            "short",
+                            "long"
+                        ]
                     },
                     {
                         "name": "frequency",
@@ -7896,7 +7943,11 @@
                         "description": "Frequency to get interest rate for for.",
                         "default": "monthly",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "monthly",
+                            "quarter",
+                            "annual"
+                        ]
                     }
                 ]
             },
@@ -7933,7 +7984,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": null,
                         "optional": true,
@@ -12062,8 +12113,8 @@
                         "name": "name",
                         "type": "str",
                         "description": "Name of the entity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12077,7 +12128,7 @@
                     {
                         "name": "change",
                         "type": "float",
-                        "description": "Change in price value.",
+                        "description": "Change in price.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -12092,7 +12143,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "float",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": false,
@@ -12101,19 +12152,19 @@
                 ],
                 "yfinance": [
                     {
-                        "name": "market_cap",
-                        "type": "float",
-                        "description": "Market Cap.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
                         "name": "avg_volume_3_months",
                         "type": "float",
                         "description": "Average volume over the last 3 months in millions.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "market_cap",
+                        "type": "float",
+                        "description": "Market Cap.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12191,8 +12242,8 @@
                         "name": "name",
                         "type": "str",
                         "description": "Name of the entity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12206,7 +12257,7 @@
                     {
                         "name": "change",
                         "type": "float",
-                        "description": "Change in price value.",
+                        "description": "Change in price.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -12221,7 +12272,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "float",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": false,
@@ -12320,8 +12371,8 @@
                         "name": "name",
                         "type": "str",
                         "description": "Name of the entity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12335,7 +12386,7 @@
                     {
                         "name": "change",
                         "type": "float",
-                        "description": "Change in price value.",
+                        "description": "Change in price.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -12350,7 +12401,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "float",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": false,
@@ -12449,8 +12500,8 @@
                         "name": "name",
                         "type": "str",
                         "description": "Name of the entity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12464,7 +12515,7 @@
                     {
                         "name": "change",
                         "type": "float",
-                        "description": "Change in price value.",
+                        "description": "Change in price.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -12479,7 +12530,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "float",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": false,
@@ -12578,8 +12629,8 @@
                         "name": "name",
                         "type": "str",
                         "description": "Name of the entity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12593,7 +12644,7 @@
                     {
                         "name": "change",
                         "type": "float",
-                        "description": "Change in price value.",
+                        "description": "Change in price.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -12608,7 +12659,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "float",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": false,
@@ -12707,8 +12758,8 @@
                         "name": "name",
                         "type": "str",
                         "description": "Name of the entity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12722,7 +12773,7 @@
                     {
                         "name": "change",
                         "type": "float",
-                        "description": "Change in price value.",
+                        "description": "Change in price.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -12737,7 +12788,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "float",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": false,
@@ -12836,8 +12887,8 @@
                         "name": "name",
                         "type": "str",
                         "description": "Name of the entity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12851,7 +12902,7 @@
                     {
                         "name": "change",
                         "type": "float",
-                        "description": "Change in price value.",
+                        "description": "Change in price.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -12866,7 +12917,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "float",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": false,
@@ -27192,13 +27243,6 @@
                         "default": null,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.",
-                        "default": null,
-                        "optional": true
                     }
                 ],
                 "fmp": []
@@ -27236,7 +27280,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "The date of the data.",
                         "default": "",
                         "optional": false,
