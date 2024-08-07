@@ -14,8 +14,10 @@ from openbb_platform.utils import (
     get_query_schema_for_widget,
 )
 
-CURRENT_USER_SETTINGS = os.path.join(os.environ.get("HOME"), ".openbb_platform", "user_settings.json")
-USER_SETTINGS_COPY = os.path.join(os.environ.get("HOME"), ".openbb_platform", "user_settings_backup.json")
+HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
+
+CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")
+USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backup.json")
 
 def check_port(host, port) -> int:
     """Check if the port number is free."""
@@ -194,6 +196,7 @@ def get_widgets_json(build: bool, openapi):
     json_exists = widgets_json_path.exists()
 
     if not json_exists:
+        widgets_json_path.parent.mkdir(parents=True, exist_ok=True)
         build = True
 
     existing_widgets_json = {}
@@ -219,9 +222,20 @@ def get_widgets_json(build: bool, openapi):
     return widgets_json
 
 
-def main(**kwargs):
+def main():
     """Main function."""
     import uvicorn
+
+    args = os.sys.argv[1:].copy()
+    kwargs = {}
+    for i in range(len(args)):
+        if args[i].startswith("--"):
+            key = args[i][2:]
+            if i + 1 < len(args) and not args[i + 1].startswith("--"):
+                value = args[i + 1]
+                kwargs[key] = value
+            else:
+                kwargs[key] = True
 
     openapi = app.openapi()
     build = kwargs.pop("build", True)
@@ -290,17 +304,7 @@ def main(**kwargs):
 
 if __name__ == "__main__":
 
-    args = os.sys.argv[1:].copy()
-    kwargs = {}
-    for i in range(len(args)):
-        if args[i].startswith("--"):
-            key = args[i][2:]
-            if i + 1 < len(args) and not args[i + 1].startswith("--"):
-                value = args[i + 1]
-                kwargs[key] = value
-            else:
-                kwargs[key] = True
     try:
-        main(**kwargs)
+        main()
     except KeyboardInterrupt:
         print("Restoring the original settings.")

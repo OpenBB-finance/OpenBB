@@ -17,7 +17,7 @@ IF ERRORLEVEL 1 (
     echo %date% %time% "Error during post-installation: poetry install failed." >> %LOG_FILE%
     exit /b 1
 ) ELSE (
-    echo %date% %time% "poetry environment successfully created." >> %LOG_FILE%
+    echo %date% %time% "Poetry environment successfully created." >> %LOG_FILE%
 )
 
 echo Poetry package installation completed successfully. Building OpenBB's Python interface...
