@@ -44,6 +44,13 @@ STOCK_LISTS = Literal[
 class TmxGainersQueryParams(EquityPerformanceQueryParams):
     """TMX Gainers Query Params."""
 
+    __json_schema_extra__ = {
+        "category": {
+            "multiple_items_allowed": False,
+            "choices": list(STOCK_LISTS_DICT),
+        },
+    }
+
     category: STOCK_LISTS = Field(
         default="price_performer",
         description="The category of list to retrieve. Defaults to `price_performer`.",
@@ -63,6 +70,25 @@ class TmxGainersData(EquityPerformanceData):
         "avg_volume_10d": "10 Day Avg. Volume",
         "ninety_day_price_change": "90 Day Price Change",
     }
+    thirty_day_price_change: Optional[float] = Field(
+        default=None,
+        description="30 Day Price Change.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    ninety_day_price_change: Optional[float] = Field(
+        default=None,
+        description="90 Day Price Change.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    dividend_yield: Optional[float] = Field(
+        default=None,
+        description="Dividend Yield.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    avg_volume_10d: Optional[float] = Field(
+        default=None,
+        description="10 Day Avg. Volume.",
+    )
     rank: int = Field(description="The rank of the stock in the list.")
 
     @field_validator("percent_change", mode="after", check_fields=False)

@@ -14,10 +14,6 @@ class CashFlowStatementGrowthQueryParams(QueryParams):
     """Cash Flow Statement Growth Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: str = Field(
-        default="annual",
-        description=QUERY_DESCRIPTIONS.get("period", ""),
-    )
     limit: Optional[int] = Field(
         default=10, description=QUERY_DESCRIPTIONS.get("limit", "")
     )

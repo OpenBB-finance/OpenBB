@@ -253,14 +253,22 @@ class ProviderInterface(metaclass=SingletonMeta):
         annotation = field.annotation
 
         additional_description = ""
+        choices: Dict = {}
         if extra := field.json_schema_extra:
-            providers = []
-            for p, v in extra.items():  # type: ignore[union-attr]
+            providers: List = []
+            for p, v in extra.items():  # type: ignore
                 if isinstance(v, dict) and v.get("multiple_items_allowed"):
                     providers.append(p)
+                    choices[p] = {"multiple_items_allowed": True, "choices": v.get("choices")}  # type: ignore
                 elif isinstance(v, list) and "multiple_items_allowed" in v:
                     # For backwards compatibility, before this was a list
                     providers.append(p)
+                    choices[p] = {"multiple_items_allowed": True, "choices": None}  # type: ignore
+                elif isinstance(v, dict) and v.get("choices"):
+                    choices[p] = {
+                        "multiple_items_allowed": False,
+                        "choices": v.get("choices"),
+                    }
 
             if providers:
                 if provider_name:
@@ -271,7 +279,6 @@ class ProviderInterface(metaclass=SingletonMeta):
                         + ", ".join(providers)  # type: ignore[arg-type]
                         + "."
                     )
-
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""
         )
@@ -303,7 +310,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                     title=provider_name,
                     description=description,
                     alias=field.alias or None,
-                    json_schema_extra=getattr(field, "json_schema_extra", None),
+                    json_schema_extra=choices,
                 ),
             )
 
@@ -318,7 +325,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                     title=provider_name,
                     description=description,
                     alias=field.alias or None,
-                    json_schema_extra=getattr(field, "json_schema_extra", None),
+                    json_schema_extra=choices,
                 ),
             )
         if provider_name:
@@ -329,7 +336,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                     default=default or None,
                     title=provider_name,
                     description=description,
-                    json_schema_extra=field.json_schema_extra,
+                    json_schema_extra=choices,
                 ),
             )
 

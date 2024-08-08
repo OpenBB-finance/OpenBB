@@ -27,22 +27,12 @@ class IndexHistoricalQueryParams(QueryParams):
     end_date: Optional[dateType] = Field(
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
-    interval: Optional[str] = Field(
-        default="1d",
-        description=QUERY_DESCRIPTIONS.get("interval", ""),
-    )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
         """Convert field to uppercase."""
         return v.upper()
-
-    @field_validator("sort", mode="before", check_fields=False)
-    @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
-        """Convert field to lowercase."""
-        return v.lower() if v else v
 
 
 class IndexHistoricalData(Data):

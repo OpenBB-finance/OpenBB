@@ -106,7 +106,6 @@ def test_index_constituents(params, headers):
         ),
         (
             {
-                "interval": "1d",
                 "provider": "intrinio",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -198,7 +197,15 @@ def test_index_snapshots(params, headers):
                 "transform": "diff",
                 "provider": "nasdaq",
             }
-        )
+        ),
+        (
+            {
+                "series_name": "pe_month",
+                "start_date": None,
+                "end_date": None,
+                "provider": "multpl",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

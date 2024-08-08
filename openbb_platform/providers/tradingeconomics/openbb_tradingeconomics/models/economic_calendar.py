@@ -64,18 +64,22 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     """
 
     __json_schema_extra__ = {
-        "country": {"multiple_items_allowed": True},
-        "calendar_id": {"multiple_items_allowed": True},
+        "country": {
+            "multiple_items_allowed": True,
+            "choices": sorted(COUNTRIES),
+        },
+        "calendar_id": {
+            "multiple_items_allowed": True,
+            "choices": IMPORTANCE_CHOICES,
+        },
     }
     country: Optional[str] = Field(
         default=None,
         description="Country of the event.",
-        json_schema_extra={"choices": sorted(COUNTRIES)},  # type: ignore[dict-item]
     )
     importance: Optional[IMPORTANCE] = Field(
         default=None,
         description="Importance of the event.",
-        json_schema_extra={"choices": IMPORTANCE_CHOICES},  # type: ignore[dict-item]
     )
     group: Optional[GROUPS] = Field(
         default=None,

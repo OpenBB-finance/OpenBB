@@ -94,12 +94,16 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
     Source: https://data-explorer.oecd.org/?lc=en
     """
 
-    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {
+        "country": {
+            "multiple_items_allowed": True,
+            "choices": CountriesList,
+        },
+    }
 
     country: str = Field(
         description="Country to get CPI for.  This is the list of OECD supported countries",
         default="united_states",
-        choices=CountriesList,
     )
     expenditure: ExpenditureChoices = Field(
         description="Expenditure component of CPI.",

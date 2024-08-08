@@ -32,6 +32,25 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_security_interval_prices_v2
     """
 
+    __json_schema_extra__ = {
+        "symbol": {
+            "choices": [
+                "1m",
+                "5m",
+                "10m",
+                "15m",
+                "30m",
+                "60m",
+                "1h",
+                "1d",
+                "1W",
+                "1M",
+                "1Q",
+                "1Y",
+            ],
+        },
+    }
+
     symbol: str = Field(
         description="A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID)."
     )

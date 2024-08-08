@@ -4,26 +4,18 @@
 from datetime import (
     date as dateType,
     datetime,
-    timedelta,
 )
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
-from dateutil import parser
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
 from openbb_core.provider.utils.errors import OpenBBError
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    amake_requests,
-    get_querystring,
-)
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
-from openbb_intrinio.utils.helpers import get_data_many, get_weekday
 from pydantic import Field, field_validator
 from pytz import timezone
 
@@ -108,6 +100,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
 class IntrinioOptionsChainsData(OptionsChainsData):
     """Intrinio Options Chains Data."""
 
+    __doc__ = OptionsChainsData.__doc__
     __alias_dict__ = {
         "contract_symbol": "code",
         "symbol": "ticker",
@@ -135,8 +128,12 @@ class IntrinioOptionsChainsData(OptionsChainsData):
         check_fields=False,
     )
     @classmethod
-    def date_validate(cls, v):
+    def _date_validate(cls, v):
         """Return the datetime object from the date string."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil import parser
+        from pytz import timezone
+
         if isinstance(v, str):
             dt = parser.parse(v)
             dt = dt.replace(tzinfo=timezone("UTC"))
@@ -146,15 +143,15 @@ class IntrinioOptionsChainsData(OptionsChainsData):
 
     @field_validator("volume", "open_interest", mode="before", check_fields=False)
     @classmethod
-    def volume_oi_validate(cls, v):
+    def _volume_oi_validate(cls, v):
         """Return the volume as an integer."""
         return 0 if v is None else v
 
 
 class IntrinioOptionsChainsFetcher(
-    Fetcher[IntrinioOptionsChainsQueryParams, List[IntrinioOptionsChainsData]]
+    Fetcher[IntrinioOptionsChainsQueryParams, IntrinioOptionsChainsData]
 ):
-    """Transform the query, extract and transform the data from the Intrinio endpoints."""
+    """Intrinio Options Chains Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioOptionsChainsQueryParams:
@@ -168,12 +165,25 @@ class IntrinioOptionsChainsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta  # noqa
+        from openbb_core.provider.utils.helpers import (
+            ClientResponse,
+            amake_requests,
+            get_querystring,
+        )
+        from openbb_intrinio.utils.helpers import get_data_many, get_weekday
+
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com/options"
 
         date = query.date if query.date is not None else datetime.now().date()
         date = get_weekday(date)
+
+        if query.symbol in ["SPX", "^SPX", "^GSPC"]:
+            query.symbol = "SPX"
+            warn("For weekly SPX options, use the symbol SPXW instead of SPX.")
 
         async def get_urls(date: str) -> List[str]:
             """Return the urls for the given date."""
@@ -222,10 +232,10 @@ class IntrinioOptionsChainsFetcher(
 
             return [generate_url(expiration) for expiration in expirations]
 
-        async def callback(response: ClientResponse, _: Any) -> list:
+        async def callback(response: ClientResponse, _: Any) -> List:
             """Return the response."""
             response_data = await response.json()
-            return response_data.get("chain", [])
+            return response_data.get("chain", [])  # type: ignore
 
         results = await amake_requests(
             await get_urls(date.strftime("%Y-%m-%d")), callback, **kwargs
@@ -233,7 +243,7 @@ class IntrinioOptionsChainsFetcher(
         # If the EOD chains are not available for the given date, try the previous day
         if not results and query.date is not None:
             date = get_weekday(date - timedelta(days=1)).strftime("%Y-%m-%d")
-            urls = await get_urls(date.strftime("%Y-%m-%d"))
+            urls = await get_urls(date)  # type: ignore
             results = await amake_requests(urls, response_callback=callback, **kwargs)
 
         if not results:
@@ -251,7 +261,7 @@ class IntrinioOptionsChainsFetcher(
                     {"symbol": query.symbol, "start_date": date, "end_date": date},
                     credentials,
                 )
-                temp = temp[0]
+                temp = temp[0]  # type: ignore
             # If the symbol is SPX, or similar, try to get the underlying price from the index.
             except Exception as e:
                 try:
@@ -259,7 +269,7 @@ class IntrinioOptionsChainsFetcher(
                         {"symbol": query.symbol, "start_date": date, "end_date": date},
                         credentials,
                     )
-                    temp = temp[0]
+                    temp = temp[0]  # type: ignore
                 except Exception:
                     warn(f"Failed to get underlying price for {query.symbol}: {e}")
             if temp:
@@ -276,9 +286,13 @@ class IntrinioOptionsChainsFetcher(
         query: IntrinioOptionsChainsQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> List[IntrinioOptionsChainsData]:
+    ) -> IntrinioOptionsChainsData:
         """Return the transformed data."""
-        results: List[IntrinioOptionsChainsData] = []
+        # pylint: disable=import-outside-toplevel
+        from numpy import nan
+        from pandas import DataFrame
+
+        results: List = []
         chains = data.get("data", [])
         underlying = data.get("underlying", {})
         last_price = underlying.get("price")
@@ -293,7 +307,7 @@ class IntrinioOptionsChainsFetcher(
                     new_item["underlying_price"] = last_price
                 _ = new_item.pop("exercise_style", None)
                 new_item["underlying_symbol"] = new_item.pop("ticker")
-                results.append(IntrinioOptionsChainsData.model_validate(new_item))
+                results.append(new_item)
         else:
             for item in chains:
                 new_item = {
@@ -315,10 +329,9 @@ class IntrinioOptionsChainsFetcher(
                 _ = new_item.pop("ticker", None)
                 _ = new_item.pop("trade_exchange", None)
                 _ = new_item.pop("exercise_style", None)
-                results.append(IntrinioOptionsChainsData.model_validate(new_item))
+                results.append(new_item)
 
-        return sorted(
-            results,
-            key=lambda x: (x.expiration, x.strike, x.option_type),
-            reverse=False,
-        )
+        output = DataFrame(results).replace({nan: None}).dropna(how="all", axis=1)
+        output = output.sort_values(by=["expiration", "strike", "type"])
+
+        return IntrinioOptionsChainsData.model_validate(output.to_dict(orient="list"))

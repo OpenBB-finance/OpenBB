@@ -1,5 +1,6 @@
 """Economy Router."""
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -156,6 +157,33 @@ async def fred_series(
 
 
 @router.command(
+    model="FredReleaseTable",
+    examples=[
+        APIEx(
+            description="Get the top-level elements of a release by not supplying an element ID.",
+            parameters={"release_id": "50", "provider": "fred"},
+        ),
+        APIEx(
+            description="Drill down on a specific section of the release.",
+            parameters={"release_id": "50", "element_id": "4880", "provider": "fred"},
+        ),
+        APIEx(
+            description="Drill down on a specific table of the release.",
+            parameters={"release_id": "50", "element_id": "4881", "provider": "fred"},
+        ),
+    ],
+)
+async def fred_release_table(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get economic release data by ID and/or element from FRED."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="MoneyMeasures",
     examples=[
         APIEx(parameters={"provider": "federal_reserve"}),
@@ -204,10 +232,10 @@ async def unemployment(
 
 
 @router.command(
-    model="CLI",
+    model="CompositeLeadingIndicator",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
-        APIEx(parameters={"country": "all", "provider": "oecd"}),
+        APIEx(parameters={"country": "all", "provider": "oecd", "growth_rate": True}),
     ],
 )
 async def composite_leading_indicator(
@@ -216,7 +244,7 @@ async def composite_leading_indicator(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Use the composite leading indicator (CLI).
+    """Get the composite leading indicator (CLI).
 
     It is designed to provide early signals of turning points
     in business cycles showing fluctuation of the economic activity around its long term potential level.
@@ -228,6 +256,12 @@ async def composite_leading_indicator(
 
 @router.command(
     model="STIR",
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead.",
+        since=(4, 3),
+        expected_removal=(4, 5),
+    ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
@@ -255,6 +289,12 @@ async def short_term_interest_rate(
 
 @router.command(
     model="LTIR",
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead.",
+        since=(4, 3),
+        expected_removal=(4, 5),
+    ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
@@ -465,6 +505,12 @@ async def house_price_index(
 
 @router.command(
     model="ImmediateInterestRate",
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead.",
+        since=(4, 3),
+        expected_removal=(4, 5),
+    ),
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
@@ -484,6 +530,44 @@ async def immediate_interest_rate(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get immediate interest rates by country."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CountryInterestRates",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            description="For OECD, duration can be 'immediate', 'short', or 'long'."
+            + " Default is 'short', which is the 3-month rate."
+            + " Overnight interbank rate is 'immediate', and 10-year rate is 'long'.",
+            parameters={
+                "provider": "oecd",
+                "country": "all",
+                "duration": "immediate",
+                "frequency": "quarter",
+            },
+        ),
+        APIEx(
+            description="Multiple countries can be passed in as a list.",
+            parameters={
+                "duration": "long",
+                "country": "united_kingdom,germany",
+                "frequency": "monthly",
+                "provider": "oecd",
+            },
+        ),
+    ],
+)
+async def interest_rates(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get interest rates by country(s) and duration.
+    Most OECD countries publish short-term, a long-term, and immediate rates monthly.
+    """
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -538,4 +622,28 @@ async def primary_dealer_positioning(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get Primary dealer positioning statistics."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="PersonalConsumptionExpenditures",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            description="Get reports for multiple dates, entered as a comma-separated string.",
+            parameters={
+                "provider": "fred",
+                "date": "2024-05-01,2024-04-01,2023-05-01",
+                "category": "pce_price_index",
+            },
+        ),
+    ],
+)
+async def pce(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Personal Consumption Expenditures (PCE) reports."""
     return await OBBject.from_query(Query(**locals()))

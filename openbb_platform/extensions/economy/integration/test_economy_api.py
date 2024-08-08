@@ -137,21 +137,12 @@ def test_economy_risk_premium(params, headers):
     [
         (
             {
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
-                "provider": "oecd",
-            }
-        ),
-        (
-            {
                 "country": "united_states",
                 "provider": "oecd",
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
+                "frequency": "annual",
+                "start_date": None,
+                "end_date": None,
+                "units": "volume",
             }
         ),
     ],
@@ -173,17 +164,20 @@ def test_economy_gdp_forecast(params, headers):
     [
         (
             {
-                "units": "usd",
+                "country": "united_states",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "provider": "oecd",
+                "provider": "econdb",
+                "use_cache": False,
             }
         ),
         (
             {
                 "country": "united_states",
                 "provider": "oecd",
-                "units": "usd",
+                "units": "level",
+                "frequency": "quarter",
+                "price_base": "volume",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -207,19 +201,20 @@ def test_economy_gdp_nominal(params, headers):
     [
         (
             {
-                "units": "yoy",
+                "country": "united_states",
+                "frequency": "quarter",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-12-31",
                 "provider": "oecd",
             }
         ),
         (
             {
                 "country": "united_states",
-                "provider": "oecd",
-                "units": "yoy",
+                "provider": "econdb",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-12-31",
+                "use_cache": False,
             }
         ),
     ],
@@ -460,10 +455,11 @@ def test_economy_unemployment(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
         (
             {
                 "country": "united_states",
+                "adjustment": "amplitude",
+                "growth_rate": False,
                 "provider": "oecd",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -794,6 +790,33 @@ def test_economy_immediate_interest_rate(params, headers):
         (
             {
                 "country": "united_states",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "duration": "long",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_interest_rates(params, headers):
+    """Test the economy interest rates endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/interest_rates?{query_str}"
+    result = requests.get(url, headers=headers, timeout=30)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "country": "united_states",
                 "item": "meats",
                 "region": "all_city",
                 "frequency": "annual",
@@ -946,6 +969,87 @@ def test_economy_primary_dealer_positioning(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/primary_dealer_positioning?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": "2024-06-01,2023-06-01",
+                "category": "avg_earnings_hourly",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_nonfarm_payrolls(params, headers):
+    """Test the economy survey nonfarm payrolls endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/survey/nonfarm_payrolls?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": "2024-05-01,2024-04-01,2023-05-01",
+                "category": "pce_price_index",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_pce(params, headers):
+    """Test the economy pce endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/pce?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "date": None,
+                "release_id": "14",
+                "element_id": "7930",
+            }
+        ),
+        (
+            {
+                "provider": "fred",
+                "date": None,
+                "release_id": "14",
+                "element_id": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_fred_release_table(params, headers):
+    """Test the economy fred release table"""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/fred_release_table?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

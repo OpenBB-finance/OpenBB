@@ -48,9 +48,6 @@ class ROUTER_equity_fundamental(Container):
     def balance(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        period: Annotated[
-            str, OpenBBField(description="Time period of the data to return.")
-        ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBField(description="The number of data entries to return."),
@@ -69,12 +66,12 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : str
-            Time period of the data to return.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
+        period : Union[Literal['annual', 'quarter'], Literal['annual', 'quarter', 'ttm']]
+            Time period of the data to return. (provider: fmp, intrinio, polygon, yfinance)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
         filing_date : Optional[datetime.date]
@@ -392,10 +389,29 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        },
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        },
+                        "polygon": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        },
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        },
+                    }
+                },
             )
         )
 
@@ -425,12 +441,12 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : str
-            Time period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        period : Literal['annual', 'quarter']
+            Time period of the data to return. (provider: fmp)
 
         Returns
         -------
@@ -558,6 +574,14 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        }
+                    }
+                },
             )
         )
 
@@ -566,9 +590,6 @@ class ROUTER_equity_fundamental(Container):
     def cash(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        period: Annotated[
-            str, OpenBBField(description="Time period of the data to return.")
-        ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBField(description="The number of data entries to return."),
@@ -587,12 +608,12 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : str
-            Time period of the data to return.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
+        period : Union[Literal['annual', 'quarter'], Literal['annual', 'quarter', 'ttm', 'ytd'], Literal['annual', 'quarter', 'ttm']]
+            Time period of the data to return. (provider: fmp, intrinio, polygon, yfinance)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
         filing_date : Optional[datetime.date]
@@ -820,10 +841,29 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        },
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter", "ttm", "ytd"],
+                        },
+                        "polygon": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter", "ttm"],
+                        },
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        },
+                    }
+                },
             )
         )
 
@@ -853,12 +893,12 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : str
-            Time period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        period : Literal['annual', 'quarter']
+            Time period of the data to return. (provider: fmp)
 
         Returns
         -------
@@ -968,6 +1008,14 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        }
+                    }
+                },
             )
         )
 
@@ -998,9 +1046,9 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
@@ -1351,11 +1399,11 @@ class ROUTER_equity_fundamental(Container):
             Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         tag : Union[str, List[str]]
             Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        frequency : Optional[Literal['daily', 'weekly', 'monthly', 'quarterly', 'year...
+        frequency : Optional[Literal['daily', 'weekly', 'monthly', 'quarterly', 'yearly']]
             The frequency of the data.
         limit : Optional[int]
             The number of data entries to return.
@@ -1419,8 +1467,12 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
-                    "tag": {"intrinio": {"multiple_items_allowed": True}},
+                    "symbol": {
+                        "intrinio": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "tag": {
+                        "intrinio": {"multiple_items_allowed": True, "choices": None}
+                    },
                 },
             )
         )
@@ -1584,9 +1636,6 @@ class ROUTER_equity_fundamental(Container):
     def income(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        period: Annotated[
-            str, OpenBBField(description="Time period of the data to return.")
-        ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBField(description="The number of data entries to return."),
@@ -1605,12 +1654,12 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : str
-            Time period of the data to return.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
+        period : Union[Literal['annual', 'quarter'], Literal['annual', 'quarter', 'ttm', 'ytd'], Literal['annual', 'quarter', 'ttm']]
+            Time period of the data to return. (provider: fmp, intrinio, polygon, yfinance)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
         filing_date : Optional[datetime.date]
@@ -1932,10 +1981,29 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        },
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter", "ttm", "ytd"],
+                        },
+                        "polygon": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter", "ttm"],
+                        },
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        },
+                    }
+                },
             )
         )
 
@@ -1944,9 +2012,6 @@ class ROUTER_equity_fundamental(Container):
     def income_growth(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        period: Annotated[
-            str, OpenBBField(description="Time period of the data to return.")
-        ] = "annual",
         limit: Annotated[
             Optional[int],
             OpenBBField(description="The number of data entries to return."),
@@ -1965,12 +2030,12 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : str
-            Time period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        period : Literal['annual', 'quarter']
+            Time period of the data to return. (provider: fmp)
 
         Returns
         -------
@@ -2068,10 +2133,17 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        }
+                    }
+                },
             )
         )
 
@@ -2155,8 +2227,12 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
-                    "tag": {"intrinio": {"multiple_items_allowed": True}},
+                    "symbol": {
+                        "intrinio": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "tag": {
+                        "intrinio": {"multiple_items_allowed": True, "choices": None}
+                    },
                 },
             )
         )
@@ -2337,7 +2413,9 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -2351,10 +2429,6 @@ class ROUTER_equity_fundamental(Container):
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
-        period: Annotated[
-            Optional[Literal["annual", "quarter"]],
-            OpenBBField(description="Time period of the data to return."),
-        ] = "annual",
         limit: Annotated[
             Optional[int],
             OpenBBField(description="The number of data entries to return."),
@@ -2373,13 +2447,13 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
-        period : Optional[Literal['annual', 'quarter']]
-            Time period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
-        with_ttm : Optional[bool]
+        period : Literal['annual', 'quarter']
+            Time period of the data to return. (provider: fmp)
+        with_ttm : bool
             Include trailing twelve months (TTM) data. (provider: fmp)
 
         Returns
@@ -2645,16 +2719,21 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
                     "limit": limit,
                 },
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "fmp": {"multiple_items_allowed": True},
-                        "intrinio": {"multiple_items_allowed": True},
-                        "yfinance": {"multiple_items_allowed": True},
-                    }
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
+                    },
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter"],
+                        }
+                    },
                 },
             )
         )
@@ -2845,7 +2924,9 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -2854,9 +2935,6 @@ class ROUTER_equity_fundamental(Container):
     def ratios(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        period: Annotated[
-            str, OpenBBField(description="Time period of the data to return.")
-        ] = "annual",
         limit: Annotated[
             int, OpenBBField(description="The number of data entries to return.")
         ] = 12,
@@ -2874,12 +2952,12 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : str
-            Time period of the data to return.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
+        period : Union[Literal['annual', 'quarter', 'ttm'], Literal['annual', 'quarter', 'ttm', 'ytd']]
+            Time period of the data to return. (provider: fmp, intrinio)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
 
@@ -3037,10 +3115,21 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter", "ttm"],
+                        },
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["annual", "quarter", "ttm", "ytd"],
+                        },
+                    }
+                },
             )
         )
 
@@ -3569,8 +3658,10 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"fmp": {"multiple_items_allowed": True}},
-                    "year": {"fmp": {"multiple_items_allowed": True}},
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "year": {"fmp": {"multiple_items_allowed": True, "choices": None}},
                 },
             )
         )
