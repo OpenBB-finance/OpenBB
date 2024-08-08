@@ -25,12 +25,12 @@ Navigate into the `build/conda` folder and then begin.
     - `constructor installer/.`
 
 
-# For when we have a full NSIS 
+# For when we have a full NSIS
 
-To check nsis file - run 
+To check nsis file - run
 
 miniconda3\\envs\\constructor\\NSIS\\makensis.exe /V2 assets\\installer.nsi
 
-gives better output 
+gives better output
 
 miniconda3\\envs\\constructor\\NSIS\\makensis.exe /V4 assets\\installer.nsi
