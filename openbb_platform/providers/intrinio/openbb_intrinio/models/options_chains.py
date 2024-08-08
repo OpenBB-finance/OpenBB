@@ -17,7 +17,6 @@ from openbb_core.provider.utils.errors import OpenBBError
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
 from pydantic import Field, field_validator
-from pytz import timezone
 
 
 class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
