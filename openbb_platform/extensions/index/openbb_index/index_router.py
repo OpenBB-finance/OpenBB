@@ -93,8 +93,8 @@ async def search(
 @router.command(
     model="SP500Multiples",
     examples=[
-        APIEx(parameters={"provider": "nasdaq"}),
-        APIEx(parameters={"series_name": "shiller_pe_year", "provider": "nasdaq"}),
+        APIEx(parameters={"provider": "multpl"}),
+        APIEx(parameters={"series_name": "shiller_pe_year", "provider": "multpl"}),
     ],
 )
 async def sp500_multiples(
