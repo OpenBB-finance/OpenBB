@@ -14,6 +14,7 @@ channels:
   - conda-forge
 
 specs:
+  - conda
   - bash  # [unix]
   - python=3.12
 
