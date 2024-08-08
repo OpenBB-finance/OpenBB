@@ -1,36 +1,36 @@
 {
-    "openbb": "4.3.0",
+    "openbb": "4.3.1",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.0",
+        "core": "1.3.1",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.2.0",
-                "crypto@1.3.0",
-                "currency@1.3.0",
-                "derivatives@1.3.0",
-                "economy@1.3.0",
-                "equity@1.3.0",
-                "etf@1.3.0",
-                "fixedincome@1.3.0",
-                "index@1.3.0",
-                "news@1.3.0",
-                "regulators@1.3.0"
+                "commodity@1.2.1",
+                "crypto@1.3.1",
+                "currency@1.3.1",
+                "derivatives@1.3.1",
+                "economy@1.3.1",
+                "equity@1.3.1",
+                "etf@1.3.1",
+                "fixedincome@1.3.1",
+                "index@1.3.1",
+                "news@1.3.1",
+                "regulators@1.3.1"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.3.0",
-                "econdb@1.2.0",
-                "federal_reserve@1.3.0",
-                "fmp@1.3.0",
-                "fred@1.3.0",
-                "intrinio@1.3.0",
-                "oecd@1.3.0",
-                "polygon@1.3.0",
-                "sec@1.3.0",
-                "tiingo@1.3.0",
-                "tradingeconomics@1.3.0",
-                "yfinance@1.3.0"
+                "benzinga@1.3.1",
+                "econdb@1.2.1",
+                "federal_reserve@1.3.1",
+                "fmp@1.3.1",
+                "fred@1.3.1",
+                "intrinio@1.3.1",
+                "oecd@1.3.1",
+                "polygon@1.3.1",
+                "sec@1.3.1",
+                "tiingo@1.3.1",
+                "tradingeconomics@1.3.1",
+                "yfinance@1.3.1"
             ],
             "openbb_obbject_extension": []
         }
