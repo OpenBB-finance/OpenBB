@@ -420,9 +420,6 @@ class ROUTER_equity_fundamental(Container):
     def balance_growth(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        period: Annotated[
-            str, OpenBBField(description="Time period of the data to return.")
-        ] = "annual",
         limit: Annotated[
             Optional[int],
             OpenBBField(description="The number of data entries to return."),
@@ -570,7 +567,6 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
                     "limit": limit,
                 },
                 extra_params=kwargs,
@@ -872,9 +868,6 @@ class ROUTER_equity_fundamental(Container):
     def cash_growth(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        period: Annotated[
-            str, OpenBBField(description="Time period of the data to return.")
-        ] = "annual",
         limit: Annotated[
             Optional[int],
             OpenBBField(description="The number of data entries to return."),
@@ -1004,7 +997,6 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
                     "limit": limit,
                 },
                 extra_params=kwargs,

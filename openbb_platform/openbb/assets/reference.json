@@ -33211,8 +33211,8 @@
         },
         "/fixedincome/government/tips_yields": {
             "deprecated": {
-                "flag": true,
-                "message": "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5."
+                "flag": null,
+                "message": null
             },
             "description": "Get current Treasury inflation-protected securities yields.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.tips_yields(provider='fred')\nobb.fixedincome.government.tips_yields(maturity=10, provider='fred')\n```\n\n",
