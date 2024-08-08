@@ -2270,9 +2270,9 @@ class ROUTER_economy(Container):
         ----------
         country : Union[str, List[str]]
             The country to get data. Multiple comma separated items allowed for provider(s): oecd.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
