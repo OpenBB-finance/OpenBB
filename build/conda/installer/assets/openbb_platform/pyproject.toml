@@ -12,7 +12,7 @@ openbb-api = "openbb_platform.api:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-openbb-core = { version = "^1", extras = ["all"] }
+openbb = { version = "^4", extras = ["all"] }
 openbb-cli = "^1"
 openbb-devtools = "^1"
 notebook = "^7"
