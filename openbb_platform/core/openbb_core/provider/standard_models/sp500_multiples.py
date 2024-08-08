@@ -12,7 +12,7 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 
-SeriesNames = Literal[
+SERIES_NAME = Literal[
     "shiller_pe_month",
     "shiller_pe_year",
     "pe_year",
@@ -55,7 +55,7 @@ SeriesNames = Literal[
 class SP500MultiplesQueryParams(QueryParams):
     """SP500 Multiples Query."""
 
-    series_name: Union[SeriesNames, str] = Field(
+    series_name: Union[SERIES_NAME, str] = Field(
         description="The name of the series. Defaults to 'pe_month'.",
         default="pe_month",
     )
