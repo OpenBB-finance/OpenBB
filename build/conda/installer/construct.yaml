@@ -16,7 +16,6 @@ channels:
 specs:
   - bash  # [unix]
   - python=3.12
-  - pyinstaller  # [win]
 
 pkg_domains:
   enable_anywhere: false
