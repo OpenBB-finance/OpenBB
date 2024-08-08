@@ -55,3 +55,8 @@ openbb_platform/openbb/package/*
 
 # Dev Container env
 obb/*
+
+# OpenBB Distribution
+!build/conda/**/*.sh
+*.pkg
+*.exe
