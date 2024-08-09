@@ -33,6 +33,7 @@ extra_files:
   - ./assets/openbb_platform/poetry.lock: ./poetry.lock
   - ./assets/openbb_platform/openbb_platform/__init__.py: ./openbb_platform/__init__.py
   - ./assets/openbb_platform/openbb_platform/api.py: ./openbb_platform/api.py
+  - ./assets/openbb_platform/openbb_platform/build.py: ./openbb_platform/build.py
   - ./assets/openbb_platform/openbb_platform/utils.py: ./openbb_platform/utils.py
   - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
   - ./assets/openbb.icns: assets/openbb_icon.icns  # [osx]

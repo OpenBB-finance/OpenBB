@@ -9,6 +9,7 @@ packages = [{ include = "openbb_platform" }]
 
 [tool.poetry.scripts]
 openbb-api = "openbb_platform.api:main"
+openbb-build = "openbb_platform.build:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"

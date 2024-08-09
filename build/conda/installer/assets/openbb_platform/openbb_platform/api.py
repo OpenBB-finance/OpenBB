@@ -260,7 +260,11 @@ def main():
     @app.get("/")
     async def get_root():
         """API Root."""
-        return JSONResponse(content={})
+        return JSONResponse(
+            content="Welcome to the OpenBB Platform API."
+                + " Learn how to connect to Pro in docs.openbb.co/pro/data-connectors,"
+                + " or see the API documentation here: /docs"
+        )
 
     @app.get("/widgets.json")
     async def get_widgets():
