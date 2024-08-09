@@ -1,0 +1,7 @@
+name: constructor
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - conda-build
+  - constructor

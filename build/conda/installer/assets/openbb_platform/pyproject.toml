@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "openbb_platform"
+version = "1.0.0"
+description = "Investment research for everyone, anywhere."
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_platform" }]
+
+[tool.poetry.scripts]
+openbb-api = "openbb_platform.api:main"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+openbb = { version = "^4", extras = ["all"] }
+openbb-cli = "^1"
+types-python-dateutil = "*"
+types-toml = "*"
+pandas-stubs = "*"
+codespell = "*"
+ruff = "*"
+mypy = "*"
+black = "*"
+pylint = "^3"
+pydocstyle = "~6.3"
+notebook = "^7"
+nbclassic = "^1"
+jedi-language-server = "^0.41"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

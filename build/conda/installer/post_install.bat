@@ -1,28 +1,35 @@
 @echo off
-echo Running post-installation environment setup.
-REM Full path to the Python executable inside the constructed environment
-SET PYTHON_EXEC="%PREFIX%\python.exe"
+echo Installing environment, this may take a few minutes... Watch for changes in %PREFIX%\post_install_log.txt
+
+cd %PREFIX%
+
+PATH %PREFIX%;%PREFIX%\Scripts;%PREFIX%\Library\bin;%PATH%
 SET LOG_FILE="%PREFIX%\post_install_log.txt"
 
-REM Use the specific Python that comes bundled with the installer
-"%PYTHON_EXEC%" -m pip install -U openbb[all] openbb-cli openbb-platform-pro-backend >> "%LOG_FILE%" 2>&1
+python -m pip install -U pip >> "%LOG_FILE%" 2>&1
+pip install -U setuptools >> "%LOG_FILE%" 2>&1
+pip install poetry >> "%LOG_FILE%" 2>&1
+poetry config virtualenvs.create false --local >> "%LOG_FILE%" 2>&1
+poetry env use python >> "%LOG_FILE%" 2>&1
+poetry lock >> "%LOG_FILE%" 2>&1
+poetry install >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
-    echo %date% %time% "Error during post-installation: pip install failed." >> %LOG_FILE%
+    echo %date% %time% "Error during post-installation: poetry install failed." >> %LOG_FILE%
     exit /b 1
 ) ELSE (
-    echo %date% %time% "pip install completed successfully." >> %LOG_FILE%
+    echo %date% %time% "Poetry environment successfully created." >> %LOG_FILE%
 )
 
-REM Build OpenBB's python interface
-"%PYTHON_EXEC%" -c "import openbb; openbb.build()" >> "%LOG_FILE%" 2>&1
+echo Poetry package installation completed successfully. Building OpenBB's Python interface...
+
+python -c "import openbb; openbb.build()" >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
-    echo %date% %time% "Error during post-installation: building OpenBB's python interface failed."  >> %LOG_FILE%
+    call :log_with_timestamp "Error during post-installation: building OpenBB's Python interface failed."
     exit /b 1
 ) ELSE (
-    echo %date% %time% "OpenBB's python interface built successfully."  >> %LOG_FILE%
+    call :log_with_timestamp "OpenBB's Python interface built successfully."
 )
 
-REM Create shortcuts using the VBS script
 cscript "%PREFIX%\assets\create_shortcut.vbs" >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
     echo %date% %time% "Error during post-installation: creating shortcuts failed."  >> %LOG_FILE%
@@ -32,4 +39,12 @@ IF ERRORLEVEL 1 (
 )
 
 echo Post-installation steps completed successfully.
+
 exit /b 0
+
+goto :eof
+
+REM Function to add timestamp
+:log_with_timestamp
+    echo %date%_%time% %1 >> %LOG_FILE%
+    goto :eof
