@@ -1,5 +1,7 @@
 """Generate and serve the widgets.json for the OpenBB Platform API."""
 
+# flake8: noqa: T201
+
 import json
 import os
 import socket
@@ -86,6 +88,9 @@ def get_user_settings(login: bool):
                     json.dump(current_settings, f, indent=4)
 
         new_settings = current_settings.copy()
+        new_settings.setdefault("credentials", {})
+        new_settings.setdefault("preferences", {})
+        new_settings.setdefault("defaults", {"commands": {}})
 
         # Update the current settings with the new settings
         if hub_credentials:
@@ -139,7 +144,7 @@ def build_json(openapi):
             and "results" in data_schema["properties"]
         ):
             response_schema_refs = data_schema["properties"]["results"]
-            columns_defs = data_schema_to_columns_defs(openapi, response_schema_refs)
+            columns_defs = data_schema_to_columns_defs(openapi, response_schema_refs)  # noqa F841
 
         widget_config = {
             "name": f'OBB {route_api["get"]["operationId"].replace("_", " ").title()}',
