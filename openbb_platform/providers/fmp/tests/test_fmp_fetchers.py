@@ -48,6 +48,7 @@ from openbb_fmp.models.forward_eps_estimates import FMPForwardEpsEstimatesFetche
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
 from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
+from openbb_fmp.models.historical_market_cap import FmpHistoricalMarketCapFetcher
 from openbb_fmp.models.historical_splits import FMPHistoricalSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
@@ -760,5 +761,19 @@ def test_fmp_yield_curve_fetcher(credentials=test_credentials):
     params = {"date": "2024-05-14,2023-05-14,2022-05-14,2021-05-14,2020-05-14"}
 
     fetcher = FMPYieldCurveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
+    """Test FMP Historical Market Cap Fetcher."""
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2024, 1, 1),
+        "end_date": date(2024, 1, 31),
+    }
+
+    fetcher = FmpHistoricalMarketCapFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

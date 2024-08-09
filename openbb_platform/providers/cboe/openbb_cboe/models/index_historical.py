@@ -22,7 +22,10 @@ class CboeIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     Source: https://www.cboe.com/
     """
 
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "interval": {"choices": ["1m", "1d"]},
+    }
 
     interval: Literal["1m", "1d"] = Field(
         default="1d",

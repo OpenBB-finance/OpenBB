@@ -27,10 +27,15 @@ from openbb_fred.models.manufacturing_outlook_texas import (
 )
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
+from openbb_fred.models.non_farm_payrolls import FredNonFarmPayrollsFetcher
 from openbb_fred.models.overnight_bank_funding_rate import (
     FredOvernightBankFundingRateFetcher,
 )
+from openbb_fred.models.personal_consumption_expenditures import (
+    FredPersonalConsumptionExpendituresFetcher,
+)
 from openbb_fred.models.regional import FredRegionalDataFetcher
+from openbb_fred.models.release_table import FredReleaseTableFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
@@ -46,6 +51,7 @@ from openbb_fred.models.survey_of_economic_conditions_chicago import (
     FredSurveyOfEconomicConditionsChicagoFetcher,
 )
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
+from openbb_fred.models.tips_yields import FredTipsYieldsFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
 from openbb_fred.models.university_of_michigan import FredUofMichiganFetcher
 from openbb_fred.models.us_yield_curve import (
@@ -471,5 +477,59 @@ def test_fred_overnight_bank_funding_rate_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredOvernightBankFundingRateFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_non_farm_payrolls_fetcher(credentials=test_credentials):
+    """Test FredNonFarmPayrollsFetcher."""
+    params = {
+        "date": "2024-06-01",
+        "category": "avg_earnings_weekly",
+    }
+
+    fetcher = FredNonFarmPayrollsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_personal_consumption_expenditures_fetcher(credentials=test_credentials):
+    """Test FRED Personal Consumption Expenditures Fetcher."""
+    params = {
+        "date": "2024-05-01",
+        "category": "pce_price_index",
+    }
+
+    fetcher = FredPersonalConsumptionExpendituresFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_release_table_fetcher(credentials=test_credentials):
+    """Test FredReleaseTableFetcher."""
+    params = {
+        "date": "2024-07-14",
+        "release_id": "483",
+        "element_id": "1217633",
+    }
+
+    fetcher = FredReleaseTableFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_tips_yields_fetcher(credentials=test_credentials):
+    """Test FRED TIPS Yields."""
+    params = {
+        "start_date": datetime.date(2024, 7, 17),
+        "end_date": datetime.date(2024, 7, 17),
+        "maturity": 5,
+    }
+
+    fetcher = FredTipsYieldsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

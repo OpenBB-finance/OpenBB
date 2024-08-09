@@ -2,13 +2,15 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
+from warnings import simplefilter, warn
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_economy(Container):
@@ -21,14 +23,17 @@ class ROUTER_economy(Container):
     country_profile
     cpi
     fred_regional
+    fred_release_table
     fred_search
     fred_series
     /gdp
     house_price_index
     immediate_interest_rate
     indicators
+    interest_rates
     long_term_interest_rate
     money_measures
+    pce
     primary_dealer_positioning
     retail_prices
     risk_premium
@@ -258,9 +263,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'tradingeconomics']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, tradingeconomics.
@@ -365,9 +370,215 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "country": {"tradingeconomics": {"multiple_items_allowed": True}},
+                    "country": {
+                        "tradingeconomics": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "afghanistan",
+                                "albania",
+                                "algeria",
+                                "andorra",
+                                "angola",
+                                "antigua_and_barbuda",
+                                "argentina",
+                                "armenia",
+                                "aruba",
+                                "australia",
+                                "austria",
+                                "azerbaijan",
+                                "bahamas",
+                                "bahrain",
+                                "bangladesh",
+                                "barbados",
+                                "belarus",
+                                "belgium",
+                                "belize",
+                                "benin",
+                                "bermuda",
+                                "bhutan",
+                                "bolivia",
+                                "bosnia_and_herzegovina",
+                                "botswana",
+                                "brazil",
+                                "brunei",
+                                "bulgaria",
+                                "burkina_faso",
+                                "burundi",
+                                "cambodia",
+                                "cameroon",
+                                "canada",
+                                "cape_verde",
+                                "cayman_islands",
+                                "central_african_republic",
+                                "chad",
+                                "chile",
+                                "china",
+                                "colombia",
+                                "comoros",
+                                "congo",
+                                "costa_rica",
+                                "croatia",
+                                "cuba",
+                                "cyprus",
+                                "czech_republic",
+                                "denmark",
+                                "djibouti",
+                                "dominica",
+                                "dominican_republic",
+                                "east_timor",
+                                "ecuador",
+                                "egypt",
+                                "el_salvador",
+                                "equatorial_guinea",
+                                "eritrea",
+                                "estonia",
+                                "ethiopia",
+                                "euro_area",
+                                "faroe_islands",
+                                "fiji",
+                                "finland",
+                                "france",
+                                "gabon",
+                                "gambia",
+                                "georgia",
+                                "germany",
+                                "ghana",
+                                "greece",
+                                "grenada",
+                                "guatemala",
+                                "guinea",
+                                "guinea_bissau",
+                                "guyana",
+                                "haiti",
+                                "honduras",
+                                "hong_kong",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "iran",
+                                "iraq",
+                                "ireland",
+                                "isle_of_man",
+                                "israel",
+                                "italy",
+                                "ivory_coast",
+                                "jamaica",
+                                "japan",
+                                "jordan",
+                                "kazakhstan",
+                                "kenya",
+                                "kiribati",
+                                "kosovo",
+                                "kuwait",
+                                "kyrgyzstan",
+                                "laos",
+                                "latvia",
+                                "lebanon",
+                                "lesotho",
+                                "liberia",
+                                "libya",
+                                "liechtenstein",
+                                "lithuania",
+                                "luxembourg",
+                                "macao",
+                                "madagascar",
+                                "malawi",
+                                "malaysia",
+                                "maldives",
+                                "mali",
+                                "malta",
+                                "mauritania",
+                                "mauritius",
+                                "mexico",
+                                "moldova",
+                                "monaco",
+                                "mongolia",
+                                "montenegro",
+                                "morocco",
+                                "mozambique",
+                                "myanmar",
+                                "namibia",
+                                "nepal",
+                                "netherlands",
+                                "new_caledonia",
+                                "new_zealand",
+                                "nicaragua",
+                                "niger",
+                                "nigeria",
+                                "north_korea",
+                                "north_macedonia",
+                                "norway",
+                                "oman",
+                                "pakistan",
+                                "palestine",
+                                "panama",
+                                "papua_new_guinea",
+                                "paraguay",
+                                "peru",
+                                "philippines",
+                                "poland",
+                                "portugal",
+                                "puerto_rico",
+                                "qatar",
+                                "republic_of_the_congo",
+                                "romania",
+                                "russia",
+                                "rwanda",
+                                "samoa",
+                                "sao_tome_and_principe",
+                                "saudi_arabia",
+                                "senegal",
+                                "serbia",
+                                "seychelles",
+                                "sierra_leone",
+                                "singapore",
+                                "slovakia",
+                                "slovenia",
+                                "solomon_islands",
+                                "somalia",
+                                "south_africa",
+                                "south_korea",
+                                "south_sudan",
+                                "spain",
+                                "sri_lanka",
+                                "sudan",
+                                "suriname",
+                                "swaziland",
+                                "sweden",
+                                "switzerland",
+                                "syria",
+                                "taiwan",
+                                "tajikistan",
+                                "tanzania",
+                                "thailand",
+                                "togo",
+                                "tonga",
+                                "trinidad_and_tobago",
+                                "tunisia",
+                                "turkey",
+                                "turkmenistan",
+                                "uganda",
+                                "ukraine",
+                                "united_arab_emirates",
+                                "united_kingdom",
+                                "united_states",
+                                "uruguay",
+                                "uzbekistan",
+                                "vanuatu",
+                                "venezuela",
+                                "vietnam",
+                                "yemen",
+                                "zambia",
+                                "zimbabwe",
+                            ],
+                        }
+                    },
                     "calendar_id": {
-                        "tradingeconomics": {"multiple_items_allowed": True}
+                        "tradingeconomics": {
+                            "multiple_items_allowed": True,
+                            "choices": ["low", "medium", "high"],
+                        }
                     },
                 },
             )
@@ -393,7 +604,7 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        date : Union[datetime.date, None, str]
+        date : Union[date, None, str]
             A specific date to get data for.
         provider : Optional[Literal['federal_reserve']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
@@ -500,7 +711,14 @@ class ROUTER_economy(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={"cusip": {"federal_reserve": {"multiple_items_allowed": True}}},
+                info={
+                    "cusip": {
+                        "federal_reserve": {
+                            "multiple_items_allowed": True,
+                            "choices": None,
+                        }
+                    }
+                },
             )
         )
 
@@ -524,7 +742,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Use the composite leading indicator (CLI).
+        """Get the composite leading indicator (CLI).
 
         It is designed to provide early signals of turning points
         in business cycles showing fluctuation of the economic activity around its long term potential level.
@@ -534,19 +752,23 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']
-            Country to get GDP for. (provider: oecd)
+        country : Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str]
+            Country to get the CLI for, default is G20. Multiple comma separated items allowed. (provider: oecd)
+        adjustment : Literal['amplitude', 'normalized']
+            Adjustment of the data, either 'amplitude' or 'normalized'. Default is amplitude. (provider: oecd)
+        growth_rate : bool
+            Return the 1-year growth rate (%) of the CLI, default is False. (provider: oecd)
 
         Returns
         -------
         OBBject
-            results : List[CLI]
+            results : List[CompositeLeadingIndicator]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -557,20 +779,20 @@ class ROUTER_economy(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        CLI
-        ---
-        date : Optional[date]
+        CompositeLeadingIndicator
+        -------------------------
+        date : date
             The date of the data.
         value : Optional[float]
             CLI value
-        country : Optional[str]
-            Country for which CLI is given
+        country : str
+            Country for the CLI value.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.economy.composite_leading_indicator(provider='oecd')
-        >>> obb.economy.composite_leading_indicator(country='all', provider='oecd')
+        >>> obb.economy.composite_leading_indicator(country='all', provider='oecd', growth_rate=True)
         """  # noqa: E501
 
         return self._run(
@@ -588,6 +810,38 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "g20",
+                                "g7",
+                                "asia5",
+                                "north_america",
+                                "europe4",
+                                "australia",
+                                "brazil",
+                                "canada",
+                                "china",
+                                "france",
+                                "germany",
+                                "india",
+                                "indonesia",
+                                "italy",
+                                "japan",
+                                "mexico",
+                                "spain",
+                                "south_africa",
+                                "south_korea",
+                                "turkey",
+                                "united_states",
+                                "united_kingdom",
+                                "all",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -689,7 +943,11 @@ class ROUTER_economy(Container):
                     "country": country,
                 },
                 extra_params=kwargs,
-                info={"country": {"econdb": {"multiple_items_allowed": True}}},
+                info={
+                    "country": {
+                        "econdb": {"multiple_items_allowed": True, "choices": None}
+                    }
+                },
             )
         )
 
@@ -706,16 +964,12 @@ class ROUTER_economy(Container):
         transform: Annotated[
             Literal["index", "yoy", "period"],
             OpenBBField(
-                description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
-                choices=["index", "yoy", "period"],
+                description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy)."
             ),
         ] = "yoy",
         frequency: Annotated[
             Literal["annual", "quarter", "monthly"],
-            OpenBBField(
-                description="The frequency of the data.",
-                choices=["annual", "quarter", "monthly"],
-            ),
+            OpenBBField(description="The frequency of the data."),
         ] = "monthly",
         harmonized: Annotated[
             bool, OpenBBField(description="If true, returns harmonized data.")
@@ -751,9 +1005,9 @@ class ROUTER_economy(Container):
             The frequency of the data.
         harmonized : bool
             If true, returns harmonized data.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred', 'oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, oecd.
@@ -814,8 +1068,118 @@ class ROUTER_economy(Container):
                 extra_params=kwargs,
                 info={
                     "country": {
-                        "fred": ["multiple_items_allowed"],
-                        "oecd": ["multiple_items_allowed"],
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "bulgaria",
+                                "canada",
+                                "chile",
+                                "china",
+                                "croatia",
+                                "cyprus",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "euro_area",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "malta",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russian_federation",
+                                "slovak_republic",
+                                "slovakia",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                            ],
+                        },
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "G20",
+                                "G7",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "canada",
+                                "chile",
+                                "china",
+                                "colombia",
+                                "costa_rica",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "euro_area_20",
+                                "europe",
+                                "european_union_27",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "oecd_total",
+                                "poland",
+                                "portugal",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "all",
+                            ],
+                        },
                     }
                 },
             )
@@ -855,9 +1219,9 @@ class ROUTER_economy(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         limit : Optional[int]
             The number of data entries to return.
@@ -993,6 +1357,119 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def fred_release_table(
+        self,
+        release_id: Annotated[
+            str,
+            OpenBBField(
+                description="The ID of the release. Use `fred_search` to find releases."
+            ),
+        ],
+        element_id: Annotated[
+            Optional[str],
+            OpenBBField(
+                description="The element ID of a specific table in the release."
+            ),
+        ] = None,
+        date: Annotated[
+            Union[str, datetime.date, None, List[Union[str, datetime.date, None]]],
+            OpenBBField(
+                description="A specific date to get data for. Multiple comma separated items allowed for provider(s): fred."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get economic release data by ID and/or element from FRED.
+
+        Parameters
+        ----------
+        release_id : str
+            The ID of the release. Use `fred_search` to find releases.
+        element_id : Optional[str]
+            The element ID of a specific table in the release.
+        date : Union[str, date, None, List[Union[str, date, None]]]
+            A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
+        provider : Optional[Literal['fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+
+        Returns
+        -------
+        OBBject
+            results : List[FredReleaseTable]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        FredReleaseTable
+        ----------------
+        date : Optional[date]
+            The date of the data.
+        level : Optional[int]
+            The indentation level of the element.
+        element_type : Optional[str]
+            The type of the element.
+        line : Optional[int]
+            The line number of the element.
+        element_id : Optional[str]
+            The element id in the parent/child relationship.
+        parent_id : Optional[str]
+            The parent id in the parent/child relationship.
+        children : Optional[str]
+            The element_id of each child, as a comma-separated string.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            The name of the series.
+        value : Optional[float]
+            The reported value of the series.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> # Get the top-level elements of a release by not supplying an element ID.
+        >>> obb.economy.fred_release_table(release_id='50', provider='fred')
+        >>> # Drill down on a specific section of the release.
+        >>> obb.economy.fred_release_table(release_id='50', element_id='4880', provider='fred')
+        >>> # Drill down on a specific table of the release.
+        >>> obb.economy.fred_release_table(release_id='50', element_id='4881', provider='fred')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/fred_release_table",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.fred_release_table",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "release_id": release_id,
+                    "element_id": element_id,
+                    "date": date,
+                },
+                extra_params=kwargs,
+                info={
+                    "date": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
     def fred_search(
         self,
         query: Annotated[
@@ -1031,9 +1508,9 @@ class ROUTER_economy(Container):
         filter_value : Optional[str]
             String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
         tag_names : Optional[str]
-            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' (provider: fred)
+            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed. (provider: fred)
         exclude_tag_names : Optional[str]
-            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. (provider: fred)
+            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed. (provider: fred)
         series_id : Optional[str]
             A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)
 
@@ -1114,6 +1591,14 @@ class ROUTER_economy(Container):
                     "query": query,
                 },
                 extra_params=kwargs,
+                info={
+                    "tag_names": {
+                        "fred": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "exclude_tag_names": {
+                        "fred": {"multiple_items_allowed": True, "choices": None}
+                    },
+                },
             )
         )
 
@@ -1153,9 +1638,9 @@ class ROUTER_economy(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         limit : Optional[int]
             The number of data entries to return.
@@ -1278,7 +1763,11 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "symbol": {
+                        "fred": {"multiple_items_allowed": True, "choices": None}
+                    }
+                },
             )
         )
 
@@ -1301,16 +1790,12 @@ class ROUTER_economy(Container):
         ] = "united_states",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
-            OpenBBField(
-                description="The frequency of the data.",
-                choices=["monthly", "quarter", "annual"],
-            ),
+            OpenBBField(description="The frequency of the data."),
         ] = "quarter",
         transform: Annotated[
             Literal["index", "yoy", "period"],
             OpenBBField(
-                description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
-                choices=["index", "yoy", "period"],
+                description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy)."
             ),
         ] = "index",
         start_date: Annotated[
@@ -1339,9 +1824,9 @@ class ROUTER_economy(Container):
             The frequency of the data.
         transform : Literal['index', 'yoy', 'period']
             Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -1395,12 +1880,81 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": ["multiple_items_allowed"]}},
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "G20",
+                                "G7",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "bulgaria",
+                                "canada",
+                                "chile",
+                                "china",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "euro_area_20",
+                                "euro_area_19",
+                                "europe",
+                                "european_union_27",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "oecd_total",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "all",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
     @exception_handler
     @validate
+    @deprecated(
+        "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+        category=OpenBBDeprecationWarning,
+    )
     def immediate_interest_rate(
         self,
         country: Annotated[
@@ -1431,9 +1985,9 @@ class ROUTER_economy(Container):
         ----------
         country : Union[str, List[str]]
             The country to get data. Multiple comma separated items allowed for provider(s): oecd.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -1471,6 +2025,13 @@ class ROUTER_economy(Container):
         >>> obb.economy.immediate_interest_rate(country='united_kingdom,germany', frequency='monthly', provider='oecd')
         """  # noqa: E501
 
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+
         return self._run(
             "/economy/immediate_interest_rate",
             **filter_inputs(
@@ -1487,7 +2048,64 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": ["multiple_items_allowed"]}},
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "belgium",
+                                "bulgaria",
+                                "brazil",
+                                "ireland",
+                                "mexico",
+                                "indonesia",
+                                "new_zealand",
+                                "japan",
+                                "united_kingdom",
+                                "france",
+                                "chile",
+                                "canada",
+                                "netherlands",
+                                "united_states",
+                                "south_korea",
+                                "norway",
+                                "austria",
+                                "south_africa",
+                                "denmark",
+                                "switzerland",
+                                "hungary",
+                                "luxembourg",
+                                "australia",
+                                "germany",
+                                "sweden",
+                                "iceland",
+                                "turkey",
+                                "greece",
+                                "israel",
+                                "czech_republic",
+                                "latvia",
+                                "slovenia",
+                                "poland",
+                                "estonia",
+                                "lithuania",
+                                "portugal",
+                                "costa_rica",
+                                "slovakia",
+                                "finland",
+                                "spain",
+                                "romania",
+                                "russia",
+                                "euro_area19",
+                                "colombia",
+                                "italy",
+                                "india",
+                                "china",
+                                "croatia",
+                                "all",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -1531,9 +2149,9 @@ class ROUTER_economy(Container):
             Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed for provider(s): econdb.
         country : Union[str, None, List[Optional[str]]]
             The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['econdb']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.
@@ -1608,14 +2226,189 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"econdb": {"multiple_items_allowed": True}},
-                    "country": {"econdb": {"multiple_items_allowed": True}},
+                    "symbol": {
+                        "econdb": {"multiple_items_allowed": True, "choices": None}
+                    },
+                    "country": {
+                        "econdb": {"multiple_items_allowed": True, "choices": None}
+                    },
                 },
             )
         )
 
     @exception_handler
     @validate
+    def interest_rates(
+        self,
+        country: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): oecd."
+            ),
+        ] = "united_states",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get interest rates by country(s) and duration.
+        Most OECD countries publish short-term, a long-term, and immediate rates monthly.
+
+
+        Parameters
+        ----------
+        country : Union[str, List[str]]
+            The country to get data. Multiple comma separated items allowed for provider(s): oecd.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['oecd']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+        duration : Literal['immediate', 'short', 'long']
+            Duration of the interest rate. 'immediate' is the overnight rate, 'short' is the 3-month rate, and 'long' is the 10-year rate. (provider: oecd)
+        frequency : Literal['monthly', 'quarter', 'annual']
+            Frequency to get interest rate for for. (provider: oecd)
+
+        Returns
+        -------
+        OBBject
+            results : List[CountryInterestRates]
+                Serializable results.
+            provider : Optional[Literal['oecd']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        CountryInterestRates
+        --------------------
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            The interest rate value.
+        country : Optional[str]
+            Country for which the interest rate is given.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.interest_rates(provider='oecd')
+        >>> # For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate. Overnight interbank rate is 'immediate', and 10-year rate is 'long'.
+        >>> obb.economy.interest_rates(provider='oecd', country='all', duration='immediate', frequency='quarter')
+        >>> # Multiple countries can be passed in as a list.
+        >>> obb.economy.interest_rates(duration='long', country='united_kingdom,germany', frequency='monthly', provider='oecd')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/interest_rates",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.interest_rates",
+                        ("oecd",),
+                    )
+                },
+                standard_params={
+                    "country": country,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "belgium",
+                                "bulgaria",
+                                "brazil",
+                                "ireland",
+                                "mexico",
+                                "indonesia",
+                                "new_zealand",
+                                "japan",
+                                "united_kingdom",
+                                "france",
+                                "chile",
+                                "canada",
+                                "netherlands",
+                                "united_states",
+                                "south_korea",
+                                "norway",
+                                "austria",
+                                "south_africa",
+                                "denmark",
+                                "switzerland",
+                                "hungary",
+                                "luxembourg",
+                                "australia",
+                                "germany",
+                                "sweden",
+                                "iceland",
+                                "turkey",
+                                "greece",
+                                "israel",
+                                "czech_republic",
+                                "latvia",
+                                "slovenia",
+                                "poland",
+                                "estonia",
+                                "lithuania",
+                                "portugal",
+                                "costa_rica",
+                                "slovakia",
+                                "finland",
+                                "spain",
+                                "romania",
+                                "russia",
+                                "euro_area19",
+                                "colombia",
+                                "italy",
+                                "india",
+                                "china",
+                                "croatia",
+                                "all",
+                            ],
+                        }
+                    },
+                    "duration": {
+                        "oecd": {
+                            "multiple_items_allowed": False,
+                            "choices": ["immediate", "short", "long"],
+                        }
+                    },
+                    "frequency": {
+                        "oecd": {
+                            "multiple_items_allowed": False,
+                            "choices": ["monthly", "quarter", "annual"],
+                        }
+                    },
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
+    @deprecated(
+        "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+        category=OpenBBDeprecationWarning,
+    )
     def long_term_interest_rate(
         self,
         start_date: Annotated[
@@ -1648,9 +2441,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -1688,6 +2481,13 @@ class ROUTER_economy(Container):
         >>> obb.economy.long_term_interest_rate(provider='oecd')
         >>> obb.economy.long_term_interest_rate(country='all', frequency='quarterly', provider='oecd')
         """  # noqa: E501
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
 
         return self._run(
             "/economy/long_term_interest_rate",
@@ -1738,9 +2538,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         adjusted : Optional[bool]
             Whether to return seasonally adjusted data.
@@ -1808,6 +2608,98 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def pce(
+        self,
+        date: Annotated[
+            Union[str, datetime.date, None, List[Union[str, datetime.date, None]]],
+            OpenBBField(
+                description="A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get Personal Consumption Expenditures (PCE) reports.
+
+        Parameters
+        ----------
+        date : Union[str, date, None, List[Union[str, date, None]]]
+            A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.
+        provider : Optional[Literal['fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        category : Literal['personal_income', 'wages_by_industry', 'real_pce_percent_change', 'real_pce_quantity_index', 'pce_price_index', 'pce_dollars', 'real_pce_chained_dollars', 'pce_price_percent_change']
+            The category to query. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[PersonalConsumptionExpenditures]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        PersonalConsumptionExpenditures
+        -------------------------------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        value : float
+
+        name : Optional[str]
+            The name of the series. (provider: fred)
+        element_id : Optional[str]
+            The element id in the parent/child relationship. (provider: fred)
+        parent_id : Optional[str]
+            The parent id in the parent/child relationship. (provider: fred)
+        children : Optional[str]
+            The element_id of each child, as a comma-separated string. (provider: fred)
+        level : Optional[int]
+            The indentation level of the element. (provider: fred)
+        line : Optional[int]
+            The line number of the series in the table. (provider: fred)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.pce(provider='fred')
+        >>> # Get reports for multiple dates, entered as a comma-separated string.
+        >>> obb.economy.pce(provider='fred', date='2024-05-01,2024-04-01,2023-05-01', category='pce_price_index')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/pce",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.pce",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "date": date,
+                },
+                extra_params=kwargs,
+                info={
+                    "date": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
     def primary_dealer_positioning(
         self,
         start_date: Annotated[
@@ -1830,9 +2722,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['federal_reserve']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
@@ -1926,9 +2818,9 @@ class ROUTER_economy(Container):
             The item or basket of items to query.
         country : str
             The country to get data.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -2084,10 +2976,7 @@ class ROUTER_economy(Container):
         ] = "united_states",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
-            OpenBBField(
-                description="The frequency of the data.",
-                choices=["monthly", "quarter", "annual"],
-            ),
+            OpenBBField(description="The frequency of the data."),
         ] = "monthly",
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -2113,9 +3002,9 @@ class ROUTER_economy(Container):
             The country to get data. Multiple comma separated items allowed for provider(s): oecd.
         frequency : Literal['monthly', 'quarter', 'annual']
             The frequency of the data.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -2168,12 +3057,81 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": ["multiple_items_allowed"]}},
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "G20",
+                                "G7",
+                                "all",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "bulgaria",
+                                "canada",
+                                "chile",
+                                "china",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "euro_area_19",
+                                "euro_area_20",
+                                "europe",
+                                "european_union_27",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "oecd_total",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
     @exception_handler
     @validate
+    @deprecated(
+        "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+        category=OpenBBDeprecationWarning,
+    )
     def short_term_interest_rate(
         self,
         start_date: Annotated[
@@ -2204,9 +3162,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -2245,6 +3203,13 @@ class ROUTER_economy(Container):
         >>> obb.economy.short_term_interest_rate(country='all', frequency='quarterly', provider='oecd')
         """  # noqa: E501
 
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+
         return self._run(
             "/economy/short_term_interest_rate",
             **filter_inputs(
@@ -2282,10 +3247,7 @@ class ROUTER_economy(Container):
         ] = "united_states",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
-            OpenBBField(
-                description="The frequency of the data.",
-                choices=["monthly", "quarter", "annual"],
-            ),
+            OpenBBField(description="The frequency of the data."),
         ] = "monthly",
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -2311,9 +3273,9 @@ class ROUTER_economy(Container):
             The country to get data. Multiple comma separated items allowed for provider(s): oecd.
         frequency : Literal['monthly', 'quarter', 'annual']
             The frequency of the data.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
@@ -2373,6 +3335,59 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"oecd": ["multiple_items_allowed"]}},
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "all",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "canada",
+                                "chile",
+                                "colombia",
+                                "costa_rica",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "euro_area20",
+                                "european_union27_2020",
+                                "finland",
+                                "france",
+                                "g7",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "oecd",
+                                "poland",
+                                "portugal",
+                                "russia",
+                                "slovakia",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                            ],
+                        }
+                    }
+                },
             )
         )

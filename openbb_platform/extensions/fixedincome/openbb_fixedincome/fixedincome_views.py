@@ -71,13 +71,14 @@ class FixedIncomeViews:
                 color = colors[color_count % len(colors)]
                 plot_df = df[df["date"] == date].copy()
                 plot_df["rate"] = plot_df["rate"].apply(lambda x: x * 100)
+                plot_df = plot_df.rename(columns={"rate": "Yield"})
                 plot_df = (
                     plot_df.drop(columns=["date"])
                     .set_index("maturity")
                     .filter(items=maturities, axis=0)
                     .reset_index()
-                    .rename(columns={"maturity": "Maturity", "rate": "Yield"})
                 )
+                plot_df = plot_df.rename(columns={"index": "Maturity"})
                 plot_df["Maturity"] = [
                     (
                         d.split("_")[1] + " " + d.split("_")[0].title()
@@ -105,7 +106,7 @@ class FixedIncomeViews:
 
         dates = df.date.unique().tolist()
         figure, color_count = create_fig(figure, df, dates, color_count)
-        extra_params = kwargs.get("extra_params")
+        extra_params = kwargs.get("extra_params", {})
         extra_params = (
             extra_params if isinstance(extra_params, dict) else extra_params.__dict__
         )

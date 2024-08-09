@@ -27,7 +27,19 @@ MATURITY_TO_FRED_ID = {
 class FredAmeriborQueryParams(AmeriborQueryParams):
     """FRED AMERIBOR Query."""
 
-    __json_schema_extra__ = {"maturity": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "maturity": {
+            "multiple_items_allowed": True,
+            "choices": [
+                "all",
+                "overnight",
+                "average_30d",
+                "average_90d",
+                "term_30d",
+                "term_90d",
+            ],
+        }
+    }
 
     maturity: Union[
         Literal[
@@ -42,16 +54,6 @@ class FredAmeriborQueryParams(AmeriborQueryParams):
     ] = Field(
         default="all",
         description="Period of AMERIBOR rate.",
-        json_schema_extra={
-            "choices": [
-                "all",
-                "overnight",
-                "average_30d",
-                "average_90d",
-                "term_30d",
-                "term_90d",
-            ]
-        },
     )
     frequency: Union[
         None,

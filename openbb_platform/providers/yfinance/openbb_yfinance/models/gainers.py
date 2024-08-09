@@ -37,15 +37,18 @@ class YFGainersData(EquityPerformanceData):
         "pe_ratio_ttm": "PE Ratio (TTM)",
     }
 
-    market_cap: Optional[float] = Field(
-        description="Market Cap.",
-    )
     avg_volume_3_months: Optional[float] = Field(
+        default=None,
         description="Average volume over the last 3 months in millions.",
     )
-    pe_ratio_ttm: Optional[float] = Field(
-        description="PE Ratio (TTM).",
+    market_cap: Optional[float] = Field(
         default=None,
+        description="Market Cap.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    pe_ratio_ttm: Optional[float] = Field(
+        default=None,
+        description="PE Ratio (TTM).",
     )
 
 

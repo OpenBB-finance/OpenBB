@@ -12,7 +12,7 @@ from openbb_core.provider.standard_models.etf_info import (
     EtfInfoQueryParams,
 )
 from openbb_core.provider.utils.helpers import amake_request
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FMPEtfInfoQueryParams(EtfInfoQueryParams):
@@ -33,9 +33,15 @@ class FMPEtfInfoData(EtfInfoData):
     asset_class: Optional[str] = Field(
         default=None, description="Asset class of the ETF."
     )
-    aum: Optional[float] = Field(default=None, description="Assets under management.")
+    aum: Optional[float] = Field(
+        default=None,
+        description="Assets under management.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
     nav: Optional[float] = Field(
-        default=None, description="Net asset value of the ETF."
+        default=None,
+        description="Net asset value of the ETF.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     nav_currency: Optional[str] = Field(
         default=None, description="Currency of the ETF's net asset value."
@@ -52,6 +58,12 @@ class FMPEtfInfoData(EtfInfoData):
         default=None, description="Average daily trading volume."
     )
     website: Optional[str] = Field(default=None, description="Website of the issuer.")
+
+    @field_validator("expense_ratio", mode="before", check_fields=False)
+    @classmethod
+    def validate_expense_ratio(cls, v):
+        """Format expense ratio as percent."""
+        return v / 100 if v else None
 
 
 class FMPEtfInfoFetcher(
