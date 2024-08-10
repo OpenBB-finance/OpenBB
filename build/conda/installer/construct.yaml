@@ -29,7 +29,8 @@ condarc:
   envs_dirs: [./envs],
   pkgs_dirs: [./pkgs],
   always_copy: true,
-  register_envs: false}
+  register_envs: false,
+  pip_interop_enabled: true}
 
 
 pkg_domains:
