@@ -5,7 +5,12 @@ description = "Investment research for everyone, anywhere."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
 readme = "README.md"
+homepage = "https://openbb.co"
+repository = "https://github.com/OpenBB-finance/OpenBB"
+documentation = "https://docs.openbb.co"
 packages = [{ include = "openbb_platform" }]
+
+
 
 [tool.poetry.scripts]
 openbb-api = "openbb_platform.api:main"
@@ -29,5 +34,5 @@ nbclassic = "^1"
 jedi-language-server = "^0.41"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
