@@ -7,10 +7,10 @@ installer_type: all
 
 register_python: false # [win]
 register_python_default: false # [win]
-
+initialize_by_default: false
+initialize_conda: false
 
 channels:
-  - defaults
   - conda-forge
 
 specs:
