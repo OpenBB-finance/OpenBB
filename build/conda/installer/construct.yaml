@@ -7,16 +7,30 @@ installer_type: all
 
 register_python: false # [win]
 register_python_default: false # [win]
+register_envs: false
 initialize_by_default: false
 initialize_conda: false
 
-channels:
-  - conda-forge
+write_condarc: true
 
 specs:
   - conda
   - bash  # [unix]
   - python=3.12
+
+channels:
+  - conda-forge
+
+condarc:
+  {channels: [conda-forge],
+  default_channels: [conda-forge],
+  allow_softlinks: false,
+  auto_activate_base: false,
+  envs_dirs: [./envs],
+  pkgs_dirs: [./pkgs],
+  always_copy: true,
+  register_envs: false}
+
 
 pkg_domains:
   enable_anywhere: false
