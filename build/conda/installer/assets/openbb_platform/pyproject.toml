@@ -10,16 +10,15 @@ repository = "https://github.com/OpenBB-finance/OpenBB"
 documentation = "https://docs.openbb.co"
 packages = [{ include = "openbb_platform" }]
 
-
-
 [tool.poetry.scripts]
 openbb-api = "openbb_platform.api:main"
 openbb-build = "openbb_platform.build:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-openbb = { version = "^4", extras = ["all"] }
-openbb-cli = "^1"
+poetry = "^1.8"
+setuptools = "*"
+openbb-core = "*"
 types-python-dateutil = "*"
 types-toml = "*"
 pandas-stubs = "*"
@@ -29,6 +28,20 @@ mypy = "*"
 black = "*"
 pylint = "^3"
 pydocstyle = "~6.3"
+
+[tool.poetry.group.openbb-all]
+
+[tool.poetry.group.openbb-all.dependencies]
+openbb = { version = "^4", extras = ["all"] }
+
+[tool.poetry.group.cli]
+
+[tool.poetry.group.cli.dependencies]
+openbb-cli = "^1"
+
+[tool.poetry.group.notebook]
+
+[tool.poetry.group.notebook.dependencies]
 notebook = "^7"
 nbclassic = "^1"
 jedi-language-server = "^0.41"
