@@ -146,7 +146,6 @@ async def get_vx_current(
         ]
         df = df.set_index("symbol")
         df = df.filter(items=current_symbols, axis=0).reset_index()
-        df = df.rename(columns={"index": "symbol"})
 
     expirations: List = []
     for month in current_months:
