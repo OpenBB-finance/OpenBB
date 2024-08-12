@@ -77,7 +77,6 @@ readme_file: ./assets/installer_readme.txt  # [unix]
 conclusion_file: ./assets/installer_conclusion.txt  # [unix]
 welcome_file: ./assets/custom_welcome.nsi  # [win]
 conclusion_file: ./assets/custom_conclusion.nsi  # [win]
-nsis_template: ./assets/installer.nsi  # [win]
 
 # Add extra files to the installer - this is another way - was playing with this
 temp_extra_files:
