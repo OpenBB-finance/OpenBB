@@ -6,13 +6,24 @@ cd %PREFIX%
 PATH %PREFIX%;%PREFIX%\Scripts;%PREFIX%\Library\bin;%PATH%
 SET LOG_FILE="%PREFIX%\post_install_log.txt"
 
+call "%PREFIX%\Scripts\activate.bat"
+
+call conda activate "%PREFIX%\envs\obb" >> "%LOG_FILE%" 2>&1
+
 python -m pip install -U pip >> "%LOG_FILE%" 2>&1
+
 pip install -U setuptools >> "%LOG_FILE%" 2>&1
+
 pip install poetry >> "%LOG_FILE%" 2>&1
+
+poetry config virtualenvs.path "%PREFIX%\envs" --local >> "%LOG_FILE%" 2>&1
+
 poetry config virtualenvs.create false --local >> "%LOG_FILE%" 2>&1
-poetry env use python >> "%LOG_FILE%" 2>&1
+
 poetry lock >> "%LOG_FILE%" 2>&1
+
 poetry install >> "%LOG_FILE%" 2>&1
+
 IF ERRORLEVEL 1 (
     echo %date% %time% "Error during post-installation: poetry install failed." >> %LOG_FILE%
     exit /b 1

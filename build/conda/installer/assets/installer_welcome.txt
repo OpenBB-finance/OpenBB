@@ -5,7 +5,7 @@ This application will install the latest version of the OpenBB Platform on your 
 
 Several launch scripts are included; OpenBB CLI, OpenBB API, Jupyter Notebook, IPython, updater, and other shortcuts.
 
-Find them at the base of the installation folder, as files beginning with "openbb-", in the "openbb" folder.
+Find them at the base of the installation folder, along with the README.md file for getting started.
 
 
 Note: In order to install you need access to the Internet.

@@ -35,32 +35,32 @@ CreateShortcut "OpenBB User Data", userProfilePath & "\OpenBBUserData", prefixPa
 CreateShortcut "Uninstall", prefixPath & "\Uninstall-OpenBB.exe", prefixPath & "\assets\openbb_icon.ico"
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB Notebook.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && poetry env use python && cd " & userProfilePath & " && jupyter-notebook"
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && source activate " & prefixPath & "\envs\obb && cd " & userProfilePath & " && jupyter-notebook"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB IPython.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && poetry env use python && ipython -c ""from openbb import obb;obb"" -i"
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && source activate " & prefixPath & "\envs\obb && ipython -c ""from openbb import obb;obb"" -i"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB API.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && poetry env use python && openbb-api --login"
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && source activate " & prefixPath & "\envs\obb && openbb-api --login"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB Updater.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && poetry env use python && poetry lock && poetry install && python -c ""import openbb; openbb.build()"" && echo OpenBB has been updated. Press any key to exit. && pause >nul && exit"
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && source activate " & prefixPath & "\envs\obb && poetry lock && poetry install && python -c ""import openbb; openbb.build()"" && echo OpenBB has been updated. Press any key to exit. && pause >nul && exit"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB CMD.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && poetry env use python"
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && source activate base"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB CLI.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && poetry env use python && openbb"
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && source activate " & prefixPath & "\envs\obb && openbb"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
