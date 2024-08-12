@@ -48,7 +48,8 @@ IPYTHON_WRAPPER_SCRIPT="$PREFIX/envs/obb/bin/openbb-ipython-launcher"
 cat > "$IPYTHON_WRAPPER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
-source activate $PREFIX/envs/obb
+source activate $PREFIX/envs/obsource "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
+conda activate obb
 ipython -c "from openbb import obb;obb" -i
 EOF
 
@@ -61,7 +62,8 @@ cat > "$SHELL_WRAPPER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
 cd "$PREFIX/.."
-$PREFIX/bin/activate base
+source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
+conda activate base
 echo
 echo "Conda base environment is active, but not initialized. Use this shell to create new environments."
 echo "To initialize and activate the OpenBB environment, run 'source activate conda/envs/obb'."
@@ -84,14 +86,15 @@ EOF
 
 chmod +x "$NOTEBOOK_WRAPPER_SCRIPT"
 
-API_WRAPPER_SCRIPT="$PREFIX/envs/obb/bin/openbb-api"
+API_WRAPPER_SCRIPT="$PREFIX/envs/obb/bin/openbb-api-launcher"
 
 cat  > "$API_WRAPPER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
+source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
+conda activate obb
 cd "$PREFIX/.."
-source activate $PREFIX/envs/obb
-python -m openbb_platform.api --login True "\$@"
+openbb-api --login True "\$@"
 EOF
 
 chmod +x "$API_WRAPPER_SCRIPT"
@@ -101,7 +104,8 @@ CLI_WRAPPER_SCRIPT="$PREFIX/envs/obb/bin/openbb-cli"
 cat  > "$CLI_WRAPPER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
-source activate $PREFIX/envs/obb
+source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
+conda activate obb
 openbb "\$@"
 EOF
 
@@ -112,7 +116,8 @@ OPENBB_UPDATER_SCRIPT="$PREFIX/bin/openbb-updater"
 cat > "$OPENBB_UPDATER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
-source activate $PREFIX/envs/obb
+source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
+conda activate obb
 openbb-update "\$@"
 EOF
 
