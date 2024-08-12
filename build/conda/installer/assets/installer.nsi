@@ -28,17 +28,15 @@
 
 ;--------------------------------
 ; Custom defines
-  !define NAME "OpenBB Terminal"
+  !define NAME "OpenBB Platform"
   !define COMPANY "OpenBB"
-  !define APPFILE "OpenBBTerminal.exe"
-  !define VERSION "2.5.1"
+  !define VERSION "1.0.0"
   !define SLUG "${NAME} v${VERSION}"
 
 ;--------------------------------
 ; General
   Name "${NAME}"
-  OutFile "C:\Users\Andrew\Desktop\openbb-good\OpenBBTerminal\build\conda\Platform-installer.exe"
-  InstallDir $PROFILE\OpenBB
+  InstallDir "${PROFILE}\OpenBB"
   RequestExecutionLevel user
 
 ;--------------------------------
@@ -51,7 +49,7 @@
   !define MUI_HEADERIMAGE_BITMAP "assets\installer_horizontal.bmp"
   !define MUI_ABORTWARNING
   !define MUI_WELCOMEPAGE_TITLE "${SLUG} Setup"
-  !define UninstId "OpenBBTerminal" ; You might want to use a GUID here
+  !define UninstId "OpenBBPlatform" ; You might want to use a GUID here
 
 ;--------------------------------
 ; Pages
@@ -207,20 +205,9 @@ FunctionEnd
     ; File /r "app\*.*"
     WriteRegStr HKCU "Software\${NAME}" "" $INSTDIR
     WriteUninstaller "$INSTDIR\Uninstall.exe"
-	WriteRegStr HKCU "Software\Software\Microsoft\Windows\CurrentVersion\Uninstall\${UninstId}" "OpenBBTerminal" "OpenBB"
+	WriteRegStr HKCU "Software\Software\Microsoft\Windows\CurrentVersion\Uninstall\${UninstId}" "OpenBBPlatform" "OpenBB"
 	WriteRegStr HKCU "Software\Software\Microsoft\Windows\CurrentVersion\Uninstall\${UninstId}" "UninstallString" '"$InstDir\Uninstall.exe"'
 	WriteRegStr HKCU "Software\Software\Microsoft\Windows\CurrentVersion\Uninstall\${UninstId}" "QuietUninstallString" '"$InstDir\Uninstall.exe" /S'
-  SectionEnd
-
-
-;--------------------------------
-; Section - Shortcut
-
-  Section "Desktop Shortcut" DeskShort
-    CreateShortCut "$DESKTOP\${NAME}.lnk" "$INSTDIR\${APPFILE}"
-	CreateDirectory '$SMPROGRAMS\${Company}\${NAME}'
-    CreateShortCut '$SMPROGRAMS\${Company}\${NAME}\${NAME}.lnk' '$INSTDIR\${APPFILE}' "" '$INSTDIR\${APPFILE}' 0
-    CreateShortCut '$SMPROGRAMS\${Company}\${NAME}\Uninstall ${NAME}.lnk' '$INSTDIR\Uninstall.exe' "" '$INSTDIR\Uninstall.exe' 0
   SectionEnd
 
 

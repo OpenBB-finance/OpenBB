@@ -1,10 +1,10 @@
 @echo off
-echo Installing environment, this may take a few minutes... Watch for changes in %PREFIX%\post_install_log.txt
+echo Installing environment, this may take a few minutes... Watch for changes in "%PREFIX%\.."\post_install_log.txt
 
 cd %PREFIX%
 
 PATH %PREFIX%;%PREFIX%\Scripts;%PREFIX%\Library\bin;%PATH%
-SET LOG_FILE="%PREFIX%\post_install_log.txt"
+SET LOG_FILE="%PREFIX%\..\post_install_log.txt"
 
 call "%PREFIX%\Scripts\activate.bat"
 
@@ -28,12 +28,12 @@ IF ERRORLEVEL 1 (
     echo %date% %time% "Error during post-installation: poetry install failed." >> %LOG_FILE%
     exit /b 1
 ) ELSE (
-    echo %date% %time% "Poetry environment successfully created." >> %LOG_FILE%
+    echo %date% %time% "Python environment successfully installed... Building the OpenBB Python interface..." >> %LOG_FILE%
 )
 
-echo Poetry package installation completed successfully. Building OpenBB's Python interface...
+echo Python environment successfully installed... Building the OpenBB Python interface...
 
-python -c "import openbb; openbb.build()" >> "%LOG_FILE%" 2>&1
+call openbb-build >> "%LOG_FILE%" 2>&1
 IF ERRORLEVEL 1 (
     call :log_with_timestamp "Error during post-installation: building OpenBB's Python interface failed."
     exit /b 1

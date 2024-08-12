@@ -19,7 +19,7 @@ def main():
         f"{sys.executable} -m pip install -U pip && "
         f"{sys.executable} -m poetry lock && "
         f"{sys.executable} -m poetry install {' '.join(args)} && "
-        f"{sys.executable} -c 'import openbb; openbb.build()'"
+        "openbb-build"
     )
 
     subprocess.run(command, shell=True, cwd=cwd)
