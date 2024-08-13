@@ -861,7 +861,7 @@ def test_equity_fundamental_ratios(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "period": "annual", "structure": "flat", "provider": "fmp"})],
+    [({"symbol": "AAPL", "period": "annual", "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_revenue_per_geography(params, headers):
@@ -877,7 +877,7 @@ def test_equity_fundamental_revenue_per_geography(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "period": "annual", "structure": "flat", "provider": "fmp"})],
+    [({"symbol": "AAPL", "period": "annual", "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_revenue_per_segment(params, headers):
