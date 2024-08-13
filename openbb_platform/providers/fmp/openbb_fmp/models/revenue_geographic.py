@@ -73,7 +73,7 @@ class FMPRevenueGeographicFetcher(
             "https://financialmodelingprep.com/api/v4/revenue-geographic-segmentation?"
         )
         url = (
-            url
+            url  # type: ignore
             + "symbol="
             + query.symbol
             + "&period="
