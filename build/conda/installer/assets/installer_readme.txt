@@ -5,8 +5,21 @@ Ensure your system meets all requirements before proceeding with the installatio
 - 4GB RAM minimum
 - 1-2 GB of storage space
 
-Installation is intended for the default location, of the current user.
+Important Notes:
 
-The application is intended strictly for research and educational purposes.
+The installation is for the current user only,  system-wide installations are not allowed.
+
+In order to install you need access to the Internet.
+
+If a folder named "OpenBB" already exists at the user root, please move or rename it before installing.
+
+Ignore the size estimate provider by the installer, it will take approximately 1-2 GB of space to install.
+
+The installed packages can be reconfigure post-installation to include/exclude certain packages.
+
+If you move the folder post-installation, shortcuts will not be updated to reflect the change. Command line entry points will continue to work.
+
+
+This application is intended strictly for research and educational purposes.
 
 By proceeding with the installation, you agree not to use this application for any purpose that is unlawful or prohibited by international and national laws, regulations, or governmental and industry requirements.

@@ -15,10 +15,10 @@ Function muiExtraPages_Create
         "Installation Successfully Complete"
 
     nsDialogs::Create /NOUNLOAD 1018
-    ${NSD_CreateLabel} 10u 10u 280u 40u "Click the link below to open the shortcuts folder:"
+    ${NSD_CreateLabel} 10u 10u 280u 40u "Click the link below to open the installation folder:"
     Pop $IntroText
 
-    ${NSD_CreateLink} 10u 55u 200u 10u "$DESKTOP\OpenBB Shortcuts"
+    ${NSD_CreateLink} 10u 55u 200u 10u "${EXEDIR}"
     Pop $InstallationLink
     ${NSD_OnClick} $InstallationLink LaunchLinkOne
 
@@ -47,7 +47,7 @@ var CheckboxLinkThree
 var CheckboxLinkFour
 
 Function LaunchLinkOne
-    ExecShell "open" "$DESKTOP\OpenBB Shortcuts"
+    ExecShell "open" "${EXEDIR}"
 FunctionEnd
 
 Function LaunchLinkTwo

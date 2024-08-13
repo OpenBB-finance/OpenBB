@@ -1,6 +1,6 @@
 Thank you for installing OpenBB Platform!
 
-To get started, open the shortcuts location - "openbb" folder at the root of your operating system user account profile - and launch the OpenBB CLI to explore the available commands.
+To get started, open the installed folder, at the root of your user account profile, and review the README.md file. Or, open one of the launchers with the provided shortcuts.
 
 Documentation is found here: https://docs.openbb.co
 

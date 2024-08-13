@@ -4,7 +4,7 @@ sdesktopPath = objShell.SpecialFolders("Desktop")
 prefixPath = objShell.ExpandEnvironmentStrings("%PREFIX%")
 userProfilePath = objShell.ExpandEnvironmentStrings("%USERPROFILE%")
 
-shortcutFolder = prefixPath & "\Shortcuts"
+shortcutFolder = prefixPath & ".."
 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 If Not objFSO.FolderExists(shortcutFolder) Then
@@ -25,43 +25,44 @@ Sub CreateShortcut(name, targetPath, iconPath)
     objShortcut.Save
 End Sub
 
-CreateShortcut "OpenBB CLI", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
-CreateShortcut "OpenBB API", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
-CreateShortcut "OpenBB Notebook", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
-CreateShortcut "OpenBB IPython", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
-CreateShortcut "OpenBB Updater", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
-CreateShortcut "OpenBB CMD", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
-CreateShortcut "OpenBB User Settings", userProfilePath & "\.openbb_platform", prefixPath & "\assets\openbb_icon.ico"
-CreateShortcut "OpenBB User Data", userProfilePath & "\OpenBBUserData", prefixPath & "\assets\openbb_icon.ico"
+CreateShortcut "openbb-cli", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
+CreateShortcut "openbb-api", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
+CreateShortcut "openbb-notebook", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
+CreateShortcut "openbb-ipython", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
+CreateShortcut "Update", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
+CreateShortcut "CMD", "C:\Windows\System32\cmd.exe", prefixPath & "\assets\openbb_icon.ico"
+CreateShortcut "Environments", prefixPath & "\envs", prefixPath & "\assets\openbb_icon.ico"
+CreateShortcut "Settings", userProfilePath & "\.openbb_platform", prefixPath & "\assets\openbb_icon.ico"
+CreateShortcut "OpenBBUserData", userProfilePath & "\OpenBBUserData", prefixPath & "\assets\openbb_icon.ico"
 CreateShortcut "Uninstall", prefixPath & "\Uninstall-OpenBB.exe", prefixPath & "\assets\openbb_icon.ico"
 
-Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB Notebook.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && cd " & userProfilePath & " && jupyter-notebook"
+Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\openbb-notebook.lnk")
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && cd " & userProfilePath & " && jupyter-notebook && exit"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
-Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB IPython.lnk")
+Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\openbb-ipython.lnk")
 objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && ipython -c ""from openbb import obb;obb"" -i"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
-Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB API.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && call openbb-api --login"
+Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\openbb-api.lnk")
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && call openbb-api --login  && exit"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
 
-Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB Updater.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && call openbb-update"
+Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\Update.lnk")
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && call openbb-update && exit"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
-Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB CMD.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate base && echo && echo Conda base environment is active, but not initialized. Use this shell to create new environments. && echo To initialize and activate the OpenBB environment, run 'source activate conda/envs/obb'. && echo"
+Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\CMD.lnk")
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate base && echo Conda base environment is active. Use this shell to create new environments. && echo To activate the OpenBB environment, run 'conda activate obb'."
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save
 
-Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\OpenBB CLI.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && call openbb"
+Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\openbb-cli.lnk")
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && call openbb && exit"
 objShortcut.WorkingDirectory = prefixPath
 objShortcut.Save

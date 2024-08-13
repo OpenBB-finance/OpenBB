@@ -12,10 +12,10 @@ initialize_by_default: false
 initialize_conda: false
 write_condarc: true
 
-default_location_pkg: ./OpenBB  # [unix]
-default_prefix_domain_user: "%USERPROFILE%/OpenBB/conda" # [win]
-default_prefix: ./OpenBB  # [unix]
-default_prefix: "%USERPROFILE%/OpenBB/conda" # [win]
+default_location_pkg: OpenBB  # [osx]
+default_prefix_domain_user: "%USERPROFILE%\\OpenBB\\conda" # [win]
+default_prefix: "${HOME}/OpenBB"  # [linux]
+default_prefix: "%USERPROFILE%\\OpenBB\\conda" # [win]
 pkg_name: conda
 
 specs:
@@ -35,8 +35,8 @@ condarc:
   default_channels: [conda-forge],
   allow_softlinks: false,
   auto_activate_base: true,
-  envs_dirs: [./conda/envs],
-  pkgs_dirs: [./conda/pkgs],
+  envs_dirs: ["%PREFIX%/envs"],
+  pkgs_dirs: ["%PREFIX%/pkgs"],
   always_copy: true,
   register_envs: false,
   pip_interop_enabled: true}
@@ -51,6 +51,7 @@ post_install: post_install.bat  # [win]
 
 extra_files:
   # Bundle launcher assets
+  - ./README.md: ../README.md
   - ./assets/openbb_platform/obb-env.yml: ../extensions/openbb_platform/obb-env.yml
   - ./assets/openbb_platform/pyproject.toml: ../extensions/openbb_platform/pyproject.toml
   - ./assets/openbb_platform/README.md: ../extensions/openbb_platform/README.md
@@ -72,7 +73,6 @@ welcome_image: ./assets/openbb_osx.png  # [unix]
 welcome_image: ./assets/Installer_vertical2.bmp  # [win]
 header_image: ./assets/Installer_horizontal2.png  # [win]
 welcome_image_text: "OpenBB Platform"
-welcome_file: ./assets/installer_welcome.txt  # [unix]
 readme_file: ./assets/installer_readme.txt  # [unix]
 conclusion_file: ./assets/installer_conclusion.txt  # [unix]
 welcome_file: ./assets/custom_welcome.nsi  # [win]

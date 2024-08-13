@@ -10,7 +10,7 @@ log_with_timestamp() {
     echo "$(date '+%Y-%m-%d_%H:%M:%S') $1" >>"$LOG_FILE"
 }
 
-cd "$PREFIX/.." >>"$LOG_FILE" 2>&1
+cd "$PREFIX/../extensions/openbb_platform" >>"$LOG_FILE" 2>&1
 
 source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
 
@@ -63,11 +63,9 @@ cat > "$SHELL_WRAPPER_SCRIPT" <<EOF
 export PATH="$PREFIX/bin:\$PATH"
 cd "$PREFIX/.."
 source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
-conda activate base
-echo
-echo "Conda base environment is active, but not initialized. Use this shell to create new environments."
-echo "To initialize and activate the OpenBB environment, run 'source activate conda/envs/obb'."
-echo
+source conda/bin/activate base
+echo "Conda base environment is active but not initialized. Use this shell to create new environments."
+echo "To initialize and activate the OpenBB environment, run 'source activate obb'."
 exec $PREFIX/bin/bash -i
 EOF
 
@@ -79,6 +77,7 @@ cat  > "$NOTEBOOK_WRAPPER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
 source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
+source activate base
 conda activate obb
 cd "$PREFIX/../.."
 jupyter notebook "\$@"
@@ -92,6 +91,7 @@ cat  > "$API_WRAPPER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
 source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
+source activate base
 conda activate obb
 cd "$PREFIX/.."
 openbb-api --login True "\$@"
@@ -105,25 +105,27 @@ cat  > "$CLI_WRAPPER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
 source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
+source activate base
 conda activate obb
 openbb "\$@"
 EOF
 
 chmod +x "$CLI_WRAPPER_SCRIPT"
 
-OPENBB_UPDATER_SCRIPT="$PREFIX/bin/openbb-updater"
+OPENBB_UPDATER_SCRIPT="$PREFIX/envs/obb/bin/openbb-updater"
 
 cat > "$OPENBB_UPDATER_SCRIPT" <<EOF
 #!$PREFIX/bin/bash
 export PATH="$PREFIX/bin:\$PATH"
 source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
+source activate base
 conda activate obb
 openbb-update "\$@"
 EOF
 
 chmod +x "$OPENBB_UPDATER_SCRIPT"
 
-TARGET_DIR="$PREFIX/../Shortcuts"
+TARGET_DIR="$PREFIX/.."
 
 mkdir -p "$TARGET_DIR"
 
@@ -131,11 +133,11 @@ if ln -s "$CLI_WRAPPER_SCRIPT" "$TARGET_DIR/openbb-cli" && \
    ln -s "$API_WRAPPER_SCRIPT" "$TARGET_DIR/openbb-api" && \
    ln -s "$NOTEBOOK_WRAPPER_SCRIPT" "$TARGET_DIR/openbb-notebook" && \
    ln -s "$IPYTHON_WRAPPER_SCRIPT" "$TARGET_DIR/openbb-ipython" && \
-   ln -s "$SHELL_WRAPPER_SCRIPT" "$PREFIX/../Bash" && \
-   ln -s "$OPENBB_UPDATER_SCRIPT" "$TARGET_DIR/openbb-update" && \
-   ln -s "$HOME/.openbb_platform" "$PREFIX/../Settings"  && \
-   ln -s "$PREFIX/envs" "$PREFIX/../Environments"  && \
-   ln -s "$HOME/OpenBBUserData" "$PREFIX/../OpenBBUserData"; then
+   ln -s "$SHELL_WRAPPER_SCRIPT" "$TARGET_DIR/Bash" && \
+   ln -s "$OPENBB_UPDATER_SCRIPT" "$TARGET_DIR/Update" && \
+   ln -s "$HOME/.openbb_platform" "$TARGET_DIR/Settings"  && \
+   ln -s "$PREFIX/envs" "$TARGET_DIR/Environments"  && \
+   ln -s "$HOME/OpenBBUserData" "$TARGET_DIR/OpenBBUserData"; then
     log_with_timestamp "Symlinks created successfully." >>"$LOG_FILE" 2>&1
 else
     log_with_timestamp "Error during post-installation: creating symlinks failed." >>"$LOG_FILE" 2>&1
@@ -150,12 +152,12 @@ verify_symlink() {
     fi
 }
 
-verify_symlink "$PREFIX/../Shortcuts/openbb-cli"
-verify_symlink "$PREFIX/../Shortcuts/openbb-api"
-verify_symlink "$PREFIX/../Shortcuts/openbb-notebook"
-verify_symlink "$PREFIX/../Shortcuts/openbb-ipython"
-verify_symlink "$PREFIX/../Bash"
-verify_symlink "$PREFIX/../Shortcuts/openbb-update"
-verify_symlink "$PREFIX/../Settings"
-verify_symlink "$PREFIX/../OpenBBUserData"
-verify_symlink "$PREFIX/../Environments"
+verify_symlink "$TARGET_DIR/openbb-cli"
+verify_symlink "$TARGET_DIR/openbb-api"
+verify_symlink "$TARGET_DIR/openbb-notebook"
+verify_symlink "$TARGET_DIR/openbb-ipython"
+verify_symlink "$TARGET_DIR/Bash"
+verify_symlink "$TARGET_DIR/Update"
+verify_symlink "$TARGET_DIR/Settings"
+verify_symlink "$TARGET_DIR/OpenBBUserData"
+verify_symlink "$TARGET_DIR/Environments"
