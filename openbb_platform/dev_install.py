@@ -1,5 +1,7 @@
 """Install for development script."""
 
+# flake8: noqa: S603
+
 import subprocess
 import sys
 from pathlib import Path
@@ -52,6 +54,7 @@ openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 openbb-finra = { path = "./providers/finra", optional = true, develop = true }
 openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
 openbb-government-us = { path = "./providers/government_us", optional = true, develop = true }
+openbb-multpl = { path = "./providers/multpl", optional = true, develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
 openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop = true }
@@ -138,10 +141,14 @@ def install_platform_local(_extras: bool = False):
         extras_args = ["-E", "all"] if _extras else []
 
         subprocess.run(
-            CMD + ["lock", "--no-update"], cwd=PLATFORM_PATH, check=True  # noqa: S603
+            CMD + ["lock", "--no-update"],
+            cwd=PLATFORM_PATH,
+            check=True,
         )
         subprocess.run(
-            CMD + ["install"] + extras_args, cwd=PLATFORM_PATH, check=True  # noqa: S603
+            CMD + ["install"] + extras_args,
+            cwd=PLATFORM_PATH,
+            check=True,
         )
 
     except (Exception, KeyboardInterrupt) as e:
@@ -179,7 +186,9 @@ def install_platform_cli():
         CMD = [sys.executable, "-m", "poetry"]
 
         subprocess.run(
-            CMD + ["lock", "--no-update"], cwd=CLI_PATH, check=True  # noqa: S603
+            CMD + ["lock", "--no-update"],
+            cwd=CLI_PATH,
+            check=True,  # noqa: S603
         )
         subprocess.run(CMD + ["install"], cwd=CLI_PATH, check=True)  # noqa: S603
 
