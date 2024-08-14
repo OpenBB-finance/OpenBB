@@ -70,8 +70,8 @@ class FMPRevenueBusinessLineFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
         url = "https://financialmodelingprep.com/api/v4/revenue-product-segmentation?"
         url = (
-            f"{url}symbol={query.symbol if query.symbol else ""}"
-            f"&period={query.period if query.period else ""}"
+            f"{url}symbol={query.symbol if query.symbol else ''}"
+            f"&period={query.period if query.period else ''}"
             f"&structure=flat&apikey={api_key}"
         )
         cf_fetcher = FMPCashFlowStatementFetcher()
