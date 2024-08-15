@@ -67,6 +67,7 @@ extra_files:
   - ./assets/installer_vertical2.bmp: assets/installer_vertical2.bmp # [win]
   - ./assets/installer_horizontal.bmp: assets/installer_horizontal.bmp # [win]
   - ./assets/examples/README.md: ../extensions/examples/README.md
+  - ./assets/examples/install_examples.py: ../extensions/examples/install_examples.py
   - ./assets/examples/empty_provider/pyproject.toml: ../extensions/examples/empty_provider/pyproject.toml
   - ./assets/examples/empty_provider/README.md: ../extensions/examples/empty_provider/README.md
   - ./assets/examples/empty_provider/empty_provider/__init__.py: ../extensions/examples/empty_provider/empty_provider/__init__.py
@@ -78,6 +79,9 @@ extra_files:
   - ./assets/examples/empty_router/empty_router/__init__.py: ../extensions/examples/empty_router/empty_router/__init__.py
   - ./assets/examples/empty_router/empty_router/empty_router.py: ../extensions/examples/empty_router/empty_router/empty_router.py
   - ./assets/examples/empty_router/empty_router/empty_views.py: ../extensions/examples/empty_router/empty_router/empty_views.py
+  - ./assets/examples/empty_obbject/pyproject.toml: ../extensions/examples/empty_obbject/pyproject.toml
+  - ./assets/examples/empty_obbject/README.md: ../extensions/examples/empty_obbject/README.md
+  - ./assets/examples/empty_obbject/empty_obbject/__init__.py: ../extensions/examples/empty_obbject/empty_obbject/__init__.py
 
 icon_image: ../openbb_icon.icns  # [osx]
 icon_image: ./assets/openbb_icon.ico  # [win]

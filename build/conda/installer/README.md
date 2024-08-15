@@ -28,7 +28,7 @@ At the root of the installation folder (where this document is) are shortcuts fo
 - openbb-api: Opens a Terminal window and launches the OpenBB API, with optional prompts to login with your OpenBB Hub PAT.
 - openbb-cli: Opens a Terminal window and launches the OpenBB CLI (formerly OpenBB Terminal).
 - openbb-ipython: Opoens a Terminal window and starts an IPython session with the OpenBB Platform package imported.
-- openbb-notebook: Opens a Terminal window, starts the Jupyter development server, and opens a browswer window with the Notebook application.
+- openbb-notebook: Opens a Terminal window, starts the Jupyter development server, and opens a browser window with the Notebook application.
 - OpenBBUserData: Shortcut to the OpenBBUserData folder. Files exported from CLI are saved here.
 - Settings: Shortcut to the `~/.openbb_platform` location where `.env` files and `user_settings.json` are stored.
   - If you cannot see the ".env" file, set Finder/Explorer to display hidden/system files.
@@ -55,6 +55,39 @@ There are several command line entry points available when either:
   - Location: "/extensions/openbb_platform"
   - Passes all args/kwargs to `poetry install`.
 
+## Installed Folder Structure
+
+At the root of the installation (where this document is), there will be two folders:
+
+- conda (Windows: This is named after the last folder path if the default was not used)
+- extensions
+
+### Conda
+
+This is the folder where Conda is installed and all environment data (site-packages, etc.) is stored. The "Environments" shortcuts takes you to the root of the "envs" folder.
+
+### Extensions
+
+This folder contains two subfolders:
+
+#### examples
+
+Contains empty example extensions for the three types of OpenBB Platform extensions:
+
+- Router
+- Provider
+- OBBject
+
+To install all three examples in the OpenBB Platform environment, open the Bash/CMD shortcut and enter:
+
+```console
+source activate obb  # CMD: conda activate obb
+cd extensions/examples
+python install_examples.py
+```
+
+- openbb_platform
+
 ## Conda Install vs. PIP Install vs. Poetry Install
 
 The three ways to install packages may appear to accomplish the same objectives - installing Python packages - but each has a distinctly different purpose.
@@ -64,8 +97,8 @@ An easy way to think about the difference is, both `pip` and `poetry` require an
 In general, you use:
 
 - `conda`
-  - When a new environment has been created. Packages here can be included in the creation command, `conda craete`.
-  - When the specific package is only distrubted through Conda or the `conda-forge` channel.
+  - When a new environment has been created. Packages here can be included in the creation command, `conda create`.
+  - When the specific package is only distributed through Conda or the `conda-forge` channel.
   - When changing the version of Python used within the environment.
 - `pip`
   - When installing/uninstalling packages to the activated Python environment.
@@ -73,7 +106,7 @@ In general, you use:
 - `poetry`
   - Installing a local Python package.
   - Syncing all package dependencies according to provided specs in `pyproject.toml` and `poetry.lock` files.
-  - Building and distrubuting Python packages.
+  - Building and distributing Python packages.
 
 Conda is for container management, Poetry resolves the project's dependencies and provides build/distribution tools, while `pip` is for installing from [PyPI](https://pypi.org)
 

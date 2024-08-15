@@ -1,5 +1,7 @@
 """Empty Router Extenision for OpenBB Platform."""
 
+from datetime import datetime
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -22,10 +24,10 @@ router = Router(prefix="", description="An Empty OpenBB Router Extension.")
 # This is a standard router "get" command.
 @router.command(methods=["GET"])
 async def hello() -> (
-    OBBject[str]
+    OBBject[dict]
 ):  # The output of every router command must be an instance of `OBBject`.
     """OpenBB Hello World."""
-    return OBBject(results="Hello from the Empty Router extension!")
+    return OBBject(results={datetime.now().strftime("%Y-%m-%d"):"Hello from the Empty Router extension!"})
 
 
 # This uses the Provider Interface to call the empty provider fetcher.
