@@ -41,7 +41,7 @@ class FMPWorldNewsData(WorldNewsData):
         """Conform the response to a list."""
         if isinstance(v, str):
             return [{"o": v}]
-        return v if isinstance(v, List[Dict]) else None
+        return v if isinstance(v, list) else None
 
 
 class FMPWorldNewsFetcher(
