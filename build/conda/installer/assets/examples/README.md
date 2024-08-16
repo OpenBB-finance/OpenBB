@@ -17,7 +17,7 @@ To install all example extensions, activate the environment, then run:
 python install_examples.py
 ```
 
-To install an individual extension to the existing OpenBB environment, actiavte it, then navigate into the folder of the desired extension and enter:
+To install an individual extension to the existing OpenBB environment, activate it, then navigate into the folder of the desired extension and enter:
 
 ```console
 poetry install --only-root

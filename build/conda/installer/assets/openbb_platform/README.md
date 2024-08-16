@@ -37,7 +37,7 @@ The package can be installed in different configurations, using Poetry groups as
 - cli
 - notebook
 
-To install, in a fresh environment, only the `openbb-core` pacakge and the base dependencies:
+To install, in a fresh environment, only the `openbb-core` package and the base dependencies:
 
 ```console
 poetry install --only main --sync
