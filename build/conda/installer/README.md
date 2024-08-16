@@ -16,6 +16,8 @@ Tools for managing, updating, and building environments allow you to take full c
 
 To get started using right away, open one of the shortcuts described below.
 
+If you want to build your own end points, connections, and features, try installing the [example extensions](#examples)
+
 ## Shortcuts
 
 At the root of the installation folder (where this document is) are shortcuts for launchers and to key file locations.
@@ -86,9 +88,43 @@ cd extensions/examples
 python install_examples.py
 ```
 
-- openbb_platform
+#### openbb_platform
 
-## Conda Install vs. PIP Install vs. Poetry Install
+This is a meta package for installing and managing OpenBB Platform installation within any Python environment.
+Poetry is used to update and resolve any dependencies that are defined in the `pyproject.toml` file.
+
+The `poetry.lock` file is updated every time the `Update` shortcut is run.
+
+There are several configurations available, via combinations of `--with`, `--without`, and `--only` parameters, when running `poetry install`.
+
+Choices are:
+
+- main
+- openbb-all
+- cli
+- notebook
+
+Each parameter will accept multiple items, but `--without` takes priority for solving for the environment.
+
+## Uninstallation
+
+Mac/Linux users can uninstall by deleting the folder, while Windows users can run the Uninstall shortcut.
+
+The leftover artifacts will include:
+
+- Global configuration files stored by Poetry, PIP, Conda, and Jupyter.
+- Third-party Python package caches and `.env` files.
+- Folders:
+  - ~/.openbb_platform
+  - ~/OpenBBUserData
+
+Windows users will also need to remove the parent folder where it was originally installed, after running Uninstall.
+
+Your OpenBB Hub account can be deleted, along with all associated data, from the Account page in [my.openbb.co](https://my.openbb.co)
+
+## Additional Information
+
+### Conda Install vs. PIP Install vs. Poetry Install
 
 The three ways to install packages may appear to accomplish the same objectives - installing Python packages - but each has a distinctly different purpose.
 
@@ -110,7 +146,7 @@ In general, you use:
 
 Conda is for container management, Poetry resolves the project's dependencies and provides build/distribution tools, while `pip` is for installing from [PyPI](https://pypi.org)
 
-## Documentation Resources
+### Documentation Resources
 
 ### OpenBB
 - [Quckstart](https://docs.openbb.co/platform/getting_started/quickstart)

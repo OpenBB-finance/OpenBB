@@ -8,6 +8,15 @@ def main():
     import subprocess
     from pathlib import Path
 
+    try:
+        import openbb  # noqa: F401  # pylint: disable=unused-import
+    except ImportError:
+        raise ImportError(
+            "OpenBB is not installed. Please install the 'openbb_platform' package before running this script."
+            "\nTo install OpenBB, navigate to the 'extensions/openbb_platform' directory and run:"
+            "poetry install --only main"
+        )
+
     base_dir = Path(__file__).parent
 
     directories = [
