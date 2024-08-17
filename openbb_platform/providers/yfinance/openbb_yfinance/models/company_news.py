@@ -22,6 +22,14 @@ class YFinanceCompanyNewsQueryParams(CompanyNewsQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def _symbol_mandatory(cls, v):
+        """Symbol mandatory validator."""
+        if not v:
+            raise ValueError("Required field missing -> symbol")
+        return v
+
 
 class YFinanceCompanyNewsData(CompanyNewsData):
     """YFinance Company News Data."""
