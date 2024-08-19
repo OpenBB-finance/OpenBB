@@ -160,9 +160,8 @@ class BlsSeriesFetcher(Fetcher[BlsSeriesQueryParams, List[BlsSeriesData]]):
                         },
                     }
                 )
-            elif isinstance(data, EmptyDataError):
-                if data.message:
-                    messages.append(data.__dict__.get("message", ""))
+            elif isinstance(data, EmptyDataError) and data.message:
+                messages.append(data.__dict__.get("message", ""))
 
         # Create a list of tasks to run based on the API query limitations.
         tasks: List = []
