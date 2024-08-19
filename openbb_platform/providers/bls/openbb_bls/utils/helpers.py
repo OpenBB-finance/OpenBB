@@ -110,7 +110,11 @@ async def get_bls_timeseries(
             if title:
                 new_d["title"] = title
             new_d["date"] = _date
-            new_d["value"] = float(_d.get("value")) if _d.get("value") else None
+            value = _d.get("value")
+            if value and value != "-":
+                new_d["value"] = float(value)
+            else:
+                new_d["value"] = None
             _latest = _d.get("latest") == "true"
             new_d["latest"] = _latest
             footnotes = _d.get("footnotes")
