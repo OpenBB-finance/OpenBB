@@ -371,7 +371,7 @@ class EconomyViews:
             df = _data.reset_index() if _data.index.name == "date" else _data
         else:
             try:
-                df = basemodel_to_df(_data, index=None)
+                df = basemodel_to_df(_data, index=None)  # type: ignore
             except Exception as _:
                 raise RuntimeError("Unable to process supplied data.")
 
@@ -384,7 +384,7 @@ class EconomyViews:
             raise RuntimeError(f"Column '{target_col}' not found in the data.")
 
         new_df = df.pivot(columns="symbol", values=target_col, index="date")
-        target_symbols = kwargs.get("target_symbol", "").split(",")[:10]
+        target_symbols = kwargs.get("target_symbol", "").split(",")[:10]  # type: ignore
 
         if not target_symbols or len(target_symbols) == 0 or target_symbols[0] == "":
             target_symbols = new_df.columns.to_list()[:10]
@@ -394,19 +394,19 @@ class EconomyViews:
 
         new_df = new_df.filter(target_symbols, axis=1)
 
-        if "percent" in target_col.lower():
+        if "percent" in target_col.lower():  # type: ignore
             ytitle = (
                 ytitle
                 if ytitle
-                else target_col.replace("change_percent_", "").replace("M", " Month")
+                else target_col.replace("change_percent_", "").replace("M", " Month")  # type: ignore
                 + " Change (%)"
             )
             new_df = new_df.apply(lambda x: x * 100)
-        elif "change" in target_col.lower() and "percent" not in target_col.lower():
+        elif "change" in target_col.lower() and "percent" not in target_col.lower():  # type: ignore
             ytitle = (
                 ytitle
                 if ytitle
-                else target_col.replace("change_", "").replace("M", " Month")
+                else target_col.replace("change_", "").replace("M", " Month")  # type: ignore
                 + " Change"
             )
 
@@ -427,21 +427,21 @@ class EconomyViews:
             new_df = new_df.apply(z_score_standardization)
             same_axis = True
             if ytitle:
-                ytitle = f"Normalized {ytitle.replace('(%)', '')}"
+                ytitle = f"Normalized {ytitle.replace('(%)', '')}"  # type: ignore
 
         plot_type = kwargs.get("plot_type")
 
         if plot_type is None:
             plot_type = (
-                "line"
+                "line"  # type: ignore
                 if (len(new_df.index) > 36 and len(new_df.columns.to_list()) >= 1)
                 else "bar"
             )
 
-        layout_kwargs = kwargs.pop("layout_kwargs", {})
-        scatter_kwargs = kwargs.pop("scatter_kwargs", {})
-        bar_kwargs = kwargs.pop("bar_kwargs", {})
-        hovertemplate = scatter_kwargs.pop("hovertemplate", None)
+        layout_kwargs: Dict = kwargs.pop("layout_kwargs", {})  # type: ignore
+        scatter_kwargs: Dict = kwargs.pop("scatter_kwargs", {})  # type: ignore
+        bar_kwargs: Dict = kwargs.pop("bar_kwargs", {})  # type: ignore
+        hovertemplate = scatter_kwargs.pop("hovertemplate", None)  # type: ignore
         trace_titles = {
             symbol: metadata.get(symbol, {})
             .get("series_title", symbol)
@@ -449,7 +449,7 @@ class EconomyViews:
             for symbol in target_symbols
         }
         new_df.columns = [trace_titles.get(col, col) for col in new_df.columns]
-        scatter_kwargs["hovertemplate"] = (
+        scatter_kwargs["hovertemplate"] = (  # type: ignore
             hovertemplate if hovertemplate else "%{fullData.name}:%{y}<extra></extra>"
         )
 

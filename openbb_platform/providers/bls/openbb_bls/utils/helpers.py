@@ -121,7 +121,7 @@ async def get_bls_timeseries(
             if footnotes:
                 new_d["footnotes"] = "; ".join(
                     [
-                        f.get("text") if isinstance(f, dict) else str(f)
+                        f.get("text") if isinstance(f, dict) else str(f)  # type ignore
                         for f in footnotes
                         if f
                     ]
@@ -178,7 +178,7 @@ async def get_bls_timeseries(
                             {
                                 "date": _date,
                                 "footnotes": " ".join(
-                                    [f.get("text", "") for f in footnotes]
+                                    [f.get("text", "") for f in footnotes]  # type: ignore
                                     if footnotes
                                     else None
                                 ).strip(),
@@ -198,7 +198,7 @@ async def get_bls_timeseries(
     if not data:
         # Return EmptyDataError if no data is found instead of raising.
         # If we raise here, the API key can be exposed in the traceback.
-        return EmptyDataError(f"No data found -> {messages}")
+        return EmptyDataError(f"No data found -> {messages}")  # type: ignore
 
     return {"data": data, "metadata": metadata, "messages": messages}
 
@@ -363,7 +363,7 @@ def open_asset(asset: str) -> Union["DataFrame", Dict]:
     else:
         raise OpenBBError(f"Asset '{asset}' not supported. Expected .json or .xz file.")
 
-    assets_path = Path(files("openbb_bls").joinpath("assets"))
+    assets_path = Path(str(files("openbb_bls").joinpath("assets")))
 
     if not os.path.exists(assets_path.joinpath(asset)):
         raise OpenBBError(f"Asset '{asset}' not found.")
@@ -403,7 +403,7 @@ async def update_static_asset(category: str) -> None:
     except Exception as e:  # pylint: disable=broad-except
         raise OpenBBError(f"Failed to download {category} -> {e}")
 
-    assets_path = Path(files("openbb_bls").joinpath("assets"))
+    assets_path = Path(str(files("openbb_bls").joinpath("assets")))
 
     # Save the code map to a JSON file.
     if codes:
