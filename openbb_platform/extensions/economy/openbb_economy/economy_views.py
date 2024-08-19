@@ -315,6 +315,7 @@ class EconomyViews:
 
         return fig, content
 
+    @staticmethod
     def economy_survey_bls_series(
         **kwargs,
     ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
@@ -372,8 +373,8 @@ class EconomyViews:
         else:
             try:
                 df = basemodel_to_df(_data, index=None)  # type: ignore
-            except Exception as _:
-                raise RuntimeError("Unable to process supplied data.")
+            except Exception as e:
+                raise RuntimeError("Unable to process supplied data.") from e
 
         if df.empty or len(df) < 2:
             raise RuntimeError("No data found to plot.")

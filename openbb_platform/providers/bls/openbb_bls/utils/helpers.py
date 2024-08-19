@@ -212,7 +212,7 @@ async def get_survey_asset(survey: str, asset: str) -> "DataFrame":
     from pandas import read_csv, NA
 
     headers = {
-        "User-Agent": "Mozilla/5.0 (Linux; U; Android 4.0.4; en-us; Glass 1 Build/IMM76L; XE16.2) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"  # noqa
+        "User-Agent": "Mozilla/5.0 (Linux; U; Android 4.0.4; en-us; Glass 1 Build/IMM76L; XE16.2) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"  # noqa  # pylint: disable=line-too-long
     }
     url = f"https://download.bls.gov/pub/time.series/{survey.lower()}/{survey.lower()}.{asset.lower()}"
     res = make_request(url=url, method="GET", headers=headers)
@@ -384,8 +384,7 @@ async def update_static_asset(category: str) -> None:
     Do not use unless the static files in the assets folder require updating.
     """
     # pylint: disable=import-outside-toplevel
-    import os  # noqa
-    import json
+    import json  # noqa
     from importlib.resources import files
     from pathlib import Path
     from openbb_core.app.model.abstract.error import OpenBBError
@@ -401,7 +400,7 @@ async def update_static_asset(category: str) -> None:
     try:
         ids, codes = await download_category_series_ids(category)
     except Exception as e:  # pylint: disable=broad-except
-        raise OpenBBError(f"Failed to download {category} -> {e}")
+        raise OpenBBError(f"Failed to download {category} -> {e}") from e
 
     assets_path = Path(str(files("openbb_bls").joinpath("assets")))
 

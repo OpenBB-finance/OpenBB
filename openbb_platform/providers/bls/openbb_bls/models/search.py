@@ -4,6 +4,7 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_bls.utils.constants import SURVEY_CATEGORIES, SURVEY_CATEGORY_NAMES
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,7 +12,6 @@ from openbb_core.provider.standard_models.bls_search import (
     SearchData,
     SearchQueryParams,
 )
-from openbb_bls.utils.constants import SURVEY_CATEGORY_NAMES, SURVEY_CATEGORIES
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
@@ -27,7 +27,8 @@ class BlsSearchQueryParams(SearchQueryParams):
     }
 
     category: SURVEY_CATEGORIES = Field(
-        description="""The category of BLS survey to search within. An empty search query will return all series within the category. Options are:
+        description="""The category of BLS survey to search within.
+        An empty search query will return all series within the category. Options are:
         \n    cpi - Consumer Price Index
         \n    pce - Personal Consumption Expenditure
         \n    ppi - Producer Price Index
@@ -45,14 +46,16 @@ class BlsSearchQueryParams(SearchQueryParams):
     )
     include_extras: bool = Field(
         default=False,
-        description="Include additional information in the search results. Extra fields returned are metadata and vary by survey."
+        description="Include additional information in the search results."
+        + " Extra fields returned are metadata and vary by survey."
         + " Fields are undefined strings that typically have names ending with '_code'.",
     )
     include_code_map: bool = Field(
         default=False,
         description="When True, includes the complete code map for eaçh survey in the category,"
         + " returned separately as a nested JSON to the `extras['results_metadata']` property of the response."
-        + " Example content is the NAICS industry map for PPI surveys. Each code is a value within the 'symbol' of the time series.",
+        + " Example content is the NAICS industry map for PPI surveys."
+        + " Each code is a value within the 'symbol' of the time series.",
     )
 
 
@@ -105,7 +108,7 @@ class BlsSearchFetcher(Fetcher[BlsSearchQueryParams, List[BlsSearchData]]):
             combined_mask = Series([True] * len(df))
             for term in terms:
                 mask = df.apply(
-                    lambda row: row.astype(str).str.contains(
+                    lambda row, term=term: row.astype(str).str.contains(
                         term, case=False, regex=True, na=False
                     )
                 ).any(axis=1)
