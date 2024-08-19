@@ -121,7 +121,7 @@ async def get_bls_timeseries(
             if footnotes:
                 new_d["footnotes"] = "; ".join(
                     [
-                        f.get("text") if isinstance(f, dict) else str(f)  # type ignore
+                        f.get("text") if isinstance(f, dict) else str(f)  # type: ignore
                         for f in footnotes
                         if f
                     ]
