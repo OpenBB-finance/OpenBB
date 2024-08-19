@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from pandas import DataFrame
 
 
-# We need to wrap this as a helper to accomodate requests for historical data
+# We need to wrap this as a helper to accommodate requests for historical data
 # greater than 20 years in length, or containing more than 50 symbols.
 async def get_bls_timeseries(
     api_key: str,
