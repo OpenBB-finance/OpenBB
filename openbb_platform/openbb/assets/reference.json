@@ -35717,7 +35717,12 @@
                         "description": "The source of the news article.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "yahoo",
+                            "moody",
+                            "moody_us_news",
+                            "moody_us_press_releases"
+                        ]
                     },
                     {
                         "name": "sentiment",
@@ -35725,7 +35730,11 @@
                         "description": "Return news only from this source.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "positive",
+                            "neutral",
+                            "negative"
+                        ]
                     },
                     {
                         "name": "language",
@@ -35791,7 +35800,10 @@
                         "description": "Sort order of the articles.",
                         "default": "desc",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "asc",
+                            "desc"
+                        ]
                     }
                 ],
                 "tiingo": [
