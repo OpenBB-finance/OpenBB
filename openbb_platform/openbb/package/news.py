@@ -77,7 +77,7 @@ class ROUTER_news(Container):
             Number of seconds since the news was published. (provider: benzinga)
         sort : Literal['id', 'created', 'updated']
             Key to sort the news by. (provider: benzinga)
-        order : Optional[Literal['asc', 'desc']]
+        order : Literal['asc', 'desc']
             Order to sort the news by. (provider: benzinga);
             Sort order of the articles. (provider: polygon)
         isin : Optional[str]
@@ -240,7 +240,30 @@ class ROUTER_news(Container):
                         "polygon": {"multiple_items_allowed": True, "choices": None},
                         "tiingo": {"multiple_items_allowed": True, "choices": None},
                         "yfinance": {"multiple_items_allowed": True, "choices": None},
-                    }
+                    },
+                    "order": {
+                        "polygon": {
+                            "multiple_items_allowed": False,
+                            "choices": ["asc", "desc"],
+                        }
+                    },
+                    "source": {
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "yahoo",
+                                "moody",
+                                "moody_us_news",
+                                "moody_us_press_releases",
+                            ],
+                        }
+                    },
+                    "sentiment": {
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["positive", "neutral", "negative"],
+                        }
+                    },
                 },
             )
         )
