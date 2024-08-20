@@ -23,7 +23,7 @@ openbb-build
 
 Update the environment dependencies with:
 
-```
+```sh
 poetry lock
 poetry install
 ```
