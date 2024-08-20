@@ -239,8 +239,8 @@ def get_widgets_json(build: bool, openapi):
         if diff and json_exists:
             print("Differences found:", diff)
             merge_prompt = input(
-                "\n'widgets.json' was previously built. Do you want to overwrite the existing widgets.json configuration?"
-                "\nEnter 'n' to append existing (y/n): "
+                "\nDo you want to overwrite the existing widgets.json configuration?"
+                "\nEnter 'n' to append existing with only new entries (y/n): "
             )
             if merge_prompt.lower().startswith("n"):
                 widgets_json.update(existing_widgets_json)
