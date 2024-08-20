@@ -236,7 +236,7 @@ def get_widgets_json(build: bool, openapi):
 
     if build:
         diff = DeepDiff(existing_widgets_json, widgets_json, ignore_order=True)
-        if diff:
+        if diff and json_exists:
             print("Differences found:", diff)
             merge_prompt = input(
                 "\n'widgets.json' was previously built. Do you want to overwrite the existing widgets.json configuration?"
