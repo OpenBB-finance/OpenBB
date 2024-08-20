@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 # We need to wrap this as a helper to accommodate requests for historical data
 # greater than 20 years in length, or containing more than 50 symbols.
-async def get_bls_timeseries(
+async def get_bls_timeseries(  # pylint: disable=too-many-branches  # noqa: PLR0912
     api_key: str,
     series_ids: Union[str, List[str]],
     start_year: Optional[int] = None,
