@@ -1,0 +1,17 @@
+poetry>=1.8
+setuptools
+types-python-dateutil
+types-toml
+pandas-stubs
+codespell
+ruff
+mypy
+black
+pylint>=3
+pydocstyle~=6.3
+openbb-core
+openbb[all]
+openbb-cli
+notebook
+nbclassic
+jedi-language-server
