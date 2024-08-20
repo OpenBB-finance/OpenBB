@@ -2,7 +2,7 @@
 
 import asyncio
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -31,7 +31,13 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
         "limit": "page_size",
         "source": "specific_source",
     }
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "source": {
+            "choices": ["yahoo", "moody", "moody_us_news", "moody_us_press_releases"]
+        },
+        "sentiment": {"choices": ["positive", "neutral", "negative"]},
+    }
 
     source: Optional[
         Literal["yahoo", "moody", "moody_us_news", "moody_us_press_releases"]
@@ -39,7 +45,7 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
         default=None,
         description="The source of the news article.",
     )
-    sentiment: Union[None, Literal["positive", "neutral", "negative"]] = Field(
+    sentiment: Optional[Literal["positive", "neutral", "negative"]] = Field(
         default=None,
         description="Return news only from this source.",
     )
@@ -80,6 +86,14 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
         description="News stories will have a business relevance score less than this value."
         + " Unsupported for yahoo source. Value is a decimal between 0 and 1.",
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def _symbol_mandatory(cls, v):
+        """Symbol mandatory validator."""
+        if not v:
+            raise OpenBBError("Required field missing -> symbol")
+        return v
 
 
 class IntrinioCompanyNewsData(CompanyNewsData):
