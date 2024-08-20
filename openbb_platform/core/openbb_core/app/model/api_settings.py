@@ -32,7 +32,7 @@ class APISettings(BaseModel):
     version: str = "1"
     title: str = "OpenBB Platform API"
     description: str = "Investment research for everyone, anywhere."
-    terms_of_service: str = "http://example.com/terms/"
+    terms_of_service: str = "https://openbb.co/legal/terms-of-service"
     contact_name: str = "OpenBB Team"
     contact_url: str = "https://openbb.co"
     contact_email: str = "hello@openbb.co"
