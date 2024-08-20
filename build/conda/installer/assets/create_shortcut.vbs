@@ -1,10 +1,12 @@
 Set objShell = CreateObject("WScript.Shell")
 sdesktopPath = objShell.SpecialFolders("Desktop")
 
+Set fso = CreateObject("Scripting.FileSystemObject")
 prefixPath = objShell.ExpandEnvironmentStrings("%PREFIX%")
 userProfilePath = objShell.ExpandEnvironmentStrings("%USERPROFILE%")
-
-shortcutFolder = prefixPath & ".."
+currentPath = fso.GetAbsolutePathName(prefixPath)
+parentFolder = fso.GetParentFolderName(currentPath)
+shortcutFolder = parentFolder
 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 If Not objFSO.FolderExists(shortcutFolder) Then

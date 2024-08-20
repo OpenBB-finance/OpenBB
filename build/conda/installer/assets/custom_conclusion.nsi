@@ -2,10 +2,13 @@
 
 Page Custom muiExtraPages_Create
 
+!include "FileFunc.nsh"
+
 var IntroText
 var InstallationLink
 var ExampleImg
 var ExampleImgCtl
+var PARENTDIR
 
 Function muiExtraPages_Create
     Push $0
@@ -14,11 +17,13 @@ Function muiExtraPages_Create
         "${PRODUCT_NAME}" \
         "Installation Successfully Complete"
 
+    ${GetParent} "$INSTDIR" $PARENTDIR
+
     nsDialogs::Create /NOUNLOAD 1018
     ${NSD_CreateLabel} 10u 10u 280u 40u "Click the link below to open the installation folder:"
     Pop $IntroText
 
-    ${NSD_CreateLink} 10u 55u 200u 10u "${EXEDIR}"
+    ${NSD_CreateLink} 10u 55u 200u 10u $PARENTDIR
     Pop $InstallationLink
     ${NSD_OnClick} $InstallationLink LaunchLinkOne
 
@@ -47,7 +52,7 @@ var CheckboxLinkThree
 var CheckboxLinkFour
 
 Function LaunchLinkOne
-    ExecShell "open" "${EXEDIR}"
+    ExecShell "open" "$PARENTDIR"
 FunctionEnd
 
 Function LaunchLinkTwo
