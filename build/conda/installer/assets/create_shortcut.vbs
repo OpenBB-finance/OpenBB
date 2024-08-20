@@ -61,7 +61,7 @@ objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\CMD.lnk")
 objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate base && echo Conda base environment is active. Use this shell to create new environments. && echo To activate the OpenBB environment, run 'conda activate obb'."
-objShortcut.WorkingDirectory = prefixPath
+objShortcut.WorkingDirectory = shortcutFolder
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\openbb-cli.lnk")
