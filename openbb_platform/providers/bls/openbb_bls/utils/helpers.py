@@ -95,13 +95,19 @@ async def get_bls_timeseries(
             new_d: Dict = {}
             year = _d.get("year", "")
             month = _d.get("period", "").replace("M", "")
-            if month.startswith("A") or month == "S01":
+            if month.startswith("A") or month in ("S01", "Q01"):
                 _date = year + "-01-01"
             elif month == "S02":
                 _date = year + "-07-01"
-            elif month == "S03":
+            elif month in ("S03", "Q05"):
                 _date = year + "-12-31"
                 month = "13"
+            elif month == "Q02":
+                _date = year + "-04-01"
+            elif month == "Q03":
+                _date = year + "-07-01"
+            elif month == "Q04":
+                _date = year + "-10-01"
             else:
                 _date = year + "-12-31" if month == "13" else year + "-" + month + "-01"
             new_d["symbol"] = seriesID
