@@ -29,7 +29,7 @@ At the root of the installation folder (where this document is) are shortcuts fo
   - "widgets.json" is located in the "assets" subdirectory.
 - openbb-api: Opens a Terminal window and launches the OpenBB API, with optional prompts to login with your OpenBB Hub PAT.
 - openbb-cli: Opens a Terminal window and launches the OpenBB CLI (formerly OpenBB Terminal).
-- openbb-ipython: Opoens a Terminal window and starts an IPython session with the OpenBB Platform package imported.
+- openbb-ipython: Opens a Terminal window and starts an IPython session with the OpenBB Platform package imported.
 - openbb-notebook: Opens a Terminal window, starts the Jupyter development server, and opens a browser window with the Notebook application.
 - OpenBBUserData: Shortcut to the OpenBBUserData folder. Files exported from CLI are saved here.
 - Settings: Shortcut to the `~/.openbb_platform` location where `.env` files and `user_settings.json` are stored.

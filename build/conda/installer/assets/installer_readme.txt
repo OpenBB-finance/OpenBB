@@ -7,15 +7,15 @@ Ensure your system meets all requirements before proceeding with the installatio
 
 Important Notes:
 
-The installation is for the current user only,  system-wide installations are not allowed.
+The installation is for the current user only, system-wide installations are not allowed.
 
 In order to install you need access to the Internet.
 
 If a folder named "OpenBB" already exists at the user root, please move or rename it before installing.
 
-Ignore the size estimate provider by the installer, it will take approximately 1-2 GB of space to install.
+The installation will take approximately 1-2 GB of storage.
 
-The installed packages can be reconfigure post-installation to include/exclude certain packages.
+The installed packages can be reconfigured, post-installation, for custom configurations.
 
 If you move the folder post-installation, shortcuts will not be updated to reflect the change. Command line entry points will continue to work.
 

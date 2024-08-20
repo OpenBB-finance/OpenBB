@@ -35,8 +35,8 @@ condarc:
   default_channels: [conda-forge],
   allow_softlinks: false,
   auto_activate_base: true,
-  envs_dirs: ["%PREFIX%/envs"],
-  pkgs_dirs: ["%PREFIX%/pkgs"],
+  envs_dirs: [$PREFIX/envs],
+  pkgs_dirs: [$PREFIX/pkgs],
   always_copy: true,
   register_envs: false,
   pip_interop_enabled: true}
@@ -91,6 +91,7 @@ header_image: ./assets/Installer_horizontal2.png  # [win]
 welcome_image_text: "OpenBB Platform"
 readme_file: ./assets/installer_readme.txt  # [unix]
 conclusion_file: ./assets/installer_conclusion.txt  # [unix]
+welcome_file: ./assets/installer_welcome.txt  # [unix]
 welcome_file: ./assets/custom_welcome.nsi  # [win]
 conclusion_file: ./assets/custom_conclusion.nsi  # [win]
 

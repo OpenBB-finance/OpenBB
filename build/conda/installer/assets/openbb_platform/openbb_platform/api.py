@@ -6,7 +6,9 @@ import json
 import os
 import socket
 from pathlib import Path
+from typing import Dict
 
+from deepdiff import DeepDiff
 from fastapi.responses import JSONResponse
 from openbb_core.api.rest_api import app
 
@@ -21,6 +23,7 @@ HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
 CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")
 USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backup.json")
 
+
 def check_port(host, port) -> int:
     """Check if the port number is free."""
     not_free = True
@@ -33,6 +36,7 @@ def check_port(host, port) -> int:
                 not_free = False
     return port
 
+
 def get_user_settings(login: bool):
     """Login to the OpenBB Platform."""
     import getpass
@@ -41,7 +45,11 @@ def get_user_settings(login: bool):
         with open(CURRENT_USER_SETTINGS) as f:
             current_settings = json.load(f)
     else:
-        current_settings = {"credentials": {}, "preferences": {}, "defaults": {"commands": {}}}
+        current_settings = {
+            "credentials": {},
+            "preferences": {},
+            "defaults": {"commands": {}},
+        }
     if (isinstance(login, str) and login.lower() == "false") or not login:
         return current_settings
 
@@ -69,17 +77,23 @@ def get_user_settings(login: bool):
 
         if hub_credentials:
             # Prompt the user to ask if they want to persist the new settings
-            persist_input = input(
-                "\n\nDo you want to persist the new settings?"
-                + " Not recommended for public machines. (yes/no): "
-            ).strip().lower()
+            persist_input = (
+                input(
+                    "\n\nDo you want to persist the new settings?"
+                    + " Not recommended for public machines. (yes/no): "
+                )
+                .strip()
+                .lower()
+            )
 
             if persist_input in ["yes", "y"]:
                 PERSIST = True
             elif persist_input in ["no", "n"]:
                 PERSIST = False
             else:
-                print("\n\nInvalid input. Defaulting to not persisting the new settings.")
+                print(
+                    "\n\nInvalid input. Defaulting to not persisting the new settings."
+                )
                 PERSIST = False
 
             # Save the current settings to restore at the end of the session.
@@ -125,9 +139,11 @@ def get_user_settings(login: bool):
 
 def build_json(openapi):
     """Build the widgets.json file."""
-    widgets_json = {}
+    widgets_json: Dict = {}
     routes = [
-        p for p in openapi["paths"] if p.startswith("/api") and "get" in openapi["paths"][p]
+        p
+        for p in openapi["paths"]
+        if p.startswith("/api") and "get" in openapi["paths"][p]
     ]
     for route in routes:
         route_api = openapi["paths"][route]
@@ -144,7 +160,9 @@ def build_json(openapi):
             and "results" in data_schema["properties"]
         ):
             response_schema_refs = data_schema["properties"]["results"]
-            columns_defs = data_schema_to_columns_defs(openapi, response_schema_refs)  # noqa F841
+            columns_defs = data_schema_to_columns_defs(  # noqa F841
+                openapi, response_schema_refs
+            )
 
         widget_config = {
             "name": f'OBB {route_api["get"]["operationId"].replace("_", " ").title()}',
@@ -163,7 +181,7 @@ def build_json(openapi):
             },
         }
 
-        #if columns_defs:
+        # if columns_defs:
         #    widget_config["data"]["table"]["columnsDefs"] = columns_defs
         #    if "date" in columns_defs:
         #        widget_config["data"]["table"]["index"] = "date"
@@ -195,7 +213,6 @@ def build_json(openapi):
 
 def get_widgets_json(build: bool, openapi):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
-
     python_path = Path(os.sys.executable)
     widgets_json_path = (
         python_path.parents[0 if os.name == "nt" else 1]
@@ -209,7 +226,7 @@ def get_widgets_json(build: bool, openapi):
         widgets_json_path.parent.mkdir(parents=True, exist_ok=True)
         build = True
 
-    existing_widgets_json = {}
+    existing_widgets_json: Dict = {}
 
     if json_exists:
         with open(widgets_json_path, encoding="utf-8") as f:
@@ -217,17 +234,19 @@ def get_widgets_json(build: bool, openapi):
 
     widgets_json = existing_widgets_json if build is False else build_json(openapi)
 
-    if existing_widgets_json and build is True:
-        merge_prompt = input(
-            "\n'widgets.json' was previously built. Do you want to overwrite the existing widgets.json configuration?"
-            "\nEnter 'n' to append existing (y/n): "
-        )
-        if merge_prompt.lower().startswith("n"):
-            widgets_json.update(existing_widgets_json)
+    if build:
+        diff = DeepDiff(existing_widgets_json, widgets_json, ignore_order=True)
+        if diff:
+            print("Differences found:", diff)
+            merge_prompt = input(
+                "\n'widgets.json' was previously built. Do you want to overwrite the existing widgets.json configuration?"
+                "\nEnter 'n' to append existing (y/n): "
+            )
+            if merge_prompt.lower().startswith("n"):
+                widgets_json.update(existing_widgets_json)
 
-    # Write the widgets_json to the assets folder.
-    with open(widgets_json_path, "w", encoding="utf-8") as f:
-        f.write(json.dumps(widgets_json, indent=4))
+        with open(widgets_json_path, "w", encoding="utf-8") as f:
+            json.dump(widgets_json, f, ensure_ascii=False, indent=4)
 
     return widgets_json
 
@@ -237,7 +256,7 @@ def main():
     import uvicorn
 
     args = os.sys.argv[1:].copy()
-    kwargs = {}
+    kwargs: Dict = {}
     for i in range(len(args)):
         if args[i].startswith("--"):
             key = args[i][2:]
@@ -262,8 +281,8 @@ def main():
         """API Root."""
         return JSONResponse(
             content="Welcome to the OpenBB Platform API."
-                + " Learn how to connect to Pro in docs.openbb.co/pro/data-connectors,"
-                + " or see the API documentation here: /docs"
+            + " Learn how to connect to Pro in docs.openbb.co/pro/data-connectors,"
+            + " or see the API documentation here: /docs"
         )
 
     @app.get("/widgets.json")
@@ -315,6 +334,7 @@ def main():
                 os.replace(USER_SETTINGS_COPY, CURRENT_USER_SETTINGS)
 
     launch_api(**kwargs)
+
 
 if __name__ == "__main__":
 
