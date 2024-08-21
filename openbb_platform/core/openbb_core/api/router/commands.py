@@ -154,7 +154,7 @@ def validate_output(c_out: OBBject) -> OBBject:
 
         # if it's a model with nested fields
         elif is_model(type_):
-            for field_name, field in type_.__fields__.items():
+            for field_name, field in type_.model_fields.items():
                 extra = getattr(field, "json_schema_extra", None)
                 if (
                     extra

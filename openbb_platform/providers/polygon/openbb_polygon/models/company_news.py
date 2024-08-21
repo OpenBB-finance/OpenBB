@@ -4,6 +4,7 @@
 
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
@@ -18,16 +19,27 @@ class PolygonCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
     """
 
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "order": {"choices": ["asc", "desc"]},
+    }
     __alias_dict__ = {
         "symbol": "ticker",
         "start_date": "published_utc.gte",
         "end_date": "published_utc.lte",
     }
 
-    order: Optional[Literal["asc", "desc"]] = Field(
+    order: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the articles."
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def _symbol_mandatory(cls, v):
+        """Symbol mandatory validator."""
+        if not v:
+            raise OpenBBError("Required field missing -> symbol")
+        return v
 
 
 class PolygonPublisher(BaseModel):

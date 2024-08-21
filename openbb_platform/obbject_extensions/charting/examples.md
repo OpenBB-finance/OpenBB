@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 ## Overview
 
 This page will walk through creating different charts using the `openbb-charting` extension.
-The perspective for this content is from the the Python Interface,
+The perspective for this content is from the Python Interface,
 and the examples will assume that the OpenBB Platform is installed with all optional packages.
 
 ```python
