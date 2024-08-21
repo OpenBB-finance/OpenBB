@@ -39,8 +39,8 @@ CreateShortcut "OpenBBUserData", userProfilePath & "\OpenBBUserData", prefixPath
 CreateShortcut "Uninstall", prefixPath & "\Uninstall-OpenBB.exe", prefixPath & "\assets\openbb_icon.ico"
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\openbb-notebook.lnk")
-objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && cd " & userProfilePath & " && jupyter-notebook && exit"
-objShortcut.WorkingDirectory = prefixPath
+objShortcut.Arguments = "/k PATH " & prefixPath & ";" & prefixPath & "\Scripts;" & prefixPath & "\Library\bin;%PATH% && activate " & prefixPath & "\envs\obb && cd " & shortcutFolder & " && jupyter-notebook && exit"
+objShortcut.WorkingDirectory = shortcutFolder
 objShortcut.Save
 
 Set objShortcut = objShell.CreateShortcut(shortcutFolder & "\openbb-ipython.lnk")

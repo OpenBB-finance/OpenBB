@@ -3,7 +3,6 @@
 # Setup environment.
 export PATH="$PREFIX/bin:$PATH"
 LOG_FILE="$PREFIX/../post_install_log.txt"
-CWDIR=$(dirname "$PREFIX")
 
 # Function to add timestamp.
 log_with_timestamp() {
@@ -77,7 +76,7 @@ cat  > "$NOTEBOOK_WRAPPER_SCRIPT" <<EOF
 export PATH="$PREFIX/bin:\$PATH"
 source activate base
 conda activate obb
-cd "$PREFIX/../.."
+cd "$PREFIX/.."
 jupyter notebook "\$@"
 EOF
 
