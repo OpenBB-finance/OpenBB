@@ -71,7 +71,7 @@ Please find more about the installation process in the [OpenBB Documentation](ht
 
 ## 2. Contributing
 
-There are three main ways of contributing to this project. (Hopefully you have started the project by now ⭐️)
+There are three main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
 
 ### Become a Contributor
 
