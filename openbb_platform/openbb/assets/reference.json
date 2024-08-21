@@ -3174,8 +3174,8 @@
                     {
                         "name": "annual_average",
                         "type": "bool",
-                        "description": "Include annual averages in the response, if available. Default is True.",
-                        "default": true,
+                        "description": "Include annual averages in the response, if available. Default is False.",
+                        "default": false,
                         "optional": true,
                         "choices": null
                     },
@@ -3360,7 +3360,7 @@
                     {
                         "name": "category",
                         "type": "Literal['cpi', 'pce', 'ppi', 'ip', 'jolts', 'nfp', 'cps', 'lfs', 'wages', 'ec', 'sla', 'bed', 'tu']",
-                        "description": "The category of BLS survey to search within. An empty search query will return all series within the category. Options are:\n        \n    cpi - Consumer Price Index\n        \n    pce - Personal Consumption Expenditure\n        \n    ppi - Producer Price Index\n        \n    ip - Industry Productivity\n        \n    jolts - Job Openings and Labor Turnover Survey\n        \n    nfp - Nonfarm Payrolls\n        \n    cps - Current Population Survey\n        \n    lfs - Labor Force Statistics\n        \n    wages - Wages\n        \n    ec - Employer Costs\n        \n    sla - State and Local Area Employment\n        \n    bed - Business Employment Dynamics\n        \n    tu - Time Use",
+                        "description": "The category of BLS survey to search within.\n        An empty search query will return all series within the category. Options are:\n        \n    cpi - Consumer Price Index\n        \n    pce - Personal Consumption Expenditure\n        \n    ppi - Producer Price Index\n        \n    ip - Industry Productivity\n        \n    jolts - Job Openings and Labor Turnover Survey\n        \n    nfp - Nonfarm Payrolls\n        \n    cps - Current Population Survey\n        \n    lfs - Labor Force Statistics\n        \n    wages - Wages\n        \n    ec - Employer Costs\n        \n    sla - State and Local Area Employment\n        \n    bed - Business Employment Dynamics\n        \n    tu - Time Use",
                         "default": "",
                         "optional": false,
                         "choices": [

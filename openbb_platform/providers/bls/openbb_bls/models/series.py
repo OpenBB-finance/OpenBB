@@ -24,15 +24,15 @@ class BlsSeriesQueryParams(SeriesQueryParams):
     }
 
     calculations: bool = Field(
-        True,
+        default=True,
         description="Include calculations in the response, if available. Default is True.",
     )
     annual_average: bool = Field(
-        True,
-        description="Include annual averages in the response, if available. Default is True.",
+        default=False,
+        description="Include annual averages in the response, if available. Default is False.",
     )
     aspects: bool = Field(
-        False,
+        default=False,
         description="Include all aspects associated with a data point for a given BLS series ID, if available."
         + " Returned with the series metadata, under `extras` of the response object. Default is False.",
     )

@@ -52,7 +52,8 @@ class ROUTER_economy_survey(Container):
         provider : Optional[Literal['bls']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.
         category : Optional[Literal['cpi', 'pce', 'ppi', 'ip', 'jolts', 'nfp', 'cps', 'lfs', 'wages', 'ec', 'sla', 'bed', 'tu']]
-            The category of BLS survey to search within. An empty search query will return all series within the category. Options are:
+            The category of BLS survey to search within.
+                An empty search query will return all series within the category. Options are:
 
             cpi - Consumer Price Index
 
@@ -196,7 +197,7 @@ class ROUTER_economy_survey(Container):
         calculations : bool
             Include calculations in the response, if available. Default is True. (provider: bls)
         annual_average : bool
-            Include annual averages in the response, if available. Default is True. (provider: bls)
+            Include annual averages in the response, if available. Default is False. (provider: bls)
         aspects : bool
             Include all aspects associated with a data point for a given BLS series ID, if available. Returned with the series metadata, under `extras` of the response object. Default is False. (provider: bls)
 
