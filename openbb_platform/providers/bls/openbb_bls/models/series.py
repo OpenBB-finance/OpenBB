@@ -182,8 +182,8 @@ class BlsSeriesFetcher(Fetcher[BlsSeriesQueryParams, List[BlsSeriesData]]):
 
         if not results.get("data"):
             if messages:
-                _messages = ",".join(set(messages))
-            raise OpenBBError(_messages)
+                raise OpenBBError(",".join(set(messages)))
+            raise EmptyDataError("The request was returned empty.")
 
         return results
 

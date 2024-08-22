@@ -121,8 +121,7 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches  # noqa: PLR0
                 new_d["value"] = float(value)
             else:
                 new_d["value"] = None
-            _latest = _d.get("latest") == "true"
-            new_d["latest"] = _latest
+            new_d["latest"] = _d.get("latest") == "true"
             footnotes = _d.get("footnotes")
             if footnotes:
                 new_d["footnotes"] = "; ".join(
