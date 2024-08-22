@@ -25749,14 +25749,6 @@
                         "default": false,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "use_cache",
-                        "type": "bool",
-                        "description": "Whether to use the cache or not.",
-                        "default": true,
-                        "optional": true,
-                        "choices": null
                     }
                 ],
                 "intrinio": [
@@ -25778,6 +25770,14 @@
                     }
                 ],
                 "sec": [
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether to use the cache or not.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    },
                     {
                         "name": "is_fund",
                         "type": "bool",
