@@ -51,7 +51,7 @@ def get_subclasses_w_keys(module: object, cls: Type) -> Dict[Type, List[str]]:
 
     for _, obj in module_members:
         if inspect.isclass(obj) and issubclass(obj, cls) and obj != cls:
-            subclasses[obj] = list(obj.__fields__.keys())
+            subclasses[obj] = list(obj.model_fields.keys())
     return subclasses
 
 

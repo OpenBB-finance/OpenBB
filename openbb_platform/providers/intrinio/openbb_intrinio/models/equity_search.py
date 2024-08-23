@@ -26,7 +26,7 @@ class IntrinioEquitySearchQueryParams(EquitySearchQueryParams):
         "limit": "page_size",
     }
 
-    active: Optional[bool] = Field(
+    active: bool = Field(
         default=True,
         description="When true, return companies that are actively traded (having stock prices within the past 14 days)."
         + " When false, return companies that are not actively traded or never have been traded.",
