@@ -13,6 +13,8 @@ from typing_extensions import Annotated
 
 class ROUTER_economy_survey(Container):
     """/economy/survey
+    bls_search
+    bls_series
     economic_conditions_chicago
     manufacturing_outlook_texas
     nonfarm_payrolls
@@ -22,6 +24,255 @@ class ROUTER_economy_survey(Container):
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
+
+    @exception_handler
+    @validate
+    def bls_search(
+        self,
+        query: Annotated[
+            str,
+            OpenBBField(
+                description="The search word(s). Use semi-colon to separate multiple queries as an & operator."
+            ),
+        ] = "",
+        provider: Annotated[
+            Optional[Literal["bls"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Search BLS surveys by category and keyword or phrase to identify BLS series IDs.
+
+        Parameters
+        ----------
+        query : str
+            The search word(s). Use semi-colon to separate multiple queries as an & operator.
+        provider : Optional[Literal['bls']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.
+        category : Optional[Literal['cpi', 'pce', 'ppi', 'ip', 'jolts', 'nfp', 'cps', 'lfs', 'wages', 'ec', 'sla', 'bed', 'tu']]
+            The category of BLS survey to search within.
+                An empty search query will return all series within the category. Options are:
+
+            cpi - Consumer Price Index
+
+            pce - Personal Consumption Expenditure
+
+            ppi - Producer Price Index
+
+            ip - Industry Productivity
+
+            jolts - Job Openings and Labor Turnover Survey
+
+            nfp - Nonfarm Payrolls
+
+            cps - Current Population Survey
+
+            lfs - Labor Force Statistics
+
+            wages - Wages
+
+            ec - Employer Costs
+
+            sla - State and Local Area Employment
+
+            bed - Business Employment Dynamics
+
+            tu - Time Use
+                 (provider: bls)
+        include_extras : bool
+            Include additional information in the search results. Extra fields returned are metadata and vary by survey. Fields are undefined strings that typically have names ending with '_code'. (provider: bls)
+        include_code_map : bool
+            When True, includes the complete code map for eaçh survey in the category, returned separately as a nested JSON to the `extras['results_metadata']` property of the response. Example content is the NAICS industry map for PPI surveys. Each code is a value within the 'symbol' of the time series. (provider: bls)
+
+        Returns
+        -------
+        OBBject
+            results : List[BlsSearch]
+                Serializable results.
+            provider : Optional[Literal['bls']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        BlsSearch
+        ---------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        title : Optional[str]
+            The title of the series.
+        survey_name : Optional[str]
+            The name of the survey.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.survey.bls_search(provider='bls', category='cpi')
+        >>> # Use semi-colon to separate multiple queries as an & operator.
+        >>> obb.economy.survey.bls_search(provider='bls', category='cpi', query='seattle;gasoline')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/survey/bls_search",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.survey.bls_search",
+                        ("bls",),
+                    )
+                },
+                standard_params={
+                    "query": query,
+                },
+                extra_params=kwargs,
+                info={
+                    "category": {
+                        "bls": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "cpi",
+                                "pce",
+                                "ppi",
+                                "ip",
+                                "jolts",
+                                "nfp",
+                                "cps",
+                                "lfs",
+                                "wages",
+                                "ec",
+                                "sla",
+                                "bed",
+                                "tu",
+                            ],
+                        }
+                    }
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
+    def bls_series(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): bls."
+            ),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["bls"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get time series data for one, or more, BLS series IDs.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): bls.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['bls']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.
+        calculations : bool
+            Include calculations in the response, if available. Default is True. (provider: bls)
+        annual_average : bool
+            Include annual averages in the response, if available. Default is False. (provider: bls)
+        aspects : bool
+            Include all aspects associated with a data point for a given BLS series ID, if available. Returned with the series metadata, under `extras` of the response object. Default is False. (provider: bls)
+
+        Returns
+        -------
+        OBBject
+            results : List[BlsSeries]
+                Serializable results.
+            provider : Optional[Literal['bls']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        BlsSeries
+        ---------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        title : Optional[str]
+            Title of the series.
+        value : Optional[float]
+            Observation value for the symbol and date.
+        change_1_m : Optional[float]
+            One month change in value. (provider: bls)
+        change_3_m : Optional[float]
+            Three month change in value. (provider: bls)
+        change_6_m : Optional[float]
+            Six month change in value. (provider: bls)
+        change_12_m : Optional[float]
+            One year change in value. (provider: bls)
+        change_percent_1_m : Optional[float]
+            One month change in percent. (provider: bls)
+        change_percent_3_m : Optional[float]
+            Three month change in percent. (provider: bls)
+        change_percent_6_m : Optional[float]
+            Six month change in percent. (provider: bls)
+        change_percent_12_m : Optional[float]
+            One year change in percent. (provider: bls)
+        latest : Optional[bool]
+            Latest value indicator. (provider: bls)
+        footnotes : Optional[str]
+            Footnotes accompanying the value. (provider: bls)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.survey.bls_series(provider='bls', symbol='CES0000000001')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/survey/bls_series",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.survey.bls_series",
+                        ("bls",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={
+                    "symbol": {"bls": {"multiple_items_allowed": True, "choices": None}}
+                },
+            )
+        )
 
     @exception_handler
     @validate

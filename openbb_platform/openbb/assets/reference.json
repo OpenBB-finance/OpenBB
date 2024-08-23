@@ -20,6 +20,7 @@
             ],
             "openbb_provider_extension": [
                 "benzinga@1.3.1",
+                "bls@1.0.0b0",
                 "econdb@1.2.1",
                 "federal_reserve@1.3.1",
                 "fmp@1.3.1",
@@ -3126,6 +3127,335 @@
                 "oecd": []
             },
             "model": "GdpReal"
+        },
+        "/economy/survey/bls_series": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get time series data for one, or more, BLS series IDs.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.bls_series(provider='bls', symbol='CES0000000001')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): bls.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "bls": [
+                    {
+                        "name": "calculations",
+                        "type": "bool",
+                        "description": "Include calculations in the response, if available. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "annual_average",
+                        "type": "bool",
+                        "description": "Include annual averages in the response, if available. Default is False.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "aspects",
+                        "type": "bool",
+                        "description": "Include all aspects associated with a data point for a given BLS series ID, if available. Returned with the series metadata, under `extras` of the response object. Default is False.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[BlsSeries]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['bls']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "Observation value for the symbol and date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "bls": [
+                    {
+                        "name": "change_1M",
+                        "type": "float",
+                        "description": "One month change in value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_3M",
+                        "type": "float",
+                        "description": "Three month change in value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_6M",
+                        "type": "float",
+                        "description": "Six month change in value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_12M",
+                        "type": "float",
+                        "description": "One year change in value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_percent_1M",
+                        "type": "float",
+                        "description": "One month change in percent.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_percent_3M",
+                        "type": "float",
+                        "description": "Three month change in percent.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_percent_6M",
+                        "type": "float",
+                        "description": "Six month change in percent.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_percent_12M",
+                        "type": "float",
+                        "description": "One year change in percent.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "latest",
+                        "type": "bool",
+                        "description": "Latest value indicator.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "footnotes",
+                        "type": "str",
+                        "description": "Footnotes accompanying the value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "BlsSeries"
+        },
+        "/economy/survey/bls_search": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Search BLS surveys by category and keyword or phrase to identify BLS series IDs.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.bls_search(provider='bls', category=cpi)\n# Use semi-colon to separate multiple queries as an & operator.\nobb.economy.survey.bls_search(provider='bls', category=cpi, query='seattle;gasoline')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "query",
+                        "type": "str",
+                        "description": "The search word(s). Use semi-colon to separate multiple queries as an & operator.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "bls": [
+                    {
+                        "name": "category",
+                        "type": "Literal['cpi', 'pce', 'ppi', 'ip', 'jolts', 'nfp', 'cps', 'lfs', 'wages', 'ec', 'sla', 'bed', 'tu']",
+                        "description": "The category of BLS survey to search within.\n        An empty search query will return all series within the category. Options are:\n        \n    cpi - Consumer Price Index\n        \n    pce - Personal Consumption Expenditure\n        \n    ppi - Producer Price Index\n        \n    ip - Industry Productivity\n        \n    jolts - Job Openings and Labor Turnover Survey\n        \n    nfp - Nonfarm Payrolls\n        \n    cps - Current Population Survey\n        \n    lfs - Labor Force Statistics\n        \n    wages - Wages\n        \n    ec - Employer Costs\n        \n    sla - State and Local Area Employment\n        \n    bed - Business Employment Dynamics\n        \n    tu - Time Use",
+                        "default": "",
+                        "optional": false,
+                        "choices": [
+                            "cpi",
+                            "pce",
+                            "ppi",
+                            "ip",
+                            "jolts",
+                            "nfp",
+                            "cps",
+                            "lfs",
+                            "wages",
+                            "ec",
+                            "sla",
+                            "bed",
+                            "tu"
+                        ]
+                    },
+                    {
+                        "name": "include_extras",
+                        "type": "bool",
+                        "description": "Include additional information in the search results. Extra fields returned are metadata and vary by survey. Fields are undefined strings that typically have names ending with '_code'.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "include_code_map",
+                        "type": "bool",
+                        "description": "When True, includes the complete code map for ea\u00e7h survey in the category, returned separately as a nested JSON to the `extras['results_metadata']` property of the response. Example content is the NAICS industry map for PPI surveys. Each code is a value within the 'symbol' of the time series.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[BlsSearch]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['bls']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "The title of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "survey_name",
+                        "type": "str",
+                        "description": "The name of the survey.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "bls": []
+            },
+            "model": "BlsSearch"
         },
         "/economy/survey/sloos": {
             "deprecated": {
@@ -25749,14 +26079,6 @@
                         "default": false,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "use_cache",
-                        "type": "bool",
-                        "description": "Whether to use the cache or not.",
-                        "default": true,
-                        "optional": true,
-                        "choices": null
                     }
                 ],
                 "intrinio": [
@@ -25778,6 +26100,14 @@
                     }
                 ],
                 "sec": [
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether to use the cache or not.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    },
                     {
                         "name": "is_fund",
                         "type": "bool",

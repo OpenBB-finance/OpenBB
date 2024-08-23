@@ -18,6 +18,11 @@ class CboeEquitySearchQueryParams(EquitySearchQueryParams):
     Source: https://www.cboe.com/
     """
 
+    use_cache: bool = Field(
+        default=True,
+        description="Whether to use the cache or not.",
+    )
+
 
 class CboeEquitySearchData(EquitySearchData):
     """CBOE Equity Search Data."""

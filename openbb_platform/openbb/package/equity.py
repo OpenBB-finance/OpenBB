@@ -662,9 +662,6 @@ class ROUTER_equity(Container):
         is_symbol: Annotated[
             bool, OpenBBField(description="Whether to search by ticker symbol.")
         ] = False,
-        use_cache: Annotated[
-            Optional[bool], OpenBBField(description="Whether to use the cache or not.")
-        ] = True,
         provider: Annotated[
             Optional[Literal["intrinio", "sec"]],
             OpenBBField(
@@ -681,14 +678,14 @@ class ROUTER_equity(Container):
             Search query.
         is_symbol : bool
             Whether to search by ticker symbol.
-        use_cache : Optional[bool]
-            Whether to use the cache or not.
         provider : Optional[Literal['intrinio', 'sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, sec.
-        active : Optional[bool]
+        active : bool
             When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio)
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio)
+        use_cache : bool
+            Whether to use the cache or not. (provider: sec)
         is_fund : bool
             Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)
 
@@ -739,7 +736,6 @@ class ROUTER_equity(Container):
                 standard_params={
                     "query": query,
                     "is_symbol": is_symbol,
-                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )
