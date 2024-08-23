@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/companies/search?active=True&api_key=MOCK_API_KEY&page_size=100&query=gold&use_cache=True
+    uri: https://api-v2.intrinio.com/companies/search?active=True&api_key=MOCK_API_KEY&page_size=100&query=gold
   response:
     body:
       string: !!binary |

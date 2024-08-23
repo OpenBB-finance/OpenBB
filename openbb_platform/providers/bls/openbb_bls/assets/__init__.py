@@ -1,0 +1,1 @@
+"""BLS Provider Static Assets."""

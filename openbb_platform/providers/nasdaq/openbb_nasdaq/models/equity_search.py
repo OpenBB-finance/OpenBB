@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -19,7 +19,7 @@ class NasdaqEquitySearchQueryParams(EquitySearchQueryParams):
     Source: https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt
     """
 
-    is_etf: Optional[bool] = Field(
+    is_etf: Union[bool, None] = Field(
         default=None,
         description="If True, returns ETFs.",
     )
