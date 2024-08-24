@@ -346,7 +346,7 @@ def main():
 
     args = sys.argv[1:].copy()
     kwargs: Dict = {}
-    for i in range(len(args)):
+    for i in range(len(args)):  # pylint: disable=C0200
         if args[i].startswith("--"):  # type: ignore
             key = args[i][2:]  # type: ignore
             if i + 1 < len(args) and not args[i + 1].startswith("--"):  # type: ignore
