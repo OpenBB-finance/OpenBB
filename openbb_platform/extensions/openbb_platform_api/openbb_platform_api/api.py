@@ -1,5 +1,6 @@
 """Generate and serve the widgets.json for the OpenBB Platform API."""
 
+# pylint: disable=unused-variable
 # flake8: noqa: T201
 
 import importlib.util
@@ -295,11 +296,9 @@ def build_json(openapi):
 def get_widgets_json(build: bool, openapi):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
     python_path = Path(sys.executable)
+    parent_path = python_path.parents[0 if os.name == "nt" else 1]
     widgets_json_path = (
-        python_path.parents[0 if os.name == "nt" else 1]
-        .joinpath("assets")
-        .resolve()
-        .joinpath("widgets.json")
+        parent_path.joinpath("assets").resolve().joinpath("widgets.json")
     )
     json_exists = widgets_json_path.exists()
 
@@ -349,7 +348,7 @@ def main():
     # pylint: disable=import-outside-toplevel
     args = sys.argv[1:].copy()
     kwargs: Dict = {}
-    for i in range(len(args)):
+    for i in enumerate(args):
         if args[i].startswith("--"):
             key = args[i][2:]
             if i + 1 < len(args) and not args[i + 1].startswith("--"):
@@ -381,12 +380,11 @@ def main():
     async def get_widgets():
         """Widgets configuration file for the OpenBB Terminal Pro."""
         # This allows us to serve an edited widgets.json file without reloading the server.
-        global FIRST_RUN  # noqa PLW0603
+        global FIRST_RUN  # noqa PLW0603  # pylint: disable=global-statement
         if FIRST_RUN is True:
             FIRST_RUN = False
             return JSONResponse(content=widgets_json)
-        else:
-            return JSONResponse(content=get_widgets_json(False, openapi))
+        return JSONResponse(content=get_widgets_json(False, openapi))
 
     def launch_api(**kwargs):  # noqa PRL0912
         """Main function."""
