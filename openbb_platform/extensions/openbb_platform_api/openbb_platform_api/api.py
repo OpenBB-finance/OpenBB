@@ -331,9 +331,7 @@ def get_widgets_json(build: bool, openapi):
                 with open(widgets_json_path, "w", encoding="utf-8") as f:
                     json.dump(widgets_json, f, ensure_ascii=False, indent=4)
             except Exception as e:
-                print(
-                    f"Error writing widgets.json: {e}.  Loading from memeory instead."
-                )
+                print(f"Error writing widgets.json: {e}.  Loading from memory instead.")
                 widgets_json = (
                     existing_widgets_json
                     if existing_widgets_json
