@@ -345,7 +345,7 @@ def get_widgets_json(build: bool, openapi):
 
 
 def main():
-    """Main function."""
+    """Entry point for the main script."""
     # pylint: disable=import-outside-toplevel
     args = sys.argv[1:].copy()
     kwargs: Dict = {}
@@ -370,7 +370,7 @@ def main():
 
     @app.get("/")
     async def get_root():
-        """API Root."""
+        """The API root response."""
         return JSONResponse(
             content="Welcome to the OpenBB Platform API."
             + " Learn how to connect to Pro in docs.openbb.co/pro/data-connectors,"

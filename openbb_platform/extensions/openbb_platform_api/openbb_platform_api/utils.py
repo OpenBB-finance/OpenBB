@@ -166,7 +166,7 @@ def get_query_schema_for_widget(  # noqa: PLR0912
 
 def get_data_schema_for_widget(openapi_json, operation_id):
     """
-    Fetches the data schema for a widget based on its operationId.
+    Get the data schema for a widget based on its operationId.
 
     Args:
         openapi (dict): The OpenAPI specification as a dictionary.
