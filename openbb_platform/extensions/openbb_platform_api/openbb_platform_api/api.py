@@ -343,10 +343,10 @@ def get_widgets_json(build: bool, openapi):
 
 def main():
     """Entry point for the main script."""
-    # pylint: disable=import-outside-toplevel
+
     args = sys.argv[1:].copy()
     kwargs: Dict = {}
-    for i in enumerate(args):
+    for i in range(len(args)):
         if args[i].startswith("--"):  # type: ignore
             key = args[i][2:]  # type: ignore
             if i + 1 < len(args) and not args[i + 1].startswith("--"):  # type: ignore

@@ -25,7 +25,6 @@ router = Router(prefix="", description="An Empty OpenBB Router Extension.")
 @router.command(
     methods=["GET"],
     examples=[
-        APIEx(parameters={}),
         PythonEx(
             description="Say Hello.",
             code=[

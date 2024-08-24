@@ -34,20 +34,16 @@ condarc:
   {channels: [conda-forge],
   default_channels: [conda-forge],
   allow_softlinks: false,
-  auto_activate_base: true,
-  envs_dirs: [$PREFIX/envs],
-  pkgs_dirs: [$PREFIX/pkgs],
+  auto_activate_base: false,
+  envs_dirs: [./envs],
+  pkgs_dirs: [./pkgs],
   always_copy: true,
   register_envs: false,
   pip_interop_enabled: true}
 
-
 pkg_domains:
   enable_anywhere: false
   enable_currentUserHome: true
-
-script_env_variables:
-  InstMode: JustMe  # [win]
 
 post_install: post_install.sh  # [unix]
 post_install: post_install.bat  # [win]

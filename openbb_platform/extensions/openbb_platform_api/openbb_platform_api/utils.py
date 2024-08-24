@@ -30,7 +30,7 @@ def get_query_schema_for_widget(
     route_params: List = []
     providers: List = []
 
-    if params[0]["name"] == "provider":
+    if params and params[0]["name"] == "provider":
         providers = params[0].get("schema", {}).get("enum", [])
 
     for param in params:
@@ -100,12 +100,14 @@ def get_query_schema_for_widget(
                 multiple_items_allowed = True
 
         if "enum" in p_schema:
-            choices = p_schema.get("enum", [])
-            p["options"] = (
-                [{"label": str(c), "value": c} for c in list(set(choices)) if c]
+            _choices = p_schema.get("enum", [])
+            choices = (
+                [{"label": str(c), "value": c} for c in list(set(_choices)) if c]
                 if choices not in ["null", None]
                 else []
             )
+            if choices:
+                p["options"] = choices
         elif "anyOf" in p_schema:
             choices_types: List = []
             for sub_schema in p_schema["anyOf"]:
@@ -123,7 +125,7 @@ def get_query_schema_for_widget(
                     p["type"] = "boolean"
                 else:
                     choices_types.append(sub_schema["type"])
-            if choices:
+            if choices and all(isinstance(item, dict) for item in choices):
                 unique_choices = list(
                     {frozenset(item.items()): item for item in choices}.values()
                 )
