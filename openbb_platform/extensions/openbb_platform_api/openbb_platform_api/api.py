@@ -349,10 +349,10 @@ def main():
     args = sys.argv[1:].copy()
     kwargs: Dict = {}
     for i in enumerate(args):
-        if args[i].startswith("--"):
-            key = args[i][2:]
-            if i + 1 < len(args) and not args[i + 1].startswith("--"):
-                value = args[i + 1]
+        if args[i].startswith("--"):  # type: ignore
+            key = args[i][2:]  # type: ignore
+            if i + 1 < len(args) and not args[i + 1].startswith("--"):  # type: ignore
+                value = args[i + 1]  # type: ignore
                 kwargs[key] = value
             else:
                 kwargs[key] = True
