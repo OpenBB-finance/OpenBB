@@ -65,10 +65,10 @@ def get_query_schema_for_widget(  # noqa: PLR0912
             p["value"] = None
 
         p_schema = param.get("schema", {})
+        choices: List = []
 
         if providers:
             p["value"] = p_schema.get("default", None)
-            choices: List = []
             for provider in providers:
                 _choices: List = []
                 if provider in p_schema:
@@ -104,7 +104,6 @@ def get_query_schema_for_widget(  # noqa: PLR0912
                 else []
             )
         elif "anyOf" in p_schema:
-            choices: List = []
             choices_types: List = []
             for sub_schema in p_schema["anyOf"]:
                 if "enum" in sub_schema:

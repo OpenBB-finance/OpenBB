@@ -6,6 +6,7 @@ import importlib.util
 import json
 import os
 import socket
+import sys
 from copy import deepcopy
 from pathlib import Path
 from typing import Dict
@@ -17,8 +18,8 @@ from openbb_core.api.rest_api import app
 
 HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
 
-CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")
-USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backup.json")
+CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")  # type: ignore
+USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backup.json")  # type: ignore
 
 FIRST_RUN = True
 
@@ -62,6 +63,9 @@ def get_user_settings(login: bool):
     if pat:
         from openbb_core.app.service.hub_service import HubService
 
+        hub_credentials: Dict = {}
+        hub_preferences: Dict = {}
+        hub_defaults: Dict = {}
         try:
             Hub = HubService()
             _ = Hub.connect(pat=pat)
@@ -71,9 +75,6 @@ def get_user_settings(login: bool):
             hub_defaults = json.loads(hub_settings.defaults.model_dump_json())
         except Exception as e:
             print(f"\n\nError connecting with Hub:\n{e}\n\nUsing the local settings.\n")
-            hub_credentials: Dict = {}
-            hub_preferences: Dict = {}
-            hub_defaults: Dict = {}
 
         if hub_credentials:
             # Prompt the user to ask if they want to persist the new settings
@@ -143,9 +144,9 @@ def build_json(openapi):
     # We need to import the utils module as a dynamic relative import.
     script_dir = os.path.dirname(os.path.abspath(__file__))
     utils_path = os.path.join(script_dir, "utils.py")
-    spec = importlib.util.spec_from_file_location("utils", utils_path)
-    utils = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(utils)
+    spec = importlib.util.spec_from_file_location("utils", utils_path)  # type: ignore
+    utils = importlib.util.module_from_spec(spec)  # type: ignore
+    spec.loader.exec_module(utils)  # type: ignore
 
     # Assign the required functions from the utils module
     data_schema_to_columns_defs = utils.data_schema_to_columns_defs
@@ -293,7 +294,7 @@ def build_json(openapi):
 
 def get_widgets_json(build: bool, openapi):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
-    python_path = Path(os.sys.executable)
+    python_path = Path(sys.executable)
     widgets_json_path = (
         python_path.parents[0 if os.name == "nt" else 1]
         .joinpath("assets")
@@ -346,7 +347,7 @@ def get_widgets_json(build: bool, openapi):
 def main():
     """Main function."""
     # pylint: disable=import-outside-toplevel
-    args = os.sys.argv[1:].copy()
+    args = sys.argv[1:].copy()
     kwargs: Dict = {}
     for i in range(len(args)):
         if args[i].startswith("--"):
