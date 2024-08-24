@@ -1,6 +1,6 @@
 """Generate and serve the widgets.json for the OpenBB Platform API."""
 
-# pylint: disable=unused-variable
+# pylint: disable=unused-variable,too-many-statements,too-many-locals,too-many-branches,too-many-nested-blocks
 # flake8: noqa: T201
 
 import importlib.util
@@ -44,7 +44,7 @@ def get_user_settings(login: bool):
     import getpass
 
     if Path(CURRENT_USER_SETTINGS).exists():
-        with open(CURRENT_USER_SETTINGS) as f:
+        with open(CURRENT_USER_SETTINGS, encoding="utf-8") as f:
             current_settings = json.load(f)
     else:
         current_settings = {
@@ -74,7 +74,7 @@ def get_user_settings(login: bool):
             hub_credentials = json.loads(hub_settings.credentials.model_dump_json())
             hub_preferences = json.loads(hub_settings.preferences.model_dump_json())
             hub_defaults = json.loads(hub_settings.defaults.model_dump_json())
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"\n\nError connecting with Hub:\n{e}\n\nUsing the local settings.\n")
 
         if hub_credentials:
@@ -100,7 +100,7 @@ def get_user_settings(login: bool):
 
             # Save the current settings to restore at the end of the session.
             if PERSIST is False:
-                with open(USER_SETTINGS_COPY, "w") as f:
+                with open(USER_SETTINGS_COPY, "w", encoding="utf-8") as f:
                     json.dump(current_settings, f, indent=4)
 
         new_settings = current_settings.copy()
@@ -131,7 +131,7 @@ def get_user_settings(login: bool):
                     continue
 
         # Write the new settings to the user_settings.json file
-        with open(CURRENT_USER_SETTINGS, "w") as f:
+        with open(CURRENT_USER_SETTINGS, "w", encoding="utf-8") as f:
             json.dump(new_settings, f, indent=4)
 
         current_settings = new_settings
@@ -296,10 +296,8 @@ def build_json(openapi):
 def get_widgets_json(build: bool, openapi):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
     python_path = Path(sys.executable)
-    parent_path = python_path.parents[0 if os.name == "nt" else 1]
-    widgets_json_path = (
-        parent_path.joinpath("assets").resolve().joinpath("widgets.json")
-    )
+    parent_path = python_path.parent if os.name == "nt" else python_path.parents[1]
+    widgets_json_path = parent_path.joinpath("assets", "widgets.json").resolve()
     json_exists = widgets_json_path.exists()
 
     if not json_exists:
@@ -332,7 +330,7 @@ def get_widgets_json(build: bool, openapi):
             try:
                 with open(widgets_json_path, "w", encoding="utf-8") as f:
                     json.dump(widgets_json, f, ensure_ascii=False, indent=4)
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 print(f"Error writing widgets.json: {e}.  Loading from memory instead.")
                 widgets_json = (
                     existing_widgets_json
