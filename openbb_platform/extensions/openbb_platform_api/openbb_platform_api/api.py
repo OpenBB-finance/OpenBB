@@ -220,6 +220,8 @@ def build_json(openapi):
             "Rss",
             "Sic",
             "Cik",
+            "Bls",
+            "Fred",
         ]
         name = " ".join(
             [(word.upper() if word in to_caps else word) for word in name.split()]
