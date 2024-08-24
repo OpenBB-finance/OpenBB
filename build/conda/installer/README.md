@@ -88,7 +88,7 @@ cd extensions/examples
 python install_examples.py
 ```
 
-#### openbb_platform
+#### openbb_platform_installer
 
 This is a meta package for installing and managing OpenBB Platform installation within any Python environment.
 Poetry is used to update and resolve any dependencies that are defined in the `pyproject.toml` file.
@@ -144,7 +144,7 @@ In general, you use:
   - Syncing all package dependencies according to provided specs in `pyproject.toml` and `poetry.lock` files.
   - Building and distributing Python packages.
 
-Conda is for container management, Poetry resolves the project's dependencies and provides build/distribution tools, while `pip` is for installing from [PyPI](https://pypi.org)
+Conda is for container management and machine code level operations, Poetry resolves the project's dependencies and provides build/distribution tools within the current Python environment, while `pip` is for installing Python packages - typically from [PyPI](https://pypi.org).
 
 ### Documentation Resources
 
@@ -159,7 +159,7 @@ Conda is for container management, Poetry resolves the project's dependencies an
 - [REST API Requests](https://docs.openbb.co/platform/getting_started/api_requests)
 - [OpenBB Platform Architecture Overview](https://docs.openbb.co/platform/developer_guide/architecture_overview)
 - [Create A New Router Extension](https://docs.openbb.co/platform/getting_started/create_new_router_extension)
-- [OpenBB Charting]()
+- [OpenBB Charting](https://github.com/OpenBB-finance/OpenBB/tree/develop/openbb_platform/obbject_extensions/charting#readme)
 - [PyWry](https://github.com/OpenBB-finance/pywry)
 
 ### External

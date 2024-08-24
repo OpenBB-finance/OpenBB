@@ -1,7 +1,7 @@
 @echo off
 echo Installing environment, this may take a few minutes... Watch for changes in post_install_log.txt file at the root of the installation directory.
 
-cd "%PREFIX%\..\extensions\openbb_platform"
+cd "%PREFIX%\..\extensions\openbb_platform_installer"
 
 PATH %PREFIX%;%PREFIX%\Scripts;%PREFIX%\Library\bin;%PATH%
 SET LOG_FILE="%PREFIX%\..\post_install_log.txt"

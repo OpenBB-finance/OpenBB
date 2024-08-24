@@ -25,7 +25,7 @@ specs:
 
 extra_envs:
   obb:
-    environment_file: ./assets/openbb_platform/obb-env.yml
+    environment_file: ./assets/openbb_platform_installer/obb-env.yml
 
 channels:
   - conda-forge
@@ -46,20 +46,25 @@ pkg_domains:
   enable_anywhere: false
   enable_currentUserHome: true
 
+script_env_variables:
+  InstMode: JustMe  # [win]
+
 post_install: post_install.sh  # [unix]
 post_install: post_install.bat  # [win]
 
 extra_files:
   # Bundle launcher assets
   - ./README.md: ../README.md
-  - ./assets/openbb_platform/obb-env.yml: ../extensions/openbb_platform/obb-env.yml
-  - ./assets/openbb_platform/pyproject.toml: ../extensions/openbb_platform/pyproject.toml
-  - ./assets/openbb_platform/README.md: ../extensions/openbb_platform/README.md
-  - ./assets/openbb_platform/openbb_platform/__init__.py: ../extensions/openbb_platform/openbb_platform/__init__.py
-  - ./assets/openbb_platform/openbb_platform/api.py: ../extensions/openbb_platform/openbb_platform/api.py
-  - ./assets/openbb_platform/openbb_platform/build.py: ../extensions/openbb_platform/openbb_platform/build.py
-  - ./assets/openbb_platform/openbb_platform/update.py: ../extensions/openbb_platform/openbb_platform/update.py
-  - ./assets/openbb_platform/openbb_platform/utils.py: ../extensions/openbb_platform/openbb_platform/utils.py
+  - ./assets/openbb_platform_installer/obb-env.yml: ../extensions/openbb_platform_installer/obb-env.yml
+  - ./assets/openbb_platform_installer/pyproject.toml: ../extensions/openbb_platform_installer/pyproject.toml
+  - ./assets/openbb_platform_installer/README.md: ../extensions/openbb_platform_installer/README.md
+  - ./assets/openbb_platform_installer/openbb_platform_installer/__init__.py: ../extensions/openbb_platform_installer/openbb_platform_installer/__init__.py
+
+  - ../../../openbb_platform/extensions/openbb_platform_api/openbb_platform_api/api.py: ../extensions/openbb_platform_installer/openbb_platform_installer/api.py
+  - ../../../openbb_platform/extensions/openbb_platform_api/openbb_platform_api/utils.py: ../extensions/openbb_platform_installer/openbb_platform_installer/utils.py
+
+  - ./assets/openbb_platform_installer/openbb_platform_installer/build.py: ../extensions/openbb_platform_installer/openbb_platform_installer/build.py
+  - ./assets/openbb_platform_installer/openbb_platform_installer/update.py: ../extensions/openbb_platform_installer/openbb_platform_installer/update.py
   - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
   - ./assets/openbb.icns: ../openbb_icon.icns  # [osx]
   - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]

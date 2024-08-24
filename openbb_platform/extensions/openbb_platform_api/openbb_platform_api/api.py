@@ -2,26 +2,25 @@
 
 # flake8: noqa: T201
 
+import importlib.util
 import json
 import os
 import socket
+from copy import deepcopy
 from pathlib import Path
 from typing import Dict
 
+import uvicorn
 from deepdiff import DeepDiff
 from fastapi.responses import JSONResponse
 from openbb_core.api.rest_api import app
-
-from openbb_platform.utils import (
-    data_schema_to_columns_defs,
-    get_data_schema_for_widget,
-    get_query_schema_for_widget,
-)
 
 HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
 
 CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")
 USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backup.json")
+
+FIRST_RUN = True
 
 
 def check_port(host, port) -> int:
@@ -39,6 +38,7 @@ def check_port(host, port) -> int:
 
 def get_user_settings(login: bool):
     """Login to the OpenBB Platform."""
+    # pylint: disable=import-outside-toplevel
     import getpass
 
     if Path(CURRENT_USER_SETTINGS).exists():
@@ -71,9 +71,9 @@ def get_user_settings(login: bool):
             hub_defaults = json.loads(hub_settings.defaults.model_dump_json())
         except Exception as e:
             print(f"\n\nError connecting with Hub:\n{e}\n\nUsing the local settings.\n")
-            hub_credentials = {}
-            hub_preferences = {}
-            hub_defaults = {}
+            hub_credentials: Dict = {}
+            hub_preferences: Dict = {}
+            hub_defaults: Dict = {}
 
         if hub_credentials:
             # Prompt the user to ask if they want to persist the new settings
@@ -139,6 +139,19 @@ def get_user_settings(login: bool):
 
 def build_json(openapi):
     """Build the widgets.json file."""
+
+    # We need to import the utils module as a dynamic relative import.
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    utils_path = os.path.join(script_dir, "utils.py")
+    spec = importlib.util.spec_from_file_location("utils", utils_path)
+    utils = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(utils)
+
+    # Assign the required functions from the utils module
+    data_schema_to_columns_defs = utils.data_schema_to_columns_defs
+    get_data_schema_for_widget = utils.get_data_schema_for_widget
+    get_query_schema_for_widget = utils.get_query_schema_for_widget
+
     widgets_json: Dict = {}
     routes = [
         p
@@ -147,7 +160,8 @@ def build_json(openapi):
     ]
     for route in routes:
         route_api = openapi["paths"][route]
-        widget_id = route_api["get"]["operationId"]
+        method = list(route_api)[0]
+        widget_id = route_api[method]["operationId"]
 
         # Prepare the query schema of the widget
         query_schema, has_chart = get_query_schema_for_widget(openapi, route)
@@ -163,14 +177,60 @@ def build_json(openapi):
             columns_defs = data_schema_to_columns_defs(  # noqa F841
                 openapi, response_schema_refs
             )
-
+        _cat = route.split("v1/")[-1]
+        _cats = _cat.split("/")
+        category = _cats[0].title()
+        category = category.replace("Fixedincome", "Fixed Income")
+        subcat = _cats[1].title().replace("_", " ") if len(_cats) > 2 else None
+        name = (
+            widget_id.replace("fixedincome", "fixed income").replace("_", " ").title()
+        )
+        to_caps = [
+            "Pe",
+            "Sloos",
+            "Eps",
+            "Ebitda",
+            "Otc",
+            "Cpi",
+            "Pce",
+            "Gdp",
+            "Lbma",
+            "Ipo",
+            "Nbbo",
+            "Ameribor",
+            "Sonia",
+            "Effr",
+            "Sofr",
+            "Iorb",
+            "Estr",
+            "Ecb",
+            "Dpcredit",
+            "Tcm",
+            "Us",
+            "Ice",
+            "Bofa",
+            "Hqm",
+            "Sp500",
+            "Sec",
+            "Cftc",
+            "Cot",
+            "Etf",
+            "Eu",
+            "Tips",
+            "Rss",
+            "Sic",
+            "Cik",
+        ]
+        name = " ".join(
+            [(word.upper() if word in to_caps else word) for word in name.split()]
+        )
         widget_config = {
-            "name": f'OBB {route_api["get"]["operationId"].replace("_", " ").title()}',
+            "name": name + " (OpenBB API)",
             "description": route_api["get"]["description"],
-            "category": route_api["get"]["tags"][0].title(),
-            "widgetType": route_api["get"]["tags"][0],
-            "widgetId": f"OBB {widget_id}",
-            "params": query_schema,  # Use the fetched query schema
+            "category": category,
+            "searchCategory": category,
+            "widgetId": widget_id + "_obb",
+            "params": query_schema,
             "endpoint": route.replace("/api", "api"),
             "gridData": {"w": 45, "h": 15},
             "data": {
@@ -180,6 +240,17 @@ def build_json(openapi):
                 },
             },
         }
+
+        if subcat:
+            subcat = " ".join(
+                [(word.upper() if word in to_caps else word) for word in subcat.split()]
+            )
+            subcat = (
+                subcat.replace("Estimates", "Analyst Estimates")
+                .replace("Fundamental", "Fundamental Analysis")
+                .replace("Compare", "Comparison Analysis")
+            )
+            widget_config["subCategory"] = subcat
 
         # if columns_defs:
         #    widget_config["data"]["table"]["columnsDefs"] = columns_defs
@@ -192,20 +263,27 @@ def build_json(openapi):
         widgets_json[widget_config["widgetId"]] = widget_config
 
         if has_chart:
-            # deepcopy the widget_config
-            widget_config_chart = json.loads(json.dumps(widget_config))
-            del widget_config_chart["data"]["table"]
-
-            widget_config_chart["name"] = f"{widget_config_chart['name']} Chart"
+            widget_config_chart = deepcopy(widget_config)
+            widget_config_chart["name"] = (
+                f"{widget_config_chart['name'].replace(' (OpenBB API)', '')} Chart (OpenBB API)"
+            )
             widget_config_chart["widgetId"] = f"{widget_config_chart['widgetId']}_chart"
-            widget_config_chart["params"]["chart"] = True
-
+            widget_config_chart["params"].append(
+                {
+                    "paramName": "chart",
+                    "label": "Chart",
+                    "description": "Returns chart",
+                    "optional": True,
+                    "value": True,
+                    "type": "boolean",
+                    "show": False,
+                },
+            )
+            widget_config_chart["searchCategory"] = "chart"
+            widget_config_chart["gridData"]["h"] = 20
+            widget_config_chart["gridData"]["w"] = 50
             widget_config_chart["defaultViz"] = "chart"
             widget_config_chart["data"]["dataKey"] = "chart.content"
-            widget_config_chart["data"]["chart"] = {
-                "type": "line",
-            }
-
             widgets_json[widget_config_chart["widgetId"]] = widget_config_chart
 
     return widgets_json
@@ -236,25 +314,38 @@ def get_widgets_json(build: bool, openapi):
 
     if build:
         diff = DeepDiff(existing_widgets_json, widgets_json, ignore_order=True)
+        merge_prompt = None
         if diff and json_exists:
             print("Differences found:", diff)
             merge_prompt = input(
                 "\nDo you want to overwrite the existing widgets.json configuration?"
-                "\nEnter 'n' to append existing with only new entries (y/n): "
+                "\nEnter 'n' to append existing with only new entries, or 'i' to ignore all changes. (y/n/i): "
             )
             if merge_prompt.lower().startswith("n"):
                 widgets_json.update(existing_widgets_json)
+            elif merge_prompt.lower().startswith("i"):
+                widgets_json = existing_widgets_json
 
-        with open(widgets_json_path, "w", encoding="utf-8") as f:
-            json.dump(widgets_json, f, ensure_ascii=False, indent=4)
+        if merge_prompt is None or not merge_prompt.lower().startswith("i"):
+            try:
+                with open(widgets_json_path, "w", encoding="utf-8") as f:
+                    json.dump(widgets_json, f, ensure_ascii=False, indent=4)
+            except Exception as e:
+                print(
+                    f"Error writing widgets.json: {e}.  Loading from memeory instead."
+                )
+                widgets_json = (
+                    existing_widgets_json
+                    if existing_widgets_json
+                    else build_json(openapi)
+                )
 
     return widgets_json
 
 
 def main():
     """Main function."""
-    import uvicorn
-
+    # pylint: disable=import-outside-toplevel
     args = os.sys.argv[1:].copy()
     kwargs: Dict = {}
     for i in range(len(args)):
@@ -271,7 +362,7 @@ def main():
     build = False if kwargs.pop("no-build", None) else build
     login = kwargs.pop("login", False)
     # We don't need the current settings,
-    # but we need to call the function to update login and/or identify the settings file.
+    # but we need to call the function to update, login, and/or identify the settings file.
     current_settings = get_user_settings(login)  # noqa F841
 
     widgets_json = get_widgets_json(build, openapi)
@@ -288,7 +379,13 @@ def main():
     @app.get("/widgets.json")
     async def get_widgets():
         """Widgets configuration file for the OpenBB Terminal Pro."""
-        return JSONResponse(content=widgets_json)
+        # This allows us to serve an edited widgets.json file without reloading the server.
+        global FIRST_RUN  # noqa PLW0603
+        if FIRST_RUN is True:
+            FIRST_RUN = False
+            return JSONResponse(content=widgets_json)
+        else:
+            return JSONResponse(content=get_widgets_json(False, openapi))
 
     def launch_api(**kwargs):  # noqa PRL0912
         """Main function."""
@@ -301,7 +398,7 @@ def main():
             if not host:
                 host = "127.0.0.1"
 
-        port = kwargs.pop("port", os.getenv("OPENBB_API_PORT", "8000"))
+        port = kwargs.pop("port", os.getenv("OPENBB_API_PORT", "6900"))
 
         try:
             port = int(port)
@@ -313,11 +410,11 @@ def main():
             try:
                 port = int(port)
             except ValueError:
-                print("\n\nInvalid port number. Defaulting to 8000.")
-                port = 8000
+                print("\n\nInvalid port number. Defaulting to 6900.")
+                port = 6900
         if port < 1025:
-            port = 8000
-            print("\n\nInvalid port number, must be above 1024. Defaulting to 8000.")
+            port = 6900
+            print("\n\nInvalid port number, must be above 1024. Defaulting to 6900.")
 
         free_port = check_port(host, port)
 
@@ -326,7 +423,8 @@ def main():
             port = free_port
 
         try:
-            uvicorn.run("openbb_platform.api:app", host=host, port=port, **kwargs)
+            package_name = __package__
+            uvicorn.run(f"{package_name}.api:app", host=host, port=port, **kwargs)
         finally:
             # If user_settings_copy.json exists, then restore the original settings.
             if os.path.exists(USER_SETTINGS_COPY):

@@ -1,20 +1,20 @@
 # If you will be using this as a template for your own package, please change the values accordingly.
 [tool.poetry]
-name = "openbb_platform"  # Change this to your package name
+name = "openbb_platform_installer"  # Change this to your package name
 version = "1.0.0"  # Change this to your package version
-description = "OpenBB Platform: Investment research for everyone, anywhere."  # Change this to your description
+description = "A meta package for installing the OpenBB Platform: Investment research for everyone, anywhere."  # Change this to your description
 authors = ["OpenBB <hello@openbb.co>"]  # Change this to your name and email
 license = "AGPL-3.0-only"  # This license must be compatible with the OpenBB license
 readme = "README.md"  # Change this to your README file
 homepage = "https://openbb.co"  # Change this to your website
 repository = "https://github.com/openbb-finance/openbb"  # Change this to your repository
 documentation = "https://docs.openbb.co" # Change this to your documentation
-packages = [{ include = "openbb_platform" }]  # Update accordingly - these are build scripts and entry points.
+packages = [{ include = "openbb_platform_installer" }]  # Update accordingly - these are build scripts and entry points.
 
 [tool.poetry.scripts]
-openbb-api = "openbb_platform.api:main"
-openbb-build = "openbb_platform.build:main"
-openbb-update = "openbb_platform.update:main"
+openbb-api = "openbb_platform_installer.api:main"
+openbb-build = "openbb_platform_installer.build:main"
+openbb-update = "openbb_platform_installer.update:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"

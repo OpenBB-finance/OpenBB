@@ -9,7 +9,7 @@ log_with_timestamp() {
     echo "$(date '+%Y-%m-%d_%H:%M:%S') $1" >>"$LOG_FILE"
 }
 
-cd "$PREFIX/../extensions/openbb_platform" >>"$LOG_FILE" 2>&1
+cd "$PREFIX/../extensions/openbb_platform_installer" >>"$LOG_FILE" 2>&1
 
 source "$PREFIX/etc/profile.d/conda.sh" && conda activate "$PREFIX"
 
@@ -89,7 +89,6 @@ cat  > "$API_WRAPPER_SCRIPT" <<EOF
 export PATH="$PREFIX/bin:\$PATH"
 source activate base
 conda activate obb
-cd "$PREFIX/.."
 openbb-api --login True "\$@"
 EOF
 

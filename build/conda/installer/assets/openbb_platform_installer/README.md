@@ -1,4 +1,4 @@
-# OpenBB Platform Package
+# OpenBB Platform Installer Package
 
 This package is for installing the OpenBB Platform packages into any Python environment. Versions between 3.9 and 3.12, inclusively, are supported.
 
