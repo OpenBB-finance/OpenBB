@@ -50,11 +50,11 @@ There are several command line entry points available when either:
   - `--login`: True/False. Defeats the login prompt when False.
   - `--no-build`: Skips building "widgets.json"
   - To launch the API with no input prompts enter: `openbb-api --login False --no-build
-- openbb-build: Runs the build script that generates the static assets for the OpenBB Pythobn interface.
+- openbb-build: Runs the build script that generates the static assets for the OpenBB Python interface.
   - Run this after installing/uninstalling/updating OpenBB extensions
   - Automatically run when `openbb-update` is run.
 - openbb-update: Updates the environment packages defined in `pyproject.toml` and `poetry.lock` and rebuilds the OpenBB Python interface.
-  - Location: "/extensions/openbb_platform"
+  - Location of Poetry files: "/extensions/openbb_platform_installer"
   - Passes all args/kwargs to `poetry install`.
 
 ## Installed Folder Structure
@@ -136,6 +136,7 @@ In general, you use:
   - When a new environment has been created. Packages here can be included in the creation command, `conda create`.
   - When the specific package is only distributed through Conda or the `conda-forge` channel.
   - When changing the version of Python used within the environment.
+  - For interactions with the machine code layer of the system - e.g., compilers, and bridges to "outside of Python" land.
 - `pip`
   - When installing/uninstalling packages to the activated Python environment.
   - Resort to `conda install` only if packages fail to install or wheels cannot be built.

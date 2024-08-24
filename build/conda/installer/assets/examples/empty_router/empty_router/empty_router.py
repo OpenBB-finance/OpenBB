@@ -22,12 +22,29 @@ router = Router(prefix="", description="An Empty OpenBB Router Extension.")
 
 
 # This is a standard router "get" command.
-@router.command(methods=["GET"])
+@router.command(
+    methods=["GET"],
+    examples=[
+        APIEx(parameters={}),
+        PythonEx(
+            description="Say Hello.",
+            code=[
+                "result = obb.empty.hello()",
+            ],
+        ),
+    ],
+)
 async def hello() -> (
     OBBject[dict]
 ):  # The output of every router command must be an instance of `OBBject`.
     """OpenBB Hello World."""
-    return OBBject(results={datetime.now().strftime("%Y-%m-%d"):"Hello from the Empty Router extension!"})
+    return OBBject(
+        results={
+            datetime.now().strftime(
+                "%Y-%m-%d"
+            ): "Hello from the Empty Router extension!"
+        }
+    )
 
 
 # This uses the Provider Interface to call the empty provider fetcher.
@@ -38,7 +55,7 @@ async def hello() -> (
         PythonEx(
             description="Say Hello.",
             code=[
-                "result = obb.empty.hello()",
+                "result = obb.empty.empty_function()",
             ],
         ),
     ],

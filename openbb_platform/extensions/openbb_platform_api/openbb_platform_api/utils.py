@@ -5,7 +5,7 @@ from typing import Dict, List
 
 def get_query_schema_for_widget(  # noqa: PLR0912
     openapi_json: dict, command_route: str
-) -> tuple[dict, bool]:
+) -> tuple[list, bool]:
     """Extract the query schema for a widget.
 
     Does that based on operationId, with special handling for certain parameters like
