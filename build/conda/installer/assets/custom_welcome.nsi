@@ -23,7 +23,7 @@ Function muiExtraPagesAfterWelcome_Create
         "Welcome to OpenBB Platform Installer"
 
     nsDialogs::Create /NOUNLOAD 1018
-    ${NSD_CreateLabel} 10u 10u 280u 120u "Welcome to the OpenBB Platform Installer.$\r$\n$\r$\nThis application will install the latest version of the OpenBB Platform on your computer as a self-contained, Python 3.12, Conda environment.$\r$\n$\r$\nInstallation requires between 1-2 GB of storage space, with a minimum of 4GB RAM.$\r$\n$\r$\nIn order to install you need access to the Internet.$\r$\n$\r$\nThe selected installation path requires a depth of two - i.e, User/MyUserAccount/OpenBB/conda, where OpenBB is the target folder, and conda is the name of the folder where Conda and the installed environments live. The path, including username, should not contain any spaces."
+    ${NSD_CreateLabel} 10u 10u 280u 120u "Welcome to the OpenBB Platform Installer.$\r$\n$\r$\nThis application will install the latest version of the OpenBB Platform on your computer as a self-contained, Python 3.12, Conda environment.$\r$\n$\r$\nIn order to install you need access to the Internet.$\r$\n$\r$\nInstallation requires between 1-2 GB of storage space, with a minimum of 4GB RAM.$\r$\n$\r$\nWhen a non-default installation path is chosen, it requires a depth of two - i.e, User/MyUserAccount/OpenBB/conda, where OpenBB is the target folder, and conda is the name of the folder where Conda and the installed environments live. The path, including username, should not contain any spaces."
     Pop $IntroAfterWelcomeText
 
     nsDialogs::CreateControl STATIC ${WS_VISIBLE}|${WS_CHILD}|${WS_CLIPSIBLINGS}|${SS_BITMAP}|${SS_REALSIZECONTROL} 0 10u 90u 280u 40u ""
