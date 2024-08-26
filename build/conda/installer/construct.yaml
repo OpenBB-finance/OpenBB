@@ -83,6 +83,7 @@ extra_files:
   - ./assets/examples/empty_obbject/pyproject.toml: ../extensions/examples/empty_obbject/pyproject.toml
   - ./assets/examples/empty_obbject/README.md: ../extensions/examples/empty_obbject/README.md
   - ./assets/examples/empty_obbject/empty_obbject/__init__.py: ../extensions/examples/empty_obbject/empty_obbject/__init__.py
+  - ./assets/examples/python_basics.ipynb: ../notebooks/python_basics.ipynb
 
 icon_image: ../openbb_icon.icns  # [osx]
 icon_image: ./assets/openbb_icon.ico  # [win]

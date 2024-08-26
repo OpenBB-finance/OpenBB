@@ -59,10 +59,11 @@ There are several command line entry points available when either:
 
 ## Installed Folder Structure
 
-At the root of the installation (where this document is), there will be two folders:
+At the root of the installation (where this document is), there will be three folders:
 
 - conda (Windows: This is named after the last folder path if the default was not used)
 - extensions
+- notebooks
 
 ### Conda
 
@@ -71,6 +72,10 @@ This is the folder where Conda is installed and all environment data (site-packa
 ### Extensions
 
 This folder contains two subfolders:
+
+### Notebooks
+
+This folder contains tutorial notebooks with examples for getting started with Python. They can be opened by launching the `openbb-notebook` shortcut.
 
 #### examples
 
