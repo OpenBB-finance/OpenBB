@@ -167,9 +167,9 @@ class Fetcher(Generic[Q, R]):
         if is_list:
             assert all(
                 field in data[0]
-                for field in cls.data_type.__fields__
+                for field in cls.data_type.model_fields
                 if field in data[0]
-            ), f"Data must have the correct fields. Expected: {cls.data_type.__fields__} Got: {data[0].__dict__}"
+            ), f"Data must have the correct fields. Expected: {cls.data_type.model_fields} Got: {data[0].__dict__}"
             # This makes sure that the data is not transformed yet so that the
             # pipeline is implemented correctly. We can remove this assertion if we
             # want to be less strict.
@@ -178,8 +178,8 @@ class Fetcher(Generic[Q, R]):
             ), f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data[0])}"
         else:
             assert all(
-                field in data for field in cls.data_type.__fields__ if field in data
-            ), f"Data must have the correct fields. Expected: {cls.data_type.__fields__} Got: {data.__dict__}"
+                field in data for field in cls.data_type.model_fields if field in data
+            ), f"Data must have the correct fields. Expected: {cls.data_type.model_fields} Got: {data.__dict__}"
             assert (
                 issubclass(type(data), cls.data_type) is False
             ), f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data)}"
@@ -200,10 +200,12 @@ class Fetcher(Generic[Q, R]):
                 and return_type_args.__origin__ is dict
             )
             if return_type_is_dict:
-                return_type_fields = return_type_args.__args__[1].__args__[0].__fields__
+                return_type_fields = (
+                    return_type_args.__args__[1].__args__[0].model_fields
+                )
                 return_type = return_type_args.__args__[1].__args__[0]
             else:
-                return_type_fields = return_type_args.__fields__
+                return_type_fields = return_type_args.model_fields
                 return_type = return_type_args
 
             assert len(transformed_data) > 0, "Transformed data must not be empty."  # type: ignore
@@ -220,8 +222,8 @@ class Fetcher(Generic[Q, R]):
         else:
             assert all(
                 field in transformed_data.__dict__
-                for field in cls.return_type.__fields__
-            ), f"Transformed data must have the correct fields. Expected: {cls.return_type.__fields__} Got: {transformed_data.__dict__}"
+                for field in cls.return_type.model_fields
+            ), f"Transformed data must have the correct fields. Expected: {cls.return_type.model_fields} Got: {transformed_data.__dict__}"
             assert issubclass(
                 type(transformed_data), cls.data_type
             ), f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data)}"

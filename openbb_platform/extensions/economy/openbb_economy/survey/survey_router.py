@@ -17,6 +17,51 @@ router = Router(prefix="/survey")
 
 
 @router.command(
+    model="BlsSeries",
+    examples=[
+        APIEx(parameters={"provider": "bls", "symbol": "CES0000000001"}),
+    ],
+)
+async def bls_series(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get time series data for one, or more, BLS series IDs."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="BlsSearch",
+    examples=[
+        APIEx(
+            parameters={
+                "provider": "bls",
+                "category": "cpi",
+            }
+        ),
+        APIEx(
+            description="Use semi-colon to separate multiple queries as an & operator.",
+            parameters={
+                "provider": "bls",
+                "category": "cpi",
+                "query": "seattle;gasoline",
+            },
+        ),
+    ],
+)
+async def bls_search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Search BLS surveys by category and keyword or phrase to identify BLS series IDs."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="SeniorLoanOfficerSurvey",
     examples=[
         APIEx(parameters={"provider": "fred"}),
