@@ -8848,6 +8848,111 @@
             },
             "model": "PersonalConsumptionExpenditures"
         },
+        "/economy/export_destinations": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get top export destinations by country from the UN Comtrade International Trade Statistics Database.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.export_destinations(provider='econdb', country='us')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): econdb.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ExportDestinations]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "origin_country",
+                        "type": "str",
+                        "description": "The country of origin.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "destination_country",
+                        "type": "str",
+                        "description": "The destination country.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[float, int]",
+                        "description": "The value of the export.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "units",
+                        "type": "str",
+                        "description": "The units of measurement for the value.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "The title of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "footnote",
+                        "type": "str",
+                        "description": "The footnote for the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "ExportDestinations"
+        },
         "/equity/calendar/ipo": {
             "deprecated": {
                 "flag": null,
