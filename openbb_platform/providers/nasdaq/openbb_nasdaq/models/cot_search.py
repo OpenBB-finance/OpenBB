@@ -43,6 +43,7 @@ class NasdaqCotSearchFetcher(
     ) -> List[Dict]:
         """Search a curated list of CFTC Commitment of Traders Reports."""
         # pylint: disable=import-outside-toplevel
+        from warnings import warn  # noqa
         from pandas import DataFrame
 
         # TODO: Remove this warning when removing from the fetcher_dict.

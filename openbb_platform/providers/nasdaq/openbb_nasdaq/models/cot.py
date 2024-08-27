@@ -103,8 +103,9 @@ class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
         """Extract the data from the Nasdaq Data Link API."""
         # pylint: disable=import-outside-toplevel
         import nasdaqdatalink  # noqa
-        from pandas import DataFrame  # noqa
-        from openbb_core.provider.utils.helpers import to_snake_case  # noqa
+        from warnings import warn
+        from pandas import DataFrame
+        from openbb_core.provider.utils.helpers import to_snake_case
 
         # TODO: Remove this warning when removing from the fetcher_dict.
         warn(
