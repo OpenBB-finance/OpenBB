@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://publicreporting.cftc.gov/resource/jun7-fc8e.json?%24%24app_token=MOCK_APP_TOKEN&%24limit=MOCK_LIMIT&%24order=MOCK_ORDER&%24where=MOCK_WHERE
+    uri: https://publicreporting.cftc.gov/resource/jun7-fc8e.json?%24limit=MOCK_LIMIT&%24order=MOCK_ORDER&%24where=MOCK_WHERE
   response:
     body:
       string: !!binary |
@@ -43,7 +43,7 @@ interactions:
       Content-Type:
       - application/json;charset=utf-8
       Date:
-      - Tue, 27 Aug 2024 06:13:46 GMT
+      - Tue, 27 Aug 2024 06:27:59 GMT
       Etag:
       - '"aG90ZWwuNTEzMDVfM18yODJtVzlSN0o5WVlrTFhDbnYyakxHb3Z1NTJCcHc---gzipn8hfNknVynA7XV4li5cBTkJ7u_Q--gzip--gzip"'
       Last-Modified:
@@ -69,7 +69,7 @@ interactions:
       X-Socrata-Region:
       - aws-us-east-1-fedramp-prod
       X-Socrata-RequestId:
-      - 7d8ecee5f138bd2bc7e4482c15d1be05
+      - 4223a5a28d93ad5780819953fa087052
     status:
       code: 200
       message: OK

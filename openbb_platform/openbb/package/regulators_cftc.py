@@ -180,7 +180,7 @@ class ROUTER_regulators_cftc(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Current Commitment of Traders Reports.
+        """Get the current Commitment of Traders Reports.
 
         Search a list of the current Commitment of Traders Reports series information.
 

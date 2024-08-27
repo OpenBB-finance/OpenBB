@@ -248,6 +248,8 @@ class ROUTER_regulators_sec(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         url : Optional[str]
             Enter an optional URL path to fetch the next level. (provider: sec)
+        use_cache : Optional[bool]
+            Whether or not to use cache. (provider: sec)
 
         Returns
         -------
@@ -330,6 +332,8 @@ class ROUTER_regulators_sec(Container):
             Search query.
         provider : Optional[Literal['sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
+        use_cache : Optional[bool]
+            Whether or not to use cache. (provider: sec)
 
         Returns
         -------

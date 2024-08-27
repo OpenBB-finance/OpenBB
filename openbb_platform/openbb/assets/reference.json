@@ -36680,6 +36680,14 @@
                         "default": null,
                         "optional": true,
                         "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether or not to use cache.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
                     }
                 ]
             },
@@ -36904,7 +36912,16 @@
                         "choices": null
                     }
                 ],
-                "sec": []
+                "sec": [
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether or not to use cache.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -36971,7 +36988,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Current Commitment of Traders Reports.\n\nSearch a list of the current Commitment of Traders Reports series information.",
+            "description": "Get the current Commitment of Traders Reports.\n\nSearch a list of the current Commitment of Traders Reports series information.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.cftc.cot_search(provider='cftc')\nobb.regulators.cftc.cot_search(query='gold', provider='cftc')\n```\n\n",
             "parameters": {
                 "standard": [
