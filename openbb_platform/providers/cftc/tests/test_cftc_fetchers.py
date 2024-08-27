@@ -19,6 +19,9 @@ def vcr_config():
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
             ("$$app_token", "MOCK_APP_TOKEN"),
+            ("$limit", "MOCK_LIMIT"),
+            ("$order", "MOCK_ORDER"),
+            ("$where", "MOCK_WHERE"),
         ],
     }
 
