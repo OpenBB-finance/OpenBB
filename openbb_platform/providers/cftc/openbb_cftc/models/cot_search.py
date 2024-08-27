@@ -54,11 +54,9 @@ class CftcCotSearchFetcher(Fetcher[CftcCotSearchQueryParams, List[CftcCotSearchD
         from pathlib import Path
         from pandas import read_json
 
-        assets_path = Path(
-            files("openbb_cftc").joinpath("assets").joinpath("cot_ids.json")
-        )
+        assets_path = Path(str(files("openbb_cftc").joinpath("assets")))
 
-        with open(assets_path, encoding="utf-8") as f:
+        with open(assets_path.joinpath("cot_ids.json"), encoding="utf-8") as f:
             available_cot = read_json(f)
 
         query_string = query.query  # noqa

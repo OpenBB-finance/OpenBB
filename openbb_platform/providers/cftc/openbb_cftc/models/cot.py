@@ -147,7 +147,7 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, List[CftcCotData]]):
         if not response:
             raise EmptyDataError(f"No data found for {query.id.replace('%', '')}.")
 
-        return response
+        return response  # type: ignore
 
     @staticmethod
     def transform_data(
@@ -184,7 +184,7 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, List[CftcCotData]]):
                 if key in string_cols and value:
                     new_values[key] = str(value)
                 elif key == "report_date_as_yyyy_mm_dd":
-                    new_values["report_date_as_yyyy_mm_dd"] = values.split("T")[0]
+                    new_values["report_date_as_yyyy_mm_dd"] = value.split("T")[0]
                 elif key.startswith("pct_") and value:
                     new_values[key.replace("__", "_")] = float(value) / 100
                 elif key.startswith("conc_") and value:
