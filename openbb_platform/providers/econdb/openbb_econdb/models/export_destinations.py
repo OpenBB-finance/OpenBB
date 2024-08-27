@@ -85,7 +85,7 @@ class EconDbExportDestinationsFetcher(
                 messages.append(f"No data available for the country -> {c}")
                 return
 
-            plots = res.get("plots", [])
+            plots = res.get("plots", [])  # type: ignore
             data = plots[0].pop("data", []) if plots else []
             meta = plots[0] if plots else {}
 
