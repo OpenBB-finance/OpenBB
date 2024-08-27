@@ -106,6 +106,13 @@ class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
         from pandas import DataFrame  # noqa
         from openbb_core.provider.utils.helpers import to_snake_case  # noqa
 
+        # TODO: Remove this warning when removing from the fetcher_dict.
+        warn(
+            "This data set is no longer updated. Install `openbb-cftc` for replacement source of the same data."
+            + " This provider fetcher will be removed in a future version.",
+            category=FutureWarning,
+        )
+
         api_key = credentials.get("nasdaq_api_key") if credentials else ""
 
         # The "code" can be an exact name, a symbol, or a CFTC series code.

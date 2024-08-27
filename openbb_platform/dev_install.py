@@ -23,6 +23,7 @@ openbb-core = { path = "./core", develop = true }
 
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
 openbb-bls = { path = "./providers/bls", develop = true }
+openbb-cftc = { path = "./providers/cftc", develop = true }
 openbb-econdb = { path = "./providers/econdb", develop = true }
 openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }

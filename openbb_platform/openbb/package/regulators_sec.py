@@ -94,9 +94,6 @@ class ROUTER_regulators_sec(Container):
     def institutions_search(
         self,
         query: Annotated[str, OpenBBField(description="Search query.")] = "",
-        use_cache: Annotated[
-            Optional[bool], OpenBBField(description="Whether or not to use cache.")
-        ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
             OpenBBField(
@@ -111,10 +108,10 @@ class ROUTER_regulators_sec(Container):
         ----------
         query : str
             Search query.
-        use_cache : Optional[bool]
-            Whether or not to use cache.
         provider : Optional[Literal['sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
+        use_cache : Optional[bool]
+            Whether or not to use cache. (provider: sec)
 
         Returns
         -------
@@ -156,7 +153,6 @@ class ROUTER_regulators_sec(Container):
                 },
                 standard_params={
                     "query": query,
-                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )
@@ -234,9 +230,6 @@ class ROUTER_regulators_sec(Container):
     def schema_files(
         self,
         query: Annotated[str, OpenBBField(description="Search query.")] = "",
-        use_cache: Annotated[
-            Optional[bool], OpenBBField(description="Whether or not to use cache.")
-        ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
             OpenBBField(
@@ -251,8 +244,6 @@ class ROUTER_regulators_sec(Container):
         ----------
         query : str
             Search query.
-        use_cache : Optional[bool]
-            Whether or not to use cache.
         provider : Optional[Literal['sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         url : Optional[str]
@@ -313,7 +304,6 @@ class ROUTER_regulators_sec(Container):
                 },
                 standard_params={
                     "query": query,
-                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )
@@ -324,9 +314,6 @@ class ROUTER_regulators_sec(Container):
     def sic_search(
         self,
         query: Annotated[str, OpenBBField(description="Search query.")] = "",
-        use_cache: Annotated[
-            Optional[bool], OpenBBField(description="Whether or not to use cache.")
-        ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
             OpenBBField(
@@ -341,8 +328,6 @@ class ROUTER_regulators_sec(Container):
         ----------
         query : str
             Search query.
-        use_cache : Optional[bool]
-            Whether or not to use cache.
         provider : Optional[Literal['sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
 
@@ -388,7 +373,6 @@ class ROUTER_regulators_sec(Container):
                 },
                 standard_params={
                     "query": query,
-                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )
