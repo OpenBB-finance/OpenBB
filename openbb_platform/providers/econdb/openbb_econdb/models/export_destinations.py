@@ -1,6 +1,6 @@
 """EconDB Export Destinations Model."""
 
-# pylint: disable-unused-argument
+# pylint: disable=unused-argument
 
 from typing import Any, Dict, List, Optional
 from warnings import warn
