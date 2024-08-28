@@ -139,7 +139,7 @@ class EconDbExportDestinationsFetcher(
                     f"No data returned for the given country -> {countries}"
                 )
             )
-        elif messages:
+        if messages:
             for message in messages:
                 warn(message)
 
