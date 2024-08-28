@@ -71,9 +71,15 @@ def get_user_settings(login: bool):
             Hub = HubService()
             _ = Hub.connect(pat=pat)
             hub_settings = Hub.pull()
-            hub_credentials = json.loads(hub_settings.credentials.model_dump_json())
-            hub_preferences = json.loads(hub_settings.preferences.model_dump_json())
-            hub_defaults = json.loads(hub_settings.defaults.model_dump_json())
+            hub_credentials = json.loads(
+                hub_settings.credentials.model_dump_json()  # pylint: disable=no-member
+            )
+            hub_preferences = json.loads(
+                hub_settings.preferences.model_dump_json()  # pylint: disable=no-member
+            )
+            hub_defaults = json.loads(
+                hub_settings.defaults.model_dump_json()  # pylint: disable=no-member
+            )
         except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"\n\nError connecting with Hub:\n{e}\n\nUsing the local settings.\n")
 
@@ -141,7 +147,6 @@ def get_user_settings(login: bool):
 
 def build_json(openapi):
     """Build the widgets.json file."""
-
     # We need to import the utils module as a dynamic relative import.
     script_dir = os.path.dirname(os.path.abspath(__file__))
     utils_path = os.path.join(script_dir, "utils.py")
@@ -229,7 +234,7 @@ def build_json(openapi):
             [(word.upper() if word in to_caps else word) for word in name.split()]
         )
         widget_config = {
-            "name": name + " (OpenBB API)",
+            "name": name + " (OpenBB Platform API)",
             "description": route_api["get"]["description"],
             "category": category,
             "searchCategory": category,
@@ -256,6 +261,7 @@ def build_json(openapi):
             )
             widget_config["subCategory"] = subcat
 
+        # TODO: Add columnsDefs to the widget_config once there is support for not displaying empty columns.
         # if columns_defs:
         #    widget_config["data"]["table"]["columnsDefs"] = columns_defs
         #    if "date" in columns_defs:
@@ -269,7 +275,7 @@ def build_json(openapi):
         if has_chart:
             widget_config_chart = deepcopy(widget_config)
             widget_config_chart["name"] = (
-                f"{widget_config_chart['name'].replace(' (OpenBB API)', '')} Chart (OpenBB API)"
+                f"{widget_config_chart['name'].replace(' (OpenBB Platform API)', '')} Chart (OpenBB Platform API)"
             )
             widget_config_chart["widgetId"] = f"{widget_config_chart['widgetId']}_chart"
             widget_config_chart["params"].append(
@@ -343,7 +349,6 @@ def get_widgets_json(build: bool, openapi):
 
 def main():
     """Entry point for the main script."""
-
     args = sys.argv[1:].copy()
     kwargs: Dict = {}
     for i in range(len(args)):  # pylint: disable=C0200
