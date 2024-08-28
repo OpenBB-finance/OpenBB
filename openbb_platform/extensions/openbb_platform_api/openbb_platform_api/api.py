@@ -118,10 +118,10 @@ def get_user_settings(login: bool):
         if hub_credentials:
             for k, v in hub_credentials.items():
                 if v:
-                    new_settings["credentials"][k] = v
+                    new_settings["credentials"][k] = v.strip('"').strip("'")
 
         if hub_preferences:
-            for k, v in hub_credentials.items():
+            for k, v in hub_preferences.items():
                 if v:
                     new_settings["preferences"][k] = v
 

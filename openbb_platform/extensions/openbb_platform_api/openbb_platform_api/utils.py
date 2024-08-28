@@ -140,9 +140,11 @@ def get_query_schema_for_widget(
         p["value"] = param["schema"].get("default", None)
         p_type = param["schema"].get("type") if not p.get("type") else p.get("type")
 
-        if p_type == "string" or multiple_items_allowed:
+        if p_type == "string":
             p["type"] = "text"
-            p["multiple_items_allowed"] = multiple_items_allowed is True
+
+        if multiple_items_allowed:
+            p["multiSelect"] = multiple_items_allowed is True
 
         if p_type in ("float", "integer") or isinstance(p.get("value"), (int, float)):
             p["type"] = "number"
