@@ -13,6 +13,7 @@ openbb-core = "^1.3.1"
 
 openbb-benzinga = "^1.3.1"
 openbb-bls = "^1.0.0b"
+openbb-cftc = "^1.0.0b"
 openbb-econdb = "^1.2.1"
 openbb-federal-reserve = "^1.3.1"
 openbb-fmp = "^1.3.1"

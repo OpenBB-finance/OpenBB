@@ -138,7 +138,7 @@ async def amake_request(
     )
 
     with_session = kwargs.pop("with_session", "session" in kwargs)
-    session: ClientSession = kwargs.pop("session", ClientSession())
+    session: ClientSession = kwargs.pop("session", ClientSession(trust_env=True))
 
     try:
         response = await session.request(method, url, **kwargs)
@@ -175,7 +175,7 @@ async def amake_requests(
     Union[dict, List[dict]]
         Response json
     """
-    session: ClientSession = kwargs.pop("session", ClientSession())
+    session: ClientSession = kwargs.pop("session", ClientSession(trust_env=True))
     kwargs["response_callback"] = response_callback
 
     urls = urls if isinstance(urls, list) else [urls]
