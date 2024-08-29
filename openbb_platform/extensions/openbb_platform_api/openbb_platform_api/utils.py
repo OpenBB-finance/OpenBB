@@ -64,6 +64,12 @@ def get_query_schema_for_widget(
             route_params.append(p)
             continue
 
+        if param_name in ["symbol", "series_id", "release_id"]:
+            p["type"] = "text"
+            p["label"] = param_name.title().replace("_", " ").replace("Id", "ID")
+            route_params.append(p)
+            continue
+
         if p["optional"]:
             p["value"] = None
 
