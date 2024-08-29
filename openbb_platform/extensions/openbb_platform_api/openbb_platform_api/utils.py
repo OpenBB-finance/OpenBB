@@ -143,9 +143,6 @@ def get_query_schema_for_widget(
         if p_type == "string":
             p["type"] = "text"
 
-        if multiple_items_allowed:
-            p["multiSelect"] = multiple_items_allowed is True
-
         if p_type in ("float", "integer") or isinstance(p.get("value"), (int, float)):
             p["type"] = "number"
 
@@ -163,7 +160,9 @@ def get_query_schema_for_widget(
 
         if p.get("type") in ("array", "list") or isinstance(p.get("type"), list):
             p["type"] = "text"
-            p["multiple_items_allowed"] = True
+
+        if multiple_items_allowed is True:
+            p["multiSelect"] = True
 
         p["show"] = True
         route_params.append(p)
