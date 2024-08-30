@@ -49,13 +49,46 @@ There are several command line entry points available when either:
   - All args/kwargs available to `uvicorn run` are exposed.
   - `--login`: True/False. Defeats the login prompt when False.
   - `--no-build`: Skips building "widgets.json"
-  - To launch the API with no input prompts enter: `openbb-api --login False --no-build
 - openbb-build: Runs the build script that generates the static assets for the OpenBB Python interface.
   - Run this after installing/uninstalling/updating OpenBB extensions
   - Automatically run when `openbb-update` is run.
 - openbb-update: Updates the environment packages defined in `pyproject.toml` and `poetry.lock` and rebuilds the OpenBB Python interface.
   - Location of Poetry files: "/extensions/openbb_platform_installer"
   - Passes all args/kwargs to `poetry install`.
+
+### Starting The OpenBB Platform API With Optional Arguments
+
+1. Open the `Bash` (`CMD` on Windows) shortcut.
+2. Activate the `obb` environment
+  - Unix: `source activate obb`
+  - Windows: `conda activate obb`
+3. Run `openbb-api` with `--parameter value` to add any `uvicorn.run` parameter.
+
+### OpenBB Platform API Over HTTPS
+
+To run the API over the HTTPS protocol, you must first create a self-signed certificate and the associated key. After steps 1 & 2 above, you can generate the files by entering this to the command line:
+
+```sh
+openssl req -x509 -days 3650 -out localhost.crt -keyout localhost.key   -newkey rsa:4096 -nodes -sha256   -subj '/CN=localhost' -extensions EXT -config <( \
+   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+```
+
+Two files will be created, in the current working directory, that are passed as keyword arguments to the `openbb-api` entry point.
+
+```sh
+openbb-api --ssl_keyfile localhost.key --ssl_certfile localhost.crt
+```
+
+**Note**: Adjust the command to include the full path to the file if the current working directory is not where they are located.
+
+
+The certificate - `localhost.crt` - will need to be added to system's trust store. The process for this will depend on the operating system and the user account privilege.
+
+A quick solution is to visit the server's URL, show the details of the warning, and choose to continue anyways.
+
+Contact the system administrator if you are using a work device and require additional permissions to complete the configuration.
+
+![This Connection Is Not Private](https://in.norton.com/content/dam/blogs/images/norton/am/this_connection_not_is_private.png)
 
 ## Installed Folder Structure
 
