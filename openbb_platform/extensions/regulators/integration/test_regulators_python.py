@@ -127,7 +127,8 @@ def test_regulators_sec_sic_search(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "grain", "provider": "nasdaq", "use_cache": None}),
+        ({"query": "grain", "provider": "nasdaq"}),
+        ({"query": "grain", "provider": "cftc"}),
     ],
 )
 @pytest.mark.integration
@@ -154,6 +155,16 @@ def test_regulators_cftc_cot_search(params, obb):
                 "transform": "diff",
                 "collapse": "weekly",
                 "provider": "nasdaq",
+            }
+        ),
+        (
+            {
+                "id": "13874P",
+                "report_type": "legacy",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "futures_only": False,
+                "provider": "cftc",
             }
         ),
     ],

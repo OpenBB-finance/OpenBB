@@ -43,7 +43,15 @@ class NasdaqCotSearchFetcher(
     ) -> List[Dict]:
         """Search a curated list of CFTC Commitment of Traders Reports."""
         # pylint: disable=import-outside-toplevel
+        from warnings import warn  # noqa
         from pandas import DataFrame
+
+        # TODO: Remove this warning when removing from the fetcher_dict.
+        warn(
+            "This data set is no longer updated. Install `openbb-cftc` for replacement source of the same data."
+            + " This provider fetcher will be removed in a future version.",
+            category=FutureWarning,
+        )
 
         query_string = query.query  # noqa
         available_cot = DataFrame(CFTC).transpose()

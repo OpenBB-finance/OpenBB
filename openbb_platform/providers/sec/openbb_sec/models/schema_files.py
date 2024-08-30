@@ -20,6 +20,10 @@ class SecSchemaFilesQueryParams(CotSearchQueryParams):
     url: Optional[str] = Field(
         description="Enter an optional URL path to fetch the next level.", default=None
     )
+    use_cache: Optional[bool] = Field(
+        default=True,
+        description="Whether or not to use cache.",
+    )
 
 
 class SecSchemaFilesData(Data):
