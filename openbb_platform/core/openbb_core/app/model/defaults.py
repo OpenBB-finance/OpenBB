@@ -32,12 +32,11 @@ class Defaults(BaseModel):
         if "routes" in values:
             if not values.get("routes"):
                 del values["routes"]
-            else:
+            show_warnings = values.get("preferences", {}).get("show_warnings")
+            if show_warnings is False or show_warnings in ["False", "false"]:
                 warn(
                     message="The 'routes' key is deprecated within 'defaults' of 'user_settings.json'."
-                    + " Suppress this warning by updating the key to 'commands'."
-                    + " Prevent all warnings from displaying in the console by setting 'show_warnings' to 'false' in"
-                    + " the 'preferences' section of 'user_settings.json'.",
+                    + " Suppress this warning by updating the key to 'commands'.",
                     category=OpenBBWarning,
                 )
                 key = "routes"
