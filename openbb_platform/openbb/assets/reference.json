@@ -22283,8 +22283,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Get the revenue geographic breakdown for a given company over time.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', period='annual', structure='flat', provider='fmp')\n```\n\n",
+            "description": "Get the geographic breakdown of revenue for a given company over time.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', period=quarter, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -22294,25 +22294,21 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
+                    }
+                ],
+                "fmp": [
                     {
                         "name": "period",
                         "type": "Literal['quarter', 'annual']",
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "structure",
-                        "type": "Literal['hierarchical', 'flat']",
-                        "description": "Structure of the returned data.",
-                        "default": "flat",
-                        "optional": true,
-                        "choices": null
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
                     }
-                ],
-                "fmp": []
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -22378,9 +22374,17 @@
                         "choices": null
                     },
                     {
-                        "name": "geographic_segment",
-                        "type": "int",
-                        "description": "Dictionary of the revenue by geographic segment.",
+                        "name": "region",
+                        "type": "str",
+                        "description": "The region represented by the revenue data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "revenue",
+                        "type": "Union[int, float]",
+                        "description": "The total revenue attributed to the region.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -22396,7 +22400,7 @@
                 "message": null
             },
             "description": "Get the revenue breakdown by business segment for a given company over time.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', period='annual', structure='flat', provider='fmp')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', period=quarter, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -22406,25 +22410,21 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
+                    }
+                ],
+                "fmp": [
                     {
                         "name": "period",
                         "type": "Literal['quarter', 'annual']",
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "structure",
-                        "type": "Literal['hierarchical', 'flat']",
-                        "description": "Structure of the returned data.",
-                        "default": "flat",
-                        "optional": true,
-                        "choices": null
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
                     }
-                ],
-                "fmp": []
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -22491,8 +22491,16 @@
                     },
                     {
                         "name": "business_line",
-                        "type": "int",
-                        "description": "Dictionary containing the revenue of the business line.",
+                        "type": "str",
+                        "description": "The business line represented by the revenue data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "revenue",
+                        "type": "Union[int, float]",
+                        "description": "The total revenue attributed to the business line.",
                         "default": "",
                         "optional": false,
                         "choices": null

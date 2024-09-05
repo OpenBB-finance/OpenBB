@@ -818,7 +818,6 @@ def test_equity_fundamental_ratios(params, obb):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "structure": "flat",
                 "provider": "fmp",
             }
         ),
@@ -840,7 +839,6 @@ def test_equity_fundamental_revenue_per_geography(params, obb):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "structure": "flat",
                 "provider": "fmp",
             }
         ),
