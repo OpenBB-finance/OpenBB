@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "openbb_platform_api"
+name = "openbb-platform-api"
 version = "1.0.0"
 description = "OpenBB Platform API: Launch script and widgets builder for the OpenBB Platform API and Terminal Pro Connector."
 authors = ["OpenBB <hello@openbb.co>"]
