@@ -12,13 +12,13 @@
 
 The OpenBB Platform CLI is a command line interface that wraps [OpenBB Platform](https://docs.openbb.co/platform).
 
-It offers a convenient way to interact with the OpenBB Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
+It offers a convenient way to interact with the OpenBB Platform and its extensions, as well as automated data collection via OpenBB Routine Scripts.
 
 Find the most complete documentation, examples, and usage guides for the OpenBB Platform CLI [here](https://docs.openbb.co/cli).
 
 ## Installation
 
-The command below provides access to the all the available OpenBB extensions behind the OpenBB Platform, find the complete list [here](https://my.openbb.co/app/platform/extensions).
+The command below provides access to all the available OpenBB extensions behind the OpenBB Platform, find the complete list [here](https://my.openbb.co/app/platform/extensions).
 
 ```bash
 pip install openbb-cli

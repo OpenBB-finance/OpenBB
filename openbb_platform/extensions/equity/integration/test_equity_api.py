@@ -1391,7 +1391,7 @@ def test_equity_fundamental_latest_attributes(params, headers):
     [
         ({"query": "AAPl", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
-        ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
+        ({"query": "", "provider": "nasdaq", "is_etf": True}),
         ({"query": "gold", "provider": "tmx", "use_cache": False}),
         ({"query": "gold", "provider": "tradier", "is_symbol": False}),
         (
@@ -1400,7 +1400,6 @@ def test_equity_fundamental_latest_attributes(params, headers):
                 "provider": "intrinio",
                 "active": True,
                 "limit": 100,
-                "use_cache": None,
             }
         ),
     ],
