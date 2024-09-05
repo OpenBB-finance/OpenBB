@@ -10,3 +10,4 @@ This is a sample how to  invoke OBB fetchers in an Apache Beam pipeline. (GCP da
 
 # The script will run a pipeline consisting of 3 task which will fetch AAPL quote, profile and news
 # This is just a very basic sample which can be used as building block to create more complex scenarios
+
