@@ -3230,14 +3230,6 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_geography(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBField(description="Time period of the data to return."),
-        ] = "annual",
-        structure: Annotated[
-            Literal["hierarchical", "flat"],
-            OpenBBField(description="Structure of the returned data."),
-        ] = "flat",
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
@@ -3246,18 +3238,16 @@ class ROUTER_equity_fundamental(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get the revenue geographic breakdown for a given company over time.
+        """Get the geographic breakdown of revenue for a given company over time.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['quarter', 'annual']
-            Time period of the data to return.
-        structure : Literal['hierarchical', 'flat']
-            Structure of the returned data.
         provider : Optional[Literal['fmp']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        period : Literal['quarter', 'annual']
+            Time period of the data to return. (provider: fmp)
 
         Returns
         -------
@@ -3283,14 +3273,16 @@ class ROUTER_equity_fundamental(Container):
             The fiscal year of the reporting period.
         filing_date : Optional[date]
             The filing date of the report.
-        geographic_segment : int
-            Dictionary of the revenue by geographic segment.
+        region : Optional[str]
+            The region represented by the revenue data.
+        revenue : Union[int, float]
+            The total revenue attributed to the region.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.equity.fundamental.revenue_per_geography(symbol='AAPL', provider='fmp')
-        >>> obb.equity.fundamental.revenue_per_geography(symbol='AAPL', period='annual', structure='flat', provider='fmp')
+        >>> obb.equity.fundamental.revenue_per_geography(symbol='AAPL', period='quarter', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -3305,10 +3297,16 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
-                    "structure": structure,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["quarter", "annual"],
+                        }
+                    }
+                },
             )
         )
 
@@ -3317,14 +3315,6 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_segment(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBField(description="Time period of the data to return."),
-        ] = "annual",
-        structure: Annotated[
-            Literal["hierarchical", "flat"],
-            OpenBBField(description="Structure of the returned data."),
-        ] = "flat",
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
@@ -3339,12 +3329,10 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['quarter', 'annual']
-            Time period of the data to return.
-        structure : Literal['hierarchical', 'flat']
-            Structure of the returned data.
         provider : Optional[Literal['fmp']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        period : Literal['quarter', 'annual']
+            Time period of the data to return. (provider: fmp)
 
         Returns
         -------
@@ -3370,14 +3358,16 @@ class ROUTER_equity_fundamental(Container):
             The fiscal year of the reporting period.
         filing_date : Optional[date]
             The filing date of the report.
-        business_line : int
-            Dictionary containing the revenue of the business line.
+        business_line : Optional[str]
+            The business line represented by the revenue data.
+        revenue : Union[int, float]
+            The total revenue attributed to the business line.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.equity.fundamental.revenue_per_segment(symbol='AAPL', provider='fmp')
-        >>> obb.equity.fundamental.revenue_per_segment(symbol='AAPL', period='annual', structure='flat', provider='fmp')
+        >>> obb.equity.fundamental.revenue_per_segment(symbol='AAPL', period='quarter', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -3392,10 +3382,16 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
-                    "structure": structure,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["quarter", "annual"],
+                        }
+                    }
+                },
             )
         )
 
