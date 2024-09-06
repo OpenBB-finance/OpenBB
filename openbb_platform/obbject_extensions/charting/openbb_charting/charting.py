@@ -561,8 +561,7 @@ class Charting:
                 return ", ".join(
                     str(", ".join([str(v) for v in i.values()])) for i in x
                 )
-            else:
-                return ", ".join([str(i) for i in x])
+            return ", ".join([str(i) for i in x])
 
         return (
             str(x)
