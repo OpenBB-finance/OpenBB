@@ -7,6 +7,7 @@ from openbb_core.provider.standard_models.calendar_ipo import (
     CalendarIpoData,
     CalendarIpoQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_intrinio.utils.references import IntrinioCompany, IntrinioSecurity
@@ -185,4 +186,6 @@ class IntrinioCalendarIpoFetcher(
         query: IntrinioCalendarIpoQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioCalendarIpoData]:
         """Return the transformed data."""
+        if not data:
+            raise EmptyDataError("The request was returned empty.")
         return [IntrinioCalendarIpoData.model_validate(d) for d in data]
