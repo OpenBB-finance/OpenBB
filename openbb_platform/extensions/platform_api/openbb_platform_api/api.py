@@ -1,4 +1,4 @@
-"""Generate and serve the widgets.json for the OpenBB Platform API."""
+"""Serve the OpenBB Platform API and widgets.json."""
 
 # pylint: disable=unused-variable,too-many-statements,too-many-locals,too-many-branches,too-many-nested-blocks
 # flake8: noqa: T201
@@ -8,7 +8,6 @@ import json
 import os
 import socket
 import sys
-from copy import deepcopy
 from pathlib import Path
 from typing import Dict
 
@@ -24,8 +23,19 @@ USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backu
 
 FIRST_RUN = True
 
+# We need to import the widgets_utils module as a dynamic relative import.
+script_dir = os.path.dirname(os.path.abspath(__file__))
+widgets_utils_path = os.path.join(script_dir, "widgets_utils.py")
+spec = importlib.util.spec_from_file_location(
+    "widgets_utils", widgets_utils_path
+)  # type: ignore
+widgets_utils = importlib.util.module_from_spec(spec)  # type: ignore
+spec.loader.exec_module(widgets_utils)  # type: ignore
 
-def check_port(host, port) -> int:
+build_json = widgets_utils.build_json
+
+
+def check_port(host, port):
     """Check if the port number is free."""
     not_free = True
     port = int(port) - 1
@@ -143,233 +153,6 @@ def get_user_settings(login: bool):
         current_settings = new_settings
 
     return current_settings
-
-
-def build_json(openapi):
-    """Build the widgets.json file."""
-    # We need to import the utils module as a dynamic relative import.
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    utils_path = os.path.join(script_dir, "utils.py")
-    spec = importlib.util.spec_from_file_location("utils", utils_path)  # type: ignore
-    utils = importlib.util.module_from_spec(spec)  # type: ignore
-    spec.loader.exec_module(utils)  # type: ignore
-
-    # Assign the required functions from the utils module
-    data_schema_to_columns_defs = utils.data_schema_to_columns_defs
-    get_data_schema_for_widget = utils.get_data_schema_for_widget
-    get_query_schema_for_widget = utils.get_query_schema_for_widget
-
-    widgets_json: Dict = {}
-    routes = [
-        p
-        for p in openapi["paths"]
-        if p.startswith("/api") and "get" in openapi["paths"][p]
-    ]
-    for route in routes:
-        route_api = openapi["paths"][route]
-        method = list(route_api)[0]
-        widget_id = route_api[method]["operationId"]
-
-        # Prepare the query schema of the widget
-        query_schema, has_chart = get_query_schema_for_widget(openapi, route)
-
-        # Extract providers from the query schema
-        providers: list = next(
-            (
-                item["options"]
-                for item in query_schema
-                if item["paramName"] == "provider"
-            ),
-            [],
-        )
-
-        for provider in providers:
-            provider_value = provider["value"]
-
-            # Prepare the data schema of the widget
-            data_schema = get_data_schema_for_widget(openapi, widget_id)
-            if (
-                data_schema
-                and "properties" in data_schema
-                and "results" in data_schema["properties"]
-            ):
-                response_schema_refs = data_schema["properties"]["results"]
-                columns_defs = data_schema_to_columns_defs(  # noqa F841
-                    openapi, response_schema_refs
-                )
-            _cat = route.split("v1/")[-1]
-            _cats = _cat.split("/")
-            category = _cats[0].title()
-            category = category.replace("Fixedincome", "Fixed Income")
-            subcat = _cats[1].title().replace("_", " ") if len(_cats) > 2 else None
-            name = (
-                widget_id.replace("fixedincome", "fixed income")
-                .replace("_", " ")
-                .title()
-            )
-            to_caps = [
-                "Pe",
-                "Sloos",
-                "Eps",
-                "Ebitda",
-                "Otc",
-                "Cpi",
-                "Pce",
-                "Gdp",
-                "Lbma",
-                "Ipo",
-                "Nbbo",
-                "Ameribor",
-                "Sonia",
-                "Effr",
-                "Sofr",
-                "Iorb",
-                "Estr",
-                "Ecb",
-                "Dpcredit",
-                "Tcm",
-                "Us",
-                "Ice",
-                "Bofa",
-                "Hqm",
-                "Sp500",
-                "Sec",
-                "Cftc",
-                "Cot",
-                "Etf",
-                "Eu",
-                "Tips",
-                "Rss",
-                "Sic",
-                "Cik",
-                "Bls",
-                "Fred",
-            ]
-            name = " ".join(
-                [(word.upper() if word in to_caps else word) for word in name.split()]
-            )
-
-            # Modify query_schema and the description for the current provider
-            modified_query_schema = []
-            for item in query_schema:
-                description = item.get("description", "")
-                if item["paramName"] == "provider":
-                    continue
-
-                PROVIDER_SPECIFIC_PARAM_STRING = "(provider:"
-                COMMA_SEPARATED_PROVIDERS_STRING = (
-                    "Multiple comma separated items allowed for provider(s):"
-                )
-
-                # Handle universal parameters
-                if (
-                    PROVIDER_SPECIFIC_PARAM_STRING not in description
-                    and COMMA_SEPARATED_PROVIDERS_STRING not in description
-                ):
-                    modified_query_schema.append(item)
-                # Handle universal parameters with comma separated support for some providers
-                elif COMMA_SEPARATED_PROVIDERS_STRING in description:
-                    providers_list = (
-                        description.split(COMMA_SEPARATED_PROVIDERS_STRING)[1]
-                        .strip()
-                        .replace(".", "")  # Remove the period at the end
-                        .split(", ")
-                    )
-                    if provider_value in providers_list:
-                        item["description"] = (
-                            description.split(COMMA_SEPARATED_PROVIDERS_STRING)[
-                                0
-                            ].strip()
-                            + " Multiple comma separated items allowed."
-                        )
-                        modified_query_schema.append(item)
-                # Handle provider-specific parameters
-                elif PROVIDER_SPECIFIC_PARAM_STRING in description:
-                    providers_list = (
-                        description.split(PROVIDER_SPECIFIC_PARAM_STRING)[1]
-                        .strip()
-                        .replace(")", "")  # Remove the closing parenthesis
-                        .split(", ")
-                    )
-                    if provider_value in providers_list:
-                        item["description"] = description.split(
-                            PROVIDER_SPECIFIC_PARAM_STRING
-                        )[0].strip()
-                        modified_query_schema.append(item)
-
-            modified_query_schema.append(
-                {"paramName": "provider", "value": provider_value, "show": False}
-            )
-
-            widget_config = {
-                "name": f"{name} ({provider_value}) (OpenBB Platform API)",
-                "description": route_api["get"]["description"],
-                "category": category,
-                "searchCategory": category,
-                "widgetId": f"{widget_id}_{provider_value}_obb",
-                "params": modified_query_schema,
-                "endpoint": route.replace("/api", "api"),
-                "gridData": {"w": 45, "h": 15},
-                "data": {
-                    "dataKey": "results",
-                    "table": {
-                        "showAll": False,
-                    },
-                },
-            }
-
-            if subcat:
-                subcat = " ".join(
-                    [
-                        (word.upper() if word in to_caps else word)
-                        for word in subcat.split()
-                    ]
-                )
-                subcat = (
-                    subcat.replace("Estimates", "Analyst Estimates")
-                    .replace("Fundamental", "Fundamental Analysis")
-                    .replace("Compare", "Comparison Analysis")
-                )
-                widget_config["subCategory"] = subcat
-
-            # TODO: Add columnsDefs to the widget_config once there is support for not displaying empty columns.
-            # if columns_defs:
-            #    widget_config["data"]["table"]["columnsDefs"] = columns_defs
-            #    if "date" in columns_defs:
-            #        widget_config["data"]["table"]["index"] = "date"
-            #    if "period" in columns_defs:
-            #        widget_config["data"]["table"]["index"] = "period"
-
-            # Add the widget configuration to the widgets.json
-            widgets_json[widget_config["widgetId"]] = widget_config
-
-            if has_chart:
-                widget_config_chart = deepcopy(widget_config)
-                widget_config_chart["name"] = (
-                    f"{widget_config_chart['name'].replace(' (OpenBB Platform API)', '')} Chart (OpenBB Platform API)"
-                )
-                widget_config_chart["widgetId"] = (
-                    f"{widget_config_chart['widgetId']}_chart"
-                )
-                widget_config_chart["params"].append(
-                    {
-                        "paramName": "chart",
-                        "label": "Chart",
-                        "description": "Returns chart",
-                        "optional": True,
-                        "value": True,
-                        "type": "boolean",
-                        "show": False,
-                    },
-                )
-                widget_config_chart["searchCategory"] = "chart"
-                widget_config_chart["gridData"]["h"] = 20
-                widget_config_chart["gridData"]["w"] = 50
-                widget_config_chart["defaultViz"] = "chart"
-                widget_config_chart["data"]["dataKey"] = "chart.content"
-                widgets_json[widget_config_chart["widgetId"]] = widget_config_chart
-
-    return widgets_json
 
 
 def get_widgets_json(build: bool, openapi):
