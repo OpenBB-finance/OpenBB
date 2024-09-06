@@ -1065,3 +1065,25 @@ def test_economy_survey_bls_series(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "IN,CN",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_export_destinations(params, obb):
+    """Test the economy export destinations endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.export_destinations(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

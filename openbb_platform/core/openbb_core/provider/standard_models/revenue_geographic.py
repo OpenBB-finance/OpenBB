@@ -1,39 +1,25 @@
 """Revenue by Geographic Segments Standard Model."""
 
 from datetime import date as dateType
-from typing import Dict, Literal, Optional
+from typing import Optional, Union
 
 from pydantic import Field, field_validator
 
-from openbb_core.provider.abstract.data import Data, ForceInt
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import (
-    QUERY_DESCRIPTIONS,
-)
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class RevenueGeographicQueryParams(QueryParams):
     """Revenue by Geographic Segments Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Literal["quarter", "annual"] = Field(
-        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
-    )
-    structure: Literal["hierarchical", "flat"] = Field(
-        default="flat", description="Structure of the returned data."
-    )  # should always be flat
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
         """Convert field to uppercase."""
         return v.upper()
-
-    @field_validator("period", "structure", mode="before", check_fields=False)
-    @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
-        """Convert field to lowercase."""
-        return v.lower() if v else v
 
 
 class RevenueGeographicData(Data):
@@ -49,6 +35,11 @@ class RevenueGeographicData(Data):
     filing_date: Optional[dateType] = Field(
         default=None, description="The filing date of the report."
     )
-    geographic_segment: Dict[str, ForceInt] = Field(
-        description="Dictionary of the revenue by geographic segment."
+    region: Optional[str] = Field(
+        default=None,
+        description="The region represented by the revenue data.",
+    )
+    revenue: Union[int, float] = Field(
+        description="The total revenue attributed to the region.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
