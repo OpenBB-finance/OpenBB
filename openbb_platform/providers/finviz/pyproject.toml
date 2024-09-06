@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-finviz"
-version = "1.2.1"
+version = "1.2.2"
 description = "Finviz extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"

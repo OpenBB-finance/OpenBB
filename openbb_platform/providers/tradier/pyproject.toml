@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-tradier"
-version = "1.2.1"
+version = "1.2.2"
 description = "Tradier Provider Extension for the OpenBB Platform"
 authors = ["OpenBB <hello@openbb.co>"]
 license = "AGPL-3.0-only"

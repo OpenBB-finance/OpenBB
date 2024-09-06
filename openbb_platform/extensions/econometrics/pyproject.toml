@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-econometrics"
-version = "1.4.1"
+version = "1.4.2"
 description = "Econometrics Toolkit for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"

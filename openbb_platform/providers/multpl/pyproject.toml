@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-multpl"
-version = "1.0.1"
+version = "1.0.2"
 description = "Public data on historical S&P Multiples."
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
