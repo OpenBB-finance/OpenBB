@@ -12,6 +12,16 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
+def scrub_string(key):
+    """Scrub a string from the response."""
+
+    def before_record_response(response):
+        response["headers"][key] = response["headers"].update({key: "MOCK_VALUE"})
+        return response
+
+    return before_record_response
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     """VCR configuration."""
@@ -22,6 +32,11 @@ def vcr_config():
             ("$limit", "MOCK_LIMIT"),
             ("$order", "MOCK_ORDER"),
             ("$where", "MOCK_WHERE"),
+        ],
+        "before_record_response": [
+            scrub_string("Etag"),
+            scrub_string("X-Socrata-RequestId"),
+            scrub_string("X-Socrata-Region"),
         ],
     }
 
