@@ -1,0 +1,6357 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenBB Platform API",
+    "description": "This is the OpenBB Platform API.",
+    "termsOfService": "http://example.com/terms/",
+    "contact": {
+      "name": "OpenBB Team",
+      "url": "https://openbb.co/",
+      "email": "hello@openbb.co"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/OpenBB-finance/OpenBB/blob/develop/LICENSE"
+    },
+    "version": "1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Local OpenBB development server"
+    }
+  ],
+  "paths": {
+    "/api/v1/economy/survey/sloos": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Sloos",
+        "description": "Get Senior Loan Officers Opinion Survey.",
+        "operationId": "economy_survey_sloos",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "spreads",
+                "consumer",
+                "auto",
+                "credit_card",
+                "firms",
+                "mortgage",
+                "commercial_real_estate",
+                "standards",
+                "demand",
+                "foreign_banks"
+              ],
+              "type": "string",
+              "title": "fred",
+              "description": "Category of survey response. (provider: fred)",
+              "default": "spreads"
+            },
+            "description": "Category of survey response. (provider: fred)"
+          },
+          {
+            "name": "transform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "chg",
+                    "ch1",
+                    "pch",
+                    "pc1",
+                    "pca",
+                    "cch",
+                    "cca",
+                    "log"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "\n        Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log\n         (provider: fred)"
+            },
+            "description": "\n        Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log\n         (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_SeniorLoanOfficerSurvey"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "SeniorLoanOfficerSurvey",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "parameters": {
+              "category": "credit_card",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/survey/university_of_michigan": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "University Of Michigan",
+        "description": "Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.",
+        "operationId": "economy_survey_university_of_michigan",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "frequency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "annual",
+                    "quarter"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)"
+            },
+            "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)"
+          },
+          {
+            "name": "aggregation_method",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "avg",
+                    "sum",
+                    "eop"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period\n         (provider: fred)"
+            },
+            "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period\n         (provider: fred)"
+          },
+          {
+            "name": "transform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "chg",
+                    "ch1",
+                    "pch",
+                    "pc1",
+                    "pca",
+                    "cch",
+                    "cca",
+                    "log"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log\n         (provider: fred)"
+            },
+            "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log\n         (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_UniversityOfMichigan"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "UniversityOfMichigan",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/survey/economic_conditions_chicago": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Economic Conditions Chicago",
+        "description": "Get The Survey Of Economic Conditions For The Chicago Region.",
+        "operationId": "economy_survey_economic_conditions_chicago",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "frequency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "annual",
+                    "quarter"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)"
+            },
+            "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)"
+          },
+          {
+            "name": "aggregation_method",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "avg",
+                    "sum",
+                    "eop"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period\n         (provider: fred)"
+            },
+            "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period\n         (provider: fred)"
+          },
+          {
+            "name": "transform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "chg",
+                    "ch1",
+                    "pch",
+                    "pc1",
+                    "pca",
+                    "cch",
+                    "cca",
+                    "log"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log\n         (provider: fred)"
+            },
+            "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log\n         (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_SurveyOfEconomicConditionsChicago"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "SurveyOfEconomicConditionsChicago",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/survey/manufacturing_outlook_texas": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Manufacturing Outlook Texas",
+        "description": "Get The Manufacturing Outlook Survey For The Texas Region.",
+        "operationId": "economy_survey_manufacturing_outlook_texas",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "topic",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "business_activity",
+                    "business_outlook",
+                    "capex",
+                    "prices_paid",
+                    "production",
+                    "inventory",
+                    "new_orders",
+                    "new_orders_growth",
+                    "unfilled_orders",
+                    "shipments",
+                    "delivery_time",
+                    "employment",
+                    "wages",
+                    "hours_worked"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "fred",
+              "description": "The topic for the survey response. Multiple comma separated items allowed. (provider: fred)",
+              "fred": {
+                "multiple_items_allowed": true,
+                "choices": [
+                  "business_activity",
+                  "business_outlook",
+                  "capex",
+                  "prices_paid",
+                  "production",
+                  "inventory",
+                  "new_orders",
+                  "new_orders_growth",
+                  "unfilled_orders",
+                  "shipments",
+                  "delivery_time",
+                  "employment",
+                  "wages",
+                  "hours_worked"
+                ]
+              },
+              "default": "new_orders_growth"
+            },
+            "description": "The topic for the survey response. Multiple comma separated items allowed. (provider: fred)"
+          },
+          {
+            "name": "frequency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "annual",
+                    "quarter"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "\n        Frequency aggregation to convert monthly data to lower frequency. None is monthly.\n         (provider: fred)"
+            },
+            "description": "\n        Frequency aggregation to convert monthly data to lower frequency. None is monthly.\n         (provider: fred)"
+          },
+          {
+            "name": "aggregation_method",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "avg",
+                    "sum",
+                    "eop"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "\n        A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period\n         (provider: fred)"
+            },
+            "description": "\n        A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period\n         (provider: fred)"
+          },
+          {
+            "name": "transform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "chg",
+                    "ch1",
+                    "pch",
+                    "pc1",
+                    "pca",
+                    "cch",
+                    "cca",
+                    "log"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "\n        Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log\n         (provider: fred)"
+            },
+            "description": "\n        Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log\n         (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_ManufacturingOutlookTexas"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "ManufacturingOutlookTexas",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "parameters": {
+              "topic": "business_outlook,new_orders",
+              "transform": "pc1",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/survey/nonfarm_payrolls": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Nonfarm Payrolls",
+        "description": "Get Nonfarm Payrolls Survey.",
+        "operationId": "economy_survey_nonfarm_payrolls",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.",
+              "fred": {
+                "multiple_items_allowed": true
+              },
+              "title": "Date"
+            },
+            "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred."
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "employees_nsa",
+                "employees_sa",
+                "employees_production_and_nonsupervisory",
+                "employees_women",
+                "employees_women_percent",
+                "avg_hours",
+                "avg_hours_production_and_nonsupervisory",
+                "avg_hours_overtime",
+                "avg_hours_overtime_production_and_nonsupervisory",
+                "avg_earnings_hourly",
+                "avg_earnings_hourly_production_and_nonsupervisory",
+                "avg_earnings_weekly",
+                "avg_earnings_weekly_production_and_nonsupervisory",
+                "index_weekly_hours",
+                "index_weekly_hours_production_and_nonsupervisory",
+                "index_weekly_payrolls",
+                "index_weekly_payrolls_production_and_nonsupervisory"
+              ],
+              "type": "string",
+              "title": "fred",
+              "description": "The category to query. (provider: fred)",
+              "default": "employees_nsa"
+            },
+            "description": "The category to query. (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_NonFarmPayrolls"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "NonFarmPayrolls",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "parameters": {
+              "category": "avg_hours",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/cpi": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Cpi",
+        "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
+        "operationId": "economy_cpi",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The country to get data. Multiple comma separated items allowed for provider(s): fred.",
+              "fred": {
+                "multiple_items_allowed": true,
+                "choices": [
+                  "australia",
+                  "austria",
+                  "belgium",
+                  "brazil",
+                  "bulgaria",
+                  "canada",
+                  "chile",
+                  "china",
+                  "croatia",
+                  "cyprus",
+                  "czech_republic",
+                  "denmark",
+                  "estonia",
+                  "euro_area",
+                  "finland",
+                  "france",
+                  "germany",
+                  "greece",
+                  "hungary",
+                  "iceland",
+                  "india",
+                  "indonesia",
+                  "ireland",
+                  "israel",
+                  "italy",
+                  "japan",
+                  "korea",
+                  "latvia",
+                  "lithuania",
+                  "luxembourg",
+                  "malta",
+                  "mexico",
+                  "netherlands",
+                  "new_zealand",
+                  "norway",
+                  "poland",
+                  "portugal",
+                  "romania",
+                  "russian_federation",
+                  "slovak_republic",
+                  "slovakia",
+                  "slovenia",
+                  "south_africa",
+                  "spain",
+                  "sweden",
+                  "switzerland",
+                  "turkey",
+                  "united_kingdom",
+                  "united_states"
+                ]
+              },
+              "default": "united_states",
+              "title": "Country"
+            },
+            "description": "The country to get data. Multiple comma separated items allowed for provider(s): fred."
+          },
+          {
+            "name": "transform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "index",
+                "yoy",
+                "period"
+              ],
+              "type": "string",
+              "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
+              "default": "yoy",
+              "title": "Transform"
+            },
+            "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy)."
+          },
+          {
+            "name": "frequency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "annual",
+                "quarter",
+                "monthly"
+              ],
+              "type": "string",
+              "description": "The frequency of the data.",
+              "default": "monthly",
+              "title": "Frequency"
+            },
+            "description": "The frequency of the data."
+          },
+          {
+            "name": "harmonized",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "If true, returns harmonized data.",
+              "default": false,
+              "title": "Harmonized"
+            },
+            "description": "If true, returns harmonized data."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_ConsumerPriceIndex"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "ConsumerPriceIndex",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "country": "japan,china,turkey",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/balance_of_payments": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Balance Of Payments",
+        "description": "Balance of Payments Reports.",
+        "operationId": "economy_balance_of_payments",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "argentina",
+                "australia",
+                "austria",
+                "belgium",
+                "brazil",
+                "canada",
+                "chile",
+                "china",
+                "colombia",
+                "costa_rica",
+                "czechia",
+                "denmark",
+                "estonia",
+                "finland",
+                "france",
+                "germany",
+                "greece",
+                "hungary",
+                "iceland",
+                "india",
+                "indonesia",
+                "ireland",
+                "israel",
+                "italy",
+                "japan",
+                "korea",
+                "latvia",
+                "lithuania",
+                "luxembourg",
+                "mexico",
+                "netherlands",
+                "new_zealand",
+                "norway",
+                "poland",
+                "portugal",
+                "russia",
+                "saudi_arabia",
+                "slovak_republic",
+                "slovenia",
+                "south_africa",
+                "spain",
+                "sweden",
+                "switzerland",
+                "turkey",
+                "united_kingdom",
+                "united_states",
+                "g7",
+                "g20"
+              ],
+              "type": "string",
+              "title": "fred",
+              "description": "The country to get data. Enter as a 3-letter ISO country code, default is USA. (provider: fred)",
+              "default": "united_states"
+            },
+            "description": "The country to get data. Enter as a 3-letter ISO country code, default is USA. (provider: fred)"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Start date of the data, in YYYY-MM-DD format. (provider: fred)"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format. (provider: fred)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "End date of the data, in YYYY-MM-DD format. (provider: fred)"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format. (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_BalanceOfPayments"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "BalanceOfPayments",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred",
+              "country": "brazil"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/fred_search": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Fred Search",
+        "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
+        "operationId": "economy_fred_search",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The search word(s).",
+              "title": "Query"
+            },
+            "description": "The search word(s)."
+          },
+          {
+            "name": "is_release",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)",
+              "default": false
+            },
+            "description": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)"
+          },
+          {
+            "name": "release_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "A specific release ID to target. (provider: fred)"
+            },
+            "description": "A specific release ID to target. (provider: fred)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "The number of data entries to return. (1-1000) (provider: fred)"
+            },
+            "description": "The number of data entries to return. (1-1000) (provider: fred)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Offset the results in conjunction with limit. (provider: fred)",
+              "default": 0
+            },
+            "description": "Offset the results in conjunction with limit. (provider: fred)"
+          },
+          {
+            "name": "filter_variable",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "frequency",
+                    "units",
+                    "seasonal_adjustment"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Filter by an attribute. (provider: fred)"
+            },
+            "description": "Filter by an attribute. (provider: fred)"
+          },
+          {
+            "name": "filter_value",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)"
+            },
+            "description": "String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)"
+          },
+          {
+            "name": "tag_names",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed. (provider: fred)",
+              "fred": {
+                "multiple_items_allowed": true
+              }
+            },
+            "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed. (provider: fred)"
+          },
+          {
+            "name": "exclude_tag_names",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed. (provider: fred)",
+              "fred": {
+                "multiple_items_allowed": true
+              }
+            },
+            "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed. (provider: fred)"
+          },
+          {
+            "name": "series_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)"
+            },
+            "description": "A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_FredSearch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "FredSearch",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/fred_series": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Fred Series",
+        "description": "Get data by series ID from FRED.",
+        "operationId": "economy_fred_series",
+        "parameters": [
+          {
+            "name": "chart",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Chart"
+            }
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.",
+              "fred": {
+                "multiple_items_allowed": true
+              },
+              "title": "Symbol"
+            },
+            "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fred."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The number of data entries to return.",
+              "default": 100000,
+              "title": "Limit"
+            },
+            "description": "The number of data entries to return."
+          },
+          {
+            "name": "frequency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "a",
+                    "q",
+                    "m",
+                    "w",
+                    "d",
+                    "wef",
+                    "weth",
+                    "wew",
+                    "wetu",
+                    "wem",
+                    "wesu",
+                    "wesa",
+                    "bwew",
+                    "bwem"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday\n         (provider: fred)"
+            },
+            "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday\n         (provider: fred)"
+          },
+          {
+            "name": "aggregation_method",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "avg",
+                    "sum",
+                    "eop"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period\n         (provider: fred)",
+              "default": "eop"
+            },
+            "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period\n         (provider: fred)"
+          },
+          {
+            "name": "transform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "chg",
+                    "ch1",
+                    "pch",
+                    "pc1",
+                    "pca",
+                    "cch",
+                    "cca",
+                    "log"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log\n         (provider: fred)"
+            },
+            "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log\n         (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_FredSeries"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "FredSeries",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "symbol": "NFCI",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "description": "Multiple series can be passed in as a list.",
+            "parameters": {
+              "symbol": "NFCI,STLFSI4",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "description": "Use the `transform` parameter to transform the data as change, log, or percent change.",
+            "parameters": {
+              "symbol": "CBBTCUSD",
+              "transform": "pc1",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/fred_release_table": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Fred Release Table",
+        "description": "Get economic release data by ID and/or element from FRED.",
+        "operationId": "economy_fred_release_table",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "release_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The ID of the release. Use `fred_search` to find releases.",
+              "title": "Release Id"
+            },
+            "description": "The ID of the release. Use `fred_search` to find releases."
+          },
+          {
+            "name": "element_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The element ID of a specific table in the release.",
+              "title": "Element Id"
+            },
+            "description": "The element ID of a specific table in the release."
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.",
+              "fred": {
+                "multiple_items_allowed": true
+              },
+              "title": "Date"
+            },
+            "description": "A specific date to get data for. Multiple comma separated items allowed for provider(s): fred."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_FredReleaseTable"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "FredReleaseTable",
+        "examples": [
+          {
+            "scope": "api",
+            "description": "Get the top-level elements of a release by not supplying an element ID.",
+            "parameters": {
+              "release_id": "50",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "description": "Drill down on a specific section of the release.",
+            "parameters": {
+              "release_id": "50",
+              "element_id": "4880",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "description": "Drill down on a specific table of the release.",
+            "parameters": {
+              "release_id": "50",
+              "element_id": "4881",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/fred_regional": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Fred Regional",
+        "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
+        "operationId": "economy_fred_regional",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Symbol to get data for.",
+              "title": "Symbol"
+            },
+            "description": "Symbol to get data for."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The number of data entries to return.",
+              "default": 100000,
+              "title": "Limit"
+            },
+            "description": "The number of data entries to return."
+          },
+          {
+            "name": "is_series_group",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "fred",
+              "description": "When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)",
+              "default": false
+            },
+            "description": "When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)"
+          },
+          {
+            "name": "region_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "bea",
+                    "msa",
+                    "frb",
+                    "necta",
+                    "state",
+                    "country",
+                    "county",
+                    "censusregion"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)"
+            },
+            "description": "The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)"
+          },
+          {
+            "name": "season",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sa",
+                "nsa",
+                "ssa"
+              ],
+              "type": "string",
+              "title": "fred",
+              "description": "The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)",
+              "default": "nsa"
+            },
+            "description": "The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)"
+          },
+          {
+            "name": "units",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)"
+            },
+            "description": "The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)"
+          },
+          {
+            "name": "frequency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "a",
+                    "q",
+                    "m",
+                    "w",
+                    "d",
+                    "wef",
+                    "weth",
+                    "wew",
+                    "wetu",
+                    "wem",
+                    "wesu",
+                    "wesa",
+                    "bwew",
+                    "bwem"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday\n         (provider: fred)"
+            },
+            "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday\n         (provider: fred)"
+          },
+          {
+            "name": "aggregation_method",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "avg",
+                    "sum",
+                    "eop"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period\n         (provider: fred)",
+              "default": "eop"
+            },
+            "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period\n         (provider: fred)"
+          },
+          {
+            "name": "transform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "chg",
+                    "ch1",
+                    "pch",
+                    "pc1",
+                    "pca",
+                    "cch",
+                    "cca",
+                    "log"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log\n         (provider: fred)"
+            },
+            "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log\n         (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_FredRegional"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "FredRegional",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "symbol": "NYICLAIMS",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "description": "With a date, time series data is returned.",
+            "parameters": {
+              "symbol": "NYICLAIMS",
+              "start_date": "2021-01-01",
+              "end_date": "2021-12-31",
+              "limit": 10,
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/retail_prices": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Retail Prices",
+        "description": "Get retail prices for common items.",
+        "operationId": "economy_retail_prices",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "item",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The item or basket of items to query.",
+              "title": "Item"
+            },
+            "description": "The item or basket of items to query."
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The country to get data.",
+              "default": "united_states",
+              "title": "Country"
+            },
+            "description": "The country to get data."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "all_city",
+                "northeast",
+                "midwest",
+                "south",
+                "west"
+              ],
+              "type": "string",
+              "title": "fred",
+              "description": "The region to get average price levels for. (provider: fred)",
+              "default": "all_city"
+            },
+            "description": "The region to get average price levels for. (provider: fred)"
+          },
+          {
+            "name": "frequency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "annual",
+                "quarter",
+                "monthly"
+              ],
+              "type": "string",
+              "title": "fred",
+              "description": "The frequency of the data. (provider: fred)",
+              "default": "monthly"
+            },
+            "description": "The frequency of the data. (provider: fred)"
+          },
+          {
+            "name": "transform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "chg",
+                    "ch1",
+                    "pch",
+                    "pc1",
+                    "pca",
+                    "cch",
+                    "cca",
+                    "log"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fred",
+              "description": "\n        Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log\n         (provider: fred)"
+            },
+            "description": "\n        Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log\n         (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_RetailPrices"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "RetailPrices",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "description": "The price of eggs in the northeast census region.",
+            "parameters": {
+              "item": "eggs",
+              "region": "northeast",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "description": "The percentage change in price, from one-year ago, of various meats, US City Average.",
+            "parameters": {
+              "item": "meats",
+              "transform": "pc1",
+              "provider": "fred"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/economy/pce": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Pce",
+        "description": "Get Personal Consumption Expenditures (PCE) reports.",
+        "operationId": "economy_pce",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "fred"
+              ],
+              "const": "fred",
+              "type": "string",
+              "default": "fred",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.",
+              "fred": {
+                "multiple_items_allowed": true
+              },
+              "title": "Date"
+            },
+            "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred."
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "personal_income",
+                "wages_by_industry",
+                "real_pce_percent_change",
+                "real_pce_quantity_index",
+                "pce_price_index",
+                "pce_dollars",
+                "real_pce_chained_dollars",
+                "pce_price_percent_change"
+              ],
+              "type": "string",
+              "title": "fred",
+              "description": "The category to query. (provider: fred)",
+              "default": "personal_income"
+            },
+            "description": "The category to query. (provider: fred)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_PersonalConsumptionExpenditures"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "PersonalConsumptionExpenditures",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "fred"
+            },
+            "provider": "fred"
+          },
+          {
+            "scope": "api",
+            "description": "Get reports for multiple dates, entered as a comma-separated string.",
+            "parameters": {
+              "provider": "fred",
+              "date": "2024-05-01,2024-04-01,2023-05-01",
+              "category": "pce_price_index"
+            },
+            "provider": "fred"
+          }
+        ]
+      }
+    },
+    "/api/v1/regulators/sec/cik_map": {
+      "get": {
+        "tags": [
+          "regulators"
+        ],
+        "summary": "Cik Map",
+        "description": "Map a ticker symbol to a CIK number.",
+        "operationId": "regulators_sec_cik_map",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sec"
+              ],
+              "const": "sec",
+              "type": "string",
+              "default": "sec",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Symbol to get data for.",
+              "title": "Symbol"
+            },
+            "description": "Symbol to get data for."
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "sec",
+              "description": "Whether or not to use cache for the request, default is True. (provider: sec)",
+              "default": true
+            },
+            "description": "Whether or not to use cache for the request, default is True. (provider: sec)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_CikMap"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "CikMap",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "symbol": "MSFT",
+              "provider": "sec"
+            },
+            "provider": "sec"
+          }
+        ]
+      }
+    },
+    "/api/v1/regulators/sec/institutions_search": {
+      "get": {
+        "tags": [
+          "regulators"
+        ],
+        "summary": "Institutions Search",
+        "description": "Search SEC-regulated institutions by name and return a list of results with CIK numbers.",
+        "operationId": "regulators_sec_institutions_search",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sec"
+              ],
+              "const": "sec",
+              "type": "string",
+              "default": "sec",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Search query.",
+              "default": "",
+              "title": "Query"
+            },
+            "description": "Search query."
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether or not to use cache.",
+              "default": true,
+              "title": "Use Cache"
+            },
+            "description": "Whether or not to use cache."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_InstitutionsSearch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "InstitutionsSearch",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "sec"
+            },
+            "provider": "sec"
+          },
+          {
+            "scope": "api",
+            "parameters": {
+              "query": "blackstone real estate",
+              "provider": "sec"
+            },
+            "provider": "sec"
+          }
+        ]
+      }
+    },
+    "/api/v1/regulators/sec/schema_files": {
+      "get": {
+        "tags": [
+          "regulators"
+        ],
+        "summary": "Schema Files",
+        "description": "Use tool for navigating the directory of SEC XML schema files by year.",
+        "operationId": "regulators_sec_schema_files",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sec"
+              ],
+              "const": "sec",
+              "type": "string",
+              "default": "sec",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Search query.",
+              "default": "",
+              "title": "Query"
+            },
+            "description": "Search query."
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether or not to use cache.",
+              "default": true,
+              "title": "Use Cache"
+            },
+            "description": "Whether or not to use cache."
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "sec",
+              "description": "Enter an optional URL path to fetch the next level. (provider: sec)"
+            },
+            "description": "Enter an optional URL path to fetch the next level. (provider: sec)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_SchemaFiles"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "SchemaFiles",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "sec"
+            },
+            "provider": "sec"
+          },
+          {
+            "scope": "python",
+            "description": "Get a list of schema files.",
+            "code": [
+              "data = obb.regulators.sec.schema_files().results",
+              "data.files[0]",
+              "'https://xbrl.fasb.org/us-gaap/'",
+              "# The directory structure can be navigated by constructing a URL from the 'results' list.",
+              "url = data.files[0]+data.files[-1]",
+              "# The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.",
+              "obb.regulators.sec.schema_files(url=url).results.files",
+              "['https://xbrl.fasb.org/us-gaap/2024/'",
+              "'USGAAP2024FileList.xml'",
+              "'dis/'",
+              "'dqcrules/'",
+              "'ebp/'",
+              "'elts/'",
+              "'entire/'",
+              "'meta/'",
+              "'stm/'",
+              "'us-gaap-2024.zip']"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/regulators/sec/symbol_map": {
+      "get": {
+        "tags": [
+          "regulators"
+        ],
+        "summary": "Symbol Map",
+        "description": "Map a CIK number to a ticker symbol, leading 0s can be omitted or included.",
+        "operationId": "regulators_sec_symbol_map",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sec"
+              ],
+              "const": "sec",
+              "type": "string",
+              "default": "sec",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Search query.",
+              "title": "Query"
+            },
+            "description": "Search query."
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether or not to use cache. If True, cache will store for seven days.",
+              "default": true,
+              "title": "Use Cache"
+            },
+            "description": "Whether or not to use cache. If True, cache will store for seven days."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_SymbolMap"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "SymbolMap",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "query": "0000789019",
+              "provider": "sec"
+            },
+            "provider": "sec"
+          }
+        ]
+      }
+    },
+    "/api/v1/regulators/sec/rss_litigation": {
+      "get": {
+        "tags": [
+          "regulators"
+        ],
+        "summary": "Rss Litigation",
+        "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
+        "operationId": "regulators_sec_rss_litigation",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sec"
+              ],
+              "const": "sec",
+              "type": "string",
+              "default": "sec",
+              "title": "Provider"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_RssLitigation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "RssLitigation",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "sec"
+            },
+            "provider": "sec"
+          }
+        ]
+      }
+    },
+    "/api/v1/regulators/sec/sic_search": {
+      "get": {
+        "tags": [
+          "regulators"
+        ],
+        "summary": "Sic Search",
+        "description": "Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.",
+        "operationId": "regulators_sec_sic_search",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sec"
+              ],
+              "const": "sec",
+              "type": "string",
+              "default": "sec",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Search query.",
+              "default": "",
+              "title": "Query"
+            },
+            "description": "Search query."
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether or not to use cache.",
+              "default": true,
+              "title": "Use Cache"
+            },
+            "description": "Whether or not to use cache."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_SicSearch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "SicSearch",
+        "examples": [
+          {
+            "scope": "api",
+            "parameters": {
+              "provider": "sec"
+            },
+            "provider": "sec"
+          },
+          {
+            "scope": "api",
+            "parameters": {
+              "query": "real estate investment trusts",
+              "provider": "sec"
+            },
+            "provider": "sec"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Chart": {
+        "properties": {
+          "content": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Content",
+            "description": "Raw textual representation of the chart."
+          },
+          "format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Format",
+            "description": "Complementary attribute to the `content` attribute. It specifies the format of the chart."
+          },
+          "fig": {
+            "anyOf": [
+              {
+
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fig",
+            "description": "The figure object.",
+            "exclude_from_api": true
+          }
+        },
+        "type": "object",
+        "title": "Chart",
+        "description": "Model for Chart."
+      },
+      "FREDConsumerPriceIndexData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "country": {
+            "type": "string",
+            "title": "Country"
+          },
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": "CPI index value or period change."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date",
+          "country",
+          "value"
+        ],
+        "title": "FREDConsumerPriceIndexData",
+        "description": "FRED Consumer Price Index Data."
+      },
+      "FredBalanceOfPaymentsData": {
+        "properties": {
+          "period": {
+            "type": "string",
+            "format": "date",
+            "title": "Period",
+            "description": "The date representing the beginning of the reporting period."
+          },
+          "balance_percent_of_gdp": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balance Percent Of Gdp",
+            "description": "Current Account Balance as Percent of GDP",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "balance_total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balance Total",
+            "description": "Current Account Total Balance (USD)"
+          },
+          "balance_total_services": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balance Total Services",
+            "description": "Current Account Total Services Balance (USD)"
+          },
+          "balance_total_secondary_income": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balance Total Secondary Income",
+            "description": "Current Account Total Secondary Income Balance (USD)"
+          },
+          "balance_total_goods": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balance Total Goods",
+            "description": "Current Account Total Goods Balance (USD)"
+          },
+          "balance_total_primary_income": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balance Total Primary Income",
+            "description": "Current Account Total Primary Income Balance (USD)"
+          },
+          "credits_services_percent_of_goods_and_services": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credits Services Percent Of Goods And Services",
+            "description": "Current Account Credits Services as Percent of Goods and Services",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "credits_services_percent_of_current_account": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credits Services Percent Of Current Account",
+            "description": "Current Account Credits Services as Percent of Current Account",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "credits_total_services": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credits Total Services",
+            "description": "Current Account Credits Total Services (USD)"
+          },
+          "credits_total_goods": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credits Total Goods",
+            "description": "Current Account Credits Total Goods (USD)"
+          },
+          "credits_total_primary_income": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credits Total Primary Income",
+            "description": "Current Account Credits Total Primary Income (USD)"
+          },
+          "credits_total_secondary_income": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credits Total Secondary Income",
+            "description": "Current Account Credits Total Secondary Income (USD)"
+          },
+          "credits_total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credits Total",
+            "description": "Current Account Credits Total (USD)"
+          },
+          "debits_services_percent_of_goods_and_services": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debits Services Percent Of Goods And Services",
+            "description": "Current Account Debits Services as Percent of Goods and Services",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "debits_services_percent_of_current_account": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debits Services Percent Of Current Account",
+            "description": "Current Account Debits Services as Percent of Current Account",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "debits_total_services": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debits Total Services",
+            "description": "Current Account Debits Total Services (USD)"
+          },
+          "debits_total_goods": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debits Total Goods",
+            "description": "Current Account Debits Total Goods (USD)"
+          },
+          "debits_total_primary_income": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debits Total Primary Income",
+            "description": "Current Account Debits Total Primary Income (USD)"
+          },
+          "debits_total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debits Total",
+            "description": "Current Account Debits Total (USD)"
+          },
+          "debits_total_secondary_income": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debits Total Secondary Income",
+            "description": "Current Account Debits Total Secondary Income (USD)"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "FredBalanceOfPaymentsData",
+        "description": "FRED Balance Of Payments Data."
+      },
+      "FredManufacturingOutlookTexasData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "topic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Topic",
+            "description": "Topic of the survey response."
+          },
+          "diffusion_index": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diffusion Index",
+            "description": "Diffusion Index."
+          },
+          "percent_reporting_increase": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percent Reporting Increase",
+            "description": "Percent of respondents reporting an increase over the last month.",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "percent_reporting_decrease": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percent Reporting Decrease",
+            "description": "Percent of respondents reporting a decrease over the last month.",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "percent_reporting_no_change": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percent Reporting No Change",
+            "description": "Percent of respondents reporting no change over the last month.",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "title": "FredManufacturingOutlookTexasData",
+        "description": "FRED Manufacturing Outlook - Texas - Data."
+      },
+      "FredNonFarmPayrollsData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "symbol": {
+            "type": "string",
+            "title": "Symbol",
+            "description": "Symbol representing the entity requested in the data."
+          },
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": ""
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the series."
+          },
+          "element_id": {
+            "type": "string",
+            "title": "Element Id",
+            "description": "The element id in the parent/child relationship."
+          },
+          "parent_id": {
+            "type": "string",
+            "title": "Parent Id",
+            "description": "The parent id in the parent/child relationship."
+          },
+          "children": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Children",
+            "description": "The element_id of each child, as a comma-separated string."
+          },
+          "level": {
+            "type": "integer",
+            "title": "Level",
+            "description": "The indentation level of the element."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date",
+          "symbol",
+          "value",
+          "name",
+          "element_id",
+          "parent_id",
+          "level"
+        ],
+        "title": "FredNonFarmPayrollsData",
+        "description": "FRED NonFarm Payrolls Data."
+      },
+      "FredPersonalConsumptionExpendituresData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "symbol": {
+            "type": "string",
+            "title": "Symbol",
+            "description": "Symbol representing the entity requested in the data."
+          },
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": ""
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the series."
+          },
+          "element_id": {
+            "type": "string",
+            "title": "Element Id",
+            "description": "The element id in the parent/child relationship."
+          },
+          "parent_id": {
+            "type": "string",
+            "title": "Parent Id",
+            "description": "The parent id in the parent/child relationship."
+          },
+          "children": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Children",
+            "description": "The element_id of each child, as a comma-separated string."
+          },
+          "level": {
+            "type": "integer",
+            "title": "Level",
+            "description": "The indentation level of the element."
+          },
+          "line": {
+            "type": "integer",
+            "title": "Line",
+            "description": "The line number of the series in the table."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date",
+          "symbol",
+          "value",
+          "name",
+          "element_id",
+          "parent_id",
+          "level",
+          "line"
+        ],
+        "title": "FredPersonalConsumptionExpendituresData",
+        "description": "FRED Personal Consumption Expenditures Data."
+      },
+      "FredRegionalData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "region": {
+            "type": "string",
+            "title": "Region",
+            "description": "The name of the region."
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Code",
+            "description": "The code of the region."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value",
+            "description": "The obersvation value. The units are defined in the search results by series ID."
+          },
+          "series_id": {
+            "type": "string",
+            "title": "Series Id",
+            "description": "The individual series ID for the region."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date",
+          "region",
+          "code",
+          "series_id"
+        ],
+        "title": "FredRegionalData",
+        "description": "FRED Regional Data."
+      },
+      "FredReleaseTableData": {
+        "properties": {
+          "date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level",
+            "description": "The indentation level of the element."
+          },
+          "element_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Element Type",
+            "description": "The type of the element."
+          },
+          "line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line",
+            "description": "The line number of the element."
+          },
+          "element_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Element Id",
+            "description": "The element id in the parent/child relationship."
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id",
+            "description": "The parent id in the parent/child relationship."
+          },
+          "children": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Children",
+            "description": "The element_id of each child, as a comma-separated string."
+          },
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Symbol",
+            "description": "Symbol representing the entity requested in the data."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "The name of the series."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value",
+            "description": "The reported value of the series."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "FredReleaseTableData",
+        "description": "FRED Release Table Data."
+      },
+      "FredRetailPricesData": {
+        "properties": {
+          "date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Symbol",
+            "description": "Symbol representing the entity requested in the data."
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country",
+            "description": ""
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Description of the item."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value",
+            "description": "Price, or change in price, per unit."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "FredRetailPricesData",
+        "description": "FRED Retail Prices Data."
+      },
+      "FredSearchData": {
+        "properties": {
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Release Id",
+            "description": "The release ID for queries."
+          },
+          "series_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Series Id",
+            "description": "The series ID for the item in the release."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "The name of the release."
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "The title of the series."
+          },
+          "observation_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observation Start",
+            "description": "The date of the first observation in the series."
+          },
+          "observation_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observation End",
+            "description": "The date of the last observation in the series."
+          },
+          "frequency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frequency",
+            "description": "The frequency of the data."
+          },
+          "frequency_short": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frequency Short",
+            "description": "Short form of the data frequency."
+          },
+          "units": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Units",
+            "description": "The units of the data."
+          },
+          "units_short": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Units Short",
+            "description": "Short form of the data units."
+          },
+          "seasonal_adjustment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seasonal Adjustment",
+            "description": "The seasonal adjustment of the data."
+          },
+          "seasonal_adjustment_short": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seasonal Adjustment Short",
+            "description": "Short form of the data seasonal adjustment."
+          },
+          "last_updated": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Updated",
+            "description": "The datetime of the last update to the data."
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Description of the release."
+          },
+          "press_release": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Press Release",
+            "description": "If the release is a press release."
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url",
+            "description": "URL to the release."
+          },
+          "popularity": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Popularity",
+            "description": "Popularity of the series"
+          },
+          "group_popularity": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Popularity",
+            "description": "Group popularity of the release"
+          },
+          "region_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Type",
+            "description": "The region type of the series."
+          },
+          "series_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Series Group",
+            "description": "The series group ID of the series. This value is used to query for regional data."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "FredSearchData",
+        "description": "FRED Search Data."
+      },
+      "FredSeniorLoanOfficerSurveyData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Symbol",
+            "description": "Symbol representing the entity requested in the data."
+          },
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": "Survey value."
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "Survey title."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date",
+          "value",
+          "title"
+        ],
+        "title": "FredSeniorLoanOfficerSurveyData",
+        "description": "FRED Senior Loan Officer Opinion Survey Data."
+      },
+      "FredSeriesData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "The date of the data."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "title": "FredSeriesData",
+        "description": "FRED Series Data."
+      },
+      "FredSurveyOfEconomicConditionsChicagoData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "activity_index": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Index",
+            "description": "Activity Index."
+          },
+          "one_year_outlook": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "One Year Outlook",
+            "description": "One Year Outlook Index."
+          },
+          "manufacturing_activity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manufacturing Activity",
+            "description": "Manufacturing Activity Index."
+          },
+          "non_manufacturing_activity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Non Manufacturing Activity",
+            "description": "Non-Manufacturing Activity Index."
+          },
+          "capital_expenditures_expectations": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Capital Expenditures Expectations",
+            "description": "Capital Expenditures Expectations Index."
+          },
+          "hiring_expectations": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hiring Expectations",
+            "description": "Hiring Expectations Index."
+          },
+          "current_hiring": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Hiring",
+            "description": "Current Hiring Index."
+          },
+          "labor_costs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Labor Costs",
+            "description": "Labor Costs Index."
+          },
+          "non_labor_costs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Non Labor Costs",
+            "description": "Non-Labor Costs Index."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "title": "FredSurveyOfEconomicConditionsChicagoData",
+        "description": "FRED Survey Of Economic Conditions - Chicago - Data."
+      },
+      "FredUofMichiganData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "The date of the data."
+          },
+          "consumer_sentiment": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Consumer Sentiment",
+            "description": "Index of the results of the University of Michigan's monthly Survey of Consumers, which is used to estimate future spending and saving.  (1966:Q1=100)."
+          },
+          "inflation_expectation": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inflation Expectation",
+            "description": "Median expected price change next 12 months, Surveys of Consumers.",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "title": "FredUofMichiganData",
+        "description": "FRED University of Michigan Survey Data."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "OBBject_BalanceOfPayments": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredBalanceOfPaymentsData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_BalanceOfPayments",
+        "description": "OBBject with results of type BalanceOfPayments"
+      },
+      "OBBject_CikMap": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SecCikMapData"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_CikMap",
+        "description": "OBBject with results of type CikMap"
+      },
+      "OBBject_ConsumerPriceIndex": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FREDConsumerPriceIndexData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_ConsumerPriceIndex",
+        "description": "OBBject with results of type ConsumerPriceIndex"
+      },
+      "OBBject_FredRegional": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredRegionalData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_FredRegional",
+        "description": "OBBject with results of type FredRegional"
+      },
+      "OBBject_FredReleaseTable": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredReleaseTableData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_FredReleaseTable",
+        "description": "OBBject with results of type FredReleaseTable"
+      },
+      "OBBject_FredSearch": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredSearchData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_FredSearch",
+        "description": "OBBject with results of type FredSearch"
+      },
+      "OBBject_FredSeries": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredSeriesData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_FredSeries",
+        "description": "OBBject with results of type FredSeries"
+      },
+      "OBBject_InstitutionsSearch": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SecInstitutionsSearchData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_InstitutionsSearch",
+        "description": "OBBject with results of type InstitutionsSearch"
+      },
+      "OBBject_ManufacturingOutlookTexas": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredManufacturingOutlookTexasData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_ManufacturingOutlookTexas",
+        "description": "OBBject with results of type ManufacturingOutlookTexas"
+      },
+      "OBBject_NonFarmPayrolls": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredNonFarmPayrollsData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_NonFarmPayrolls",
+        "description": "OBBject with results of type NonFarmPayrolls"
+      },
+      "OBBject_PersonalConsumptionExpenditures": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredPersonalConsumptionExpendituresData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_PersonalConsumptionExpenditures",
+        "description": "OBBject with results of type PersonalConsumptionExpenditures"
+      },
+      "OBBject_RetailPrices": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredRetailPricesData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_RetailPrices",
+        "description": "OBBject with results of type RetailPrices"
+      },
+      "OBBject_RssLitigation": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SecRssLitigationData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_RssLitigation",
+        "description": "OBBject with results of type RssLitigation"
+      },
+      "OBBject_SchemaFiles": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SecSchemaFilesData"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_SchemaFiles",
+        "description": "OBBject with results of type SchemaFiles"
+      },
+      "OBBject_SeniorLoanOfficerSurvey": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredSeniorLoanOfficerSurveyData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_SeniorLoanOfficerSurvey",
+        "description": "OBBject with results of type SeniorLoanOfficerSurvey"
+      },
+      "OBBject_SicSearch": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SecSicSearchData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_SicSearch",
+        "description": "OBBject with results of type SicSearch"
+      },
+      "OBBject_SurveyOfEconomicConditionsChicago": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredSurveyOfEconomicConditionsChicagoData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_SurveyOfEconomicConditionsChicago",
+        "description": "OBBject with results of type SurveyOfEconomicConditionsChicago"
+      },
+      "OBBject_SymbolMap": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SecSymbolMapData"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_SymbolMap",
+        "description": "OBBject with results of type SymbolMap"
+      },
+      "OBBject_UniversityOfMichigan": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FredUofMichiganData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_UniversityOfMichigan",
+        "description": "OBBject with results of type UniversityOfMichigan"
+      },
+      "OpenBBErrorResponse": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "error_kind": {
+            "type": "string",
+            "title": "Error Kind"
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail",
+          "error_kind"
+        ],
+        "title": "OpenBBErrorResponse",
+        "description": "OpenBB Error Response."
+      },
+      "SecCikMapData": {
+        "properties": {
+          "cik": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cik",
+            "description": "Central Index Key (CIK) for the requested entity."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "SecCikMapData",
+        "description": "SEC CIK Mapping Data."
+      },
+      "SecInstitutionsSearchData": {
+        "properties": {
+          "Institution": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Institution",
+            "description": "The name of the institution."
+          },
+          "CIK Number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cik Number",
+            "description": "Central Index Key (CIK)"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "SecInstitutionsSearchData",
+        "description": "SEC Institutions Search Data."
+      },
+      "SecRssLitigationData": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date",
+            "description": "The date of publication."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of the release."
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "description": "Short summary of the release."
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "The identifier associated with the release."
+          },
+          "link": {
+            "type": "string",
+            "title": "Link",
+            "description": "URL to the release."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date",
+          "title",
+          "summary",
+          "id",
+          "link"
+        ],
+        "title": "SecRssLitigationData",
+        "description": "SEC Litigation RSS Feed Data."
+      },
+      "SecSchemaFilesData": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Files",
+            "description": "Dictionary of URLs to SEC Schema Files"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "files"
+        ],
+        "title": "SecSchemaFilesData",
+        "description": "SEC Schema Files List Data."
+      },
+      "SecSicSearchData": {
+        "properties": {
+          "SIC Code": {
+            "type": "integer",
+            "title": "Sic Code",
+            "description": "Sector Industrial Code (SIC)"
+          },
+          "Industry Title": {
+            "type": "string",
+            "title": "Industry Title",
+            "description": "Industry title."
+          },
+          "Office": {
+            "type": "string",
+            "title": "Office",
+            "description": "Reporting office within the Corporate Finance Office"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "SIC Code",
+          "Industry Title",
+          "Office"
+        ],
+        "title": "SecSicSearchData",
+        "description": "SEC Standard Industrial Classification Code (SIC) Data."
+      },
+      "SecSymbolMapData": {
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "title": "Symbol",
+            "description": "Symbol representing the entity requested in the data."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "symbol"
+        ],
+        "title": "SecSymbolMapData",
+        "description": "SEC symbol map Data."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "Warning_": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "message"
+        ],
+        "title": "Warning_",
+        "description": "Model for Warning."
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "economy",
+      "description": "Economic data."
+    },
+    {
+      "name": "regulators",
+      "description": "Financial market regulators data."
+    }
+  ]
+}
