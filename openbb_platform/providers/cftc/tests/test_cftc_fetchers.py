@@ -13,6 +13,8 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 
 def scrub_string(key):
+    """Scrub a string from the response."""
+
     def before_record_response(response):
         response["headers"][key] = response["headers"].update({key: "MOCK_VALUE"})
         return response
