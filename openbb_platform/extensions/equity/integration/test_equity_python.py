@@ -514,7 +514,7 @@ def test_equity_ownership_institutional(params, obb):
     [
         (
             {
-                "symbol": "",
+                "symbol": None,
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 100,
@@ -1078,8 +1078,8 @@ def test_equity_compare_groups(params, obb):
                 "adjustment": "splits_and_dividends",
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "start_date": "2023-06-01",
-                "end_date": "2023-06-03",
+                "start_date": None,
+                "end_date": None,
                 "interval": "1h",
             }
         ),
