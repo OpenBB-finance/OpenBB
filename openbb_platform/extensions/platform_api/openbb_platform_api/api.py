@@ -37,14 +37,15 @@ build_json = widgets_utils.build_json
 
 def check_port(host, port):
     """Check if the port number is free."""
+    port = int(port)
     not_free = True
-    port = int(port) - 1
     while not_free:
-        port = port + 1
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             res = sock.connect_ex((host, port))
             if res != 0:
                 not_free = False
+            else:
+                port += 1
     return port
 
 
