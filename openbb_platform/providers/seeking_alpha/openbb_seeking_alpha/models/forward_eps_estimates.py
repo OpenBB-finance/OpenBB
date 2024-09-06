@@ -102,7 +102,7 @@ class SAForwardEpsEstimatesFetcher(
             "period_type": fp,
             "relative_periods": "-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11",
         }
-        async with ClientSession() as session:
+        async with ClientSession(trust_env=True) as session:
             kwargs = {"session": session}
             ids = {
                 ticker: await get_seekingalpha_id(ticker, **kwargs)
