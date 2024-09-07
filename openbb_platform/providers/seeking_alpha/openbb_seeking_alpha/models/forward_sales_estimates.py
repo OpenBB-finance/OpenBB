@@ -76,7 +76,7 @@ class SAForwardSalesEstimatesFetcher(
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.client import ClientSession
 
-        tickers = query.symbol.split(",")
+        tickers = query.symbol.split(",")  # type: ignore
         fp = query.period if query.period == "annual" else "quarterly"
         url = "https://seekingalpha.com/api/v3/symbol_data/estimates"
         querystring = {
@@ -111,7 +111,7 @@ class SAForwardSalesEstimatesFetcher(
         **kwargs: Any,
     ) -> List[SAForwardSalesEstimatesData]:
         """Transform the data to the standard format."""
-        tickers = query.symbol.split(",")
+        tickers = query.symbol.split(",")  # type: ignore
         ids = data.get("ids", {})
         estimates = data.get("estimates", {})
         results: List[SAForwardSalesEstimatesData] = []

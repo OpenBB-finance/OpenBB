@@ -119,7 +119,7 @@ class SACalendarEarningsFetcher(
                         messages.append(message)
                         warn(message)
                 if "data" in response:
-                    results.extend(response.get("data"))
+                    results.extend(response.get("data"))  # type: ignore
 
             await asyncio.gather(*[get_date(date, currency) for date in dates])
 
