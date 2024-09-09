@@ -1053,3 +1053,80 @@ def test_economy_fred_release_table(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "bls",
+                "query": "gasoline;seattle;average price",
+                "category": "cpi",
+                "include_extras": False,
+                "include_code_map": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_bls_search(params, headers):
+    """Test the economy survey bls search endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/survey/bls_search?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "bls",
+                "symbol": "APUS49D74714,APUS49D74715,APUS49D74716",
+                "start_date": "2024-01-01",
+                "end_date": "2024-07-01",
+                "aspects": False,
+                "calculations": True,
+                "annual_average": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_bls_series(params, headers):
+    """Test the economy survey bls search endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/survey/bls_series?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "IN,CN",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_export_destinations(params, headers):
+    """Test the economy export destinations endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/export_destinations?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

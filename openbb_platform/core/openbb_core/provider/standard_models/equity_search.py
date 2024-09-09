@@ -16,10 +16,6 @@ class EquitySearchQueryParams(QueryParams):
     is_symbol: bool = Field(
         description="Whether to search by ticker symbol.", default=False
     )
-    use_cache: Optional[bool] = Field(
-        default=True,
-        description="Whether to use the cache or not.",
-    )
 
 
 class EquitySearchData(Data):

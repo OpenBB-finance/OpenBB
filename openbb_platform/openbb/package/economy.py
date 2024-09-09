@@ -22,6 +22,7 @@ class ROUTER_economy(Container):
     composite_leading_indicator
     country_profile
     cpi
+    export_destinations
     fred_regional
     fred_release_table
     fred_search
@@ -1180,6 +1181,90 @@ class ROUTER_economy(Container):
                                 "all",
                             ],
                         },
+                    }
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
+    def export_destinations(
+        self,
+        country: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): econdb."
+            ),
+        ],
+        provider: Annotated[
+            Optional[Literal["econdb"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get top export destinations by country from the UN Comtrade International Trade Statistics Database.
+
+        Parameters
+        ----------
+        country : Union[str, List[str]]
+            The country to get data. Multiple comma separated items allowed for provider(s): econdb.
+        provider : Optional[Literal['econdb']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.
+
+        Returns
+        -------
+        OBBject
+            results : List[ExportDestinations]
+                Serializable results.
+            provider : Optional[Literal['econdb']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        ExportDestinations
+        ------------------
+        origin_country : str
+            The country of origin.
+        destination_country : str
+            The destination country.
+        value : Union[float, int]
+            The value of the export.
+        units : Optional[str]
+            The units of measurement for the value. (provider: econdb)
+        title : Optional[str]
+            The title of the data. (provider: econdb)
+        footnote : Optional[str]
+            The footnote for the data. (provider: econdb)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.export_destinations(provider='econdb', country='us')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/export_destinations",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.export_destinations",
+                        ("econdb",),
+                    )
+                },
+                standard_params={
+                    "country": country,
+                },
+                extra_params=kwargs,
+                info={
+                    "country": {
+                        "econdb": {"multiple_items_allowed": True, "choices": None}
                     }
                 },
             )

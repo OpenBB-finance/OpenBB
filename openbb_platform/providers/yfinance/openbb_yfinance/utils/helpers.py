@@ -355,6 +355,9 @@ def yf_download(
             threads=False,
             **kwargs,
         )
+        if hasattr(data.index, "tz") and data.index.tz is not None:
+            data = data.tz_convert(None)
+
     except ValueError as exc:
         raise EmptyDataError() from exc
 

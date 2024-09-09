@@ -20,6 +20,8 @@
             ],
             "openbb_provider_extension": [
                 "benzinga@1.3.1",
+                "bls@1.0.0b0",
+                "cftc@1.0.0b0",
                 "econdb@1.2.1",
                 "federal_reserve@1.3.1",
                 "fmp@1.3.1",
@@ -3126,6 +3128,335 @@
                 "oecd": []
             },
             "model": "GdpReal"
+        },
+        "/economy/survey/bls_series": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get time series data for one, or more, BLS series IDs.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.bls_series(provider='bls', symbol='CES0000000001')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): bls.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "bls": [
+                    {
+                        "name": "calculations",
+                        "type": "bool",
+                        "description": "Include calculations in the response, if available. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "annual_average",
+                        "type": "bool",
+                        "description": "Include annual averages in the response, if available. Default is False.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "aspects",
+                        "type": "bool",
+                        "description": "Include all aspects associated with a data point for a given BLS series ID, if available. Returned with the series metadata, under `extras` of the response object. Default is False.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[BlsSeries]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['bls']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "Observation value for the symbol and date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "bls": [
+                    {
+                        "name": "change_1M",
+                        "type": "float",
+                        "description": "One month change in value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_3M",
+                        "type": "float",
+                        "description": "Three month change in value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_6M",
+                        "type": "float",
+                        "description": "Six month change in value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_12M",
+                        "type": "float",
+                        "description": "One year change in value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_percent_1M",
+                        "type": "float",
+                        "description": "One month change in percent.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_percent_3M",
+                        "type": "float",
+                        "description": "Three month change in percent.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_percent_6M",
+                        "type": "float",
+                        "description": "Six month change in percent.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_percent_12M",
+                        "type": "float",
+                        "description": "One year change in percent.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "latest",
+                        "type": "bool",
+                        "description": "Latest value indicator.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "footnotes",
+                        "type": "str",
+                        "description": "Footnotes accompanying the value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "BlsSeries"
+        },
+        "/economy/survey/bls_search": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Search BLS surveys by category and keyword or phrase to identify BLS series IDs.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.bls_search(provider='bls', category=cpi)\n# Use semi-colon to separate multiple queries as an & operator.\nobb.economy.survey.bls_search(provider='bls', category=cpi, query='seattle;gasoline')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "query",
+                        "type": "str",
+                        "description": "The search word(s). Use semi-colon to separate multiple queries as an & operator.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "bls": [
+                    {
+                        "name": "category",
+                        "type": "Literal['cpi', 'pce', 'ppi', 'ip', 'jolts', 'nfp', 'cps', 'lfs', 'wages', 'ec', 'sla', 'bed', 'tu']",
+                        "description": "The category of BLS survey to search within.\n        An empty search query will return all series within the category. Options are:\n        \n    cpi - Consumer Price Index\n        \n    pce - Personal Consumption Expenditure\n        \n    ppi - Producer Price Index\n        \n    ip - Industry Productivity\n        \n    jolts - Job Openings and Labor Turnover Survey\n        \n    nfp - Nonfarm Payrolls\n        \n    cps - Current Population Survey\n        \n    lfs - Labor Force Statistics\n        \n    wages - Wages\n        \n    ec - Employer Costs\n        \n    sla - State and Local Area Employment\n        \n    bed - Business Employment Dynamics\n        \n    tu - Time Use",
+                        "default": "",
+                        "optional": false,
+                        "choices": [
+                            "cpi",
+                            "pce",
+                            "ppi",
+                            "ip",
+                            "jolts",
+                            "nfp",
+                            "cps",
+                            "lfs",
+                            "wages",
+                            "ec",
+                            "sla",
+                            "bed",
+                            "tu"
+                        ]
+                    },
+                    {
+                        "name": "include_extras",
+                        "type": "bool",
+                        "description": "Include additional information in the search results. Extra fields returned are metadata and vary by survey. Fields are undefined strings that typically have names ending with '_code'.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "include_code_map",
+                        "type": "bool",
+                        "description": "When True, includes the complete code map for ea\u00e7h survey in the category, returned separately as a nested JSON to the `extras['results_metadata']` property of the response. Example content is the NAICS industry map for PPI surveys. Each code is a value within the 'symbol' of the time series.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[BlsSearch]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['bls']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "The title of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "survey_name",
+                        "type": "str",
+                        "description": "The name of the survey.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "bls": []
+            },
+            "model": "BlsSearch"
         },
         "/economy/survey/sloos": {
             "deprecated": {
@@ -8517,6 +8848,111 @@
                 ]
             },
             "model": "PersonalConsumptionExpenditures"
+        },
+        "/economy/export_destinations": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get top export destinations by country from the UN Comtrade International Trade Statistics Database.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.export_destinations(provider='econdb', country='us')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): econdb.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ExportDestinations]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "origin_country",
+                        "type": "str",
+                        "description": "The country of origin.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "destination_country",
+                        "type": "str",
+                        "description": "The destination country.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[float, int]",
+                        "description": "The value of the export.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "units",
+                        "type": "str",
+                        "description": "The units of measurement for the value.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "The title of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "footnote",
+                        "type": "str",
+                        "description": "The footnote for the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "ExportDestinations"
         },
         "/equity/calendar/ipo": {
             "deprecated": {
@@ -21847,8 +22283,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Get the revenue geographic breakdown for a given company over time.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', period='annual', structure='flat', provider='fmp')\n```\n\n",
+            "description": "Get the geographic breakdown of revenue for a given company over time.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', period=quarter, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -21858,25 +22294,21 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
+                    }
+                ],
+                "fmp": [
                     {
                         "name": "period",
                         "type": "Literal['quarter', 'annual']",
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "structure",
-                        "type": "Literal['hierarchical', 'flat']",
-                        "description": "Structure of the returned data.",
-                        "default": "flat",
-                        "optional": true,
-                        "choices": null
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
                     }
-                ],
-                "fmp": []
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -21942,9 +22374,17 @@
                         "choices": null
                     },
                     {
-                        "name": "geographic_segment",
-                        "type": "int",
-                        "description": "Dictionary of the revenue by geographic segment.",
+                        "name": "region",
+                        "type": "str",
+                        "description": "The region represented by the revenue data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "revenue",
+                        "type": "Union[int, float]",
+                        "description": "The total revenue attributed to the region.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -21960,7 +22400,7 @@
                 "message": null
             },
             "description": "Get the revenue breakdown by business segment for a given company over time.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', period='annual', structure='flat', provider='fmp')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', period=quarter, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -21970,25 +22410,21 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
+                    }
+                ],
+                "fmp": [
                     {
                         "name": "period",
                         "type": "Literal['quarter', 'annual']",
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "structure",
-                        "type": "Literal['hierarchical', 'flat']",
-                        "description": "Structure of the returned data.",
-                        "default": "flat",
-                        "optional": true,
-                        "choices": null
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
                     }
-                ],
-                "fmp": []
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -22055,8 +22491,16 @@
                     },
                     {
                         "name": "business_line",
-                        "type": "int",
-                        "description": "Dictionary containing the revenue of the business line.",
+                        "type": "str",
+                        "description": "The business line represented by the revenue data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "revenue",
+                        "type": "Union[int, float]",
+                        "description": "The total revenue attributed to the business line.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -25749,14 +26193,6 @@
                         "default": false,
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "use_cache",
-                        "type": "bool",
-                        "description": "Whether to use the cache or not.",
-                        "default": true,
-                        "optional": true,
-                        "choices": null
                     }
                 ],
                 "intrinio": [
@@ -25778,6 +26214,14 @@
                     }
                 ],
                 "sec": [
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether to use the cache or not.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    },
                     {
                         "name": "is_fund",
                         "type": "bool",
@@ -36258,7 +36702,9 @@
                         "default": "",
                         "optional": true,
                         "choices": null
-                    },
+                    }
+                ],
+                "sec": [
                     {
                         "name": "use_cache",
                         "type": "bool",
@@ -36267,8 +36713,7 @@
                         "optional": true,
                         "choices": null
                     }
-                ],
-                "sec": []
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -36338,14 +36783,6 @@
                         "default": "",
                         "optional": true,
                         "choices": null
-                    },
-                    {
-                        "name": "use_cache",
-                        "type": "bool",
-                        "description": "Whether or not to use cache.",
-                        "default": true,
-                        "optional": true,
-                        "choices": null
                     }
                 ],
                 "sec": [
@@ -36354,6 +36791,14 @@
                         "type": "str",
                         "description": "Enter an optional URL path to fetch the next level.",
                         "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether or not to use cache.",
+                        "default": true,
                         "optional": true,
                         "choices": null
                     }
@@ -36578,7 +37023,9 @@
                         "default": "",
                         "optional": true,
                         "choices": null
-                    },
+                    }
+                ],
+                "sec": [
                     {
                         "name": "use_cache",
                         "type": "bool",
@@ -36587,8 +37034,7 @@
                         "optional": true,
                         "choices": null
                     }
-                ],
-                "sec": []
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -36649,6 +37095,341 @@
                 ]
             },
             "model": "SicSearch"
+        },
+        "/regulators/cftc/cot_search": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the current Commitment of Traders Reports.\n\nSearch a list of the current Commitment of Traders Reports series information.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.cftc.cot_search(provider='cftc')\nobb.regulators.cftc.cot_search(query='gold', provider='cftc')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "query",
+                        "type": "str",
+                        "description": "Search query.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "cftc": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[COTSearch]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['cftc']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "code",
+                        "type": "str",
+                        "description": "CFTC market contract code of the report.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the underlying asset.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "category",
+                        "type": "str",
+                        "description": "Category of the underlying asset.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "subcategory",
+                        "type": "str",
+                        "description": "Subcategory of the underlying asset.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "units",
+                        "type": "str",
+                        "description": "The units for one contract.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "cftc": [
+                    {
+                        "name": "commodity",
+                        "type": "str",
+                        "description": "Name of the commodity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "COTSearch"
+        },
+        "/regulators/cftc/cot": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get Commitment of Traders Reports.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the latest report for all items classified as, GOLD.\nobb.regulators.cftc.cot(id='gold', provider='cftc')\n# Enter the entire history for a single CFTC Market Contract Code.\nobb.regulators.cftc.cot(id='088691', provider='cftc')\n# Get the report for futures only.\nobb.regulators.cftc.cot(id='088691', futures_only=True, provider='cftc')\n# Get the most recent Commodity Index Traders Supplemental Report.\nobb.regulators.cftc.cot(id='all', report_type=supplemental, provider='cftc')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "id",
+                        "type": "str",
+                        "description": "A string with the CFTC market code or other identifying string, such as the contract market name, commodity name, or commodity group - i.e, 'gold' or 'japanese yen'.Default report is Fed Funds Futures. Use the 'cftc_market_code' for an exact match.",
+                        "default": "045601",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format. Default is the most recent report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "cftc": [
+                    {
+                        "name": "report_type",
+                        "type": "Literal['legacy', 'disaggregated', 'financial', 'supplemental']",
+                        "description": "The type of report to retrieve. Set `id` as 'all' to return all items in the report\n            type (default date range returns the latest report). The Legacy report is broken down by exchange\n            with reported open interest further broken down into three trader classifications: commercial,\n            non-commercial and non-reportable. The Disaggregated reports are broken down by Agriculture and\n            Natural Resource contracts. The Disaggregated reports break down reportable open interest positions\n            into four classifications: Producer/Merchant, Swap Dealers, Managed Money and Other Reportables.\n            The Traders in Financial Futures (TFF) report includes financial contracts. The TFF report breaks\n            down the reported open interest into five classifications: Dealer, Asset Manager, Leveraged Money,\n            Other Reportables and Non-Reportables.",
+                        "default": "legacy",
+                        "optional": true,
+                        "choices": [
+                            "legacy",
+                            "disaggregated",
+                            "financial",
+                            "supplemental"
+                        ]
+                    },
+                    {
+                        "name": "futures_only",
+                        "type": "bool",
+                        "description": "Returns the futures-only report. Default is False, for the combined report.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[COT]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['cftc']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "report_week",
+                        "type": "str",
+                        "description": "Report week for the year.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "market_and_exchange_names",
+                        "type": "str",
+                        "description": "Market and exchange names.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cftc_contract_market_code",
+                        "type": "str",
+                        "description": "CFTC contract market code.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cftc_market_code",
+                        "type": "str",
+                        "description": "CFTC market code.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cftc_region_code",
+                        "type": "str",
+                        "description": "CFTC region code.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cftc_commodity_code",
+                        "type": "str",
+                        "description": "CFTC commodity code.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cftc_contract_market_code_quotes",
+                        "type": "str",
+                        "description": "CFTC contract market code quotes.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cftc_market_code_quotes",
+                        "type": "str",
+                        "description": "CFTC market code quotes.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cftc_commodity_code_quotes",
+                        "type": "str",
+                        "description": "CFTC commodity code quotes.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cftc_subgroup_code",
+                        "type": "str",
+                        "description": "CFTC subgroup code.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "commodity",
+                        "type": "str",
+                        "description": "Commodity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "commodity_group",
+                        "type": "str",
+                        "description": "Commodity group name.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "commodity_subgroup",
+                        "type": "str",
+                        "description": "Commodity subgroup name.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "futonly_or_combined",
+                        "type": "str",
+                        "description": "If the report is futures-only or combined.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "contract_units",
+                        "type": "str",
+                        "description": "Contract units.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "cftc": []
+            },
+            "model": "COT"
         }
     },
     "routers": {
