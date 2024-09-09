@@ -254,7 +254,7 @@ def price_historical(  # noqa: PLR0912
     if same_axis is True:
         y1title = None  # type: ignore
         y2title = None  # type: ignore
-)
+
     fig.update_layout(
         paper_bgcolor=(
             "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
