@@ -52,7 +52,7 @@ def line_chart(  # noqa: PLR0912
     """Create a line chart."""
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame, Series, to_datetime  # noqa
-    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
+    from openbb_charting.core.openbb_figure import OpenBBFigure
 
     if data is None:
         raise ValueError("Error: Data is a required field.")
@@ -122,6 +122,8 @@ def line_chart(  # noqa: PLR0912
     except Exception as _:
         fig = OpenBBFigure(create_backend=True)
 
+    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    text_color = "white" if ChartStyle().plt_style == "dark" else "black"
     title = f"{title}" if title else ""
     xtitle = xtitle if xtitle else ""
     y1title = ytitle if ytitle else ""
@@ -242,15 +244,24 @@ def line_chart(  # noqa: PLR0912
 
     fig.update_layout(
         title=dict(text=title if title else None, x=0.5, font=dict(size=16)),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color=text_color),
+        paper_bgcolor=(
+            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+        ),
+        plot_bgcolor=(
+            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+        ),
         legend=dict(
-            orientation="h",
-            yanchor="bottom",
+            orientation="v",
+            yanchor="top",
             xanchor="right",
-            y=1.02,
-            x=0.95,
-            bgcolor="rgba(0,0,0,0)",
+            y=0.95,
+            x=-0.01,
+            xref="paper",
+            font=dict(size=12),
+            bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
         ),
         yaxis=(
             dict(
@@ -405,6 +416,7 @@ def bar_chart(  # noqa: PLR0912
     )
 
     figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    text_color = "white" if ChartStyle().plt_style == "dark" else "black"
     if colors is not None:
         figure.update_layout(colorway=colors)
     if bar_kwargs is None:
@@ -434,15 +446,23 @@ def bar_chart(  # noqa: PLR0912
 
     figure.update_layout(
         title=dict(text=title if title else None, x=0.5, font=dict(size=16)),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor=(
+            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+        ),
+        plot_bgcolor=(
+            "rgba(0,0,0,0)" if text_color == "white" else "rbga(255,255,255,0)"
+        ),
         legend=dict(
-            orientation="h",
-            yanchor="bottom",
+            orientation="v",
+            yanchor="top",
             xanchor="right",
-            y=1.02,
-            x=0.98,
-            bgcolor="rgba(0,0,0,0)",
+            y=0.95,
+            x=-0.01 if orientation == "v" else 1.01,
+            xref="paper",
+            font=dict(size=12),
+            bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
         ),
         xaxis=dict(
             type=xtype,
@@ -469,6 +489,7 @@ def bar_chart(  # noqa: PLR0912
         ),
         margin=dict(pad=5),
         barmode=barmode,
+        font=dict(color=text_color),
     )
     if orientation == "h":
         figure.update_layout(
@@ -483,6 +504,7 @@ def bar_chart(  # noqa: PLR0912
             hoverlabel=dict(
                 font=dict(size=12),
             ),
+            hovermode="y unified",
         )
     if layout_kwargs:
         figure.update_layout(
@@ -532,7 +554,7 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
     """
     # pylint: disable=import-outside-toplevel
     from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
-    from pandas import Series  # noqa
+    from pandas import Series
 
     try:
         figure = OpenBBFigure()
@@ -548,7 +570,8 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
         row_width=[1],
         specs=[[{"secondary_y": True}]],
     )
-    # figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    text_color = "white" if ChartStyle().plt_style == "dark" else "black"
 
     try:
         data = Series(data=values, index=keys)
@@ -605,6 +628,13 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
             categoryorder="array" if orientation == "v" else None,
             categoryarray=keys if orientation == "v" else None,
         ),
+        paper_bgcolor=(
+            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+        ),
+        plot_bgcolor=(
+            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+        ),
+        font=dict(color="white" if text_color == "white" else "black"),
         margin=dict(pad=5),
     )
 

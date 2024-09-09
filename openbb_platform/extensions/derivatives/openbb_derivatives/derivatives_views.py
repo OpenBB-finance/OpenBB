@@ -128,6 +128,7 @@ class DerivativesViews:
 
         figure = OpenBBFigure().create_subplots(shared_xaxes=True)
         figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+        text_color = "white" if ChartStyle().plt_style == "dark" else "black"
 
         def create_fig(figure, df, dates, color_count):
             """Create a scatter for each date in the data."""
@@ -184,7 +185,12 @@ class DerivativesViews:
         # Update the layout of the figure.
         figure.update_layout(
             title=dict(text=title, x=0.5, font=dict(size=20)),
-            plot_bgcolor="rgba(255,255,255,0)",
+            plot_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
+            paper_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
             xaxis=dict(
                 title="",
                 ticklen=0,
@@ -207,7 +213,9 @@ class DerivativesViews:
                 x=0,
                 xref="paper",
                 font=dict(size=12),
-                bgcolor="rgba(0,0,0,0)",
+                bgcolor=(
+                    "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                ),
             ),
             margin=dict(
                 b=10,
