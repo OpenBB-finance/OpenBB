@@ -23,26 +23,10 @@ class ROUTER_index_price(Container):
     @validate
     def historical(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, polygon, yfinance."
-            ),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance."
-            ),
-        ] = None,
+        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, polygon, yfinance.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Historical Index Levels.
@@ -81,17 +65,17 @@ class ROUTER_index_price(Container):
         IndexHistorical
         ---------------
         date : Union[date, datetime]
-            The date of the data.
+            The date of the data. 
         open : Optional[Annotated[float, Strict(strict=True)]]
-            The open price.
+            The open price. 
         high : Optional[Annotated[float, Strict(strict=True)]]
-            The high price.
+            The high price. 
         low : Optional[Annotated[float, Strict(strict=True)]]
-            The low price.
+            The low price. 
         close : Optional[Annotated[float, Strict(strict=True)]]
-            The close price.
+            The close price. 
         volume : Optional[int]
-            The trading volume.
+            The trading volume. 
         vwap : Optional[float]
             Volume Weighted Average Price over the period. (provider: fmp)
         change : Optional[float]
@@ -125,37 +109,6 @@ class ROUTER_index_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={
-                    "symbol": {
-                        "fmp": {"multiple_items_allowed": True, "choices": None},
-                        "intrinio": {"multiple_items_allowed": True, "choices": None},
-                        "polygon": {"multiple_items_allowed": True, "choices": None},
-                        "yfinance": {"multiple_items_allowed": True, "choices": None},
-                    },
-                    "interval": {
-                        "fmp": {
-                            "multiple_items_allowed": False,
-                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
-                        },
-                        "yfinance": {
-                            "multiple_items_allowed": False,
-                            "choices": [
-                                "1m",
-                                "2m",
-                                "5m",
-                                "15m",
-                                "30m",
-                                "60m",
-                                "90m",
-                                "1h",
-                                "1d",
-                                "5d",
-                                "1W",
-                                "1M",
-                                "1Q",
-                            ],
-                        },
-                    },
-                },
+                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}, "intrinio": {"multiple_items_allowed": True, "choices": None}, "polygon": {"multiple_items_allowed": True, "choices": None}, "yfinance": {"multiple_items_allowed": True, "choices": None}}, "interval": {"fmp": {"multiple_items_allowed": False, "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]}, "yfinance": {"multiple_items_allowed": False, "choices": ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1W", "1M", "1Q"]}}},
             )
         )

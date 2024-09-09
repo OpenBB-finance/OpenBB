@@ -18,8 +18,8 @@ router = Router(prefix="/cftc")
 @router.command(
     model="COTSearch",
     examples=[
-        APIEx(parameters={"provider": "nasdaq"}),
-        APIEx(parameters={"query": "gold", "provider": "nasdaq"}),
+        APIEx(parameters={"provider": "cftc"}),
+        APIEx(parameters={"query": "gold", "provider": "cftc"}),
     ],
 )
 async def cot_search(
@@ -28,9 +28,9 @@ async def cot_search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Curated Commitment of Traders Reports.
+    """Get the current Commitment of Traders Reports.
 
-    Search a list of curated Commitment of Traders Reports series information.
+    Search a list of the current Commitment of Traders Reports series information.
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -38,18 +38,22 @@ async def cot_search(
 @router.command(
     model="COT",
     examples=[
-        APIEx(parameters={"provider": "nasdaq"}),
+        APIEx(parameters={"provider": "ctfc"}),
         APIEx(
-            description="Get the Commitment of Traders Report for Gold.",
-            parameters={"id": "GC=F", "provider": "nasdaq"},
+            description="Get the latest report for all items classified as, GOLD.",
+            parameters={"id": "gold", "provider": "cftc"},
         ),
         APIEx(
-            description="Enter the report ID by the Nasdaq Data Link Code.",
-            parameters={"id": "088691", "provider": "nasdaq"},
+            description="Enter the entire history for a single CFTC Market Contract Code.",
+            parameters={"id": "088691", "provider": "cftc"},
         ),
         APIEx(
             description="Get the report for futures only.",
-            parameters={"id": "088691", "data_type": "F", "provider": "nasdaq"},
+            parameters={"id": "088691", "futures_only": True, "provider": "cftc"},
+        ),
+        APIEx(
+            description="Get the most recent Commodity Index Traders Supplemental Report.",
+            parameters={"id": "all", "report_type": "supplemental", "provider": "cftc"},
         ),
     ],
 )

@@ -7,8 +7,8 @@ from openbb_core.provider.utils.helpers import amake_request
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0",
     "Accept": "*/*",
-    "Accept-Language": "de,en-US;q=0.7,en;q=0.3",
-    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "same-origin",
@@ -22,8 +22,9 @@ def date_range(start_date, end_date):
         yield start_date + timedelta(n)
 
 
-async def get_seekingalpha_id(symbol: str) -> str:
+async def get_seekingalpha_id(symbol: str, **kwargs) -> str:
     """Map a ticker symbol to its Seeking Alpha ID."""
+    session = kwargs.get("session")
     url = "https://seekingalpha.com/api/v3/searches"
     querystring = {
         "filter[type]": "symbols",
@@ -31,10 +32,12 @@ async def get_seekingalpha_id(symbol: str) -> str:
         "page[size]": "100",
     }
     querystring["filter[query]"] = symbol
-    payload = ""
-    response = await amake_request(
-        url, data=payload, headers=HEADERS, params=querystring
-    )
+    if session:
+        response = await amake_request(
+            url, headers=HEADERS, params=querystring, session=session
+        )
+    else:
+        response = await amake_request(url, headers=HEADERS, params=querystring)
     ids = response.get("symbols")  # type: ignore
 
-    return str(ids[0].get("id", ""))
+    return str(ids[0].get("id", "")) if isinstance(ids, list) and ids else ""

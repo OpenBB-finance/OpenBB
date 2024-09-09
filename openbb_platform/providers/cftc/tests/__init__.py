@@ -1,0 +1,1 @@
+"""CFTC Provider Fetcher Tests."""

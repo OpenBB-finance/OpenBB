@@ -630,7 +630,7 @@ results: [{'close': 77.62, 'close_EMA_50': None}, {'close': 80.25, 'close_EMA_50
 
 ##### Python Interface
 
-When using the OpenBB Platform on a Python Interface, docstrings and type hints are your best friends as it provides plenty of context on how to use the commands.
+When using the OpenBB Platform on a Python Interface, docstrings and type hints are your best friends as they provides plenty of context on how to use the commands.
 Looking at an example on the `ta` menu:
 
 ```python

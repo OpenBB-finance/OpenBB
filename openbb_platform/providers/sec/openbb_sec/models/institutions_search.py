@@ -16,6 +16,11 @@ class SecInstitutionsSearchQueryParams(CotSearchQueryParams):
     Source: https://sec.gov/
     """
 
+    use_cache: Optional[bool] = Field(
+        default=True,
+        description="Whether or not to use cache.",
+    )
+
 
 class SecInstitutionsSearchData(Data):
     """SEC Institutions Search Data."""
