@@ -103,7 +103,7 @@ class ImfEconomicIndicatorsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> ImfEconomicIndicatorsQueryParams:
         """Transform the query."""
-        symbols = params.get("symbol")
+        symbols = params.get("symbol", "")
         countries = params.get("country")
         now = datetime.now().date()
         symbols = "IRFCL" if ("all" in symbols or "IRFCL" in symbols) else symbols
