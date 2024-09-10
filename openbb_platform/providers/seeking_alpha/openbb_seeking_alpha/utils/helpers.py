@@ -40,4 +40,4 @@ async def get_seekingalpha_id(symbol: str, **kwargs) -> str:
         response = await amake_request(url, headers=HEADERS, params=querystring)
     ids = response.get("symbols")  # type: ignore
 
-    return str(ids[0].get("id", ""))
+    return str(ids[0].get("id", "")) if isinstance(ids, list) and ids else ""
