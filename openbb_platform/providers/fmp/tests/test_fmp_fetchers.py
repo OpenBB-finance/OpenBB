@@ -294,7 +294,7 @@ def test_fmp_share_statistics_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_revenue_geographic_fetcher(credentials=test_credentials):
     """Test FMP revenue geographic fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "period": "annual"}
 
     fetcher = FMPRevenueGeographicFetcher()
     result = fetcher.test(params, credentials)
@@ -304,7 +304,7 @@ def test_fmp_revenue_geographic_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_revenue_business_line_fetcher(credentials=test_credentials):
     """Test FMP revenue business line fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "period": "annual"}
 
     fetcher = FMPRevenueBusinessLineFetcher()
     result = fetcher.test(params, credentials)

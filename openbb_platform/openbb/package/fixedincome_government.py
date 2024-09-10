@@ -28,20 +28,9 @@ class ROUTER_fixedincome_government(Container):
     @validate
     def tips_yields(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["fred"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
         **kwargs
     ) -> OBBject:
         """Get current Treasury inflation-protected securities yields.
@@ -109,15 +98,15 @@ class ROUTER_fixedincome_government(Container):
         TipsYields
         ----------
         date : date
-            The date of the data.
+            The date of the data. 
         symbol : Optional[str]
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         due : Optional[date]
-            The due date (maturation date) of the security.
+            The due date (maturation date) of the security. 
         name : Optional[str]
-            The name of the security.
+            The name of the security. 
         value : Optional[float]
-            The yield value.
+            The yield value. 
 
         Examples
         --------
@@ -148,20 +137,9 @@ class ROUTER_fixedincome_government(Container):
     @validate
     def treasury_rates(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["federal_reserve", "fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fmp."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["federal_reserve", "fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fmp.")] = None,
         **kwargs
     ) -> OBBject:
         """Government Treasury Rates.
@@ -192,33 +170,33 @@ class ROUTER_fixedincome_government(Container):
         TreasuryRates
         -------------
         date : date
-            The date of the data.
+            The date of the data. 
         week_4 : Optional[float]
-            4 week Treasury bills rate (secondary market).
+            4 week Treasury bills rate (secondary market). 
         month_1 : Optional[float]
-            1 month Treasury rate.
+            1 month Treasury rate. 
         month_2 : Optional[float]
-            2 month Treasury rate.
+            2 month Treasury rate. 
         month_3 : Optional[float]
-            3 month Treasury rate.
+            3 month Treasury rate. 
         month_6 : Optional[float]
-            6 month Treasury rate.
+            6 month Treasury rate. 
         year_1 : Optional[float]
-            1 year Treasury rate.
+            1 year Treasury rate. 
         year_2 : Optional[float]
-            2 year Treasury rate.
+            2 year Treasury rate. 
         year_3 : Optional[float]
-            3 year Treasury rate.
+            3 year Treasury rate. 
         year_5 : Optional[float]
-            5 year Treasury rate.
+            5 year Treasury rate. 
         year_7 : Optional[float]
-            7 year Treasury rate.
+            7 year Treasury rate. 
         year_10 : Optional[float]
-            10 year Treasury rate.
+            10 year Treasury rate. 
         year_20 : Optional[float]
-            20 year Treasury rate.
+            20 year Treasury rate. 
         year_30 : Optional[float]
-            30 year Treasury rate.
+            30 year Treasury rate. 
 
         Examples
         --------
@@ -252,21 +230,9 @@ class ROUTER_fixedincome_government(Container):
     )
     def us_yield_curve(
         self,
-        date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(
-                description="A specific date to get data for. Defaults to the most recent FRED entry."
-            ),
-        ] = None,
-        inflation_adjusted: Annotated[
-            Optional[bool], OpenBBField(description="Get inflation adjusted rates.")
-        ] = False,
-        provider: Annotated[
-            Optional[Literal["fred"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
-            ),
-        ] = None,
+        date: Annotated[Union[datetime.date, None, str], OpenBBField(description="A specific date to get data for. Defaults to the most recent FRED entry.")] = None,
+        inflation_adjusted: Annotated[Optional[bool], OpenBBField(description="Get inflation adjusted rates.")] = False,
+        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
         **kwargs
     ) -> OBBject:
         """US Yield Curve. Get United States yield curve.
@@ -297,9 +263,9 @@ class ROUTER_fixedincome_government(Container):
         USYieldCurve
         ------------
         maturity : float
-            Maturity of the treasury rate in years.
+            Maturity of the treasury rate in years. 
         rate : float
-            Associated rate given in decimal form (0.05 is 5%)
+            Associated rate given in decimal form (0.05 is 5%) 
 
         Examples
         --------
@@ -309,11 +275,7 @@ class ROUTER_fixedincome_government(Container):
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)
-        warn(
-            "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4.",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
+        warn("This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4.", category=DeprecationWarning, stacklevel=2)
 
         return self._run(
             "/fixedincome/government/us_yield_curve",
@@ -337,18 +299,8 @@ class ROUTER_fixedincome_government(Container):
     @validate
     def yield_curve(
         self,
-        date: Annotated[
-            Union[str, None, List[Optional[str]]],
-            OpenBBField(
-                description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred."
-            ),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["econdb", "federal_reserve", "fmp", "fred"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred."
-            ),
-        ] = None,
+        date: Annotated[Union[str, None, List[Optional[str]]], OpenBBField(description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.")] = None,
+        provider: Annotated[Optional[Literal["econdb", "federal_reserve", "fmp", "fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.")] = None,
         **kwargs
     ) -> OBBject:
         """Get yield curve data by country and date.
@@ -383,11 +335,11 @@ class ROUTER_fixedincome_government(Container):
         YieldCurve
         ----------
         date : Optional[date]
-            The date of the data.
+            The date of the data. 
         maturity : str
-            Maturity length of the security.
+            Maturity length of the security. 
         rate : float
-            The yield as a normalized percent (0.05 is 5%)
+            The yield as a normalized percent (0.05 is 5%) 
 
         Examples
         --------
@@ -412,16 +364,6 @@ class ROUTER_fixedincome_government(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={
-                    "date": {
-                        "econdb": {"multiple_items_allowed": True, "choices": None},
-                        "federal_reserve": {
-                            "multiple_items_allowed": True,
-                            "choices": None,
-                        },
-                        "fmp": {"multiple_items_allowed": True, "choices": None},
-                        "fred": {"multiple_items_allowed": True, "choices": None},
-                    }
-                },
+                info={"date": {"econdb": {"multiple_items_allowed": True, "choices": None}, "federal_reserve": {"multiple_items_allowed": True, "choices": None}, "fmp": {"multiple_items_allowed": True, "choices": None}, "fred": {"multiple_items_allowed": True, "choices": None}}},
             )
         )
