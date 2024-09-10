@@ -1,38 +1,38 @@
 {
-    "openbb": "4.3.1",
+    "openbb": "4.3.2",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.1",
+        "core": "1.3.2",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.2.1",
-                "crypto@1.3.1",
-                "currency@1.3.1",
-                "derivatives@1.3.1",
-                "economy@1.3.1",
-                "equity@1.3.1",
-                "etf@1.3.1",
-                "fixedincome@1.3.1",
-                "index@1.3.1",
-                "news@1.3.1",
-                "regulators@1.3.1"
+                "commodity@1.2.2",
+                "crypto@1.3.2",
+                "currency@1.3.2",
+                "derivatives@1.3.2",
+                "economy@1.3.2",
+                "equity@1.3.2",
+                "etf@1.3.2",
+                "fixedincome@1.3.2",
+                "index@1.3.2",
+                "news@1.3.2",
+                "regulators@1.3.2"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.3.1",
-                "bls@1.0.0b0",
-                "cftc@1.0.0b0",
-                "econdb@1.2.1",
-                "federal_reserve@1.3.1",
-                "fmp@1.3.1",
-                "fred@1.3.1",
-                "intrinio@1.3.1",
-                "oecd@1.3.1",
-                "polygon@1.3.1",
-                "sec@1.3.1",
-                "tiingo@1.3.1",
-                "tradingeconomics@1.3.1",
-                "yfinance@1.3.1"
+                "benzinga@1.3.2",
+                "bls@1.0.0",
+                "cftc@1.0.0",
+                "econdb@1.2.2",
+                "federal_reserve@1.3.2",
+                "fmp@1.3.2",
+                "fred@1.3.2",
+                "intrinio@1.3.2",
+                "oecd@1.3.2",
+                "polygon@1.3.2",
+                "sec@1.3.2",
+                "tiingo@1.3.2",
+                "tradingeconomics@1.3.2",
+                "yfinance@1.3.3"
             ],
             "openbb_obbject_extension": []
         }
@@ -8848,6 +8848,111 @@
                 ]
             },
             "model": "PersonalConsumptionExpenditures"
+        },
+        "/economy/export_destinations": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get top export destinations by country from the UN Comtrade International Trade Statistics Database.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.export_destinations(provider='econdb', country='us')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): econdb.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ExportDestinations]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "origin_country",
+                        "type": "str",
+                        "description": "The country of origin.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "destination_country",
+                        "type": "str",
+                        "description": "The destination country.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[float, int]",
+                        "description": "The value of the export.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "units",
+                        "type": "str",
+                        "description": "The units of measurement for the value.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "The title of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "footnote",
+                        "type": "str",
+                        "description": "The footnote for the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "ExportDestinations"
         },
         "/equity/calendar/ipo": {
             "deprecated": {
@@ -22178,8 +22283,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Get the revenue geographic breakdown for a given company over time.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', period='annual', structure='flat', provider='fmp')\n```\n\n",
+            "description": "Get the geographic breakdown of revenue for a given company over time.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', period=quarter, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -22189,25 +22294,21 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
+                    }
+                ],
+                "fmp": [
                     {
                         "name": "period",
                         "type": "Literal['quarter', 'annual']",
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "structure",
-                        "type": "Literal['hierarchical', 'flat']",
-                        "description": "Structure of the returned data.",
-                        "default": "flat",
-                        "optional": true,
-                        "choices": null
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
                     }
-                ],
-                "fmp": []
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -22273,9 +22374,17 @@
                         "choices": null
                     },
                     {
-                        "name": "geographic_segment",
-                        "type": "int",
-                        "description": "Dictionary of the revenue by geographic segment.",
+                        "name": "region",
+                        "type": "str",
+                        "description": "The region represented by the revenue data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "revenue",
+                        "type": "Union[int, float]",
+                        "description": "The total revenue attributed to the region.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -22291,7 +22400,7 @@
                 "message": null
             },
             "description": "Get the revenue breakdown by business segment for a given company over time.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', period='annual', structure='flat', provider='fmp')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', period=quarter, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -22301,25 +22410,21 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
+                    }
+                ],
+                "fmp": [
                     {
                         "name": "period",
                         "type": "Literal['quarter', 'annual']",
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "structure",
-                        "type": "Literal['hierarchical', 'flat']",
-                        "description": "Structure of the returned data.",
-                        "default": "flat",
-                        "optional": true,
-                        "choices": null
+                        "choices": [
+                            "quarter",
+                            "annual"
+                        ]
                     }
-                ],
-                "fmp": []
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -22386,8 +22491,16 @@
                     },
                     {
                         "name": "business_line",
-                        "type": "int",
-                        "description": "Dictionary containing the revenue of the business line.",
+                        "type": "str",
+                        "description": "The business line represented by the revenue data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "revenue",
+                        "type": "Union[int, float]",
+                        "description": "The total revenue attributed to the business line.",
                         "default": "",
                         "optional": false,
                         "choices": null

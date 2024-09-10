@@ -64,6 +64,7 @@ class FixedIncomeViews:
 
         figure = OpenBBFigure().create_subplots(shared_xaxes=True)
         figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+        text_color = "white" if ChartStyle().plt_style == "dark" else "black"
 
         def create_fig(figure, df, dates, color_count, country: Optional[str] = None):
             """Create a scatter for each date in the data."""
@@ -90,7 +91,6 @@ class FixedIncomeViews:
                 figure.add_scatter(
                     x=plot_df["Maturity"],
                     y=plot_df["Yield"],
-                    # fill=fill,
                     mode="lines+markers",
                     name=f"{country} - {date}" if country else date,
                     line=dict(width=3, color=color),
@@ -142,7 +142,12 @@ class FixedIncomeViews:
         # Update the layout of the figure.
         figure.update_layout(
             title=dict(text=title, x=0.5, font=dict(size=20)),
-            plot_bgcolor="rgba(255,255,255,0)",
+            plot_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
+            paper_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
             xaxis=dict(
                 title="Maturity",
                 ticklen=0,
@@ -174,7 +179,9 @@ class FixedIncomeViews:
                 x=0,
                 xref="paper",
                 font=dict(size=12),
-                bgcolor="rgba(0,0,0,0)",
+                bgcolor=(
+                    "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                ),
             ),
             margin=dict(
                 b=25,
