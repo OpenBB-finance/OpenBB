@@ -206,7 +206,7 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
 
     if "ErrorDetails" in response:
         raise OpenBBError(
-            f"{response['ErrorDetails'].get('Code')} -> {response['ErrorDetails'].get('Message')}"
+            f"{response['ErrorDetails'].get('Code')} -> {response['ErrorDetails'].get('Message')}"  # type: ignore
         )
 
     series = response.get("CompactData", {}).get("DataSet", {}).pop("Series", {})  # type: ignore
