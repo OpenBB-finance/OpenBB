@@ -146,6 +146,15 @@
         "website": "https://data.gov"
     },
     {
+        "packageName": "openbb-imf",
+        "optional": false,
+        "reprName": "International Monetary Fund (IMF) Public Data API",
+        "description": "The mission of the Commodity Futures Trading Commission (CFTC) is to promote the integrity, resilience, and vibrancy of the U.S. derivatives markets through sound regulation.",
+        "credentials": [],
+        "website": "https://datahelp.imf.org/knowledgebase/articles/667681-using-json-restful-web-service",
+        "instructions": ""
+    },
+    {
         "packageName": "openbb-intrinio",
         "optional": false,
         "reprName": "Intrinio",
