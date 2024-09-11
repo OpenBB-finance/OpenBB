@@ -149,10 +149,9 @@
         "packageName": "openbb-imf",
         "optional": false,
         "reprName": "International Monetary Fund (IMF) Public Data API",
-        "description": "The mission of the Commodity Futures Trading Commission (CFTC) is to promote the integrity, resilience, and vibrancy of the U.S. derivatives markets through sound regulation.",
+        "description": "This provider allows you to access International Monetary Fund data through the IMF Public Data API.",
         "credentials": [],
-        "website": "https://datahelp.imf.org/knowledgebase/articles/667681-using-json-restful-web-service",
-        "instructions": ""
+        "website": "https://datahelp.imf.org/knowledgebase/articles/667681-using-json-restful-web-service"
     },
     {
         "packageName": "openbb-intrinio",
