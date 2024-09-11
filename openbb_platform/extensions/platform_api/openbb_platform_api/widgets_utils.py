@@ -140,6 +140,9 @@ def build_json(openapi: Dict):
             [],
         )
 
+        if not providers:
+            providers = [{"value": "Custom"}]
+
         for provider in providers:
             provider_value = provider["value"]
 
