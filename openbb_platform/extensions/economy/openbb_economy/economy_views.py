@@ -25,6 +25,7 @@ class EconomyViews:
         from openbb_charting.charts.helpers import (
             z_score_standardization,
         )
+        from openbb_charting.core.chart_style import ChartStyle
         from openbb_charting.core.openbb_figure import OpenBBFigure
         from openbb_charting.styles.colors import LARGE_CYCLER
         from openbb_core.app.utils import basemodel_to_df
@@ -177,7 +178,8 @@ class EconomyViews:
         fig = OpenBBFigure().create_subplots(
             rows=1, cols=1, shared_xaxes=True, shared_yaxes=False
         )
-
+        fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
+        text_color = "white" if ChartStyle().plt_style == "dark" else "black"
         # For each series in the DataFrame, add a scatter plot.
         for i, col in enumerate(df_ta.columns):
 
@@ -227,15 +229,21 @@ class EconomyViews:
         # Now update the layout of the complete figure.
         fig.update_layout(
             title=dict(text=title, x=0.5, font=dict(size=16)),
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
+            plot_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
                 xanchor="right",
                 y=1.02,
                 x=0.95,
-                bgcolor="rgba(0,0,0,0)",
+                bgcolor=(
+                    "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                ),
                 font=dict(size=12),
             ),
             yaxis=(
@@ -304,6 +312,7 @@ class EconomyViews:
             margin=(
                 dict(r=25, l=25, b=75 if xtitle else 30) if normalize is False else None
             ),
+            font=dict(color=text_color),
             autosize=True,
             dragmode="pan",
         )
@@ -311,6 +320,7 @@ class EconomyViews:
             fig.update_layout(kwargs.get("layout_kwargs"))
         if kwargs.get("title"):
             fig.set_title(str(kwargs.get("title")))
+
         content = fig.to_plotly_json()
 
         return fig, content
