@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 import pytest
-from openbb_platform_api.widgets_utils import build_json, modify_query_schema
+from openbb_platform_api.utils.widgets import build_json, modify_query_schema
 
 # pylint: disable=redefined-outer-name
 

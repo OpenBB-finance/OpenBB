@@ -1,11 +1,11 @@
 from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
-from openbb_platform_api.api import (
+from openbb_platform_api.utils.api import (
     check_port,
     get_user_settings,
     get_widgets_json,
-    main,
+    parse_args,
 )
 
 
@@ -38,7 +38,9 @@ def test_get_user_settings_no_login():
             read_data='{"credentials": {}, "preferences": {}, "defaults": {"commands": {}}}'
         ),
     ):
-        settings = get_user_settings(login=False)
+        settings = get_user_settings(
+            _login=False, current_user_settings="", user_settings_copy=""
+        )
         assert settings == {
             "credentials": {},
             "preferences": {},
@@ -50,16 +52,24 @@ def test_get_widgets_json_no_build():
     with patch("builtins.open", mock_open(read_data="{}")), patch(
         "os.path.exists", return_value=True
     ):
-        widgets_json = get_widgets_json(build=False, openapi={})
+        widgets_json = get_widgets_json(_build=False, _openapi={})
         assert widgets_json == {}
 
 
-def test_main():
-    with patch("sys.argv", ["api.py", "--no-build"]), patch(
-        "openbb_platform_api.api.get_user_settings"
-    ), patch("openbb_platform_api.api.get_widgets_json"), patch("uvicorn.run"):
-        main()
-        assert True  # If no exception is raised, the test passes
+def test_parse_args():
+    with patch("sys.argv", ["script.py", "--help"]):
+        with pytest.raises(SystemExit) as e:
+            parse_args()
+        assert e.type == SystemExit
+        assert e.value.code == 0
+
+    with patch("sys.argv", ["script.py", "--key", "value"]):
+        args = parse_args()
+        assert args == {"key": "value"}
+
+    with patch("sys.argv", ["script.py", "--flag"]):
+        args = parse_args()
+        assert args == {"flag": True}
 
 
 if __name__ == "__main__":

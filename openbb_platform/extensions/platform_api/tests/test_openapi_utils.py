@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 import pytest
-from openbb_platform_api.openapi_utils import (
+from openbb_platform_api.utils.openapi import (
     data_schema_to_columns_defs,
     get_data_schema_for_widget,
     get_query_schema_for_widget,

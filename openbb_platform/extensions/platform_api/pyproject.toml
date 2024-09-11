@@ -11,7 +11,7 @@ documentation = "https://docs.openbb.co"
 packages = [{ include = "openbb_platform_api" }]
 
 [tool.poetry.scripts]
-openbb-api = "openbb_platform_api.api:main"
+openbb-api = "openbb_platform_api.main:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"

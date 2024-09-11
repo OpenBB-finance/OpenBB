@@ -1,7 +1,5 @@
-"""Utilities for building the widgets.json file."""
+"""Utils for building the widgets.json file."""
 
-import importlib.util
-import os
 from copy import deepcopy
 from typing import Dict, List
 
@@ -100,21 +98,11 @@ def modify_query_schema(query_schema: List[Dict], provider_value: str):
 
 def build_json(openapi: Dict):
     """Build the widgets.json file."""
-    # We need to import the utils module as a dynamic relative import.
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    openapi_utils_path = os.path.join(script_dir, "openapi_utils.py")
-    spec = importlib.util.spec_from_file_location(
-        "openapi_utils", openapi_utils_path
-    )  # type: ignore
-    openapi_utils = importlib.util.module_from_spec(spec)  # type: ignore
-    spec.loader.exec_module(openapi_utils)  # type: ignore
-
-    # Assign the required functions from the utils module
-    get_query_schema_for_widget = openapi_utils.get_query_schema_for_widget
+    # pylint: disable=import-outside-toplevel
+    from .openapi import get_query_schema_for_widget
 
     # TODO: Add the data schema to the widget_config once there is support for not displaying empty columns.
-    # data_schema_to_columns_defs = openapi_utils.data_schema_to_columns_defs
-    # get_data_schema_for_widget = openapi_utils.get_data_schema_for_widget
+    # from .openapi import get_data_schema_for_widget
 
     widgets_json: Dict = {}
     routes = [

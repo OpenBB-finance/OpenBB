@@ -1,19 +1,5 @@
-"""
-Serve the OpenBB Platform API and widgets.json.
+"""API Utils."""
 
-Specific arguments:
---build: Build the widgets.json file.
---no-build: Do not build the widgets.json file.
---login: Login to the OpenBB Platform.
-
-All other arguments will be passed to uvicorn.
-Run `uvicorn --help` to get the full list of arguments.
-"""
-
-# pylint: disable=unused-variable,too-many-statements,too-many-locals,too-many-branches,too-many-nested-blocks
-# flake8: noqa: T201
-
-import importlib.util
 import json
 import os
 import socket
@@ -21,28 +7,43 @@ import sys
 from pathlib import Path
 from typing import Dict
 
-import uvicorn
 from deepdiff import DeepDiff
-from fastapi.responses import JSONResponse
-from openbb_core.api.rest_api import app
 
-HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
+from .widgets import build_json
 
-CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")  # type: ignore
-USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backup.json")  # type: ignore
+LAUNCH_SCRIPT_DESCRIPTION = """
+Serve the OpenBB Platform API.
 
-FIRST_RUN = True
 
-# We need to import the widgets_utils module as a dynamic relative import.
-script_dir = os.path.dirname(os.path.abspath(__file__))
-widgets_utils_path = os.path.join(script_dir, "widgets_utils.py")
-spec = importlib.util.spec_from_file_location(
-    "widgets_utils", widgets_utils_path
-)  # type: ignore
-widgets_utils = importlib.util.module_from_spec(spec)  # type: ignore
-spec.loader.exec_module(widgets_utils)  # type: ignore
+Launcher specific arguments:
 
-build_json = widgets_utils.build_json
+    --build                         Build the widgets.json file.
+    --no-build                      Do not build the widgets.json file.
+    --login                         Login to the OpenBB Platform.
+
+
+All other arguments will be passed to uvicorn. Here are the most common ones:
+
+    --host TEXT                     Host IP address or hostname.
+                                      [default: 127.0.0.1]
+    --port INTEGER                  Port number.
+                                      [default: 6900]
+    --ssl-keyfile TEXT              SSL key file.
+    --ssl-certfile TEXT             SSL certificate file.
+    --ssl-keyfile-password TEXT     SSL keyfile password.
+    --ssl-version INTEGER           SSL version to use.
+                                      (see stdlib ssl module's)
+                                      [default: 17]
+    --ssl-cert-reqs INTEGER         Whether client certificate is required.
+                                      (see stdlib ssl module's)
+                                      [default: 0]
+    --ssl-ca-certs TEXT             CA certificates file.
+    --ssl-ciphers TEXT              Ciphers to use.
+                                      (see stdlib ssl module's)
+                                      [default: TLSv1]
+
+Run `uvicorn --help` to get the full list of arguments.
+"""
 
 
 def check_port(host, port):
@@ -59,13 +60,15 @@ def check_port(host, port):
     return port
 
 
-def get_user_settings(_login: bool):
+def get_user_settings(
+    _login: bool, current_user_settings: str, user_settings_copy: str
+):
     """Login to the OpenBB Platform."""
     # pylint: disable=import-outside-toplevel
     import getpass
 
-    if Path(CURRENT_USER_SETTINGS).exists():
-        with open(CURRENT_USER_SETTINGS, encoding="utf-8") as f:
+    if Path(current_user_settings).exists():
+        with open(current_user_settings, encoding="utf-8") as f:
             _current_settings = json.load(f)
     else:
         _current_settings = {
@@ -102,7 +105,9 @@ def get_user_settings(_login: bool):
                 hub_settings.defaults.model_dump_json()  # pylint: disable=no-member
             )
         except Exception as e:  # pylint: disable=broad-exception-caught
-            print(f"\n\nError connecting with Hub:\n{e}\n\nUsing the local settings.\n")
+            print(  # noqa: T201
+                f"\n\nError connecting with Hub:\n{e}\n\nUsing the local settings.\n"
+            )
 
         if hub_credentials:
             # Prompt the user to ask if they want to persist the new settings
@@ -120,14 +125,14 @@ def get_user_settings(_login: bool):
             elif persist_input in ["no", "n"]:
                 PERSIST = False
             else:
-                print(
+                print(  # noqa: T201
                     "\n\nInvalid input. Defaulting to not persisting the new settings."
                 )
                 PERSIST = False
 
             # Save the current settings to restore at the end of the session.
             if PERSIST is False:
-                with open(USER_SETTINGS_COPY, "w", encoding="utf-8") as f:
+                with open(user_settings_copy, "w", encoding="utf-8") as f:
                     json.dump(_current_settings, f, indent=4)
 
         new_settings = _current_settings.copy()
@@ -158,7 +163,7 @@ def get_user_settings(_login: bool):
                     continue
 
         # Write the new settings to the user_settings.json file
-        with open(CURRENT_USER_SETTINGS, "w", encoding="utf-8") as f:
+        with open(current_user_settings, "w", encoding="utf-8") as f:
             json.dump(new_settings, f, indent=4)
 
         _current_settings = new_settings
@@ -189,7 +194,7 @@ def get_widgets_json(_build: bool, _openapi):
         diff = DeepDiff(existing_widgets_json, _widgets_json, ignore_order=True)
         merge_prompt = None
         if diff and json_exists:
-            print("Differences found:", diff)
+            print("Differences found:", diff)  # noqa: T201
             merge_prompt = input(
                 "\nDo you want to overwrite the existing widgets.json configuration?"
                 "\nEnter 'n' to append existing with only new entries, or 'i' to ignore all changes. (y/n/i): "
@@ -204,7 +209,9 @@ def get_widgets_json(_build: bool, _openapi):
                 with open(widgets_json_path, "w", encoding="utf-8") as f:
                     json.dump(_widgets_json, f, ensure_ascii=False, indent=4)
             except Exception as e:  # pylint: disable=broad-exception-caught
-                print(f"Error writing widgets.json: {e}.  Loading from memory instead.")
+                print(  # noqa: T201
+                    f"Error writing widgets.json: {e}.  Loading from memory instead."
+                )
                 _widgets_json = (
                     existing_widgets_json
                     if existing_widgets_json
@@ -220,7 +227,7 @@ def parse_args():
     _kwargs: Dict = {}
     for i, arg in enumerate(args):
         if arg == "--help":
-            print(__doc__)
+            print(LAUNCH_SCRIPT_DESCRIPTION)  # noqa: T201
             sys.exit(0)
         if arg.startswith("--"):
             key = arg[2:]
@@ -230,93 +237,3 @@ def parse_args():
             else:
                 _kwargs[key] = True
     return _kwargs
-
-
-openapi = app.openapi()
-kwargs = parse_args()
-build = kwargs.pop("build", True)
-build = False if kwargs.pop("no-build", None) else build
-login = kwargs.pop("login", False)
-
-# We don't need the current settings,
-# but we need to call the function to update, login, and/or identify the settings file.
-current_settings = get_user_settings(login)  # noqa F841
-
-widgets_json = get_widgets_json(build, openapi)
-
-
-@app.get("/")
-async def get_root():
-    """Root response and welcome message."""
-    return JSONResponse(
-        content="Welcome to the OpenBB Platform API."
-        + " Learn how to connect to Pro in docs.openbb.co/pro/data-connectors,"
-        + " or see the API documentation here: /docs"
-    )
-
-
-@app.get("/widgets.json")
-async def get_widgets():
-    """Widgets configuration file for the OpenBB Terminal Pro."""
-    # This allows us to serve an edited widgets.json file without reloading the server.
-    global FIRST_RUN  # noqa PLW0603  # pylint: disable=global-statement
-    if FIRST_RUN is True:
-        FIRST_RUN = False
-        return JSONResponse(content=widgets_json)
-    return JSONResponse(content=get_widgets_json(False, openapi))
-
-
-def launch_api(**_kwargs):  # noqa PRL0912
-    """Main function."""
-    host = _kwargs.pop("host", os.getenv("OPENBB_API_HOST", "127.0.0.1"))
-    if not host:
-        print(
-            "\n\nOPENBB_API_HOST is set incorrectly. It should be an IP address or hostname."
-        )
-        host = input("Enter the host IP address or hostname: ")
-        if not host:
-            host = "127.0.0.1"
-
-    port = _kwargs.pop("port", os.getenv("OPENBB_API_PORT", "6900"))
-
-    try:
-        port = int(port)
-    except ValueError:
-        print("\n\nOPENBB_API_PORT is set incorrectly. It should be an port number.")
-        port = input("Enter the port number: ")
-        try:
-            port = int(port)
-        except ValueError:
-            print("\n\nInvalid port number. Defaulting to 6900.")
-            port = 6900
-    if port < 1025:
-        port = 6900
-        print("\n\nInvalid port number, must be above 1024. Defaulting to 6900.")
-
-    free_port = check_port(host, port)
-
-    if free_port != port:
-        print(f"\n\nPort {port} is already in use. Using port {free_port}.\n")
-        port = free_port
-
-    try:
-        package_name = __package__
-        uvicorn.run(f"{package_name}.api:app", host=host, port=port, **_kwargs)
-    finally:
-        # If user_settings_copy.json exists, then restore the original settings.
-        if os.path.exists(USER_SETTINGS_COPY):
-            print("\n\nRestoring the original settings.\n")
-            os.replace(USER_SETTINGS_COPY, CURRENT_USER_SETTINGS)
-
-
-def main():
-    """Launch the API."""
-    launch_api(**kwargs)
-
-
-if __name__ == "__main__":
-
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("Restoring the original settings.")

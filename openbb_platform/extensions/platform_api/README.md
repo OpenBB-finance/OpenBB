@@ -9,4 +9,3 @@ Install this package locally by navigating into the directory and entering:
 ```sh
 pip install -e .
 ```
-

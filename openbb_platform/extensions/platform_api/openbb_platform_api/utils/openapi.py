@@ -1,12 +1,10 @@
-"""OpenBB Platform API Utils."""
-
-# flake8: noqa: PLR0912
-# pylint: disable=too-many-branches
+"""OpenAPI parsing Utils."""
 
 from typing import Dict, List
 
 
-def get_query_schema_for_widget(
+# pylint: disable=too-many-branches
+def get_query_schema_for_widget(  # noqa: PLR0912
     openapi_json: dict, command_route: str
 ) -> tuple[list, bool]:
     """Extract the query schema for a widget.
