@@ -83,9 +83,7 @@ class EconDbPortVolumeFetcher(
         try:
             response = await amake_request(url)
         except Exception as e:
-            raise OpenBBError(
-                "There was an error with the HTTP request", original=e
-            ) from e
+            raise OpenBBError("There was an error with the HTTP request") from e
 
         if isinstance(response, dict):
             return response
@@ -116,9 +114,9 @@ class EconDbPortVolumeFetcher(
         port_codes = list(code_to_city_map)
 
         for code in port_codes:
-            data: List = []
+            new_data: List = []
             for k, v in res.items():
-                data.extend(
+                new_data.extend(
                     {
                         "date": d.get("Date"),
                         "port_code": code,
@@ -131,14 +129,14 @@ class EconDbPortVolumeFetcher(
                     if d.get(code)
                 )
             df = (
-                DataFrame(data)
+                DataFrame(new_data)
                 .sort_values(by=["date", "measure"])
                 .reset_index(drop=True)
                 if df.empty
                 else concat(
                     [
                         df,
-                        DataFrame(data)
+                        DataFrame(new_data)
                         .sort_values(by=["date", "measure"])
                         .reset_index(drop=True),
                     ]
