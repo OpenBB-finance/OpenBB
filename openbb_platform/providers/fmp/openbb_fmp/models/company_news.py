@@ -26,6 +26,14 @@ class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
         description="Page number of the results. Use in combination with limit.",
     )
 
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def _symbol_mandatory(cls, v):
+        """Symbol mandatory validator."""
+        if not v:
+            raise ValueError("Required field missing -> symbol")
+        return v
+
 
 class FMPCompanyNewsData(CompanyNewsData):
     """FMP Company News Data."""

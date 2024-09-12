@@ -514,7 +514,7 @@ def test_equity_ownership_institutional(params, obb):
     [
         (
             {
-                "symbol": "",
+                "symbol": None,
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 100,
@@ -818,7 +818,6 @@ def test_equity_fundamental_ratios(params, obb):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "structure": "flat",
                 "provider": "fmp",
             }
         ),
@@ -840,7 +839,6 @@ def test_equity_fundamental_revenue_per_geography(params, obb):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "structure": "flat",
                 "provider": "fmp",
             }
         ),
@@ -1080,8 +1078,8 @@ def test_equity_compare_groups(params, obb):
                 "adjustment": "splits_and_dividends",
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "start_date": "2023-06-01",
-                "end_date": "2023-06-03",
+                "start_date": None,
+                "end_date": None,
                 "interval": "1h",
             }
         ),
@@ -1329,7 +1327,7 @@ def test_equity_fundamental_latest_attributes(params, obb):
     [
         ({"query": "AAPL", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
-        ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
+        ({"query": "", "provider": "nasdaq", "is_etf": True}),
         ({"query": "gold", "provider": "tmx", "use_cache": False}),
         ({"query": "gold", "provider": "tradier", "is_symbol": False}),
         (
@@ -1338,7 +1336,6 @@ def test_equity_fundamental_latest_attributes(params, obb):
                 "provider": "intrinio",
                 "active": True,
                 "limit": 100,
-                "use_cache": None,
             }
         ),
     ],

@@ -647,3 +647,19 @@ async def pce(
 ) -> OBBject:
     """Get Personal Consumption Expenditures (PCE) reports."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ExportDestinations",
+    examples=[
+        APIEx(parameters={"provider": "econdb", "country": "us"}),
+    ],
+)
+async def export_destinations(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get top export destinations by country from the UN Comtrade International Trade Statistics Database."""
+    return await OBBject.from_query(Query(**locals()))

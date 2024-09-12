@@ -24,12 +24,7 @@ class ROUTER_index(Container):
     @validate
     def available(
         self,
-        provider: Annotated[
-            Optional[Literal["fmp", "yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["fmp", "yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """All indices available from a given provider.
@@ -56,9 +51,9 @@ class ROUTER_index(Container):
         AvailableIndices
         ----------------
         name : Optional[str]
-            Name of the index.
+            Name of the index. 
         currency : Optional[str]
-            Currency the index is traded in.
+            Currency the index is traded in. 
         stock_exchange : Optional[str]
             Stock exchange where the index is listed. (provider: fmp)
         exchange_short_name : Optional[str]
@@ -85,7 +80,8 @@ class ROUTER_index(Container):
                         ("fmp", "yfinance"),
                     )
                 },
-                standard_params={},
+                standard_params={
+                },
                 extra_params=kwargs,
             )
         )
@@ -95,12 +91,7 @@ class ROUTER_index(Container):
     def constituents(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
         **kwargs
     ) -> OBBject:
         """Get Index Constituents.
@@ -129,9 +120,9 @@ class ROUTER_index(Container):
         IndexConstituents
         -----------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the constituent company in the index.
+            Name of the constituent company in the index. 
         sector : Optional[str]
             Sector the constituent company in the index belongs to. (provider: fmp)
         sub_sector : Optional[str]
