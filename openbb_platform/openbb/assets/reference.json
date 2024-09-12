@@ -8954,6 +8954,135 @@
             },
             "model": "ExportDestinations"
         },
+        "/economy/port_volume": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get average dwelling times and TEU volumes from the top ports.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.port_volume(provider='econdb')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "econdb": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PortVolume]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "port_code",
+                        "type": "str",
+                        "description": "Port code.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "port_name",
+                        "type": "str",
+                        "description": "Port name.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "Country where the port is located.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "export_dwell_time",
+                        "type": "float",
+                        "description": "EconDB model estimate for the average number of days from when a container enters the terminal gates until it is loaded on a vessel. High dwelling times can indicate vessel delays.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "import_dwell_time",
+                        "type": "float",
+                        "description": "EconDB model estimate for the average number of days from when a container is discharged from a vessel until it exits the terminal gates. High dwelling times can indicate trucking or port congestion.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "import_teu",
+                        "type": "int",
+                        "description": "EconDB model estimate for the number of twenty-foot equivalent units (TEUs) of containers imported through the port.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "export_teu",
+                        "type": "int",
+                        "description": "EconDB model estimate for the number of twenty-foot equivalent units (TEUs) of containers exported through the port.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "PortVolume"
+        },
         "/equity/calendar/ipo": {
             "deprecated": {
                 "flag": null,

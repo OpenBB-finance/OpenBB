@@ -10,6 +10,7 @@ from openbb_econdb.models.economic_indicators import EconDbEconomicIndicatorsFet
 from openbb_econdb.models.export_destinations import EconDbExportDestinationsFetcher
 from openbb_econdb.models.gdp_nominal import EconDbGdpNominalFetcher
 from openbb_econdb.models.gdp_real import EconDbGdpRealFetcher
+from openbb_econdb.models.port_volume import EconDbPortVolumeFetcher
 from openbb_econdb.models.yield_curve import EconDbYieldCurveFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -130,5 +131,15 @@ def test_econdb_export_destinations_fetcher(credentials=test_credentials):
     }
 
     fetcher = EconDbExportDestinationsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_econdb_port_volume_fetcher(credentials=test_credentials):
+    """Test EconDB Port Volume Fetcher."""
+    params = {}
+
+    fetcher = EconDbPortVolumeFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
