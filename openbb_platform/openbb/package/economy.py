@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
@@ -10,7 +10,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated, deprecated
+from typing_extensions import deprecated
 
 
 class ROUTER_economy(Container):
