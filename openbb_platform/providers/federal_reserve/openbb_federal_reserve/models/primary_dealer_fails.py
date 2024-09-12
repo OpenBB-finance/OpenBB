@@ -167,6 +167,7 @@ class FederalReservePrimaryDealerFailsFetcher(
         new_data.loc[:, "symbol"] = new_data.title.map(
             {v: k for k, v in FAILS_SERIES_TO_TITLE.items()}
         ).replace({NA: "--"})
+        new_data = new_data.dropna()
 
         if query.unit == "value":
             new_data.value = new_data.value.astype(int)
