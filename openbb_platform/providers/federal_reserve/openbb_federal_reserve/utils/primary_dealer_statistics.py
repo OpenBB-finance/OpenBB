@@ -3,35 +3,27 @@
 # pylint: disable=line-too-long
 # flake8: noqa
 
-from typing import TYPE_CHECKING, Optional
-
 FAILS_SERIES_TO_TITLE = {
     "PDFTD-CS": "FTD Corporate Securities",
     "PDFTR-CS": "FTR Corporate Securities",
-    "PDFASCFRA": "FTD Corporate Securities",
-    "PDFASCFDA": "FTR Corporate Securities",
+    "PDFASCFDA": "FTD Corporate Securities",
+    "PDFASCFRA": "FTR Corporate Securities",
     "PDFTD-FGEM": "FTD Agency and GSE Securities (Ex-MBS)",
     "PDFTR-FGEM": "FTR Agency and GSE Securities (Ex-MBS)",
-    "PDFASFAFRA": "FTD Agency and GSE Securities (Ex-MBS)",
-    "PDFASFAFDA": "FTR Agency and GSE Securities (Ex-MBS)",
     "PDFASFAFDA": "FTD Agency and GSE Securities (Ex-MBS)",
     "PDFASFAFRA": "FTR Agency and GSE Securities (Ex-MBS)",
     "PDFTD-FGM": "FTD Agency and GSE MBS",
     "PDFTR-FGM": "FTR Agency and GSE MBS",
     "PDFTD-OM": "FTD Other MBS",
     "PDFTR-OM": "FTR Other MBS",
-    "PDFASMBFRA": "FTD MBS",
-    "PDFASMBFDA": "FTR MBS",
     "PDFASMBFDA": "FTD MBS",
     "PDFASMBFRA": "FTR MBS",
     "PDFTD-UST": "FTD TIPS",
     "PDFTR-UST": "FTR TIPS",
     "PDFTD-USTET": "FTD Treasury Securities (Ex-TIPS)",
     "PDFTR-USTET": "FTR Treasury Securities (Ex-TIPS)",
-    "PDFASUFRA": "FTD Treasury Securities",
-    "PDFASUFDA": "FTR Treasury Securities",
-    "PDFASUFDA": "FTD Treasury Securities",
     "PDFASUFRA": "FTR Treasury Securities",
+    "PDFASUFDA": "FTD Treasury Securities",
 }
 
 
