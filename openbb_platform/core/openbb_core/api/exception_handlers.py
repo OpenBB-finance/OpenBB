@@ -69,7 +69,13 @@ class ExceptionHandlers:
             loc in query_params for err in errors for loc in err.get("loc", ())
         )
         if "QueryParams" in error.title and all_in_query:
-            detail = [{**err, "loc": ("query",) + err.get("loc", ())} for err in errors]
+            detail = [
+                {
+                    **{k: v for k, v in err.items() if k != "ctx"},
+                    "loc": ("query",) + err.get("loc", ()),
+                }
+                for err in errors
+            ]
             return await ExceptionHandlers._handle(
                 exception=error,
                 status_code=422,
