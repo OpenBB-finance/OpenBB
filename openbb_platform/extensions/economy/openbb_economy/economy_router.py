@@ -671,7 +671,7 @@ async def export_destinations(
         APIEx(parameters={"provider": "federal_reserve"}),
         APIEx(
             description="Transform the data to be percentage totals by asset class",
-            parameters={"provider": "federal_reserve", "transform": "percent"},
+            parameters={"provider": "federal_reserve", "unit": "percent"},
         ),
     ],
 )
