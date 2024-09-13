@@ -14,7 +14,6 @@ from openbb_core.provider.standard_models.calendar_earnings import (
     CalendarEarningsData,
     CalendarEarningsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request
 from openbb_seeking_alpha.utils.helpers import HEADERS, date_range
 from pydantic import Field, field_validator
 
@@ -86,6 +85,10 @@ class SACalendarEarningsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Seeking Alpha endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.client import ClientSession
+        from openbb_core.provider.utils.helpers import amake_request
+
         results: List[Dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
@@ -94,25 +97,31 @@ class SACalendarEarningsFetcher(
         currency = "USD" if query.country == "us" else "CAD"
         messages: List = []
 
-        async def get_date(date, currency):
-            """Get date for one date."""
-            url = (
-                f"https://seekingalpha.com/api/v3/earnings_calendar/tickers?"
-                f"filter%5Bselected_date%5D={date}"
-                f"&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D={currency}"
-            )
-            response = await amake_request(url=url, headers=HEADERS)
-            # Try again if the response is blocked.
-            if "blockScript" in response:
-                response = await amake_request(url=url, headers=HEADERS)
-                if "blockScript" in response:
-                    message = json.dumps(response)
-                    messages.append(message)
-                    warn(message)
-            if "data" in response:
-                results.extend(response.get("data"))
+        async with ClientSession() as session:
 
-        await asyncio.gather(*[get_date(date, currency) for date in dates])
+            async def get_date(date, currency):
+                """Get date for one date."""
+                url = (
+                    f"https://seekingalpha.com/api/v3/earnings_calendar/tickers?"
+                    f"filter%5Bselected_date%5D={date}"
+                    f"&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D={currency}"
+                )
+                response = await amake_request(
+                    url=url, headers=HEADERS, session=session
+                )
+                # Try again if the response is blocked.
+                if "blockScript" in response:
+                    response = await amake_request(
+                        url=url, headers=HEADERS, session=session
+                    )
+                    if "blockScript" in response:
+                        message = json.dumps(response)
+                        messages.append(message)
+                        warn(message)
+                if "data" in response:
+                    results.extend(response.get("data"))  # type: ignore
+
+            await asyncio.gather(*[get_date(date, currency) for date in dates])
 
         if not results:
             raise OpenBBError(f"Error with the Seeking Alpha request -> {messages}")

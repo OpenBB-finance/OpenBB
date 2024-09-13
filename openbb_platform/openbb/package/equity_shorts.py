@@ -23,12 +23,7 @@ class ROUTER_equity_shorts(Container):
     def fails_to_deliver(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        provider: Annotated[
-            Optional[Literal["sec"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["sec"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.")] = None,
         **kwargs
     ) -> OBBject:
         """Get reported Fail-to-deliver (FTD) data.
@@ -40,12 +35,12 @@ class ROUTER_equity_shorts(Container):
         provider : Optional[Literal['sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         limit : Optional[int]
-
+            
                 Limit the number of reports to parse, from most recent.
                 Approximately 24 reports per year, going back to 2009.
                  (provider: sec)
         skip_reports : Optional[int]
-
+            
                 Skip N number of reports from current. A value of 1 will skip the most recent report.
                  (provider: sec)
         use_cache : Optional[bool]
@@ -68,17 +63,17 @@ class ROUTER_equity_shorts(Container):
         EquityFTD
         ---------
         settlement_date : Optional[date]
-            The settlement date of the fail.
+            The settlement date of the fail. 
         symbol : Optional[str]
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         cusip : Optional[str]
-            CUSIP of the Security.
+            CUSIP of the Security. 
         quantity : Optional[int]
-            The number of fails on that settlement date.
+            The number of fails on that settlement date. 
         price : Optional[float]
-            The price at the previous closing price from the settlement date.
+            The price at the previous closing price from the settlement date. 
         description : Optional[str]
-            The description of the Security.
+            The description of the Security. 
 
         Examples
         --------

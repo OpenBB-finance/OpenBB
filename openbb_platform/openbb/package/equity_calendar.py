@@ -26,20 +26,9 @@ class ROUTER_equity_calendar(Container):
     @validate
     def dividend(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates.
@@ -70,19 +59,19 @@ class ROUTER_equity_calendar(Container):
         CalendarDividend
         ----------------
         ex_dividend_date : date
-            The ex-dividend date - the date on which the stock begins trading without rights to the dividend.
+            The ex-dividend date - the date on which the stock begins trading without rights to the dividend. 
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         amount : Optional[float]
-            The dividend amount per share.
+            The dividend amount per share. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         record_date : Optional[date]
-            The record date of ownership for eligibility.
+            The record date of ownership for eligibility. 
         payment_date : Optional[date]
-            The payment date of the dividend.
+            The payment date of the dividend. 
         declaration_date : Optional[date]
-            Declaration date of the dividend.
+            Declaration date of the dividend. 
         adjusted_amount : Optional[float]
             The adjusted-dividend amount. (provider: fmp)
         label : Optional[str]
@@ -116,20 +105,9 @@ class ROUTER_equity_calendar(Container):
     @validate
     def earnings(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data.
@@ -160,15 +138,15 @@ class ROUTER_equity_calendar(Container):
         CalendarEarnings
         ----------------
         report_date : date
-            The date of the earnings report.
+            The date of the earnings report. 
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         eps_previous : Optional[float]
-            The earnings-per-share from the same previously reported period.
+            The earnings-per-share from the same previously reported period. 
         eps_consensus : Optional[float]
-            The analyst conesus earnings-per-share estimate.
+            The analyst conesus earnings-per-share estimate. 
         eps_actual : Optional[float]
             The actual earnings per share announced. (provider: fmp)
         revenue_actual : Optional[float]
@@ -212,27 +190,11 @@ class ROUTER_equity_calendar(Container):
     @validate
     def ipo(
         self,
-        symbol: Annotated[
-            Optional[str], OpenBBField(description="Symbol to get data for.")
-        ] = None,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        limit: Annotated[
-            Optional[int],
-            OpenBBField(description="The number of data entries to return."),
-        ] = 100,
-        provider: Annotated[
-            Optional[Literal["intrinio"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
-            ),
-        ] = None,
+        symbol: Annotated[Optional[str], OpenBBField(description="Symbol to get data for.")] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        limit: Annotated[Optional[int], OpenBBField(description="The number of data entries to return.")] = 100,
+        provider: Annotated[Optional[Literal["intrinio"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.")] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming initial public offerings (IPOs).
@@ -273,9 +235,9 @@ class ROUTER_equity_calendar(Container):
         CalendarIpo
         -----------
         symbol : Optional[str]
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         ipo_date : Optional[date]
-            The date of the IPO, when the stock first trades on a major exchange.
+            The date of the IPO, when the stock first trades on a major exchange. 
         status : Optional[Literal['upcoming', 'priced', 'withdrawn']]
             The status of the IPO. Upcoming IPOs have not taken place yet but are expected to. Priced IPOs have taken place. Withdrawn IPOs were expected to take place, but were subsequently withdrawn. (provider: intrinio)
         exchange : Optional[str]
@@ -349,20 +311,9 @@ class ROUTER_equity_calendar(Container):
     @validate
     def splits(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming stock split operations.
@@ -393,15 +344,15 @@ class ROUTER_equity_calendar(Container):
         CalendarSplits
         --------------
         date : date
-            The date of the data.
+            The date of the data. 
         label : str
-            Label of the stock splits.
+            Label of the stock splits. 
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         numerator : float
-            Numerator of the stock splits.
+            Numerator of the stock splits. 
         denominator : float
-            Denominator of the stock splits.
+            Denominator of the stock splits. 
 
         Examples
         --------
