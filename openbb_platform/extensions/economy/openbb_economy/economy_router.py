@@ -686,7 +686,8 @@ async def primary_dealer_fails(
     Data from the NY Federal Reserve are updated on Thursdays at approximately
     4:15 p.m. with the previous week's statistics.
 
-    For research on the topic, see: https://www.federalreserve.gov/econres/notes/feds-notes/the-systemic-nature-of-settlement-fails-20170703.html
+    For research on the topic, see:
+    https://www.federalreserve.gov/econres/notes/feds-notes/the-systemic-nature-of-settlement-fails-20170703.html
 
     "Large and protracted settlement fails are believed to undermine the liquidity
     and well-functioning of securities markets.

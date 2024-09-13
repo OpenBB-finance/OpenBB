@@ -1098,7 +1098,7 @@ def test_economy_export_destinations(params, obb):
                 "start_date": None,
                 "end_date": None,
                 "asset_class": "mbs",
-                "transform": "value",
+                "unit": "value",
             }
         ),
     ],
