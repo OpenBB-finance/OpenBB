@@ -279,6 +279,33 @@ def get_query_schema_for_widget(
     return route_params, has_chart
 
 
+def get_data_schema_for_widget(openapi_json, operation_id):
+    """
+    Get the data schema for a widget based on its operationId.
+
+    Args:
+        openapi (dict): The OpenAPI specification as a dictionary.
+        operation_id (str): The operationId of the widget.
+
+    Returns:
+        dict: The schema dictionary for the widget's data.
+    """
+    # Find the route and method for the given operationId
+    for _, methods in openapi_json["paths"].items():
+        for _, details in methods.items():
+            if details.get("operationId") == operation_id:
+                # Get the reference to the schema from the successful response
+                response_ref = details["responses"]["200"]["content"][
+                    "application/json"
+                ]["schema"]["$ref"]
+                # Extract the schema name from the reference
+                schema_name = response_ref.split("/")[-1]
+                # Fetch and return the schema from components
+                return openapi_json["components"]["schemas"][schema_name]
+    # Return None if the schema is not found
+    return None
+
+
 def data_schema_to_columns_defs(openapi_json, result_schema_ref):
     """Convert data schema to column definitions for the widget."""
     # Initialize an empty list to hold the schema references
