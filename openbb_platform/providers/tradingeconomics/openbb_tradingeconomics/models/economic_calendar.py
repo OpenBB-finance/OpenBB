@@ -92,7 +92,7 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
         default=None,
         description="Grouping of events.",
     )
-    calendar_id: Union[None, int, str]] = Field(
+    calendar_id: Union[None, int, str] = Field(
         default=None, description="Get events by TradingEconomics Calendar ID."
     )
     _number_of_countries: int = 0
