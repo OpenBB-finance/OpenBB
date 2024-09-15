@@ -663,3 +663,36 @@ async def export_destinations(
 ) -> OBBject:
     """Get top export destinations by country from the UN Comtrade International Trade Statistics Database."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="PrimaryDealerFails",
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(
+            description="Transform the data to be percentage totals by asset class",
+            parameters={"provider": "federal_reserve", "unit": "percent"},
+        ),
+    ],
+)
+async def primary_dealer_fails(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Primary Dealer Statistics for Fails to Deliver and Fails to Receive.
+
+    Data from the NY Federal Reserve are updated on Thursdays at approximately
+    4:15 p.m. with the previous week's statistics.
+
+    For research on the topic, see:
+    https://www.federalreserve.gov/econres/notes/feds-notes/the-systemic-nature-of-settlement-fails-20170703.html
+
+    "Large and protracted settlement fails are believed to undermine the liquidity
+    and well-functioning of securities markets.
+
+    Near-100 percent pass-through of fails suggests a high degree of collateral
+    re-hypothecation together with the inability or unwillingness to borrow or buy the needed securities."
+    """
+    return await OBBject.from_query(Query(**locals()))

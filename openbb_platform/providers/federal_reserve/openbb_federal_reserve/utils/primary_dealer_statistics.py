@@ -3,6 +3,30 @@
 # pylint: disable=line-too-long
 # flake8: noqa
 
+FAILS_SERIES_TO_TITLE = {
+    "PDFTD-CS": "FTD Corporate Securities",
+    "PDFTR-CS": "FTR Corporate Securities",
+    "PDFASCFDA": "FTD Corporate Securities",
+    "PDFASCFRA": "FTR Corporate Securities",
+    "PDFTD-FGEM": "FTD Agency and GSE Securities (Ex-MBS)",
+    "PDFTR-FGEM": "FTR Agency and GSE Securities (Ex-MBS)",
+    "PDFASFAFDA": "FTD Agency and GSE Securities (Ex-MBS)",
+    "PDFASFAFRA": "FTR Agency and GSE Securities (Ex-MBS)",
+    "PDFTD-FGM": "FTD Agency and GSE MBS",
+    "PDFTR-FGM": "FTR Agency and GSE MBS",
+    "PDFTD-OM": "FTD Other MBS",
+    "PDFTR-OM": "FTR Other MBS",
+    "PDFASMBFDA": "FTD MBS",
+    "PDFASMBFRA": "FTR MBS",
+    "PDFTD-UST": "FTD TIPS",
+    "PDFTR-UST": "FTR TIPS",
+    "PDFTD-USTET": "FTD Treasury Securities (Ex-TIPS)",
+    "PDFTR-USTET": "FTR Treasury Securities (Ex-TIPS)",
+    "PDFASUFRA": "FTR Treasury Securities",
+    "PDFASUFDA": "FTD Treasury Securities",
+}
+
+
 POSITION_SERIES_TO_TITLE = {
     "PDPOSGS-B": "BILLS (EX. TIPS): DEALER POSITION - LONG. - BILLS (EX. TIPS): DEALER POSITION - SHORT",
     "PDPOSGSC-L2": "TREASURIES (EX. TIPS) COUPONS DUE IN LESS THAN OR EQUAL TO 2 YEARS: DEALER POSITION - NET",
