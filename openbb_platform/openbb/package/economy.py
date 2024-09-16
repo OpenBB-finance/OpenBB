@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
@@ -10,7 +10,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated, deprecated
+from typing_extensions import deprecated
 
 
 class ROUTER_economy(Container):
@@ -35,6 +35,7 @@ class ROUTER_economy(Container):
     long_term_interest_rate
     money_measures
     pce
+    primary_dealer_fails
     port_volume
     primary_dealer_positioning
     retail_prices
@@ -2780,6 +2781,126 @@ class ROUTER_economy(Container):
                 extra_params=kwargs,
                 info={
                     "date": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
+    def primary_dealer_fails(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Primary Dealer Statistics for Fails to Deliver and Fails to Receive.
+
+        Data from the NY Federal Reserve are updated on Thursdays at approximately
+        4:15 p.m. with the previous week's statistics.
+
+        For research on the topic, see:
+        https://www.federalreserve.gov/econres/notes/feds-notes/the-systemic-nature-of-settlement-fails-20170703.html
+
+        "Large and protracted settlement fails are believed to undermine the liquidity
+        and well-functioning of securities markets.
+
+        Near-100 percent pass-through of fails suggests a high degree of collateral
+        re-hypothecation together with the inability or unwillingness to borrow or buy the needed securities."
+
+
+        Parameters
+        ----------
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['federal_reserve']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
+        asset_class : Literal['all', 'treasuries', 'tips', 'agency', 'mbs', 'corporate']
+            Asset class to return, default is 'all'. (provider: federal_reserve)
+        unit : Literal['value', 'percent']
+            Unit of the data returned to the 'value' field. Default is 'value', which represents millions of USD. 'percent' returns data as the percentage of the total fails-to-receive and fails-to-deliver, by asset class. (provider: federal_reserve)
+
+        Returns
+        -------
+        OBBject
+            results : List[PrimaryDealerFails]
+                Serializable results.
+            provider : Optional[Literal['federal_reserve']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        PrimaryDealerFails
+        ------------------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        title : Optional[str]
+            Title of the series' symbol. (provider: federal_reserve)
+        value : Optional[Union[int, float]]
+            Value of the data returned, in millions of USD if the `unit` parameter is 'value' else a normalized percent. (provider: federal_reserve)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.primary_dealer_fails(provider='federal_reserve')
+        >>> # Transform the data to be percentage totals by asset class
+        >>> obb.economy.primary_dealer_fails(provider='federal_reserve', unit='percent')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/primary_dealer_fails",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.primary_dealer_fails",
+                        ("federal_reserve",),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={
+                    "asset_class": {
+                        "federal_reserve": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "all",
+                                "treasuries",
+                                "tips",
+                                "agency",
+                                "mbs",
+                                "corporate",
+                            ],
+                        }
+                    },
+                    "unit": {
+                        "federal_reserve": {
+                            "multiple_items_allowed": False,
+                            "choices": ["value", "percent"],
+                        }
+                    },
                 },
             )
         )
