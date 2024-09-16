@@ -78,7 +78,7 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
         "group": {
             "multiple_items_allowed": False,
             "choices": GROUPS_CHOICES,
-        }
+        },
     }
     country: Optional[str] = Field(
         default=None,
