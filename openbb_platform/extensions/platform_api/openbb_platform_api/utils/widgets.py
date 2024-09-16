@@ -42,11 +42,6 @@ TO_CAPS_STRINGS = [
     "Fred",
 ]
 
-PROVIDER_SPECIFIC_PARAM_STRING = "(provider:"
-COMMA_SEPARATED_PROVIDERS_STRING = (
-    "Multiple comma separated items allowed for provider(s):"
-)
-
 
 def modify_query_schema(query_schema: List[Dict], provider_value: str):
     """Modify query_schema and the description for the current provider."""
