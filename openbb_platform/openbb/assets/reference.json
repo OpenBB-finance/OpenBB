@@ -8954,6 +8954,130 @@
             },
             "model": "ExportDestinations"
         },
+        "/economy/primary_dealer_fails": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Primary Dealer Statistics for Fails to Deliver and Fails to Receive.\n\nData from the NY Federal Reserve are updated on Thursdays at approximately\n4:15 p.m. with the previous week's statistics.\n\nFor research on the topic, see: https://www.federalreserve.gov/econres/notes/feds-notes/the-systemic-nature-of-settlement-fails-20170703.html\n\n\"Large and protracted settlement fails are believed to undermine the liquidity\nand well-functioning of securities markets.\n\nNear-100 percent pass-through of fails suggests a high degree of collateral\nre-hypothecation together with the inability or unwillingness to borrow or buy the needed securities.\"",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.primary_dealer_fails(provider='federal_reserve')\n# Transform the data to be percentage totals by asset class\nobb.economy.primary_dealer_fails(provider='federal_reserve', transform=percent)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "asset_class",
+                        "type": "Literal['all', 'treasuries', 'tips', 'agency', 'mbs', 'corporate']",
+                        "description": "Asset class to return, default is 'all'.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "treasuries",
+                            "tips",
+                            "agency",
+                            "mbs",
+                            "corporate"
+                        ]
+                    },
+                    {
+                        "name": "unit",
+                        "type": "Literal['value', 'percent']",
+                        "description": "Unit of the data returned to the 'value' field. Default is 'value', which represents millions of USD. 'percent' returns data as the percentage of the total fails-to-receive and fails-to-deliver, by asset class.",
+                        "default": "value",
+                        "optional": true,
+                        "choices": [
+                            "value",
+                            "percent"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PrimaryDealerFails]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['federal_reserve']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series' symbol.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Value of the data returned, in millions of USD if the `unit` parameter is 'value' else a normalized percent.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "PrimaryDealerFails"
+        },
         "/equity/calendar/ipo": {
             "deprecated": {
                 "flag": null,
