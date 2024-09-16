@@ -20,6 +20,7 @@ LOCAL_DEPS = """
 python = ">=3.9,<3.13"
 openbb-devtools = { path = "./extensions/devtools", develop = true, markers = "python_version >= '3.10'" }
 openbb-core = { path = "./core", develop = true }
+openbb-platform-api = { path = "./extensions/platform_api", develop = true }
 
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
 openbb-bls = { path = "./providers/bls", develop = true }

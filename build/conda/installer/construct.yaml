@@ -56,8 +56,12 @@ extra_files:
   - ./assets/openbb_platform_installer/README.md: ../extensions/openbb_platform_installer/README.md
   - ./assets/openbb_platform_installer/openbb_platform_installer/__init__.py: ../extensions/openbb_platform_installer/openbb_platform_installer/__init__.py
 
-  - ../../../openbb_platform/extensions/openbb_platform_api/openbb_platform_api/api.py: ../extensions/openbb_platform_installer/openbb_platform_installer/api.py
-  - ../../../openbb_platform/extensions/openbb_platform_api/openbb_platform_api/utils.py: ../extensions/openbb_platform_installer/openbb_platform_installer/utils.py
+  - ../../../openbb_platform/extensions/platform_api/openbb_platform_api/__init__.py: ../extensions/openbb_platform_installer/openbb_platform_installer/__init__.py
+  - ../../../openbb_platform/extensions/platform_api/openbb_platform_api/main.py: ../extensions/openbb_platform_installer/openbb_platform_installer/main.py
+  - ../../../openbb_platform/extensions/platform_api/openbb_platform_api/utils/__init__.py: ../extensions/openbb_platform_installer/openbb_platform_installer/utils/__init__.py
+  - ../../../openbb_platform/extensions/platform_api/openbb_platform_api/utils/api.py: ../extensions/openbb_platform_installer/openbb_platform_installer/utils/api.py
+  - ../../../openbb_platform/extensions/platform_api/openbb_platform_api/utils/widgets.py: ../extensions/openbb_platform_installer/openbb_platform_installer/utils/widgets.py
+  - ../../../openbb_platform/extensions/platform_api/openbb_platform_api/utils/openapi.py: ../extensions/openbb_platform_installer/openbb_platform_installer/utils/openapi.py
 
   - ./assets/openbb_platform_installer/openbb_platform_installer/build.py: ../extensions/openbb_platform_installer/openbb_platform_installer/build.py
   - ./assets/openbb_platform_installer/openbb_platform_installer/update.py: ../extensions/openbb_platform_installer/openbb_platform_installer/update.py

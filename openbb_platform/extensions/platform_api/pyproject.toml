@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "openbb_platform_api"
+name = "openbb-platform-api"
 version = "1.0.0"
 description = "OpenBB Platform API: Launch script and widgets builder for the OpenBB Platform API and Terminal Pro Connector."
 authors = ["OpenBB <hello@openbb.co>"]
@@ -11,7 +11,7 @@ documentation = "https://docs.openbb.co"
 packages = [{ include = "openbb_platform_api" }]
 
 [tool.poetry.scripts]
-openbb-api = "openbb_platform_api.api:main"
+openbb-api = "openbb_platform_api.main:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
