@@ -925,19 +925,6 @@ class OpenBBFigure(go.Figure):
                     if data.get("layout", {}):
                         pio.show(data, *args, **kwargs)
 
-        self.update_layout(
-            legend=dict(
-                orientation=(
-                    "v"
-                    if not self.layout.legend.orientation
-                    else self.layout.legend.orientation
-                ),
-            ),
-            barmode="overlay",
-            bargap=0,
-            bargroupgap=0,
-        )
-
         return pio.show(self, *args, **kwargs)
 
     def _xaxis_tickformatstops(self) -> None:
