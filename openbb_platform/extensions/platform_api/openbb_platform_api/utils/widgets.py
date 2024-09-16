@@ -54,6 +54,7 @@ def modify_query_schema(query_schema: List[Dict], provider_value: str):
     for item in query_schema:
         # copy the item
         _item = deepcopy(item)
+        provider_value_options = {}
 
         # Exclude provider parameter. Those will be added last.
         if "parameter_name" in _item and _item["parameter_name"] == "provider":
@@ -75,11 +76,12 @@ def modify_query_schema(query_schema: List[Dict], provider_value: str):
             _item["type"] = "text"
             _item["multiSelect"] = True
 
-        provider_value_options = {}
         if "options" in _item:
             provider_value_options = _item.pop("options")
 
-        if provider_value in provider_value_options:
+        if provider_value in provider_value_options and bool(
+            provider_value_options[provider_value]
+        ):
             _item["options"] = provider_value_options[provider_value]
             _item["type"] = "text"
         elif len(provider_value_options) == 1 and "other" in provider_value_options:

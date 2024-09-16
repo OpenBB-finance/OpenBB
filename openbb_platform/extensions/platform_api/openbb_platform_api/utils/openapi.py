@@ -39,11 +39,17 @@ def set_parameter_type(p: Dict, p_schema: Dict):
     if p_type == "string":
         p["type"] = "text"
 
-    if p_type in ("float", "integer") or isinstance(p.get("value"), (int, float)):
+    if p_type in ("float", "integer") or (
+        not isinstance(p["value"], bool) and isinstance(p["value"], (int, float))
+    ):
         p["type"] = "number"
 
-    if p_type == "boolean":
-        p["type"] = "text" if p["value"] is None else "boolean"
+    if (
+        p_type == "boolean"
+        or p_schema.get("type") == "boolean"
+        or ("anyOf" in p_schema and p_schema["anyOf"][0].get("type") == "boolean")
+    ):
+        p["type"] = "boolean"
 
     if "date" in p["parameter_name"]:
         p["type"] = "date"
