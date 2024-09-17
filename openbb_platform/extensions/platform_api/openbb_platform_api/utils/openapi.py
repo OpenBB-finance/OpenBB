@@ -1,9 +1,9 @@
 """OpenAPI parsing Utils."""
 
-from typing import Dict, List, Tuple
+from openbb_core.provider.utils.helpers import to_snake_case
 
 
-def extract_providers(params: List[Dict]) -> List[str]:
+def extract_providers(params: list[dict]) -> list[str]:
     """
     Extract provider options from parameters.
 
@@ -23,7 +23,7 @@ def extract_providers(params: List[Dict]) -> List[str]:
     return []
 
 
-def set_parameter_type(p: Dict, p_schema: Dict):
+def set_parameter_type(p: dict, p_schema: dict):
     """
     Determine and set the type for the parameter.
 
@@ -66,7 +66,7 @@ def set_parameter_type(p: Dict, p_schema: Dict):
     return p
 
 
-def set_parameter_options(p: Dict, p_schema: Dict, providers: List[str]) -> Dict:
+def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict:
     """
     Set options for the parameter based on the schema.
 
@@ -84,17 +84,17 @@ def set_parameter_options(p: Dict, p_schema: Dict, providers: List[str]) -> Dict
     Dict
         Updated parameter dictionary with options.
     """
-    choices: Dict[str, List[Dict[str, str]]] = {}
-    multiple_items_allowed_dict = {}
+    choices: dict[str, list[dict[str, str]]] = {}
+    multiple_items_allowed_dict: dict = {}
     is_provider_specific = False
-    available_providers = set()
-    unique_general_choices = []
+    available_providers: set = set()
+    unique_general_choices: list = []
 
     # Handle provider-specific choices
     for provider in providers:
         if (provider in p_schema) or (len(providers) == 1):
             is_provider_specific = True
-            provider_choices = []
+            provider_choices: list = []
             if provider not in available_providers:
                 available_providers.add(provider)
             if provider in p_schema:
@@ -119,7 +119,7 @@ def set_parameter_options(p: Dict, p_schema: Dict, providers: List[str]) -> Dict
             available_providers.update(title_providers)
 
     # Handle general choices
-    general_choices = []
+    general_choices: list = []
     if "enum" in p_schema:
         general_choices.extend(
             [
@@ -178,7 +178,7 @@ def set_parameter_options(p: Dict, p_schema: Dict, providers: List[str]) -> Dict
     return p
 
 
-def process_parameter(param: Dict, providers: List[str]) -> Dict:
+def process_parameter(param: dict, providers: list[str]) -> dict:
     """
     Process a single parameter and return the processed dictionary.
 
@@ -194,7 +194,7 @@ def process_parameter(param: Dict, providers: List[str]) -> Dict:
     Dict
         Processed parameter dictionary.
     """
-    p: Dict = {}
+    p: dict = {}
     param_name = param["name"]
     p["parameter_name"] = param_name
     p["label"] = (
@@ -222,7 +222,7 @@ def process_parameter(param: Dict, providers: List[str]) -> Dict:
             .split("Multiple comma separated items allowed for provider(s)")[0]
             .strip()
         )
-        multiple_items_allowed_dict = {}
+        multiple_items_allowed_dict: dict = {}
         for _provider in providers:
             if _provider in param["schema"] and param["schema"][_provider].get(
                 "multiple_items_allowed", False
@@ -247,7 +247,7 @@ def process_parameter(param: Dict, providers: List[str]) -> Dict:
 
 def get_query_schema_for_widget(
     openapi_json: dict, command_route: str
-) -> Tuple[List[Dict], bool]:
+) -> tuple[list[dict], bool]:
     """
     Extract the query schema for a widget.
 
@@ -268,8 +268,8 @@ def get_query_schema_for_widget(
     schema_method = list(command)[0]
     command = command[schema_method]
     params = command.get("parameters", [])
-    route_params: List[Dict] = []
-    providers: List[str] = extract_providers(params)
+    route_params: list[dict] = []
+    providers: list[str] = extract_providers(params)
 
     for param in params:
         if param["name"] in ["sort", "order"]:
@@ -307,15 +307,22 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                 # Extract the schema name from the reference
                 schema_name = response_ref.split("/")[-1]
                 # Fetch and return the schema from components
-                return openapi_json["components"]["schemas"][schema_name]
+                return (
+                    openapi_json["components"]["schemas"][schema_name]
+                    .get("properties", {})
+                    .get("results", {})
+                )
+
     # Return None if the schema is not found
     return None
 
 
-def data_schema_to_columns_defs(openapi_json, result_schema_ref):
+def data_schema_to_columns_defs(openapi_json, operation_id, provider):
     """Convert data schema to column definitions for the widget."""
     # Initialize an empty list to hold the schema references
-    schema_refs: List = []
+    schema_refs: list = []
+
+    result_schema_ref = get_data_schema_for_widget(openapi_json, operation_id)
 
     # Check if 'anyOf' is in the result_schema_ref and handle the nested structure
     if "anyOf" in result_schema_ref:
@@ -345,19 +352,24 @@ def data_schema_to_columns_defs(openapi_json, result_schema_ref):
     if not schemas:
         return []
 
-    # If there's only one schema, use its properties directly
-    if len(schemas) == 1:
-        common_keys = schemas[0]["properties"].keys()
-    else:
-        # Find common keys across all schemas if there are multiple
-        common_keys = set(schemas[0]["properties"].keys())
-        for schema in schemas[1:]:
-            common_keys.intersection_update(schema["properties"].keys())
+    target_schema: dict = {}
 
-    column_defs: List = []
-    for key in common_keys:
+    for schema in schemas:
+        if (
+            schema.get("description", "")
+            .lower()
+            .startswith(provider.lower().replace("tradingeconomics", "te"))
+        ):
+            target_schema = schema
+            break
+
+    keys = list(target_schema.get("properties", {}))
+
+    column_defs: list = []
+    for key in keys:
         cell_data_type = None
-        prop = schemas[0]["properties"][key]
+        formatterFn = None
+        prop = target_schema.get("properties", {}).get(key)
         # Handle prop types for both when there's a single prop type or multiple
         if "anyOf" in prop:
             types = [
@@ -377,34 +389,67 @@ def data_schema_to_columns_defs(openapi_json, result_schema_ref):
             prop_type = prop.get("type", None)
             if prop_type in ["number", "integer", "float"]:
                 cell_data_type = "number"
+                if prop_type == "integer":
+                    formatterFn = "int"
             elif "format" in prop and prop["format"] in ["date", "date-time"]:
                 cell_data_type = "date"
             else:
                 cell_data_type = "text"
 
-        column_def: Dict = {}
-        column_def["field"] = key
+        column_def: dict = {}
+        # OpenAPI changes some of the field names.
+        k = to_snake_case(key)
+        column_def["field"] = (
+            k.replace("ma_20_", "ma20_")
+            .replace("ma_50_", "ma50_")
+            .replace("ma_200_", "ma200_")
+        )
+        if k in [
+            "symbol",
+            "symbol_root",
+            "series_id",
+            "date",
+            "published",
+            "fiscal_year",
+            "period_ending",
+            "period_beginning",
+            "order",
+            "name",
+            "title",
+            "cusip",
+            "isin",
+        ]:
+            column_def["pinned"] = "left"
+
+        column_def["formatterFn"] = formatterFn
         column_def["headerName"] = prop.get("title", key.title())
         column_def["description"] = prop.get(
             "description", prop.get("title", key.title())
         )
         column_def["cellDataType"] = cell_data_type
-
         column_def["chartDataType"] = (
-            "series" if cell_data_type in ["number", "integer", "float"] else "category"
+            "series"
+            if cell_data_type in ["number", "integer", "float"]
+            and column_def.get("pinned") != "left"
+            else "category"
         )
-
         measurement = prop.get("x-unit_measurement")
+
         if measurement == "percent":
             column_def["formatterFn"] = (
                 "normalizedPercent"
                 if prop.get("x-frontend_multiply") == 100
                 else "percent"
             )
-        elif cell_data_type == "date":
-            column_def["formatterFn"] = "date"
+            column_def["renderFn"] = "greenRed"
         elif cell_data_type == "number":
-            column_def["formatterFn"] = "none"
+            del column_def["formatterFn"]
+
+        if k in ["cik", "isin", "figi", "cusip", "sedol", "symbol"]:
+            column_def["cellDataType"] = "text"
+            column_def["headerName"] = (
+                column_def["headerName"].upper() if key != "symbol" else "Symbol"
+            )
 
         column_defs.append(column_def)
 

@@ -1,7 +1,6 @@
 """Utils for building the widgets.json file."""
 
 from copy import deepcopy
-from typing import Dict, List
 
 TO_CAPS_STRINGS = [
     "Pe",
@@ -43,13 +42,13 @@ TO_CAPS_STRINGS = [
 ]
 
 
-def modify_query_schema(query_schema: List[Dict], provider_value: str):
+def modify_query_schema(query_schema: list[dict], provider_value: str):
     """Modify query_schema and the description for the current provider."""
-    modified_query_schema = []
+    modified_query_schema: list = []
     for item in query_schema:
         # copy the item
         _item = deepcopy(item)
-        provider_value_options = {}
+        provider_value_options: dict = {}
 
         # Exclude provider parameter. Those will be added last.
         if "parameter_name" in _item and _item["parameter_name"] == "provider":
@@ -98,15 +97,12 @@ def modify_query_schema(query_schema: List[Dict], provider_value: str):
     return modified_query_schema
 
 
-def build_json(openapi: Dict):
+def build_json(openapi: dict):
     """Build the widgets.json file."""
     # pylint: disable=import-outside-toplevel
-    from .openapi import get_query_schema_for_widget
+    from .openapi import data_schema_to_columns_defs, get_query_schema_for_widget
 
-    # TODO: Add the data schema to the widget_config once there is support for not displaying empty columns.
-    # from .openapi import get_data_schema_for_widget
-
-    widgets_json: Dict = {}
+    widgets_json: dict = {}
     routes = [
         p
         for p in openapi["paths"]
@@ -121,7 +117,7 @@ def build_json(openapi: Dict):
         query_schema, has_chart = get_query_schema_for_widget(openapi, route)
 
         # Extract providers from the query schema
-        providers = []
+        providers: list = []
         for item in query_schema:
             if item["parameter_name"] == "provider":
                 providers = item["available_providers"]
@@ -133,16 +129,7 @@ def build_json(openapi: Dict):
 
             # TODO: Add the data schema to the widget_config once there is support for not displaying empty columns.
             # # Prepare the data schema of the widget
-            # data_schema = get_data_schema_for_widget(openapi, widget_id)
-            # if (
-            #     data_schema
-            #     and "properties" in data_schema
-            #     and "results" in data_schema["properties"]
-            # ):
-            #     response_schema_refs = data_schema["properties"]["results"]
-            #     columns_defs = data_schema_to_columns_defs(  # noqa F841
-            #         openapi, response_schema_refs
-            #     )
+            columns_defs = data_schema_to_columns_defs(openapi, widget_id, provider)
             _cat = route.split("v1/")[-1]
             _cats = _cat.split("/")
             category = _cats[0].title()
@@ -163,8 +150,30 @@ def build_json(openapi: Dict):
 
             modified_query_schema = modify_query_schema(query_schema, provider)
 
+            provider_map = {
+                "tmx": "TMX",
+                "ecb": "ECB",
+                "econdb": "EconDB",
+                "fmp": "FMP",
+                "oecd": "OECD",
+                "finra": "FINRA",
+                "fred": "FRED",
+                "imf": "IMF",
+                "bls": "BLS",
+                "yfinance": "yFinance",
+                "sec": "SEC",
+                "cftc": "CFTC",
+                "tradingeconomics": "Trading Economics",
+                "wsj": "WSJ",
+            }
+            provider_name = (
+                provider_map.get(provider.lower())
+                if provider.lower() in provider_map
+                else provider.replace("_", " ").title()
+            )
+
             widget_config = {
-                "name": f"{name} ({provider}) (OpenBB Platform API)",
+                "name": f"{name} ({provider_name})",
                 "description": route_api["get"]["description"],
                 "category": category,
                 "searchCategory": category,
@@ -175,9 +184,10 @@ def build_json(openapi: Dict):
                 "data": {
                     "dataKey": "results",
                     "table": {
-                        "showAll": False,
+                        "showAll": True,
                     },
                 },
+                "source": [provider_name],
             }
 
             if subcat:
@@ -194,22 +204,15 @@ def build_json(openapi: Dict):
                 )
                 widget_config["subCategory"] = subcat
 
-            # TODO: Add columnsDefs to the widget_config once there is support for not displaying empty columns.
-            # if columns_defs:
-            #    widget_config["data"]["table"]["columnsDefs"] = columns_defs
-            #    if "date" in columns_defs:
-            #        widget_config["data"]["table"]["index"] = "date"
-            #    if "period" in columns_defs:
-            #        widget_config["data"]["table"]["index"] = "period"
+            if columns_defs:
+                widget_config["data"]["table"]["columnsDefs"] = columns_defs
 
             # Add the widget configuration to the widgets.json
             widgets_json[widget_config["widgetId"]] = widget_config
 
             if has_chart:
                 widget_config_chart = deepcopy(widget_config)
-                widget_config_chart["name"] = widget_config_chart["name"].replace(
-                    " (OpenBB Platform API)", " Chart (OpenBB Platform API)"
-                )
+                widget_config_chart["name"] = widget_config_chart["name"] + " (Chart)"
                 widget_config_chart["widgetId"] = (
                     f"{widget_config_chart['widgetId']}_chart"
                 )
