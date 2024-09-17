@@ -25,11 +25,18 @@ class SecInstitutionsSearchQueryParams(CotSearchQueryParams):
 class SecInstitutionsSearchData(Data):
     """SEC Institutions Search Data."""
 
+    __alias_dict__ = {
+        "name": "Institution",
+        "cik": "CIK Number",
+    }
+
     name: Optional[str] = Field(
-        default=None, description="The name of the institution.", alias="Institution"
+        default=None,
+        description="The name of the institution.",
     )
     cik: Optional[Union[str, int]] = Field(
-        default=None, description="Central Index Key (CIK)", alias="CIK Number"
+        default=None,
+        description="Central Index Key (CIK)",
     )
 
 

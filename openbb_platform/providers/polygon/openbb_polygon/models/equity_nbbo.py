@@ -21,6 +21,8 @@ class PolygonEquityNBBOQueryParams(EquityNBBOQueryParams):
     Source: https://polygon.io/docs/stocks/get_v3_quotes__stockticker
     """
 
+    __alias_dict__ = {"date": "timestamp"}
+
     limit: int = Field(
         default=50000,
         description=(
@@ -38,7 +40,6 @@ class PolygonEquityNBBOQueryParams(EquityNBBOQueryParams):
             QUERY_DESCRIPTIONS.get("date", "")
             + " Use bracketed the timestamp parameters to specify exact time ranges."
         ),
-        alias="timestamp",
     )
     timestamp_lt: Optional[Union[datetime, str]] = Field(
         default=None,
@@ -81,16 +82,24 @@ class PolygonEquityNBBOQueryParams(EquityNBBOQueryParams):
 class PolygonEquityNBBOData(EquityNBBOData):
     """Polygon Equity NBBO data."""
 
-    __alias_dict__ = {"ask": "ask_price", "bid": "bid_price"}
+    __alias_dict__ = {
+        "ask": "ask_price",
+        "bid": "bid_price",
+        "tape": "tape_integer",
+        "sequence_num": "sequence_number",
+    }
 
     tape: Optional[str] = Field(
-        default=None, description="The exchange tape.", alias="tape_integer"
+        default=None,
+        description="The exchange tape.",
     )
     conditions: Optional[Union[str, List[int], List[str]]] = Field(
-        default=None, description="A list of condition codes.", alias="conditions"
+        default=None,
+        description="A list of condition codes.",
     )
     indicators: Optional[List[int]] = Field(
-        default=None, description="A list of indicator codes.", alias="indicators"
+        default=None,
+        description="A list of indicator codes.",
     )
     sequence_num: Optional[int] = Field(
         default=None,
@@ -99,7 +108,6 @@ class PolygonEquityNBBOData(EquityNBBOData):
             "These are increasing and unique per ticker symbol, but will not always be sequential "
             "(e.g., 1, 2, 6, 9, 10, 11)"
         ),
-        alias="sequence_number",
     )
     participant_timestamp: Optional[datetime] = Field(
         default=None,

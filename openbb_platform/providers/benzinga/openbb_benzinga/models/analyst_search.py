@@ -73,7 +73,49 @@ class BenzingaAnalystSearchData(AnalystSearchData):
     __alias_dict__ = {
         "analyst_id": "id",
         "last_updated": "updated",
+        "overall_std_dev": "overall_stdev",
+        "gain_count_1m": "1m_gain_count",
+        "loss_count_1m": "1m_loss_count",
+        "average_return_1m": "1m_average_return",
+        "std_dev_1m": "1m_stdev",
+        "smart_score_1m": "1m_smart_score",
+        "success_rate_1m": "1m_success_rate",
+        "gain_count_3m": "3m_gain_count",
+        "loss_count_3m": "3m_loss_count",
+        "average_return_3m": "3m_average_return",
+        "std_dev_3m": "3m_stdev",
+        "smart_score_3m": "3m_smart_score",
+        "success_rate_3m": "3m_success_rate",
+        "gain_count_6m": "6m_gain_count",
+        "loss_count_6m": "6m_loss_count",
+        "average_return_6m": "6m_average_return",
+        "std_dev_6m": "6m_stdev",
+        "gain_count_9m": "9m_gain_count",
+        "loss_count_9m": "9m_loss_count",
+        "average_return_9m": "9m_average_return",
+        "std_dev_9m": "9m_stdev",
+        "smart_score_9m": "9m_smart_score",
+        "success_rate_9m": "9m_success_rate",
+        "gain_count_1y": "1y_gain_count",
+        "loss_count_1y": "1y_loss_count",
+        "average_return_1y": "1y_average_return",
+        "std_dev_1y": "1y_stdev",
+        "smart_score_1y": "1y_smart_score",
+        "success_rate_1y": "1y_success_rate",
+        "gain_count_2y": "2y_gain_count",
+        "loss_count_2y": "2y_loss_count",
+        "average_return_2y": "2y_average_return",
+        "std_dev_2y": "2y_stdev",
+        "smart_score_2y": "2y_smart_score",
+        "success_rate_2y": "2y_success_rate",
+        "gain_count_3y": "3y_gain_count",
+        "loss_count_3y": "3y_loss_count",
+        "average_return_3y": "3y_average_return",
+        "std_dev_3y": "3y_stdev",
+        "smart_score_3y": "3y_smart_score",
+        "success_rate_3y": "3y_success_rate",
     }
+
     analyst_id: Optional[str] = Field(
         default=None,
         description="ID of the analyst.",
@@ -126,240 +168,199 @@ class BenzingaAnalystSearchData(AnalystSearchData):
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings since the date of recommendation",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="overall_stdev",
     )
     gain_count_1m: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last month",
-        alias="1m_gain_count",
     )
     loss_count_1m: Optional[int] = Field(
         default=None,
         description="The number of ratings that have lost value over the last month",
-        alias="1m_loss_count",
     )
     average_return_1m: Optional[float] = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over the last month",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="1m_average_return",
     )
     std_dev_1m: Optional[float] = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last month",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="1m_stdev",
     )
     smart_score_1m: Optional[float] = Field(
         default=None,
         description="A weighted average smart score over the last month.",
-        alias="1m_smart_score",
     )
     success_rate_1m: Optional[float] = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last month",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="1m_success_rate",
     )
     gain_count_3m: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last 3 months",
-        alias="3m_gain_count",
     )
     loss_count_3m: Optional[int] = Field(
         default=None,
         description="The number of ratings that have lost value over the last 3 months",
-        alias="3m_loss_count",
     )
     average_return_3m: Optional[float] = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 3 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="3m_average_return",
     )
     std_dev_3m: Optional[float] = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 3 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="3m_stdev",
     )
     smart_score_3m: Optional[float] = Field(
         default=None,
         description="A weighted average smart score over the last 3 months.",
-        alias="3m_smart_score",
     )
     success_rate_3m: Optional[float] = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="3m_success_rate",
     )
     gain_count_6m: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last 6 months",
-        alias="6m_gain_count",
     )
     loss_count_6m: Optional[int] = Field(
         default=None,
         description="The number of ratings that have lost value over the last 6 months",
-        alias="6m_loss_count",
     )
     average_return_6m: Optional[float] = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 6 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="6m_average_return",
     )
     std_dev_6m: Optional[float] = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 6 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="6m_stdev",
     )
     gain_count_9m: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last 9 months",
-        alias="9m_gain_count",
     )
     loss_count_9m: Optional[int] = Field(
         default=None,
         description="The number of ratings that have lost value over the last 9 months",
-        alias="9m_loss_count",
     )
     average_return_9m: Optional[float] = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 9 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="9m_average_return",
     )
     std_dev_9m: Optional[float] = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 9 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="9m_stdev",
     )
     smart_score_9m: Optional[float] = Field(
         default=None,
         description="A weighted average smart score over the last 9 months.",
-        alias="9m_smart_score",
     )
     success_rate_9m: Optional[float] = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 9 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="9m_success_rate",
     )
     gain_count_1y: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last 1 year",
-        alias="1y_gain_count",
     )
     loss_count_1y: Optional[int] = Field(
         default=None,
         description="The number of ratings that have lost value over the last 1 year",
-        alias="1y_loss_count",
     )
     average_return_1y: Optional[float] = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 1 year",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="1y_average_return",
     )
     std_dev_1y: Optional[float] = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 1 year",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="1y_stdev",
     )
     smart_score_1y: Optional[float] = Field(
         default=None,
         description="A weighted average smart score over the last 1 year.",
-        alias="1y_smart_score",
     )
     success_rate_1y: Optional[float] = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 1 year",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="1y_success_rate",
     )
     gain_count_2y: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last 2 years",
-        alias="2y_gain_count",
     )
     loss_count_2y: Optional[int] = Field(
         default=None,
         description="The number of ratings that have lost value over the last 2 years",
-        alias="2y_loss_count",
     )
     average_return_2y: Optional[float] = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 2 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="2y_average_return",
     )
     std_dev_2y: Optional[float] = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 2 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="2y_stdev",
     )
     smart_score_2y: Optional[float] = Field(
         default=None,
         description="A weighted average smart score over the last 3 years.",
-        alias="2y_smart_score",
     )
     success_rate_2y: Optional[float] = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 2 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="2y_success_rate",
     )
     gain_count_3y: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last 3 years",
-        alias="3y_gain_count",
     )
     loss_count_3y: Optional[int] = Field(
         default=None,
         description="The number of ratings that have lost value over the last 3 years",
-        alias="3y_loss_count",
     )
     average_return_3y: Optional[float] = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 3 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="3y_average_return",
     )
     std_dev_3y: Optional[float] = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 3 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="3y_stdev",
     )
     smart_score_3y: Optional[float] = Field(
         default=None,
         description="A weighted average smart score over the last 3 years.",
-        alias="3y_smart_score",
     )
     success_rate_3y: Optional[float] = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="3y_success_rate",
     )
 
     @field_validator("last_updated", mode="before", check_fields=False)

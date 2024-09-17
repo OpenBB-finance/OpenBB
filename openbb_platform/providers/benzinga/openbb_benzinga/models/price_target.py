@@ -171,6 +171,9 @@ class BenzingaPriceTargetData(PriceTargetData):
         "company_name": "name",
         "rating_previous": "rating_prior",
         "url_analyst": "url",
+        "action": "action_company",
+        "action_change": "action_pt",
+        "last_updated": "updated",
     }
 
     action: Optional[
@@ -191,14 +194,12 @@ class BenzingaPriceTargetData(PriceTargetData):
         default=None,
         description="Description of the change in rating from firm's last rating."
         "Note that all of these terms are precisely defined.",
-        alias="action_company",
     )
     action_change: Optional[
         Literal["Announces", "Maintains", "Lowers", "Raises", "Removes", "Adjusts"]
     ] = Field(
         default=None,
         description="Description of the change in price target from firm's last price target.",
-        alias="action_pt",
     )
     importance: Optional[Literal[0, 1, 2, 3, 4, 5]] = Field(
         default=None,
@@ -218,7 +219,6 @@ class BenzingaPriceTargetData(PriceTargetData):
     last_updated: Optional[datetime] = Field(
         default=None,
         description="Last updated timestamp, UTC.",
-        alias="updated",
     )
 
     @field_validator("published_date", mode="before", check_fields=False)

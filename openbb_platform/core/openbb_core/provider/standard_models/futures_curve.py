@@ -28,6 +28,27 @@ class FuturesCurveQueryParams(QueryParams):
         """Convert field to uppercase."""
         return v.upper()
 
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def _validate_date(cls, v):
+        """Validate the date."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
+        if v is None:
+            return None
+        if isinstance(v, dateType):
+            return v.strftime("%Y-%m-%d")
+        new_dates: list = []
+        if isinstance(v, str):
+            dates = v.split(",")
+        if isinstance(v, list):
+            dates = v
+        for date in dates:
+            new_dates.append(to_datetime(date).date().strftime("%Y-%m-%d"))
+
+        return ",".join(new_dates) if new_dates else None
+
 
 class FuturesCurveData(Data):
     """Futures Curve Data."""
