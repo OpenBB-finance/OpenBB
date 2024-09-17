@@ -31,27 +31,27 @@ class YFinanceEquityQuoteData(EquityQuoteData):
         "prev_close": "previousClose",
         "year_high": "fiftyTwoWeekHigh",
         "year_low": "fiftyTwoWeekLow",
+        "ma_50d": "fiftyDayAverage",
+        "ma_200d": "twoHundredDayAverage",
+        "volume_average": "averageVolume",
+        "volume_average_10d": "averageDailyVolume10Day",
     }
 
     ma_50d: Optional[float] = Field(
         default=None,
         description="50-day moving average price.",
-        alias="fiftyDayAverage",
     )
     ma_200d: Optional[float] = Field(
         default=None,
         description="200-day moving average price.",
-        alias="twoHundredDayAverage",
     )
     volume_average: Optional[float] = Field(
         default=None,
         description="Average daily trading volume.",
-        alias="averageVolume",
     )
     volume_average_10d: Optional[float] = Field(
         default=None,
         description="Average daily trading volume in the last 10 days.",
-        alias="averageDailyVolume10Day",
     )
     currency: Optional[str] = Field(
         default=None,

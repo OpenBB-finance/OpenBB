@@ -55,6 +55,15 @@ class TmxBondPricesData(BondReferenceData):
 
     __alias_dict__ = {
         "coupon_rate": "couponRate",
+        "ytm": "lastYield",
+        "price": "lastPrice",
+        "highest_price": "highestPrice",
+        "lowest_price": "lowestPrice",
+        "total_trades": "totalTrades",
+        "last_traded_date": "lastTradedDate",
+        "maturity_date": "maturityDate",
+        "issue_date": "originalIssueDate",
+        "issuer_name": "issuer",
     }
 
     ytm: Optional[float] = Field(
@@ -64,48 +73,39 @@ class TmxBondPricesData(BondReferenceData):
         + " the current market price, par value, coupon rate and time to maturity. It is assumed that all"
         + " coupons are reinvested at the same rate."
         + " Values are returned as a normalized percent.",
-        alias="lastYield",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     price: Optional[float] = Field(
         default=None,
         description="The last price for the bond.",
-        alias="lastPrice",
     )
     highest_price: Optional[float] = Field(
         default=None,
         description="The highest price for the bond on the last traded date.",
-        alias="highestPrice",
     )
     lowest_price: Optional[float] = Field(
         default=None,
         description="The lowest price for the bond on the last traded date.",
-        alias="lowestPrice",
     )
     total_trades: Optional[int] = Field(
         default=None,
         description="Total number of trades on the last traded date.",
-        alias="totalTrades",
     )
     last_traded_date: Optional[dateType] = Field(
         default=None,
         description="Last traded date of the bond.",
-        alias="lastTradedDate",
     )
     maturity_date: Optional[dateType] = Field(
         default=None,
         description="Maturity date of the bond.",
-        alias="maturityDate",
     )
     issue_date: Optional[dateType] = Field(
         default=None,
         description="Issue date of the bond. This is the date when the bond first accrues interest.",
-        alias="originalIssueDate",
     )
     issuer_name: Optional[str] = Field(
         default=None,
         description="Name of the issuing entity.",
-        alias="issuer",
     )
 
     @field_validator(

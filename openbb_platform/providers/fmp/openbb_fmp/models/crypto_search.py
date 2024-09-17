@@ -29,17 +29,20 @@ class FMPCryptoSearchQueryParams(CryptoSearchQueryParams):
 class FMPCryptoSearchData(CryptoSearchData):
     """FMP Crypto Search Data."""
 
+    __alias_dict__ = {
+        "exchange": "stockExchange",
+        "exchange_name": "exchangeShortName",
+    }
+
     currency: Optional[str] = Field(
         description="The currency the crypto trades for.", default=None
     )
     exchange: Optional[str] = Field(
         description="The exchange code the crypto trades on.",
-        alias="stockExchange",
         default=None,
     )
     exchange_name: Optional[str] = Field(
         description="The short name of the exchange the crypto trades on.",
-        alias="exchangeShortName",
         default=None,
     )
 

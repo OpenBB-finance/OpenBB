@@ -30,10 +30,15 @@ class FMPEtfSearchData(EtfSearchData):
 
     __alias_dict__ = {
         "name": "companyName",
+        "market_cap": "marketCap",
+        "last_annual_dividend": "lastAnnualDividend",
+        "exchange": "exchangeShortName",
+        "exchange_name": "exchange",
+        "actively_trading": "isActivelyTrading",
     }
 
     market_cap: Optional[float] = Field(
-        description="The market cap of the ETF.", alias="marketCap", default=None
+        description="The market cap of the ETF.", default=None
     )
     sector: Optional[str] = Field(description="The sector of the ETF.", default=None)
     industry: Optional[str] = Field(
@@ -45,7 +50,6 @@ class FMPEtfSearchData(EtfSearchData):
     )
     last_annual_dividend: Optional[float] = Field(
         description="The last annual dividend paid.",
-        alias="lastAnnualDividend",
         default=None,
     )
     volume: Optional[float] = Field(
@@ -53,12 +57,10 @@ class FMPEtfSearchData(EtfSearchData):
     )
     exchange: Optional[str] = Field(
         description="The exchange code the ETF trades on.",
-        alias="exchangeShortName",
         default=None,
     )
     exchange_name: Optional[str] = Field(
         description="The full name of the exchange the ETF trades on.",
-        alias="exchange",
         default=None,
     )
     country: Optional[str] = Field(
@@ -66,7 +68,6 @@ class FMPEtfSearchData(EtfSearchData):
     )
     actively_trading: Optional[Literal[True, False]] = Field(
         description="Whether the ETF is actively trading.",
-        alias="isActivelyTrading",
         default=None,
     )
 

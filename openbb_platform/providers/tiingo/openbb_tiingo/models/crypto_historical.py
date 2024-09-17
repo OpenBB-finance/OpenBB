@@ -73,10 +73,14 @@ class TiingoCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
 class TiingoCryptoHistoricalData(CryptoHistoricalData):
     """Tiingo Crypto Historical Price Data."""
 
+    __alias_dict__ = {
+        "transactions": "tradesDone",
+        "volume_notional": "volumeNotional",
+    }
+
     transactions: Optional[int] = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
-        alias="tradesDone",
     )
 
     volume_notional: Optional[float] = Field(
@@ -86,7 +90,6 @@ class TiingoCryptoHistoricalData(CryptoHistoricalData):
             "quote currency. The volume of the asset on the specific date in "
             "the quote currency."
         ),
-        alias="volumeNotional",
     )
 
 

@@ -30,25 +30,28 @@ class TmxEquityProfileData(EquityInfoData):
         "stock_exchange": "exchangeCode",
         "industry_category": "industry",
         "industry_group": "qmdescription",
+        "issue_type": "issueType",
+        "share_outstanding": "shareOutStanding",
+        "shares_escrow": "sharesESCROW",
+        "total_shares_outstanding": "totalSharesOutStanding",
     }
+
     email: Optional[str] = Field(description="The email of the company.", default=None)
     issue_type: Optional[str] = Field(
-        description="The issuance type of the asset.", default=None, alias="issueType"
+        description="The issuance type of the asset.",
+        default=None,
     )
     shares_outstanding: Optional[int] = Field(
         description="The number of listed shares outstanding.",
         default=None,
-        alias="shareOutStanding",
     )
     shares_escrow: Optional[int] = Field(
         description="The number of shares held in escrow.",
         default=None,
-        alias="sharesESCROW",
     )
     shares_total: Optional[int] = Field(
         description="The total number of shares outstanding from all classes.",
         default=None,
-        alias="totalSharesOutStanding",
     )
     dividend_frequency: Optional[str] = Field(
         description="The dividend frequency.", default=None
