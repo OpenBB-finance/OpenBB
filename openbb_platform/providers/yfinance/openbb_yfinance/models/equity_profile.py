@@ -52,7 +52,6 @@ class YFinanceEquityProfileData(EquityInfoData):
     issue_type: Optional[str] = Field(
         description="The issuance type of the asset.",
         default=None,
-        alias="issueType",
     )
     currency: Optional[str] = Field(
         description="The currency in which the asset is traded.", default=None
@@ -84,7 +83,6 @@ class YFinanceEquityProfileData(EquityInfoData):
         description="The dividend yield of the asset, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="dividendYield",
     )
     beta: Optional[float] = Field(
         description="The beta of the asset relative to the broad market.",
@@ -166,7 +164,11 @@ class YFinanceEquityProfileFetcher(
             if ticker:
                 for field in fields:
                     if field in ticker:
-                        result[field] = ticker.get(field, None)
+                        result[
+                            field.replace("dividendYield", "dividend_yield").replace(
+                                "issueType", "issue_type"
+                            )
+                        ] = ticker.get(field, None)
                 if result:
                     results.append(result)
 
