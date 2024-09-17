@@ -33,7 +33,7 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """
 
     __json_schema_extra__ = {
-        "symbol": {
+        "interval": {
             "choices": [
                 "1m",
                 "5m",
