@@ -174,7 +174,7 @@ def build_json(openapi: dict):
                 provider_name = "Custom"
             elif isinstance(provider, str):
                 provider_name = (
-                    provider_map.get(provider.lower())
+                    provider_map.get(provider.lower(), "")
                     if provider.lower() in provider_map
                     else provider.replace("_", " ").title()
                 )
