@@ -426,7 +426,8 @@ def bar_chart(  # noqa: PLR0912
 
     bar_df = data.copy().set_index(x)  # type: ignore
     y = y.split(",") if isinstance(y, str) else y
-
+    hovertemplate = bar_kwargs.pop("hovertemplate", None)
+    width = bar_kwargs.pop("width", None)
     for item in y:
         figure.add_bar(
             x=bar_df.index if orientation == "v" else bar_df[item],
@@ -436,11 +437,19 @@ def bar_chart(  # noqa: PLR0912
             legendgroup=bar_df[item].name,
             orientation=orientation,
             hovertemplate=(
-                "%{fullData.name}:%{y}<extra></extra>"
-                if orientation == "v"
-                else "%{fullData.name}:%{x}<extra></extra>"
+                hovertemplate
+                if hovertemplate
+                else (
+                    "%{fullData.name}:%{y}<extra></extra>"
+                    if orientation == "v"
+                    else "%{fullData.name}:%{x}<extra></extra>"
+                )
             ),
-            width=0.95 / len(y) * 0.75 if barmode == "group" and len(y) > 1 else 0.95,
+            width=(
+                width
+                if width
+                else 0.95 / len(y) * 0.75 if barmode == "group" and len(y) > 1 else 0.95
+            ),
             **bar_kwargs,
         )
 
