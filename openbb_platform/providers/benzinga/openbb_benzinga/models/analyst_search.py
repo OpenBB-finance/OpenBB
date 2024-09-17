@@ -113,7 +113,7 @@ class BenzingaAnalystSearchData(AnalystSearchData):
         "average_return_3y": "3y_average_return",
         "std_dev_3y": "3y_stdev",
         "smart_score_3y": "3y_smart_score",
-        "success_rate_3y": "3y_success",
+        "success_rate_3y": "3y_success_rate",
     }
 
     analyst_id: Optional[str] = Field(
