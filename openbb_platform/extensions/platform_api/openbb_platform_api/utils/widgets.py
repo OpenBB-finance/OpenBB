@@ -166,11 +166,18 @@ def build_json(openapi: dict):
                 "tradingeconomics": "Trading Economics",
                 "wsj": "WSJ",
             }
-            provider_name = (
-                provider_map.get(provider.lower())
-                if provider.lower() in provider_map
-                else provider.replace("_", " ").title()
-            )
+            if (
+                isinstance(provider, dict)
+                and "value" in provider
+                and provider["value"] == "Custom"
+            ):
+                provider_name = "Custom"
+            else:
+                provider_name = (
+                    provider_map.get(provider.lower())  # type: ignore
+                    if provider.lower() in provider_map
+                    else provider.replace("_", " ").title()
+                )
 
             widget_config = {
                 "name": f"{name} ({provider_name})",

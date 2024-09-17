@@ -444,7 +444,7 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
         if k in ["cik", "isin", "figi", "cusip", "sedol", "symbol"]:
             column_def["cellDataType"] = "text"
             column_def["headerName"] = (
-                column_def["headerName"].upper() if key != "symbol" else "Symbol"
+                column_def["headerName"].upper() if k != "symbol" else "Symbol"
             )
 
         column_defs.append(column_def)
