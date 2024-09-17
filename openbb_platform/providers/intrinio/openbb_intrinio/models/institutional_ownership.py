@@ -117,7 +117,7 @@ class IntrinioInstitutionalOwnershipFetcher(
         for item in results:
             if isinstance(item, Exception):
                 continue
-            data.append(item)
+            data.append(item)  # type: ignore
 
         return data
 
