@@ -399,11 +399,7 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
         column_def: dict = {}
         # OpenAPI changes some of the field names.
         k = to_snake_case(key)
-        column_def["field"] = (
-            k.replace("ma_20_", "ma20_")
-            .replace("ma_50_", "ma50_")
-            .replace("ma_200_", "ma200_")
-        )
+        column_def["field"] = k
         if k in [
             "symbol",
             "symbol_root",
