@@ -25,6 +25,8 @@ class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
     __alias_dict__ = {
         "symbol": "ticker",
         "limit": "page_size",
+        "min_value": "offer_amount_greater_than",
+        "max_value": "offer_amount_less_than",
     }
 
     status: Optional[Literal["upcoming", "priced", "withdrawn"]] = Field(
@@ -33,12 +35,10 @@ class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
     min_value: Optional[int] = Field(
         description="Return IPOs with an offer dollar amount greater than the given amount.",
         default=None,
-        alias="offer_amount_greater_than",
     )
     max_value: Optional[int] = Field(
         description="Return IPOs with an offer dollar amount less than the given amount.",
         default=None,
-        alias="offer_amount_less_than",
     )
 
 
