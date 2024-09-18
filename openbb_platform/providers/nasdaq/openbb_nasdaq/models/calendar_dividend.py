@@ -31,12 +31,12 @@ class NasdaqCalendarDividendData(CalendarDividendData):
         "record_date": "record_Date",
         "declaration_date": "announcement_Date",
         "amount": "dividend_Rate",
+        "annualized_amount": "indicated_Annual_Dividend",
     }
 
     annualized_amount: Optional[float] = Field(
         default=None,
         description="The indicated annualized dividend amount.",
-        alias="indicated_Annual_Dividend",
     )
 
     @field_validator(

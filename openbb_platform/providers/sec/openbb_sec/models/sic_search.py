@@ -25,11 +25,16 @@ class SecSicSearchQueryParams(CotSearchQueryParams):
 class SecSicSearchData(Data):
     """SEC Standard Industrial Classification Code (SIC) Data."""
 
-    sic: int = Field(description="Sector Industrial Code (SIC)", alias="SIC Code")
-    industry: str = Field(description="Industry title.", alias="Industry Title")
+    __alias_dict__ = {
+        "sic": "SIC Code",
+        "industry": "Industry Title",
+        "office": "Office",
+    }
+
+    sic: int = Field(description="Sector Industrial Code (SIC)")
+    industry: str = Field(description="Industry title.")
     office: str = Field(
-        description="Reporting office within the Corporate Finance Office",
-        alias="Office",
+        description="Reporting office within the Corporate Finance Office"
     )
 
 
