@@ -42,38 +42,42 @@ class NasdaqCalendarIpoData(CalendarIpoData):
         "share_price": "proposedSharePrice",
         "exchange": "proposedExchange",
         "id": "dealID",
+        "name": "companyName",
+        "offer_amount": "dollarValueOfSharesOffered",
+        "share_count": "sharesOffered",
+        "expected_price_date": "expectedPriceDate",
+        "filed_date": "filedDate",
+        "withdraw_date": "withdrawDate",
+        "deal_status": "dealStatus",
     }
 
     name: Optional[str] = Field(
         default=None,
         description="The name of the company.",
-        alias="companyName",
     )
     offer_amount: Optional[float] = Field(
         default=None,
         description="The dollar value of the shares offered.",
-        alias="dollarValueOfSharesOffered",
     )
     share_count: Optional[int] = Field(
         default=None,
         description="The number of shares offered.",
-        alias="sharesOffered",
     )
     expected_price_date: Optional[dateType] = Field(
         default=None,
         description="The date the pricing is expected.",
-        alias="expectedPriceDate",
     )
     filed_date: Optional[dateType] = Field(
-        default=None, description="The date the IPO was filed.", alias="filedDate"
+        default=None,
+        description="The date the IPO was filed.",
     )
     withdraw_date: Optional[dateType] = Field(
         default=None,
         description="The date the IPO was withdrawn.",
-        alias="withdrawDate",
     )
     deal_status: Optional[str] = Field(
-        default=None, description="The status of the deal.", alias="dealStatus"
+        default=None,
+        description="The status of the deal.",
     )
 
     @field_validator(

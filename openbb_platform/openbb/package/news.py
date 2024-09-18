@@ -25,32 +25,11 @@ class ROUTER_news(Container):
     @validate
     def company(
         self,
-        symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
-            OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance."
-            ),
-        ] = None,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        limit: Annotated[
-            Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBField(description="The number of data entries to return."),
-        ] = 2500,
-        provider: Annotated[
-            Optional[
-                Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
-            ],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, polygon, tiingo, yfinance."
-            ),
-        ] = None,
+        symbol: Annotated[Union[str, None, List[Optional[str]]], OpenBBField(description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.")] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        limit: Annotated[Optional[Annotated[int, Ge(ge=0)]], OpenBBField(description="The number of data entries to return.")] = 2500,
+        provider: Annotated[Optional[Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, polygon, tiingo, yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Company News. Get news for one or more companies.
@@ -133,17 +112,17 @@ class ROUTER_news(Container):
         CompanyNews
         -----------
         date : datetime
-            The date of the data. Here it is the published date of the article.
+            The date of the data. Here it is the published date of the article. 
         title : str
-            Title of the article.
+            Title of the article. 
         text : Optional[str]
-            Text/body of the article.
+            Text/body of the article. 
         images : Optional[List[Dict[str, str]]]
-            Images associated with the article.
+            Images associated with the article. 
         url : str
-            URL to the article.
+            URL to the article. 
         symbols : Optional[str]
-            Symbols associated with the article.
+            Symbols associated with the article. 
         id : Optional[str]
             Article ID. (provider: benzinga, intrinio, polygon)
         author : Optional[str]
@@ -171,7 +150,7 @@ class ROUTER_news(Container):
         word_count : Optional[int]
             The word count of the news article. (provider: intrinio)
         business_relevance : Optional[float]
-                How strongly correlated the news article is to the business (provider: intrinio)
+             	How strongly correlated the news article is to the business (provider: intrinio)
         sentiment : Optional[str]
             The sentiment of the news article - i.e, negative, positive. (provider: intrinio)
         sentiment_confidence : Optional[float]
@@ -215,14 +194,7 @@ class ROUTER_news(Container):
                     "provider": self._get_provider(
                         provider,
                         "news.company",
-                        (
-                            "benzinga",
-                            "fmp",
-                            "intrinio",
-                            "polygon",
-                            "tiingo",
-                            "yfinance",
-                        ),
+                        ("benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"),
                     )
                 },
                 standard_params={
@@ -232,39 +204,7 @@ class ROUTER_news(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={
-                    "symbol": {
-                        "benzinga": {"multiple_items_allowed": True, "choices": None},
-                        "fmp": {"multiple_items_allowed": True, "choices": None},
-                        "intrinio": {"multiple_items_allowed": True, "choices": None},
-                        "polygon": {"multiple_items_allowed": True, "choices": None},
-                        "tiingo": {"multiple_items_allowed": True, "choices": None},
-                        "yfinance": {"multiple_items_allowed": True, "choices": None},
-                    },
-                    "order": {
-                        "polygon": {
-                            "multiple_items_allowed": False,
-                            "choices": ["asc", "desc"],
-                        }
-                    },
-                    "source": {
-                        "intrinio": {
-                            "multiple_items_allowed": False,
-                            "choices": [
-                                "yahoo",
-                                "moody",
-                                "moody_us_news",
-                                "moody_us_press_releases",
-                            ],
-                        }
-                    },
-                    "sentiment": {
-                        "intrinio": {
-                            "multiple_items_allowed": False,
-                            "choices": ["positive", "neutral", "negative"],
-                        }
-                    },
-                },
+                info={"symbol": {"benzinga": {"multiple_items_allowed": True, "choices": None}, "fmp": {"multiple_items_allowed": True, "choices": None}, "intrinio": {"multiple_items_allowed": True, "choices": None}, "polygon": {"multiple_items_allowed": True, "choices": None}, "tiingo": {"multiple_items_allowed": True, "choices": None}, "yfinance": {"multiple_items_allowed": True, "choices": None}}, "order": {"polygon": {"multiple_items_allowed": False, "choices": ["asc", "desc"]}}, "source": {"intrinio": {"multiple_items_allowed": False, "choices": ["yahoo", "moody", "moody_us_news", "moody_us_press_releases"]}}, "sentiment": {"intrinio": {"multiple_items_allowed": False, "choices": ["positive", "neutral", "negative"]}}},
             )
         )
 
@@ -272,26 +212,10 @@ class ROUTER_news(Container):
     @validate
     def world(
         self,
-        limit: Annotated[
-            int,
-            OpenBBField(
-                description="The number of data entries to return. The number of articles to return."
-            ),
-        ] = 2500,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, tiingo."
-            ),
-        ] = None,
+        limit: Annotated[int, OpenBBField(description="The number of data entries to return. The number of articles to return.")] = 2500,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, tiingo.")] = None,
         **kwargs
     ) -> OBBject:
         """World News. Global news data.
@@ -369,15 +293,15 @@ class ROUTER_news(Container):
         WorldNews
         ---------
         date : datetime
-            The date of the data. The published date of the article.
+            The date of the data. The published date of the article. 
         title : str
-            Title of the article.
+            Title of the article. 
         images : Optional[List[Dict[str, str]]]
-            Images associated with the article.
+            Images associated with the article. 
         text : Optional[str]
-            Text/body of the article.
+            Text/body of the article. 
         url : Optional[str]
-            URL to the article.
+            URL to the article. 
         id : Optional[str]
             Article ID. (provider: benzinga, intrinio)
         author : Optional[str]
@@ -403,7 +327,7 @@ class ROUTER_news(Container):
         word_count : Optional[int]
             The word count of the news article. (provider: intrinio)
         business_relevance : Optional[float]
-                How strongly correlated the news article is to the business (provider: intrinio)
+             	How strongly correlated the news article is to the business (provider: intrinio)
         sentiment : Optional[str]
             The sentiment of the news article - i.e, negative, positive. (provider: intrinio)
         sentiment_confidence : Optional[float]

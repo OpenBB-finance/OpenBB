@@ -24,8 +24,13 @@ class FMPEtfInfoQueryParams(EtfInfoQueryParams):
 class FMPEtfInfoData(EtfInfoData):
     """FMP ETF Info Data."""
 
+    __alias_dict__ = {
+        "issuer": "etfCompany",
+    }
+
     issuer: Optional[str] = Field(
-        default=None, description="Company of the ETF.", alias="etfCompany"
+        default=None,
+        description="Company of the ETF.",
     )
     cusip: Optional[str] = Field(default=None, description="CUSIP of the ETF.")
     isin: Optional[str] = Field(default=None, description="ISIN of the ETF.")

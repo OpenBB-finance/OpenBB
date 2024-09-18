@@ -24,28 +24,10 @@ class ROUTER_regulators_cftc(Container):
     @validate
     def cot(
         self,
-        id: Annotated[
-            str,
-            OpenBBField(
-                description="A string with the CFTC market code or other identifying string, such as the contract market name, commodity name, or commodity group - i.e, 'gold' or 'japanese yen'.Default report is Fed Funds Futures. Use the 'cftc_market_code' for an exact match."
-            ),
-        ] = "045601",
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(
-                description="Start date of the data, in YYYY-MM-DD format. Default is the most recent report."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["cftc"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc."
-            ),
-        ] = None,
+        id: Annotated[str, OpenBBField(description="A string with the CFTC market code or other identifying string, such as the contract market name, commodity name, or commodity group - i.e, 'gold' or 'japanese yen'.Default report is Fed Funds Futures. Use the 'cftc_market_code' for an exact match.")] = "045601",
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format. Default is the most recent report.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["cftc"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc.")] = None,
         **kwargs
     ) -> OBBject:
         """Get Commitment of Traders Reports.
@@ -90,37 +72,37 @@ class ROUTER_regulators_cftc(Container):
         COT
         ---
         date : date
-            The date of the data.
+            The date of the data. 
         report_week : Optional[str]
-            Report week for the year.
+            Report week for the year. 
         market_and_exchange_names : Optional[str]
-            Market and exchange names.
+            Market and exchange names. 
         cftc_contract_market_code : Optional[str]
-            CFTC contract market code.
+            CFTC contract market code. 
         cftc_market_code : Optional[str]
-            CFTC market code.
+            CFTC market code. 
         cftc_region_code : Optional[str]
-            CFTC region code.
+            CFTC region code. 
         cftc_commodity_code : Optional[str]
-            CFTC commodity code.
+            CFTC commodity code. 
         cftc_contract_market_code_quotes : Optional[str]
-            CFTC contract market code quotes.
+            CFTC contract market code quotes. 
         cftc_market_code_quotes : Optional[str]
-            CFTC market code quotes.
+            CFTC market code quotes. 
         cftc_commodity_code_quotes : Optional[str]
-            CFTC commodity code quotes.
+            CFTC commodity code quotes. 
         cftc_subgroup_code : Optional[str]
-            CFTC subgroup code.
+            CFTC subgroup code. 
         commodity : Optional[str]
-            Commodity.
+            Commodity. 
         commodity_group : Optional[str]
-            Commodity group name.
+            Commodity group name. 
         commodity_subgroup : Optional[str]
-            Commodity subgroup name.
+            Commodity subgroup name. 
         futonly_or_combined : Optional[str]
-            If the report is futures-only or combined.
+            If the report is futures-only or combined. 
         contract_units : Optional[str]
-            Contract units.
+            Contract units. 
 
         Examples
         --------
@@ -151,19 +133,7 @@ class ROUTER_regulators_cftc(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={
-                    "report_type": {
-                        "cftc": {
-                            "multiple_items_allowed": False,
-                            "choices": [
-                                "legacy",
-                                "disaggregated",
-                                "financial",
-                                "supplemental",
-                            ],
-                        }
-                    }
-                },
+                info={"report_type": {"cftc": {"multiple_items_allowed": False, "choices": ["legacy", "disaggregated", "financial", "supplemental"]}}},
             )
         )
 
@@ -172,18 +142,13 @@ class ROUTER_regulators_cftc(Container):
     def cot_search(
         self,
         query: Annotated[str, OpenBBField(description="Search query.")] = "",
-        provider: Annotated[
-            Optional[Literal["cftc"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["cftc"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the current Commitment of Traders Reports.
 
         Search a list of the current Commitment of Traders Reports series information.
-
+        
 
         Parameters
         ----------
@@ -209,17 +174,17 @@ class ROUTER_regulators_cftc(Container):
         COTSearch
         ---------
         code : str
-            CFTC market contract code of the report.
+            CFTC market contract code of the report. 
         name : str
-            Name of the underlying asset.
+            Name of the underlying asset. 
         category : Optional[str]
-            Category of the underlying asset.
+            Category of the underlying asset. 
         subcategory : Optional[str]
-            Subcategory of the underlying asset.
+            Subcategory of the underlying asset. 
         units : Optional[str]
-            The units for one contract.
+            The units for one contract. 
         symbol : Optional[str]
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         commodity : Optional[str]
             Name of the commodity. (provider: cftc)
 

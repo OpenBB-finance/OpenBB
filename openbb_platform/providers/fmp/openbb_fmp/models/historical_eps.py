@@ -31,32 +31,34 @@ class FMPHistoricalEpsQueryParams(HistoricalEpsQueryParams):
 class FMPHistoricalEpsData(HistoricalEpsData):
     """FMP Historical EPS Data."""
 
-    __alias_dict__ = {"eps_actual": "eps"}
+    __alias_dict__ = {
+        "eps_actual": "eps",
+        "revenue_estimated": "revenueEstimated",
+        "revenue_actual": "revenue",
+        "reporting_time": "time",
+        "updated_at": "updatedFromDate",
+        "period_ending": "fiscalDateEnding",
+    }
 
     revenue_estimated: Optional[float] = Field(
         default=None,
         description="Estimated consensus revenue for the reporting period.",
-        alias="revenueEstimated",
     )
     revenue_actual: Optional[float] = Field(
         default=None,
         description="The actual reported revenue.",
-        alias="revenue",
     )
     reporting_time: Optional[str] = Field(
         default=None,
         description="The reporting time - e.g. after market close.",
-        alias="time",
     )
     updated_at: Optional[dateType] = Field(
         default=None,
         description="The date when the data was last updated.",
-        alias="updatedFromDate",
     )
     period_ending: Optional[dateType] = Field(
         default=None,
         description="The fiscal period end date.",
-        alias="fiscalDateEnding",
     )
 
     @field_validator(

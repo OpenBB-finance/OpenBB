@@ -97,10 +97,16 @@ class FMPEquityScreenerData(EquityScreenerData):
 
     __alias_dict__ = {
         "name": "companyName",
+        "market_cap": "marketCap",
+        "last_annual_dividend": "lastAnnualDividend",
+        "exchange": "exchangeShortName",
+        "exchange_name": "exchange",
+        "is_etf": "isEtf",
+        "actively_trading": "isActivelyTrading",
     }
 
     market_cap: Optional[int] = Field(
-        description="The market cap of ticker.", alias="marketCap", default=None
+        description="The market cap of ticker.", default=None
     )
     sector: Optional[str] = Field(
         description="The sector the ticker belongs to.", default=None
@@ -112,7 +118,6 @@ class FMPEquityScreenerData(EquityScreenerData):
     price: Optional[float] = Field(description="The current price.", default=None)
     last_annual_dividend: Optional[float] = Field(
         description="The last annual amount dividend paid.",
-        alias="lastAnnualDividend",
         default=None,
     )
     volume: Optional[int] = Field(
@@ -120,12 +125,10 @@ class FMPEquityScreenerData(EquityScreenerData):
     )
     exchange: Optional[str] = Field(
         description="The exchange code the asset trades on.",
-        alias="exchangeShortName",
         default=None,
     )
     exchange_name: Optional[str] = Field(
         description="The full name of the primary exchange.",
-        alias="exchange",
         default=None,
     )
     country: Optional[str] = Field(
@@ -133,11 +136,10 @@ class FMPEquityScreenerData(EquityScreenerData):
         default=None,
     )
     is_etf: Optional[Literal[True, False]] = Field(
-        description="Whether the ticker is an ETF.", alias="isEtf", default=None
+        description="Whether the ticker is an ETF.", default=None
     )
     actively_trading: Optional[Literal[True, False]] = Field(
         description="Whether the ETF is actively trading.",
-        alias="isActivelyTrading",
         default=None,
     )
 

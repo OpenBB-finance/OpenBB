@@ -13,6 +13,9 @@ from openbb_federal_reserve.models.money_measures import (
 from openbb_federal_reserve.models.overnight_bank_funding_rate import (
     FederalReserveOvernightBankFundingRateFetcher,
 )
+from openbb_federal_reserve.models.primary_dealer_fails import (
+    FederalReservePrimaryDealerFailsFetcher,
+)
 from openbb_federal_reserve.models.primary_dealer_positioning import (
     FederalReservePrimaryDealerPositioningFetcher,
 )
@@ -31,6 +34,7 @@ federal_reserve_provider = Provider(
         "FederalFundsRate": FederalReserveFederalFundsRateFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
         "OvernightBankFundingRate": FederalReserveOvernightBankFundingRateFetcher,
+        "PrimaryDealerFails": FederalReservePrimaryDealerFailsFetcher,
         "PrimaryDealerPositioning": FederalReservePrimaryDealerPositioningFetcher,
         "SOFR": FederalReserveSOFRFetcher,
         "TreasuryRates": FederalReserveTreasuryRatesFetcher,

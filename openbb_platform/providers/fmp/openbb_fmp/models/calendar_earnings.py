@@ -34,37 +34,37 @@ class FMPCalendarEarningsData(CalendarEarningsData):
     __alias_dict__ = {
         "report_date": "date",
         "eps_consensus": "epsEstimated",
+        "eps_actual": "eps",
+        "revenue_actual": "revenue",
+        "revenue_consensus": "revenueEstimated",
+        "period_ending": "fiscalDateEnding",
+        "reporting_time": "time",
+        "updated_date": "updatedFromDate",
     }
 
     eps_actual: Optional[float] = Field(
         default=None,
         description="The actual earnings per share announced.",
-        alias="eps",
     )
     revenue_actual: Optional[float] = Field(
         default=None,
         description="The actual reported revenue.",
-        alias="revenue",
     )
     revenue_consensus: Optional[float] = Field(
         default=None,
         description="The revenue forecast consensus.",
-        alias="revenueEstimated",
     )
     period_ending: Optional[dateType] = Field(
         default=None,
         description="The fiscal period end date.",
-        alias="fiscalDateEnding",
     )
     reporting_time: Optional[str] = Field(
         default=None,
         description="The reporting time - e.g. after market close.",
-        alias="time",
     )
     updated_date: Optional[dateType] = Field(
         default=None,
         description="The date the data was updated last.",
-        alias="updatedFromDate",
     )
 
     @field_validator(
