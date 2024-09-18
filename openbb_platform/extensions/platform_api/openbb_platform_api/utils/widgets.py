@@ -91,9 +91,11 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
 
         modified_query_schema.append(_item)
 
-    modified_query_schema.append(
-        {"paramName": "provider", "value": provider_value, "show": False}
-    )
+    if provider_value != "custom":
+        modified_query_schema.append(
+            {"paramName": "provider", "value": provider_value, "show": False}
+        )
+
     return modified_query_schema
 
 
