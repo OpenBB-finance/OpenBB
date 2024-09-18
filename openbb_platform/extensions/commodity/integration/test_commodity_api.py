@@ -45,13 +45,41 @@ def headers():
         ),
     ],
 )
-@pytest.mark.integration
+@pytest.mark.skip(reason="Resource no longer available. Pending replacement/removal.")
 def test_commodity_lbma_fixing(params, headers):
     """Test the LBMA fixing endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/commodity/lbma_fixing?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "commodity": "all",
+                "start_date": None,
+                "end_date": None,
+                "frequency": None,
+                "transform": None,
+                "aggregation_method": None,
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_commodity_spot_prices(params, headers):
+    """Test the commodity spot prices endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/commodity/spot_prices?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

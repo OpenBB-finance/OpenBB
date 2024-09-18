@@ -40,12 +40,39 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
         ),
     ],
 )
-@pytest.mark.integration
+@pytest.mark.skip(reason="Resource no longer available. Pending replacement/removal.")
 def test_commodity_lbma_fixing(params, obb):
     """Test the LBMA fixing endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.commodity.lbma_fixing(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "commodity": "all",
+                "start_date": None,
+                "end_date": None,
+                "frequency": None,
+                "transform": None,
+                "aggregation_method": None,
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_commodity_spot_prices(params, obb):
+    """Test the commodity spot prices endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.commodity.spot_prices(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

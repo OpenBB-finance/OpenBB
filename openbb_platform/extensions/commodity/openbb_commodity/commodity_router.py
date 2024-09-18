@@ -40,3 +40,20 @@ async def lbma_fixing(
 ) -> OBBject:
     """Daily LBMA Fixing Prices in USD/EUR/GBP."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CommoditySpotPrices",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"provider": "fred", "commodity": "wti"}),
+    ],
+)
+async def spot_prices(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Commodity Spot Prices."""
+    return await OBBject.from_query(Query(**locals()))
