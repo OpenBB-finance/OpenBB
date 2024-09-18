@@ -123,12 +123,9 @@ def build_json(openapi: dict):
                 providers = item["available_providers"]
 
         if not providers:
-            providers = [{"value": "Custom"}]
+            providers = ["custom"]
 
         for provider in providers:
-
-            # TODO: Add the data schema to the widget_config once there is support for not displaying empty columns.
-            # # Prepare the data schema of the widget
             columns_defs = data_schema_to_columns_defs(openapi, widget_id, provider)
             _cat = route.split("v1/")[-1]
             _cats = _cat.split("/")
@@ -166,20 +163,9 @@ def build_json(openapi: dict):
                 "tradingeconomics": "Trading Economics",
                 "wsj": "WSJ",
             }
-            if (
-                isinstance(provider, dict)
-                and "value" in provider
-                and provider["value"] == "Custom"
-            ):
-                provider_name = "Custom"
-            elif isinstance(provider, str):
-                provider_name = (
-                    provider_map.get(provider.lower(), "")
-                    if provider.lower() in provider_map
-                    else provider.replace("_", " ").title()
-                )
-            else:
-                provider_name = provider
+            provider_name = provider_map.get(
+                provider.lower(), provider.replace("_", " ").title()
+            )
 
             widget_config = {
                 "name": f"{name} ({provider_name})",
