@@ -37,7 +37,7 @@ class BiztocWorldNewsData(WorldNewsData):
     }
 
     images: Optional[List[Dict[str, str]]] = Field(
-        description="Images for the article.", alias="images", default=None
+        description="Images for the article.", default=None
     )
     tags: Optional[List[str]] = Field(description="Tags for the article.", default=None)
     score: Optional[float] = Field(

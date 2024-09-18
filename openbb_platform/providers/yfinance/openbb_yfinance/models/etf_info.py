@@ -26,17 +26,39 @@ class YFinanceEtfInfoData(EtfInfoData):
         "name": "longName",
         "inception_date": "fundInceptionDate",
         "description": "longBusinessSummary",
+        "fund_type": "legalType",
+        "fund_family": "fundFamily",
+        "exchange_timezone": "timeZoneFullName",
+        "nav_price": "navPrice",
+        "total_assets": "totalAssets",
+        "trailing_pe": "trailingPE",
+        "dividend_yield": "yield",
+        "dividend_rate_ttm": "trailingAnnualDividendRate",
+        "dividend_yield_ttm": "trailingAnnualDividendYield",
+        "year_high": "fiftyTwoWeekHigh",
+        "year_low": "fiftyTwoWeekLow",
+        "ma_50d": "fiftyDayAverage",
+        "ma_200d": "twoHundredDayAverage",
+        "return_ytd": "ytdReturn",
+        "return_3y_avg": "threeYearAverageReturn",
+        "return_5y_avg": "fiveYearAverageReturn",
+        "beta_3y_avg": "beta3Year",
+        "volume_avg": "averageVolume",
+        "volume_avg_10d": "averageDailyVolume10Day",
+        "bid_size": "bidSize",
+        "ask_size": "askSize",
+        "high": "dayHigh",
+        "low": "dayLow",
+        "prev_close": "previousClose",
     }
 
     fund_type: Optional[str] = Field(
         default=None,
         description="The legal type of fund.",
-        alias="legalType",
     )
     fund_family: Optional[str] = Field(
         default=None,
         description="The fund family.",
-        alias="fundFamily",
     )
     category: Optional[str] = Field(
         default=None,
@@ -49,7 +71,6 @@ class YFinanceEtfInfoData(EtfInfoData):
     exchange_timezone: Optional[str] = Field(
         default=None,
         description="The timezone of the exchange.",
-        alias="timeZoneFullName",
     )
     currency: Optional[str] = Field(
         default=None,
@@ -58,87 +79,71 @@ class YFinanceEtfInfoData(EtfInfoData):
     nav_price: Optional[float] = Field(
         default=None,
         description="The net asset value per unit of the fund.",
-        alias="navPrice",
     )
     total_assets: Optional[int] = Field(
         default=None,
         description="The total value of assets held by the fund.",
-        alias="totalAssets",
     )
     trailing_pe: Optional[float] = Field(
         default=None,
         description="The trailing twelve month P/E ratio of the fund's assets.",
-        alias="trailingPE",
     )
     dividend_yield: Optional[float] = Field(
         default=None,
         description="The dividend yield of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="yield",
     )
     dividend_rate_ttm: Optional[float] = Field(
         default=None,
         description="The trailing twelve month annual dividend rate of the fund, in currency units.",
-        alias="trailingAnnualDividendRate",
     )
     dividend_yield_ttm: Optional[float] = Field(
         default=None,
         description="The trailing twelve month annual dividend yield of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="trailingAnnualDividendYield",
     )
     year_high: Optional[float] = Field(
         default=None,
         description="The fifty-two week high price.",
-        alias="fiftyTwoWeekHigh",
     )
     year_low: Optional[float] = Field(
         default=None,
         description="The fifty-two week low price.",
-        alias="fiftyTwoWeekLow",
     )
     ma_50d: Optional[float] = Field(
         default=None,
         description="50-day moving average price.",
-        alias="fiftyDayAverage",
     )
     ma_200d: Optional[float] = Field(
         default=None,
         description="200-day moving average price.",
-        alias="twoHundredDayAverage",
     )
     return_ytd: Optional[float] = Field(
         default=None,
         description="The year-to-date return of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="ytdReturn",
     )
     return_3y_avg: Optional[float] = Field(
         default=None,
         description="The three year average return of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="threeYearAverageReturn",
     )
     return_5y_avg: Optional[float] = Field(
         default=None,
         description="The five year average return of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="fiveYearAverageReturn",
     )
     beta_3y_avg: Optional[float] = Field(
         default=None,
         description="The three year average beta of the fund.",
-        alias="beta3Year",
     )
     volume_avg: Optional[float] = Field(
         default=None,
         description="The average daily trading volume of the fund.",
-        alias="averageVolume",
     )
     volume_avg_10d: Optional[float] = Field(
         default=None,
         description="The average daily trading volume of the fund over the past ten days.",
-        alias="averageDailyVolume10Day",
     )
     bid: Optional[float] = Field(
         default=None,
@@ -147,7 +152,6 @@ class YFinanceEtfInfoData(EtfInfoData):
     bid_size: Optional[float] = Field(
         default=None,
         description="The current bid size.",
-        alias="bidSize",
     )
     ask: Optional[float] = Field(
         default=None,
@@ -156,7 +160,6 @@ class YFinanceEtfInfoData(EtfInfoData):
     ask_size: Optional[float] = Field(
         default=None,
         description="The current ask size.",
-        alias="askSize",
     )
     open: Optional[float] = Field(
         default=None,
@@ -165,12 +168,10 @@ class YFinanceEtfInfoData(EtfInfoData):
     high: Optional[float] = Field(
         default=None,
         description="The highest price of the most recent trading session.",
-        alias="dayHigh",
     )
     low: Optional[float] = Field(
         default=None,
         description="The lowest price of the most recent trading session.",
-        alias="dayLow",
     )
     volume: Optional[int] = Field(
         default=None,
@@ -179,7 +180,6 @@ class YFinanceEtfInfoData(EtfInfoData):
     prev_close: Optional[float] = Field(
         default=None,
         description="The previous closing price.",
-        alias="previousClose",
     )
 
     @field_validator("inception_date", mode="before", check_fields=False)
