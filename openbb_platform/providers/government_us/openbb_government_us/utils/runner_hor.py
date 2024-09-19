@@ -12,8 +12,9 @@ async def fetch_data():
 
     return [d for d in data]
 
-
+'''
 def run_fetcher():
     with asyncio.Runner() as runner:
         data = runner.run(fetch_data())
         print(f"senate data is:{data}")
+'''
