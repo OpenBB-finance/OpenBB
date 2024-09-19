@@ -49,6 +49,17 @@ def extract_docids_from_year_disclosures(res : io.BytesIO) -> List[dict]:
             pass
     return doc_dictionary
 
+def get_all_docids(content):
+    zip_file = io.BytesIO(content)
+    xml_stream = None
+    with zipfile.ZipFile(zip_file, "r") as zip_ref:
+        for member in zip_ref.infolist():
+            # there are two files the zip, an xml and a txt
+            if member.filename.endswith(".xml"):
+                xml_stream = io.BytesIO(zip_ref.read(member))
+
+    return extract_docids_from_year_disclosures(xml_stream)
+
 async def aextract_xml_from_zip_url(client : aiohttp.ClientSession,
                                     url :str,
                                     output_file:str) -> List[dict]:
@@ -76,16 +87,14 @@ async def aextract_xml_from_zip_url(client : aiohttp.ClientSession,
                   if not data:
                       break
                   content += data
-        zip_file = io.BytesIO(content)
-        with zipfile.ZipFile(zip_file, "r") as zip_ref:
-            for member in zip_ref.infolist():
-                if member.filename.endswith(".xml"):
-                    xml_stream = io.BytesIO(zip_ref.read(member))
-                    break
-        return extract_docids_from_year_disclosures(xml_stream)
+        return get_all_docids(content)
     except Exception as e:
         raise Exception(f'Unable to get data from {url}:\n{str(e)}')
 
+def extract_from_pdf(content):
+    on_fly_mem_obj = io.BytesIO(content)
+    pdf_reader = PdfReader(on_fly_mem_obj)
+    return extract_from_disclosure(pdf_reader)
 
 async def aread_pdf_from_url(client : aiohttp.ClientSession,
                              year:int,
@@ -111,9 +120,7 @@ async def aread_pdf_from_url(client : aiohttp.ClientSession,
                         break
                     content += data
 
-        on_fly_mem_obj = io.BytesIO(content)
-        pdf_reader = PdfReader(on_fly_mem_obj)
-        data = extract_from_disclosure(pdf_reader)
+        data = extract_from_pdf(content)
         dfdata = extract_transactions(data['transactions'], discl_dict)
         if dfdata:
             return pd.DataFrame(data=dfdata )
@@ -148,7 +155,8 @@ async def get_transactions(year : int) -> pd.DataFrame:
     output_file = f"{year}.xml"
     session = aiohttp.ClientSession()
     reports = await aextract_xml_from_zip_url(session, url, output_file)
-    return await fetch_all_transactions(session, year, reports)
+    all_transactions_df =  await fetch_all_transactions(session, year, reports)
+    return all_transactions_df.to_dict('records')
 
 def hor_runner(year:int) -> pd.DataFrame:
     with asyncio.Runner() as runner:

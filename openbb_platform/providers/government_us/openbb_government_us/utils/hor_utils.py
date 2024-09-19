@@ -16,37 +16,26 @@ def extract_from_disclosure(pdf_reader):
         page = pdf_reader.pages[page_num]
 
         text = page.extract_text()
-        if text.find('Clerk of the House of Representatives') > 0:
-          # we actually dont need filer info as all the information is already in the xml file
-          # we should extract it from there. we should not even need the dates then
+        transactions = text
+        rowHolder = []
+        rows = transactions.splitlines()
+        seen = False
+        transaction_holder = []
+        # need to read line by line, considering only rows that start with 'SP'
 
-            start_filer_section = text.index('Clerk of the House of Representatives')
-            start_transaction_section = text.index('ID')
-            filer = text[start_filer_section:start_transaction_section].encode('utf-8').decode('utf-8')
-            transactions = text[start_transaction_section +12: ]
-            lines = filer.splitlines()
-            filer_info = lines[2:]
-        else:
-            transactions = text
-            rowHolder = []
-            rows = transactions.splitlines()
-            seen = False
-            transaction_holder = []
-            # need to read line by line, considering only rows that start with 'SP'
-
-            for row in rows:
-                row  = row.encode('utf-8').decode('utf-8')
-                if row.startswith(start_token):
-                  seen = not seen
-                if seen:
-                    if row:
-                        if row.find("\x00") < 0: # row with this character are 'intermediate' row
-                            transaction_holder.append(row)
-                        else:
-                            seen = False
-                            rowHolder.append(' '.join(transaction_holder))
-                            transaction_holder = []
-            holder[page_num] = rowHolder
+        for row in rows:
+            row  = row.encode('utf-8').decode('utf-8')
+            if row.startswith(start_token):
+              seen = not seen
+            if seen:
+                if row:
+                    if row.find("\x00") < 0: # row with this character are 'intermediate' row
+                        transaction_holder.append(row)
+                    else:
+                        seen = False
+                        rowHolder.append(' '.join(transaction_holder))
+                        transaction_holder = []
+        holder[page_num] = rowHolder
     return {'info' : filer_info, 'transactions' : holder}
 
 def extract_data(first_row):
