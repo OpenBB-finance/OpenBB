@@ -1,5 +1,4 @@
 import unittest
-import os
 from apache_beam.testing.test_pipeline import TestPipeline
 from apache_beam.options.pipeline_options import PipelineOptions
 import asyncio

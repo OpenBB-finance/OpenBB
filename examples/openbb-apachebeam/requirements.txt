@@ -1,2 +1,2 @@
 apache-beam
-openbb==4.3.1
+openbb-yfinance
