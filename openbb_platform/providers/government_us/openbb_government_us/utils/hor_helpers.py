@@ -163,8 +163,8 @@ async def get_transactions(year: int) -> pd.DataFrame:
     all_transactions_df = await fetch_all_transactions(session, year, reports)
     return all_transactions_df.to_dict("records")
 
-'''
+"""
 def hor_runner(year: int) -> pd.DataFrame:
     with asyncio.Runner() as runner:
         print(runner.run(get_transactions(year)))
-'''
+"""
