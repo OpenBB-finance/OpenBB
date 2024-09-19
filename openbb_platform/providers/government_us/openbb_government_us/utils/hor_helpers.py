@@ -164,6 +164,6 @@ async def get_transactions(year: int) -> pd.DataFrame:
     return all_transactions_df.to_dict("records")
 
 
-def hor_runner(year:int) -> pd.DataFrame:
+def hor_runner(year: int) -> pd.DataFrame:
     with asyncio.Runner() as runner:
         print(runner.run(get_transactions(year)))
