@@ -19,6 +19,8 @@ def extract_docids_from_year_disclosures(res: io.BytesIO | None) -> List[dict]:
     :param res: an XML Stream
     :return:  a List of dictionaries containing doc_id, membername, state and date of transaction
     """
+    if not res:
+        return []
     xml_data = res
     # Parse the XML data from the BytesIO object
     tree = ET.parse(xml_data)
@@ -29,10 +31,13 @@ def extract_docids_from_year_disclosures(res: io.BytesIO | None) -> List[dict]:
     for member in root.findall("Member"):
         filing_type = member.find("FilingType").text
         if filing_type == "P":
-            doc_id = member.find("DocID").text
-            membername = f"{member.find('Last').text} {member.find('First').text}"
-            state = member.find("StateDst").text
-            filing_date = member.find("FilingDate").text
+            doc_id = member.find("DocID").text if member.find("DocID") else "N/A"
+            if member.find("Last") and member.find("First"):
+                membername = f"{member.find('Last').text} {member.find('First').text}"
+            else:
+                membername = "N/A"
+            state = member.find("StateDst").text if member.find("StateDst") else "N/A"
+            filing_date = member.find("FilingDate").text if member.find("FilingDate") else "N/A"
             doc_dictionary.append(
                 dict(
                     doc_id=doc_id,

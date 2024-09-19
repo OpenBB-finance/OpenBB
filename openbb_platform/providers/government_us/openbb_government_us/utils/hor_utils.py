@@ -1,11 +1,12 @@
 import re
-
+from PyPDF2 import PdfReader
+from typing import Any
 """
 Utility  methods to extract data from pdf rows
 """
 
 
-def extract_from_disclosure(pdf_reader):
+def extract_from_disclosure(pdf_reader: PdfReader) -> dict[str, Any]:
     holder = {}
     # page 0 has all information about the HOR Member
     start_token = "SP"  # START token
@@ -42,7 +43,7 @@ def extract_from_disclosure(pdf_reader):
     return {"info": filer_info, "transactions": holder}
 
 
-def extract_data(first_row):
+def extract_data(first_row: str) -> dict[str, Any]:
     # Here we try to extract item from each row
     # regex did not work well, as some time there were '\x0' characters
     # so doing a brute force check
