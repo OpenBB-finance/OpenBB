@@ -49,7 +49,7 @@ class USHoRDisclosuresFetcher(
         query: USHoRDisclosuresQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> str:
+    ) -> List[Any]:
         """Extract the raw data from US Treasury website."""
         # pylint: disable=import-outside-toplevel
         from openbb_government_us.utils.hor_helpers import get_transactions
