@@ -35,8 +35,6 @@ condarc:
   default_channels: [conda-forge],
   allow_softlinks: false,
   auto_activate_base: false,
-  envs_dirs: [./envs],
-  pkgs_dirs: [./pkgs],
   always_copy: true,
   register_envs: false,
   pip_interop_enabled: true}
