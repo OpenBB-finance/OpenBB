@@ -1,6 +1,6 @@
 import re
 from PyPDF2 import PdfReader
-from typing import Any
+from typing import Any, Dict
 
 """
 Utility  methods to extract data from pdf rows
@@ -14,7 +14,7 @@ def extract_from_disclosure(pdf_reader: PdfReader) -> dict[str, Any]:
     # then we have two blanks
     # then we have ticker [ST] Transaction Transaction Date Amount #
 
-    filer_info = dict()
+    filer_info:Dict[str, int] = {}
     for page_num in range(0, len(pdf_reader.pages)):
         page = pdf_reader.pages[page_num]
 
