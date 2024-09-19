@@ -13,13 +13,14 @@ BASE_URL = "https://disclosures-clerk.house.gov/public_disc/financial-pdfs"
 FINANCIAL_DOC_URL = "https://disclosures-clerk.house.gov/public_disc/ptr-pdfs"
 
 
-def extract_docids_from_year_disclosures(res: io.BytesIO | None) -> List[dict]:
+# pylint: disable=no-member
+
+def extract_docids_from_year_disclosures(res: io.BytesIO) -> List[dict]:
     """
     Extract disclosures information from an XML file
     :param res: an XML Stream
     :return:  a List of dictionaries containing doc_id, membername, state and date of transaction
     """
-    # pylint: disable=no-member
     if not res:
         return []
     xml_data = res
