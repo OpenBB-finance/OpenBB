@@ -1,5 +1,8 @@
 
-from openbb_government_us.models.senate_disclosures import USSenateDisclosuresFetcher, USSenateDisclosuresQueryParams
+from openbb_government_us.models.senate_disclosures import (
+    USSenateDisclosuresFetcher,
+    USSenateDisclosuresQueryParams
+)
 import asyncio
 
 
@@ -8,7 +11,7 @@ async def fetch_data():
     params.num_reports = 5
     data = await USSenateDisclosuresFetcher.extract_data(params, {})
 
-    return [d  for d in data]
+    return [d for d in data]
 
 
 def run_fetcher():

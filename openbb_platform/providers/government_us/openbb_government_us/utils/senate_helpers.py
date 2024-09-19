@@ -4,8 +4,15 @@ import asyncio
 import pandas as pd
 from bs4 import BeautifulSoup
 from typing import Any, List, Optional
-from openbb_government_us.utils.senate_constants import LANDING_PAGE_URL, LANDING_PAGE_FAIL, SEARCH_PAGE_URL, REPORTS_URL,\
-                ROOT, REPORT_COL_NAMES, PDF_PREFIX, BATCH_SIZE
+from openbb_government_us.utils.senate_constants import (
+    LANDING_PAGE_URL,
+    SEARCH_PAGE_URL,
+    REPORTS_URL,
+    ROOT,
+    REPORT_COL_NAMES,
+    PDF_PREFIX,
+    BATCH_SIZE
+)
 
 async def _csrf(client: aiohttp.ClientSession) -> str:
     """Set the session ID and return the CSRF token for this session."""
@@ -169,17 +176,18 @@ async def fetch_all_txs(
     tasks = [txs_for_report(client, row, token) for row in reports]
     all_transactions = await asyncio.gather(*tasks)
     all_transactions_df = pd.concat(all_transactions, ignore_index=True)
-    return all_transactions_df.to_dict('records')
+    return all_transactions_df.to_dict("records")
 
 
-async def get_transactions(num_reports:int):
+async def get_transactions(num_reports: int):
     session = aiohttp.ClientSession()
     token = await _csrf(session)
     reports = await senator_reports(session)
 
     return await fetch_all_txs(session, reports[:num_reports], token)
 
-def senate_runner(num_reports:int = 10):
+
+def senate_runner(num_reports: int = 10):
     with asyncio.Runner() as runner:
         print(runner.run(get_transactions(num_reports=num_reports)))
 

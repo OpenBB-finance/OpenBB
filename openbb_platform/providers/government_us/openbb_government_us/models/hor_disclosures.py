@@ -8,16 +8,17 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 import asyncio
 from warnings import warn
+
+
 class USHoRDisclosuresQueryParams(QueryParams):
     """US Senate Disclosures."""
+
     year: int = Field(description="Year of disclosures.")
 
 class USHoRDisclosuresData(Data):
     """US Senate Disclosures Data."""
-    __alias_dict__ = {
-        "tx_date": "transaction_date",
-        "tx_amount": "transaction_amount"
-    }
+
+    __alias_dict__ = {"tx_date": "transaction_date", "tx_amount": "transaction_amount"}
 
 class USHoRDisclosuresFetcher(
     Fetcher[
@@ -28,9 +29,7 @@ class USHoRDisclosuresFetcher(
     """US Government Treasury Prices Fetcher."""
 
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> USHoRDisclosuresQueryParams:
+    def transform_query(params: Dict[str, Any]) -> USHoRDisclosuresQueryParams:
         """Transform query params."""
         # pylint: disable=import-outside-toplevel
         from datetime import date, timedelta
@@ -72,11 +71,10 @@ class USHoRDisclosuresFetcher(
             raise EmptyDataError("No data found for the given symbols.")
         return results
 
-
     @staticmethod
     def transform_data(
         query: USHoRDisclosuresQueryParams,
-        data :List[Dict],
+        data:List[Dict],
         **kwargs: Any,
     ) -> List[USHoRDisclosuresData]:
         """Transform the data."""
@@ -90,7 +88,4 @@ class USHoRDisclosuresFetcher(
         except Exception as e:
             raise OpenBBError(e) from e
 
-        return [
-            USHoRDisclosuresData.model_validate(d)
-            for d in data
-        ]
+        return [USHoRDisclosuresData.model_validate(d) for d in data]

@@ -10,14 +10,15 @@ import asyncio
 from warnings import warn
 class USSenateDisclosuresQueryParams(QueryParams):
     """US Senate Disclosures."""
-    num_reports: Optional[int] = Field(description="Number of disclosures to fetch.", default=30)
+
+    num_reports: Optional[int] = (Field
+                                  (description="Number of disclosures to fetch.", default=30)
+                                  )
 
 class USSenateDisclosuresData(Data):
     """US Senate Disclosures Data."""
-    __alias_dict__ = {
-        "tx_date": "transaction_date",
-        "tx_amount": "transaction_amount"
-    }
+
+    __alias_dict__ = {"tx_date": "transaction_date", "tx_amount": "transaction_amount"}
 
 class USSenateDisclosuresFetcher(
     Fetcher[
@@ -28,9 +29,7 @@ class USSenateDisclosuresFetcher(
     """US Government Treasury Prices Fetcher."""
 
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> USSenateDisclosuresQueryParams:
+    def transform_query(params: Dict[str, Any]) -> USSenateDisclosuresQueryParams:
         """Transform query params."""
         # pylint: disable=import-outside-toplevel
         from datetime import date, timedelta
@@ -72,7 +71,6 @@ class USSenateDisclosuresFetcher(
             raise EmptyDataError("No data found for the given symbols.")
         return results
 
-
     @staticmethod
     def transform_data(
         query: USSenateDisclosuresQueryParams,
@@ -90,7 +88,4 @@ class USSenateDisclosuresFetcher(
         except Exception as e:
             raise OpenBBError(e) from e
 
-        return [
-            USSenateDisclosuresData.model_validate(d)
-            for d in data
-        ]
+        return [USSenateDisclosuresData.model_validate(d) for d in data]
