@@ -11,10 +11,3 @@ async def fetch_data():
     data = await USSenateDisclosuresFetcher.extract_data(params, {})
 
     return [d for d in data]
-
-"""
-def run_fetcher():
-    with asyncio.Runner() as runner:
-        data = runner.run(fetch_data())
-        print(f"senate data is:{data}")
-"""
