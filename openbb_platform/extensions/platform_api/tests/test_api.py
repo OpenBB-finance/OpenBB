@@ -52,7 +52,7 @@ def test_get_widgets_json_no_build():
     with patch("builtins.open", mock_open(read_data="{}")), patch(
         "os.path.exists", return_value=True
     ):
-        widgets_json = get_widgets_json(_build=False, _openapi={"paths": [{}]})
+        widgets_json = get_widgets_json(_build=False, _openapi={})
         assert widgets_json == {}
 
 

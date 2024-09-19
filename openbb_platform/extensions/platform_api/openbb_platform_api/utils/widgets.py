@@ -104,6 +104,9 @@ def build_json(openapi: dict):
     # pylint: disable=import-outside-toplevel
     from .openapi import data_schema_to_columns_defs, get_query_schema_for_widget
 
+    if not openapi:
+        return {}
+
     widgets_json: dict = {}
     routes = [
         p
