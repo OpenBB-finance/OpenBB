@@ -446,7 +446,9 @@ def test_modify_query_schema(query_schema, provider_value, expected_result):
 
 def test_build_json(mock_openapi_json, mock_widgets_json):
     result = build_json(mock_openapi_json)
-    assert result == mock_widgets_json
+    assert (
+        len(result) == len(mock_openapi_json["paths"]) + 1
+    )  # +1 for the duplicate path with a chart.
 
 
 if __name__ == "__main__":

@@ -379,24 +379,17 @@ def test_get_data_schema_for_widget(mock_openapi_json, openapi_operation_id):
 
 
 @pytest.mark.parametrize(
-    "openapi_schema_ref",
+    "openapi_operation_id",
     [
-        "FredBalanceOfPaymentsData",
-        "FredUofMichiganData",
-        "FredSurveyOfEconomicConditionsChicagoData",
+        "economy_survey_sloos",
+        "economy_survey_university_of_michigan",
+        "economy_balance_of_payments",
     ],
 )
-def test_data_schema_to_columns_defs(mock_openapi_json, openapi_schema_ref):
-    result_schema_ref = {
-        "anyOf": [
-            {
-                "items": {
-                    "oneOf": [{"$ref": f"#/components/schemas/{openapi_schema_ref}"}]
-                }
-            }
-        ]
-    }
-    column_defs = data_schema_to_columns_defs(mock_openapi_json, result_schema_ref)
+def test_data_schema_to_columns_defs(mock_openapi_json, openapi_operation_id):
+    column_defs = data_schema_to_columns_defs(
+        mock_openapi_json, openapi_operation_id, provider="fred"
+    )
     assert len(column_defs) > 1  # There should be at least two columns
 
 
