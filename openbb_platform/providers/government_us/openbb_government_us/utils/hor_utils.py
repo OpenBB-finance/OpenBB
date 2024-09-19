@@ -48,6 +48,7 @@ def extract_data(first_row: str) -> dict[str, Any]:
     # Here we try to extract item from each row
     # regex did not work well, as some time there were '\x0' characters
     # so doing a brute force check
+    # pylint: disable=no-member
     ticker_idx_st = first_row.find("(")
 
     if ticker_idx_st < 0:
