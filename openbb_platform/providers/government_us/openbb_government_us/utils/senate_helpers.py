@@ -186,8 +186,3 @@ async def get_transactions(num_reports: int):
     reports = await senator_reports(session)
 
     return await fetch_all_txs(session, reports[:num_reports], token)
-
-
-def senate_runner(num_reports: int = 10):
-    with asyncio.Runner() as runner:
-        print(runner.run(get_transactions(num_reports=num_reports)))

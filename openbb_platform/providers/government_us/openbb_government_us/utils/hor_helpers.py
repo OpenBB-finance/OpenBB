@@ -29,17 +29,27 @@ def extract_docids_from_year_disclosures(res: io.BytesIO | None) -> List[dict]:
     # Find all members with FilingType == "P" and extract their DocID
     doc_dictionary = []
     for member in root.findall("Member"):
-        filing_type = member.find("FilingType").text
-        if filing_type == "P":
-            doc_id = member.find("DocID").text if member.find("DocID") else "N/A"
-            if member.find("Last") and member.find("First"):
+        if member.find("FilingType") is not None:
+            filing_type = member.find("FilingType").text
+        if filing_type is not None and filing_type == "P":
+            if member.find("DocID") is not None:
+                doc_id = member.find("DocID").text
+            else:
+                doc_id = "N/A"
+            if member.find("Last") is not None and member.find("First") is not None:
                 membername = f"{member.find('Last').text} {member.find('First').text}"
             else:
                 membername = "N/A"
-            state = member.find("StateDst").text if member.find("StateDst") else "N/A"
-            filing_date = (
-                member.find("FilingDate").text if member.find("FilingDate") else "N/A"
-            )
+            if member.find("StateDst") is not None:
+                state = member.find("StateDst").text
+            else:
+                state = "N/A"
+            if member.find("FilingDate") is not None:
+                filing_date = (
+                    member.find("FilingDate").text
+                )
+            else:
+                filing_date = "N/A"
             doc_dictionary.append(
                 dict(
                     doc_id=doc_id,

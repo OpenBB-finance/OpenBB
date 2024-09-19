@@ -14,7 +14,7 @@ def extract_from_disclosure(pdf_reader: PdfReader) -> dict[str, Any]:
     # then we have two blanks
     # then we have ticker [ST] Transaction Transaction Date Amount #
 
-    filer_info = {}
+    filer_info = dict()
     for page_num in range(0, len(pdf_reader.pages)):
         page = pdf_reader.pages[page_num]
 
