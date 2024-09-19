@@ -9,7 +9,7 @@ def extract_from_disclosure(pdf_reader):
     # page 0 has all information about the HOR Member
     start_token = 'SP' # START token
     # then we have two blanks
-    # then wee have ticker [ST] Transaction Transaction Date Amount #
+    # then we have ticker [ST] Transaction Transaction Date Amount #
 
     filer_info = {}
     for page_num in range(0, len(pdf_reader.pages)):
