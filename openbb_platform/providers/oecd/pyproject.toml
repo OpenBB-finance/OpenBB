@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-oecd"
-version = "1.3.1"
+version = "1.3.2"
 description = "OECD extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_oecd" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openbb-core = "^1.3.1"
+openbb-core = "^1.3.2"
 urllib3 = ">1.26.16"
 defusedxml = "^0.8.0rc2"
 

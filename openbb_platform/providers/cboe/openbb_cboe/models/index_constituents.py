@@ -98,6 +98,7 @@ class CboeIndexConstituentsData(IndexConstituentsData):
         "change": "price_change",
         "change_percent": "price_change_percent",
         "last_price": "current_price",
+        "asset_type": "type",
     }
 
     security_type: Optional[str] = Field(
@@ -135,7 +136,8 @@ class CboeIndexConstituentsData(IndexConstituentsData):
         default=None, description="Last trade timestamp for the symbol."
     )
     asset_type: Optional[str] = Field(
-        default=None, description="Type of asset.", alias="type"
+        default=None,
+        description="Type of asset.",
     )
 
     @field_validator("last_trade_time", mode="before", check_fields=False)

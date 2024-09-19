@@ -25,18 +25,8 @@ class ROUTER_derivatives_futures(Container):
     def curve(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        date: Annotated[
-            Union[str, datetime.date, None, List[Union[str, datetime.date, None]]],
-            OpenBBField(
-                description="A specific date to get data for. Multiple comma separated items allowed for provider(s): yfinance."
-            ),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
-            ),
-        ] = None,
+        date: Annotated[Union[str, datetime.date, None, List[Union[str, datetime.date, None]]], OpenBBField(description="A specific date to get data for. Multiple comma separated items allowed for provider(s): yfinance.")] = None,
+        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Futures Term Structure, current or historical.
@@ -67,11 +57,11 @@ class ROUTER_derivatives_futures(Container):
         FuturesCurve
         ------------
         date : Optional[date]
-            The date of the data.
+            The date of the data. 
         expiration : str
-            Futures expiration month.
+            Futures expiration month. 
         price : Optional[float]
-            The price of the futures contract.
+            The price of the futures contract. 
 
         Examples
         --------
@@ -94,11 +84,7 @@ class ROUTER_derivatives_futures(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={
-                    "date": {
-                        "yfinance": {"multiple_items_allowed": True, "choices": None}
-                    }
-                },
+                info={"date": {"yfinance": {"multiple_items_allowed": True, "choices": None}}},
             )
         )
 
@@ -106,30 +92,11 @@ class ROUTER_derivatives_futures(Container):
     @validate
     def historical(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance."
-            ),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        expiration: Annotated[
-            Optional[str],
-            OpenBBField(description="Future expiry date with format YYYY-MM"),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
-            ),
-        ] = None,
+        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        expiration: Annotated[Optional[str], OpenBBField(description="Future expiry date with format YYYY-MM")] = None,
+        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Historical futures prices.
@@ -166,17 +133,17 @@ class ROUTER_derivatives_futures(Container):
         FuturesHistorical
         -----------------
         date : datetime
-            The date of the data.
+            The date of the data. 
         open : float
-            The open price.
+            The open price. 
         high : float
-            The high price.
+            The high price. 
         low : float
-            The low price.
+            The low price. 
         close : float
-            The close price.
+            The close price. 
         volume : float
-            The trading volume.
+            The trading volume. 
 
         Examples
         --------
@@ -205,10 +172,6 @@ class ROUTER_derivatives_futures(Container):
                     "expiration": expiration,
                 },
                 extra_params=kwargs,
-                info={
-                    "symbol": {
-                        "yfinance": {"multiple_items_allowed": True, "choices": None}
-                    }
-                },
+                info={"symbol": {"yfinance": {"multiple_items_allowed": True, "choices": None}}},
             )
         )

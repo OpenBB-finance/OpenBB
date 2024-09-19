@@ -25,131 +25,144 @@ class YFinanceKeyMetricsData(KeyMetricsData):
     __alias_dict__ = {
         "market_cap": "marketCap",
         "pe_ratio": "trailingPE",
+        "forward_pe": "forwardPE",
+        "peg_ratio": "pegRatio",
+        "peg_ratio_ttm": "trailingPegRatio",
+        "eps_ttm": "trailingEps",
+        "eps_forward": "forwardEps",
+        "enterprise_to_ebitda": "enterpriseToEbitda",
+        "earnings_growth": "earningsGrowth",
+        "earnings_growth_quarterly": "earningsQuarterlyGrowth",
+        "revenue_per_share": "revenuePerShare",
+        "revenue_growth": "revenueGrowth",
+        "enterprise_to_revenue": "enterpriseToRevenue",
+        "cash_per_share": "totalCashPerShare",
+        "quick_ratio": "quickRatio",
+        "current_ratio": "currentRatio",
+        "debt_to_equity": "debtToEquity",
+        "gross_margin": "grossMargins",
+        "operating_margin": "operatingMargins",
+        "ebitda_margin": "ebitdaMargins",
+        "profit_margin": "profitMargins",
+        "return_on_assets": "returnOnAssets",
+        "return_on_equity": "returnOnEquity",
+        "dividend_yield": "dividendYield",
+        "dividend_yield_5y_avg": "fiveYearAvgDividendYield",
+        "payout_ratio": "payoutRatio",
+        "book_value": "bookValue",
+        "price_to_book": "priceToBook",
+        "enterprise_value": "enterpriseValue",
+        "overall_risk": "overallRisk",
+        "audit_risk": "auditRisk",
+        "board_risk": "boardRisk",
+        "compensation_risk": "compensationRisk",
+        "shareholder_rights_risk": "shareHolderRightsRisk",
+        "price_return_1y": "52WeekChange",
+        "currency": "financialCurrency",
     }
+
     forward_pe: Optional[float] = Field(
         default=None,
         description="Forward price-to-earnings ratio.",
-        alias="forwardPE",
     )
     peg_ratio: Optional[float] = Field(
         default=None,
         description="PEG ratio (5-year expected).",
-        alias="pegRatio",
     )
     peg_ratio_ttm: Optional[float] = Field(
         default=None,
         description="PEG ratio (TTM).",
-        alias="trailingPegRatio",
     )
     eps_ttm: Optional[float] = Field(
         default=None,
         description="Earnings per share (TTM).",
-        alias="trailingEps",
     )
     eps_forward: Optional[float] = Field(
         default=None,
         description="Forward earnings per share.",
-        alias="forwardEps",
     )
     enterprise_to_ebitda: Optional[float] = Field(
         default=None,
         description="Enterprise value to EBITDA ratio.",
-        alias="enterpriseToEbitda",
     )
     earnings_growth: Optional[float] = Field(
         default=None,
         description="Earnings growth (Year Over Year), as a normalized percent.",
-        alias="earningsGrowth",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     earnings_growth_quarterly: Optional[float] = Field(
         default=None,
         description="Quarterly earnings growth (Year Over Year), as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="earningsQuarterlyGrowth",
     )
     revenue_per_share: Optional[float] = Field(
         default=None,
         description="Revenue per share (TTM).",
-        alias="revenuePerShare",
     )
     revenue_growth: Optional[float] = Field(
         default=None,
         description="Revenue growth (Year Over Year), as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="revenueGrowth",
     )
     enterprise_to_revenue: Optional[float] = Field(
         default=None,
         description="Enterprise value to revenue ratio.",
-        alias="enterpriseToRevenue",
     )
     cash_per_share: Optional[float] = Field(
         default=None,
         description="Cash per share.",
-        alias="totalCashPerShare",
     )
     quick_ratio: Optional[float] = Field(
         default=None,
         description="Quick ratio.",
-        alias="quickRatio",
     )
     current_ratio: Optional[float] = Field(
         default=None,
         description="Current ratio.",
-        alias="currentRatio",
     )
     debt_to_equity: Optional[float] = Field(
         default=None,
         description="Debt-to-equity ratio.",
-        alias="debtToEquity",
     )
     gross_margin: Optional[float] = Field(
         default=None,
         description="Gross margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="grossMargins",
     )
     operating_margin: Optional[float] = Field(
         default=None,
         description="Operating margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="operatingMargins",
     )
     ebitda_margin: Optional[float] = Field(
         default=None,
         description="EBITDA margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="ebitdaMargins",
     )
     profit_margin: Optional[float] = Field(
         default=None,
         description="Profit margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="profitMargins",
     )
     return_on_assets: Optional[float] = Field(
         default=None,
         description="Return on assets, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="returnOnAssets",
     )
     return_on_equity: Optional[float] = Field(
         default=None,
         description="Return on equity, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="returnOnEquity",
     )
     dividend_yield: Optional[float] = Field(
         default=None,
         description="Dividend yield, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="dividendYield",
     )
     dividend_yield_5y_avg: Optional[float] = Field(
         default=None,
         description="5-year average dividend yield, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="fiveYearAvgDividendYield",
     )
     payout_ratio: Optional[float] = Field(
         default=None,
@@ -158,42 +171,34 @@ class YFinanceKeyMetricsData(KeyMetricsData):
     book_value: Optional[float] = Field(
         default=None,
         description="Book value per share.",
-        alias="bookValue",
     )
     price_to_book: Optional[float] = Field(
         default=None,
         description="Price-to-book ratio.",
-        alias="priceToBook",
     )
     enterprise_value: Optional[int] = Field(
         default=None,
         description="Enterprise value.",
-        alias="enterpriseValue",
     )
     overall_risk: Optional[float] = Field(
         default=None,
         description="Overall risk score.",
-        alias="overallRisk",
     )
     audit_risk: Optional[float] = Field(
         default=None,
         description="Audit risk score.",
-        alias="auditRisk",
     )
     board_risk: Optional[float] = Field(
         default=None,
         description="Board risk score.",
-        alias="boardRisk",
     )
     compensation_risk: Optional[float] = Field(
         default=None,
         description="Compensation risk score.",
-        alias="compensationRisk",
     )
     shareholder_rights_risk: Optional[float] = Field(
         default=None,
         description="Shareholder rights risk score.",
-        alias="shareHolderRightsRisk",
     )
     beta: Optional[float] = Field(
         default=None,
@@ -203,12 +208,10 @@ class YFinanceKeyMetricsData(KeyMetricsData):
         default=None,
         description="One-year price return, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="52WeekChange",
     )
     currency: Optional[str] = Field(
         default=None,
         description="Currency in which the data is presented.",
-        alias="financialCurrency",
     )
 
     @field_validator("dividend_yield_5y_avg")

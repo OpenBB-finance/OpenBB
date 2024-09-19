@@ -25,12 +25,7 @@ class ROUTER_derivatives_options(Container):
     def chains(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        provider: Annotated[
-            Optional[Literal["intrinio", "yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["intrinio", "yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the complete options chain for a ticker.
@@ -83,107 +78,107 @@ class ROUTER_derivatives_options(Container):
         OptionsChains
         -------------
         underlying_symbol : List[Optional[str]]
-            Underlying symbol for the option.
+            Underlying symbol for the option. 
         underlying_price : List[Optional[float]]
-            Price of the underlying stock.
+            Price of the underlying stock. 
         contract_symbol : List[str]
-            Contract symbol for the option.
+            Contract symbol for the option. 
         eod_date : List[Optional[date]]
-            Date for which the options chains are returned.
+            Date for which the options chains are returned. 
         expiration : List[date]
-            Expiration date of the contract.
+            Expiration date of the contract. 
         dte : List[Optional[int]]
-            Days to expiration of the contract.
+            Days to expiration of the contract. 
         strike : List[float]
-            Strike price of the contract.
+            Strike price of the contract. 
         option_type : List[str]
-            Call or Put.
+            Call or Put. 
         open_interest : List[Optional[int]]
-            Open interest on the contract.
+            Open interest on the contract. 
         volume : List[Optional[int]]
-            The trading volume.
+            The trading volume. 
         theoretical_price : List[Optional[float]]
-            Theoretical value of the option.
+            Theoretical value of the option. 
         last_trade_price : List[Optional[float]]
-            Last trade price of the option.
+            Last trade price of the option. 
         last_trade_size : List[Optional[int]]
-            Last trade size of the option.
+            Last trade size of the option. 
         last_trade_time : List[Optional[datetime]]
-            The timestamp of the last trade.
+            The timestamp of the last trade. 
         tick : List[Optional[str]]
-            Whether the last tick was up or down in price.
+            Whether the last tick was up or down in price. 
         bid : List[Optional[float]]
-            Current bid price for the option.
+            Current bid price for the option. 
         bid_size : List[Optional[int]]
-            Bid size for the option.
+            Bid size for the option. 
         bid_time : List[Optional[datetime]]
-            The timestamp of the bid price.
+            The timestamp of the bid price. 
         bid_exchange : List[Optional[str]]
-            The exchange of the bid price.
+            The exchange of the bid price. 
         ask : List[Optional[float]]
-            Current ask price for the option.
+            Current ask price for the option. 
         ask_size : List[Optional[int]]
-            Ask size for the option.
+            Ask size for the option. 
         ask_time : List[Optional[datetime]]
-            The timestamp of the ask price.
+            The timestamp of the ask price. 
         ask_exchange : List[Optional[str]]
-            The exchange of the ask price.
+            The exchange of the ask price. 
         mark : List[Optional[float]]
-            The mid-price between the latest bid and ask.
+            The mid-price between the latest bid and ask. 
         open : List[Optional[float]]
-            The open price.
+            The open price. 
         open_bid : List[Optional[float]]
-            The opening bid price for the option that day.
+            The opening bid price for the option that day. 
         open_ask : List[Optional[float]]
-            The opening ask price for the option that day.
+            The opening ask price for the option that day. 
         high : List[Optional[float]]
-            The high price.
+            The high price. 
         bid_high : List[Optional[float]]
-            The highest bid price for the option that day.
+            The highest bid price for the option that day. 
         ask_high : List[Optional[float]]
-            The highest ask price for the option that day.
+            The highest ask price for the option that day. 
         low : List[Optional[float]]
-            The low price.
+            The low price. 
         bid_low : List[Optional[float]]
-            The lowest bid price for the option that day.
+            The lowest bid price for the option that day. 
         ask_low : List[Optional[float]]
-            The lowest ask price for the option that day.
+            The lowest ask price for the option that day. 
         close : List[Optional[float]]
-            The close price.
+            The close price. 
         close_size : List[Optional[int]]
-            The closing trade size for the option that day.
+            The closing trade size for the option that day. 
         close_time : List[Optional[datetime]]
-            The time of the closing price for the option that day.
+            The time of the closing price for the option that day. 
         close_bid : List[Optional[float]]
-            The closing bid price for the option that day.
+            The closing bid price for the option that day. 
         close_bid_size : List[Optional[int]]
-            The closing bid size for the option that day.
+            The closing bid size for the option that day. 
         close_bid_time : List[Optional[datetime]]
-            The time of the bid closing price for the option that day.
+            The time of the bid closing price for the option that day. 
         close_ask : List[Optional[float]]
-            The closing ask price for the option that day.
+            The closing ask price for the option that day. 
         close_ask_size : List[Optional[int]]
-            The closing ask size for the option that day.
+            The closing ask size for the option that day. 
         close_ask_time : List[Optional[datetime]]
-            The time of the ask closing price for the option that day.
+            The time of the ask closing price for the option that day. 
         prev_close : List[Optional[float]]
-            The previous close price.
+            The previous close price. 
         change : List[Optional[float]]
-            The change in the price of the option.
+            The change in the price of the option. 
         change_percent : List[Optional[float]]
-            Change, in normalized percentage points, of the option.
+            Change, in normalized percentage points, of the option. 
         implied_volatility : List[Optional[float]]
-            Implied volatility of the option.
+            Implied volatility of the option. 
         delta : List[Optional[float]]
-            Delta of the option.
+            Delta of the option. 
         gamma : List[Optional[float]]
-            Gamma of the option.
+            Gamma of the option. 
         theta : List[Optional[float]]
-            Theta of the option.
+            Theta of the option. 
         vega : List[Optional[float]]
-            Vega of the option.
+            Vega of the option. 
         rho : List[Optional[float]]
-            Rho of the option.
+            Rho of the option. 
         in_the_money : List[Optional[bool]]
             Whether the option is in the money. (provider: yfinance)
         currency : List[Optional[str]]
@@ -218,12 +213,7 @@ class ROUTER_derivatives_options(Container):
     @validate
     def snapshots(
         self,
-        provider: Annotated[
-            Optional[Literal["intrinio"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["intrinio"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.")] = None,
         **kwargs
     ) -> OBBject:
         """Get a snapshot of the options market universe.
@@ -254,35 +244,35 @@ class ROUTER_derivatives_options(Container):
         OptionsSnapshots
         ----------------
         underlying_symbol : List[str]
-            Ticker symbol of the underlying asset.
+            Ticker symbol of the underlying asset. 
         contract_symbol : List[str]
-            Symbol of the options contract.
+            Symbol of the options contract. 
         expiration : List[date]
-            Expiration date of the options contract.
+            Expiration date of the options contract. 
         dte : List[Optional[int]]
-            Number of days to expiration of the options contract.
+            Number of days to expiration of the options contract. 
         strike : List[float]
-            Strike price of the options contract.
+            Strike price of the options contract. 
         option_type : List[str]
-            The type of option.
+            The type of option. 
         volume : List[Optional[int]]
-            The trading volume.
+            The trading volume. 
         open_interest : List[Optional[int]]
-            Open interest at the time.
+            Open interest at the time. 
         last_price : List[Optional[float]]
-            Last trade price at the time.
+            Last trade price at the time. 
         last_size : List[Optional[int]]
-            Lot size of the last trade.
+            Lot size of the last trade. 
         last_timestamp : List[Optional[datetime]]
-            Timestamp of the last price.
+            Timestamp of the last price. 
         open : List[Optional[float]]
-            The open price.
+            The open price. 
         high : List[Optional[float]]
-            The high price.
+            The high price. 
         low : List[Optional[float]]
-            The low price.
+            The low price. 
         close : List[Optional[float]]
-            The close price.
+            The close price. 
         bid : List[Optional[float]]
             The last bid price at the time. (provider: intrinio)
         bid_size : List[Optional[int]]
@@ -324,7 +314,8 @@ class ROUTER_derivatives_options(Container):
                         ("intrinio",),
                     )
                 },
-                standard_params={},
+                standard_params={
+                },
                 extra_params=kwargs,
             )
         )
@@ -333,16 +324,8 @@ class ROUTER_derivatives_options(Container):
     @validate
     def unusual(
         self,
-        symbol: Annotated[
-            Optional[str],
-            OpenBBField(description="Symbol to get data for. (the underlying symbol)"),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["intrinio"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
-            ),
-        ] = None,
+        symbol: Annotated[Optional[str], OpenBBField(description="Symbol to get data for. (the underlying symbol)")] = None,
+        provider: Annotated[Optional[Literal["intrinio"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the complete options chain for a ticker.
@@ -387,9 +370,9 @@ class ROUTER_derivatives_options(Container):
         OptionsUnusual
         --------------
         underlying_symbol : Optional[str]
-            Symbol representing the entity requested in the data. (the underlying symbol)
+            Symbol representing the entity requested in the data. (the underlying symbol) 
         contract_symbol : str
-            Contract symbol for the option.
+            Contract symbol for the option. 
         trade_timestamp : Optional[datetime]
             The datetime of order placement. (provider: intrinio)
         trade_type : Optional[Literal['block', 'sweep', 'large']]

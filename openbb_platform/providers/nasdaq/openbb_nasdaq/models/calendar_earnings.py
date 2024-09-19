@@ -31,41 +31,42 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         "report_date": "date",
         "eps_previous": "lastYearEPS",
         "eps_consensus": "epsForecast",
+        "eps_actual": "eps",
+        "surprise_percent": "surprise",
+        "num_estimates": "noOfEsts",
+        "period_ending": "fiscalQuarterEnding",
+        "previous_report_date": "lastYearRptDt",
+        "reporting_time": "time",
+        "market_cap": "marketCap",
     }
+
     eps_actual: Optional[float] = Field(
         default=None,
         description="The actual earnings per share (USD) announced.",
-        alias="eps",
     )
     surprise_percent: Optional[float] = Field(
         default=None,
         description="The earnings surprise as normalized percentage points.",
-        alias="surprise",
     )
     num_estimates: Optional[int] = Field(
         default=None,
         description="The number of analysts providing estimates for the consensus.",
-        alias="noOfEsts",
     )
     period_ending: Optional[str] = Field(
         default=None,
         description="The fiscal period end date.",
-        alias="fiscalQuarterEnding",
     )
     previous_report_date: Optional[dateType] = Field(
         default=None,
         description="The previous report date for the same period last year.",
-        alias="lastYearRptDt",
     )
     reporting_time: Optional[str] = Field(
         default=None,
         description="The reporting time - e.g. after market close.",
-        alias="time",
     )
     market_cap: Optional[int] = Field(
         default=None,
         description="The market cap (USD) of the reporting entity.",
-        alias="marketCap",
     )
 
     @field_validator(

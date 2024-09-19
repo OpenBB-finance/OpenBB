@@ -120,8 +120,12 @@ def price_historical(  # noqa: PLR0912
         if _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
         fig.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
+            plot_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
             font=dict(color=text_color),
             showlegend=True,
             legend=dict(
@@ -132,7 +136,9 @@ def price_historical(  # noqa: PLR0912
                 x=-0.01,
                 xref="paper",
                 font=dict(size=12),
-                bgcolor="rgba(0,0,0,0)",
+                bgcolor=(
+                    "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                ),
             ),
             xaxis=dict(
                 ticklen=0,
@@ -207,6 +213,8 @@ def price_historical(  # noqa: PLR0912
                 y2title = None  # type: ignore
 
         fig = OpenBBFigure()
+        fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
+        text_color = "white" if ChartStyle().plt_style == "dark" else "black"
 
         for i, col in enumerate(data.columns):
 
@@ -248,8 +256,12 @@ def price_historical(  # noqa: PLR0912
         y2title = None  # type: ignore
 
     fig.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor=(
+            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+        ),
+        plot_bgcolor=(
+            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+        ),
         legend=(
             dict(
                 orientation="v",
@@ -257,7 +269,9 @@ def price_historical(  # noqa: PLR0912
                 xanchor="right",
                 y=0.95,
                 x=-0.01,
-                bgcolor="rgba(0,0,0,0)",
+                bgcolor=(
+                    "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                ),
             )
             if len(data.columns) > 2
             else dict(
@@ -266,7 +280,9 @@ def price_historical(  # noqa: PLR0912
                 xanchor="right",
                 y=1.02,
                 x=0.98,
-                bgcolor="rgba(0,0,0,0)",
+                bgcolor=(
+                    "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                ),
             )
         ),
         yaxis1=(

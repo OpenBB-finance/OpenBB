@@ -66,40 +66,43 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 class TiingoEquityHistoricalData(EquityHistoricalData):
     """Tiingo Equity Historical Price Data."""
 
+    __alias_dict__ = {
+        "adj_open": "adjOpen",
+        "adj_high": "adjHigh",
+        "adj_low": "adjLow",
+        "adj_close": "adjClose",
+        "adj_volume": "adjVolume",
+        "split_ratio": "splitFactor",
+        "dividend": "divCash",
+    }
+
     adj_open: Optional[float] = Field(
         default=None,
         description="The adjusted open price.",
-        alias="adjOpen",
     )
     adj_high: Optional[float] = Field(
         default=None,
         description="The adjusted high price.",
-        alias="adjHigh",
     )
     adj_low: Optional[float] = Field(
         default=None,
         description="The adjusted low price.",
-        alias="adjLow",
     )
     adj_close: Optional[float] = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("adj_close", ""),
-        alias="adjClose",
     )
     adj_volume: Optional[float] = Field(
         default=None,
         description="The adjusted volume.",
-        alias="adjVolume",
     )
     split_ratio: Optional[float] = Field(
         default=None,
         description="Ratio of the equity split, if a split occurred.",
-        alias="splitFactor",
     )
     dividend: Optional[float] = Field(
         default=None,
         description="Dividend amount, if a dividend was paid.",
-        alias="divCash",
     )
 
 

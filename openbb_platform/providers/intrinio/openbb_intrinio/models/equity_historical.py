@@ -33,7 +33,7 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """
 
     __json_schema_extra__ = {
-        "symbol": {
+        "interval": {
             "choices": [
                 "1m",
                 "5m",
@@ -103,7 +103,12 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 class IntrinioEquityHistoricalData(EquityHistoricalData):
     """Intrinio Equity Historical Price Data."""
 
-    __alias_dict__ = {"date": "time"}
+    __alias_dict__ = {
+        "date": "time",
+        "change_percent": "percent_change",
+        "interval": "frequency",
+        "intra_period": "intraperiod",
+    }
 
     average: Optional[float] = Field(
         default=None,
@@ -116,7 +121,6 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
     change_percent: Optional[float] = Field(
         default=None,
         description="Percent change in the price of the symbol from the previous day.",
-        alias="percent_change",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     adj_open: Optional[float] = Field(
@@ -167,7 +171,6 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
     interval: Optional[str] = Field(
         default=None,
         description="The data time frequency.",
-        alias="frequency",
     )
     intra_period: Optional[bool] = Field(
         default=None,
@@ -175,7 +178,6 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
         "(be it day, week, quarter, month, or year), meaning that the close "
         "price is the latest price available, not the official close price "
         "for the period",
-        alias="intraperiod",
     )
 
 

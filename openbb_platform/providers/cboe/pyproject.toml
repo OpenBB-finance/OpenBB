@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-cboe"
-version = "1.3.1"
+version = "1.3.2"
 description = "CBOE extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -11,7 +11,7 @@ packages = [{ include = "openbb_cboe" }]
 python = "^3.9"
 aiohttp-client-cache = "^0.11.0"
 aiosqlite = "^0.20.0"
-openbb-core = "^1.3.1"
+openbb-core = "^1.3.2"
 
 [build-system]
 requires = ["poetry-core"]

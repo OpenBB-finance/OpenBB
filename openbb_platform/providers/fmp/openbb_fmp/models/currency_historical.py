@@ -46,6 +46,10 @@ class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
 class FMPCurrencyHistoricalData(CurrencyHistoricalData):
     """FMP Currency Historical Price Data."""
 
+    __alias_dict__ = {
+        "change_percent": "changeOverTime",
+    }
+
     adj_close: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
@@ -56,7 +60,6 @@ class FMPCurrencyHistoricalData(CurrencyHistoricalData):
     change_percent: Optional[float] = Field(
         default=None,
         description="Change in the price from the previous close, as a normalized percent.",
-        alias="changeOverTime",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 

@@ -70,7 +70,14 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
         },
         "calendar_id": {
             "multiple_items_allowed": True,
+        },
+        "importance": {
+            "multiple_items_allowed": False,
             "choices": IMPORTANCE_CHOICES,
+        },
+        "group": {
+            "multiple_items_allowed": False,
+            "choices": GROUPS_CHOICES,
         },
     }
     country: Optional[str] = Field(
@@ -84,9 +91,8 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     group: Optional[GROUPS] = Field(
         default=None,
         description="Grouping of events.",
-        json_schema_extra={"choices": GROUPS_CHOICES},  # type: ignore[dict-item]
     )
-    calendar_id: Optional[Union[int, str]] = Field(
+    calendar_id: Union[None, int, str] = Field(
         default=None, description="Get events by TradingEconomics Calendar ID."
     )
     _number_of_countries: int = 0

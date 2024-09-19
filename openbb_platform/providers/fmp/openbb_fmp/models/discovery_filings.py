@@ -22,12 +22,12 @@ class FMPDiscoveryFilingsQueryParams(DiscoveryFilingsQueryParams):
         "start_date": "from",
         "end_date": "to",
         "form_type": "type",
+        "is_done": "isDone",
     }
 
     is_done: Optional[bool] = Field(
         default=None,
         description="Flag for whether or not the filing is done.",
-        alias="isDone",
     )
 
 

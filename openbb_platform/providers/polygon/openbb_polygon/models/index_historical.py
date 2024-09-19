@@ -83,12 +83,12 @@ class PolygonIndexHistoricalData(IndexHistoricalData):
         "close": "c",
         "volume": "v",
         "vwap": "vw",
+        "transactions": "n",
     }
 
     transactions: Optional[PositiveInt] = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
-        alias="n",
     )
 
 

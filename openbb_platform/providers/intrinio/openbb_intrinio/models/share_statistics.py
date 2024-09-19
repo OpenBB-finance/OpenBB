@@ -29,12 +29,12 @@ class IntrinioShareStatisticsData(ShareStatisticsData):
 
     __alias_dict__ = {
         "outstanding_shares": "weightedavebasicdilutedsharesos",
+        "adjusted_outstanding_shares": "adjweightedavebasicdilutedsharesos",
     }
 
     adjusted_outstanding_shares: Optional[float] = Field(
         default=None,
         description="Total number of shares of a publicly-traded company, adjusted for splits.",
-        alias="adjweightedavebasicdilutedsharesos",
     )
     public_float: Optional[float] = Field(
         default=None,

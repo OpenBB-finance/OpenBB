@@ -28,6 +28,10 @@ class TmxEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 class TmxEtfHoldingsData(EtfHoldingsData):
     """TMX ETF Holdings Data."""
 
+    __alias_dict__ = {
+        "shares": "number_of_shares",
+    }
+
     symbol: Optional[str] = Field(
         description="The ticker symbol of the asset.", default=None
     )
@@ -39,7 +43,6 @@ class TmxEtfHoldingsData(EtfHoldingsData):
     )
     shares: Optional[Union[int, str]] = Field(
         description="The value of the assets under management.",
-        alias="number_of_shares",
         default=None,
     )
     market_value: Optional[Union[float, str]] = Field(

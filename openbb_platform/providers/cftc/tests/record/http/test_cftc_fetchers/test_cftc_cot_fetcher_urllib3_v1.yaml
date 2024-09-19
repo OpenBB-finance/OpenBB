@@ -43,11 +43,10 @@ interactions:
       Content-Type:
       - application/json;charset=utf-8
       Date:
-      - Tue, 27 Aug 2024 06:28:40 GMT
-      Etag:
-      - '"aG90ZWwuNTEzMDVfM18yODJtVzlSN0o5WVlrTFhDbnYyakxHb3Z1NTJCcHc---gzipn8hfNknVynA7XV4li5cBTkJ7u_Q--gzip--gzip"'
+      - Thu, 05 Sep 2024 18:51:48 GMT
+      Etag: null
       Last-Modified:
-      - Fri, 23 Aug 2024 19:30:46 GMT
+      - Fri, 30 Aug 2024 19:30:46 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -61,15 +60,13 @@ interactions:
       X-SODA2-Fields:
       - '["id","market_and_exchange_names","report_date_as_yyyy_mm_dd","yyyy_report_week_ww","contract_market_name","cftc_contract_market_code","cftc_market_code","cftc_region_code","cftc_commodity_code","commodity_name","open_interest_all","noncomm_positions_long_all","noncomm_positions_short_all","noncomm_postions_spread_all","comm_positions_long_all","comm_positions_short_all","tot_rept_positions_long_all","tot_rept_positions_short","nonrept_positions_long_all","nonrept_positions_short_all","open_interest_old","noncomm_positions_long_old","noncomm_positions_short_old","noncomm_positions_spread","comm_positions_long_old","comm_positions_short_old","tot_rept_positions_long_old","tot_rept_positions_short_1","nonrept_positions_long_old","nonrept_positions_short_old","open_interest_other","noncomm_positions_long_other","noncomm_positions_short_other","noncomm_positions_spread_1","comm_positions_long_other","comm_positions_short_other","tot_rept_positions_long_other","tot_rept_positions_short_2","nonrept_positions_long_other","nonrept_positions_short_other","change_in_open_interest_all","change_in_noncomm_long_all","change_in_noncomm_short_all","change_in_noncomm_spead_all","change_in_comm_long_all","change_in_comm_short_all","change_in_tot_rept_long_all","change_in_tot_rept_short","change_in_nonrept_long_all","change_in_nonrept_short_all","pct_of_open_interest_all","pct_of_oi_noncomm_long_all","pct_of_oi_noncomm_short_all","pct_of_oi_noncomm_spread","pct_of_oi_comm_long_all","pct_of_oi_comm_short_all","pct_of_oi_tot_rept_long_all","pct_of_oi_tot_rept_short","pct_of_oi_nonrept_long_all","pct_of_oi_nonrept_short_all","pct_of_open_interest_old","pct_of_oi_noncomm_long_old","pct_of_oi_noncomm_short_old","pct_of_oi_noncomm_spread_1","pct_of_oi_comm_long_old","pct_of_oi_comm_short_old","pct_of_oi_tot_rept_long_old","pct_of_oi_tot_rept_short_1","pct_of_oi_nonrept_long_old","pct_of_oi_nonrept_short_old","pct_of_open_interest_other","pct_of_oi_noncomm_long_other","pct_of_oi_noncomm_short_other","pct_of_oi_noncomm_spread_2","pct_of_oi_comm_long_other","pct_of_oi_comm_short_other","pct_of_oi_tot_rept_long_other","pct_of_oi_tot_rept_short_2","pct_of_oi_nonrept_long_other","pct_of_oi_nonrept_short_other","traders_tot_all","traders_noncomm_long_all","traders_noncomm_short_all","traders_noncomm_spread_all","traders_comm_long_all","traders_comm_short_all","traders_tot_rept_long_all","traders_tot_rept_short_all","traders_tot_old","traders_noncomm_long_old","traders_noncomm_short_old","traders_noncomm_spead_old","traders_comm_long_old","traders_comm_short_old","traders_tot_rept_long_old","traders_tot_rept_short_old","traders_tot_other","traders_noncomm_long_other","traders_noncomm_short_other","traders_noncomm_spread_other","traders_comm_long_other","traders_comm_short_other","traders_tot_rept_long_other","traders_tot_rept_short_other","conc_gross_le_4_tdr_long","conc_gross_le_4_tdr_short","conc_gross_le_8_tdr_long","conc_gross_le_8_tdr_short","conc_net_le_4_tdr_long_all","conc_net_le_4_tdr_short_all","conc_net_le_8_tdr_long_all","conc_net_le_8_tdr_short_all","conc_gross_le_4_tdr_long_1","conc_gross_le_4_tdr_short_1","conc_gross_le_8_tdr_long_1","conc_gross_le_8_tdr_short_1","conc_net_le_4_tdr_long_old","conc_net_le_4_tdr_short_old","conc_net_le_8_tdr_long_old","conc_net_le_8_tdr_short_old","conc_gross_le_4_tdr_long_2","conc_gross_le_4_tdr_short_2","conc_gross_le_8_tdr_long_2","conc_gross_le_8_tdr_short_2","conc_net_le_4_tdr_long_other","conc_net_le_4_tdr_short_other","conc_net_le_8_tdr_long_other","conc_net_le_8_tdr_short_other","contract_units","commodity","commodity_subgroup_name","commodity_group_name","futonly_or_combined"]'
       X-SODA2-Secondary-Last-Modified:
-      - Fri, 23 Aug 2024 19:30:46 GMT
+      - Fri, 30 Aug 2024 19:30:46 GMT
       X-SODA2-Truth-Last-Modified:
-      - Fri, 23 Aug 2024 19:30:46 GMT
+      - Fri, 30 Aug 2024 19:30:46 GMT
       X-SODA2-Types:
       - '["text","text","floating_timestamp","text","text","text","text","text","text","text","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","text","text","text","text","text"]'
-      X-Socrata-Region:
-      - aws-us-east-1-fedramp-prod
-      X-Socrata-RequestId:
-      - 0abb185a1eec56a4fa1748718eb9ef7d
+      X-Socrata-Region: null
+      X-Socrata-RequestId: null
     status:
       code: 200
       message: OK

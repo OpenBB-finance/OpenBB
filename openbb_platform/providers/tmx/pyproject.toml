@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-tmx"
-version = "1.2.1"
+version = "1.2.2"
 description = "Unofficial TMX data provider extension for the OpenBB Platform - Public Canadian markets data for Python and Fast API."
 authors = ["OpenBB <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -13,7 +13,7 @@ aiohttp-client-cache = "^0.11.0"
 aiosqlite = "^0.20.0"
 random-user-agent = "^1.0.1"
 exchange-calendars = "^4.5.4"
-openbb-core = "^1.3.1"
+openbb-core = "^1.3.2"
 
 [build-system]
 requires = ["poetry-core"]

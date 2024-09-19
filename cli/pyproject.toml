@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-cli"
-version = "1.1.1"
+version = "1.1.2"
 description = "Investment Research for Everyone, Anywhere."
 authors = ["OpenBB <hello@openbb.co>"]
 packages = [{ include = "openbb_cli" }]
@@ -17,7 +17,7 @@ openbb = 'openbb_cli.cli:main'
 python = "^3.9,<3.13"
 
 # OpenBB dependencies
-openbb = { version = "^4.3.1", extras = ["all"] }
+openbb = { version = "^4.3.2", extras = ["all"] }
 
 # CLI dependencies
 prompt-toolkit = "^3.0.16"

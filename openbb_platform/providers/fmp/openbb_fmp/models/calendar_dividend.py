@@ -34,12 +34,12 @@ class FMPCalendarDividendData(CalendarDividendData):
         "record_date": "recordDate",
         "payment_date": "paymentDate",
         "declaration_date": "declarationDate",
+        "adjusted_amount": "adjDividend",
     }
 
     adjusted_amount: Optional[float] = Field(
         default=None,
         description="The adjusted-dividend amount.",
-        alias="adjDividend",
     )
     label: Optional[str] = Field(
         default=None, description="Ex-dividend date formatted for display."

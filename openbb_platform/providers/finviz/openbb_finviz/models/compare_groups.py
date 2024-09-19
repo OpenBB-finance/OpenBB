@@ -42,21 +42,21 @@ class FinvizCompareGroupsData(CompareGroupsData):
         "name": "Name",
         "stocks": "Number of Stocks",
         "market_cap": "Market Cap",
-        "performance_1D": "Change",
-        "performance_1W": "Perf Week",
-        "performance_1M": "Perf Month",
-        "performance_3M": "Perf Quart",
-        "performance_6M": "Perf Half",
-        "performance_1Y": "Perf Year",
-        "performance_YTD": "Perf YTD",
+        "performance_1d": "Change",
+        "performance_1w": "Perf Week",
+        "performance_1m": "Perf Month",
+        "performance_3m": "Perf Quart",
+        "performance_6m": "Perf Half",
+        "performance_1y": "Perf Year",
+        "performance_ytd": "Perf YTD",
         "volume": "Volume",
         "volume_average": "Avg Volume",
         "volume_relative": "Rel Volume",
         "pe": "P/E",
         "forward_pe": "Fwd P/E",
-        "pe_growth": "PEG",
-        "eps_growth_past_5_years": "EPS past 5Y",
-        "eps_growth_next_5_years": "EPS next 5Y",
+        "peg": "PEG",
+        "eps_growth_past_5y": "EPS past 5Y",
+        "eps_growth_next_5y": "EPS next 5Y",
         "sales_growth_past_5_years": "Sales past 5Y",
         "price_to_sales": "P/S",
         "price_to_book": "P/B",
@@ -70,43 +70,42 @@ class FinvizCompareGroupsData(CompareGroupsData):
     stocks: Optional[int] = Field(
         default=None,
         description="The number of stocks in the group.",
-        alias="Stocks",
     )
     market_cap: Optional[ForceInt] = Field(
         default=None,
         description="The market cap of the group.",
     )
-    performance_1D: Optional[float] = Field(
+    performance_1d: Optional[float] = Field(
         default=None,
         description="The performance in the last day, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_1W: Optional[float] = Field(
+    performance_1w: Optional[float] = Field(
         default=None,
         description="The performance in the last week, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_1M: Optional[float] = Field(
+    performance_1m: Optional[float] = Field(
         default=None,
         description="The performance in the last month, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_3M: Optional[float] = Field(
+    performance_3m: Optional[float] = Field(
         default=None,
         description="The performance in the last quarter, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_6M: Optional[float] = Field(
+    performance_6m: Optional[float] = Field(
         default=None,
         description="The performance in the last half year, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_1Y: Optional[float] = Field(
+    performance_1y: Optional[float] = Field(
         default=None,
         description="The performance in the last year, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_YTD: Optional[float] = Field(
+    performance_ytd: Optional[float] = Field(
         default=None,
         description="The performance in the year to date, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -127,20 +126,19 @@ class FinvizCompareGroupsData(CompareGroupsData):
     peg: Optional[float] = Field(
         default=None,
         description="The PEG ratio of the group.",
-        alias="pe_growth",
     )
-    eps_growth_past_5_years: Optional[float] = Field(
+    eps_growth_past_5y: Optional[float] = Field(
         default=None,
         description="The EPS growth of the group for the past 5 years, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    eps_growth_next_5_years: Optional[float] = Field(
+    eps_growth_next_5y: Optional[float] = Field(
         default=None,
         description="The estimated EPS growth of the groupo for the next 5 years,"
         + " as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    sales_growth_past_5_years: Optional[float] = Field(
+    sales_growth_past_5y: Optional[float] = Field(
         default=None,
         description="The sales growth of the group for the past 5 years, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -167,16 +165,16 @@ class FinvizCompareGroupsData(CompareGroupsData):
     )
 
     @field_validator(
-        "performance_1W",
-        "performance_1M",
-        "performance_3M",
-        "performance_6M",
-        "performance_1Y",
-        "performance_YTD",
+        "performance_1w",
+        "performance_1m",
+        "performance_3m",
+        "performance_6m",
+        "performance_1y",
+        "performance_ytd",
         "dividend_yield",
-        "eps_growth_past_5_years",
-        "eps_growth_next_5_years",
-        "sales_growth_past_5_years",
+        "eps_growth_past_5y",
+        "eps_growth_next_5y",
+        "sales_growth_past_5y",
         "float_short",
         mode="before",
         check_fields=False,

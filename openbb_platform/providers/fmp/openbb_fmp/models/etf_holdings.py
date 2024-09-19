@@ -49,6 +49,17 @@ class FMPEtfHoldingsData(EtfHoldingsData):
         "value": "marketValue",
         "symbol": "asset",
         "balance": "sharesNumber",
+        "acceptance_datetime": "acceptanceTime",
+        "is_restricted": "isRestrictedSec",
+        "is_loan_by_fund": "isLoanByFund",
+        "is_cash_collateral": "isCashCollateral",
+        "is_non_cash_collateral": "isNonCashCollateral",
+        "fair_value_level": "fairValLevel",
+        "payoff_profile": "payoffProfile",
+        "asset_category": "assetCat",
+        "issuer_category": "issuerCat",
+        "country": "invCountry",
+        "currency": "cur_cd",
     }
 
     lei: Optional[str] = Field(description="The LEI of the holding.", default=None)
@@ -62,64 +73,54 @@ class FMPEtfHoldingsData(EtfHoldingsData):
         description="The type of units.", default=None
     )
     currency: Optional[str] = Field(
-        description="The currency of the holding.", alias="cur_cd", default=None
+        description="The currency of the holding.", default=None
     )
     value: Optional[float] = Field(
         description="The value of the holding, in dollars.",
-        alias="valUsd",
         default=None,
     )
     weight: Optional[float] = Field(
         description="The weight of the holding, as a normalized percent.",
-        alias="pctVal",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     payoff_profile: Optional[str] = Field(
         description="The payoff profile of the holding.",
-        alias="payoffProfile",
         default=None,
     )
     asset_category: Optional[str] = Field(
-        description="The asset category of the holding.", alias="assetCat", default=None
+        description="The asset category of the holding.", default=None
     )
     issuer_category: Optional[str] = Field(
         description="The issuer category of the holding.",
-        alias="issuerCat",
         default=None,
     )
     country: Optional[str] = Field(
-        description="The country of the holding.", alias="invCountry", default=None
+        description="The country of the holding.", default=None
     )
     is_restricted: Optional[str] = Field(
         description="Whether the holding is restricted.",
-        alias="isRestrictedSec",
         default=None,
     )
     fair_value_level: Optional[int] = Field(
         description="The fair value level of the holding.",
-        alias="fairValLevel",
         default=None,
     )
     is_cash_collateral: Optional[str] = Field(
         description="Whether the holding is cash collateral.",
-        alias="isCashCollateral",
         default=None,
     )
     is_non_cash_collateral: Optional[str] = Field(
         description="Whether the holding is non-cash collateral.",
-        alias="isNonCashCollateral",
         default=None,
     )
     is_loan_by_fund: Optional[str] = Field(
         description="Whether the holding is loan by fund.",
-        alias="isLoanByFund",
         default=None,
     )
     cik: Optional[str] = Field(description="The CIK of the filing.", default=None)
     acceptance_datetime: Optional[str] = Field(
         description="The acceptance datetime of the filing.",
-        alias="acceptanceTime",
         default=None,
     )
     updated: Optional[Union[dateType, datetime]] = Field(
@@ -188,4 +189,13 @@ class FMPEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> List[FMPEtfHoldingsData]:
         """Return the transformed data."""
-        return [FMPEtfHoldingsData.model_validate(d) for d in data]
+        results: list[FMPEtfHoldingsData] = []
+        # Limited to one alias per field, so we need to do these here.
+        for d in data:
+            new_d = {
+                k.replace("valUsd", "value").replace("pctVal", "weight"): v
+                for k, v in d.items()
+            }
+            results.append(FMPEtfHoldingsData.model_validate(new_d))
+
+        return results

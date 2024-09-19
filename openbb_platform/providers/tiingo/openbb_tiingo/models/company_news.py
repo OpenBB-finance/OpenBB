@@ -44,12 +44,13 @@ class TiingoCompanyNewsData(CompanyNewsData):
         "symbols": "tickers",
         "date": "publishedDate",
         "text": "description",
+        "article_id": "id",
     }
 
     tags: Optional[str] = Field(
         default=None, description="Tags associated with the news article."
     )
-    article_id: int = Field(description="Unique ID of the news article.", alias="id")
+    article_id: int = Field(description="Unique ID of the news article.")
     source: str = Field(description="News source.")
     crawl_date: datetime = Field(description="Date the news article was crawled.")
 

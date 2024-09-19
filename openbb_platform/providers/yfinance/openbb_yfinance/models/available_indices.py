@@ -23,10 +23,14 @@ class YFinanceAvailableIndicesQueryParams(AvailableIndicesQueryParams):
 class YFinanceAvailableIndicesData(AvailableIndicesData):
     """Yahoo Finance Available Indices Data."""
 
+    __alias_dict__ = {
+        "symbol": "ticker",
+    }
+
     code: str = Field(
         description="ID code for keying the index in the OpenBB Terminal."
     )
-    symbol: str = Field(description="Symbol for the index.", alias="ticker")
+    symbol: str = Field(description="Symbol for the index.")
 
 
 class YFinanceAvailableIndicesFetcher(

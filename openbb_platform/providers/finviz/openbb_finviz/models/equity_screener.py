@@ -207,14 +207,14 @@ class FinvizEquityScreenerData(EquityScreenerData):
         "volume_avg": "Avg Volume",
         "volume_relative": "Rel Volume",
         "average_true_range": "ATR",
-        "price_change_1W": "Perf Week",
-        "price_change_1M": "Perf Month",
-        "price_change_3M": "Perf Quart",
-        "price_change_6M": "Perf Half",
-        "price_change_1Y": "Perf Year",
-        "price_change_YTD": "Perf YTD",
-        "volatility_1W": "Volatility W",
-        "volatility_1M": "Volatility M",
+        "price_change_1w": "Perf Week",
+        "price_change_1m": "Perf Month",
+        "price_change_3m": "Perf Quart",
+        "price_change_6m": "Perf Half",
+        "price_change_1y": "Perf Year",
+        "price_change_ytd": "Perf YTD",
+        "volatility_1w": "Volatility W",
+        "volatility_1m": "Volatility M",
         "price_to_earnings": "P/E",
         "forward_pe": "Fwd P/E",
         "peg_ratio": "PEG",
@@ -222,11 +222,11 @@ class FinvizEquityScreenerData(EquityScreenerData):
         "price_to_book": "P/B",
         "price_to_cash": "P/C",
         "price_to_free_cash_flow": "P/FCF",
-        "eps_growth_past_1Y": "EPS this Y",
-        "eps_growth_next_1Y": "EPS next Y",
-        "eps_growth_past_5Y": "EPS past 5Y",
-        "eps_growth_next_5Y": "EPS next 5Y",
-        "sales_growth_past_5Y": "Sales past 5Y",
+        "eps_growth_past_1y": "EPS this Y",
+        "eps_growth_next_1y": "EPS next Y",
+        "eps_growth_past_5y": "EPS past 5Y",
+        "eps_growth_next_5y": "EPS next 5Y",
+        "sales_growth_past_5y": "Sales past 5Y",
         "dividend_yield": "Dividend",
         "return_on_assets": "ROA",
         "return_on_equity": "ROE",
@@ -306,42 +306,42 @@ class FinvizEquityScreenerData(EquityScreenerData):
         description="Average true range (14).",
         json_schema_extra={"x-unit_measurement:": "currency"},
     )
-    price_change_1W: Optional[float] = Field(
+    price_change_1w: Optional[float] = Field(
         default=None,
         description="One-week price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_1M: Optional[float] = Field(
+    price_change_1m: Optional[float] = Field(
         default=None,
         description="One-month price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_3M: Optional[float] = Field(
+    price_change_3m: Optional[float] = Field(
         default=None,
         description="Three-month price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_6M: Optional[float] = Field(
+    price_change_6m: Optional[float] = Field(
         default=None,
         description="Six-month price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_1Y: Optional[float] = Field(
+    price_change_1y: Optional[float] = Field(
         default=None,
         description="One-year price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_YTD: Optional[float] = Field(
+    price_change_ytd: Optional[float] = Field(
         default=None,
         description="Year-to-date price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volatility_1W: Optional[float] = Field(
+    volatility_1w: Optional[float] = Field(
         default=None,
         description="One-week volatility.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volatility_1M: Optional[float] = Field(
+    volatility_1m: Optional[float] = Field(
         default=None,
         description="One-month volatility.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -440,27 +440,27 @@ class FinvizEquityScreenerData(EquityScreenerData):
         default=None,
         description="Price to free cash flow ratio.",
     )
-    eps_growth_past_1Y: Optional[float] = Field(
+    eps_growth_past_1y: Optional[float] = Field(
         default=None,
         description="EPS growth for this year.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    eps_growth_next_1Y: Optional[float] = Field(
+    eps_growth_next_1y: Optional[float] = Field(
         default=None,
         description="EPS growth next year.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    eps_growth_past_5Y: Optional[float] = Field(
+    eps_growth_past_5y: Optional[float] = Field(
         default=None,
         description="EPS growth for the previous 5 years.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    eps_growth_next_5Y: Optional[float] = Field(
+    eps_growth_next_5y: Optional[float] = Field(
         default=None,
         description="EPS growth for the next 5 years.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    sales_growth_past_5Y: Optional[float] = Field(
+    sales_growth_past_5y: Optional[float] = Field(
         default=None,
         description="Sales growth for the previous 5 years.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},

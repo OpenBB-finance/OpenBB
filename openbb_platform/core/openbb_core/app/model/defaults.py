@@ -30,11 +30,16 @@ class Defaults(BaseModel):
         """Validate model (before)."""
         key = "commands"
         if "routes" in values:
-            warn(
-                message="'routes' is deprecated. Use 'commands' instead.",
-                category=OpenBBWarning,
-            )
-            key = "routes"
+            if not values.get("routes"):
+                del values["routes"]
+            show_warnings = values.get("preferences", {}).get("show_warnings")
+            if show_warnings is False or show_warnings in ["False", "false"]:
+                warn(
+                    message="The 'routes' key is deprecated within 'defaults' of 'user_settings.json'."
+                    + " Suppress this warning by updating the key to 'commands'.",
+                    category=OpenBBWarning,
+                )
+                key = "routes"
 
         new_values: Dict[str, Dict[str, Optional[List[str]]]] = {"commands": {}}
         for k, v in values.get(key, {}).items():

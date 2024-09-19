@@ -23,24 +23,9 @@ class ROUTER_equity_compare(Container):
     @validate
     def company_facts(
         self,
-        symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
-            OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): sec."
-            ),
-        ] = None,
-        fact: Annotated[
-            str,
-            OpenBBField(
-                description="The fact to lookup, typically a GAAP-reporting measure. Choices vary by provider."
-            ),
-        ] = "",
-        provider: Annotated[
-            Optional[Literal["sec"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec."
-            ),
-        ] = None,
+        symbol: Annotated[Union[str, None, List[Optional[str]]], OpenBBField(description="Symbol to get data for. Multiple comma separated items allowed for provider(s): sec.")] = None,
+        fact: Annotated[str, OpenBBField(description="The fact to lookup, typically a GAAP-reporting measure. Choices vary by provider.")] = "",
+        provider: Annotated[Optional[Literal["sec"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.")] = None,
         **kwargs
     ) -> OBBject:
         """Copmare reported company facts and fundamental data points.
@@ -80,21 +65,21 @@ class ROUTER_equity_compare(Container):
         CompareCompanyFacts
         -------------------
         symbol : Optional[str]
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         value : float
-            The reported value of the fact or concept.
+            The reported value of the fact or concept. 
         reported_date : Optional[date]
-            The date when the report was filed.
+            The date when the report was filed. 
         period_beginning : Optional[date]
-            The start date of the reporting period.
+            The start date of the reporting period. 
         period_ending : Optional[date]
-            The end date of the reporting period.
+            The end date of the reporting period. 
         fiscal_year : Optional[int]
-            The fiscal year.
+            The fiscal year. 
         fiscal_period : Optional[str]
-            The fiscal period of the fiscal year.
+            The fiscal period of the fiscal year. 
         cik : Optional[Union[int, str]]
             Central Index Key (CIK) for the requested entity. (provider: sec)
         location : Optional[str]
@@ -133,9 +118,7 @@ class ROUTER_equity_compare(Container):
                     "fact": fact,
                 },
                 extra_params=kwargs,
-                info={
-                    "symbol": {"sec": {"multiple_items_allowed": True, "choices": None}}
-                },
+                info={"symbol": {"sec": {"multiple_items_allowed": True, "choices": None}}},
             )
         )
 
@@ -144,19 +127,14 @@ class ROUTER_equity_compare(Container):
     def peers(
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the closest peers for a given company.
 
         Peers consist of companies trading on the same exchange, operating within the same sector
         and with comparable market capitalizations.
-
+        
 
         Parameters
         ----------
@@ -182,7 +160,7 @@ class ROUTER_equity_compare(Container):
         EquityPeers
         -----------
         peers_list : List[str]
-            A list of equity peers based on sector, exchange and market cap.
+            A list of equity peers based on sector, exchange and market cap. 
 
         Examples
         --------

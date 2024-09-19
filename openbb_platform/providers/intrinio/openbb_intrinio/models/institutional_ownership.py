@@ -21,8 +21,13 @@ class IntrinioInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParam
             https://docs.intrinio.com/documentation/web_api/get_owner_by_id_v2
     """
 
+    __alias_dict__ = {
+        "limit": "page_size",
+    }
+
     limit: Optional[int] = Field(
-        default=100, description=QUERY_DESCRIPTIONS.get("limit", ""), alias="page_size"
+        default=100,
+        description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
 
 
@@ -32,10 +37,11 @@ class IntrinioInstitutionalOwnershipData(InstitutionalOwnershipData):
     __alias_dict__ = {
         "cik": "owner_cik",
         "date": "period_ended",
+        "name": "owner_name",
     }
 
     name: str = Field(
-        description="Name of the institutional owner.", alias="owner_name"
+        description="Name of the institutional owner.",
     )
     value: float = Field(description="Value of the institutional owner.")
     amount: float = Field(description="Amount of the institutional owner.")
@@ -111,7 +117,7 @@ class IntrinioInstitutionalOwnershipFetcher(
         for item in results:
             if isinstance(item, Exception):
                 continue
-            data.append(item)
+            data.append(item)  # type: ignore
 
         return data
 

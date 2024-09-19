@@ -3,8 +3,8 @@
 from datetime import date
 
 import pytest
-from openbb_bls.models.series import BlsSeriesFetcher
 from openbb_bls.models.search import BlsSearchFetcher
+from openbb_bls.models.series import BlsSeriesFetcher
 from openbb_core.app.service.user_service import UserService
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(

@@ -81,6 +81,17 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches  # noqa: PLR0
     res = await amake_request(url=url, method="POST", headers=headers, data=payload)
     results = res.get("Results", {}).get("series", [])  # type: ignore
     messages = res.get("message", [])  # type: ignore
+    if messages:
+        messages = [
+            (
+                f"The key provided by the User is invalid. {m.split(' provided by the User is invalid.')[1].strip()}"
+                if m.startswith("The key:")
+                else m
+            )
+            for m in messages
+            if m
+        ]
+
     metadata: Dict = {}
     data: List = []
     for result in results:

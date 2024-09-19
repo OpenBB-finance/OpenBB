@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/widgets/top-trade-items/data/?country=US&split_by=country
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3XRXU/CMBQG4L/S7JoL2NaNcafgByJoHDMmhouyVV1S2qU9SySE/25booldTnbT
+        nj475017ijqhwEQz8n6KQDNpOmW43YLu+YhEcOzcLjJct9xErtKC8KU1ayXh353SQBpuoJUMWiU9
+        +lAKpALvStXrms9ItSFzdbAzGk6WEri+eCbI1tdKsHvbpjZkwYDtmc0x+pvsA9aq8S1fmeg5ObRC
+        2AakKhcOSnbAD5vWdIId3fmeaVepGfBPpX1prnoJdnneOWqHX8b9lp24cv8MW89InFKan0fkH1+/
+        oTzJ8mnI5xuMTyZpTkP+8IxxWsRZqKsVqpNpHOrVC66zQe/FDarjdBLqzSOm03GchvoaTZIUyeAK
+        l+gVJlM66F3eoTobvuYtniShxSA3eidxno9DfY++TjzOBkmWW1zTJNRP8MW1QbNTmhbnnf1+AMFP
+        oscFBAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8b9ea95219478438-YVR
+      Cache-Control:
+      - max-age=900
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 27 Aug 2024 20:02:49 GMT
+      Expires:
+      - Tue, 27 Aug 2024 20:11:42 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=51d2bvbfJrm%2BEeZ3huFocT8M1LtGY1uCuHVzxLQOEWIwy2228srC7K%2FeOlkzvY42dkuzRgsDK%2FIJI2V%2BpDeY%2B%2BXqsYWzLMnHCrG%2B4ZIyBXVPVeXLpQ1b3lL5UC2rTsXXQI0yaSIIi43Blofm"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

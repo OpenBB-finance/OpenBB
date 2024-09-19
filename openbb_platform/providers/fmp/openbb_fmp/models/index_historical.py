@@ -46,6 +46,10 @@ class FMPIndexHistoricalQueryParams(IndexHistoricalQueryParams):
 class FMPIndexHistoricalData(IndexHistoricalData):
     """FMP Index Historical Data."""
 
+    __alias_dict__ = {
+        "change_percent": "changeOverTime",
+    }
+
     vwap: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
     )
@@ -56,7 +60,6 @@ class FMPIndexHistoricalData(IndexHistoricalData):
     change_percent: Optional[float] = Field(
         default=None,
         description="Change in the price from the previous close, as a normalized percent.",
-        alias="changeOverTime",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 

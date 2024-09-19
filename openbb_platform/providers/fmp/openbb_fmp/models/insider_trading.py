@@ -21,10 +21,19 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
 
+    __json_schema_extra__ = {
+        "transaction_type": {
+            "multiple_items_allowed": False,
+            "choices": list(TRANSACTION_TYPES_DICT),
+        }
+    }
+    __alias_dict__ = {
+        "transaction_type": "transactionType",
+    }
+
     transaction_type: Optional[TRANSACTION_TYPES] = Field(
         default=None,
         description="Type of the transaction.",
-        alias="transactionType",
     )
 
     @model_validator(mode="after")

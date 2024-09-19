@@ -45,6 +45,12 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
         "last_price_timestamp": "timestamp",
         "shares_outstanding": "sharesOutstanding",
         "volume_avg": "avgVolume",
+        "ma50": "priceAvg50",
+        "ma200": "priceAvg200",
+        "year_high": "yearHigh",
+        "year_low": "yearLow",
+        "market_cap": "marketCap",
+        "earnings_date": "earningsAnnouncement",
     }
 
     last_price: Optional[float] = Field(
@@ -54,22 +60,18 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
         description="The timestamp of the last price.", default=None
     )
     ma50: Optional[float] = Field(
-        description="The 50-day moving average.", alias="priceAvg50", default=None
+        description="The 50-day moving average.", default=None
     )
     ma200: Optional[float] = Field(
-        description="The 200-day moving average.", alias="priceAvg200", default=None
+        description="The 200-day moving average.", default=None
     )
-    year_high: Optional[float] = Field(
-        description="The 52-week high.", alias="yearHigh", default=None
-    )
-    year_low: Optional[float] = Field(
-        description="The 52-week low.", alias="yearLow", default=None
-    )
+    year_high: Optional[float] = Field(description="The 52-week high.", default=None)
+    year_low: Optional[float] = Field(description="The 52-week low.", default=None)
     volume_avg: Optional[ForceInt] = Field(
         description="Average daily trading volume.", default=None
     )
     market_cap: Optional[ForceInt] = Field(
-        description="Market cap of the stock.", alias="marketCap", default=None
+        description="Market cap of the stock.", default=None
     )
     eps: Optional[float] = Field(description="Earnings per share.", default=None)
     pe: Optional[float] = Field(description="Price to earnings ratio.", default=None)
@@ -85,7 +87,6 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     )
     earnings_date: Optional[Union[datetime, dateType]] = Field(
         description="The upcoming earnings announcement date.",
-        alias="earningsAnnouncement",
         default=None,
     )
 

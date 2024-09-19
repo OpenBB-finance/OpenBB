@@ -36,6 +36,11 @@ class SecCompareCompanyFactsQueryParams(CompareCompanyFactsQueryParams):
 
     __json_schema_extra__ = {
         "symbol": {"multiple_items_allowed": True},
+        "fact": {"multiple_items_allowed": False, "choices": sorted(FACTS)},
+        "fiscal_period": {
+            "multiple_items_allowed": False,
+            "choices": ["fy", "q1", "q2", "q3", "q4"],
+        },
     }
 
     fact: FACT_CHOICES = Field(
@@ -43,7 +48,6 @@ class SecCompareCompanyFactsQueryParams(CompareCompanyFactsQueryParams):
         description="Fact or concept from the SEC taxonomy, in UpperCamelCase. Defaults to, 'Revenues'."
         + " AAPL, MSFT, GOOG, BRK-A currently report revenue as, 'RevenueFromContractWithCustomerExcludingAssessedTax'."
         + " In previous years, they have reported as 'Revenues'.",
-        json_schema_extra={"choices": sorted(FACTS)},
     )
     year: Optional[int] = Field(
         default=None,

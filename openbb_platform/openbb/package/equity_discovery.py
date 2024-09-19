@@ -30,18 +30,8 @@ class ROUTER_equity_discovery(Container):
     @validate
     def active(
         self,
-        sort: Annotated[
-            Literal["asc", "desc"],
-            OpenBBField(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
-        provider: Annotated[
-            Optional[Literal["yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
-            ),
-        ] = None,
+        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
+        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the most actively traded stocks based on volume.
@@ -70,17 +60,17 @@ class ROUTER_equity_discovery(Container):
         EquityActive
         ------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         price : float
-            Last price.
+            Last price. 
         change : float
-            Change in price.
+            Change in price. 
         percent_change : float
-            Percent change.
+            Percent change. 
         volume : Union[int, float]
-            The trading volume.
+            The trading volume. 
         market_cap : Optional[float]
             Market Cap displayed in billions. (provider: yfinance)
         avg_volume_3_months : Optional[float]
@@ -116,18 +106,8 @@ class ROUTER_equity_discovery(Container):
     @validate
     def aggressive_small_caps(
         self,
-        sort: Annotated[
-            Literal["asc", "desc"],
-            OpenBBField(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
-        provider: Annotated[
-            Optional[Literal["yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
-            ),
-        ] = None,
+        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
+        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Get top small cap stocks based on earnings growth.
@@ -156,17 +136,17 @@ class ROUTER_equity_discovery(Container):
         EquityAggressiveSmallCaps
         -------------------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         price : float
-            Last price.
+            Last price. 
         change : float
-            Change in price.
+            Change in price. 
         percent_change : float
-            Percent change.
+            Percent change. 
         volume : Union[int, float]
-            The trading volume.
+            The trading volume. 
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
@@ -202,29 +182,11 @@ class ROUTER_equity_discovery(Container):
     @validate
     def filings(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        form_type: Annotated[
-            Optional[str],
-            OpenBBField(
-                description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types."
-            ),
-        ] = None,
-        limit: Annotated[
-            int, OpenBBField(description="The number of data entries to return.")
-        ] = 100,
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        form_type: Annotated[Optional[str], OpenBBField(description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.")] = None,
+        limit: Annotated[int, OpenBBField(description="The number of data entries to return.")] = 100,
+        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.
@@ -233,7 +195,7 @@ class ROUTER_equity_discovery(Container):
         Foreign Investment Disclosures and others. The annual 10-K report is required to be
         filed annually and includes the company's financial statements, management discussion and analysis,
         and audited financial statements.
-
+        
 
         Parameters
         ----------
@@ -267,17 +229,17 @@ class ROUTER_equity_discovery(Container):
         DiscoveryFilings
         ----------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         cik : str
-            Central Index Key (CIK) for the requested entity.
+            Central Index Key (CIK) for the requested entity. 
         title : str
-            Title of the filing.
+            Title of the filing. 
         date : datetime
-            The date of the data.
+            The date of the data. 
         form_type : str
-            The form type of the filing
+            The form type of the filing 
         link : str
-            URL to the filing page on the SEC site.
+            URL to the filing page on the SEC site. 
 
         Examples
         --------
@@ -311,18 +273,8 @@ class ROUTER_equity_discovery(Container):
     @validate
     def gainers(
         self,
-        sort: Annotated[
-            Literal["asc", "desc"],
-            OpenBBField(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
-        provider: Annotated[
-            Optional[Literal["yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
-            ),
-        ] = None,
+        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
+        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the top price gainers in the stock market.
@@ -351,17 +303,17 @@ class ROUTER_equity_discovery(Container):
         EquityGainers
         -------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         price : float
-            Last price.
+            Last price. 
         change : float
-            Change in price.
+            Change in price. 
         percent_change : float
-            Percent change.
+            Percent change. 
         volume : Union[int, float]
-            The trading volume.
+            The trading volume. 
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
         market_cap : Optional[float]
@@ -397,18 +349,8 @@ class ROUTER_equity_discovery(Container):
     @validate
     def growth_tech(
         self,
-        sort: Annotated[
-            Literal["asc", "desc"],
-            OpenBBField(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
-        provider: Annotated[
-            Optional[Literal["yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
-            ),
-        ] = None,
+        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
+        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Get top tech stocks based on revenue and earnings growth.
@@ -437,17 +379,17 @@ class ROUTER_equity_discovery(Container):
         GrowthTechEquities
         ------------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         price : float
-            Last price.
+            Last price. 
         change : float
-            Change in price.
+            Change in price. 
         percent_change : float
-            Percent change.
+            Percent change. 
         volume : Union[int, float]
-            The trading volume.
+            The trading volume. 
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
@@ -483,18 +425,8 @@ class ROUTER_equity_discovery(Container):
     @validate
     def losers(
         self,
-        sort: Annotated[
-            Literal["asc", "desc"],
-            OpenBBField(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
-        provider: Annotated[
-            Optional[Literal["yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
-            ),
-        ] = None,
+        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
+        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the top price losers in the stock market.
@@ -523,17 +455,17 @@ class ROUTER_equity_discovery(Container):
         EquityLosers
         ------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         price : float
-            Last price.
+            Last price. 
         change : float
-            Change in price.
+            Change in price. 
         percent_change : float
-            Percent change.
+            Percent change. 
         volume : Union[int, float]
-            The trading volume.
+            The trading volume. 
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
@@ -569,18 +501,8 @@ class ROUTER_equity_discovery(Container):
     @validate
     def undervalued_growth(
         self,
-        sort: Annotated[
-            Literal["asc", "desc"],
-            OpenBBField(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
-        provider: Annotated[
-            Optional[Literal["yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
-            ),
-        ] = None,
+        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
+        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Get potentially undervalued growth stocks.
@@ -609,17 +531,17 @@ class ROUTER_equity_discovery(Container):
         EquityUndervaluedGrowth
         -----------------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         price : float
-            Last price.
+            Last price. 
         change : float
-            Change in price.
+            Change in price. 
         percent_change : float
-            Percent change.
+            Percent change. 
         volume : Union[int, float]
-            The trading volume.
+            The trading volume. 
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
@@ -655,18 +577,8 @@ class ROUTER_equity_discovery(Container):
     @validate
     def undervalued_large_caps(
         self,
-        sort: Annotated[
-            Literal["asc", "desc"],
-            OpenBBField(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
-        provider: Annotated[
-            Optional[Literal["yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
-            ),
-        ] = None,
+        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
+        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Get potentially undervalued large cap stocks.
@@ -695,17 +607,17 @@ class ROUTER_equity_discovery(Container):
         EquityUndervaluedLargeCaps
         --------------------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the entity.
+            Name of the entity. 
         price : float
-            Last price.
+            Last price. 
         change : float
-            Change in price.
+            Change in price. 
         percent_change : float
-            Percent change.
+            Percent change. 
         volume : Union[int, float]
-            The trading volume.
+            The trading volume. 
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]

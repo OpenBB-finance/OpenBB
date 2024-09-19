@@ -372,8 +372,7 @@ async def ratios(
         APIEx(
             parameters={
                 "symbol": "AAPL",
-                "period": "annual",
-                "structure": "flat",
+                "period": "quarter",
                 "provider": "fmp",
             }
         ),
@@ -385,7 +384,7 @@ async def revenue_per_geography(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the revenue geographic breakdown for a given company over time."""
+    """Get the geographic breakdown of revenue for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -396,8 +395,7 @@ async def revenue_per_geography(
         APIEx(
             parameters={
                 "symbol": "AAPL",
-                "period": "annual",
-                "structure": "flat",
+                "period": "quarter",
                 "provider": "fmp",
             }
         ),

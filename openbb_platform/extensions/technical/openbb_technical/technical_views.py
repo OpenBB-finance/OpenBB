@@ -289,8 +289,12 @@ class TechnicalViews:
         fig.set_title(title)
 
         fig.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
+            plot_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
             font=dict(color=text_color),
             legend=dict(
                 orientation="h",
@@ -298,7 +302,9 @@ class TechnicalViews:
                 xanchor="right",
                 y=1.02,
                 x=1,
-                bgcolor="rgba(0,0,0,0)",
+                bgcolor=(
+                    "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                ),
             ),
             yaxis=dict(
                 ticklen=0,
@@ -366,7 +372,9 @@ class TechnicalViews:
         figure = OpenBBFigure(fig)  # pylint: disable=E0606
         font_color = "black" if ChartStyle().plt_style == "light" else "white"
         figure.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor=(
+                "rgba(0,0,0,0)" if font_color == "white" else "rgba(255,255,255,255)"
+            ),
             plot_bgcolor="rgba(255,255,255,1)",
             font=dict(color=font_color),
             yaxis=dict(
@@ -473,7 +481,7 @@ def _ta_ma(**kwargs):
         specs=[[{"secondary_y": True}]],
     )
     fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
-
+    font_color = "black" if ChartStyle().plt_style == "light" else "white"
     ma_df = DataFrame()
     window = [window] if isinstance(window, int) else window
     for w in window:
@@ -511,8 +519,12 @@ def _ta_ma(**kwargs):
 
     fig.update_layout(
         title=dict(text=title, x=0.5, font=dict(size=16)),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor=(
+            "rgba(0,0,0,0)" if font_color == "white" else "rgba(255,255,255,255)"
+        ),
+        plot_bgcolor=(
+            "rgba(0,0,0,0)" if font_color == "white" else "rgba(255,255,255,0)"
+        ),
         showlegend=True,
         legend=dict(
             orientation="h",
@@ -520,7 +532,7 @@ def _ta_ma(**kwargs):
             xanchor="right",
             y=1.02,
             x=0.95,
-            bgcolor="rgba(0,0,0,0)",
+            bgcolor="rgba(0,0,0,0)" if font_color == "white" else "rgba(255,255,255,0)",
         ),
         xaxis=dict(
             ticklen=0,
@@ -537,6 +549,7 @@ def _ta_ma(**kwargs):
             mirror=True,
             autorange=True,
         ),
+        font=dict(color=font_color),
     )
 
     content = fig.show(external=True).to_plotly_json()

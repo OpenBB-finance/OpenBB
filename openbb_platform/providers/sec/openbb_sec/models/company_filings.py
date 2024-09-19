@@ -53,12 +53,21 @@ class SecCompanyFilingsData(CompanyFilingsData):
         "filing_url": "filingDetailUrl",
         "report_url": "primaryDocumentUrl",
         "report_type": "form",
+        "report_date": "reportDate",
+        "primary_doc_description": "primaryDocDescription",
+        "primary_doc": "primaryDocument",
+        "accession_number": "accessionNumber",
+        "file_number": "fileNumber",
+        "film_number": "filmNumber",
+        "is_inline_xbrl": "isInlineXBRL",
+        "is_xbrl": "isXBRL",
+        "complete_submission_url": "completeSubmissionUrl",
+        "filing_detail_url": "filingDetailUrl",
     }
 
     report_date: Optional[dateType] = Field(
         description="The date of the filing.",
         default=None,
-        alias="reportDate",
     )
     act: Optional[Union[str, int]] = Field(
         description="The SEC Act number.", default=None
@@ -69,37 +78,30 @@ class SecCompanyFilingsData(CompanyFilingsData):
     primary_doc_description: Optional[str] = Field(
         description="The description of the primary document.",
         default=None,
-        alias="primaryDocDescription",
     )
     primary_doc: Optional[str] = Field(
         description="The filename of the primary document.",
         default=None,
-        alias="primaryDocument",
     )
     accession_number: Optional[Union[str, int]] = Field(
         description="The accession number.",
         default=None,
-        alias="accessionNumber",
     )
     file_number: Optional[Union[str, int]] = Field(
         description="The file number.",
         default=None,
-        alias="fileNumber",
     )
     film_number: Optional[Union[str, int]] = Field(
         description="The film number.",
         default=None,
-        alias="filmNumber",
     )
     is_inline_xbrl: Optional[Union[str, int]] = Field(
         description="Whether the filing is an inline XBRL filing.",
         default=None,
-        alias="isInlineXBRL",
     )
     is_xbrl: Optional[Union[str, int]] = Field(
         description="Whether the filing is an XBRL filing.",
         default=None,
-        alias="isXBRL",
     )
     size: Optional[Union[str, int]] = Field(
         description="The size of the filing.", default=None
@@ -107,12 +109,10 @@ class SecCompanyFilingsData(CompanyFilingsData):
     complete_submission_url: Optional[str] = Field(
         description="The URL to the complete filing submission.",
         default=None,
-        alias="completeSubmissionUrl",
     )
     filing_detail_url: Optional[str] = Field(
         description="The URL to the filing details.",
         default=None,
-        alias="filingDetailUrl",
     )
 
     @field_validator("report_date", mode="before", check_fields=False)

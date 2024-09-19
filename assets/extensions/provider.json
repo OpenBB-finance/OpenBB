@@ -38,12 +38,34 @@
         "instructions": "The BizToc API is hosted on RapidAPI. To set up, go to: https://rapidapi.com/thma/api/biztoc.\n\n![biztoc0](https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda)\n\nIn the top right, select 'Sign Up'. After answering some questions, you will be prompted to select one of their plans.\n\n![biztoc1](https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422)\n\nAfter signing up, navigate back to https://rapidapi.com/thma/api/biztoc. If you are logged in, you will see a header called X-RapidAPI-Key.\n\n![biztoc2](https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f)"
     },
     {
+        "packageName": "openbb-bls",
+        "optional": false,
+        "reprName": "Bureau of Labor Statistics' (BLS) Public Data API",
+        "description": "The Bureau of Labor Statistics' (BLS) Public Data Application Programming Interface (API) gives the public access to economic data from all BLS programs. It is the Bureau's hope that talented developers and programmers will use the BLS Public Data API to create original, inventive applications with published BLS data.",
+        "credentials": [
+            "bls_api_key"
+        ],
+        "website": "https://www.bls.gov/developers/api_signature_v2.htm",
+        "instructions": "Sign up for a free API key here: https://data.bls.gov/registrationEngine/"
+    },
+    {
         "packageName": "openbb-cboe",
         "optional": true,
         "reprName": "Chicago Board Options Exchange (CBOE)",
         "description": "Cboe is the world's go-to derivatives and exchange network,\ndelivering cutting-edge trading, clearing and investment solutions to people\naround the world.",
         "credentials": [],
         "website": "https://www.cboe.com"
+    },
+    {
+        "packageName": "openbb-cftc",
+        "optional": false,
+        "reprName": "Commodity DFutures Trading Commission (CFTC) Public Reporting API",
+        "description": "The mission of the Commodity Futures Trading Commission (CFTC) is to promote the integrity,\n    resilience, and vibrancy of the U.S. derivatives markets through sound regulation.",
+        "credentials": [
+            "cftc_app_token"
+        ],
+        "website": "https://cftc.gov/",
+        "instructions": "Credentials are not required, but your IP address may be subject to throttling limits.\n    API requests made using an application token are not throttled.\n    Create an account here: https://evergreen.data.socrata.com/signup\n    and then generate the app_token by signing in with the credentials\n    here: https://publicreporting.cftc.gov/profile/edit/developer_settings."
     },
     {
         "packageName": "openbb-ecb",

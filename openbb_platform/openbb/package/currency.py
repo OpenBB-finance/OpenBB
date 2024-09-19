@@ -31,16 +31,8 @@ class ROUTER_currency(Container):
     @validate
     def search(
         self,
-        query: Annotated[
-            Optional[str],
-            OpenBBField(description="Query to search for currency pairs."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["fmp", "intrinio", "polygon"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon."
-            ),
-        ] = None,
+        query: Annotated[Optional[str], OpenBBField(description="Query to search for currency pairs.")] = None,
+        provider: Annotated[Optional[Literal["fmp", "intrinio", "polygon"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.")] = None,
         **kwargs
     ) -> OBBject:
         """Currency Search.
@@ -52,7 +44,7 @@ class ROUTER_currency(Container):
         All trading within the forex market, whether selling, buying, or trading, will take place through currency pairs.
         (ref: Investopedia)
         Major currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.
-
+        
 
         Parameters
         ----------
@@ -78,9 +70,9 @@ class ROUTER_currency(Container):
         CurrencyPairs
         -------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the currency pair.
+            Name of the currency pair. 
         currency : Optional[str]
             Base currency of the currency pair. (provider: fmp)
         stock_exchange : Optional[str]
@@ -137,30 +129,10 @@ class ROUTER_currency(Container):
     @validate
     def snapshots(
         self,
-        base: Annotated[
-            Union[str, List[str]],
-            OpenBBField(
-                description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp, polygon."
-            ),
-        ] = "usd",
-        quote_type: Annotated[
-            Literal["direct", "indirect"],
-            OpenBBField(
-                description="Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency."
-            ),
-        ] = "indirect",
-        counter_currencies: Annotated[
-            Union[List[str], str, None],
-            OpenBBField(
-                description="An optional list of counter currency symbols to filter for. None returns all."
-            ),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["fmp", "polygon"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon."
-            ),
-        ] = None,
+        base: Annotated[Union[str, List[str]], OpenBBField(description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp, polygon.")] = "usd",
+        quote_type: Annotated[Literal["direct", "indirect"], OpenBBField(description="Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.")] = "indirect",
+        counter_currencies: Annotated[Union[List[str], str, None], OpenBBField(description="An optional list of counter currency symbols to filter for. None returns all.")] = None,
+        provider: Annotated[Optional[Literal["fmp", "polygon"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon.")] = None,
         **kwargs
     ) -> OBBject:
         """Snapshots of currency exchange rates from an indirect or direct perspective of a base currency.
@@ -193,23 +165,23 @@ class ROUTER_currency(Container):
         CurrencySnapshots
         -----------------
         base_currency : str
-            The base, or domestic, currency.
+            The base, or domestic, currency. 
         counter_currency : str
-            The counter, or foreign, currency.
+            The counter, or foreign, currency. 
         last_rate : float
-            The exchange rate, relative to the base currency. Rates are expressed as the amount of foreign currency received from selling one unit of the base currency, or the quantity of foreign currency required to purchase one unit of the domestic currency. To inverse the perspective, set the 'quote_type' parameter as 'direct'.
+            The exchange rate, relative to the base currency. Rates are expressed as the amount of foreign currency received from selling one unit of the base currency, or the quantity of foreign currency required to purchase one unit of the domestic currency. To inverse the perspective, set the 'quote_type' parameter as 'direct'. 
         open : Optional[float]
-            The open price.
+            The open price. 
         high : Optional[float]
-            The high price.
+            The high price. 
         low : Optional[float]
-            The low price.
+            The low price. 
         close : Optional[float]
-            The close price.
+            The close price. 
         volume : Optional[int]
-            The trading volume.
+            The trading volume. 
         prev_close : Optional[float]
-            The previous close price.
+            The previous close price. 
         change : Optional[float]
             The change in the price from the previous close. (provider: fmp, polygon)
         change_percent : Optional[float]
@@ -286,11 +258,6 @@ class ROUTER_currency(Container):
                     "counter_currencies": counter_currencies,
                 },
                 extra_params=kwargs,
-                info={
-                    "base": {
-                        "fmp": {"multiple_items_allowed": True, "choices": None},
-                        "polygon": {"multiple_items_allowed": True, "choices": None},
-                    }
-                },
+                info={"base": {"fmp": {"multiple_items_allowed": True, "choices": None}, "polygon": {"multiple_items_allowed": True, "choices": None}}},
             )
         )

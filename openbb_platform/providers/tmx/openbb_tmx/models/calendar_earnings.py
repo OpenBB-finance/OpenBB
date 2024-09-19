@@ -26,9 +26,10 @@ class TmxCalendarEarningsData(CalendarEarningsData):
         "eps_consensus": "estimatedEps",
         "eps_surprise": "epsSurpriseDollar",
         "surprise_percent": "epsSurprisePercent",
+        "name": "companyName",
     }
 
-    name: str = Field(description="The company's name.", alias="companyName")
+    name: str = Field(description="The company's name.")
     eps_consensus: Optional[float] = Field(
         default=None, description="The consensus estimated EPS in dollars."
     )

@@ -27,9 +27,14 @@ class TmxEtfInfoQueryParams(EtfInfoQueryParams):
 class TmxEtfInfoData(EtfInfoData):
     """TMX ETF Info Data."""
 
-    issuer: Optional[str] = Field(
-        description="The issuer of the ETF.", alias="fund_family", default=None
-    )
+    __alias_dict__ = {
+        "avg_volume": "volume_avg_daily",
+        "issuer": "fund_family",
+        "avg_volume_30d": "volume_avg_30d",
+        "description": "investment_objectives",
+    }
+
+    issuer: Optional[str] = Field(description="The issuer of the ETF.", default=None)
     investment_style: Optional[str] = Field(
         description="The investment style of the ETF.", default=None
     )
@@ -91,12 +96,10 @@ class TmxEtfInfoData(EtfInfoData):
     )
     avg_volume: Optional[int] = Field(
         description="The average daily volume of the ETF.",
-        alias="volume_avg_daily",
         default=None,
     )
     avg_volume_30d: Optional[int] = Field(
         description="The 30-day average volume of the ETF.",
-        alias="volume_avg_30d",
         default=None,
     )
     aum: Optional[float] = Field(description="The AUM of the ETF.", default=None)
@@ -127,7 +130,6 @@ class TmxEtfInfoData(EtfInfoData):
     website: Optional[str] = Field(description="The website of the ETF.", default=None)
     description: Optional[str] = Field(
         description="The description of the ETF.",
-        alias="investment_objectives",
         default=None,
     )
 

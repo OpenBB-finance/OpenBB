@@ -30,62 +30,62 @@ class YFinanceShareStatisticsData(ShareStatisticsData):
         "outstanding_shares": "sharesOutstanding",
         "float_shares": "floatShares",
         "date": "dateShortInterest",
+        "implied_shares_outstanding": "impliedSharesOutstanding",
+        "short_interest": "sharesShort",
+        "short_percent_of_float": "shortPercentOfFloat",
+        "days_to_cover": "shortRatio",
+        "short_interest_prev_month": "sharesShortPriorMonth",
+        "short_interest_prev_date": "sharesShortPreviousMonthDate",
+        "insider_ownership": "heldPercentInsiders",
+        "institution_ownership": "heldPercentInstitutions",
+        "institution_float_ownership": "institutionsFloatPercentHeld",
+        "institutions_count": "institutionsCount",
     }
 
     implied_shares_outstanding: Optional[int] = Field(
         default=None,
         description="Implied Shares Outstanding of common equity,"
         + " assuming the conversion of all convertible subsidiary equity into common.",
-        alias="impliedSharesOutstanding",
     )
     short_interest: Optional[int] = Field(
         default=None,
         description="Number of shares that are reported short.",
-        alias="sharesShort",
     )
     short_percent_of_float: Optional[float] = Field(
         default=None,
         description="Percentage of shares that are reported short, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="shortPercentOfFloat",
     )
     days_to_cover: Optional[float] = Field(
         default=None,
         description="Number of days to repurchase the shares as a ratio of average daily volume",
-        alias="shortRatio",
     )
     short_interest_prev_month: Optional[int] = Field(
         default=None,
         description="Number of shares that were reported short in the previous month.",
-        alias="sharesShortPriorMonth",
     )
     short_interest_prev_date: Optional[dateType] = Field(
         default=None,
         description="Date of the previous month's report.",
-        alias="sharesShortPreviousMonthDate",
     )
     insider_ownership: Optional[float] = Field(
         default=None,
         description="Percentage of shares held by insiders, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="heldPercentInsiders",
     )
     institution_ownership: Optional[float] = Field(
         default=None,
         description="Percentage of shares held by institutions, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="heldPercentInstitutions",
     )
     institution_float_ownership: Optional[float] = Field(
         default=None,
         description="Percentage of float held by institutions, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="institutionsFloatPercentHeld",
     )
     institutions_count: Optional[int] = Field(
         default=None,
         description="Number of institutions holding shares.",
-        alias="institutionsCount",
     )
 
     @field_validator(

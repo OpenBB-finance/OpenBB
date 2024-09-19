@@ -18,9 +18,7 @@ class ROUTER_regulators(Container):
         # pylint: disable=import-outside-toplevel
         from . import regulators_cftc
 
-        return regulators_cftc.ROUTER_regulators_cftc(
-            command_runner=self._command_runner
-        )
+        return regulators_cftc.ROUTER_regulators_cftc(command_runner=self._command_runner)
 
     @property
     def sec(self):

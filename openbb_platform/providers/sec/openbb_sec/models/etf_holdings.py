@@ -39,7 +39,22 @@ class SecEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 class SecEtfHoldingsData(EtfHoldingsData):
     """SEC ETF Holdings Data."""
 
-    __alias_dict__ = {"name": "title"}
+    __alias_dict__ = {
+        "name": "title",
+        "weight": "pctVal",
+        "value": "valUSD",
+        "payoff_profile": "payoffProfile",
+        "currency": "curCd",
+        "asset_category": "assetCat",
+        "issuer_category": "issuerCat",
+        "country": "invCountry",
+        "is_restricted": "isRestrictedSec",
+        "fair_value_level": "fairValLevel",
+        "is_cash_collateral": "isCashCollateral",
+        "is_non_cash_collateral": "isNonCashCollateral",
+        "is_loan_by_fund": "isLoanByFund",
+        "loan_value": "loanVal",
+    }
 
     lei: Optional[str] = Field(description="The LEI of the holding.", default=None)
     cusip: Optional[str] = Field(description="The CUSIP of the holding.", default=None)
@@ -52,63 +67,54 @@ class SecEtfHoldingsData(EtfHoldingsData):
     )
     weight: Optional[float] = Field(
         description="The weight of the holding in ETF in %.",
-        alias="pctVal",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     value: Optional[float] = Field(
-        description="The value of the holding in USD.", alias="valUSD", default=None
+        description="The value of the holding in USD.", default=None
     )
     payoff_profile: Optional[str] = Field(
         description="The payoff profile of the holding.",
-        alias="payoffProfile",
         default=None,
     )
     units: Optional[Union[float, str]] = Field(
         description="The units of the holding.", default=None
     )
     currency: Optional[str] = Field(
-        description="The currency of the holding.", alias="curCd", default=None
+        description="The currency of the holding.", default=None
     )
     asset_category: Optional[str] = Field(
-        description="The asset category of the holding.", alias="assetCat", default=None
+        description="The asset category of the holding.", default=None
     )
     issuer_category: Optional[str] = Field(
         description="The issuer category of the holding.",
-        alias="issuerCat",
         default=None,
     )
     country: Optional[str] = Field(
-        description="The country of the holding.", alias="invCountry", default=None
+        description="The country of the holding.", default=None
     )
     is_restricted: Optional[str] = Field(
         description="Whether the holding is restricted.",
-        alias="isRestrictedSec",
         default=None,
     )
     fair_value_level: Optional[int] = Field(
         description="The fair value level of the holding.",
-        alias="fairValLevel",
         default=None,
     )
     is_cash_collateral: Optional[str] = Field(
         description="Whether the holding is cash collateral.",
-        alias="isCashCollateral",
         default=None,
     )
     is_non_cash_collateral: Optional[str] = Field(
         description="Whether the holding is non-cash collateral.",
-        alias="isNonCashCollateral",
         default=None,
     )
     is_loan_by_fund: Optional[str] = Field(
         description="Whether the holding is loan by fund.",
-        alias="isLoanByFund",
         default=None,
     )
     loan_value: Optional[float] = Field(
         description="The loan value of the holding.",
-        alias="loanVal",
         default=None,
     )
     issuer_conditional: Optional[str] = Field(
