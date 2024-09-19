@@ -19,6 +19,7 @@ def extract_docids_from_year_disclosures(res: io.BytesIO | None) -> List[dict]:
     :param res: an XML Stream
     :return:  a List of dictionaries containing doc_id, membername, state and date of transaction
     """
+    # pylint: disable=no-member
     if not res:
         return []
     xml_data = res
