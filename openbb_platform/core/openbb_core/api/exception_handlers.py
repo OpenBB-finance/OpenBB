@@ -1,6 +1,7 @@
 """Exception handlers module."""
 
 import logging
+from collections.abc import Iterable
 from typing import Any
 
 from fastapi import Request
@@ -31,16 +32,23 @@ class ExceptionHandlers:
     @staticmethod
     async def exception(_: Request, error: Exception) -> JSONResponse:
         """Exception handler for Base Exception."""
-        # Required parameters are missing and is not handled by ValidationError.
         errors = error.errors(include_url=False) if hasattr(error, "errors") else error
         if errors:
-            for err in errors:
-                if err.get("type") == "missing":
-                    return await ExceptionHandlers._handle(
-                        exception=error,
-                        status_code=422,
-                        detail={**err},
-                    )
+            if isinstance(errors, ValueError):
+                return await ExceptionHandlers._handle(
+                    exception=errors,
+                    status_code=422,
+                    detail=errors.args,
+                )
+            # Required parameters are missing and is not handled by ValidationError.
+            if isinstance(errors, Iterable):
+                for err in errors:
+                    if err.get("type") == "missing":
+                        return await ExceptionHandlers._handle(
+                            exception=error,
+                            status_code=422,
+                            detail={**err},
+                        )
         return await ExceptionHandlers._handle(
             exception=error,
             status_code=500,
@@ -61,7 +69,13 @@ class ExceptionHandlers:
             loc in query_params for err in errors for loc in err.get("loc", ())
         )
         if "QueryParams" in error.title and all_in_query:
-            detail = [{**err, "loc": ("query",) + err.get("loc", ())} for err in errors]
+            detail = [
+                {
+                    **{k: v for k, v in err.items() if k != "ctx"},
+                    "loc": ("query",) + err.get("loc", ()),
+                }
+                for err in errors
+            ]
             return await ExceptionHandlers._handle(
                 exception=error,
                 status_code=422,

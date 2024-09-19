@@ -47,6 +47,10 @@ class FMPEquityProfileData(EquityInfoData):
         "employees": "fullTimeEmployees",
         "long_description": "description",
         "first_stock_price_date": "ipoDate",
+        "market_cap": "mktCap",
+        "last_price": "price",
+        "volume_avg": "volAvg",
+        "annualized_dividend_amount": "lastDiv",
     }
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
@@ -61,12 +65,10 @@ class FMPEquityProfileData(EquityInfoData):
     market_cap: Optional[ForceInt] = Field(
         default=None,
         description="Market capitalization of the company.",
-        alias="mktCap",
     )
     last_price: Optional[float] = Field(
         default=None,
         description="The last traded price.",
-        alias="price",
     )
     year_high: Optional[float] = Field(
         default=None, description="The one-year high of the price."
@@ -77,12 +79,10 @@ class FMPEquityProfileData(EquityInfoData):
     volume_avg: Optional[ForceInt] = Field(
         default=None,
         description="Average daily trading volume.",
-        alias="volAvg",
     )
     annualized_dividend_amount: Optional[float] = Field(
         default=None,
         description="The annualized dividend payment based on the most recent regular dividend payment.",
-        alias="lastDiv",
     )
     beta: Optional[float] = Field(
         default=None, description="Beta of the stock relative to the market."
