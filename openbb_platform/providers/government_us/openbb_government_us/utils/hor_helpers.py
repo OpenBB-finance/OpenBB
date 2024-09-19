@@ -37,7 +37,9 @@ def extract_docids_from_year_disclosures(res: io.BytesIO | None) -> List[dict]:
             else:
                 membername = "N/A"
             state = member.find("StateDst").text if member.find("StateDst") else "N/A"
-            filing_date = member.find("FilingDate").text if member.find("FilingDate") else "N/A"
+            filing_date = (
+                member.find("FilingDate").text if member.find("FilingDate") else "N/A"
+            )
             doc_dictionary.append(
                 dict(
                     doc_id=doc_id,

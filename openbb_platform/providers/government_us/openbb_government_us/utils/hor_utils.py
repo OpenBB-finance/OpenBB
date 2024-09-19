@@ -1,6 +1,7 @@
 import re
 from PyPDF2 import PdfReader
 from typing import Any
+
 """
 Utility  methods to extract data from pdf rows
 """
