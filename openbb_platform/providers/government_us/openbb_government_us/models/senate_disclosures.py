@@ -14,7 +14,7 @@ class USSenateDisclosuresQueryParams(QueryParams):
     """US Senate Disclosures."""
 
     num_reports: Optional[int] = Field(
-                description = "Number of disclosures to fetch.", default = 30
+        description="Number of disclosures to fetch.", default=30
     )
 
 
@@ -78,7 +78,7 @@ class USSenateDisclosuresFetcher(
     @staticmethod
     def transform_data(
         query: USSenateDisclosuresQueryParams,
-        data :List[Dict],
+        data: List[Dict],
         **kwargs: Any,
     ) -> List[USSenateDisclosuresData]:
         """Transform the data."""

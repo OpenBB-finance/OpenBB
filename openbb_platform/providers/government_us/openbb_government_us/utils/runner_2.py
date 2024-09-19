@@ -1,4 +1,3 @@
-
 from openbb_government_us.models.senate_disclosures import (
     USSenateDisclosuresFetcher,
     USSenateDisclosuresQueryParams,

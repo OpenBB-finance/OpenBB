@@ -31,8 +31,8 @@ def extract_from_disclosure(pdf_reader):
             if seen:
                 if row:
                     if (
-                            row.find("\x00") < 0
-                    ): # row with this character are 'intermediate' row
+                        row.find("\x00") < 0
+                    ):  # row with this character are 'intermediate' row
                         transaction_holder.append(row)
                     else:
                         seen = False
@@ -50,7 +50,7 @@ def extract_data(first_row):
 
     if ticker_idx_st < 0:
         ticker = "N/A"
-        company_name = first_row[0: first_row.find("[")]
+        company_name = first_row[0 : first_row.find("[")]
     else:
         ticker_idx_end = first_row.index(")")
         ticker = first_row[ticker_idx_st + 1 : ticker_idx_end]
@@ -62,7 +62,7 @@ def extract_data(first_row):
     else:
         action_idx = first_row.index("[") + 4
         purchase_idx = first_row.index("$")
-        action = first_row[action_idx:action_idx+2]
+        action = first_row[action_idx : action_idx + 2]
         purchase_price = first_row[purchase_idx:]
 
     pattern = r"\d{2}/\d{2}/\d{4}"

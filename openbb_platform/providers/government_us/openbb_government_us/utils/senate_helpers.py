@@ -14,6 +14,7 @@ from openbb_government_us.utils.senate_constants import (
     BATCH_SIZE,
 )
 
+
 async def _csrf(client: aiohttp.ClientSession) -> str:
     """Set the session ID and return the CSRF token for this session."""
     async with client.get(LANDING_PAGE_URL) as landing_page_response:
@@ -190,4 +191,3 @@ async def get_transactions(num_reports: int):
 def senate_runner(num_reports: int = 10):
     with asyncio.Runner() as runner:
         print(runner.run(get_transactions(num_reports=num_reports)))
-

@@ -38,7 +38,7 @@ def extract_docids_from_year_disclosures(res: io.BytesIO) -> List[dict]:
                     doc_id=doc_id,
                     member=membername,
                     state=state,
-                    filing_date=filing_date
+                    filing_date=filing_date,
                 )
             )
         else:
@@ -99,7 +99,8 @@ def extract_from_pdf(content):
 
 
 async def aread_pdf_from_url(
-        client : aiohttp.ClientSession, year:int, discl_dict:dict) -> pd.DataFrame:
+    client: aiohttp.ClientSession, year: int, discl_dict: dict
+) -> pd.DataFrame:
     """
         Extract transactions from a pdf file
     :param client:  asyncio client
@@ -133,7 +134,7 @@ async def aread_pdf_from_url(
 
 
 async def fetch_all_transactions(
-        session: aiohttp.ClientSession, year: int, reports: List[dict]
+    session: aiohttp.ClientSession, year: int, reports: List[dict]
 ) -> pd.DataFrame:
     """
 
@@ -166,7 +167,3 @@ async def get_transactions(year: int) -> pd.DataFrame:
 def hor_runner(year:int) -> pd.DataFrame:
     with asyncio.Runner() as runner:
         print(runner.run(get_transactions(year)))
-
-
-
-
