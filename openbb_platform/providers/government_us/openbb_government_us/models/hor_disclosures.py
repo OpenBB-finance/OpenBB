@@ -15,10 +15,12 @@ class USHoRDisclosuresQueryParams(QueryParams):
 
     year: int = Field(description="Year of disclosures.")
 
+
 class USHoRDisclosuresData(Data):
     """US Senate Disclosures Data."""
 
     __alias_dict__ = {"tx_date": "transaction_date", "tx_amount": "transaction_amount"}
+
 
 class USHoRDisclosuresFetcher(
     Fetcher[
@@ -74,7 +76,7 @@ class USHoRDisclosuresFetcher(
     @staticmethod
     def transform_data(
         query: USHoRDisclosuresQueryParams,
-        data:List[Dict],
+        data: List[Dict],
         **kwargs: Any,
     ) -> List[USHoRDisclosuresData]:
         """Transform the data."""

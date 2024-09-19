@@ -11,7 +11,7 @@ from openbb_government_us.utils.senate_constants import (
     ROOT,
     REPORT_COL_NAMES,
     PDF_PREFIX,
-    BATCH_SIZE
+    BATCH_SIZE,
 )
 
 async def _csrf(client: aiohttp.ClientSession) -> str:

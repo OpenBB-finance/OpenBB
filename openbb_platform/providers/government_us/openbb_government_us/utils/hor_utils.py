@@ -1,4 +1,5 @@
 import re
+
 """
 Utility  methods to extract data from pdf rows
 """
@@ -7,7 +8,7 @@ Utility  methods to extract data from pdf rows
 def extract_from_disclosure(pdf_reader):
     holder = {}
     # page 0 has all information about the HOR Member
-    start_token = "SP" # START token
+    start_token = "SP"  # START token
     # then we have two blanks
     # then we have ticker [ST] Transaction Transaction Date Amount #
 
@@ -24,7 +25,7 @@ def extract_from_disclosure(pdf_reader):
         # need to read line by line, considering only rows that start with 'SP'
 
         for row in rows:
-            row = row.encode('utf-8').decode('utf-8')
+            row = row.encode("utf-8").decode("utf-8")
             if row.startswith(start_token):
                 seen = not seen
             if seen:
@@ -40,6 +41,7 @@ def extract_from_disclosure(pdf_reader):
         holder[page_num] = rowHolder
     return {"info": filer_info, "transactions": holder}
 
+
 def extract_data(first_row):
     # Here we try to extract item from each row
     # regex did not work well, as some time there were '\x0' characters
@@ -48,13 +50,13 @@ def extract_data(first_row):
 
     if ticker_idx_st < 0:
         ticker = "N/A"
-        company_name = first_row[0:first_row.find("[")]
+        company_name = first_row[0: first_row.find("[")]
     else:
         ticker_idx_end = first_row.index(")")
-        ticker = first_row[ticker_idx_st+1:ticker_idx_end]
+        ticker = first_row[ticker_idx_st + 1 : ticker_idx_end]
         company_name = first_row[0:ticker_idx_st]
 
-    if first_row.find('[') < 0:
+    if first_row.find("[") < 0:
         action = "N/A"
         purchase_price = "N/A"
     else:
@@ -62,7 +64,6 @@ def extract_data(first_row):
         purchase_idx = first_row.index("$")
         action = first_row[action_idx:action_idx+2]
         purchase_price = first_row[purchase_idx:]
-
 
     pattern = r"\d{2}/\d{2}/\d{4}"
     matches = re.findall(pattern, first_row)
@@ -83,7 +84,7 @@ def extract_data(first_row):
         action=action,
         purchase_price=purchase_price,
         transaction_date=date1,
-        report_date=date2
+        report_date=date2,
     )
     return data
 

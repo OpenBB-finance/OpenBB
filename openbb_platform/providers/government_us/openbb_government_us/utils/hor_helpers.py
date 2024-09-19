@@ -13,7 +13,7 @@ BASE_URL = "https://disclosures-clerk.house.gov/public_disc/financial-pdfs"
 FINANCIAL_DOC_URL = "https://disclosures-clerk.house.gov/public_disc/ptr-pdfs"
 
 
-def extract_docids_from_year_disclosures(res : io.BytesIO) -> List[dict]:
+def extract_docids_from_year_disclosures(res: io.BytesIO) -> List[dict]:
     """
     Extract disclosures information from an XML file
     :param res: an XML Stream
@@ -57,6 +57,7 @@ def get_all_docids(content):
 
     return extract_docids_from_year_disclosures(xml_stream)
 
+
 async def aextract_xml_from_zip_url(
     client: aiohttp.ClientSession, url: str, output_file: str
 ) -> List[dict]:
@@ -70,9 +71,11 @@ async def aextract_xml_from_zip_url(
          - member name
          - state
          - filing date
+         :param client:
     """
     headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Windows; Windows x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36"}
+        "User-Agent": "Mozilla/5.0 (X11; Windows; Windows x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36"
+    }
 
     try:
         async with client.get(url, headers=headers) as response:
@@ -88,22 +91,22 @@ async def aextract_xml_from_zip_url(
     except Exception as e:
         raise Exception(f"Unable to get data from {url}:\n{str(e)}")
 
+
 def extract_from_pdf(content):
     on_fly_mem_obj = io.BytesIO(content)
     pdf_reader = PdfReader(on_fly_mem_obj)
     return extract_from_disclosure(pdf_reader)
 
+
 async def aread_pdf_from_url(
-        client : aiohttp.ClientSession,
-        year:int,
-        discl_dict:dict) -> pd.DataFrame: # need asyncio client here
-    '''
+        client : aiohttp.ClientSession, year:int, discl_dict:dict) -> pd.DataFrame:
+    """
         Extract transactions from a pdf file
     :param client:  asyncio client
     :param year:  year of disclosures
     :param discl_dict: dictionary containing docid, member info, state etc
     :return:  a DataFrame of disclosures
-    '''
+    """
     disclosure_url = f"{FINANCIAL_DOC_URL}/{year}/{discl_dict['doc_id']}.pdf"
     headers = {
         "User-Agent": "Mozilla/5.0 (X11; Windows; Windows x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36"
@@ -123,10 +126,10 @@ async def aread_pdf_from_url(
         data = extract_from_pdf(content)
         dfdata = extract_transactions(data["transactions"], discl_dict)
         if dfdata:
-            return pd.DataFrame(data=dfdata )
+            return pd.DataFrame(data=dfdata)
         return pd.DataFrame()
-    except Exception as  e:
-        raise Exception(f"Unmable to fetch data from {disclosure_url}:\n{str(e)}")
+    except Exception as e:
+        raise Exception(f"Unable to fetch data from {disclosure_url}:\n{str(e)}")
 
 
 async def fetch_all_transactions(
@@ -144,7 +147,8 @@ async def fetch_all_transactions(
     all_transactions_df = pd.concat(all_transactions, ignore_index=True)
     return all_transactions_df
 
-async def get_transactions(year : int) -> pd.DataFrame:
+
+async def get_transactions(year: int) -> pd.DataFrame:
     """
     Retrieve all HOR disclosures
     :param year: year of disclosures
@@ -155,8 +159,9 @@ async def get_transactions(year : int) -> pd.DataFrame:
     output_file = f"{year}.xml"
     session = aiohttp.ClientSession()
     reports = await aextract_xml_from_zip_url(session, url, output_file)
-    all_transactions_df =  await fetch_all_transactions(session, year, reports)
+    all_transactions_df = await fetch_all_transactions(session, year, reports)
     return all_transactions_df.to_dict("records")
+
 
 def hor_runner(year:int) -> pd.DataFrame:
     with asyncio.Runner() as runner:

@@ -8,17 +8,21 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 import asyncio
 from warnings import warn
+
+
 class USSenateDisclosuresQueryParams(QueryParams):
     """US Senate Disclosures."""
 
-    num_reports: Optional[int] = (Field
-                                  (description="Number of disclosures to fetch.", default=30)
-                                  )
+    num_reports: Optional[int] = Field(
+                description = "Number of disclosures to fetch.", default = 30
+    )
+
 
 class USSenateDisclosuresData(Data):
     """US Senate Disclosures Data."""
 
     __alias_dict__ = {"tx_date": "transaction_date", "tx_amount": "transaction_amount"}
+
 
 class USSenateDisclosuresFetcher(
     Fetcher[

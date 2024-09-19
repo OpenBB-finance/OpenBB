@@ -1,7 +1,7 @@
 
 from openbb_government_us.models.senate_disclosures import (
     USSenateDisclosuresFetcher,
-    USSenateDisclosuresQueryParams
+    USSenateDisclosuresQueryParams,
 )
 import asyncio
 
@@ -17,4 +17,4 @@ async def fetch_data():
 def run_fetcher():
     with asyncio.Runner() as runner:
         data = runner.run(fetch_data())
-        print(f'senate data is:{data}')
+        print(f"senate data is:{data}")
