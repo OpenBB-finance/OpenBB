@@ -21,7 +21,7 @@ def vcr_config():
 
 @pytest.mark.asyncio
 @pytest.mark.record_http
-async def test_get_transactions(mocker):
+async def test_get_transactions(monkeypatch):
     """Test GovernmentUSTreasuryAuctionsFetcher."""
     def patched_docids(content):
         return [dict(doc_id = '20024277',
@@ -42,9 +42,9 @@ async def test_get_transactions(mocker):
                                   'state': 'GA12',
                                   'filing_date': '5/13/2024'}])
 
+    monkeypatch.setattr(hor_helpers, "get_all_docids", patched_docids)
+    monkeypatch.setattr(hor_helpers, "aread_pdf_from_url", patched_transactions)
 
-    mocker.patch('openbb_government_us.utils.hor_helpers.get_all_docids', patched_docids)
-    mocker.patch('openbb_government_us.utils.hor_helpers.aread_pdf_from_url', patched_transactions)
     result = await hor_helpers.get_transactions(2024)
     print(result)
     assert result is not  None
