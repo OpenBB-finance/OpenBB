@@ -1,5 +1,7 @@
 """Exception handlers module."""
 
+# pylint: disable=unused-argument
+
 import logging
 from collections.abc import Iterable
 from typing import Any
