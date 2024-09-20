@@ -696,3 +696,19 @@ async def primary_dealer_fails(
     re-hypothecation together with the inability or unwillingness to borrow or buy the needed securities."
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="PortVolume",
+    examples=[
+        APIEx(parameters={"provider": "econdb"}),
+    ],
+)
+async def port_volume(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get average dwelling times and TEU volumes from the top ports."""
+    return await OBBject.from_query(Query(**locals()))
