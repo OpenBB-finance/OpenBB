@@ -51,11 +51,15 @@ def test_handlers_added_correctly():
         MockFormatterWithExceptions,
     ):
         settings = Mock()
+        settings.verbosity = 20
         settings.handler_list = ["stdout", "stderr", "noop", "file", "posthog"]
-        _ = HandlersManager(settings=settings)
+        logger = logging.getLogger("test_handlers_added_correctly")
+        handlers_manager = HandlersManager(logger=logger, settings=settings)
+        handlers_manager.setup()
+        handlers = logger.handlers
 
-        handlers = logging.getLogger().handlers
-
+        assert not logger.propagate
+        assert logger.level == 20
         assert len(handlers) >= 5
 
         for handler in handlers:
@@ -88,16 +92,15 @@ def test_update_handlers():
         settings = Mock()
         settings.handler_list = ["file", "posthog"]
         settings.any_other_attr = "mock_settings"
-        handlers_manager = HandlersManager(settings=settings)
+        logger = logging.getLogger("test_update_handlers")
+        handlers_manager = HandlersManager(logger=logger, settings=settings)
 
         changed_settings = Mock()
         changed_settings.any_other_attr = "changed_settings"
 
         handlers_manager.update_handlers(settings=changed_settings)
 
-        handlers = logging.getLogger().handlers
-
-        for hdlr in handlers:
+        for hdlr in logger.handlers:
             if isinstance(hdlr, (MockPosthogHandler, MockPathTrackingFileHandler)):
                 assert hdlr.settings == changed_settings
                 assert hdlr.formatter.settings == changed_settings  # type: ignore[union-attr]
