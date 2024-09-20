@@ -146,6 +146,14 @@
         "website": "https://data.gov"
     },
     {
+        "packageName": "openbb-imf",
+        "optional": false,
+        "reprName": "International Monetary Fund (IMF) Public Data API",
+        "description": "This provider allows you to access International Monetary Fund data through the IMF Public Data API.",
+        "credentials": [],
+        "website": "https://datahelp.imf.org/knowledgebase/articles/667681-using-json-restful-web-service"
+    },
+    {
         "packageName": "openbb-intrinio",
         "optional": false,
         "reprName": "Intrinio",
