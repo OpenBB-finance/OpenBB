@@ -36,9 +36,7 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_calendar
 
-        return equity_calendar.ROUTER_equity_calendar(
-            command_runner=self._command_runner
-        )
+        return equity_calendar.ROUTER_equity_calendar(command_runner=self._command_runner)
 
     @property
     def compare(self):
@@ -52,52 +50,30 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_discovery
 
-        return equity_discovery.ROUTER_equity_discovery(
-            command_runner=self._command_runner
-        )
+        return equity_discovery.ROUTER_equity_discovery(command_runner=self._command_runner)
 
     @property
     def estimates(self):
         # pylint: disable=import-outside-toplevel
         from . import equity_estimates
 
-        return equity_estimates.ROUTER_equity_estimates(
-            command_runner=self._command_runner
-        )
+        return equity_estimates.ROUTER_equity_estimates(command_runner=self._command_runner)
 
     @property
     def fundamental(self):
         # pylint: disable=import-outside-toplevel
         from . import equity_fundamental
 
-        return equity_fundamental.ROUTER_equity_fundamental(
-            command_runner=self._command_runner
-        )
+        return equity_fundamental.ROUTER_equity_fundamental(command_runner=self._command_runner)
 
     @exception_handler
     @validate
     def historical_market_cap(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
-            ),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
-            ),
-        ] = None,
+        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the historical market cap of a ticker symbol.
@@ -130,11 +106,11 @@ class ROUTER_equity(Container):
         HistoricalMarketCap
         -------------------
         date : date
-            The date of the data.
+            The date of the data. 
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         market_cap : Union[int, float]
-            Market capitalization of the security.
+            Market capitalization of the security. 
 
         Examples
         --------
@@ -158,9 +134,7 @@ class ROUTER_equity(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={
-                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
-                },
+                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}},
             )
         )
 
@@ -168,12 +142,7 @@ class ROUTER_equity(Container):
     @validate
     def market_snapshots(
         self,
-        provider: Annotated[
-            Optional[Literal["fmp", "intrinio", "polygon"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["fmp", "intrinio", "polygon"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.")] = None,
         **kwargs
     ) -> OBBject:
         """Get an updated equity market snapshot. This includes price data for thousands of stocks.
@@ -204,23 +173,23 @@ class ROUTER_equity(Container):
         MarketSnapshots
         ---------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         open : Optional[float]
-            The open price.
+            The open price. 
         high : Optional[float]
-            The high price.
+            The high price. 
         low : Optional[float]
-            The low price.
+            The low price. 
         close : Optional[float]
-            The close price.
+            The close price. 
         volume : Optional[int]
-            The trading volume.
+            The trading volume. 
         prev_close : Optional[float]
-            The previous close price.
+            The previous close price. 
         change : Optional[float]
-            The change in price from the previous close.
+            The change in price from the previous close. 
         change_percent : Optional[float]
-            The change in price from the previous close, as a normalized percent.
+            The change in price from the previous close, as a normalized percent. 
         last_price : Optional[float]
             The last price of the stock. (provider: fmp);
             The last trade price. (provider: intrinio)
@@ -316,7 +285,8 @@ class ROUTER_equity(Container):
                         ("fmp", "intrinio", "polygon"),
                     )
                 },
-                standard_params={},
+                standard_params={
+                },
                 extra_params=kwargs,
             )
         )
@@ -326,9 +296,7 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_ownership
 
-        return equity_ownership.ROUTER_equity_ownership(
-            command_runner=self._command_runner
-        )
+        return equity_ownership.ROUTER_equity_ownership(command_runner=self._command_runner)
 
     @property
     def price(self):
@@ -341,18 +309,8 @@ class ROUTER_equity(Container):
     @validate
     def profile(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
-            ),
-        ],
-        provider: Annotated[
-            Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance."
-            ),
-        ] = None,
+        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.")],
+        provider: Annotated[Optional[Literal["fmp", "intrinio", "yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.")] = None,
         **kwargs
     ) -> OBBject:
         """Get general information about a company. This includes company name, industry, sector and price data.
@@ -381,81 +339,81 @@ class ROUTER_equity(Container):
         EquityInfo
         ----------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Common name of the company.
+            Common name of the company. 
         cik : Optional[str]
-            Central Index Key (CIK) for the requested entity.
+            Central Index Key (CIK) for the requested entity. 
         cusip : Optional[str]
-            CUSIP identifier for the company.
+            CUSIP identifier for the company. 
         isin : Optional[str]
-            International Securities Identification Number.
+            International Securities Identification Number. 
         lei : Optional[str]
-            Legal Entity Identifier assigned to the company.
+            Legal Entity Identifier assigned to the company. 
         legal_name : Optional[str]
-            Official legal name of the company.
+            Official legal name of the company. 
         stock_exchange : Optional[str]
-            Stock exchange where the company is traded.
+            Stock exchange where the company is traded. 
         sic : Optional[int]
-            Standard Industrial Classification code for the company.
+            Standard Industrial Classification code for the company. 
         short_description : Optional[str]
-            Short description of the company.
+            Short description of the company. 
         long_description : Optional[str]
-            Long description of the company.
+            Long description of the company. 
         ceo : Optional[str]
-            Chief Executive Officer of the company.
+            Chief Executive Officer of the company. 
         company_url : Optional[str]
-            URL of the company's website.
+            URL of the company's website. 
         business_address : Optional[str]
-            Address of the company's headquarters.
+            Address of the company's headquarters. 
         mailing_address : Optional[str]
-            Mailing address of the company.
+            Mailing address of the company. 
         business_phone_no : Optional[str]
-            Phone number of the company's headquarters.
+            Phone number of the company's headquarters. 
         hq_address1 : Optional[str]
-            Address of the company's headquarters.
+            Address of the company's headquarters. 
         hq_address2 : Optional[str]
-            Address of the company's headquarters.
+            Address of the company's headquarters. 
         hq_address_city : Optional[str]
-            City of the company's headquarters.
+            City of the company's headquarters. 
         hq_address_postal_code : Optional[str]
-            Zip code of the company's headquarters.
+            Zip code of the company's headquarters. 
         hq_state : Optional[str]
-            State of the company's headquarters.
+            State of the company's headquarters. 
         hq_country : Optional[str]
-            Country of the company's headquarters.
+            Country of the company's headquarters. 
         inc_state : Optional[str]
-            State in which the company is incorporated.
+            State in which the company is incorporated. 
         inc_country : Optional[str]
-            Country in which the company is incorporated.
+            Country in which the company is incorporated. 
         employees : Optional[int]
-            Number of employees working for the company.
+            Number of employees working for the company. 
         entity_legal_form : Optional[str]
-            Legal form of the company.
+            Legal form of the company. 
         entity_status : Optional[str]
-            Status of the company.
+            Status of the company. 
         latest_filing_date : Optional[date]
-            Date of the company's latest filing.
+            Date of the company's latest filing. 
         irs_number : Optional[str]
-            IRS number assigned to the company.
+            IRS number assigned to the company. 
         sector : Optional[str]
-            Sector in which the company operates.
+            Sector in which the company operates. 
         industry_category : Optional[str]
-            Category of industry in which the company operates.
+            Category of industry in which the company operates. 
         industry_group : Optional[str]
-            Group of industry in which the company operates.
+            Group of industry in which the company operates. 
         template : Optional[str]
-            Template used to standardize the company's financial statements.
+            Template used to standardize the company's financial statements. 
         standardized_active : Optional[bool]
-            Whether the company is active or not.
+            Whether the company is active or not. 
         first_fundamental_date : Optional[date]
-            Date of the company's first fundamental.
+            Date of the company's first fundamental. 
         last_fundamental_date : Optional[date]
-            Date of the company's last fundamental.
+            Date of the company's last fundamental. 
         first_stock_price_date : Optional[date]
-            Date of the company's first stock price.
+            Date of the company's first stock price. 
         last_stock_price_date : Optional[date]
-            Date of the company's last stock price.
+            Date of the company's last stock price. 
         is_etf : Optional[bool]
             If the symbol is an ETF. (provider: fmp)
         is_actively_trading : Optional[bool]
@@ -522,13 +480,7 @@ class ROUTER_equity(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={
-                    "symbol": {
-                        "fmp": {"multiple_items_allowed": True, "choices": None},
-                        "intrinio": {"multiple_items_allowed": True, "choices": None},
-                        "yfinance": {"multiple_items_allowed": True, "choices": None},
-                    }
-                },
+                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}, "intrinio": {"multiple_items_allowed": True, "choices": None}, "yfinance": {"multiple_items_allowed": True, "choices": None}}},
             )
         )
 
@@ -536,18 +488,13 @@ class ROUTER_equity(Container):
     @validate
     def screener(
         self,
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
         **kwargs
     ) -> OBBject:
         """Screen for companies meeting various criteria.
 
         These criteria include market cap, price, beta, volume, and dividend yield.
-
+        
 
         Parameters
         ----------
@@ -605,9 +552,9 @@ class ROUTER_equity(Container):
         EquityScreener
         --------------
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the company.
+            Name of the company. 
         market_cap : Optional[int]
             The market cap of ticker. (provider: fmp)
         sector : Optional[str]
@@ -649,7 +596,8 @@ class ROUTER_equity(Container):
                         ("fmp",),
                     )
                 },
-                standard_params={},
+                standard_params={
+                },
                 extra_params=kwargs,
             )
         )
@@ -659,15 +607,8 @@ class ROUTER_equity(Container):
     def search(
         self,
         query: Annotated[str, OpenBBField(description="Search query.")] = "",
-        is_symbol: Annotated[
-            bool, OpenBBField(description="Whether to search by ticker symbol.")
-        ] = False,
-        provider: Annotated[
-            Optional[Literal["intrinio", "sec"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, sec."
-            ),
-        ] = None,
+        is_symbol: Annotated[bool, OpenBBField(description="Whether to search by ticker symbol.")] = False,
+        provider: Annotated[Optional[Literal["intrinio", "sec"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, sec.")] = None,
         **kwargs
     ) -> OBBject:
         """Search for stock symbol, CIK, LEI, or company name.
@@ -706,9 +647,9 @@ class ROUTER_equity(Container):
         EquitySearch
         ------------
         symbol : Optional[str]
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         name : Optional[str]
-            Name of the company.
+            Name of the company. 
         cik : Optional[str]
             ;
             Central Index Key (provider: sec)

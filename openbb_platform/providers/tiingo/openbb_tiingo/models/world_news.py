@@ -40,15 +40,17 @@ class TiingoWorldNewsData(WorldNewsData):
     __alias_dict__ = {
         "date": "publishedDate",
         "text": "description",
+        "symbols": "tickers",
+        "article_id": "id",
+        "site": "source",
     }
 
     symbols: Optional[str] = Field(
         default=None,
         description="Ticker tagged in the fetched news.",
-        alias="tickers",
     )
-    article_id: int = Field(description="Unique ID of the news article.", alias="id")
-    site: str = Field(description="News source.", alias="source")
+    article_id: int = Field(description="Unique ID of the news article.")
+    site: str = Field(description="News source.")
     tags: Optional[str] = Field(
         default=None,
         description="Tags associated with the news article.",

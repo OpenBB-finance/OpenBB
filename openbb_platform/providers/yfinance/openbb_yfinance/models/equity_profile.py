@@ -38,16 +38,20 @@ class YFinanceEquityProfileData(EquityInfoData):
         "long_description": "longBusinessSummary",
         "employees": "fullTimeEmployees",
         "market_cap": "marketCap",
-        "dividend_yield": "dividendYield",
+        "shares_outstanding": "sharesOutstanding",
+        "shares_float": "floatShares",
+        "shares_implied_outstanding": "impliedSharesOutstanding",
+        "shares_short": "sharesShort",
+        "dividend_yield": "yield",
     }
 
     exchange_timezone: Optional[str] = Field(
         description="The timezone of the exchange.",
         default=None,
-        alias="timeZoneFullName",
     )
     issue_type: Optional[str] = Field(
-        description="The issuance type of the asset.", default=None, alias="issueType"
+        description="The issuance type of the asset.",
+        default=None,
     )
     currency: Optional[str] = Field(
         description="The currency in which the asset is traded.", default=None
@@ -59,12 +63,10 @@ class YFinanceEquityProfileData(EquityInfoData):
     shares_outstanding: Optional[int] = Field(
         description="The number of listed shares outstanding.",
         default=None,
-        alias="sharesOutstanding",
     )
     shares_float: Optional[int] = Field(
         description="The number of shares in the public float.",
         default=None,
-        alias="floatShares",
     )
     shares_implied_outstanding: Optional[int] = Field(
         description=(
@@ -72,18 +74,15 @@ class YFinanceEquityProfileData(EquityInfoData):
             "assuming the conversion of all convertible subsidiary equity into common."
         ),
         default=None,
-        alias="impliedSharesOutstanding",
     )
     shares_short: Optional[int] = Field(
         description="The reported number of shares short.",
         default=None,
-        alias="sharesShort",
     )
     dividend_yield: Optional[float] = Field(
         description="The dividend yield of the asset, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="yield",
     )
     beta: Optional[float] = Field(
         description="The beta of the asset relative to the broad market.",
@@ -165,7 +164,11 @@ class YFinanceEquityProfileFetcher(
             if ticker:
                 for field in fields:
                     if field in ticker:
-                        result[field] = ticker.get(field, None)
+                        result[
+                            field.replace("dividendYield", "dividend_yield").replace(
+                                "issueType", "issue_type"
+                            )
+                        ] = ticker.get(field, None)
                 if result:
                     results.append(result)
 
