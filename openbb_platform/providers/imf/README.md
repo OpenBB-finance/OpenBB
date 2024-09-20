@@ -20,6 +20,7 @@ No authorization is required to use, but IP addresses are bound by the limitatio
 
 - Databases:
   - International Reserves and Foreign Currency Liquidity
+  - Direction of Trade Statistics
 
 Coverage:
   - All IRFCL tables.
@@ -29,3 +30,4 @@ Coverage:
 
 - `obb.economy.available_indicators`
 - `obb.economy.indicators`
+- `obb.economy.direction_of_trade`
