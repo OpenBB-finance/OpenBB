@@ -7,6 +7,7 @@ from openbb_econdb.models.economic_indicators import EconDbEconomicIndicatorsFet
 from openbb_econdb.models.export_destinations import EconDbExportDestinationsFetcher
 from openbb_econdb.models.gdp_nominal import EconDbGdpNominalFetcher
 from openbb_econdb.models.gdp_real import EconDbGdpRealFetcher
+from openbb_econdb.models.port_volume import EconDbPortVolumeFetcher
 from openbb_econdb.models.yield_curve import EconDbYieldCurveFetcher
 
 econdb_provider = Provider(
@@ -28,6 +29,7 @@ aggregate statistics.""",
         "ExportDestinations": EconDbExportDestinationsFetcher,
         "GdpNominal": EconDbGdpNominalFetcher,
         "GdpReal": EconDbGdpRealFetcher,
+        "PortVolume": EconDbPortVolumeFetcher,
         "YieldCurve": EconDbYieldCurveFetcher,
     },
     repr_name="EconDB",

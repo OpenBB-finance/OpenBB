@@ -115,15 +115,14 @@ class ImfEconomicIndicatorsFetcher(
         if countries:
             params["country"] = validate_countries(countries)
 
-        if symbols:
-            if symbols in IRFCL_PRESET:
-                params["symbol"] = IRFCL_PRESET[symbols]
-                if symbols in IRFCL_TABLES and countries and countries.split(",") > 1:
-                    raise OpenBBError(
-                        f"Symbol '{symbols}' is a table and can only be used with one country."
-                    )
-            else:
-                params["symbol"] = symbols
+        if symbols and symbols in IRFCL_PRESET:
+            params["symbol"] = IRFCL_PRESET[symbols]
+            if symbols in IRFCL_TABLES and countries and countries.split(",") > 1:
+                raise OpenBBError(
+                    f"Symbol '{symbols}' is a table and can only be used with one country."
+                )
+        elif symbols:
+            params["symbol"] = symbols
 
         if not params.get("start_date") and (not countries or countries == "all"):
             params["start_date"] = now.replace(

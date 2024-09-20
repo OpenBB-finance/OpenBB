@@ -1132,3 +1132,26 @@ def test_economy_primary_dealer_fails(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "start_date": None,
+                "end_date": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_port_volume(params, obb):
+    """Test the economy port volume endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.port_volume(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
