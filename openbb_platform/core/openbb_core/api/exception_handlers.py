@@ -23,8 +23,6 @@ class ExceptionHandlers:
         if Env().DEBUG_MODE:
             raise exception
         logger.error(exception)
-        if status_code == 204:
-            return JSONResponse(status_code=status_code)
         return JSONResponse(
             status_code=status_code,
             content={
@@ -35,10 +33,6 @@ class ExceptionHandlers:
     @staticmethod
     async def exception(_: Request, error: Exception) -> JSONResponse:
         """Exception handler for Base Exception."""
-        # print(error.__class__.__name__)
-        # if error.__class__.__name__ == "EmptyDataError":
-        #    return await ExceptionHandlers.empty_data(_, error)
-
         errors = error.errors(include_url=False) if hasattr(error, "errors") else error
         if errors:
             if isinstance(errors, ValueError):
