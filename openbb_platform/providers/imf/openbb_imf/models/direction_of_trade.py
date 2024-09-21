@@ -194,7 +194,7 @@ class ImfDirectionOfTradeFetcher(
                 for k, v in s.items()
                 if k != "Obs"
             }
-            _symbol = meta.get("indicator")
+            _symbol = meta.get("indicator", "")
             _title = None
 
             _data = s.pop("Obs", [])
