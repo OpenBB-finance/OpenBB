@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -60,12 +60,12 @@ class ImfDirectionOfTradeFetcher(
     @staticmethod
     def transform_query(params: dict[str, Any]) -> ImfDirectionOfTradeQueryParams:
         """Transform query parameters."""
-        countries = params.get("country").split(",") if params.get("country") else "all"
+        countries = params.get("country", "")
+        countries = countries.split(",") if countries else "all"
         if countries != "all":
             countries = validate_countries(countries)
-        counterparts = (
-            params.get("counterpart").split(",") if params.get("counterpart") else "all"
-        )
+        counterparts = params.get("counterpart", "")
+        counterparts = counterparts.split(",") if params.get("counterpart") else "all"
         if counterparts != "all":
             counterparts = validate_countries(counterparts)
         now = datetime.now().date()
@@ -116,14 +116,12 @@ class ImfDirectionOfTradeFetcher(
         if start_date:
             start_date = to_datetime(start_date)
             if frequency == "Q":
-                # offset = offsets.QuarterBegin(startingMonth=1)
-                # start_date = start_date + offset
                 start_date = offsets.QuarterBegin(startingMonth=1).rollback(start_date)
             elif frequency == "A":
                 start_date = offsets.YearBegin().rollback(start_date)
             else:
                 start_date = offsets.MonthBegin().rollback(start_date)
-            start_date = start_date.strftime("%Y-%m-%d")
+            start_date = start_date.strftime("%Y-%m-%d")  # type: ignore
 
         if end_date:
             end_date = to_datetime(end_date)
@@ -133,9 +131,9 @@ class ImfDirectionOfTradeFetcher(
                 end_date = offsets.YearEnd().rollforward(end_date)
             else:
                 end_date = offsets.MonthEnd().rollforward(end_date)
-            end_date = end_date.strftime("%Y-%m-%d")
+            end_date = end_date.strftime("%Y-%m-%d")  # type: ignore
 
-        date_range = (
+        date_range = (  # type: ignore
             f"?startPeriod={start_date}&endPeriod={end_date}"
             if start_date and end_date
             else ""
@@ -206,9 +204,9 @@ class ImfDirectionOfTradeFetcher(
 
             for d in _data:
                 _date = d.pop("@TIME_PERIOD", None)
-                val = d.pop("@OBS_VALUE", None)
+                val: Union[float, None] = d.pop("@OBS_VALUE", None)
                 _ = d.pop("@OBS_STATUS", None)
-
+                val = float(val) if val else None
                 if not val:
                     continue
 
@@ -238,7 +236,7 @@ class ImfDirectionOfTradeFetcher(
                         ),
                         "title": dot_titles_map.get(_symbol),
                         "scale": meta.get("unit_mult"),
-                        "value": float(val) if val else None,
+                        "value": val,
                     }.items()
                     if v
                 }
