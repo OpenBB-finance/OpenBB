@@ -41,7 +41,9 @@ def extract_docids_from_year_disclosures(res: io.BytesIO) -> List[dict]:
                 else:
                     doc_id = "N/A"
                 if member.find("Last") is not None and member.find("First") is not None:
-                    membername = f"{member.find('Last').text} {member.find('First').text}"
+                    membername = (
+                        f"{member.find('Last').text} {member.find('First').text}"
+                    )
                 else:
                     membername = "N/A"
                 if member.find("StateDst") is not None:
