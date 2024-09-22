@@ -47,9 +47,7 @@ def extract_docids_from_year_disclosures(res: io.BytesIO) -> List[dict]:
                     else:
                         doc_id = "N/A"
                     if first_elem is not None and last_elem is not None:
-                        membername = (
-                            f"{last_elem.text} {first_elem.text}"
-                        )
+                        membername = f"{last_elem.text} {first_elem.text}"
                     else:
                         membername = "N/A"
                     if state_elem is not None:
