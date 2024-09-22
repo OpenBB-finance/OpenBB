@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-imf"
+version = "1.0.0b"
+description = "https://datahelp.imf.org/knowledgebase/articles/630877-api"
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_imf" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openbb-core = "^1.3.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+imf = "openbb_imf:imf_provider"
