@@ -34,7 +34,7 @@ def extract_docids_from_year_disclosures(res: io.BytesIO) -> List[dict]:
     for member in root.findall("Member"):
         if member is not None:
             if member.find("FilingType") is not None:
-                filing_type = member.find("FilingType").text
+                filing_type = member.find("FilingType").text if member.find("FilingType") is not None else "N/A"
             if filing_type is not None and filing_type == "P":
                 if member.find("DocID") is not None:
                     doc_id = member.find("DocID").text
