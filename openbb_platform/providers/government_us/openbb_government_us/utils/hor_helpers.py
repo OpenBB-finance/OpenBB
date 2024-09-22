@@ -66,7 +66,7 @@ def extract_docids_from_year_disclosures(res: io.BytesIO) -> List[dict]:
 
 def get_all_docids(content):
     zip_file = io.BytesIO(content)
-    xml_stream = None
+    xml_stream = ''
     with zipfile.ZipFile(zip_file, "r") as zip_ref:
         for member in zip_ref.infolist():
             # there are two files the zip, an xml and a txt
