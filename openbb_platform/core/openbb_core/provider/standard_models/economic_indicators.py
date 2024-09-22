@@ -16,10 +16,6 @@ from openbb_core.provider.utils.descriptions import (
 class EconomicIndicatorsQueryParams(QueryParams):
     """Economic Indicators Query."""
 
-    symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " The base symbol for the indicator (e.g. GDP, CPI, etc.).",
-    )
     country: Optional[str] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("country", "")

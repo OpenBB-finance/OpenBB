@@ -13,6 +13,7 @@ from openbb_core.provider.standard_models.economic_indicators import (
     EconomicIndicatorsData,
     EconomicIndicatorsQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
@@ -24,6 +25,12 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         "symbol": {"multiple_items_allowed": True},
         "country": {"multiple_items_allowed": True},
     }
+
+    symbol: str = Field(
+        description=QUERY_DESCRIPTIONS.get("symbol", "")
+        + " The base symbol for the indicator (e.g. GDP, CPI, etc.)."
+        + " Use `available_indicators()` to get a list of available symbols.",
+    )
 
     transform: Union[None, Literal["toya", "tpop", "tusd", "tpgp"]] = Field(
         default=None,

@@ -1,0 +1,2058 @@
+{
+    "RAF_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAF_USD",
+        "order": 1,
+        "level": 1,
+        "title": "Official Reserve Assets and Other Foreign Currency Assets, US Dollars"
+    },
+    "RAFA_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAF_USD",
+        "order": 2,
+        "level": 2,
+        "title": "Official Reserve Assets, US Dollars"
+    },
+    "RAFAFX_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFA_USD",
+        "order": 3,
+        "level": 3,
+        "title": "Official Reserve Assets, Foreign Currency Reserves (in Convertible Foreign Currencies), US Dollars"
+    },
+    "RAFAFXS_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAFX_USD",
+        "order": 4,
+        "level": 4,
+        "title": "Official Reserve Assets, Foreign Currency Reserves (in Convertible Foreign Currencies), Securities, US Dollars"
+    },
+    "RAFAFXSI_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAFXS_USD",
+        "order": 5,
+        "level": 5,
+        "title": "Official Reserve Assets, Securities, of Which: Issuer Headquartered in Reporting Country But Located Abroad, US Dollars"
+    },
+    "RAFAFXCD_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAFX_USD",
+        "order": 6,
+        "level": 4,
+        "title": "Official Reserve Assets, Foreign Currency Reserves (in Convertible Foreign Currencies), Total Currency and Deposits with:, US Dollars"
+    },
+    "RAFAFXCDN_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAFXCD_USD",
+        "order": 7,
+        "level": 5,
+        "title": "Official Reserve Assets, Foreign Currency Reserves (in Convertible Foreign Currencies), Total Currency and Deposits with:, Other National Central Banks, BIS and IMF, US Dollars"
+    },
+    "RAFAFXCDBI_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAFXCD_USD",
+        "order": 8,
+        "level": 5,
+        "title": "Official Reserve Assets, Foreign Currency Reserves (in Convertible Foreign Currencies), Total Currency and Deposits with:, Banks Headquartered in the Reporting Country, US Dollars"
+    },
+    "RAFAFXCDBIA_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAFXCDBI_USD",
+        "order": 9,
+        "level": 6,
+        "title": "Official Reserve Assets, Foreign Currency Reserves (in Convertible Foreign Currencies), Total Currency and Deposits with:, Banks Headquartered in the Reporting Country, of Which: Located Abroad, US Dollars"
+    },
+    "RAFAFXCDBO_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAFXCD_USD",
+        "order": 10,
+        "level": 5,
+        "title": "Official Reserve Assets, Foreign Currency Reserves (in Convertible Foreign Currencies), Total Currency and Deposits with:, Banks Headquartered Outside the Reporting Country, US Dollars"
+    },
+    "RAFAFXCDBOA_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAFXCDBO_USD",
+        "order": 11,
+        "level": 6,
+        "title": "Official Reserve Assets, Foreign Currency Reserves (in Convertible Foreign Currencies), Total Currency and Deposits with:, Banks Headquartered Outside the Reporting Country, of Which: Located in the Reporting Country, US Dollars"
+    },
+    "RAFAIMF_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFA_USD",
+        "order": 12,
+        "level": 3,
+        "title": "Official Reserve Assets, IMF Reserve Position, US Dollars"
+    },
+    "RAFASDR_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFA_USD",
+        "order": 13,
+        "level": 3,
+        "title": "Official Reserve Assets, SDRs, US Dollars"
+    },
+    "RAFAGOLD_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFA_USD",
+        "order": 14,
+        "level": 3,
+        "title": "Official Reserve Assets, Gold (Including Gold Deposits and, If Appropriate, Gold Swapped) , US Dollars"
+    },
+    "RAFAGOLDV_OZT": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAGOLD_USD",
+        "order": 15,
+        "level": 4,
+        "title": "Official Reserve Assets, Gold (Including Gold Deposits and, If Appropriate, Gold Swapped), Volume in Millions of Fine Troy Ounces , Fine Troy Ounces"
+    },
+    "RAFAO_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFA_USD",
+        "order": 16,
+        "level": 3,
+        "title": "Official Reserve Assets, Other Reserve Assets (Specify), US Dollars"
+    },
+    "RAFAOF_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAO_USD",
+        "order": 17,
+        "level": 4,
+        "title": "Official Reserve Assets, Other Reserve Assets (Specify), Financial Derivatives, US Dollars"
+    },
+    "RAFAOL_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAO_USD",
+        "order": 18,
+        "level": 4,
+        "title": "Official Reserve Assets, Other Reserve Assets (Specify), Loans to Non-bank Nonresidents, US Dollars"
+    },
+    "RAFAOO_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAFAO_USD",
+        "order": 19,
+        "level": 4,
+        "title": "Official Reserve Assets, Other Reserve Assets (Specify), Other, US Dollars"
+    },
+    "RAOFA_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAF_USD",
+        "order": 20,
+        "level": 2,
+        "title": "Other Foreign Currency Assets (Specify), US Dollars"
+    },
+    "RAOFAS_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAOFA_USD",
+        "order": 21,
+        "level": 3,
+        "title": "Other Foreign Currency Assets (Specify), Securities Not Included in Official Reserve Assets, US Dollars"
+    },
+    "RAOFAD_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAOFA_USD",
+        "order": 22,
+        "level": 3,
+        "title": "Other Foreign Currency Assets (Specify), Deposits Not Included in Official Reserve Assets, US Dollars"
+    },
+    "RAOFAL_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAOFA_USD",
+        "order": 23,
+        "level": 3,
+        "title": "Other Foreign Currency Assets (Specify), Loans Not Included in Official Reserve Assets, US Dollars"
+    },
+    "RAOFAF_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAOFA_USD",
+        "order": 24,
+        "level": 3,
+        "title": "Other Foreign Currency Assets (Specify), Financial Derivatives Not Included in Official Reserve Assets, US Dollars"
+    },
+    "RAOFAG_USD": {
+        "dataset": "IRFCL",
+        "table": "reserve_assets_and_other_fx_assets",
+        "parent": "RAOFA_USD",
+        "order": 25,
+        "level": 3,
+        "title": "Other Foreign Currency Assets (Specify), Gold Not Included in Official Reserve Assets, US Dollars"
+    },
+    "RAPFA_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFA_USD",
+        "order": 1,
+        "level": 1,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, US Dollars"
+    },
+    "RAPFALSD_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFA_USD",
+        "order": 2,
+        "level": 2,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Foreign Currency Loans, Securities, and Deposits, US Dollars"
+    },
+    "RAPFALSD_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSD_USD",
+        "order": 3,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Foreign Currency Loans, Securities, and Deposits, US Dollars"
+    },
+    "RAPFALSD_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSD_USD",
+        "order": 4,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Foreign Currency Loans, Securities, and Deposits, US Dollars"
+    },
+    "RAPFALSD_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSD_USD",
+        "order": 5,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Foreign Currency Loans, Securities, and Deposits, US Dollars"
+    },
+    "RAPFALSDOP_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSD_USD",
+        "order": 6,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Foreign Currency Loans, Securities, and Deposits, Outflows (-) Principal, US Dollars"
+    },
+    "RAPFALSDOP_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDOP_USD",
+        "order": 7,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Foreign Currency Loans, Securities, and Deposits, Outflows (-) Principal, US Dollars"
+    },
+    "RAPFALSDOP_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDOP_USD",
+        "order": 8,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Foreign Currency Loans, Securities, and Deposits, Outflows (-) Principal, US Dollars"
+    },
+    "RAPFALSDOP_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDOP_USD",
+        "order": 9,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Foreign Currency Loans, Securities, and Deposits, Outflows (-) Principal, US Dollars"
+    },
+    "RAPFALSDOI_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSD_USD",
+        "order": 10,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Foreign Currency Loans, Securities, and Deposits, Outflows (-) Interest, US Dollars"
+    },
+    "RAPFALSDOI_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDOI_USD",
+        "order": 11,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Foreign Currency Loans, Securities, and Deposits, Outflows (-) Interest, US Dollars"
+    },
+    "RAPFALSDOI_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDOI_USD",
+        "order": 12,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Foreign Currency Loans, Securities, and Deposits, Outflows (-) Interest, US Dollars"
+    },
+    "RAPFALSDOI_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDOI_USD",
+        "order": 13,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Foreign Currency Loans, Securities, and Deposits, Outflows (-) Interest, US Dollars"
+    },
+    "RAPFALSDIP_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSD_USD",
+        "order": 14,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Foreign Currency Loans, Securities, and Deposits, Inflows (+) Principal, US Dollars"
+    },
+    "RAPFALSDIP_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDIP_USD",
+        "order": 15,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Foreign Currency Loans, Securities, and Deposits, Inflows (+) Principal, US Dollars"
+    },
+    "RAPFALSDIP_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDIP_USD",
+        "order": 16,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Foreign Currency Loans, Securities, and Deposits, Inflows (+) Principal, US Dollars"
+    },
+    "RAPFALSDIP_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDIP_USD",
+        "order": 17,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Foreign Currency Loans, Securities, and Deposits, Inflows (+) Principal, US Dollars"
+    },
+    "RAPFALSDII_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSD_USD",
+        "order": 18,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Foreign Currency Loans, Securities, and Deposits, Inflows (+) Interest, US Dollars"
+    },
+    "RAPFALSDII_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDII_USD",
+        "order": 19,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Foreign Currency Loans, Securities, and Deposits, Inflows (+) Interest, US Dollars"
+    },
+    "RAPFALSDII_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDII_USD",
+        "order": 20,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Foreign Currency Loans, Securities, and Deposits, Inflows (+) Interest, US Dollars"
+    },
+    "RAPFALSDII_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFALSDII_USD",
+        "order": 21,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Foreign Currency Loans, Securities, and Deposits, Inflows (+) Interest, US Dollars"
+    },
+    "RAPFAFFS_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFA_USD",
+        "order": 22,
+        "level": 2,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregated Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward leg of Ccy. Swaps), Short Positions (-), US Dollars"
+    },
+    "RAPFAFFS_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAFFS_USD",
+        "order": 23,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregated Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward Leg of Ccy. Swaps), Short positions (-), US Dollars"
+    },
+    "RAPFAFFS_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAFFS_USD",
+        "order": 24,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward Leg of Ccy. Swaps), Short Positions (-), US Dollars"
+    },
+    "RAPFAFFS_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAFFS_USD",
+        "order": 25,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward Leg of Ccy. Swaps), Short Positions (-), US Dollars"
+    },
+    "RAPFAFFL_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFA_USD",
+        "order": 26,
+        "level": 2,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregated Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward leg of Ccy. Swaps), Long Positions (+), US Dollars"
+    },
+    "RAPFAFFL_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAFFL_USD",
+        "order": 27,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregated Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward Leg of Ccy. Swaps), Long positions (+), US Dollars"
+    },
+    "RAPFAFFL_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAFFL_USD",
+        "order": 28,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregated Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward Leg of Ccy. Swaps), Long positions (+), US Dollars"
+    },
+    "RAPFAFFL_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAFFL_USD",
+        "order": 29,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregated Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward Leg of Ccy. Swaps), Long positions (+), US Dollars"
+    },
+    "RAPFAO_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFA_USD",
+        "order": 30,
+        "level": 2,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Other Predetermined Short-term Net Drains on Foreign Currency Assets, US Dollars"
+    },
+    "RAPFAO_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAO_USD",
+        "order": 31,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Other Predetermined Short-term Net Drains on Foreign Currency Assets, US Dollars"
+    },
+    "RAPFAO_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAO_USD",
+        "order": 32,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Other Predetermined Short-term Net Drains on Foreign Currency Assets, US Dollars"
+    },
+    "RAPFAO_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAO_USD",
+        "order": 33,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Other Predetermined Short-term Net Drains on Foreign Currency Assets, US Dollars"
+    },
+    "RAPFAOOR_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAO_USD",
+        "order": 34,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Outflows Related to Repos (-), US Dollars"
+    },
+    "RAPFAOOR_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOOR_USD",
+        "order": 35,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Outflows Related to Repos (-), US Dollars"
+    },
+    "RAPFAOOR_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOOR_USD",
+        "order": 36,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Outflows Related to Repos (-), US Dollars"
+    },
+    "RAPFAOOR_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOOR_USD",
+        "order": 37,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Outflows Related to Repos (-), US Dollars"
+    },
+    "RAPFAOIRR_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAO_USD",
+        "order": 38,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Inflows Related to Reverse Repos (+), US Dollars"
+    },
+    "RAPFAOIRR_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOIRR_USD",
+        "order": 39,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Inflows Related to Reverse Repos (+), US Dollars"
+    },
+    "RAPFAOIRR_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOIRR_USD",
+        "order": 40,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Inflows Related to Reverse Repos (+), US Dollars"
+    },
+    "RAPFAOIRR_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOIRR_USD",
+        "order": 41,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Inflows Related to Reverse Repos (+), US Dollars"
+    },
+    "RAPFAOOC_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAO_USD",
+        "order": 42,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Trade Credit (-), US Dollars"
+    },
+    "RAPFAOOC_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOOC_USD",
+        "order": 43,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Trade Credit (-), US Dollars"
+    },
+    "RAPFAOOC_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOOC_USD",
+        "order": 44,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Trade Credit (-), US Dollars"
+    },
+    "RAPFAOOC_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOOC_USD",
+        "order": 45,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Trade Credit (-), US Dollars"
+    },
+    "RAPFAOIC_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAO_USD",
+        "order": 46,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Trade Credit (+), US Dollars"
+    },
+    "RAPFAOIC_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOIC_USD",
+        "order": 47,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Trade Credit (+), US Dollars"
+    },
+    "RAPFAOIC_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOIC_USD",
+        "order": 48,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Trade Credit (+), US Dollars"
+    },
+    "RAPFAOIC_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOIC_USD",
+        "order": 49,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Trade Credit (+), US Dollars"
+    },
+    "RAPFAOOP_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAO_USD",
+        "order": 50,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Other Accounts Payable (-), US Dollars"
+    },
+    "RAPFAOOP_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOOP_USD",
+        "order": 51,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Other Accounts Payable (-), US Dollars"
+    },
+    "RAPFAOOP_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOOP_USD",
+        "order": 52,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Other Accounts Payable (-), US Dollars"
+    },
+    "RAPFAOOP_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOOP_USD",
+        "order": 53,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Other Accounts Payable (-), US Dollars"
+    },
+    "RAPFAOIR_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAO_USD",
+        "order": 54,
+        "level": 3,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Other Accounts Receivable (+), US Dollars"
+    },
+    "RAPFAOIR_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOIR_USD",
+        "order": 55,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Other Accounts Receivable (+), US Dollars"
+    },
+    "RAPFAOIR_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOIR_USD",
+        "order": 56,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Other Accounts Receivable (+), US Dollars"
+    },
+    "RAPFAOIR_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAPFAOIR_USD",
+        "order": 57,
+        "level": 4,
+        "title": "Predetermined Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Other Predetermined Short-term Net Drains on Foreign Currency Assets, Other Accounts Receivable (+), US Dollars"
+    },
+    "RAFA_RAPFA_RO": {
+        "dataset": "IRFCL",
+        "table": "predetermined_drains_on_fx_assets",
+        "parent": "RAFA_RAPFA_RO",
+        "order": 58,
+        "level": 1,
+        "title": "Official Reserve Assets by Predetermined Short-term Net Drains on Foreign Currency Assets, Ratio"
+    },
+    "RACFA_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFA_USD",
+        "order": 1,
+        "level": 1,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, US Dollars"
+    },
+    "RACFAL_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFA_USD",
+        "order": 2,
+        "level": 2,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Contingent Liabilities in Foreign Currency, US Dollars"
+    },
+    "RACFAL_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAL_USD",
+        "order": 3,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Contingent Liabilities in Foreign Currency, US Dollars"
+    },
+    "RACFAL_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAL_USD",
+        "order": 4,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Contingent Liabilities in Foreign Currency, US Dollars"
+    },
+    "RACFAL_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAL_USD",
+        "order": 5,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Contingent Liabilities in Foreign Currency, US Dollars"
+    },
+    "RACFALG_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAL_USD",
+        "order": 6,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Contingent Liabilities in Foreign Currency, Guarantees of Foreign Currency Securities, US Dollars"
+    },
+    "RACFALG_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFALG_USD",
+        "order": 7,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Contingent Liabilities in Foreign Currency, Guarantees of Foreign Currency Securities, US Dollars"
+    },
+    "RACFALG_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFALG_USD",
+        "order": 8,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Contingent Liabilities in Foreign Currency, Guarantees of Foreign Currency Securities, US Dollars"
+    },
+    "RACFALO_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAL_USD",
+        "order": 9,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Contingent Liabilities in Foreign Currency, Other Contingent Liabilities, US Dollars"
+    },
+    "RACFALO_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFALO_USD",
+        "order": 10,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Contingent Liabilities in Foreign Currency, Other Contingent Liabilities, US Dollars"
+    },
+    "RACFALO_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFALO_USD",
+        "order": 11,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Contingent Liabilities in Foreign Currency, Other Contingent Liabilities, US Dollars"
+    },
+    "RACFALO_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFALO_USD",
+        "order": 12,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Contingent Liabilities in Foreign Currency, Other Contingent Liabilities, US Dollars"
+    },
+    "RACFAS_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFA_USD",
+        "order": 13,
+        "level": 2,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Foreign Currency Securities Issued with Embedded Options (Puttable Bonds), US Dollars"
+    },
+    "RACFACB_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFA_USD",
+        "order": 14,
+        "level": 2,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided by:, US Dollars"
+    },
+    "RACFACB_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACB_USD",
+        "order": 15,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided by:, US Dollars"
+    },
+    "RACFACB_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACB_USD",
+        "order": 16,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided by:, US Dollars"
+    },
+    "RACFACB_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACB_USD",
+        "order": 17,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided by:, US Dollars"
+    },
+    "RACFACBA_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACB_USD",
+        "order": 18,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, US Dollars"
+    },
+    "RACFACBA_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBA_USD",
+        "order": 19,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, US Dollars"
+    },
+    "RACFACBA_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBA_USD",
+        "order": 20,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, US Dollars"
+    },
+    "RACFACBA_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBA_USD",
+        "order": 21,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, US Dollars"
+    },
+    "RACFACBAOI_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBA_USD",
+        "order": 22,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other International Organizations (+), US Dollars'"
+    },
+    "RACFACBAOI_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBAOI_USD",
+        "order": 23,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other International Organizations (+), US Dollars"
+    },
+    "RACFACBAOI_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBAOI_USD",
+        "order": 24,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other International Organizations (+), US Dollars"
+    },
+    "RACFACBAON_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBA_USD",
+        "order": 25,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other National Monetary Authorities (+), US Dollars'"
+    },
+    "RACFACBAON_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBAON_USD",
+        "order": 26,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other National Monetary Authorities (+), US Dollars"
+    },
+    "RACFACBAON_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBAON_USD",
+        "order": 27,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other National Monetary Authorities (+), US Dollars"
+    },
+    "RACFACBAON_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBAON_USD",
+        "order": 28,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other National Monetary Authorities (+), US Dollars"
+    },
+    "RACFACBABIS_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBA_USD",
+        "order": 29,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, BIS (+), US Dollars"
+    },
+    "RACFACBAIMF_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBAIMF_USD",
+        "order": 34,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, IMF (+), US Dollars"
+    },
+    "RACFACBAIMF_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBAIMF_USD",
+        "order": 35,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, IMF (+), US Dollars"
+    },
+    "RACFACBAIMF_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBAIMF_USD",
+        "order": 36,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, IMF (+), US Dollars"
+    },
+    "RACFACBAIMF_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBA_USD",
+        "order": 33,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided by: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, IMF (+), US Dollars"
+    },
+    "RACFACBFIR_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACB_USD",
+        "order": 37,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided by: Banks and Other Financial Institutions hdqrtd in the Reporting Country (+), US Dollars"
+    },
+    "RACFACBFIR_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBFIR_USD",
+        "order": 38,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided by: Banks and Other Financial Institutions hdqrtd in the Reporting Country (+), US Dollars"
+    },
+    "RACFACBFIR_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBFIR_USD",
+        "order": 39,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided by: Banks and Other Financial Institutions hdqrtd in the Reporting Country (+), US Dollars"
+    },
+    "RACFACBFIR_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBFIR_USD",
+        "order": 40,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided by: Banks and Other Financial Institutions hdqrtd in the Reporting Country (+), US Dollars"
+    },
+    "RACFACBFIO_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACB_USD",
+        "order": 41,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided by: Banks and Other Financial Institutions hdqrtd outside Reporting Country (+), US Dollars"
+    },
+    "RACFACBFIO_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBFIO_USD",
+        "order": 42,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided by: Banks and Other Financial Institutions hdqrtd outside Reporting Country (+), US Dollars"
+    },
+    "RACFACBFIO_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBFIO_USD",
+        "order": 43,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided by: Banks and Other Financial Institutions hdqrtd outside Reporting Country (+), US Dollars"
+    },
+    "RACFACBFIO_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACBFIO_USD",
+        "order": 44,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided by: Banks and Other Financial Institutions hdqrtd outside Reporting Country (+), US Dollars"
+    },
+    "RACFACT_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFA_USD",
+        "order": 45,
+        "level": 2,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided to:, US Dollars"
+    },
+    "RACFACT_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACT_USD",
+        "order": 46,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided to:, US Dollars"
+    },
+    "RACFACT_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACT_USD",
+        "order": 47,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided to:, US Dollars"
+    },
+    "RACFACT_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACT_USD",
+        "order": 48,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided to:, US Dollars"
+    },
+    "RACFACTA_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACT_USD",
+        "order": 49,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, US Dollars"
+    },
+    "RACFACTA_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTA_USD",
+        "order": 50,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, US Dollars"
+    },
+    "RACFACTA_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTA_USD",
+        "order": 51,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, US Dollars"
+    },
+    "RACFACTA_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTA_USD",
+        "order": 52,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, US Dollars"
+    },
+    "RACFACTAOI_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTA_USD",
+        "order": 53,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other International Organizations (-), US Dollars"
+    },
+    "RACFACTAOI_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTAOI_USD",
+        "order": 54,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other International Organizations (-), US Dollars"
+    },
+    "RACFACTAOI_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTAOI_USD",
+        "order": 55,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other International Organizations (-), US Dollars"
+    },
+    "RACFACTAOI_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTAOI_USD",
+        "order": 56,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other International Organizations (-), US Dollars"
+    },
+    "RACFACTAON_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTA_USD",
+        "order": 57,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other National Monetary Authorities (-), US Dollars"
+    },
+    "RACFACTAON_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTAON_USD",
+        "order": 58,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other National Monetary Authorities (-), US Dollars"
+    },
+    "RACFACTAON_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTAON_USD",
+        "order": 59,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other National Monetary Authorities (-), US Dollars"
+    },
+    "RACFACTAON_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTAON_USD",
+        "order": 60,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, Other National Monetary Authorities (-), US Dollars"
+    },
+    "RACFACTABIS_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTA_USD",
+        "order": 61,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, BIS (-), US Dollars"
+    },
+    "RACFACTABIS_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTABIS_USD",
+        "order": 62,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, BIS (-), US Dollars"
+    },
+    "RACFACTABIS_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTABIS_USD",
+        "order": 63,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, BIS (-), US Dollars"
+    },
+    "RACFACTABIS_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTABIS_USD",
+        "order": 64,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, BIS (-), US Dollars"
+    },
+    "RACFACTAIMF_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTA_USD",
+        "order": 65,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, IMF (-), US Dollars"
+    },
+    "RACFACTAIMF_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTAIMF_USD",
+        "order": 66,
+        "level": 5,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided to: Other National Monetary Authorities, BIS, IMF, and Other International Organizations, IMF (-), US Dollars"
+    },
+    "RACFACTFIR_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACT_USD",
+        "order": 67,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided to: Banks and Other Financial Institutions hdqrtd in the Reporting Country (-), US Dollars"
+    },
+    "RACFACTFIR_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTFIR_USD",
+        "order": 68,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided to: Banks and Other Financial Institutions hdqrtd in the Reporting Country (-), US Dollars"
+    },
+    "RACFACTFIR_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTFIR_USD",
+        "order": 69,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided to: Banks and Other Financial Institutions hdqrtd in the Reporting Country (-), US Dollars"
+    },
+    "RACFACTFIR_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTFIR_USD",
+        "order": 70,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided to: Banks and Other Financial Institutions hdqrtd in the Reporting Country (-), US Dollars"
+    },
+    "RACFACTFIO_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACT_USD",
+        "order": 71,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Undrawn, Unconditional Credit Lines provided to: Banks and Other Financial Institutions hdqrtd outside Reporting Country (-), US Dollars"
+    },
+    "RACFACTFIO_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTFIO_USD",
+        "order": 72,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Undrawn, Unconditional Credit Lines provided to: Banks and Other Financial Institutions hdqrtd outside Reporting Country (-), US Dollars"
+    },
+    "RACFACTFIO_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTFIO_USD",
+        "order": 73,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Undrawn, Unconditional Credit Lines provided to: Banks and Other Financial Institutions hdqrtd outside Reporting Country (-), US Dollars"
+    },
+    "RACFACTFIO_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFACTFIO_USD",
+        "order": 74,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Undrawn, Unconditional Credit Lines provided to: Banks and Other Financial Institutions hdqrtd outside Reporting Country (-), US Dollars"
+    },
+    "RACFAPPS_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFA_USD",
+        "order": 75,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, US Dollars"
+    },
+    "RACFAPPS_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 76,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, US Dollars"
+    },
+    "RACFAPPS_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 77,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, US Dollars"
+    },
+    "RACFAPPS_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 78,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, US Dollars"
+    },
+    "RACFAPPSBP_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 79,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Bought Puts, US Dollars"
+    },
+    "RACFAPPSBP_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPSBP_USD",
+        "order": 80,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Bought Puts, US Dollars"
+    },
+    "RACFAPPSBP_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPSBP_USD",
+        "order": 81,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Bought Puts, US Dollars"
+    },
+    "RACFAPPSBP_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPSBP_USD",
+        "order": 82,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Bought Puts, US Dollars"
+    },
+    "RACFAPPSWC_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 83,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Written Calls, US Dollars"
+    },
+    "RACFAPPSWC_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPSWC_USD",
+        "order": 84,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Written Calls, US Dollars"
+    },
+    "RACFAPPSWC_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPSWC_USD",
+        "order": 85,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Written Calls, US Dollars"
+    },
+    "RACFAPPSWC_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPSWC_USD",
+        "order": 86,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Written Calls, US Dollars"
+    },
+    "RACFAPPL_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFA_USD",
+        "order": 87,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, US Dollars"
+    },
+    "RACFAPPL_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 88,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, US Dollars"
+    },
+    "RACFAPPL_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 89,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, US Dollars"
+    },
+    "RACFAPPL_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 90,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, US Dollars"
+    },
+    "RACFAPPLBC_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 91,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Bought Calls, US Dollars"
+    },
+    "RACFAPPLBC_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPLBC_USD",
+        "order": 92,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Bought Calls, US Dollars"
+    },
+    "RACFAPPLBC_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPLBC_USD",
+        "order": 93,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Bought Calls, US Dollars"
+    },
+    "RACFAPPLBC_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPLBC_USD",
+        "order": 94,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Bought Calls, US Dollars"
+    },
+    "RACFAPPLWP_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 95,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Written Puts, US Dollars"
+    },
+    "RACFAPPLWP_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPLWP_USD",
+        "order": 96,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Written Puts, US Dollars"
+    },
+    "RACFAPPLWP_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPLWP_USD",
+        "order": 97,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Written Puts, US Dollars"
+    },
+    "RACFAPPLWP_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPLWP_USD",
+        "order": 98,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Written Puts, US Dollars"
+    },
+    "RACFAMPAS_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 99,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, At Current Exchange Rate, Short Position, US Dollars"
+    },
+    "RACFAMPAS_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPAS_USD",
+        "order": 100,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, At Current Exchange Rate, Short Position, US Dollars"
+    },
+    "RACFAMPAS_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPAS_USD",
+        "order": 101,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, At Current Exchange Rate, Short Position, US Dollars"
+    },
+    "RACFAMPAS_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPAS_USD",
+        "order": 102,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, At Current Exchange Rate, Short Position, US Dollars"
+    },
+    "RACFAMPAL_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 103,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, At Current Exchange Rate, Long Position, US Dollars"
+    },
+    "RACFAMPAL_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPAL_USD",
+        "order": 104,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, At Current Exchange Rate, Long Position, US Dollars"
+    },
+    "RACFAMPAL_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPAL_USD",
+        "order": 105,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, At Current Exchange Rate, Long Position, US Dollars"
+    },
+    "RACFAMPAL_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPAL_USD",
+        "order": 106,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, At Current Exchange Rate, Long Position, US Dollars"
+    },
+    "RACFAMPBS_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 107,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 5 % (Depreciation of 5%), Short Position, US Dollars"
+    },
+    "RACFAMPBS_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPBS_USD",
+        "order": 108,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 5 % (Depreciation of 5%), Short Position, US Dollars"
+    },
+    "RACFAMPBS_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPBS_USD",
+        "order": 109,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 5 % (Depreciation of 5%), Short Position, US Dollars"
+    },
+    "RACFAMPBS_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPBS_USD",
+        "order": 110,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 5 % (Depreciation of 5%), Short Position, US Dollars"
+    },
+    "RACFAMPBL_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 111,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 5 % (Depreciation of 5%), Long Position, US Dollars"
+    },
+    "RACFAMPBL_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPBL_USD",
+        "order": 112,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 5 % (Depreciation of 5%), Long Position, US Dollars"
+    },
+    "RACFAMPBL_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPBL_USD",
+        "order": 113,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 5 % (Depreciation of 5%), Long Position, US Dollars"
+    },
+    "RACFAMPBL_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPBL_USD",
+        "order": 114,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 5 % (Depreciation of 5%), Long Position, US Dollars"
+    },
+    "RACFAMPCS_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 115,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 5 % (Appreciation of 5%), Short Position, US Dollars"
+    },
+    "RACFAMPCS_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPCS_USD",
+        "order": 116,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 5 % (Appreciation of 5%), Short Position, US Dollars"
+    },
+    "RACFAMPCS_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPCS_USD",
+        "order": 117,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 5 % (Appreciation of 5%), Short Position, US Dollars"
+    },
+    "RACFAMPCS_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPCS_USD",
+        "order": 118,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 5 % (Appreciation of 5%), Short Position, US Dollars"
+    },
+    "RACFAMPCL_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 119,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 5 % (Appreciation of 5%), Long Position, US Dollars"
+    },
+    "RACFAMPCL_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPCL_USD",
+        "order": 120,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 5 % (Appreciation of 5%), Long Position, US Dollars"
+    },
+    "RACFAMPCL_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPCL_USD",
+        "order": 121,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 5 % (Appreciation of 5%), Long Position, US Dollars"
+    },
+    "RACFAMPCL_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPCL_USD",
+        "order": 122,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 5 % (Appreciation of 5%), Long Position, US Dollars"
+    },
+    "RACFAMPDS_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 123,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 10 % (Depreciation of 10%), Short Position, US Dollars"
+    },
+    "RACFAMPDS_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPDS_USD",
+        "order": 124,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 10 % (Depreciation of 10%), Short Position, US Dollars"
+    },
+    "RACFAMPDS_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPDS_USD",
+        "order": 125,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 10 % (Depreciation of 10%), Short Position, US Dollars"
+    },
+    "RACFAMPDS_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPDS_USD",
+        "order": 126,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 10 % (Depreciation of 10%), Short Position, US Dollars"
+    },
+    "RACFAMPDL_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 127,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 10 % (Depreciation of 10%), Long Position, US Dollars"
+    },
+    "RACFAMPDL_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPDL_USD",
+        "order": 128,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 10 % (Depreciation of 10%), Long Position, US Dollars"
+    },
+    "RACFAMPDL_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPDL_USD",
+        "order": 129,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 10 % (Depreciation of 10%), Long Position, US Dollars"
+    },
+    "RACFAMPDL_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPDL_USD",
+        "order": 130,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, + 10 % (Depreciation of 10%), Long Position, US Dollars"
+    },
+    "RACFAMPES_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 131,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 10 % (Appreciation of 10%), Short Position, US Dollars"
+    },
+    "RACFAMPES_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPES_USD",
+        "order": 132,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 10 % (Appreciation of 10%), Short Position, US Dollars"
+    },
+    "RACFAMPES_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPES_USD",
+        "order": 133,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 10 % (Appreciation of 10%), Short Position, US Dollars"
+    },
+    "RACFAMPES_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPES_USD",
+        "order": 134,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 10 % (Appreciation of 10%), Short Position, US Dollars"
+    },
+    "RACFAMPEL_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 135,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 10 % (Appreciation of 10%), Long Position, US Dollars"
+    },
+    "RACFAMPEL_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPEL_USD",
+        "order": 136,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 10 % (Appreciation of 10%), Long Position, US Dollars"
+    },
+    "RACFAMPEL_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPEL_USD",
+        "order": 137,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 10 % (Appreciation of 10%), Long Position, US Dollars"
+    },
+    "RACFAMPEL_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPEL_USD",
+        "order": 138,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, - 10 % (Appreciation of 10%), Long Position, US Dollars"
+    },
+    "RACFAMPFS_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPS_USD",
+        "order": 139,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, Other, Short Position, US Dollars"
+    },
+    "RACFAMPFS_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPFS_USD",
+        "order": 140,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, Other, Short Position, US Dollars"
+    },
+    "RACFAMPFS_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPFS_USD",
+        "order": 141,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, Other, Short Position, US Dollars"
+    },
+    "RACFAMPFS_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPFS_USD",
+        "order": 142,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, Other, Short Position, US Dollars"
+    },
+    "RACFAMPFL_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAPPL_USD",
+        "order": 143,
+        "level": 3,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Total, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, Other, Long Position, US Dollars"
+    },
+    "RACFAMPFL_1M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPFL_USD",
+        "order": 144,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), Up to 1 Month, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, Other, Long Position, US Dollars"
+    },
+    "RACFAMPFL_1M_3M_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPFL_USD",
+        "order": 145,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 1 and up to 3 Months, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, Other, Long Position, US Dollars"
+    },
+    "RACFAMPFL_3M_1Y_USD": {
+        "dataset": "IRFCL",
+        "table": "contingent_drains_fx_assets",
+        "parent": "RACFAMPFL_USD",
+        "order": 146,
+        "level": 4,
+        "title": "Contingent Short-term Net Drains on Foreign Currency Assets (nominal value), More than 3 Months and up to 1 Year, Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, PRO MEMORIA: In-the-money Options, Other, Long Position, US Dollars"
+    },
+    "RAMDCD_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMDCD_USD",
+        "order": 1,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Short-term Domestic Currency Debt Indexed to the Exchange Rate, US Dollars"
+    },
+    "RAMFIFC_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMFIFC_USD",
+        "order": 2,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Financial Instruments Denominated in Foreign Currency and Settled by Other Means (e.g., in Dom. Ccy.), US Dollars"
+    },
+    "RAMPA_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMPA_USD",
+        "order": 3,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Pledged Assets, US Dollars"
+    },
+    "RAMFFS_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMFFS_USD",
+        "order": 17,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Aggregate Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward Leg of Currency Swaps), Short Positions (-), US Dollars"
+    },
+    "RAMPAOA_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMPA_USD",
+        "order": 5,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Pledged Assets, Included in Other Foreign Currency Assets, US Dollars"
+    },
+    "RAMSR_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMSR_USD",
+        "order": 6,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Securities Lent and on Repo, US Dollars"
+    },
+    "RAMSRLRI_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMSR_USD",
+        "order": 7,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Securities Lent and on Repo, Lent or Repoed and Included in Section I, US Dollars"
+    },
+    "RAMSRLRN_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMSR_USD",
+        "order": 8,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Securities Lent and on Repo, Lent or Repoed but not Included in Section I, US Dollars"
+    },
+    "RAMSRBRI_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMSR_USD",
+        "order": 9,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Securities Lent and on Repo, Borrowed or Acquired and Included in Section I, US Dollars"
+    },
+    "RAMSRBAN_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMSR_USD",
+        "order": 10,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Securities Lent and on Repo, Borrowed or Acquired but not Included in Section I, US Dollars"
+    },
+    "RAMFDA_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMFDA_USD",
+        "order": 11,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Financial Derivative Assets (Net, Marked to Market), US Dollars"
+    },
+    "RAMFDAF_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMFDA_USD",
+        "order": 12,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Financial Derivative Assets (Net, Marked to Market), Forwards, US Dollars"
+    },
+    "RAMFDAU_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMFDA_USD",
+        "order": 13,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Financial Derivative Assets (Net, Marked to Market), Futures, US Dollars"
+    },
+    "RAMFDAW_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMFDA_USD",
+        "order": 14,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Financial Derivative Assets (Net, Marked to Market), Swaps, US Dollars"
+    },
+    "RAMFDAP_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMFDA_USD",
+        "order": 15,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Financial Derivative Assets (Net, Marked to Market), Options, US Dollars"
+    },
+    "RAMFDAO_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMFDA_USD",
+        "order": 16,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Financial Derivative Assets (Net, Marked to Market), Other, US Dollars"
+    },
+    "RAMFFL_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMFFL_USD",
+        "order": 18,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Aggregate Short & Long Positions in Forwards and Futures in Foreign Currencies vis-a-vis the Domestic Currency (including the Forward Leg of Currency Swaps), Long Positions (+), US Dollars"
+    },
+    "RAMPPS_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMPPS_USD",
+        "order": 19,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, US Dollars"
+    },
+    "RAMPPSBP_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMPPS_USD",
+        "order": 20,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Bought Puts, US Dollars"
+    },
+    "RAMPPSWC_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMPPS_USD",
+        "order": 21,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Short Positions, Written Calls, US Dollars"
+    },
+    "RAMPPL_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMPPL_USD",
+        "order": 22,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, US Dollars"
+    },
+    "RAMPPLBP_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMPPL_USD",
+        "order": 23,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Bought Puts, US Dollars"
+    },
+    "RAMPPLWC_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMPPL_USD",
+        "order": 24,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Aggregate Short and Long Positions of Options in Foreign Currencies vis-a-vis the Domestic Currency, Long Positions, Written Calls, US Dollars"
+    },
+    "RAMCR_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMCR_USD",
+        "order": 25,
+        "level": 1,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Currency Composition of Reserves (by Groups of Currencies), US Dollars"
+    },
+    "RAMCRISDR_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMCR_USD",
+        "order": 26,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Currency Composition of Reserves (by Groups of Currencies), Currencies in SDR Basket, US Dollars"
+    },
+    "RAMCRIC_USD_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMCRISDR_USD",
+        "order": 27,
+        "level": 3,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Currency Composition of Reserves, Denominated in US Dollars, US Dollars"
+    },
+    "RAMCRIC_EUR_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMCRISDR_USD",
+        "order": 28,
+        "level": 3,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Currency Composition of Reserves, Denominated in Euros, US Dollars"
+    },
+    "RAMCRIC_CNY_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMCRISDR_USD",
+        "order": 29,
+        "level": 3,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Currency Composition of Reserves, Denominated in Chinese Yuan, US Dollars"
+    },
+    "RAMCRIC_JPY_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMCRISDR_USD",
+        "order": 30,
+        "level": 3,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Currency Composition of Reserves, Denominated in Japanese Yen, US Dollars"
+    },
+    "RAMCRIC_GBP_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMCRISDR_USD",
+        "order": 31,
+        "level": 3,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Currency Composition of Reserves, Denominated in UK Pound Sterling, US Dollars"
+    },
+    "RAMCROSDR_USD": {
+        "dataset": "IRFCL",
+        "table": "memorandum_items",
+        "parent": "RAMCR_USD",
+        "order": 32,
+        "level": 2,
+        "title": "Memorandum Items (Section IV of Reserves Data Template), Currency Composition of Reserves (by Groups of Currencies, Currencies not in SDR Basket), US Dollars"
+    }
+}
