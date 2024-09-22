@@ -72,9 +72,9 @@ def get_all_docids(content):
             # there are two files the zip, an xml and a txt
             if member.filename.endswith(".xml"):
                 xml_stream = io.BytesIO(zip_ref.read(member))
-
-    return extract_docids_from_year_disclosures(xml_stream)
-
+    if xml_stream:
+        return extract_docids_from_year_disclosures(xml_stream)
+    return []
 
 async def aextract_xml_from_zip_url(
     client: aiohttp.ClientSession, url: str, output_file: str
