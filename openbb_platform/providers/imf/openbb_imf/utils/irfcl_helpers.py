@@ -39,9 +39,11 @@ def load_country_map() -> Dict:
         raise OpenBBError(f"Failed to load IMF IRFCL country map: {e}") from e
 
     return {
-        k: v.replace("`", "").split(",")[0].split("_(")[0]
+        k: v.split(",")[0].split("_(")[0]
         for k, v in country_map_dict.items()
-        if len(k) == 2 and k[0] not in ("5", "1", "7") and k not in ("X0", "R1", "GW")
+        if len(k) == 2
+        and k[0] not in ("5", "1", "7")
+        and k not in ("X0", "R1", "GW", "F1", "F6")
     }
 
 
@@ -104,6 +106,7 @@ def validate_symbols(symbols) -> str:
     # pylint: disable=import-outside-toplevel
     from warnings import warn  # noqa
     from openbb_core.app.model.abstract.error import OpenBBError
+    from openbb_imf.utils.constants import IRFCL_PRESET
 
     irfcl_symbols = load_irfcl_symbols()
 
@@ -118,6 +121,8 @@ def validate_symbols(symbols) -> str:
     new_symbols: List = []
 
     for symbol in symbols:
+        if symbol in IRFCL_PRESET:
+            return IRFCL_PRESET[symbol].replace(",", "+")
         if symbol.upper() not in irfcl_symbols:
             warn(f"Invalid IMF IRFCL symbol: {symbol}")
         new_symbols.append(symbol.upper())
@@ -138,7 +143,8 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
     but through the `ImfEconomicIndicatorsFetcher` class.
     """
     # pylint: disable=import-outside-toplevel
-    from json.decoder import JSONDecodeError  # noqa
+    from aiohttp.client_exceptions import ContentTypeError  # noqa
+    from json.decoder import JSONDecodeError
     from openbb_core.provider.utils.helpers import amake_request
     from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_imf.utils import constants
@@ -192,14 +198,13 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
         if start_date and end_date
         else ""
     )
-
     base_url = "http://dataservices.imf.org/REST/SDMX_JSON.svc/"
     key = f"CompactData/IRFCL/{frequency}.{countries}.{indicator}.{sector}"
     url = f"{base_url}{key}{date_range}"
 
     try:
         response = await amake_request(url, timeout=20)
-    except JSONDecodeError as e:
+    except (JSONDecodeError, ContentTypeError) as e:
         raise OpenBBError(
             "Error fetching data; This might be rate-limiting. Try again later."
         ) from e

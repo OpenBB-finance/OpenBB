@@ -3,10 +3,10 @@
 from datetime import date
 
 import pytest
-
-from openbb_imf.models.available_indicators import ImfAvailableIndicatorsFetcher
-from openbb_imf.models.economic_indicators import ImfEconomicIndicatorsFetcher
 from openbb_core.app.service.user_service import UserService
+from openbb_imf.models.available_indicators import ImfAvailableIndicatorsFetcher
+from openbb_imf.models.direction_of_trade import ImfDirectionOfTradeFetcher
+from openbb_imf.models.economic_indicators import ImfEconomicIndicatorsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -56,5 +56,23 @@ def test_imf_available_indicators_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = ImfAvailableIndicatorsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_imf_direction_of_trade_fetcher(credentials=test_credentials):
+    """Test the ImfDirectionOfTrade fetcher."""
+    params = {
+        "provider": "imf",
+        "country": "us",
+        "counterpart": "world,eu",
+        "frequency": "annual",
+        "direction": "exports",
+        "start_date": date(2020, 1, 1),
+        "end_date": date(2023, 1, 1),
+    }
+
+    fetcher = ImfDirectionOfTradeFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
