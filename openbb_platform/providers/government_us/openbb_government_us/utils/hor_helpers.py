@@ -34,36 +34,35 @@ def extract_docids_from_year_disclosures(res: io.BytesIO) -> List[dict]:
     for member in root.findall("Member"):
         if member is not None:
             if member.find("FilingType") is not None:
-                filing_type = member.find("FilingType").text if member.find("FilingType") is not None else "N/A"
-            if filing_type is not None and filing_type == "P":
-                if member.find("DocID") is not None:
-                    doc_id = member.find("DocID").text
-                else:
-                    doc_id = "N/A"
-                if member.find("Last") is not None and member.find("First") is not None:
-                    membername = (
-                        f"{member.find('Last').text} {member.find('First').text}"
+                filing_type = member.find("FilingType")
+                if filing_type is not None and filing_type == "P":
+                    if member.find("DocID") is not None:
+                        doc_id = member.find("DocID").text
+                    else:
+                        doc_id = "N/A"
+                    if member.find("Last") is not None and member.find("First") is not None:
+                        membername = (
+                            f"{member.find('Last').text} {member.find('First').text}"
+                        )
+                    else:
+                        membername = "N/A"
+                    if member.find("StateDst") is not None:
+                        state = member.find("StateDst").text
+                    else:
+                        state = "N/A"
+                    if member.find("FilingDate") is not None:
+                        filing_date = member.find("FilingDate").text
+                    else:
+                        filing_date = "N/A"
+                    doc_dictionary.append(
+                        dict(
+                            doc_id=doc_id,
+                            member=membername,
+                            state=state,
+                            filing_date=filing_date,
+                        )
                     )
-                else:
-                    membername = "N/A"
-                if member.find("StateDst") is not None:
-                    state = member.find("StateDst").text
-                else:
-                    state = "N/A"
-                if member.find("FilingDate") is not None:
-                    filing_date = member.find("FilingDate").text
-                else:
-                    filing_date = "N/A"
-                doc_dictionary.append(
-                    dict(
-                        doc_id=doc_id,
-                        member=membername,
-                        state=state,
-                        filing_date=filing_date,
-                    )
-                )
-            else:
-                pass
+
     return doc_dictionary
 
 
