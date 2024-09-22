@@ -36,25 +36,31 @@ def extract_docids_from_year_disclosures(res: io.BytesIO) -> List[dict]:
             if member.find("FilingType") is not None:
                 filing_type = member.find("FilingType")
                 if filing_type is not None and filing_type == "P":
-                    if member.find("DocID") is not None:
-                        doc_id = member.find("DocID").text
+                    doc_id_elem = member.find("DocID")
+                    first_elem = member.find("First")
+                    last_elem = member.find("Last")
+                    state_elem = member.find("StateDst")
+                    filing_date_elem = member.find("FilingDate")
+
+                    if doc_id_elem is not None:
+                        doc_id = doc_id_elem.text
                     else:
                         doc_id = "N/A"
                     if (
-                        member.find("Last") is not None
-                        and member.find("First") is not None
+                        first_elem is not None
+                        and last_elem is not None
                     ):
                         membername = (
-                            f"{member.find('Last').text} {member.find('First').text}"
+                            f"{last_elem.text} {first_elem.text}"
                         )
                     else:
                         membername = "N/A"
-                    if member.find("StateDst") is not None:
-                        state = member.find("StateDst").text
+                    if state_elem is not None:
+                        state = state_elem.text
                     else:
                         state = "N/A"
-                    if member.find("FilingDate") is not None:
-                        filing_date = member.find("FilingDate").text
+                    if filing_date_elem is not None:
+                        filing_date = filing_date_elem.text
                     else:
                         filing_date = "N/A"
                     doc_dictionary.append(
