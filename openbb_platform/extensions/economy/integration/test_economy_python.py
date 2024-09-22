@@ -629,6 +629,26 @@ def test_economy_available_indicators(params, obb):
                 "frequency": "quarter",
             }
         ),
+        (
+            {
+                "provider": "imf",
+                "country": "us,uk,jp",
+                "symbol": "gold_reserves",
+                "start_date": "2022-01-01",
+                "end_date": "2023-12-31",
+                "frequency": "annual",
+            }
+        ),
+        (
+            {
+                "provider": "imf",
+                "country": "all",
+                "symbol": "derivative_assets",
+                "start_date": "2022-01-01",
+                "end_date": "2023-12-31",
+                "frequency": "annual",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
