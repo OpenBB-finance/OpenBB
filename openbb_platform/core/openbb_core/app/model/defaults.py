@@ -49,7 +49,6 @@ class Defaults(BaseModel):
                 v["provider"] = [provider]
             new_values["commands"][clean_k] = v
 
-        print(new_values)
         return new_values
 
     def update(self, incoming: "Defaults"):
