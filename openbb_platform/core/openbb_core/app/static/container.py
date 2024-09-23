@@ -22,6 +22,26 @@ class Container:
 
     def _run(self, *args, **kwargs) -> Any:
         """Run a command in the container."""
+        endpoint = args[0][1:].replace("/", ".")
+        defaults = self._command_runner.user_settings.defaults.commands
+
+        if defaults.get(endpoint):
+            default_params = {
+                k: v for k, v in defaults[endpoint].items() if k != "provider"
+            }
+            for k, v in default_params.items():
+                if k == "chart" and v is True:
+                    kwargs["chart"] = True
+                elif (
+                    k in kwargs["standard_params"]
+                    and kwargs["standard_params"][k] is None
+                ):
+                    kwargs["standard_params"][k] = v
+                elif (
+                    k in kwargs["extra_params"] and kwargs["extra_params"][k] is None
+                ) or k not in kwargs["extra_params"]:
+                    kwargs["extra_params"][k] = v
+
         obbject = self._command_runner.sync_run(*args, **kwargs)
         output_type = self._command_runner.user_settings.preferences.output_type
         if output_type == "OBBject":
@@ -65,6 +85,7 @@ class Container:
         """
         if choice is None:
             commands = self._command_runner.user_settings.defaults.commands
+            _command = self._command_runner._command_map.get_command(command)
             providers = (
                 commands.get(command, {}).get("provider", []) or default_priority
             )
