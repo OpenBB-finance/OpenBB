@@ -85,9 +85,6 @@ class Container:
         """
         if choice is None:
             commands = self._command_runner.user_settings.defaults.commands
-            _command = self._command_runner._command_map.get_command(
-                command
-            )  # pylint: disable=protected-access
             providers = (
                 commands.get(command, {}).get("provider", []) or default_priority
             )
