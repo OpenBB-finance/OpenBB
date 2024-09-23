@@ -735,3 +735,40 @@ async def port_volume(
 ) -> OBBject:
     """Get average dwelling times and TEU volumes from the top ports."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="DirectionOfTrade",
+    examples=[
+        APIEx(parameters={"provider": "imf", "country": "all", "counterpart": "china"}),
+        APIEx(
+            description="Select multiple countries or counterparts by entering a comma-separated list."
+            + " The direction of trade can be 'exports', 'imports', 'balance', or 'all'.",
+            parameters={
+                "provider": "imf",
+                "country": "us",
+                "counterpart": "world,eu",
+                "frequency": "annual",
+                "direction": "exports",
+            },
+        ),
+    ],
+)
+async def direction_of_trade(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Direction Of Trade Statistics from the IMF database.
+
+    The Direction of Trade Statistics (DOTS) presents the value of merchandise exports and
+    imports disaggregated according to a country's primary trading partners.
+    Area and world aggregates are included in the display of trade flows between major areas of the world.
+    Reported data is supplemented by estimates whenever such data is not available or current.
+    Imports are reported on a cost, insurance and freight (CIF) basis
+    and exports are reported on a free on board (FOB) basis.
+    Time series data includes estimates derived from reports of partner countries
+    for non-reporting and slow-reporting countries.
+    """
+    return await OBBject.from_query(Query(**locals()))
