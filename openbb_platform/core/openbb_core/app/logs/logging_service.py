@@ -175,7 +175,8 @@ class LoggingService(metaclass=SingletonMeta):
             ),
         )
 
-    def log(  # noqa: too-many-positional-arguments
+    # pylint: disable=R0917
+    def log(
         self,
         user_settings: UserSettings,
         system_settings: SystemSettings,
