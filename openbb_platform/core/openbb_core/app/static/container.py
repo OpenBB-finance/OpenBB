@@ -22,10 +22,10 @@ class Container:
 
     def _run(self, *args, **kwargs) -> Any:
         """Run a command in the container."""
-        endpoint = args[0][1:].replace("/", ".")
+        endpoint = args[0][1:].replace("/", ".") if args else ""
         defaults = self._command_runner.user_settings.defaults.commands
 
-        if defaults and defaults.get(endpoint):
+        if endpoint and defaults and defaults.get(endpoint):
             default_params = {
                 k: v for k, v in defaults[endpoint].items() if k != "provider"
             }
