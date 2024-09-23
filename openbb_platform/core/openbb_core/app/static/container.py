@@ -1,6 +1,6 @@
 """Container class."""
 
-from typing import TYPE_CHECKING, Any, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -25,7 +25,7 @@ class Container:
         endpoint = args[0][1:].replace("/", ".")
         defaults = self._command_runner.user_settings.defaults.commands
 
-        if defaults.get(endpoint):
+        if defaults and defaults.get(endpoint):
             default_params = {
                 k: v for k, v in defaults[endpoint].items() if k != "provider"
             }
@@ -57,7 +57,7 @@ class Container:
         return all(getattr(credentials, r, None) for r in required)
 
     def _get_provider(
-        self, choice: Optional[str], command: str, default_priority: Tuple[str, ...]
+        self, choice: Optional[str], command: str, default_priority: tuple[str, ...]
     ) -> str:
         """Get the provider to use in execution.
 
@@ -85,11 +85,15 @@ class Container:
         """
         if choice is None:
             commands = self._command_runner.user_settings.defaults.commands
-            _command = self._command_runner._command_map.get_command(command)
+            _command = self._command_runner._command_map.get_command(
+                command
+            )  # pylint: disable=protected-access
             providers = (
                 commands.get(command, {}).get("provider", []) or default_priority
             )
             tries = []
+            if len(providers) == 1:
+                return providers[0]
             for p in providers:
                 result = self._check_credentials(p)
                 if result:

@@ -1,6 +1,6 @@
 """Defaults model."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 from warnings import warn
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -13,7 +13,7 @@ class Defaults(BaseModel):
 
     model_config = ConfigDict(validate_assignment=True, populate_by_name=True)
 
-    commands: Dict[str, Dict[str, Any]] = Field(
+    commands: dict[str, dict[str, Any]] = Field(
         default_factory=dict,
         alias="routes",
     )
