@@ -11,6 +11,7 @@ packages = [{ include = "openbb_government_us" }]
 python = "^3.9"
 openbb-core = "^1.3.2"
 random-user-agent = "^1.0.1"
+PyPDF2 = "3.0.1"
 
 [build-system]
 requires = ["poetry-core"]
