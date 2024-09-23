@@ -175,7 +175,7 @@ class LoggingService(metaclass=SingletonMeta):
             ),
         )
 
-    def log(
+    def log(  # noqa: too-many-positional-arguments
         self,
         user_settings: UserSettings,
         system_settings: SystemSettings,
