@@ -123,7 +123,11 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches  # noqa: PLR0
                 _date = year + "-12-31" if month == "13" else year + "-" + month + "-01"
             new_d["symbol"] = seriesID
             title = metadata[seriesID].get("series_title") if catalog else None
-            title = title + (" (Annual Average)" if month == "13" else "")
+            title = (
+                title + (" (Annual Average)" if month == "13" else "")
+                if title
+                else None
+            )
             if title:
                 new_d["title"] = title
             new_d["date"] = _date
