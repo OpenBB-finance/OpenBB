@@ -227,6 +227,10 @@ def build_api_wrapper(
                 for k, v in defaults.items():
                     if k in standard_params and standard_params[k] is None:
                         standard_params[k] = v
+                    elif (k in standard_params and standard_params[k] is not None) or (
+                        k in extra_params and extra_params[k] is not None
+                    ):
+                        continue
                     elif k not in extra_params or (
                         k in extra_params and extra_params[k] is None
                     ):
