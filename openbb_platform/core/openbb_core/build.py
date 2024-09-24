@@ -1,6 +1,7 @@
 """Script to build the OpenBB platform static assets."""
 
 # flake8: noqa: S603
+# pylint: disable=import-outside-toplevel
 
 import subprocess
 import sys
