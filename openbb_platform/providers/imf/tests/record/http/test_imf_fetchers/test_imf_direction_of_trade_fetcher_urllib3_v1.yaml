@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: http://dataservices.imf.org/REST/SDMX_JSON.svc/CompactData/DOT/A.US.TXG_FOB_USD.W00+B0?startPeriod=2020-01-01&endPeriod=2023-12-31
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6SSX6+aQBDFv4qhL216gQVRlCdRsCURsfxprH0gK4xeEgHDbtXG3O/e2dWm1zRp
+        btIXEs6e35nZmb0qs7Y+0oJ7lFPFuSqTS31omHNhleIoz5wfHV0/n8/aua+13V43CTH0dbhIimeo
+        qVo1jNOmAOXpD1i+AZR+VjlMxizagvKqbR7BxAvXsmYHrP3RFcB0IYUL/UYx/WTmRK+BMbqHnuiV
+        YbMd7CvGu58aK+uL5B/sMuKGaBdWSgypEq/PoDtVWEar6p0Ei9todC9K3+oTmfJyYor/cx8M+Qy0
+        hE4sJfAwqrBKwzQGoI6GI1u1LPyMh9uhurUte0TtHRkbBKkUGEf3jh6YWMuqgyPtoETJJKalkrFq
+        ktQYOQPiWBb6E2hKkFUmlXAZM4LqktYgKovn4Bxos0ceGjx4x+HC8ScI58rLkzJrG46vR1izOEBd
+        rAHnKZ7MfYwIpXCA43PbABo+9ozee2zlQ29o9tWhaRLlBYNiKKA6vW5ks9mICh5uJgEuR4CLeCWJ
+        oqK/hmHsvW6JbvaPPWIzCXQVIPL9qkzmsf8FYRflSezPczf2XfzPEiEESy+YuWkUo5KuP+XzaJpn
+        iSeOZlG2TP145cbpb2ZKxEG2DNI8zBYpMkMhpEHoIxmHrpBWxjcUo+29vDxc+XEQeeg3iSkzommS
+        f3UXmS+0ft8eWJpt2wbeHDv+CzEwcPKA2L9ao3cbBoIQiqK9OLYQjz+VONpS6N1jhx6N5GALuAIO
+        0gVKlNehkd9GHVVGZrCQQ6RbFJ0elMEm8Zhrnmu/G0Vf/OW4mxQm3e1kbIw+HLupIj1LQB7Z/Ler
+        cDiWUSdM5TBrg5W1lzso1ltUP7LXzLwBuF028KsFAAA=
+    headers:
+      Cache-Control:
+      - private
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '659'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 20 Sep 2024 22:50:44 GMT
+      Set-Cookie: null
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

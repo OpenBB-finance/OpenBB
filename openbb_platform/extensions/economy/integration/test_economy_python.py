@@ -629,6 +629,26 @@ def test_economy_available_indicators(params, obb):
                 "frequency": "quarter",
             }
         ),
+        (
+            {
+                "provider": "imf",
+                "country": "us,uk,jp",
+                "symbol": "gold_reserves",
+                "start_date": "2022-01-01",
+                "end_date": "2023-12-31",
+                "frequency": "annual",
+            }
+        ),
+        (
+            {
+                "provider": "imf",
+                "country": "all",
+                "symbol": "derivative_assets",
+                "start_date": "2022-01-01",
+                "end_date": "2023-12-31",
+                "frequency": "annual",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1132,6 +1152,33 @@ def test_economy_port_volume(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.port_volume(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "country": "us",
+                "counterpart": "world,eu",
+                "frequency": "annual",
+                "direction": "exports",
+                "start_date": "2020-01-01",
+                "end_date": "2023-01-01",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_direction_of_trade(params, obb):
+    """Test the economy direction of trade endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.direction_of_trade(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
