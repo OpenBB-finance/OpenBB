@@ -64,7 +64,7 @@ Add it to the credentials section of `~/.openbb_platform/user_settings.json`
 
 ### Current Python Session
 
-The credential can be added for the current session only, after import the OpenBB paackage.
+The credential can be added for the current session only, after importing the OpenBB package.
 
 ```python
 from openbb import obb
