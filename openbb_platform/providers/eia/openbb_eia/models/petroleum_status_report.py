@@ -2,28 +2,25 @@
 
 # pylint: disable=unused-argument
 
-from datetime import (
-    datetime,
-)
-from typing import TYPE_CHECKING, Any, Literal, Optional
+from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
-
 from openbb_core.provider.standard_models.petroleum_status_report import (
     PetroleumStatusReportData,
     PetroleumStatusReportQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field
+
 from openbb_eia.utils.constants import (
-    WpsrCategoryType,
     WpsrCategoryChoices,
+    WpsrCategoryType,
     WpsrFileMap,
     WpsrTableChoices,
     WpsrTableMap,
     WpsrTableType,
 )
-from pydantic import Field
 
 
 class EiaPetroleumStatusReportQueryParams(PetroleumStatusReportQueryParams):
@@ -113,15 +110,16 @@ class EiaPetroleumStatusReportFetcher(
     ) -> list[EiaPetroleumStatusReportData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
-        import re
+        import re  # noqa
         from warnings import warn
         from pandas import Categorical, ExcelFile, concat, read_excel
 
         category = query.category
-        if query.table == "all" or not query.table:
-            tables = list(WpsrTableMap[category])
-        else:
-            tables = [query.table]
+        tables = (
+            list(WpsrTableMap[category])
+            if query.table == "all" or not query.table
+            else [query.table]
+        )
 
         file = data.get("file")
 

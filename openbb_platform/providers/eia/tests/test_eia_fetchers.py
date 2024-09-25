@@ -1,7 +1,6 @@
 """EIA Fetcher Tests."""
 
 import pytest
-
 from openbb_core.app.service.user_service import UserService
 from openbb_eia.models.petroleum_status_report import EiaPetroleumStatusReportFetcher
 
