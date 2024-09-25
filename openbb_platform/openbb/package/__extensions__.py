@@ -40,6 +40,7 @@ Extensions:
     - federal_reserve@1.3.2
     - fmp@1.3.2
     - fred@1.3.2
+    - imf@1.0.0b0
     - intrinio@1.3.2
     - oecd@1.3.2
     - polygon@1.3.2

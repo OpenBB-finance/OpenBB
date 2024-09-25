@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 # We need to wrap this as a helper to accommodate requests for historical data
 # greater than 20 years in length, or containing more than 50 symbols.
-async def get_bls_timeseries(  # pylint: disable=too-many-branches  # noqa: PLR0912
+async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-positional-arguments  # noqa: PLR0912
     api_key: str,
     series_ids: Union[str, List[str]],
     start_year: Optional[int] = None,
@@ -123,7 +123,11 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches  # noqa: PLR0
                 _date = year + "-12-31" if month == "13" else year + "-" + month + "-01"
             new_d["symbol"] = seriesID
             title = metadata[seriesID].get("series_title") if catalog else None
-            title = title + (" (Annual Average)" if month == "13" else "")
+            title = (
+                title + (" (Annual Average)" if month == "13" else "")
+                if title
+                else None
+            )
             if title:
                 new_d["title"] = title
             new_d["date"] = _date
