@@ -55,3 +55,40 @@ def test_commodity_lbma_fixing(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "category": "balance_sheet",
+                "table": "stocks",
+                "start_date": None,
+                "end_date": None,
+                "provider": "eia",
+                "use_cache": True,
+            }
+        ),
+        (
+            {
+                "category": "weekly_estimates",
+                "table": "crude_production",
+                "start_date": "2020-01-01",
+                "end_date": "2023-12-31",
+                "provider": "eia",
+                "use_cache": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_petroleum_status_report(params, headers):
+    """Test the Petroleum Status Report endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/commodity/petroleum_status_report?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

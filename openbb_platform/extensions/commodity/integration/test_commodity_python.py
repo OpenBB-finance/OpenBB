@@ -49,3 +49,37 @@ def test_commodity_lbma_fixing(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "category": "balance_sheet",
+                "table": "stocks",
+                "start_date": None,
+                "end_date": None,
+                "provider": "eia",
+                "use_cache": True,
+            }
+        ),
+        (
+            {
+                "category": "weekly_estimates",
+                "table": "crude_production",
+                "start_date": "2020-01-01",
+                "end_date": "2023-12-31",
+                "provider": "eia",
+                "use_cache": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_petroleum_status_report(params, obb):
+    """Test Commodity extension."""
+    result = obb.commodity.petroleum_status_report(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

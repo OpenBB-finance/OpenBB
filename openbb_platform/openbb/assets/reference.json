@@ -23,6 +23,7 @@
                 "bls@1.0.0",
                 "cftc@1.0.0",
                 "econdb@1.2.2",
+                "eia@1.0.0b0",
                 "federal_reserve@1.3.2",
                 "fmp@1.3.2",
                 "fred@1.3.2",
@@ -39,6 +40,205 @@
         }
     },
     "paths": {
+        "/commodity/petroleum_status_report": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "EIA Weekly Petroleum Status Report.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the EIA's Weekly Petroleum Status Report.\nobb.commodity.petroleum_status_report(provider='eia')\n# Select the category of data, and filter for a specific table within the report.\nobb.commodity.petroleum_status_report(category=weekly_estimates, table=imports, provider='eia')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": [
+                    {
+                        "name": "category",
+                        "type": "Literal['balance_sheet', 'inputs_and_production', 'refiner_and_blender_net_production', 'crude_petroleum_stocks', 'gasoline_fuel_stocks', 'total_gasoline_by_sub_padd', 'distillate_fuel_oil_stocks', 'imports', 'imports_by_country', 'weekly_estimates', 'spot_prices_crude_gas_heating', 'spot_prices_diesel_jet_fuel_propane', 'retail_prices']",
+                        "description": "The group of data to be returned. The default is the balance sheet.",
+                        "default": "balance_sheet",
+                        "optional": true,
+                        "choices": [
+                            "balance_sheet",
+                            "inputs_and_production",
+                            "refiner_and_blender_net_production",
+                            "crude_petroleum_stocks",
+                            "gasoline_fuel_stocks",
+                            "total_gasoline_by_sub_padd",
+                            "distillate_fuel_oil_stocks",
+                            "imports",
+                            "imports_by_country",
+                            "weekly_estimates",
+                            "spot_prices_crude_gas_heating",
+                            "spot_prices_diesel_jet_fuel_propane",
+                            "retail_prices"
+                        ]
+                    },
+                    {
+                        "name": "table",
+                        "type": "Literal['all', 'conventional_gas', 'crude', 'crude_production', 'crude_production_avg', 'diesel', 'ethanol_plant_production', 'ethanol_plant_production_avg', 'exports', 'exports_avg', 'heating_oil', 'imports', 'imports_avg', 'imports_by_country', 'imports_by_country_avg', 'inputs_and_utilization', 'inputs_and_utilization_avg', 'jet_fuel', 'monthly', 'net_imports_inc_spr_avg', 'net_imports_incl_spr', 'net_production', 'net_production_avg', 'net_production_by_product', 'net_production_by_production_avg', 'product_by_region', 'product_by_region_avg', 'product_supplied', 'product_supplied_avg', 'propane', 'rbob', 'refiner_blender_net_production', 'refiner_blender_net_production_avg', 'stocks', 'supply', 'supply_avg', 'ulta_low_sulfur_distillate_reflassification', 'ulta_low_sulfur_distillate_reflassification_avg', 'weekly']",
+                        "description": "The specific table element within the category to be returned, default is 'stocks'.\n    Note: Choices represent all available tables from the entire collection and are not all available for every category. Invalid choices will raise a ValidationError with a message indicating the valid choices for the selected category.",
+                        "default": "stocks",
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "conventional_gas",
+                            "crude",
+                            "crude_production",
+                            "crude_production_avg",
+                            "diesel",
+                            "ethanol_plant_production",
+                            "ethanol_plant_production_avg",
+                            "exports",
+                            "exports_avg",
+                            "heating_oil",
+                            "imports",
+                            "imports_avg",
+                            "imports_by_country",
+                            "imports_by_country_avg",
+                            "inputs_and_utilization",
+                            "inputs_and_utilization_avg",
+                            "jet_fuel",
+                            "monthly",
+                            "net_imports_inc_spr_avg",
+                            "net_imports_incl_spr",
+                            "net_production",
+                            "net_production_avg",
+                            "net_production_by_product",
+                            "net_production_by_production_avg",
+                            "product_by_region",
+                            "product_by_region_avg",
+                            "product_supplied",
+                            "product_supplied_avg",
+                            "propane",
+                            "rbob",
+                            "refiner_blender_net_production",
+                            "refiner_blender_net_production_avg",
+                            "stocks",
+                            "supply",
+                            "supply_avg",
+                            "ulta_low_sulfur_distillate_reflassification",
+                            "ulta_low_sulfur_distillate_reflassification_avg",
+                            "weekly"
+                        ]
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Subsequent requests for the same source data are cached for the session using ALRU cache.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PetroleumStatusReport]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['eia']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "table",
+                        "type": "str",
+                        "description": "Table name for the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "order",
+                        "type": "int",
+                        "description": "Presented order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Value of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "Unit or scale of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": []
+            },
+            "model": "PetroleumStatusReport"
+        },
         "/crypto/price/historical": {
             "deprecated": {
                 "flag": null,
@@ -38700,6 +38900,9 @@
         }
     },
     "routers": {
+        "/commodity": {
+            "description": "Commodity market data."
+        },
         "/crypto": {
             "description": "Cryptocurrency market data."
         },

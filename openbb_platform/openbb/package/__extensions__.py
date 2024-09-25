@@ -8,6 +8,7 @@ class Extensions(Container):
     # fmt: off
     """
 Routers:
+    /commodity
     /crypto
     /currency
     /derivatives
@@ -36,6 +37,7 @@ Extensions:
     - bls@1.0.0
     - cftc@1.0.0
     - econdb@1.2.2
+    - eia@1.0.0b0
     - federal_reserve@1.3.2
     - fmp@1.3.2
     - fred@1.3.2
@@ -51,6 +53,13 @@ Extensions:
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
+
+    @property
+    def commodity(self):
+        # pylint: disable=import-outside-toplevel
+        from . import commodity
+
+        return commodity.ROUTER_commodity(command_runner=self._command_runner)
 
     @property
     def crypto(self):
