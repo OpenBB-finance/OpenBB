@@ -150,7 +150,7 @@ class EiaPetroleumStatusReportFetcher(
             titles = [
                 d.replace(".1", "") for d in df.columns.get_level_values(1).tolist()
             ]
-            title_map = {s: t for s, t in zip(symbols, titles)}
+            title_map = dict(zip(symbols, titles))
             df = read_excel(file, sheet_name, header=None, skiprows=3)
             df.columns = [d.replace("Sourcekey", "date") for d in symbols]
             df = df.melt(
