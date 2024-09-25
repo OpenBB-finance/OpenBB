@@ -187,11 +187,13 @@ class EiaPetroleumStatusReportFetcher(
         try:
             for table in tables:
                 read_excel_file(file, category, table)
+
             results = concat(dfs)
-            results = results.sort_values(by=["date", "table", "order"])
 
             if len(results) < 1:
                 raise EmptyDataError("The data is empty.")
+
+            results = results.sort_values(by=["date", "table", "order"])
 
             return [
                 EiaPetroleumStatusReportData.model_validate(d)
