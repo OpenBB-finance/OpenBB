@@ -9,7 +9,6 @@ import sys
 
 def main():
     """Build the OpenBB platform static assets."""
-    message = "\nOpenBB build script not found, installing from PyPI...\n"
     try:
         from openbb import build
 
@@ -19,7 +18,10 @@ def main():
         ModuleNotFoundError,
         AttributeError,
     ) as e:
-        print(message)  # noqa: T201
+        subprocess.run(
+            ["/bin/echo", "\nOpenBB build script not found, installing from PyPI...\n"],
+            check=True,
+        )
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "openbb", "--no-deps"],
             check=True,
