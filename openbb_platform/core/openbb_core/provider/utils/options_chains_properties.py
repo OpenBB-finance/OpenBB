@@ -1,6 +1,6 @@
 """Options Chains Properties."""
 
-# pylint: disable=too-many-lines, too-many-arguments, too-many-locals, too-many-statements
+# pylint: disable=too-many-lines, too-many-arguments, too-many-locals, too-many-statements, too-many-positional-arguments
 
 from datetime import datetime
 from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Union
