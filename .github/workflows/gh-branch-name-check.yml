@@ -29,7 +29,7 @@ jobs:
 
       - name: Check branch name for develop PRs
         id: check-develop-branch
-        if: ${{ steps.branch-names.outputs.base_ref_branch == 'develop' }}
+        if: ${{ steps.branch-names.outputs.base_ref_branch == 'develop' && !github.event.pull_request.head.repo.fork }}
         run: |
           if ! [[ "${{ steps.branch-names.outputs.head_ref_branch }}" =~ ^(feature/.*|docs/.*|bugfix/.*|hotfix/.*|release/([a-zA-Z-]+-)?[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
             echo "reason=Invalid branch name for a Pull Request to be merged to `${{ steps.branch-names.outputs.base_ref_branch }}` branch. Branches must follow the GitFlow naming convention." >> $GITHUB_OUTPUT
