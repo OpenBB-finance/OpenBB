@@ -1,3 +1,6 @@
+[![image](https://github.com/user-attachments/assets/db4855e3-a94b-49ba-bd93-328caa323bf9)](https://oss.gg)
+
+
 # Instructions for oss.gg Hacktoberfest 2024 Open Source Contributors
 
 ## Overview of OpenBB Quests
