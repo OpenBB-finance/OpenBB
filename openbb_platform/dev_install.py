@@ -22,10 +22,13 @@ openbb-devtools = { path = "./extensions/devtools", develop = true, markers = "p
 openbb-core = { path = "./core", develop = true }
 
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
+openbb-bls = { path = "./providers/bls", develop = true }
+openbb-cftc = { path = "./providers/cftc", develop = true }
 openbb-econdb = { path = "./providers/econdb", develop = true }
 openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
+openbb-imf = { path = "./providers/imf", develop = true }
 openbb-intrinio = { path = "./providers/intrinio", develop = true }
 openbb-oecd = { path = "./providers/oecd", develop = true }
 openbb-polygon = { path = "./providers/polygon", develop = true }

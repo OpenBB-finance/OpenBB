@@ -73,22 +73,31 @@ class SAForwardSalesEstimatesFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Seeking Alpha endpoint."""
-        tickers = query.symbol.split(",")
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.client import ClientSession
+
+        tickers = query.symbol.split(",")  # type: ignore
         fp = query.period if query.period == "annual" else "quarterly"
         url = "https://seekingalpha.com/api/v3/symbol_data/estimates"
-        payload = ""
         querystring = {
             "estimates_data_items": "revenue_actual,revenue_consensus_low,revenue_consensus_mean,"
             "revenue_consensus_high,revenue_num_of_estimates",
             "period_type": fp,
             "relative_periods": "-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12",
         }
-        ids = {ticker: await get_seekingalpha_id(ticker) for ticker in tickers}
-        querystring["ticker_ids"] = (",").join(list(ids.values()))
-        response = await amake_request(
-            url, data=payload, headers=HEADERS, params=querystring
-        )
-        estimates = response.get("estimates", {})  # type: ignore
+
+        async with ClientSession(trust_env=True) as session:
+            kwargs = {"session": session}
+            ids = {
+                ticker: await get_seekingalpha_id(ticker, **kwargs)
+                for ticker in tickers
+            }
+            querystring["ticker_ids"] = ("%2C").join(list(ids.values()))
+            response = await amake_request(
+                url, headers=HEADERS, params=querystring, session=session
+            )
+            estimates = response.get("estimates", {})  # type: ignore
+
         if not estimates:
             raise OpenBBError(f"No estimates data was returned for: {query.symbol}")
         output: Dict = {"ids": ids, "estimates": estimates}
@@ -102,7 +111,7 @@ class SAForwardSalesEstimatesFetcher(
         **kwargs: Any,
     ) -> List[SAForwardSalesEstimatesData]:
         """Transform the data to the standard format."""
-        tickers = query.symbol.split(",")
+        tickers = query.symbol.split(",")  # type: ignore
         ids = data.get("ids", {})
         estimates = data.get("estimates", {})
         results: List[SAForwardSalesEstimatesData] = []
@@ -111,7 +120,13 @@ class SAForwardSalesEstimatesFetcher(
             if sa_id == "" or sa_id not in estimates:
                 warn(f"Symbol Error: No data found for, {ticker}")
             seek_object = estimates.get(sa_id, {})
-            items = len(seek_object["revenue_num_of_estimates"])
+            if not seek_object:
+                warn(f"No data found for {ticker}")
+                continue
+            items = len(seek_object.get("revenue_num_of_estimates"))
+            if not items:
+                warn(f"No data found for {ticker}")
+                continue
             for i in range(0, items - 4):
                 rev_estimates: Dict = {}
                 rev_estimates["symbol"] = ticker

@@ -631,7 +631,7 @@ def test_equity_ownership_institutional(params, headers):
     [
         (
             {
-                "symbol": "",
+                "symbol": None,
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 100,
@@ -861,7 +861,7 @@ def test_equity_fundamental_ratios(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "period": "annual", "structure": "flat", "provider": "fmp"})],
+    [({"symbol": "AAPL", "period": "annual", "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_revenue_per_geography(params, headers):
@@ -877,7 +877,7 @@ def test_equity_fundamental_revenue_per_geography(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "period": "annual", "structure": "flat", "provider": "fmp"})],
+    [({"symbol": "AAPL", "period": "annual", "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_revenue_per_segment(params, headers):
@@ -1131,8 +1131,8 @@ def test_equity_compare_groups(params, headers):
                 "adjustment": "splits_only",
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "start_date": "2023-06-01",
-                "end_date": "2023-06-03",
+                "start_date": None,
+                "end_date": None,
                 "interval": "1h",
             }
         ),
@@ -1391,7 +1391,7 @@ def test_equity_fundamental_latest_attributes(params, headers):
     [
         ({"query": "AAPl", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
-        ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
+        ({"query": "", "provider": "nasdaq", "is_etf": True}),
         ({"query": "gold", "provider": "tmx", "use_cache": False}),
         ({"query": "gold", "provider": "tradier", "is_symbol": False}),
         (
@@ -1400,7 +1400,6 @@ def test_equity_fundamental_latest_attributes(params, headers):
                 "provider": "intrinio",
                 "active": True,
                 "limit": 100,
-                "use_cache": None,
             }
         ),
     ],

@@ -18,14 +18,22 @@ class CboeEquitySearchQueryParams(EquitySearchQueryParams):
     Source: https://www.cboe.com/
     """
 
+    use_cache: bool = Field(
+        default=True,
+        description="Whether to use the cache or not.",
+    )
+
 
 class CboeEquitySearchData(EquitySearchData):
     """CBOE Equity Search Data."""
 
+    __alias_dict__ = {
+        "dpm_name": "DPM Name",
+    }
+
     dpm_name: Optional[str] = Field(
         default=None,
         description="Name of the primary market maker.",
-        alias="DPM Name",
     )
     post_station: Optional[str] = Field(
         default=None, description="Post and station location on the CBOE trading floor."

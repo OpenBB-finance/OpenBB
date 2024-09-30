@@ -1,0 +1,73 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://publicreporting.cftc.gov/resource/jun7-fc8e.json?%24limit=MOCK_LIMIT&%24order=MOCK_ORDER&%24where=MOCK_WHERE
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAI2YXW/bNhSG7/crBGMXGzALJCVZdO8MTWuExQ5gu1iAoiBcS0mE2pIhKciCYv99
+        pEjZpMSPFLkoxIfvOedleMjw689Zmc8+zVAIMAIoWMZhnMz+mJ0PzY+iI4cqJ8W/x5dD9VyQ6nAu
+        Wsqus2T74KXzdbbJvO2X3S69v/cQAMDLNn8+enMvucuS1ecHb51uk9Vmn92nXvqY3K02n1Mq3RSX
+        uulIfugKcmjJO/1HzmeS92kAFM4BniOwB+BT/+NTYTqrx8TUt6L4Qd7eBO9t+6/eP/SrF4SUPdZV
+        1xyOHRFVsMSdebN5T92RjCcf65xN5tYMkDqWrFNvGGmK57KuriN32U33fK7zsnuXFPtZ1+8izSEz
+        mlTKsqovRUXKqiuaoqUrcjpRBi5DwCqt6orNJ5e6LTsatyWnunoWUBjHgZZpX5iLQokuOlIpAV2a
+        4pALCkVYpKoPFYAFmAJyHLRkQFd3bBE7vQoGS6iHeqU+2xgDnq1ZBsIABlpITggvUDhxtz7lbnc5
+        5HBXKE3dLWV7rdZyCZu1nLBbyxmHtQS6zRUVOcwV4bTmdi9FQweBxVorIiLYGf5rCwXgCuKMYLTV
+        znAhdEvTpWH0U06W9+GyIrqegBBSocEceYctYi2idIQFjvTQ5dYQYKTGGgeCYb87RoAcRp1/tVDS
+        QOHSAF3bAQ4mqY5V5iie2HITGfpXX/KFdv36SWsuZAeRhJQ6d1HoL7SMHCpCfqyHho4A/UABJt5G
+        Pp4CyhL6kQLo3A3hKI+Ju1E0LWesEuFRsjp3w9APTfYOfdJqr+hzdns55LCXNzqjwSIbi8GCsBos
+        Dgi7wX0mdotFRXaLRTCbxUMLsVrsgEbdyERxk5EGcYf6QJyRzy5K6sLThN06I6MVit4R86Jp+1jD
+        HUn6rOu9mmF5lyx14/IlLJCAsXg8HlPawSjf8SaGCx2gKKARIXaksWRxDTCWzMf1JbOKxd1HWzEf
+        M1Qs9qexYjFuqVgQk4rlA19bsgXQ3Cv0K61D7CEc+oYdYylfuR1VR/Lc1C29sBQkJF3e9Dr9bcMP
+        DcRwftAGiCcIlkUC2Lc/HXE9hKC/HJCK/sml5DHsPBOjHEK8HcsQHgvRfKCWUQ5wXVlSTvAD7vSQ
+        w5+ecTnETxGrR2Kr2j1SjiyDR2JP2j0SZ5bDo1tLNltkYrBbBptlNP4ofd1okJHCH5HCNin+3vBa
+        lR17XvmNPwBcXybSR+/R+xX40e/ya4HmoeD2ktC+fqdevF6GJ4Xd/iH5m3FZku4UUsH+yjarTZKt
+        mORuv/2yTjd7hj+9dnV1eid1w7rN97Iq2Bonw3//+/bL/5C3Jc9HEgAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Thu, 05 Sep 2024 18:48:26 GMT
+      Etag: null
+      Last-Modified:
+      - Fri, 30 Aug 2024 19:30:46 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-SODA2-Data-Out-Of-Date:
+      - 'false'
+      X-SODA2-Fields:
+      - '["id","market_and_exchange_names","report_date_as_yyyy_mm_dd","yyyy_report_week_ww","contract_market_name","cftc_contract_market_code","cftc_market_code","cftc_region_code","cftc_commodity_code","commodity_name","open_interest_all","noncomm_positions_long_all","noncomm_positions_short_all","noncomm_postions_spread_all","comm_positions_long_all","comm_positions_short_all","tot_rept_positions_long_all","tot_rept_positions_short","nonrept_positions_long_all","nonrept_positions_short_all","open_interest_old","noncomm_positions_long_old","noncomm_positions_short_old","noncomm_positions_spread","comm_positions_long_old","comm_positions_short_old","tot_rept_positions_long_old","tot_rept_positions_short_1","nonrept_positions_long_old","nonrept_positions_short_old","open_interest_other","noncomm_positions_long_other","noncomm_positions_short_other","noncomm_positions_spread_1","comm_positions_long_other","comm_positions_short_other","tot_rept_positions_long_other","tot_rept_positions_short_2","nonrept_positions_long_other","nonrept_positions_short_other","change_in_open_interest_all","change_in_noncomm_long_all","change_in_noncomm_short_all","change_in_noncomm_spead_all","change_in_comm_long_all","change_in_comm_short_all","change_in_tot_rept_long_all","change_in_tot_rept_short","change_in_nonrept_long_all","change_in_nonrept_short_all","pct_of_open_interest_all","pct_of_oi_noncomm_long_all","pct_of_oi_noncomm_short_all","pct_of_oi_noncomm_spread","pct_of_oi_comm_long_all","pct_of_oi_comm_short_all","pct_of_oi_tot_rept_long_all","pct_of_oi_tot_rept_short","pct_of_oi_nonrept_long_all","pct_of_oi_nonrept_short_all","pct_of_open_interest_old","pct_of_oi_noncomm_long_old","pct_of_oi_noncomm_short_old","pct_of_oi_noncomm_spread_1","pct_of_oi_comm_long_old","pct_of_oi_comm_short_old","pct_of_oi_tot_rept_long_old","pct_of_oi_tot_rept_short_1","pct_of_oi_nonrept_long_old","pct_of_oi_nonrept_short_old","pct_of_open_interest_other","pct_of_oi_noncomm_long_other","pct_of_oi_noncomm_short_other","pct_of_oi_noncomm_spread_2","pct_of_oi_comm_long_other","pct_of_oi_comm_short_other","pct_of_oi_tot_rept_long_other","pct_of_oi_tot_rept_short_2","pct_of_oi_nonrept_long_other","pct_of_oi_nonrept_short_other","traders_tot_all","traders_noncomm_long_all","traders_noncomm_short_all","traders_noncomm_spread_all","traders_comm_long_all","traders_comm_short_all","traders_tot_rept_long_all","traders_tot_rept_short_all","traders_tot_old","traders_noncomm_long_old","traders_noncomm_short_old","traders_noncomm_spead_old","traders_comm_long_old","traders_comm_short_old","traders_tot_rept_long_old","traders_tot_rept_short_old","traders_tot_other","traders_noncomm_long_other","traders_noncomm_short_other","traders_noncomm_spread_other","traders_comm_long_other","traders_comm_short_other","traders_tot_rept_long_other","traders_tot_rept_short_other","conc_gross_le_4_tdr_long","conc_gross_le_4_tdr_short","conc_gross_le_8_tdr_long","conc_gross_le_8_tdr_short","conc_net_le_4_tdr_long_all","conc_net_le_4_tdr_short_all","conc_net_le_8_tdr_long_all","conc_net_le_8_tdr_short_all","conc_gross_le_4_tdr_long_1","conc_gross_le_4_tdr_short_1","conc_gross_le_8_tdr_long_1","conc_gross_le_8_tdr_short_1","conc_net_le_4_tdr_long_old","conc_net_le_4_tdr_short_old","conc_net_le_8_tdr_long_old","conc_net_le_8_tdr_short_old","conc_gross_le_4_tdr_long_2","conc_gross_le_4_tdr_short_2","conc_gross_le_8_tdr_long_2","conc_gross_le_8_tdr_short_2","conc_net_le_4_tdr_long_other","conc_net_le_4_tdr_short_other","conc_net_le_8_tdr_long_other","conc_net_le_8_tdr_short_other","contract_units","commodity","commodity_subgroup_name","commodity_group_name","futonly_or_combined"]'
+      X-SODA2-Secondary-Last-Modified:
+      - Fri, 30 Aug 2024 19:30:46 GMT
+      X-SODA2-Truth-Last-Modified:
+      - Fri, 30 Aug 2024 19:30:46 GMT
+      X-SODA2-Types:
+      - '["text","text","floating_timestamp","text","text","text","text","text","text","text","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","text","text","text","text","text"]'
+      X-Socrata-Region: null
+      X-Socrata-RequestId: null
+    status:
+      code: 200
+      message: OK
+version: 1

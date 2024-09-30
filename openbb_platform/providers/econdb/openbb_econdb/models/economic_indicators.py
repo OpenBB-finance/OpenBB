@@ -13,6 +13,7 @@ from openbb_core.provider.standard_models.economic_indicators import (
     EconomicIndicatorsData,
     EconomicIndicatorsQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
@@ -24,6 +25,12 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         "symbol": {"multiple_items_allowed": True},
         "country": {"multiple_items_allowed": True},
     }
+
+    symbol: str = Field(
+        description=QUERY_DESCRIPTIONS.get("symbol", "")
+        + " The base symbol for the indicator (e.g. GDP, CPI, etc.)."
+        + " Use `available_indicators()` to get a list of available symbols.",
+    )
 
     transform: Union[None, Literal["toya", "tpop", "tusd", "tpgp"]] = Field(
         default=None,
@@ -201,7 +208,7 @@ class EconDbEconomicIndicatorsFetcher(
         new_symbols: List = []
         # We need to join country, symbol, and transformation
         # for every combination of country and symbol.
-        for symbol in symbols:
+        for s in symbols:
             # We will assume that if the symbol has a '~' in it,
             # the user knows what they are doing. We don't want to
             # match this defined symbol with any supplied country, and we need to
@@ -210,9 +217,10 @@ class EconDbEconomicIndicatorsFetcher(
             # and return the symbol as 'level' if it is not.
             # We will also check if the symbol should have a country,
             # and if one was supplied.
+            symbol = s.upper()
             if "~" in symbol:
-                _symbol = symbol.split("~")[0].upper()
-                _transform = symbol.split("~")[1].upper()
+                _symbol = symbol.split("~")[0]
+                _transform = symbol.split("~")[1]
                 if (
                     helpers.HAS_COUNTRIES.get(_symbol) is True
                     and _symbol in helpers.SYMBOL_TO_INDICATOR.values()
@@ -275,7 +283,9 @@ class EconDbEconomicIndicatorsFetcher(
             ):
                 new_symbols.append(symbol)
         if not new_symbols:
-            symbol_message = helpers.INDICATOR_COUNTRIES.get(query.symbol, "None")
+            symbol_message = helpers.INDICATOR_COUNTRIES.get(
+                query.symbol.upper(), "None"
+            )
             error_message = (
                 "No valid combination of indicator symbols and countries were supplied."
                 + f"\nValid countries for '{query.symbol}' are: {symbol_message}"

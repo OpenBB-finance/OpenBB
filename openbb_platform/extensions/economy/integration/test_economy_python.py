@@ -629,6 +629,26 @@ def test_economy_available_indicators(params, obb):
                 "frequency": "quarter",
             }
         ),
+        (
+            {
+                "provider": "imf",
+                "country": "us,uk,jp",
+                "symbol": "gold_reserves",
+                "start_date": "2022-01-01",
+                "end_date": "2023-12-31",
+                "frequency": "annual",
+            }
+        ),
+        (
+            {
+                "provider": "imf",
+                "country": "all",
+                "symbol": "derivative_assets",
+                "start_date": "2022-01-01",
+                "end_date": "2023-12-31",
+                "frequency": "annual",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1010,6 +1030,155 @@ def test_economy_fred_release_table(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.fred_release_table(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "bls",
+                "query": "gasoline;seattle;average price",
+                "category": "cpi",
+                "include_extras": False,
+                "include_code_map": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_bls_search(params, obb):
+    """Test the economy survey bls search endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.survey.bls_search(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "bls",
+                "symbol": "APUS49D74714,APUS49D74715,APUS49D74716",
+                "start_date": "2024-01-01",
+                "end_date": "2024-07-01",
+                "aspects": False,
+                "calculations": True,
+                "annual_average": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_bls_series(params, obb):
+    """Test the economy survey bls series endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.survey.bls_series(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "IN,CN",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_export_destinations(params, obb):
+    """Test the economy export destinations endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.export_destinations(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": None,
+                "end_date": None,
+                "asset_class": "mbs",
+                "unit": "value",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_primary_dealer_fails(params, obb):
+    """Test the economy primary dealer fails endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.primary_dealer_fails(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "start_date": None,
+                "end_date": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_port_volume(params, obb):
+    """Test the economy port volume endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.port_volume(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "country": "us",
+                "counterpart": "world,eu",
+                "frequency": "annual",
+                "direction": "exports",
+                "start_date": "2020-01-01",
+                "end_date": "2023-01-01",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_direction_of_trade(params, obb):
+    """Test the economy direction of trade endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.direction_of_trade(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

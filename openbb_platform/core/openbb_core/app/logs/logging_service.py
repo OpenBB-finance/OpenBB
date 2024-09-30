@@ -19,13 +19,13 @@ from pydantic_core import to_jsonable_python
 
 
 class DummyProvider(BaseModel):
-    """Dummy Provider for error handling with logs"""
+    """Dummy Provider for error handling with logs."""
 
     provider: str = "not_passed_to_kwargs"
 
 
 class LoggingService(metaclass=SingletonMeta):
-    """Logging Manager class responsible for managing logging settings and handling logs.
+    """Logging Service class responsible for managing logging settings and handling logs.
 
     Attributes
     ----------
@@ -58,6 +58,8 @@ class LoggingService(metaclass=SingletonMeta):
     _log_startup()
         Log startup information.
     """
+
+    _logger = logging.getLogger("openbb.logging_service")
 
     def __init__(
         self,
@@ -118,20 +120,15 @@ class LoggingService(metaclass=SingletonMeta):
         HandlersManager
             Handlers Manager object.
         """
-        logger = logging.getLogger(__name__)
-        logging.basicConfig(
-            level=self._logging_settings.verbosity,
-            format=FormatterWithExceptions.LOGFORMAT,
-            datefmt=FormatterWithExceptions.DATEFORMAT,
-            handlers=[],
-            force=True,
+        handlers_manager = HandlersManager(
+            self._logger, settings=self._logging_settings
         )
-        handlers_manager = HandlersManager(settings=self._logging_settings)
+        handlers_manager.setup()
 
-        logger.info("Logging configuration finished")
-        logger.info("Logging set to %s", self._logging_settings.handler_list)
-        logger.info("Verbosity set to %s", self._logging_settings.verbosity)
-        logger.info(
+        self._logger.info("Logging configuration finished")
+        self._logger.info("Logging set to %s", self._logging_settings.handler_list)
+        self._logger.info("Verbosity set to %s", self._logging_settings.verbosity)
+        self._logger.info(
             "LOGFORMAT: %s%s",
             FormatterWithExceptions.LOGPREFIXFORMAT.replace("|", "-"),
             FormatterWithExceptions.LOGFORMAT.replace("|", "-"),
@@ -160,8 +157,7 @@ class LoggingService(metaclass=SingletonMeta):
                 for c in credentials
             }
 
-        logger = logging.getLogger(__name__)
-        logger.info(
+        self._logger.info(
             "STARTUP: %s ",
             json.dumps(
                 {
@@ -179,6 +175,7 @@ class LoggingService(metaclass=SingletonMeta):
             ),
         )
 
+    # pylint: disable=R0917
     def log(
         self,
         user_settings: UserSettings,
@@ -223,7 +220,6 @@ class LoggingService(metaclass=SingletonMeta):
         if "login" in route:
             self._log_startup(route, custom_headers)
         else:
-            logger = logging.getLogger(__name__)
 
             # Remove CommandContext if any
             kwargs.pop("cc", None)
@@ -254,7 +250,7 @@ class LoggingService(metaclass=SingletonMeta):
                 default=to_jsonable_python,
             )
             log_message = f"{message_label}: {log_message}"
-            log_level = logger.error if error else logger.info
+            log_level = self._logger.error if error else self._logger.info
             log_level(
                 log_message,
                 extra={"func_name_override": func.__name__},
