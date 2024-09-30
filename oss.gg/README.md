@@ -42,7 +42,7 @@ For both types of side-quests, you will need to:
 - Click the green commit changes button
 - Add a coommit message such as "Submitting No Code Side Quest"
 - Make a helpful branch name such as feature/oss-gg-new-side-quest
--  
+- After committing - navigate to the main OpenBB repo and submit a pull request.
 
 ## How to Submit Code Side-Quests
 
