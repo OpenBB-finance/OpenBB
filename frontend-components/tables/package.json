@@ -30,7 +30,8 @@
     "react-plotly.js": "^2.6.0",
     "react-table": "^7.8.0",
     "react-virtual": "^2.10.4",
-    "xss": "^1.0.14"
+    "xss": "^1.0.14",
+    "rollup": ">=4.22.4"
   },
   "devDependencies": {
     "@types/dom-to-image": "^2.6.4",
