@@ -17,7 +17,8 @@
     "posthog-js": "^1.55.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-plotly.js": "^2.6.0"
+    "react-plotly.js": "^2.6.0",
+    "rollup": ">=4.22.4"
   },
   "devDependencies": {
     "@types/dom-to-image": "^2.6.4",
