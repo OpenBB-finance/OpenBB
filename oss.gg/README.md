@@ -40,7 +40,7 @@ For both types of side-quests, you will need to:
   - A UTC timestamp
   - A link to your proof of contribution (e.g., a fork or a new repository for code side-quests, or a blog post for no-code side-quests).
 - Click the green commit changes button
-- Add a coommit message such as "Submitting No Code Side Quest"
+- Add a commit message such as "Submitting No Code Side Quest"
 - Make a helpful branch name such as feature/oss-gg-new-side-quest
 - After committing - navigate to the main OpenBB repo and submit a pull request.
 
