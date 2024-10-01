@@ -86,6 +86,7 @@ class USTreasuryAuctionsData(Data):
     interest_rate: Optional[float] = Field(
         default=None,
         description="The interest rate of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     cpi_on_issue_date: Optional[float] = Field(
         default=None,
@@ -118,26 +119,32 @@ class USTreasuryAuctionsData(Data):
     accrued_interest_per_100: Optional[float] = Field(
         default=None,
         description="Accrued interest per $100.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     accrued_interest_per_1000: Optional[float] = Field(
         default=None,
         description="Accrued interest per $1000.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     adjusted_accrued_interest_per_100: Optional[float] = Field(
         default=None,
         description="Adjusted accrued interest per $100.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     adjusted_accrued_interest_per_1000: Optional[float] = Field(
         default=None,
         description="Adjusted accrued interest per $1000.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     adjusted_price: Optional[float] = Field(
         default=None,
         description="Adjusted price.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     allocation_percentage: Optional[float] = Field(
         default=None,
         description="Allocation percentage, as normalized percentage points.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     allocation_percentage_decimals: Optional[float] = Field(
         default=None,
@@ -154,24 +161,29 @@ class USTreasuryAuctionsData(Data):
     avg_median_discount_rate: Optional[float] = Field(
         default=None,
         description="The average median discount rate of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     avg_median_investment_rate: Optional[float] = Field(
         default=None,
         description="The average median investment rate of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     avg_median_price: Optional[float] = Field(
         default=None,
         description="The average median price paid for the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     avg_median_discount_margin: Optional[float] = Field(
         default=None,
         description="The average median discount margin of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     avg_median_yield: Optional[float] = Field(
         default=None,
         description="The average median yield of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    back_dated: Literal["Yes", "No", None] = Field(
+    back_dated: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether the security is back dated.",
     )
@@ -187,7 +199,7 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The call date of the security.",
     )
-    callable: Literal["Yes", "No", None] = Field(
+    callable: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether the security is callable.",
     )
@@ -195,7 +207,7 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The called date of the security.",
     )
-    cash_management_bill: Literal["Yes", "No", None] = Field(
+    cash_management_bill: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether the security is a cash management bill.",
     )
@@ -210,6 +222,7 @@ class USTreasuryAuctionsData(Data):
     competitive_accepted: Optional[int] = Field(
         default=None,
         description="The accepted value for competitive bids on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     competitive_accepted_decimals: Optional[int] = Field(
         default=None,
@@ -218,8 +231,9 @@ class USTreasuryAuctionsData(Data):
     competitive_tendered: Optional[int] = Field(
         default=None,
         description="The tendered value for competitive bids on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
-    competitive_tenders_accepted: Optional[Literal["Yes", "No", None]] = Field(
+    competitive_tenders_accepted: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether competitive tenders are accepted on the security.",
     )
@@ -234,6 +248,7 @@ class USTreasuryAuctionsData(Data):
     currently_outstanding: Optional[int] = Field(
         default=None,
         description="The currently outstanding value on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     direct_bidder_accepted: Optional[int] = Field(
         default=None,
@@ -242,22 +257,26 @@ class USTreasuryAuctionsData(Data):
     direct_bidder_tendered: Optional[int] = Field(
         default=None,
         description="The tendered value from direct bidders on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     est_amount_of_publicly_held_maturing_security: Optional[int] = Field(
         default=None,
         description="The estimated amount of publicly held maturing securities on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
-    fima_included: Literal["Yes", "No", None] = Field(
+    fima_included: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether the security is included in the FIMA (Foreign and International Money Authorities).",
     )
     fima_non_competitive_accepted: Optional[int] = Field(
         default=None,
         description="The non-competitive accepted value on the security from FIMAs.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     fima_non_competitive_tendered: Optional[int] = Field(
         default=None,
         description="The non-competitive tendered value on the security from FIMAs.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     first_interest_period: Optional[str] = Field(
         default=None,
@@ -267,7 +286,7 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The first interest payment date of the security.",
     )
-    floating_rate: Literal["Yes", "No", None] = Field(
+    floating_rate: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether the security is a floating rate.",
     )
@@ -278,26 +297,32 @@ class USTreasuryAuctionsData(Data):
     frn_index_determination_rate: Optional[float] = Field(
         default=None,
         description="The FRN index determination rate of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     high_discount_rate: Optional[float] = Field(
         default=None,
         description="The high discount rate of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     high_investment_rate: Optional[float] = Field(
         default=None,
         description="The high investment rate of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     high_price: Optional[float] = Field(
         default=None,
         description="The high price of the security at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     high_discount_margin: Optional[float] = Field(
         default=None,
         description="The high discount margin of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     high_yield: Optional[float] = Field(
         default=None,
         description="The high yield of the security at auction.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     index_ratio_on_issue_date: Optional[float] = Field(
         default=None,
@@ -306,10 +331,12 @@ class USTreasuryAuctionsData(Data):
     indirect_bidder_accepted: Optional[int] = Field(
         default=None,
         description="The accepted value from indirect bidders on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     indirect_bidder_tendered: Optional[int] = Field(
         default=None,
         description="The tendered value from indirect bidders on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     interest_payment_frequency: Optional[str] = Field(
         default=None,
@@ -318,22 +345,27 @@ class USTreasuryAuctionsData(Data):
     low_discount_rate: Optional[float] = Field(
         default=None,
         description="The low discount rate of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     low_investment_rate: Optional[float] = Field(
         default=None,
         description="The low investment rate of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     low_price: Optional[float] = Field(
         default=None,
         description="The low price of the security at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     low_discount_margin: Optional[float] = Field(
         default=None,
         description="The low discount margin of the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     low_yield: Optional[float] = Field(
         default=None,
         description="The low yield of the security at auction.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     maturing_date: Optional[dateType] = Field(
         default=None,
@@ -342,26 +374,32 @@ class USTreasuryAuctionsData(Data):
     max_competitive_award: Optional[int] = Field(
         default=None,
         description="The maximum competitive award at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     max_non_competitive_award: Optional[int] = Field(
         default=None,
         description="The maximum non-competitive award at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     max_single_bid: Optional[int] = Field(
         default=None,
         description="The maximum single bid at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     min_bid_amount: Optional[int] = Field(
         default=None,
         description="The minimum bid amount at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     min_strip_amount: Optional[int] = Field(
         default=None,
         description="The minimum strip amount at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     min_to_issue: Optional[int] = Field(
         default=None,
         description="The minimum to issue at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     multiples_to_bid: Optional[int] = Field(
         default=None,
@@ -374,6 +412,7 @@ class USTreasuryAuctionsData(Data):
     nlp_exclusion_amount: Optional[int] = Field(
         default=None,
         description="The NLP exclusion amount at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     nlp_reporting_threshold: Optional[int] = Field(
         default=None,
@@ -382,14 +421,17 @@ class USTreasuryAuctionsData(Data):
     non_competitive_accepted: Optional[int] = Field(
         default=None,
         description="The accepted value from non-competitive bidders on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
-    non_competitive_tenders_accepted: Optional[Literal["Yes", "No", None]] = Field(
+    non_competitive_tenders_accepted: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether or not the auction accepted non-competitive tenders.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     offering_amount: Optional[int] = Field(
         default=None,
         description="The offering amount at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     original_cusip: Optional[str] = Field(
         default=None,
@@ -426,16 +468,19 @@ class USTreasuryAuctionsData(Data):
     price_per_100: Optional[float] = Field(
         default=None,
         description="The price per 100 of the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     primary_dealer_accepted: Optional[int] = Field(
         default=None,
         description="The primary dealer accepted value on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     primary_dealer_tendered: Optional[int] = Field(
         default=None,
         description="The primary dealer tendered value on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
-    reopening: Optional[Literal["Yes", "No", None]] = Field(
+    reopening: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether or not the auction was reopened.",
     )
@@ -454,28 +499,33 @@ class USTreasuryAuctionsData(Data):
     soma_accepted: Optional[int] = Field(
         default=None,
         description="The SOMA accepted value on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     soma_holdings: Optional[int] = Field(
         default=None,
         description="The SOMA holdings on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
-    soma_included: Optional[Literal["Yes", "No", None]] = Field(
+    soma_included: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether or not the SOMA (System Open Market Account) was included on the security.",
     )
     soma_tendered: Optional[int] = Field(
         default=None,
         description="The SOMA tendered value on the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     spread: Optional[float] = Field(
         default=None,
         description="The spread on the security.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     standard_payment_per_1000: Optional[float] = Field(
         default=None,
         description="The standard payment per 1000 of the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
-    strippable: Optional[Literal["Yes", "No", None]] = Field(
+    strippable: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether or not the security is strippable.",
     )
@@ -487,23 +537,26 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The TIIN conversion factor per 1000 of the security.",
     )
-    tips: Optional[Literal["Yes", "No", None]] = Field(
+    tips: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether or not the security is TIPS.",
     )
     total_accepted: Optional[int] = Field(
         default=None,
         description="The total accepted value at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     total_tendered: Optional[int] = Field(
         default=None,
         description="The total tendered value at auction.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     treasury_retail_accepted: Optional[int] = Field(
         default=None,
         description="The accepted value on the security from retail.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
-    treasury_retail_tenders_accepted: Optional[Literal["Yes", "No", None]] = Field(
+    treasury_retail_tenders_accepted: Optional[Literal["Yes", "No"]] = Field(
         default=None,
         description="Whether or not the tender offers from retail are accepted",
     )
@@ -514,10 +567,12 @@ class USTreasuryAuctionsData(Data):
     unadjusted_accrued_interest_per_1000: Optional[float] = Field(
         default=None,
         description="The unadjusted accrued interest per 1000 of the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     unadjusted_price: Optional[float] = Field(
         default=None,
         description="The unadjusted price of the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     updated_timestamp: Optional[datetime] = Field(
         default=None,

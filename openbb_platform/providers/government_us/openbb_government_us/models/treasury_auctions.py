@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.treasury_auctions import (
     USTreasuryAuctionsData,
     USTreasuryAuctionsQueryParams,
 )
+from pydantic import model_validator
 
 
 class GovernmentUSTreasuryAuctionsQueryParams(USTreasuryAuctionsQueryParams):
@@ -143,6 +144,24 @@ class GovernementUSTreasuryAuctionsData(USTreasuryAuctionsData):
         "tint_cusip1": "tintCusip1",
         "tint_cusip2": "tintCusip2",
     }
+
+    @model_validator(mode="before")
+    @classmethod
+    def _normalize_percent(cls, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Normalize percent values."""
+        for k, v in data.items():
+            if (
+                k.endswith("Rate")
+                or k.endswith("Yield")
+                or k.endswith("Margin")
+                or k.endswith("Percentage")
+                or "spread" in k.lower()
+            ):
+                if v not in ["Yes", "No", None, ""]:
+                    data[k] = float(v) / 100 if v else None
+                else:
+                    data[k] = v if v in ["Yes", "No"] else None
+        return data
 
 
 class GovernmentUSTreasuryAuctionsFetcher(
