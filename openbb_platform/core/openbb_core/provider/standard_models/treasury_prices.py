@@ -51,13 +51,19 @@ class TreasuryPricesData(Data):
         description="The call date of the security.", default=None
     )
     bid: Optional[float] = Field(
-        description="The bid price of the security.", default=None
+        default=None,
+        description="The bid price of the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     offer: Optional[float] = Field(
-        description="The offer price of the security.", default=None
+        default=None,
+        description="The offer price of the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     eod_price: Optional[float] = Field(
-        description="The end-of-day price of the security.", default=None
+        default=None,
+        description="The end-of-day price of the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     last_traded_date: Optional[dateType] = Field(
         description="The last trade date of the security.", default=None
@@ -67,19 +73,24 @@ class TreasuryPricesData(Data):
         description="Total number of trades on the last traded date.",
     )
     last_price: Optional[float] = Field(
-        description="The last price of the security.", default=None
+        default=None,
+        description="The last price of the security.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     highest_price: Optional[float] = Field(
         default=None,
         description="The highest price for the bond on the last traded date.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     lowest_price: Optional[float] = Field(
         default=None,
         description="The lowest price for the bond on the last traded date.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     rate: Optional[float] = Field(
         description="The annualized interest rate or coupon of the security.",
         default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ytm: Optional[float] = Field(
         default=None,
@@ -87,4 +98,5 @@ class TreasuryPricesData(Data):
         + " if it is held until the maturity date. It takes into account"
         + " the current market price, par value, coupon rate and time to maturity. It is assumed that all"
         + " coupons are reinvested at the same rate.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
