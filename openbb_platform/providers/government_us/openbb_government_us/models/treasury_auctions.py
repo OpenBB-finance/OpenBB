@@ -146,6 +146,7 @@ class GovernementUSTreasuryAuctionsData(USTreasuryAuctionsData):
     }
 
     @model_validator(mode="before")
+    @classmethod
     def _normalize_percent(cls, data: Dict[str, Any]) -> Dict[str, Any]:
         """Normalize percent values."""
         for k, v in data.items():
