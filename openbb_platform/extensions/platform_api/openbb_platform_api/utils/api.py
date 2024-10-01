@@ -171,7 +171,7 @@ def get_user_settings(
     return _current_settings
 
 
-def get_widgets_json(_build: bool, _openapi):
+def get_widgets_json(_build: bool, _openapi, widget_exclude_filter: dict):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
     python_path = Path(sys.executable)
     parent_path = python_path.parent if os.name == "nt" else python_path.parents[1]
@@ -188,7 +188,11 @@ def get_widgets_json(_build: bool, _openapi):
         with open(widgets_json_path, encoding="utf-8") as f:
             existing_widgets_json = json.load(f)
 
-    _widgets_json = existing_widgets_json if _build is False else build_json(_openapi)
+    _widgets_json = (
+        existing_widgets_json
+        if _build is False
+        else build_json(_openapi, widget_exclude_filter)
+    )
 
     if _build:
         diff = DeepDiff(existing_widgets_json, _widgets_json, ignore_order=True)
@@ -215,7 +219,7 @@ def get_widgets_json(_build: bool, _openapi):
                 _widgets_json = (
                     existing_widgets_json
                     if existing_widgets_json
-                    else build_json(_openapi)
+                    else build_json(_openapi, widget_exclude_filter)
                 )
 
     return _widgets_json
