@@ -100,7 +100,7 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
     return modified_query_schema
 
 
-def build_json(openapi: dict, widget_exclude_filter: dict):
+def build_json(openapi: dict, widget_exclude_filter: list):
     """Build the widgets.json file."""
     # pylint: disable=import-outside-toplevel
     from .openapi import data_schema_to_columns_defs, get_query_schema_for_widget

@@ -171,7 +171,7 @@ def get_user_settings(
     return _current_settings
 
 
-def get_widgets_json(_build: bool, _openapi, widget_exclude_filter: dict):
+def get_widgets_json(_build: bool, _openapi, widget_exclude_filter: list):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
     python_path = Path(sys.executable)
     parent_path = python_path.parent if os.name == "nt" else python_path.parents[1]

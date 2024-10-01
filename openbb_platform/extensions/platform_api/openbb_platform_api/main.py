@@ -25,17 +25,15 @@ USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backu
 # Load widget_exclude_filter.json if it exists
 # Widget filtering is optional and can be used to exclude widgets from the widgets.json file
 # You can generate this filter on OpenBB Hub: https://my.openbb.co/app/platform/widgets
-WIDGET_EXCLUDE_FILTER_PATH = os.path.join(
-    HOME, ".openbb_platform", "widget_exclude_filter.json"
-)
-if os.path.exists(WIDGET_EXCLUDE_FILTER_PATH):
-    with open(WIDGET_EXCLUDE_FILTER_PATH) as f:
+WIDGET_SETTINGS = os.path.join(HOME, ".openbb_platform", "widget_settings.json")
+if os.path.exists(WIDGET_SETTINGS):
+    with open(WIDGET_SETTINGS) as f:
         try:
-            widget_exclude_filter = json.load(f)
+            widget_exclude_filter = json.load(f)["exclude"]
         except json.JSONDecodeError:
-            widget_exclude_filter = {}
+            widget_exclude_filter = []
 else:
-    widget_exclude_filter = {}
+    widget_exclude_filter = []
 
 openapi = app.openapi()
 kwargs = parse_args()
