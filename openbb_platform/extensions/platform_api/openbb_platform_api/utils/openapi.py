@@ -323,7 +323,6 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
     schema_refs: list = []
 
     result_schema_ref = get_data_schema_for_widget(openapi_json, operation_id)
-
     # Check if 'anyOf' is in the result_schema_ref and handle the nested structure
     if "anyOf" in result_schema_ref:
         for item in result_schema_ref["anyOf"]:
@@ -354,14 +353,17 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
 
     target_schema: dict = {}
 
-    for schema in schemas:
-        if (
-            schema.get("description", "")
-            .lower()
-            .startswith(provider.lower().replace("tradingeconomics", "te"))
-        ):
-            target_schema = schema
-            break
+    if len(schemas) == 1:
+        target_schema = schemas[0]
+    else:
+        for schema in schemas:
+            if (
+                schema.get("description", "")
+                .lower()
+                .startswith(provider.lower().replace("tradingeconomics", "te"))
+            ) or (schema.get("description", "").lower().startswith("us government")):
+                target_schema = schema
+                break
 
     keys = list(target_schema.get("properties", {}))
 

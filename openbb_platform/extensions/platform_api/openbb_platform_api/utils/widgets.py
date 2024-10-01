@@ -39,6 +39,7 @@ TO_CAPS_STRINGS = [
     "Cik",
     "Bls",
     "Fred",
+    "Cusip",
 ]
 
 
