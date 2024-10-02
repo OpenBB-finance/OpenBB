@@ -87,7 +87,10 @@ jobs:
           ENTITLEMENTS_PLIST: build/conda/installer/entitlements.plist
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
-          codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS_PLIST" -s "$APPLE_SIGNING_IDENTITY" build/conda/OpenBB-Platform-MacOSX-arm64.pkg
+          # Sign all binaries in the package
+          find build/conda/OpenBB-Platform-MacOSX-arm64.pkg -type f -perm +111 -print0 | xargs -0 codesign --force --options runtime --timestamp --entitlements "$ENTITLEMENTS_PLIST" -s "$APPLE_SIGNING_IDENTITY" --deep
+          # Sign the package itself
+          codesign --force --verify --verbose --options runtime --timestamp --entitlements "$ENTITLEMENTS_PLIST" -s "$APPLE_SIGNING_IDENTITY" build/conda/OpenBB-Platform-MacOSX-arm64.pkg
           mv build/conda/OpenBB-Platform-MacOSX-arm64.pkg OpenBB-Platform-MacOSX-arm64.pkg
         shell: bash -l {0}
 
