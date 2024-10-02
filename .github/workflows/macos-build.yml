@@ -49,6 +49,7 @@ jobs:
           activate-environment: constructor
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
+          python-version: "3.12"
 
       - name: Build Bundle
         run: cd build/conda && constructor installer/.
@@ -155,7 +156,7 @@ jobs:
           activate-environment: constructor
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
-
+          python-version: "3.12"
       - name: Build Bundle
         run: cd build/conda && constructor installer/.
         shell: bash -l {0}
