@@ -7,8 +7,7 @@ env:
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
 
-# on: workflow_dispatch
-on: push
+on: workflow_dispatch
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -35,7 +34,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-10-${{ hashFiles('build/conda/environments/constructor.yaml') }}
+          key: conda-macos-3-10-${{ hashFiles('build/conda/environments/constructor.yml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v3.0.4
@@ -45,7 +44,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/environments/constructor.yaml
+          environment-file: build/conda/environments/constructor.yml
           activate-environment: constructor
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
@@ -141,7 +140,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-10-${{ hashFiles('build/conda/environments/constructor.yaml') }}
+          key: conda-macos-3-10-${{ hashFiles('build/conda/environments/constructor.yml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v3.0.4
@@ -151,7 +150,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/environments/constructor.yaml
+          environment-file: build/conda/environments/constructor.yml
           activate-environment: constructor
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
