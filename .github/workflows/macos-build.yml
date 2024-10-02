@@ -95,7 +95,7 @@ jobs:
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
           echo "Expanding pkg and signing components"
           pkgutil --expand build/conda/OpenBB-Platform-MacOSX-arm64.pkg ./pkg-expanded
-          codesign --sign "$MACOS_APPLICATION_SIGNING_IDENTITY_NAME" --timestamp --options runtime build/conda/pkg-expanded/prepare_installation.pkg/Contents/Payload/OpenBB/conda/_conda
+          codesign --force --verify --verbose --sign "$MACOS_APPLICATION_SIGNING_IDENTITY_NAME" --timestamp -o runtime build/conda/pkg-expanded/prepare_installation.pkg/Contents/Payload/OpenBB/conda/_conda
           echo "Flattening and signing pkg"
           pkgutil --flatten build/conda/pkg-expanded build/conda/OpenBB-Platform-MacOSX-arm64.pkg
           productsign --sign "$MACOS_INSTALLER_SIGNING_IDENTITY_NAME" build/conda/OpenBB-Platform-MacOSX-arm64.pkg build/conda/OpenBB-Platform-MacOSX-arm64-signed.pkg
