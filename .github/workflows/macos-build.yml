@@ -83,24 +83,26 @@ jobs:
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
           echo "signing_identity_name: $MACOS_INSTALLER_SIGNING_IDENTITY_NAME" >> build/conda/installer/construct.yaml
+          echo "notarization_identity_name: $MACOS_APPLICATION_SIGNING_IDENTITY_NAME" >> build/conda/installer/construct.yaml
           cd build/conda && constructor installer/. && cd ../../
+          mv build/conda/OpenBB-Platform-MacOSX-arm64.pkg OpenBB-Platform-MacOSX-arm64.pkg
         shell: bash -l {0}
 
-      - name: Deep sign the application components
-        env:
-          MACOS_INSTALLER_KEYCHAIN_PWD: ${{ secrets.MACOS_INSTALLER_KEYCHAIN_PWD }}
-          MACOS_APPLICATION_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_IDENTITY_NAME }}
-          MACOS_INSTALLER_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_INSTALLER_IDENTITY_NAME }}
-        run: |
-          security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
-          echo "Expanding pkg and signing components"
-          pkgutil --expand build/conda/OpenBB-Platform-MacOSX-arm64.pkg ./pkg-expanded
-          codesign --force --verify --verbose --sign "$MACOS_APPLICATION_SIGNING_IDENTITY_NAME" --timestamp -o runtime build/conda/pkg-expanded/prepare_installation.pkg/Contents/Payload/OpenBB/conda/_conda
-          echo "Flattening and signing pkg"
-          pkgutil --flatten build/conda/pkg-expanded build/conda/OpenBB-Platform-MacOSX-arm64.pkg
-          productsign --sign "$MACOS_INSTALLER_SIGNING_IDENTITY_NAME" build/conda/OpenBB-Platform-MacOSX-arm64.pkg build/conda/OpenBB-Platform-MacOSX-arm64-signed.pkg
-          mv build/conda/OpenBB-Platform-MacOSX-arm64-signed.pkg OpenBB-Platform-MacOSX-arm64.pkg
-        shell: bash -l {0}
+      # - name: Deep sign the application components
+      #   env:
+      #     MACOS_INSTALLER_KEYCHAIN_PWD: ${{ secrets.MACOS_INSTALLER_KEYCHAIN_PWD }}
+      #     MACOS_APPLICATION_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_IDENTITY_NAME }}
+      #     MACOS_INSTALLER_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_INSTALLER_IDENTITY_NAME }}
+      #   run: |
+      #     security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
+      #     echo "Expanding pkg and signing components"
+      #     pkgutil --expand build/conda/OpenBB-Platform-MacOSX-arm64.pkg ./pkg-expanded
+      #     codesign --force --verify --verbose --sign "$MACOS_APPLICATION_SIGNING_IDENTITY_NAME" --timestamp -o runtime build/conda/pkg-expanded/prepare_installation.pkg/Contents/Payload/OpenBB/conda/_conda
+      #     echo "Flattening and signing pkg"
+      #     pkgutil --flatten build/conda/pkg-expanded build/conda/OpenBB-Platform-MacOSX-arm64.pkg
+      #     productsign --sign "$MACOS_INSTALLER_SIGNING_IDENTITY_NAME" build/conda/OpenBB-Platform-MacOSX-arm64.pkg build/conda/OpenBB-Platform-MacOSX-arm64-signed.pkg
+      #     mv build/conda/OpenBB-Platform-MacOSX-arm64-signed.pkg OpenBB-Platform-MacOSX-arm64.pkg
+      #   shell: bash -l {0}
 
 
       - name: Deleting Previous Keychain
