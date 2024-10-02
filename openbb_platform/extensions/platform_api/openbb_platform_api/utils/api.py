@@ -20,6 +20,7 @@ Launcher specific arguments:
     --build                         Build the widgets.json file.
     --no-build                      Do not build the widgets.json file.
     --login                         Login to the OpenBB Platform.
+    --no-filter                     Do not filter the widgets.json file.
 
 
 All other arguments will be passed to uvicorn. Here are the most common ones:

@@ -22,11 +22,17 @@ if not HOME:
 CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")
 USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backup.json")
 
-# Load widget_exclude_filter.json if it exists
 # Widget filtering is optional and can be used to exclude widgets from the widgets.json file
 # You can generate this filter on OpenBB Hub: https://my.openbb.co/app/platform/widgets
 WIDGET_SETTINGS = os.path.join(HOME, ".openbb_platform", "widget_settings.json")
-if os.path.exists(WIDGET_SETTINGS):
+
+kwargs = parse_args()
+build = kwargs.pop("build", True)
+build = False if kwargs.pop("no-build", None) else build
+login = kwargs.pop("login", False)
+dont_filter = kwargs.pop("no-filter", False)
+
+if not dont_filter and os.path.exists(WIDGET_SETTINGS):
     with open(WIDGET_SETTINGS) as f:
         try:
             widget_exclude_filter = json.load(f)["exclude"]
@@ -36,10 +42,6 @@ else:
     widget_exclude_filter = []
 
 openapi = app.openapi()
-kwargs = parse_args()
-build = kwargs.pop("build", True)
-build = False if kwargs.pop("no-build", None) else build
-login = kwargs.pop("login", False)
 
 # We don't need the current settings,
 # but we need to call the function to update, login, and/or identify the settings file.
