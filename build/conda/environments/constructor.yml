@@ -4,4 +4,4 @@ channels:
   - defaults
 dependencies:
   - conda-build
-  - constructor
+  - constructor>=3.9.3
