@@ -73,27 +73,14 @@ jobs:
           security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
           echo "Setting Partition List"
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
-          echo "macos_certificate: $MACOS_CERTIFICATE" >> build/conda/installer/creds.txt
-          echo "macos_certificate_pwd: $MACOS_CERTIFICATE_PWD" >> build/conda/installer/creds.txt
-          echo "macos_keychain_pwd: $MACOS_KEYCHAIN_PWD" >> build/conda/installer/creds.txt
-          echo "macos_codesign_identity: $MACOS_CODESIGN_IDENTITY" >> build/conda/installer/creds.txt
 
       - name: Create Signed Package
         env:
-          APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
-          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           MACOS_INSTALLER_KEYCHAIN_PWD: ${{ secrets.MACOS_INSTALLER_KEYCHAIN_PWD }}
-          APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
-          APPLE_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_IDENTITY_NAME }}
+          APPLE_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_INSTALLER_IDENTITY_NAME }}
           ENTITLEMENTS_PLIST: build/conda/installer/entitlements.plist
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
-          echo "macos_certificate_pwd: $MACOS_CERTIFICATE_PWD" >> build/conda/installer/creds.txt
-          echo "macos_installer_keychain_pwd: $MACOS_INSTALLER_KEYCHAIN_PWD" >> build/conda/installer/creds.txt
-          echo "apple_signing_identity: $APPLE_SIGNING_IDENTITY" >> build/conda/installer/creds.txt
-          echo "apple_signing_identity_name: $APPLE_SIGNING_IDENTITY_NAME" >> build/conda/installer/creds.txt
-          echo "apple_developer_certificate_id: $APPLE_DEVELOPER_CERTIFICATE_ID" >> build/conda/installer/creds.txt
           echo "signing_identity_name: $APPLE_SIGNING_IDENTITY_NAME" >> build/conda/installer/construct.yml
           cd build/conda && constructor installer/. && cd ../../
           mv build/conda/OpenBB-Platform-MacOSX-arm64.pkg OpenBB-Platform-MacOSX-arm64.pkg
