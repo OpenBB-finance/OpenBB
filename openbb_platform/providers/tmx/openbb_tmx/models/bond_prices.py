@@ -78,14 +78,17 @@ class TmxBondPricesData(BondReferenceData):
     price: Optional[float] = Field(
         default=None,
         description="The last price for the bond.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     highest_price: Optional[float] = Field(
         default=None,
         description="The highest price for the bond on the last traded date.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     lowest_price: Optional[float] = Field(
         default=None,
         description="The lowest price for the bond on the last traded date.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     total_trades: Optional[int] = Field(
         default=None,
