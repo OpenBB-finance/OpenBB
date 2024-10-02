@@ -84,8 +84,10 @@ jobs:
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           MACOS_INSTALLER_KEYCHAIN_PWD: ${{ secrets.MACOS_INSTALLER_KEYCHAIN_PWD }}
           APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+          ENTITLEMENTS_PLIST: build/conda/installer/entitlements.plist
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
+          codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS_PLIST" -s "$APPLE_SIGNING_IDENTITY" build/conda/OpenBB-Platform-MacOSX-arm64.pkg
           mv build/conda/OpenBB-Platform-MacOSX-arm64.pkg OpenBB-Platform-MacOSX-arm64.pkg
         shell: bash -l {0}
 
