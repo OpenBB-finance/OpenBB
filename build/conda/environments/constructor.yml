@@ -5,3 +5,6 @@ channels:
 dependencies:
   - conda-build
   - constructor>=3.9.3
+  - six
+  - urllib3
+  - requests

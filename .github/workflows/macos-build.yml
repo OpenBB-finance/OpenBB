@@ -48,7 +48,7 @@ jobs:
           environment-file: build/conda/environments/constructor.yml
           activate-environment: constructor
           auto-activate-base: false
-          # use-only-tar-bz2: true # Needed for caching some reason
+          use-only-tar-bz2: true # Needed for caching some reason
 
       - name: Build Bundle
         run: cd build/conda && constructor installer/.
@@ -154,7 +154,7 @@ jobs:
           environment-file: build/conda/environments/constructor.yml
           activate-environment: constructor
           auto-activate-base: false
-          # use-only-tar-bz2: true # Needed for caching some reason
+          use-only-tar-bz2: true # Needed for caching some reason
 
       - name: Build Bundle
         run: cd build/conda && constructor installer/.
