@@ -50,9 +50,6 @@ jobs:
           auto-activate-base: false
           # use-only-tar-bz2: true # Needed for caching some reason
 
-      - name: Build Bundle
-        run: cd build/conda && constructor installer/.
-        shell: bash -l {0}
 
       - name: Creating Application Keychain
         env:
@@ -87,9 +84,15 @@ jobs:
           ENTITLEMENTS_PLIST: build/conda/installer/entitlements.plist
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
-          codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS_PLIST" -s "$APPLE_SIGNING_IDENTITY" build/conda/OpenBB-Platform-MacOSX-arm64.pkg
+          echo "signing_identity_name: $APPLE_SIGNING_IDENTITY" >> build/conda/installer/construct.yaml
+          cd build/conda && constructor installer/. && cd ../../
           mv build/conda/OpenBB-Platform-MacOSX-arm64.pkg OpenBB-Platform-MacOSX-arm64.pkg
         shell: bash -l {0}
+
+      # - name: Build Bundle
+      #   run:
+      #   shell: bash -l {0}
+
 
       - name: Deleting Previous Keychain
         run: |
