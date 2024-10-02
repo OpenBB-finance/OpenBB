@@ -3,6 +3,7 @@
 Launch script and widgets builder for the OpenBB Terminal Custom Backend.
 """
 
+import json
 import os
 
 import uvicorn
@@ -10,6 +11,8 @@ from fastapi.responses import JSONResponse
 from openbb_core.api.rest_api import app
 
 from .utils.api import check_port, get_user_settings, get_widgets_json, parse_args
+
+FIRST_RUN = True
 
 HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
 
@@ -19,19 +22,32 @@ if not HOME:
 CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")
 USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backup.json")
 
-FIRST_RUN = True
+# Widget filtering is optional and can be used to exclude widgets from the widgets.json file
+# You can generate this filter on OpenBB Hub: https://my.openbb.co/app/platform/widgets
+WIDGET_SETTINGS = os.path.join(HOME, ".openbb_platform", "widget_settings.json")
 
-openapi = app.openapi()
 kwargs = parse_args()
 build = kwargs.pop("build", True)
 build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
+dont_filter = kwargs.pop("no-filter", False)
+
+if not dont_filter and os.path.exists(WIDGET_SETTINGS):
+    with open(WIDGET_SETTINGS) as f:
+        try:
+            widget_exclude_filter = json.load(f)["exclude"]
+        except json.JSONDecodeError:
+            widget_exclude_filter = []
+else:
+    widget_exclude_filter = []
+
+openapi = app.openapi()
 
 # We don't need the current settings,
 # but we need to call the function to update, login, and/or identify the settings file.
 current_settings = get_user_settings(login, CURRENT_USER_SETTINGS, USER_SETTINGS_COPY)
 
-widgets_json = get_widgets_json(build, openapi)
+widgets_json = get_widgets_json(build, openapi, widget_exclude_filter)
 
 
 @app.get("/")
@@ -52,7 +68,7 @@ async def get_widgets():
     if FIRST_RUN is True:
         FIRST_RUN = False
         return JSONResponse(content=widgets_json)
-    return JSONResponse(content=get_widgets_json(False, openapi))
+    return JSONResponse(content=get_widgets_json(False, openapi, widget_exclude_filter))
 
 
 def launch_api(**_kwargs):  # noqa PRL0912

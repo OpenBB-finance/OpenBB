@@ -100,7 +100,7 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
     return modified_query_schema
 
 
-def build_json(openapi: dict):
+def build_json(openapi: dict, widget_exclude_filter: list):
     """Build the widgets.json file."""
     # pylint: disable=import-outside-toplevel
     from .openapi import data_schema_to_columns_defs, get_query_schema_for_widget
@@ -209,7 +209,8 @@ def build_json(openapi: dict):
                 widget_config["data"]["table"]["columnsDefs"] = columns_defs
 
             # Add the widget configuration to the widgets.json
-            widgets_json[widget_config["widgetId"]] = widget_config
+            if widget_config["widgetId"] not in widget_exclude_filter:
+                widgets_json[widget_config["widgetId"]] = widget_config
 
             if has_chart:
                 widget_config_chart = deepcopy(widget_config)
@@ -233,6 +234,7 @@ def build_json(openapi: dict):
                 widget_config_chart["gridData"]["w"] = 50
                 widget_config_chart["defaultViz"] = "chart"
                 widget_config_chart["data"]["dataKey"] = "chart.content"
-                widgets_json[widget_config_chart["widgetId"]] = widget_config_chart
+                if widget_config_chart["widgetId"] not in widget_exclude_filter:
+                    widgets_json[widget_config_chart["widgetId"]] = widget_config_chart
 
     return widgets_json
