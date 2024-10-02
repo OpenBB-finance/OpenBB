@@ -78,12 +78,12 @@ jobs:
         env:
           MACOS_INSTALLER_KEYCHAIN_PWD: ${{ secrets.MACOS_INSTALLER_KEYCHAIN_PWD }}
           MACOS_INSTALLER_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_INSTALLER_IDENTITY_NAME }}
-          MACOS_APPLICATION_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_IDENTITY_NAME }}
+          MACOS_APPLICATION_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
           ENTITLEMENTS_PLIST: build/conda/installer/entitlements.plist
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
           echo "signing_identity_name: $MACOS_INSTALLER_SIGNING_IDENTITY_NAME" >> build/conda/installer/construct.yaml
-          echo "notarization_identity_name: $MACOS_APPLICATION_SIGNING_IDENTITY_NAME" >> build/conda/installer/construct.yaml
+          echo "notarization_identity_name: $MACOS_APPLICATION_SIGNING_IDENTITY" >> build/conda/installer/construct.yaml
           cd build/conda && constructor installer/. && cd ../../
           mv build/conda/OpenBB-Platform-MacOSX-arm64.pkg OpenBB-Platform-MacOSX-arm64.pkg
         shell: bash -l {0}
