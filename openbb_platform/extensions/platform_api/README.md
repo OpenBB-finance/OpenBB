@@ -20,9 +20,9 @@ openbb-api
 
 This will launch a Fast API instance, via `uvicorn`, at `http://127.0.0.1:6900`
 
-### Keyword Agruments
+### Keyword Arguments
 
-The behavior of the script can be configured with the use of argments and keyword arguments.
+The behavior of the script can be configured with the use of arguments and keyword arguments.
 
 Launcher specific arguments:
 
