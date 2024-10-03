@@ -1,0 +1,2 @@
+apache-beam
+openbb-yfinance

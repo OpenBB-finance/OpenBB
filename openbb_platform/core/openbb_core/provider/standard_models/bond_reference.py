@@ -87,4 +87,5 @@ class BondReferenceData(Data):
     coupon_rate: Optional[float] = Field(
         default=None,
         description="Coupon rate of the bond.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
