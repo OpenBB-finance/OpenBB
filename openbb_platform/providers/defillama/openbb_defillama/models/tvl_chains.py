@@ -10,15 +10,20 @@ from defillama import tvl
 
 class DeFiLlamaTvlChainsQueryParams(QueryParams):
     """DeFiLlama TVL Chains Query Parameters"""
+
     pass
 
 
 class DeFiLlamaTvlChainsData(Data):
     """DeFiLlama TVL Chains Data"""
 
-    gecko_id: Optional[str] = Field(default=None, description="CoinGecko ID of the chain")
+    gecko_id: Optional[str] = Field(
+        default=None, description="CoinGecko ID of the chain"
+    )
     tvl: float = Field(description="Current TVL in the chain")
-    tokenSymbol: Optional[str] = Field(default=None, description="Chain symbol (e.g. ETH)")
+    tokenSymbol: Optional[str] = Field(
+        default=None, description="Chain symbol (e.g. ETH)"
+    )
     cmcId: Optional[str] = Field(
         default=None, description="CoinMarketCap ID of the chain"
     )
