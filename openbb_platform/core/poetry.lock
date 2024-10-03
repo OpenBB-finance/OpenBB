@@ -1162,6 +1162,7 @@ typing-extensions = [
     {version = ">=4.12.2", markers = "python_version >= \"3.13\""},
     {version = ">=4.6.1", markers = "python_version < \"3.13\""},
 ]
+tzdata = {version = "*", markers = "python_version >= \"3.9\""}
 
 [package.extras]
 email = ["email-validator (>=2.0.0)"]

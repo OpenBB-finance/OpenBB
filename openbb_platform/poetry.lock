@@ -2609,6 +2609,7 @@ files = [
 annotated-types = ">=0.6.0"
 pydantic-core = "2.23.4"
 typing-extensions = {version = ">=4.6.1", markers = "python_version < \"3.13\""}
+tzdata = {version = "*", markers = "python_version >= \"3.9\""}
 
 [package.extras]
 email = ["email-validator (>=2.0.0)"]
