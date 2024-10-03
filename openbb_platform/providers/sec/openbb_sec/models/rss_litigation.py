@@ -65,7 +65,7 @@ class SecRssLitigationFetcher(
             raise OpenBBError(f"Status code {r.status_code} returned.")
 
         def clean_xml(xml_content):
-            # Remove any invalid characters or fix common issues
+            """Clean the XML content before parsing."""
             xml_content = re.sub(r"&(?!amp;|lt;|gt;|quot;|apos;)", "&amp;", xml_content)
             return xml_content
 
