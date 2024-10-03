@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "openbb-defillama"
+version = "1.0.0"
+description = "DeFiLlama extension for OpenBB"
+authors = ["Pratyush Shukla <ps4534@nyu.edu>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_defillama" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+openbb-core = "^1.3.2"
+defillama-curl = "^2.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+defillama = "openbb_defillama:defillama_provider"
