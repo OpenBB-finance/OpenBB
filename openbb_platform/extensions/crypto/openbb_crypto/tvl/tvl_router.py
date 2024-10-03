@@ -1,4 +1,5 @@
-"""Crypto Router."""
+# pylint: disable=W0613:unused-argument
+"""Crypto TVL Router."""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -11,27 +12,22 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 
-from openbb_crypto.price.price_router import router as price_router
-from openbb_crypto.tvl.tvl_router import router as tvl_router
-
-router = Router(prefix="", description="Cryptocurrency market data.")
-router.include_router(price_router)
-router.include_router(tvl_router)
+router = Router(prefix="/tvl")
 
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,line-too-long
 @router.command(
-    model="CryptoSearch",
+    model="TvlChains",
     examples=[
-        APIEx(parameters={"provider": "fmp"}),
-        APIEx(parameters={"query": "BTCUSD", "provider": "fmp"}),
+        APIEx(parameters={"provider": "defillama"}),
     ],
 )
-async def search(
+async def chains(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Search available cryptocurrency pairs within a provider."""
+    """Get the current TVL for all chains."""
     return await OBBject.from_query(Query(**locals()))
+
