@@ -18,6 +18,7 @@
 The first financial Platform that is free and fully open source.
 
 Offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
+.
 
 Sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
 
