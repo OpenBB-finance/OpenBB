@@ -281,6 +281,9 @@ class Router:
             kwargs["responses"] = kwargs.get(
                 "responses",
                 {
+                    204: {
+                        "description": "Empty response",
+                    },
                     400: {
                         "model": OpenBBErrorResponse,
                         "description": "No Results Found",
