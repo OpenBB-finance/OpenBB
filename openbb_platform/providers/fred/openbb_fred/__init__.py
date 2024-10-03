@@ -5,6 +5,7 @@ from openbb_fred.models.ameribor import FredAmeriborFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
 from openbb_fred.models.bond_indices import FredBondIndicesFetcher
 from openbb_fred.models.commercial_paper import FREDCommercialPaperFetcher
+from openbb_fred.models.commodity_spot_prices import FredCommoditySpotPricesFetcher
 from openbb_fred.models.consumer_price_index import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
@@ -66,6 +67,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
     fetcher_dict={
         "BalanceOfPayments": FredBalanceOfPaymentsFetcher,
         "BondIndices": FredBondIndicesFetcher,
+        "CommoditySpotPrices": FredCommoditySpotPricesFetcher,
         "ConsumerPriceIndex": FREDConsumerPriceIndexFetcher,
         "USYieldCurve": FREDUSYieldCurveFetcher,
         "SOFR": FREDSOFRFetcher,
