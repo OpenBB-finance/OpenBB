@@ -3,6 +3,7 @@
 from openbb_core.provider.abstract.provider import Provider
 from openbb_defillama.models.tvl_chains import DeFiLlamaTvlChainsFetcher
 from openbb_defillama.models.tvl_current import DeFiLlamaTvlCurrentFetcher
+from openbb_defillama.models.tvl_historical import DeFiLlamaTvlHistoricalFetcher
 
 defillama_provider = Provider(
     name="defillama",
@@ -12,6 +13,7 @@ defillama_provider = Provider(
     fetcher_dict={
         "TvlChains": DeFiLlamaTvlChainsFetcher,
         "TvlCurrent": DeFiLlamaTvlCurrentFetcher,
+        "TvlHistorical": DeFiLlamaTvlHistoricalFetcher,
     },
     repr_name="DeFiLlama",
 )

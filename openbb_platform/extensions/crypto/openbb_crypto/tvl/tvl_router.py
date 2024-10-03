@@ -32,6 +32,24 @@ async def chains(
     return await OBBject.from_query(Query(**locals()))
 
 @router.command(
+    model="TvlHistorical",
+    examples=[
+        APIEx(parameters={"provider": "defillama"}),
+        APIEx(parameters={"provider": "defillama", "symbol": "uniswap"}),
+        APIEx(parameters={"provider": "defillama", "symbol_type": "chain"}),
+        APIEx(parameters={"provider": "defillama", "symbol": "ethereum", "symbol_type": "chain"}),
+    ],
+)
+async def historical(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the historical TVL for a given protocol, chain or all chains."""
+    return await OBBject.from_query(Query(**locals()))
+
+@router.command(
     model="TvlCurrent",
     examples=[
         APIEx(parameters={"symbol": "uniswap", "provider": "defillama"}),
