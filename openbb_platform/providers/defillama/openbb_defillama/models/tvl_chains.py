@@ -9,12 +9,12 @@ from defillama import tvl
 
 
 class DeFiLlamaTvlChainsQueryParams(QueryParams):
-    """DeFiLlama TVL Query Parameters"""
+    """DeFiLlama TVL Chains Query Parameters"""
     pass
 
 
 class DeFiLlamaTvlChainsData(Data):
-    """DeFiLlama TVL Data"""
+    """DeFiLlama TVL Chains Data"""
 
     gecko_id: Optional[str] = Field(default=None, description="CoinGecko ID of the chain")
     tvl: float = Field(description="Current TVL in the chain")
@@ -31,7 +31,7 @@ class DeFiLlamaTvlChainsData(Data):
 class DeFiLlamaTvlChainsFetcher(
     Fetcher[DeFiLlamaTvlChainsQueryParams, List[DeFiLlamaTvlChainsData]]
 ):
-    """Fetcher for DeFiLlama TVL data"""
+    """Fetcher for DeFiLlama TVL Chains data"""
 
     @staticmethod
     def transform_query(params: DeFiLlamaTvlChainsQueryParams) -> Dict[str, Any]:
