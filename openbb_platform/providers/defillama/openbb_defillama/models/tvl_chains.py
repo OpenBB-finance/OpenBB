@@ -21,15 +21,15 @@ class DeFiLlamaTvlChainsData(Data):
         default=None, description="CoinGecko ID of the chain"
     )
     tvl: float = Field(description="Current TVL in the chain")
-    tokenSymbol: Optional[str] = Field(
-        default=None, description="Chain symbol (e.g. ETH)"
+    token_symbol: Optional[str] = Field(
+        default=None, description="Chain symbol (e.g. ETH)", alias="tokenSymbol"
     )
-    cmcId: Optional[str] = Field(
-        default=None, description="CoinMarketCap ID of the chain"
+    cmc_id: Optional[str] = Field(
+        default=None, description="CoinMarketCap ID of the chain", alias="cmcId"
     )
     name: str = Field(description="Given name of the chain")
-    chainId: Optional[int] = Field(
-        default=None, description="DeFillama ID of the chain"
+    chain_id: Optional[int] = Field(
+        default=None, description="DeFillama ID of the chain", alias="chainId"
     )
 
 
