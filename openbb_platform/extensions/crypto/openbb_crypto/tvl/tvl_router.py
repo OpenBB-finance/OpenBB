@@ -2,7 +2,7 @@
 """Crypto TVL Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -31,3 +31,17 @@ async def chains(
     """Get the current TVL for all chains."""
     return await OBBject.from_query(Query(**locals()))
 
+@router.command(
+    model="TvlCurrent",
+    examples=[
+        APIEx(parameters={"symbol": "uniswap", "provider": "defillama"}),
+    ],
+)
+async def current(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the current TVl of a given protocol."""
+    return await OBBject.from_query(Query(**locals()))
