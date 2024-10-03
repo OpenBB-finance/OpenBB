@@ -1,6 +1,7 @@
 """The Commodity router."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,unused-import
+# flake8: noqa: F401
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -13,21 +14,9 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 
+from openbb_commodity.price.price_router import router as price_router
+
 router = Router(prefix="", description="Commodity market data.")
 
 
-@router.command(
-    model="CommoditySpotPrices",
-    examples=[
-        APIEx(parameters={"provider": "fred"}),
-        APIEx(parameters={"provider": "fred", "commodity": "wti"}),
-    ],
-)
-async def spot_prices(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Commodity Spot Prices."""
-    return await OBBject.from_query(Query(**locals()))
+router.include_router(price_router)

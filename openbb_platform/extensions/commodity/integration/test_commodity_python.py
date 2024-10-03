@@ -32,11 +32,11 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     ],
 )
 @pytest.mark.integration
-def test_commodity_spot_prices(params, obb):
+def test_commodity_price_spot(params, obb):
     """Test the commodity spot prices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.commodity.spot_prices(**params)
+    result = obb.commodity.price.spot(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

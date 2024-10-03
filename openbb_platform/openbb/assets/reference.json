@@ -39,13 +39,13 @@
         }
     },
     "paths": {
-        "/commodity/spot_prices": {
+        "/commodity/price/spot": {
             "deprecated": {
                 "flag": null,
                 "message": null
             },
             "description": "Commodity Spot Prices.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.commodity.spot_prices(provider='fred')\nobb.commodity.spot_prices(provider='fred', commodity=wti)\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.commodity.price.spot(provider='fred')\nobb.commodity.price.spot(provider='fred', commodity=wti)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
