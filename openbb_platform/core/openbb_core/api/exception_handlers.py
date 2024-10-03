@@ -1,13 +1,16 @@
 """Exception handlers module."""
 
+# pylint: disable=unused-argument
+
 import logging
 from collections.abc import Iterable
 from typing import Any
 
 from fastapi import Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ValidationError
 
 logger = logging.getLogger("uvicorn.error")
@@ -91,3 +94,8 @@ class ExceptionHandlers:
             status_code=400,
             detail=str(error.original),
         )
+
+    @staticmethod
+    async def empty_data(_: Request, error: EmptyDataError):
+        """Exception handler for EmptyDataError."""
+        return Response(status_code=204)
