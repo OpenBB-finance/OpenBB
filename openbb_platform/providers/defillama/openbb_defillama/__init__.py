@@ -5,6 +5,7 @@ from openbb_defillama.models.tvl_chains import DeFiLlamaTvlChainsFetcher
 from openbb_defillama.models.tvl_current import DeFiLlamaTvlCurrentFetcher
 from openbb_defillama.models.tvl_historical import DeFiLlamaTvlHistoricalFetcher
 from openbb_defillama.models.yields_pools import DeFiLlamaYieldsPoolsFetcher
+from openbb_defillama.models.yields_historical import DeFiLlamaYieldsHistoricalFetcher
 
 defillama_provider = Provider(
     name="defillama",
@@ -16,7 +17,7 @@ defillama_provider = Provider(
         "TvlCurrent": DeFiLlamaTvlCurrentFetcher,
         "TvlHistorical": DeFiLlamaTvlHistoricalFetcher,
         "YieldsPools": DeFiLlamaYieldsPoolsFetcher,
-        # "YieldsHistorical": DeFiLlamaYieldsHistoricalFetcher,
+        "YieldsHistorical": DeFiLlamaYieldsHistoricalFetcher,
     },
     repr_name="DeFiLlama",
 )
