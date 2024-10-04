@@ -1048,13 +1048,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "1.3.3"
+version = "1.3.4"
 description = "OpenBB package with core functionality."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "openbb_core-1.3.3-py3-none-any.whl", hash = "sha256:bcea0584184ca679783093bfb17f710b0a0b9a7f0a7616f9e913dc152a90ff1d"},
-    {file = "openbb_core-1.3.3.tar.gz", hash = "sha256:f2366c910b33752771f133fc106e5c912bb6de7236b7bf492f75732dc2bfd9dc"},
+    {file = "openbb_core-1.3.4-py3-none-any.whl", hash = "sha256:890ae2f6c1d89fef34c595e9326715cadbcfd4bc4acbe9ef9d13074871f32d63"},
+    {file = "openbb_core-1.3.4.tar.gz", hash = "sha256:c23207bdfc4be4cc4b25763802da1d91a2b3fe28e3339d20b685ef0a35df3820"},
 ]
 
 [package.dependencies]
@@ -2471,4 +2471,4 @@ pywry = ["pywry"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "033771b787043ee0112345a8fdd6fff856fb83f3b44590ee18c196ba845168b2"
+content-hash = "b201db4c40f17f587da954beb8ff794054575ea30aa0e581ca1bf4f5a5861d24"
