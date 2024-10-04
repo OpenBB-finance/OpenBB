@@ -53,7 +53,6 @@ extra_files:
   - ./assets/openbb_platform_installer/pyproject.toml: ../extensions/openbb_platform_installer/pyproject.toml
   - ./assets/openbb_platform_installer/README.md: ../extensions/openbb_platform_installer/README.md
   - ./assets/openbb_platform_installer/openbb_platform_installer/__init__.py: ../extensions/openbb_platform_installer/openbb_platform_installer/__init__.py
-  - ./assets/openbb_platform_installer/openbb_platform_installer/build.py: ../extensions/openbb_platform_installer/openbb_platform_installer/build.py
   - ./assets/openbb_platform_installer/openbb_platform_installer/update.py: ../extensions/openbb_platform_installer/openbb_platform_installer/update.py
   - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
   - ./assets/openbb.icns: ../openbb_icon.icns  # [osx]
@@ -78,6 +77,7 @@ extra_files:
   - ./assets/examples/empty_obbject/README.md: ../extensions/examples/empty_obbject/README.md
   - ./assets/examples/empty_obbject/empty_obbject/__init__.py: ../extensions/examples/empty_obbject/empty_obbject/__init__.py
   - ./assets/examples/python_basics.ipynb: ../notebooks/python_basics.ipynb
+  - ../../../examples/platform_standardization.ipynb: ../notebooks/how_platform_works.ipynb
 
 icon_image: ../openbb_icon.icns  # [osx]
 icon_image: ./assets/openbb_icon.ico  # [win]

@@ -12,11 +12,7 @@ def main():
     try:
         import openbb  # noqa: F401  # pylint: disable=unused-import
     except ImportError:
-        raise ImportError(
-            "OpenBB is not installed. Please install the 'openbb_platform' package before running this script."
-            "\nTo install OpenBB, navigate to the 'extensions/openbb_platform_installer' directory and run:"
-            "poetry install --only main"
-        )
+        subprocess.check_call("openbb-build", shell=True)  # noqa: S602, S607
 
     base_dir = Path(__file__).parent
 
@@ -40,9 +36,7 @@ def main():
             ]
         )
 
-    subprocess.check_call(
-        [os.sys.executable, "-m", "openbb_platform_installer.build"]  # noqa: S603
-    )
+    subprocess.check_call("openbb-build", shell=True)  # noqa: S602, S607
 
     print(  # noqa: T201
         "\nExample extensions have been installed and are ready-to-use."

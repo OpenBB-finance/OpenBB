@@ -14,9 +14,36 @@ If you already have an installation of Conda or Anaconda, the version in this fo
 
 Tools for managing, updating, and building environments allow you to take full control of your installation, as well as quickly spin up new containers within this project folder.
 
-To get started using right away, open one of the shortcuts described below.
+Follow the quick start steps below to get started using right away; or, open one of the shortcuts described below.
 
 If you want to build your own end points, connections, and features, try installing the [example extensions](#examples)
+
+## OpenBB Terminal Pro Quick Start
+
+- Login to the [OpenBB Hub](https://my.openbb.co)
+- Optionally, add API keys for remote authorization on the page [here](https://my.openbb.dev/app/platform/credentials).
+  - If credentials have been added, from the sidebar, click on 'Personal Access Token'.
+  - Generate a token and copy the value to the clipboard.
+- Optionally, from the sidebar, click on 'Widgets' to filter out any provider extensions or endpoints you wish to exclude.
+  - Without filtering, there will be well over 300 individual widgets. This will narrow the field and focus on only what you need.
+  - After configuring, download the file ("widget_settings.json") and save it to, `~/.openbb_platform`. The "Settings" shortcut takes you there.
+- Double-click on the `openbb-api` shortcut.
+- If you generated a personal access token, paste the values that were copied to the clipboard and hit the return key.
+  - Enter y/n to persist the downloaded credentials on the local machine for future sessions.
+
+- By default, the server will be running on: [http://127.0.0.1:6900](http://127.0.0.1:6900)
+
+- Login to OpenBB Terminal Pro [here](https://pro.openbb.co)
+- From the sidebar, click on, "Data Connectors".
+- Then click on the button, "Add Data".
+- In the pop-up menu, select "Custom Backend".
+- Enter a name for the connection - i.e, "OpenBB Platform"
+- Enter the address the server is running on - i.e, "http://127.0.0.1:6900"
+- **Ensure that "Validate Widgets" is set to "No".**
+- Click on the "Test" button.
+- Finally, click on the "Add" button.
+
+The OpenBB Platform API widgets can now be added to any dashboard. For a more detailed version of these instructions, see the documentation page [here](https://docs.openbb.co/pro/custom-backend)
 
 ## Shortcuts
 
@@ -108,7 +135,7 @@ This folder contains two subfolders:
 
 ### Notebooks
 
-This folder contains tutorial notebooks with examples for getting started with Python. They can be opened by launching the `openbb-notebook` shortcut.
+This folder contains tutorial notebooks with examples for getting started with Python and the OpenBB Platform. They can be opened by launching the `openbb-notebook` shortcut.
 
 #### examples
 
@@ -177,7 +204,7 @@ In general, you use:
   - For interactions with the machine code layer of the system - e.g., compilers, and bridges to "outside of Python" land.
 - `pip`
   - When installing/uninstalling packages to the activated Python environment.
-  - Resort to `conda install` only if packages fail to install or wheels cannot be built.
+  - Resort to `conda install` when packages fail to install, or wheels cannot be built, from PyPI.
 - `poetry`
   - Installing a local Python package.
   - Syncing all package dependencies according to provided specs in `pyproject.toml` and `poetry.lock` files.
@@ -188,10 +215,11 @@ Conda is for container management and machine code level operations, Poetry reso
 ### Documentation Resources
 
 ### OpenBB
-- [Quckstart](https://docs.openbb.co/platform/getting_started/quickstart)
 - [OpenBB Pro](https://docs.openbb.co/pro)
-- [OpenBB Pro Data Connectors](https://docs.openbb.co/pro/data-connectors)
+- [OpenBB Pro Data Connectors](https://docs.openbb.co/pro/data-connector)
+- [widgets.json](https://docs.openbb.co/pro/custom-backend/widgets.json)
 - [OpenBB Platform](https://docs.openbb.co/platform)
+- [OpenBB Platform Quckstart](https://docs.openbb.co/platform/getting_started/quickstart)
 - [OpenBB CLI](https://docs.openbb.co/cli)
 - [OpenBB User Settings](https://docs.openbb.co/platform/user_guides/settings_and_environment_variables)
 - [API Keys and Authorization](https://docs.openbb.co/platform/getting_started/api_keys)

@@ -10,7 +10,7 @@ Assuming the current working directory is the location of this document, the cod
 
 Open the Terminal command line with the Bash/CMD shortcut.
 
-```console
+```sh
 conda create -n my_env python=3.10 -y
 conda activate my_env
 pip install poetry
@@ -39,7 +39,7 @@ The package can be installed in different configurations, using Poetry groups as
 
 To install, in a fresh environment, only the `openbb-core` package and the base dependencies:
 
-```console
+```sh
 poetry install --only main --sync
 ```
 

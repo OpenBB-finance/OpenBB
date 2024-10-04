@@ -12,14 +12,14 @@ documentation = "https://docs.openbb.co" # Change this to your documentation
 packages = [{ include = "openbb_platform_installer" }]  # Update accordingly - these are build scripts and entry points.
 
 [tool.poetry.scripts]
-openbb-build = "openbb_platform_installer.build:main"
 openbb-update = "openbb_platform_installer.update:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
 poetry = "^1.8"
 setuptools = "*"
-openbb-core = "*"
+openbb-core = "^1"
+openbb-platform-api = "^1"
 deepdiff = "*"
 types-python-dateutil = "*"
 types-toml = "*"
@@ -40,11 +40,6 @@ openbb = { version = "^4", extras = ["all"] }
 
 [tool.poetry.group.cli.dependencies]
 openbb-cli = "^1"
-
-[tool.poetry.group.api]
-
-[tool.poetry.group.api.dependencies]
-openbb-platform-api = "^1"
 
 [tool.poetry.group.notebook]
 
