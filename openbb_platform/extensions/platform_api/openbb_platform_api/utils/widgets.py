@@ -142,6 +142,9 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 widget_id.replace("fixedincome", "fixed income")
                 .replace("_", " ")
                 .title()
+                .replace(category if category else "", "")
+                .replace(subcat if subcat else "", "")
+                .strip()
             )
 
             name = " ".join(
@@ -174,7 +177,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
             )
 
             widget_config = {
-                "name": f"{name} ({provider_name})",
+                "name": f"{name}",
                 "description": route_api["get"]["description"],
                 "category": category,
                 "searchCategory": category,
