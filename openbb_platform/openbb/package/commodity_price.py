@@ -23,20 +23,9 @@ class ROUTER_commodity_price(Container):
     @validate
     def spot(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["fred"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
         **kwargs
     ) -> OBBject:
         """Commodity Spot Prices.
@@ -106,15 +95,15 @@ class ROUTER_commodity_price(Container):
         CommoditySpotPrices
         -------------------
         date : date
-            The date of the data.
+            The date of the data. 
         symbol : Optional[str]
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         commodity : Optional[str]
-            Commodity name.
+            Commodity name. 
         price : float
-            Price of the commodity.
+            Price of the commodity. 
         unit : Optional[str]
-            Unit of the commodity price.
+            Unit of the commodity price. 
 
         Examples
         --------
@@ -138,69 +127,6 @@ class ROUTER_commodity_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={
-                    "commodity": {
-                        "fred": {
-                            "multiple_items_allowed": False,
-                            "choices": [
-                                "wti",
-                                "brent",
-                                "natural_gas",
-                                "jet_fuel",
-                                "propane",
-                                "heating_oil",
-                                "diesel_gulf_coast",
-                                "diesel_ny_harbor",
-                                "diesel_la",
-                                "gasoline_ny_harbor",
-                                "gasoline_gulf_coast",
-                                "rbob",
-                                "all",
-                            ],
-                        }
-                    },
-                    "frequency": {
-                        "fred": {
-                            "multiple_items_allowed": False,
-                            "choices": [
-                                "a",
-                                "q",
-                                "m",
-                                "w",
-                                "d",
-                                "wef",
-                                "weth",
-                                "wew",
-                                "wetu",
-                                "wem",
-                                "wesu",
-                                "wesa",
-                                "bwew",
-                                "bwem",
-                            ],
-                        }
-                    },
-                    "aggregation_method": {
-                        "fred": {
-                            "multiple_items_allowed": False,
-                            "choices": ["avg", "sum", "eop"],
-                        }
-                    },
-                    "transform": {
-                        "fred": {
-                            "multiple_items_allowed": False,
-                            "choices": [
-                                "chg",
-                                "ch1",
-                                "pch",
-                                "pc1",
-                                "pca",
-                                "cch",
-                                "cca",
-                                "log",
-                            ],
-                        }
-                    },
-                },
+                info={"commodity": {"fred": {"multiple_items_allowed": False, "choices": ["wti", "brent", "natural_gas", "jet_fuel", "propane", "heating_oil", "diesel_gulf_coast", "diesel_ny_harbor", "diesel_la", "gasoline_ny_harbor", "gasoline_gulf_coast", "rbob", "all"]}}, "frequency": {"fred": {"multiple_items_allowed": False, "choices": ["a", "q", "m", "w", "d", "wef", "weth", "wew", "wetu", "wem", "wesu", "wesa", "bwew", "bwem"]}}, "aggregation_method": {"fred": {"multiple_items_allowed": False, "choices": ["avg", "sum", "eop"]}}, "transform": {"fred": {"multiple_items_allowed": False, "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]}}},
             )
         )

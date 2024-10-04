@@ -294,7 +294,7 @@ class ROUTER_etf(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}, "intrinio": {"multiple_items_allowed": False, "choices": ["1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1W", "1M", "1Q", "1Y"]}, "polygon": {"multiple_items_allowed": True, "choices": None}, "tiingo": {"multiple_items_allowed": True, "choices": None}, "yfinance": {"multiple_items_allowed": True, "choices": None}}, "interval": {"fmp": {"multiple_items_allowed": False, "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]}, "tiingo": {"multiple_items_allowed": False, "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]}, "yfinance": {"multiple_items_allowed": False, "choices": ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1W", "1M", "1Q"]}}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}, "polygon": {"multiple_items_allowed": True, "choices": None}, "tiingo": {"multiple_items_allowed": True, "choices": None}, "yfinance": {"multiple_items_allowed": True, "choices": None}}, "interval": {"fmp": {"multiple_items_allowed": False, "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]}, "intrinio": {"multiple_items_allowed": False, "choices": ["1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1W", "1M", "1Q", "1Y"]}, "tiingo": {"multiple_items_allowed": False, "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]}, "yfinance": {"multiple_items_allowed": False, "choices": ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1W", "1M", "1Q"]}}},
             )
         )
 

@@ -299,7 +299,7 @@ class ROUTER_fixedincome_government(Container):
     @validate
     def yield_curve(
         self,
-        date: Annotated[Union[str, None, List[Optional[str]]], OpenBBField(description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.")] = None,
+        date: Annotated[Union[str, datetime.date, None, List[Union[str, datetime.date, None]]], OpenBBField(description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.")] = None,
         provider: Annotated[Optional[Literal["econdb", "federal_reserve", "fmp", "fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.")] = None,
         **kwargs
     ) -> OBBject:
@@ -307,7 +307,7 @@ class ROUTER_fixedincome_government(Container):
 
         Parameters
         ----------
-        date : Union[str, None, List[Optional[str]]]
+        date : Union[str, date, None, List[Union[str, date, None]]]
             A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.
         provider : Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.

@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
@@ -10,7 +10,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import deprecated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_economy(Container):
@@ -54,12 +54,7 @@ class ROUTER_economy(Container):
     @validate
     def available_indicators(
         self,
-        provider: Annotated[
-            Optional[Literal["econdb", "imf"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, imf."
-            ),
-        ] = None,
+        provider: Annotated[Optional[Literal["econdb", "imf"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, imf.")] = None,
         **kwargs
     ) -> OBBject:
         """Get the available economic indicators for a provider.
@@ -365,244 +360,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={
-                    "country": {
-                        "tradingeconomics": {
-                            "multiple_items_allowed": True,
-                            "choices": [
-                                "afghanistan",
-                                "albania",
-                                "algeria",
-                                "andorra",
-                                "angola",
-                                "antigua_and_barbuda",
-                                "argentina",
-                                "armenia",
-                                "aruba",
-                                "australia",
-                                "austria",
-                                "azerbaijan",
-                                "bahamas",
-                                "bahrain",
-                                "bangladesh",
-                                "barbados",
-                                "belarus",
-                                "belgium",
-                                "belize",
-                                "benin",
-                                "bermuda",
-                                "bhutan",
-                                "bolivia",
-                                "bosnia_and_herzegovina",
-                                "botswana",
-                                "brazil",
-                                "brunei",
-                                "bulgaria",
-                                "burkina_faso",
-                                "burundi",
-                                "cambodia",
-                                "cameroon",
-                                "canada",
-                                "cape_verde",
-                                "cayman_islands",
-                                "central_african_republic",
-                                "chad",
-                                "chile",
-                                "china",
-                                "colombia",
-                                "comoros",
-                                "congo",
-                                "costa_rica",
-                                "croatia",
-                                "cuba",
-                                "cyprus",
-                                "czech_republic",
-                                "denmark",
-                                "djibouti",
-                                "dominica",
-                                "dominican_republic",
-                                "east_timor",
-                                "ecuador",
-                                "egypt",
-                                "el_salvador",
-                                "equatorial_guinea",
-                                "eritrea",
-                                "estonia",
-                                "ethiopia",
-                                "euro_area",
-                                "faroe_islands",
-                                "fiji",
-                                "finland",
-                                "france",
-                                "gabon",
-                                "gambia",
-                                "georgia",
-                                "germany",
-                                "ghana",
-                                "greece",
-                                "grenada",
-                                "guatemala",
-                                "guinea",
-                                "guinea_bissau",
-                                "guyana",
-                                "haiti",
-                                "honduras",
-                                "hong_kong",
-                                "hungary",
-                                "iceland",
-                                "india",
-                                "indonesia",
-                                "iran",
-                                "iraq",
-                                "ireland",
-                                "isle_of_man",
-                                "israel",
-                                "italy",
-                                "ivory_coast",
-                                "jamaica",
-                                "japan",
-                                "jordan",
-                                "kazakhstan",
-                                "kenya",
-                                "kiribati",
-                                "kosovo",
-                                "kuwait",
-                                "kyrgyzstan",
-                                "laos",
-                                "latvia",
-                                "lebanon",
-                                "lesotho",
-                                "liberia",
-                                "libya",
-                                "liechtenstein",
-                                "lithuania",
-                                "luxembourg",
-                                "macao",
-                                "madagascar",
-                                "malawi",
-                                "malaysia",
-                                "maldives",
-                                "mali",
-                                "malta",
-                                "mauritania",
-                                "mauritius",
-                                "mexico",
-                                "moldova",
-                                "monaco",
-                                "mongolia",
-                                "montenegro",
-                                "morocco",
-                                "mozambique",
-                                "myanmar",
-                                "namibia",
-                                "nepal",
-                                "netherlands",
-                                "new_caledonia",
-                                "new_zealand",
-                                "nicaragua",
-                                "niger",
-                                "nigeria",
-                                "north_korea",
-                                "north_macedonia",
-                                "norway",
-                                "oman",
-                                "pakistan",
-                                "palestine",
-                                "panama",
-                                "papua_new_guinea",
-                                "paraguay",
-                                "peru",
-                                "philippines",
-                                "poland",
-                                "portugal",
-                                "puerto_rico",
-                                "qatar",
-                                "republic_of_the_congo",
-                                "romania",
-                                "russia",
-                                "rwanda",
-                                "samoa",
-                                "sao_tome_and_principe",
-                                "saudi_arabia",
-                                "senegal",
-                                "serbia",
-                                "seychelles",
-                                "sierra_leone",
-                                "singapore",
-                                "slovakia",
-                                "slovenia",
-                                "solomon_islands",
-                                "somalia",
-                                "south_africa",
-                                "south_korea",
-                                "south_sudan",
-                                "spain",
-                                "sri_lanka",
-                                "sudan",
-                                "suriname",
-                                "swaziland",
-                                "sweden",
-                                "switzerland",
-                                "syria",
-                                "taiwan",
-                                "tajikistan",
-                                "tanzania",
-                                "thailand",
-                                "togo",
-                                "tonga",
-                                "trinidad_and_tobago",
-                                "tunisia",
-                                "turkey",
-                                "turkmenistan",
-                                "uganda",
-                                "ukraine",
-                                "united_arab_emirates",
-                                "united_kingdom",
-                                "united_states",
-                                "uruguay",
-                                "uzbekistan",
-                                "vanuatu",
-                                "venezuela",
-                                "vietnam",
-                                "yemen",
-                                "zambia",
-                                "zimbabwe",
-                            ],
-                        }
-                    },
-                    "importance": {
-                        "tradingeconomics": {
-                            "multiple_items_allowed": False,
-                            "choices": ["low", "medium", "high"],
-                        }
-                    },
-                    "group": {
-                        "tradingeconomics": {
-                            "multiple_items_allowed": False,
-                            "choices": [
-                                "interest_rate",
-                                "inflation",
-                                "bonds",
-                                "consumer",
-                                "gdp",
-                                "government",
-                                "housing",
-                                "labour",
-                                "markets",
-                                "money",
-                                "prices",
-                                "trade",
-                                "business",
-                            ],
-                        }
-                    },
-                    "calendar_id": {
-                        "tradingeconomics": {
-                            "multiple_items_allowed": True,
-                            "choices": None,
-                        }
-                    },
-                },
+                info={"country": {"tradingeconomics": {"multiple_items_allowed": True, "choices": ["afghanistan", "albania", "algeria", "andorra", "angola", "antigua_and_barbuda", "argentina", "armenia", "aruba", "australia", "austria", "azerbaijan", "bahamas", "bahrain", "bangladesh", "barbados", "belarus", "belgium", "belize", "benin", "bermuda", "bhutan", "bolivia", "bosnia_and_herzegovina", "botswana", "brazil", "brunei", "bulgaria", "burkina_faso", "burundi", "cambodia", "cameroon", "canada", "cape_verde", "cayman_islands", "central_african_republic", "chad", "chile", "china", "colombia", "comoros", "congo", "costa_rica", "croatia", "cuba", "cyprus", "czech_republic", "denmark", "djibouti", "dominica", "dominican_republic", "east_timor", "ecuador", "egypt", "el_salvador", "equatorial_guinea", "eritrea", "estonia", "ethiopia", "euro_area", "faroe_islands", "fiji", "finland", "france", "gabon", "gambia", "georgia", "germany", "ghana", "greece", "grenada", "guatemala", "guinea", "guinea_bissau", "guyana", "haiti", "honduras", "hong_kong", "hungary", "iceland", "india", "indonesia", "iran", "iraq", "ireland", "isle_of_man", "israel", "italy", "ivory_coast", "jamaica", "japan", "jordan", "kazakhstan", "kenya", "kiribati", "kosovo", "kuwait", "kyrgyzstan", "laos", "latvia", "lebanon", "lesotho", "liberia", "libya", "liechtenstein", "lithuania", "luxembourg", "macao", "madagascar", "malawi", "malaysia", "maldives", "mali", "malta", "mauritania", "mauritius", "mexico", "moldova", "monaco", "mongolia", "montenegro", "morocco", "mozambique", "myanmar", "namibia", "nepal", "netherlands", "new_caledonia", "new_zealand", "nicaragua", "niger", "nigeria", "north_korea", "north_macedonia", "norway", "oman", "pakistan", "palestine", "panama", "papua_new_guinea", "paraguay", "peru", "philippines", "poland", "portugal", "puerto_rico", "qatar", "republic_of_the_congo", "romania", "russia", "rwanda", "samoa", "sao_tome_and_principe", "saudi_arabia", "senegal", "serbia", "seychelles", "sierra_leone", "singapore", "slovakia", "slovenia", "solomon_islands", "somalia", "south_africa", "south_korea", "south_sudan", "spain", "sri_lanka", "sudan", "suriname", "swaziland", "sweden", "switzerland", "syria", "taiwan", "tajikistan", "tanzania", "thailand", "togo", "tonga", "trinidad_and_tobago", "tunisia", "turkey", "turkmenistan", "uganda", "ukraine", "united_arab_emirates", "united_kingdom", "united_states", "uruguay", "uzbekistan", "vanuatu", "venezuela", "vietnam", "yemen", "zambia", "zimbabwe"]}}, "importance": {"tradingeconomics": {"multiple_items_allowed": False, "choices": ["low", "medium", "high"]}}, "group": {"tradingeconomics": {"multiple_items_allowed": False, "choices": ["interest_rate", "inflation", "bonds", "consumer", "gdp", "government", "housing", "labour", "markets", "money", "prices", "trade", "business"]}}, "calendar_id": {"tradingeconomics": {"multiple_items_allowed": True, "choices": None}}},
             )
         )
 
@@ -997,6 +755,110 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def direction_of_trade(
+        self,
+        country: Annotated[Union[str, None, List[Optional[str]]], OpenBBField(description="The country to get data. None is an equiavlent to 'all'. If 'all' is used, the counterpart field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.")] = None,
+        counterpart: Annotated[Union[str, None, List[Optional[str]]], OpenBBField(description="Counterpart country to the trade. None is an equiavlent to 'all'. If 'all' is used, the country field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.")] = None,
+        direction: Annotated[Literal["exports", "imports", "balance", "all"], OpenBBField(description="Trade direction. Use 'all' to get all data for this dimension.")] = "balance",
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        frequency: Annotated[Literal["month", "quarter", "annual"], OpenBBField(description="The frequency of the data.")] = "month",
+        provider: Annotated[Optional[Literal["imf"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: imf.")] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get Direction Of Trade Statistics from the IMF database.
+
+        The Direction of Trade Statistics (DOTS) presents the value of merchandise exports and
+        imports disaggregated according to a country's primary trading partners.
+        Area and world aggregates are included in the display of trade flows between major areas of the world.
+        Reported data is supplemented by estimates whenever such data is not available or current.
+        Imports are reported on a cost, insurance and freight (CIF) basis
+        and exports are reported on a free on board (FOB) basis.
+        Time series data includes estimates derived from reports of partner countries
+        for non-reporting and slow-reporting countries.
+        
+
+        Parameters
+        ----------
+        country : Union[str, None, List[Optional[str]]]
+            The country to get data. None is an equiavlent to 'all'. If 'all' is used, the counterpart field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.
+        counterpart : Union[str, None, List[Optional[str]]]
+            Counterpart country to the trade. None is an equiavlent to 'all'. If 'all' is used, the country field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.
+        direction : Literal['exports', 'imports', 'balance', 'all']
+            Trade direction. Use 'all' to get all data for this dimension.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        frequency : Literal['month', 'quarter', 'annual']
+            The frequency of the data.
+        provider : Optional[Literal['imf']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: imf.
+
+        Returns
+        -------
+        OBBject
+            results : List[DirectionOfTrade]
+                Serializable results.
+            provider : Optional[Literal['imf']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        DirectionOfTrade
+        ----------------
+        date : date
+            The date of the data. 
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data. 
+        country : str
+            
+        counterpart : str
+            Counterpart country or region to the trade. 
+        title : Optional[str]
+            Title corresponding to the symbol. 
+        value : float
+            Trade value. 
+        scale : Optional[str]
+            Scale of the value. 
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.direction_of_trade(provider='imf', country='all', counterpart='china')
+        >>> # Select multiple countries or counterparts by entering a comma-separated list. The direction of trade can be 'exports', 'imports', 'balance', or 'all'.
+        >>> obb.economy.direction_of_trade(provider='imf', country='us', counterpart='world,eu', frequency='annual', direction='exports')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/direction_of_trade",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.direction_of_trade",
+                        ("imf",),
+                    )
+                },
+                standard_params={
+                    "country": country,
+                    "counterpart": counterpart,
+                    "direction": direction,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "frequency": frequency,
+                },
+                extra_params=kwargs,
+                info={"country": {"imf": {"multiple_items_allowed": True, "choices": ["all", "advanced_economies", "afghanistan", "africa", "africa_not_allocated", "albania", "algeria", "american_samoa", "angola", "anguilla", "antigua_and_barbuda", "antilles", "argentina", "armenia", "aruba", "asia_not_allocated", "australia", "austria", "azerbaijan", "bahamas", "bahrain", "bangladesh", "barbados", "belarus", "belgium", "belgo-luxembourg_economic_union", "belize", "benin", "bermuda", "bhutan", "bolivia", "bosnia_and_herzegovina", "botswana", "brazil", "brunei_darussalam", "bulgaria", "burkina_faso", "burundi", "cabo_verde", "cambodia", "cameroon", "canada", "central_african_republic", "chad", "chile", "china", "colombia", "community_of_independent_states", "comoros", "congo", "costa_rica", "croatia", "cuba", "curacao", "cyprus", "czech_republic", "democratic_republic_of_the_congo", "denmark", "developing_asia", "djibouti", "dominica", "dominican_republic", "east_germany", "ecuador", "egypt", "el_salvador", "emerging_and_developing_countries", "emerging_and_developing_europe", "equatorial_guinea", "eritrea", "estonia", "eswatini", "ethiopia", "euro_area", "europe", "europe_not_allocated", "european_union", "export_earnings_fuel", "export_earnings_nonfuel", "falkland_islands", "faroe_islands", "fiji", "finland", "former_czechoslovakia", "former_ussr", "former_yugoslavia", "france", "french_polynesia", "gabon", "gambia", "georgia", "germany", "ghana", "gibraltar", "greece", "greenland", "grenada", "guam", "guatemala", "guinea", "guyana", "haiti", "honduras", "hong_kong", "hungary", "iceland", "india", "indonesia", "iran", "iraq", "ireland", "israel", "italy", "ivory_coast", "jamaica", "japan", "jordan", "kazakhstan", "kenya", "kiribati", "kosovo", "kuwait", "kyrgyzstan", "lao", "latvia", "lebanon", "lesotho", "liberia", "libya", "lithuania", "luxembourg", "macao", "madagascar", "malawi", "malaysia", "maldives", "mali", "malta", "marshall_islands", "mauritania", "mauritius", "mexico", "micronesia", "middle_east", "middle_east_and_central_asia", "middle_east_and_central_asia_not_specified", "middle_east_north_africa_afghanistan_and_pakistan", "moldova", "mongolia", "montenegro", "montserrat", "morocco", "mozambique", "myanmar", "namibia", "nauru", "nepal", "netherlands", "new_caledonia", "new_zealand", "nicaragua", "niger", "nigeria", "north_korea", "north_macedonia", "north_vietnam", "norway", "oman", "other_countries_nie", "pakistan", "palau", "palestine", "panama", "papua_new_guinea", "paraguay", "peru", "philippines", "poland", "portugal", "qatar", "romania", "russia", "rwanda", "saint_kitts_and_nevis", "saint_lucia", "saint_vincent_and_the_grenadines", "samoa", "san_marino", "sao_tome_and_principe", "saudi_arabia", "senegal", "serbia", "serbia_and_montenegro", "seychelles", "sierra_leone", "singapore", "sint_maarten", "slovakia", "slovenia", "solomon_islands", "somalia", "south_africa", "south_african_common_customs_area", "south_korea", "south_sudan", "spain", "special_categories_and_economic_zones", "sri_lanka", "sub-saharan_africa", "sudan", "suriname", "sweden", "switzerland", "syria", "taiwan", "tajikistan", "tanzania", "thailand", "timor-leste", "togo", "tonga", "trinidad_and_tobago", "tunisia", "turkey", "turkmenistan", "tuvalu", "uganda", "ukraine", "united_arab_emirates", "united_kingdom", "united_states", "uruguay", "uzbekistan", "vanuatu", "vatican_city_state", "venezuela", "viet_nam", "west_malaysia", "western_hemisphere", "western_hemisphere_not_allocated", "world", "yemen", "yemen_arab_rep", "yemen_pd_rep", "zambia", "zimbabwe"]}}, "counterpart": {"imf": {"multiple_items_allowed": True, "choices": ["all", "advanced_economies", "afghanistan", "africa", "africa_not_allocated", "albania", "algeria", "american_samoa", "angola", "anguilla", "antigua_and_barbuda", "antilles", "argentina", "armenia", "aruba", "asia_not_allocated", "australia", "austria", "azerbaijan", "bahamas", "bahrain", "bangladesh", "barbados", "belarus", "belgium", "belgo-luxembourg_economic_union", "belize", "benin", "bermuda", "bhutan", "bolivia", "bosnia_and_herzegovina", "botswana", "brazil", "brunei_darussalam", "bulgaria", "burkina_faso", "burundi", "cabo_verde", "cambodia", "cameroon", "canada", "central_african_republic", "chad", "chile", "china", "colombia", "community_of_independent_states", "comoros", "congo", "costa_rica", "croatia", "cuba", "curacao", "cyprus", "czech_republic", "democratic_republic_of_the_congo", "denmark", "developing_asia", "djibouti", "dominica", "dominican_republic", "east_germany", "ecuador", "egypt", "el_salvador", "emerging_and_developing_countries", "emerging_and_developing_europe", "equatorial_guinea", "eritrea", "estonia", "eswatini", "ethiopia", "euro_area", "europe", "europe_not_allocated", "european_union", "export_earnings_fuel", "export_earnings_nonfuel", "falkland_islands", "faroe_islands", "fiji", "finland", "former_czechoslovakia", "former_ussr", "former_yugoslavia", "france", "french_polynesia", "gabon", "gambia", "georgia", "germany", "ghana", "gibraltar", "greece", "greenland", "grenada", "guam", "guatemala", "guinea", "guyana", "haiti", "honduras", "hong_kong", "hungary", "iceland", "india", "indonesia", "iran", "iraq", "ireland", "israel", "italy", "ivory_coast", "jamaica", "japan", "jordan", "kazakhstan", "kenya", "kiribati", "kosovo", "kuwait", "kyrgyzstan", "lao", "latvia", "lebanon", "lesotho", "liberia", "libya", "lithuania", "luxembourg", "macao", "madagascar", "malawi", "malaysia", "maldives", "mali", "malta", "marshall_islands", "mauritania", "mauritius", "mexico", "micronesia", "middle_east", "middle_east_and_central_asia", "middle_east_and_central_asia_not_specified", "middle_east_north_africa_afghanistan_and_pakistan", "moldova", "mongolia", "montenegro", "montserrat", "morocco", "mozambique", "myanmar", "namibia", "nauru", "nepal", "netherlands", "new_caledonia", "new_zealand", "nicaragua", "niger", "nigeria", "north_korea", "north_macedonia", "north_vietnam", "norway", "oman", "other_countries_nie", "pakistan", "palau", "palestine", "panama", "papua_new_guinea", "paraguay", "peru", "philippines", "poland", "portugal", "qatar", "romania", "russia", "rwanda", "saint_kitts_and_nevis", "saint_lucia", "saint_vincent_and_the_grenadines", "samoa", "san_marino", "sao_tome_and_principe", "saudi_arabia", "senegal", "serbia", "serbia_and_montenegro", "seychelles", "sierra_leone", "singapore", "sint_maarten", "slovakia", "slovenia", "solomon_islands", "somalia", "south_africa", "south_african_common_customs_area", "south_korea", "south_sudan", "spain", "special_categories_and_economic_zones", "sri_lanka", "sub-saharan_africa", "sudan", "suriname", "sweden", "switzerland", "syria", "taiwan", "tajikistan", "tanzania", "thailand", "timor-leste", "togo", "tonga", "trinidad_and_tobago", "tunisia", "turkey", "turkmenistan", "tuvalu", "uganda", "ukraine", "united_arab_emirates", "united_kingdom", "united_states", "uruguay", "uzbekistan", "vanuatu", "vatican_city_state", "venezuela", "viet_nam", "west_malaysia", "western_hemisphere", "western_hemisphere_not_allocated", "world", "yemen", "yemen_arab_rep", "yemen_pd_rep", "zambia", "zimbabwe"]}}},
+            )
+        )
+
+    @exception_handler
+    @validate
     def export_destinations(
         self,
         country: Annotated[Union[str, List[str]], OpenBBField(description="The country to get data. Multiple comma separated items allowed for provider(s): econdb.")],
@@ -1062,730 +924,6 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={"country": {"econdb": {"multiple_items_allowed": True, "choices": None}}},
-            )
-        )
-
-    @exception_handler
-    @validate
-    def direction_of_trade(
-        self,
-        country: Annotated[
-            Union[str, None, List[Optional[str]]],
-            OpenBBField(
-                description="The country to get data. None is an equiavlent to 'all'. If 'all' is used, the counterpart field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf."
-            ),
-        ] = None,
-        counterpart: Annotated[
-            Union[str, None, List[Optional[str]]],
-            OpenBBField(
-                description="Counterpart country to the trade. None is an equiavlent to 'all'. If 'all' is used, the country field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf."
-            ),
-        ] = None,
-        direction: Annotated[
-            Literal["exports", "imports", "balance", "all"],
-            OpenBBField(
-                description="Trade direction. Use 'all' to get all data for this dimension."
-            ),
-        ] = "balance",
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        frequency: Annotated[
-            Literal["month", "quarter", "annual"],
-            OpenBBField(description="The frequency of the data."),
-        ] = "month",
-        provider: Annotated[
-            Optional[Literal["imf"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: imf."
-            ),
-        ] = None,
-        **kwargs
-    ) -> OBBject:
-        """Get Direction Of Trade Statistics from the IMF database.
-
-        The Direction of Trade Statistics (DOTS) presents the value of merchandise exports and
-        imports disaggregated according to a country's primary trading partners.
-        Area and world aggregates are included in the display of trade flows between major areas of the world.
-        Reported data is supplemented by estimates whenever such data is not available or current.
-        Imports are reported on a cost, insurance and freight (CIF) basis
-        and exports are reported on a free on board (FOB) basis.
-        Time series data includes estimates derived from reports of partner countries
-        for non-reporting and slow-reporting countries.
-
-
-        Parameters
-        ----------
-        country : Union[str, None, List[Optional[str]]]
-            The country to get data. None is an equiavlent to 'all'. If 'all' is used, the counterpart field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.
-        counterpart : Union[str, None, List[Optional[str]]]
-            Counterpart country to the trade. None is an equiavlent to 'all'. If 'all' is used, the country field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.
-        direction : Literal['exports', 'imports', 'balance', 'all']
-            Trade direction. Use 'all' to get all data for this dimension.
-        start_date : Union[date, None, str]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[date, None, str]
-            End date of the data, in YYYY-MM-DD format.
-        frequency : Literal['month', 'quarter', 'annual']
-            The frequency of the data.
-        provider : Optional[Literal['imf']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: imf.
-
-        Returns
-        -------
-        OBBject
-            results : List[DirectionOfTrade]
-                Serializable results.
-            provider : Optional[Literal['imf']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
-
-        DirectionOfTrade
-        ----------------
-        date : date
-            The date of the data.
-        symbol : Optional[str]
-            Symbol representing the entity requested in the data.
-        country : str
-
-        counterpart : str
-            Counterpart country or region to the trade.
-        title : Optional[str]
-            Title corresponding to the symbol.
-        value : float
-            Trade value.
-        scale : Optional[str]
-            Scale of the value.
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.economy.direction_of_trade(provider='imf', country='all', counterpart='china')
-        >>> # Select multiple countries or counterparts by entering a comma-separated list. The direction of trade can be 'exports', 'imports', 'balance', or 'all'.
-        >>> obb.economy.direction_of_trade(provider='imf', country='us', counterpart='world,eu', frequency='annual', direction='exports')
-        """  # noqa: E501
-
-        return self._run(
-            "/economy/direction_of_trade",
-            **filter_inputs(
-                provider_choices={
-                    "provider": self._get_provider(
-                        provider,
-                        "economy.direction_of_trade",
-                        ("imf",),
-                    )
-                },
-                standard_params={
-                    "country": country,
-                    "counterpart": counterpart,
-                    "direction": direction,
-                    "start_date": start_date,
-                    "end_date": end_date,
-                    "frequency": frequency,
-                },
-                extra_params=kwargs,
-                info={
-                    "country": {
-                        "imf": {
-                            "multiple_items_allowed": True,
-                            "choices": [
-                                "all",
-                                "advanced_economies",
-                                "afghanistan",
-                                "africa",
-                                "africa_not_allocated",
-                                "albania",
-                                "algeria",
-                                "american_samoa",
-                                "angola",
-                                "anguilla",
-                                "antigua_and_barbuda",
-                                "antilles",
-                                "argentina",
-                                "armenia",
-                                "aruba",
-                                "asia_not_allocated",
-                                "australia",
-                                "austria",
-                                "azerbaijan",
-                                "bahamas",
-                                "bahrain",
-                                "bangladesh",
-                                "barbados",
-                                "belarus",
-                                "belgium",
-                                "belgo-luxembourg_economic_union",
-                                "belize",
-                                "benin",
-                                "bermuda",
-                                "bhutan",
-                                "bolivia",
-                                "bosnia_and_herzegovina",
-                                "botswana",
-                                "brazil",
-                                "brunei_darussalam",
-                                "bulgaria",
-                                "burkina_faso",
-                                "burundi",
-                                "cabo_verde",
-                                "cambodia",
-                                "cameroon",
-                                "canada",
-                                "central_african_republic",
-                                "chad",
-                                "chile",
-                                "china",
-                                "colombia",
-                                "community_of_independent_states",
-                                "comoros",
-                                "congo",
-                                "costa_rica",
-                                "croatia",
-                                "cuba",
-                                "curacao",
-                                "cyprus",
-                                "czech_republic",
-                                "democratic_republic_of_the_congo",
-                                "denmark",
-                                "developing_asia",
-                                "djibouti",
-                                "dominica",
-                                "dominican_republic",
-                                "east_germany",
-                                "ecuador",
-                                "egypt",
-                                "el_salvador",
-                                "emerging_and_developing_countries",
-                                "emerging_and_developing_europe",
-                                "equatorial_guinea",
-                                "eritrea",
-                                "estonia",
-                                "eswatini",
-                                "ethiopia",
-                                "euro_area",
-                                "europe",
-                                "europe_not_allocated",
-                                "european_union",
-                                "export_earnings_fuel",
-                                "export_earnings_nonfuel",
-                                "falkland_islands",
-                                "faroe_islands",
-                                "fiji",
-                                "finland",
-                                "former_czechoslovakia",
-                                "former_ussr",
-                                "former_yugoslavia",
-                                "france",
-                                "french_polynesia",
-                                "gabon",
-                                "gambia",
-                                "georgia",
-                                "germany",
-                                "ghana",
-                                "gibraltar",
-                                "greece",
-                                "greenland",
-                                "grenada",
-                                "guam",
-                                "guatemala",
-                                "guinea",
-                                "guyana",
-                                "haiti",
-                                "honduras",
-                                "hong_kong",
-                                "hungary",
-                                "iceland",
-                                "india",
-                                "indonesia",
-                                "iran",
-                                "iraq",
-                                "ireland",
-                                "israel",
-                                "italy",
-                                "ivory_coast",
-                                "jamaica",
-                                "japan",
-                                "jordan",
-                                "kazakhstan",
-                                "kenya",
-                                "kiribati",
-                                "kosovo",
-                                "kuwait",
-                                "kyrgyzstan",
-                                "lao",
-                                "latvia",
-                                "lebanon",
-                                "lesotho",
-                                "liberia",
-                                "libya",
-                                "lithuania",
-                                "luxembourg",
-                                "macao",
-                                "madagascar",
-                                "malawi",
-                                "malaysia",
-                                "maldives",
-                                "mali",
-                                "malta",
-                                "marshall_islands",
-                                "mauritania",
-                                "mauritius",
-                                "mexico",
-                                "micronesia",
-                                "middle_east",
-                                "middle_east_and_central_asia",
-                                "middle_east_and_central_asia_not_specified",
-                                "middle_east_north_africa_afghanistan_and_pakistan",
-                                "moldova",
-                                "mongolia",
-                                "montenegro",
-                                "montserrat",
-                                "morocco",
-                                "mozambique",
-                                "myanmar",
-                                "namibia",
-                                "nauru",
-                                "nepal",
-                                "netherlands",
-                                "new_caledonia",
-                                "new_zealand",
-                                "nicaragua",
-                                "niger",
-                                "nigeria",
-                                "north_korea",
-                                "north_macedonia",
-                                "north_vietnam",
-                                "norway",
-                                "oman",
-                                "other_countries_nie",
-                                "pakistan",
-                                "palau",
-                                "palestine",
-                                "panama",
-                                "papua_new_guinea",
-                                "paraguay",
-                                "peru",
-                                "philippines",
-                                "poland",
-                                "portugal",
-                                "qatar",
-                                "romania",
-                                "russia",
-                                "rwanda",
-                                "saint_kitts_and_nevis",
-                                "saint_lucia",
-                                "saint_vincent_and_the_grenadines",
-                                "samoa",
-                                "san_marino",
-                                "sao_tome_and_principe",
-                                "saudi_arabia",
-                                "senegal",
-                                "serbia",
-                                "serbia_and_montenegro",
-                                "seychelles",
-                                "sierra_leone",
-                                "singapore",
-                                "sint_maarten",
-                                "slovakia",
-                                "slovenia",
-                                "solomon_islands",
-                                "somalia",
-                                "south_africa",
-                                "south_african_common_customs_area",
-                                "south_korea",
-                                "south_sudan",
-                                "spain",
-                                "special_categories_and_economic_zones",
-                                "sri_lanka",
-                                "sub-saharan_africa",
-                                "sudan",
-                                "suriname",
-                                "sweden",
-                                "switzerland",
-                                "syria",
-                                "taiwan",
-                                "tajikistan",
-                                "tanzania",
-                                "thailand",
-                                "timor-leste",
-                                "togo",
-                                "tonga",
-                                "trinidad_and_tobago",
-                                "tunisia",
-                                "turkey",
-                                "turkmenistan",
-                                "tuvalu",
-                                "uganda",
-                                "ukraine",
-                                "united_arab_emirates",
-                                "united_kingdom",
-                                "united_states",
-                                "uruguay",
-                                "uzbekistan",
-                                "vanuatu",
-                                "vatican_city_state",
-                                "venezuela",
-                                "viet_nam",
-                                "west_malaysia",
-                                "western_hemisphere",
-                                "western_hemisphere_not_allocated",
-                                "world",
-                                "yemen",
-                                "yemen_arab_rep",
-                                "yemen_pd_rep",
-                                "zambia",
-                                "zimbabwe",
-                            ],
-                        }
-                    },
-                    "counterpart": {
-                        "imf": {
-                            "multiple_items_allowed": True,
-                            "choices": [
-                                "all",
-                                "advanced_economies",
-                                "afghanistan",
-                                "africa",
-                                "africa_not_allocated",
-                                "albania",
-                                "algeria",
-                                "american_samoa",
-                                "angola",
-                                "anguilla",
-                                "antigua_and_barbuda",
-                                "antilles",
-                                "argentina",
-                                "armenia",
-                                "aruba",
-                                "asia_not_allocated",
-                                "australia",
-                                "austria",
-                                "azerbaijan",
-                                "bahamas",
-                                "bahrain",
-                                "bangladesh",
-                                "barbados",
-                                "belarus",
-                                "belgium",
-                                "belgo-luxembourg_economic_union",
-                                "belize",
-                                "benin",
-                                "bermuda",
-                                "bhutan",
-                                "bolivia",
-                                "bosnia_and_herzegovina",
-                                "botswana",
-                                "brazil",
-                                "brunei_darussalam",
-                                "bulgaria",
-                                "burkina_faso",
-                                "burundi",
-                                "cabo_verde",
-                                "cambodia",
-                                "cameroon",
-                                "canada",
-                                "central_african_republic",
-                                "chad",
-                                "chile",
-                                "china",
-                                "colombia",
-                                "community_of_independent_states",
-                                "comoros",
-                                "congo",
-                                "costa_rica",
-                                "croatia",
-                                "cuba",
-                                "curacao",
-                                "cyprus",
-                                "czech_republic",
-                                "democratic_republic_of_the_congo",
-                                "denmark",
-                                "developing_asia",
-                                "djibouti",
-                                "dominica",
-                                "dominican_republic",
-                                "east_germany",
-                                "ecuador",
-                                "egypt",
-                                "el_salvador",
-                                "emerging_and_developing_countries",
-                                "emerging_and_developing_europe",
-                                "equatorial_guinea",
-                                "eritrea",
-                                "estonia",
-                                "eswatini",
-                                "ethiopia",
-                                "euro_area",
-                                "europe",
-                                "europe_not_allocated",
-                                "european_union",
-                                "export_earnings_fuel",
-                                "export_earnings_nonfuel",
-                                "falkland_islands",
-                                "faroe_islands",
-                                "fiji",
-                                "finland",
-                                "former_czechoslovakia",
-                                "former_ussr",
-                                "former_yugoslavia",
-                                "france",
-                                "french_polynesia",
-                                "gabon",
-                                "gambia",
-                                "georgia",
-                                "germany",
-                                "ghana",
-                                "gibraltar",
-                                "greece",
-                                "greenland",
-                                "grenada",
-                                "guam",
-                                "guatemala",
-                                "guinea",
-                                "guyana",
-                                "haiti",
-                                "honduras",
-                                "hong_kong",
-                                "hungary",
-                                "iceland",
-                                "india",
-                                "indonesia",
-                                "iran",
-                                "iraq",
-                                "ireland",
-                                "israel",
-                                "italy",
-                                "ivory_coast",
-                                "jamaica",
-                                "japan",
-                                "jordan",
-                                "kazakhstan",
-                                "kenya",
-                                "kiribati",
-                                "kosovo",
-                                "kuwait",
-                                "kyrgyzstan",
-                                "lao",
-                                "latvia",
-                                "lebanon",
-                                "lesotho",
-                                "liberia",
-                                "libya",
-                                "lithuania",
-                                "luxembourg",
-                                "macao",
-                                "madagascar",
-                                "malawi",
-                                "malaysia",
-                                "maldives",
-                                "mali",
-                                "malta",
-                                "marshall_islands",
-                                "mauritania",
-                                "mauritius",
-                                "mexico",
-                                "micronesia",
-                                "middle_east",
-                                "middle_east_and_central_asia",
-                                "middle_east_and_central_asia_not_specified",
-                                "middle_east_north_africa_afghanistan_and_pakistan",
-                                "moldova",
-                                "mongolia",
-                                "montenegro",
-                                "montserrat",
-                                "morocco",
-                                "mozambique",
-                                "myanmar",
-                                "namibia",
-                                "nauru",
-                                "nepal",
-                                "netherlands",
-                                "new_caledonia",
-                                "new_zealand",
-                                "nicaragua",
-                                "niger",
-                                "nigeria",
-                                "north_korea",
-                                "north_macedonia",
-                                "north_vietnam",
-                                "norway",
-                                "oman",
-                                "other_countries_nie",
-                                "pakistan",
-                                "palau",
-                                "palestine",
-                                "panama",
-                                "papua_new_guinea",
-                                "paraguay",
-                                "peru",
-                                "philippines",
-                                "poland",
-                                "portugal",
-                                "qatar",
-                                "romania",
-                                "russia",
-                                "rwanda",
-                                "saint_kitts_and_nevis",
-                                "saint_lucia",
-                                "saint_vincent_and_the_grenadines",
-                                "samoa",
-                                "san_marino",
-                                "sao_tome_and_principe",
-                                "saudi_arabia",
-                                "senegal",
-                                "serbia",
-                                "serbia_and_montenegro",
-                                "seychelles",
-                                "sierra_leone",
-                                "singapore",
-                                "sint_maarten",
-                                "slovakia",
-                                "slovenia",
-                                "solomon_islands",
-                                "somalia",
-                                "south_africa",
-                                "south_african_common_customs_area",
-                                "south_korea",
-                                "south_sudan",
-                                "spain",
-                                "special_categories_and_economic_zones",
-                                "sri_lanka",
-                                "sub-saharan_africa",
-                                "sudan",
-                                "suriname",
-                                "sweden",
-                                "switzerland",
-                                "syria",
-                                "taiwan",
-                                "tajikistan",
-                                "tanzania",
-                                "thailand",
-                                "timor-leste",
-                                "togo",
-                                "tonga",
-                                "trinidad_and_tobago",
-                                "tunisia",
-                                "turkey",
-                                "turkmenistan",
-                                "tuvalu",
-                                "uganda",
-                                "ukraine",
-                                "united_arab_emirates",
-                                "united_kingdom",
-                                "united_states",
-                                "uruguay",
-                                "uzbekistan",
-                                "vanuatu",
-                                "vatican_city_state",
-                                "venezuela",
-                                "viet_nam",
-                                "west_malaysia",
-                                "western_hemisphere",
-                                "western_hemisphere_not_allocated",
-                                "world",
-                                "yemen",
-                                "yemen_arab_rep",
-                                "yemen_pd_rep",
-                                "zambia",
-                                "zimbabwe",
-                            ],
-                        }
-                    },
-                },
-            )
-        )
-
-    @exception_handler
-    @validate
-    def export_destinations(
-        self,
-        country: Annotated[
-            Union[str, List[str]],
-            OpenBBField(
-                description="The country to get data. Multiple comma separated items allowed for provider(s): econdb."
-            ),
-        ],
-        provider: Annotated[
-            Optional[Literal["econdb"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb."
-            ),
-        ] = None,
-        **kwargs
-    ) -> OBBject:
-        """Get top export destinations by country from the UN Comtrade International Trade Statistics Database.
-
-        Parameters
-        ----------
-        country : Union[str, List[str]]
-            The country to get data. Multiple comma separated items allowed for provider(s): econdb.
-        provider : Optional[Literal['econdb']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.
-
-        Returns
-        -------
-        OBBject
-            results : List[ExportDestinations]
-                Serializable results.
-            provider : Optional[Literal['econdb']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
-
-        ExportDestinations
-        ------------------
-        origin_country : str
-            The country of origin.
-        destination_country : str
-            The destination country.
-        value : Union[float, int]
-            The value of the export.
-        units : Optional[str]
-            The units of measurement for the value. (provider: econdb)
-        title : Optional[str]
-            The title of the data. (provider: econdb)
-        footnote : Optional[str]
-            The footnote for the data. (provider: econdb)
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.economy.export_destinations(provider='econdb', country='us')
-        """  # noqa: E501
-
-        return self._run(
-            "/economy/export_destinations",
-            **filter_inputs(
-                provider_choices={
-                    "provider": self._get_provider(
-                        provider,
-                        "economy.export_destinations",
-                        ("econdb",),
-                    )
-                },
-                standard_params={
-                    "country": country,
-                },
-                extra_params=kwargs,
-                info={
-                    "country": {
-                        "econdb": {"multiple_items_allowed": True, "choices": None}
-                    }
-                },
             )
         )
 
@@ -2183,67 +1321,40 @@ class ROUTER_economy(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, intrinio.
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
             Frequency aggregation to convert high frequency data to lower frequency.
-                
-            None = No change
-                
-            a = Annual
-                
-            q = Quarterly
-                
-            m = Monthly
-                
-            w = Weekly
-                
-            d = Daily
-                
-            wef = Weekly, Ending Friday
-                
-            weth = Weekly, Ending Thursday
-                
-            wew = Weekly, Ending Wednesday
-                
-            wetu = Weekly, Ending Tuesday
-                
-            wem = Weekly, Ending Monday
-                
-            wesu = Weekly, Ending Sunday
-                
-            wesa = Weekly, Ending Saturday
-                
-            bwew = Biweekly, Ending Wednesday
-                
-            bwem = Biweekly, Ending Monday
+                None = No change
+                a = Annual
+                q = Quarterly
+                m = Monthly
+                w = Weekly
+                d = Daily
+                wef = Weekly, Ending Friday
+                weth = Weekly, Ending Thursday
+                wew = Weekly, Ending Wednesday
+                wetu = Weekly, Ending Tuesday
+                wem = Weekly, Ending Monday
+                wesu = Weekly, Ending Sunday
+                wesa = Weekly, Ending Saturday
+                bwew = Biweekly, Ending Wednesday
+                bwem = Biweekly, Ending Monday
                  (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
             A key that indicates the aggregation method used for frequency aggregation.
                 This parameter has no affect if the frequency parameter is not set.
-                
-            avg = Average
-                
-            sum = Sum
-                
-            eop = End of Period
+                avg = Average
+                sum = Sum
+                eop = End of Period
                  (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
             Transformation type
-                
-            None = No transformation
-                
-            chg = Change
-                
-            ch1 = Change from Year Ago
-                
-            pch = Percent Change
-                
-            pc1 = Percent Change from Year Ago
-                
-            pca = Compounded Annual Rate of Change
-                
-            cch = Continuously Compounded Rate of Change
-                
-            cca = Continuously Compounded Annual Rate of Change
-                
-            log = Natural Log
+                None = No transformation
+                chg = Change
+                ch1 = Change from Year Ago
+                pch = Percent Change
+                pc1 = Percent Change from Year Ago
+                pca = Compounded Annual Rate of Change
+                cch = Continuously Compounded Rate of Change
+                cca = Continuously Compounded Annual Rate of Change
+                log = Natural Log
                  (provider: fred)
         all_pages : Optional[bool]
             Returns all pages of data from the API call at once. (provider: intrinio)
@@ -2298,7 +1409,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fred": {"multiple_items_allowed": True, "choices": None}}},
+                info={"symbol": {"fred": {"multiple_items_allowed": True, "choices": None}}, "frequency": {"fred": {"multiple_items_allowed": False, "choices": ["a", "q", "m", "w", "d", "wef", "weth", "wew", "wetu", "wem", "wesu", "wesa", "bwew", "bwem"]}}, "aggregation_method": {"fred": {"multiple_items_allowed": False, "choices": ["avg", "sum", "eop"]}}, "transform": {"fred": {"multiple_items_allowed": False, "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]}}},
             )
         )
 
@@ -2478,26 +1589,10 @@ class ROUTER_economy(Container):
     @validate
     def indicators(
         self,
-        country: Annotated[
-            Union[str, None, List[Optional[str]]],
-            OpenBBField(
-                description="The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb, imf."
-            ),
-        ] = None,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["econdb", "imf"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, imf."
-            ),
-        ] = None,
+        country: Annotated[Union[str, None, List[Optional[str]]], OpenBBField(description="The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb, imf.")] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["econdb", "imf"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, imf.")] = None,
         **kwargs
     ) -> OBBject:
         """Get economic indicators by country and indicator.
@@ -2515,7 +1610,7 @@ class ROUTER_economy(Container):
         symbol : Optional[str]
             Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Use `available_indicators()` to get a list of available symbols. Multiple comma separated items allowed. (provider: econdb);
             Symbol to get data for. Use `available_indicators()` to get the list of available symbols. Use 'IRFCL' to get all the data from the set of indicators. Complete tables are available only by single country, and are keyed as described below. The default is 'irfcl_top_lines'. Available presets not listed in `available_indicators()` are:
-
+        
                 'IRFCL': All the data from the set of indicators. Not compatible with multiple countries.
                 'irfcl_top_lines': The default, top line items from the IRFCL data. Compatible with multiple countries.
                 'reserve_assets_and_other_fx_assets': Table I of the IRFCL data. Not compatible with multiple countries.
@@ -2567,7 +1662,7 @@ class ROUTER_economy(Container):
         country : Optional[str]
             The country represented by the data. 
         value : Optional[Union[int, float]]
-
+            
         scale : Optional[str]
             The scale of the value. (provider: imf)
         table : Optional[str]
@@ -2613,242 +1708,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={
-                    "country": {
-                        "econdb": {"multiple_items_allowed": True, "choices": None},
-                        "imf": {
-                            "multiple_items_allowed": True,
-                            "choices": [
-                                "all",
-                                "afghanistan",
-                                "albania",
-                                "algeria",
-                                "american_samoa",
-                                "angola",
-                                "anguilla",
-                                "antigua_and_barbuda",
-                                "argentina",
-                                "armenia",
-                                "aruba",
-                                "australia",
-                                "austria",
-                                "azerbaijan",
-                                "bahamas",
-                                "bahrain",
-                                "bangladesh",
-                                "barbados",
-                                "belarus",
-                                "belgium",
-                                "belize",
-                                "benin",
-                                "bermuda",
-                                "bhutan",
-                                "bolivia",
-                                "bosnia_and_herzegovina",
-                                "botswana",
-                                "brazil",
-                                "brunei_darussalam",
-                                "bulgaria",
-                                "burkina_faso",
-                                "burundi",
-                                "cabo_verde",
-                                "cambodia",
-                                "cameroon",
-                                "canada",
-                                "central_african_republic",
-                                "chad",
-                                "chile",
-                                "hong_kong",
-                                "macao",
-                                "china",
-                                "colombia",
-                                "comoros",
-                                "democratic_republic_of_the_congo",
-                                "congo",
-                                "costa_rica",
-                                "ivory_coast",
-                                "croatia",
-                                "cuba",
-                                "curacao",
-                                "cyprus",
-                                "czech_republic",
-                                "denmark",
-                                "djibouti",
-                                "dominica",
-                                "dominican_republic",
-                                "ecuador",
-                                "egypt",
-                                "el_salvador",
-                                "equatorial_guinea",
-                                "eritrea",
-                                "estonia",
-                                "eswatini",
-                                "ethiopia",
-                                "falkland_islands",
-                                "faroe_islands",
-                                "fiji",
-                                "finland",
-                                "france",
-                                "french_polynesia",
-                                "gabon",
-                                "gambia",
-                                "georgia",
-                                "germany",
-                                "ghana",
-                                "gibraltar",
-                                "greece",
-                                "greenland",
-                                "grenada",
-                                "guam",
-                                "guatemala",
-                                "guinea",
-                                "guyana",
-                                "haiti",
-                                "vatican_city_state",
-                                "honduras",
-                                "hungary",
-                                "iceland",
-                                "india",
-                                "indonesia",
-                                "iran",
-                                "iraq",
-                                "ireland",
-                                "israel",
-                                "italy",
-                                "jamaica",
-                                "japan",
-                                "jordan",
-                                "kazakhstan",
-                                "kenya",
-                                "kiribati",
-                                "north_korea",
-                                "south_korea",
-                                "kosovo",
-                                "kuwait",
-                                "kyrgyzstan",
-                                "lao",
-                                "latvia",
-                                "lebanon",
-                                "lesotho",
-                                "liberia",
-                                "libya",
-                                "lithuania",
-                                "luxembourg",
-                                "madagascar",
-                                "malawi",
-                                "malaysia",
-                                "maldives",
-                                "mali",
-                                "malta",
-                                "marshall_islands",
-                                "mauritania",
-                                "mauritius",
-                                "mexico",
-                                "micronesia",
-                                "moldova",
-                                "mongolia",
-                                "montenegro",
-                                "montserrat",
-                                "morocco",
-                                "mozambique",
-                                "myanmar",
-                                "namibia",
-                                "nauru",
-                                "nepal",
-                                "antilles",
-                                "netherlands",
-                                "new_caledonia",
-                                "new_zealand",
-                                "nicaragua",
-                                "niger",
-                                "nigeria",
-                                "north_macedonia",
-                                "norway",
-                                "oman",
-                                "pakistan",
-                                "palau",
-                                "panama",
-                                "papua_new_guinea",
-                                "paraguay",
-                                "peru",
-                                "philippines",
-                                "poland",
-                                "portugal",
-                                "qatar",
-                                "romania",
-                                "russia",
-                                "rwanda",
-                                "samoa",
-                                "san_marino",
-                                "sao_tome_and_principe",
-                                "saudi_arabia",
-                                "senegal",
-                                "serbia_and_montenegro",
-                                "serbia",
-                                "seychelles",
-                                "sierra_leone",
-                                "singapore",
-                                "sint_maarten",
-                                "slovakia",
-                                "slovenia",
-                                "solomon_islands",
-                                "somalia",
-                                "south_africa",
-                                "south_sudan",
-                                "spain",
-                                "sri_lanka",
-                                "saint_kitts_and_nevis",
-                                "saint_lucia",
-                                "saint_vincent_and_the_grenadines",
-                                "sudan",
-                                "suriname",
-                                "sweden",
-                                "switzerland",
-                                "syria",
-                                "taiwan",
-                                "tajikistan",
-                                "tanzania",
-                                "thailand",
-                                "timor-leste",
-                                "togo",
-                                "tonga",
-                                "trinidad_and_tobago",
-                                "tunisia",
-                                "turkey",
-                                "turkmenistan",
-                                "tuvalu",
-                                "uganda",
-                                "ukraine",
-                                "united_arab_emirates",
-                                "united_kingdom",
-                                "united_states",
-                                "uruguay",
-                                "uzbekistan",
-                                "vanuatu",
-                                "venezuela",
-                                "viet_nam",
-                                "palestine",
-                                "yemen",
-                                "zambia",
-                                "zimbabwe",
-                                "euro_area",
-                                "europe",
-                                "european_union",
-                                "unspecified",
-                            ],
-                        },
-                    },
-                    "symbol": {
-                        "econdb": {"multiple_items_allowed": True, "choices": None},
-                        "imf": {"multiple_items_allowed": True, "choices": None},
-                    },
-                    "frequency": {
-                        "imf": {
-                            "multiple_items_allowed": False,
-                            "choices": ["annual", "quarter", "month"],
-                        }
-                    },
-                },
+                info={"country": {"econdb": {"multiple_items_allowed": True, "choices": None}, "imf": {"multiple_items_allowed": True, "choices": ["all", "afghanistan", "albania", "algeria", "american_samoa", "angola", "anguilla", "antigua_and_barbuda", "argentina", "armenia", "aruba", "australia", "austria", "azerbaijan", "bahamas", "bahrain", "bangladesh", "barbados", "belarus", "belgium", "belize", "benin", "bermuda", "bhutan", "bolivia", "bosnia_and_herzegovina", "botswana", "brazil", "brunei_darussalam", "bulgaria", "burkina_faso", "burundi", "cabo_verde", "cambodia", "cameroon", "canada", "central_african_republic", "chad", "chile", "hong_kong", "macao", "china", "colombia", "comoros", "democratic_republic_of_the_congo", "congo", "costa_rica", "ivory_coast", "croatia", "cuba", "curacao", "cyprus", "czech_republic", "denmark", "djibouti", "dominica", "dominican_republic", "ecuador", "egypt", "el_salvador", "equatorial_guinea", "eritrea", "estonia", "eswatini", "ethiopia", "falkland_islands", "faroe_islands", "fiji", "finland", "france", "french_polynesia", "gabon", "gambia", "georgia", "germany", "ghana", "gibraltar", "greece", "greenland", "grenada", "guam", "guatemala", "guinea", "guyana", "haiti", "vatican_city_state", "honduras", "hungary", "iceland", "india", "indonesia", "iran", "iraq", "ireland", "israel", "italy", "jamaica", "japan", "jordan", "kazakhstan", "kenya", "kiribati", "north_korea", "south_korea", "kosovo", "kuwait", "kyrgyzstan", "lao", "latvia", "lebanon", "lesotho", "liberia", "libya", "lithuania", "luxembourg", "madagascar", "malawi", "malaysia", "maldives", "mali", "malta", "marshall_islands", "mauritania", "mauritius", "mexico", "micronesia", "moldova", "mongolia", "montenegro", "montserrat", "morocco", "mozambique", "myanmar", "namibia", "nauru", "nepal", "antilles", "netherlands", "new_caledonia", "new_zealand", "nicaragua", "niger", "nigeria", "north_macedonia", "norway", "oman", "pakistan", "palau", "panama", "papua_new_guinea", "paraguay", "peru", "philippines", "poland", "portugal", "qatar", "romania", "russia", "rwanda", "samoa", "san_marino", "sao_tome_and_principe", "saudi_arabia", "senegal", "serbia_and_montenegro", "serbia", "seychelles", "sierra_leone", "singapore", "sint_maarten", "slovakia", "slovenia", "solomon_islands", "somalia", "south_africa", "south_sudan", "spain", "sri_lanka", "saint_kitts_and_nevis", "saint_lucia", "saint_vincent_and_the_grenadines", "sudan", "suriname", "sweden", "switzerland", "syria", "taiwan", "tajikistan", "tanzania", "thailand", "timor-leste", "togo", "tonga", "trinidad_and_tobago", "tunisia", "turkey", "turkmenistan", "tuvalu", "uganda", "ukraine", "united_arab_emirates", "united_kingdom", "united_states", "uruguay", "uzbekistan", "vanuatu", "venezuela", "viet_nam", "palestine", "yemen", "zambia", "zimbabwe", "euro_area", "europe", "european_union", "unspecified"]}}, "symbol": {"econdb": {"multiple_items_allowed": True, "choices": None}, "imf": {"multiple_items_allowed": True, "choices": None}}, "frequency": {"imf": {"multiple_items_allowed": False, "choices": ["annual", "quarter", "month"]}}},
             )
         )
 
@@ -3192,20 +2052,9 @@ class ROUTER_economy(Container):
     @validate
     def port_volume(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["econdb"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["econdb"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.")] = None,
         **kwargs
     ) -> OBBject:
         """Get average dwelling times and TEU volumes from the top ports.
@@ -3236,13 +2085,13 @@ class ROUTER_economy(Container):
         PortVolume
         ----------
         date : date
-            The date of the data.
+            The date of the data. 
         port_code : Optional[str]
-            Port code.
+            Port code. 
         port_name : Optional[str]
-            Port name.
+            Port name. 
         country : Optional[str]
-            Country where the port is located.
+            Country where the port is located. 
         export_dwell_time : Optional[float]
             EconDB model estimate for the average number of days from when a container enters the terminal gates until it is loaded on a vessel. High dwelling times can indicate vessel delays. (provider: econdb)
         import_dwell_time : Optional[float]
@@ -3280,20 +2129,9 @@ class ROUTER_economy(Container):
     @validate
     def primary_dealer_fails(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
-        ] = None,
-        provider: Annotated[
-            Optional[Literal["federal_reserve"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        provider: Annotated[Optional[Literal["federal_reserve"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.")] = None,
         **kwargs
     ) -> OBBject:
         """Primary Dealer Statistics for Fails to Deliver and Fails to Receive.
@@ -3309,7 +2147,7 @@ class ROUTER_economy(Container):
 
         Near-100 percent pass-through of fails suggests a high degree of collateral
         re-hypothecation together with the inability or unwillingness to borrow or buy the needed securities."
-
+        
 
         Parameters
         ----------
@@ -3341,9 +2179,9 @@ class ROUTER_economy(Container):
         PrimaryDealerFails
         ------------------
         date : date
-            The date of the data.
+            The date of the data. 
         symbol : str
-            Symbol representing the entity requested in the data.
+            Symbol representing the entity requested in the data. 
         title : Optional[str]
             Title of the series' symbol. (provider: federal_reserve)
         value : Optional[Union[int, float]]
@@ -3372,27 +2210,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={
-                    "asset_class": {
-                        "federal_reserve": {
-                            "multiple_items_allowed": False,
-                            "choices": [
-                                "all",
-                                "treasuries",
-                                "tips",
-                                "agency",
-                                "mbs",
-                                "corporate",
-                            ],
-                        }
-                    },
-                    "unit": {
-                        "federal_reserve": {
-                            "multiple_items_allowed": False,
-                            "choices": ["value", "percent"],
-                        }
-                    },
-                },
+                info={"asset_class": {"federal_reserve": {"multiple_items_allowed": False, "choices": ["all", "treasuries", "tips", "agency", "mbs", "corporate"]}}, "unit": {"federal_reserve": {"multiple_items_allowed": False, "choices": ["value", "percent"]}}},
             )
         )
 
