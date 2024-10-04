@@ -12,27 +12,14 @@ from typing import Any, Dict, Optional
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from pydantic import BaseModel, Field
-
-
-class Address(BaseModel):
-    """Address Model."""
-
-    city: str = Field(
-        default="Atlanta",
-        description="City",
-    )
-    state: str = Field(
-        default="GA",
-        description="State",
-    )
+from pydantic import Field
 
 
 class EmptyQueryParams(QueryParams):
     """Empty Query Params"""
 
-    some_param: Dict[Any, Any] = Field(
-        default=Address().model_dump(),
+    some_param: Optional[str] = Field(
+        default=None,
         description="Some param",
     )
 
@@ -77,19 +64,19 @@ class EmptyFetcher(
     ) -> Dict:  # Typing here should match the 'data' input of 'transform_data'.
         """Extract data."""
         # pylint: disable=import-outside-toplevel
-        #from openbb_core.provider.utils.helpers import (
+        # from openbb_core.provider.utils.helpers import (
         #    make_request,
         #    amake_request,
         #    amake_requests,
         #    get_querystring,
-        #)   Use these to make HTTP requests.
+        # )   Use these to make HTTP requests.
 
         # We import here so that items are imported on execution, not on initialization.
         # Critical for modules that introduce a heavy load on the system.
         # Generally, any module required for data retrieval and parsing should be 'lazy' imported.
         # This is to ensure that the module is only imported when needed.
 
-        # print(query.some_param)
+        print(query.some_param)  # noqa: T201
         results = {
             "date": datetime.now().date(),
             "title": "Hello from the Empty Provider extension!",
