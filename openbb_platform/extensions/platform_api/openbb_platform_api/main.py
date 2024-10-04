@@ -55,7 +55,7 @@ async def get_root():
     """Root response and welcome message."""
     return JSONResponse(
         content="Welcome to the OpenBB Platform API."
-        + " Learn how to connect to Pro in docs.openbb.co/pro/data-connectors,"
+        + " Learn how to connect to Pro in https://docs.openbb.co/pro/custom-backend,"
         + " or see the API documentation here: /docs"
     )
 
