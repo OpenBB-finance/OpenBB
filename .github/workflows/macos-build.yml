@@ -7,7 +7,7 @@ env:
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
 
-on: push
+on: workflow_dispatch
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
