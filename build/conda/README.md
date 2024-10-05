@@ -31,7 +31,7 @@ To check nsis file - run
 miniconda3\envs\constructor\NSIS\makensis.exe /V2 assets\installer.nsi
 ```
 
-gives better output
+gives better output for errors
 
 ```batch
 miniconda3\envs\constructor\NSIS\makensis.exe /V4 assets\installer.nsi
