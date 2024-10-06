@@ -3,6 +3,7 @@
 from openbb_core.provider.abstract.provider import Provider
 
 from openbb_eia.models.petroleum_status_report import EiaPetroleumStatusReportFetcher
+from openbb_eia.models.short_term_energy_outlook import EiaShortTermEnergyOutlookFetcher
 
 eia_provider = Provider(
     name="eia",
@@ -15,6 +16,7 @@ eia_provider = Provider(
     ],  # This is not required for the Weekly Petroleum Status Report
     fetcher_dict={
         "PetroleumStatusReport": EiaPetroleumStatusReportFetcher,
+        "ShortTermEnergyOutlook": EiaShortTermEnergyOutlookFetcher,
     },
     repr_name="U.S. Energy Information Administration (EIA) Open Data and API",
     instructions="""Credentials are required for functions calling the EIA's API.

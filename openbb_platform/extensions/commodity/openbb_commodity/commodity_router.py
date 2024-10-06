@@ -68,3 +68,32 @@ async def petroleum_status_report(
 ) -> OBBject:
     """EIA Weekly Petroleum Status Report."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ShortTermEnergyOutlook",
+    examples=[
+        APIEx(
+            description="Get the EIA's Short Term Energy Outlook.",
+            parameters={"provider": "eia"},
+        ),
+        APIEx(
+            description="Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.",
+            parameters={
+                "table": "03d",
+                "provider": "eia",
+            },
+        ),
+    ],
+)
+async def short_term_energy_outlook(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Monthly short term (18 month) projections using EIA's STEO model.
+
+    Source: www.eia.gov/steo/
+    """
+    return await OBBject.from_query(Query(**locals()))
