@@ -25,33 +25,24 @@ def headers():
     [
         (
             {
-                "asset": "gold",
+                "commodity": "all",
                 "start_date": None,
                 "end_date": None,
-                "collapse": None,
+                "frequency": None,
                 "transform": None,
-                "provider": "nasdaq",
-            }
-        ),
-        (
-            {
-                "asset": "silver",
-                "start_date": "1990-01-01",
-                "end_date": "2023-01-01",
-                "collapse": "monthly",
-                "transform": "diff",
-                "provider": "nasdaq",
+                "aggregation_method": None,
+                "provider": "fred",
             }
         ),
     ],
 )
 @pytest.mark.integration
-def test_commodity_lbma_fixing(params, headers):
-    """Test the LBMA fixing endpoint."""
+def test_commodity_price_spot(params, headers):
+    """Test the commodity spot prices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/commodity/lbma_fixing?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/commodity/price/spot?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

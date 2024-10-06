@@ -529,7 +529,7 @@ def test_fixedincome_government_eu_yield_curve(params, obb):
                 "cusip": None,
                 "page_size": None,
                 "page_num": None,
-                "security_type": "Bond",
+                "security_type": "bond",
                 "provider": "government_us",
             }
         ),

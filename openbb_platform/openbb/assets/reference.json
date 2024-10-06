@@ -40,6 +40,185 @@
         }
     },
     "paths": {
+        "/commodity/price/spot": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Commodity Spot Prices.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.commodity.price.spot(provider='fred')\nobb.commodity.price.spot(provider='fred', commodity=wti)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "commodity",
+                        "type": "Literal['wti', 'brent', 'natural_gas', 'jet_fuel', 'propane', 'heating_oil', 'diesel_gulf_coast', 'diesel_ny_harbor', 'diesel_la', 'gasoline_ny_harbor', 'gasoline_gulf_coast', 'rbob', 'all']",
+                        "description": "Commodity name associated with the EIA spot price commodity data, default is 'all'.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "wti",
+                            "brent",
+                            "natural_gas",
+                            "jet_fuel",
+                            "propane",
+                            "heating_oil",
+                            "diesel_gulf_coast",
+                            "diesel_ny_harbor",
+                            "diesel_la",
+                            "gasoline_ny_harbor",
+                            "gasoline_gulf_coast",
+                            "rbob",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        None = No change\n        a = Annual\n        q = Quarterly\n        m = Monthly\n        w = Weekly\n        d = Daily\n        wef = Weekly, Ending Friday\n        weth = Weekly, Ending Thursday\n        wew = Weekly, Ending Wednesday\n        wetu = Weekly, Ending Tuesday\n        wem = Weekly, Ending Monday\n        wesu = Weekly, Ending Sunday\n        wesa = Weekly, Ending Saturday\n        bwew = Biweekly, Ending Wednesday\n        bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        avg = Average\n        sum = Sum\n        eop = End of Period",
+                        "default": "eop",
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type\n        None = No transformation\n        chg = Change\n        ch1 = Change from Year Ago\n        pch = Percent Change\n        pc1 = Percent Change from Year Ago\n        pca = Compounded Annual Rate of Change\n        cch = Continuously Compounded Rate of Change\n        cca = Continuously Compounded Annual Rate of Change\n        log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CommoditySpotPrices]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "commodity",
+                        "type": "str",
+                        "description": "Commodity name.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price",
+                        "type": "float",
+                        "description": "Price of the commodity.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "Unit of the commodity price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "CommoditySpotPrices"
+        },
         "/commodity/petroleum_status_report": {
             "deprecated": {
                 "flag": null,
@@ -238,6 +417,174 @@
                 "eia": []
             },
             "model": "PetroleumStatusReport"
+        },
+        "/commodity/short_term_energy_outlook": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Monthly short term (18 month) projections using EIA's STEO model.\n\nSource: www.eia.gov/steo/",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the EIA's Short Term Energy Outlook.\nobb.commodity.short_term_energy_outlook(provider='eia')\n# Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.\nobb.commodity.short_term_energy_outlook(table=03d, provider='eia')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": [
+                    {
+                        "name": "table",
+                        "type": "Literal['01', '02', '03a', '03b', '03c', '03d', '03e', '04a', '04b', '04c', '04d', '05a', '05b', '06', '07a', '07b', '07c', '07d1', '07d2', '07e', '08', '09a', '09b', '09c', '10a', '10b']",
+                        "description": "The specific table within the STEO dataset. Default is '01'.\n        \n    01: US Energy Markets Summary\n        \n    02: Nominal Energy Prices\n        \n    03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories\n        \n    03b: Non-OPEC Petroleum and Other Liquid Fuels Production\n        \n    03c: World Petroleum and Other Liquid Fuels Production\n        \n    03d: World Crude Oil Production\n        \n    03e: World Petroleum and Other Liquid Fuels Consumption\n        \n    04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories\n        \n    04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances\n        \n    04c: US Regional Motor Gasoline Prices and Inventories\n        \n    04d: US Biofuel Supply, Consumption, and Inventories\n        \n    05a: US Natural Gas Supply, Consumption, and Inventories\n        \n    05b: US Regional Natural Gas Prices\n        \n    06: US Coal Supply, Consumption, and Inventories\n        \n    07a: US Electricity Industry Overview\n        \n    07b: US Regional Electricity Retail Sales\n        \n    07c: US Regional Electricity Prices\n        \n    07d1: US Regional Electricity Generation, Electric Power Sector\n        \n    07d2: US Regional Electricity Generation, Electric Power Sector, continued\n        \n    07e: US Electricity Generating Capacity\n        \n    08: US Renewable Energy Consumption\n        \n    09a: US Macroeconomic Indicators and CO2 Emissions\n        \n    09b: US Regional Macroeconomic Data\n        \n    09c: US Regional Weather Data\n        \n    10a: Drilling Productivity Metrics\n        \n    10b: Crude Oil and Natural Gas Production from Shale and Tight Formations",
+                        "default": "01",
+                        "optional": true,
+                        "choices": [
+                            "01",
+                            "02",
+                            "03a",
+                            "03b",
+                            "03c",
+                            "03d",
+                            "03e",
+                            "04a",
+                            "04b",
+                            "04c",
+                            "04d",
+                            "05a",
+                            "05b",
+                            "06",
+                            "07a",
+                            "07b",
+                            "07c",
+                            "07d1",
+                            "07d2",
+                            "07e",
+                            "08",
+                            "09a",
+                            "09b",
+                            "09c",
+                            "10a",
+                            "10b"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['month', 'quarter', 'annual']",
+                        "description": "The frequency of the data. Default is 'month'.",
+                        "default": "month",
+                        "optional": true,
+                        "choices": [
+                            "month",
+                            "quarter",
+                            "annual"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ShortTermEnergyOutlook]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['eia']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "table",
+                        "type": "str",
+                        "description": "Table name for the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "order",
+                        "type": "int",
+                        "description": "Presented order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Value of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "Unit or scale of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": []
+            },
+            "model": "ShortTermEnergyOutlook"
         },
         "/crypto/price/historical": {
             "deprecated": {
@@ -5868,7 +6215,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        None = No change\n        a = Annual\n        q = Quarterly\n        m = Monthly\n        w = Weekly\n        d = Daily\n        wef = Weekly, Ending Friday\n        weth = Weekly, Ending Thursday\n        wew = Weekly, Ending Wednesday\n        wetu = Weekly, Ending Tuesday\n        wem = Weekly, Ending Monday\n        wesu = Weekly, Ending Sunday\n        wesa = Weekly, Ending Saturday\n        bwew = Biweekly, Ending Wednesday\n        bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -5891,7 +6238,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        avg = Average\n        sum = Sum\n        eop = End of Period",
                         "default": "eop",
                         "optional": true,
                         "choices": [
@@ -5903,7 +6250,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                        "description": "Transformation type\n        None = No transformation\n        chg = Change\n        ch1 = Change from Year Ago\n        pch = Percent Change\n        pc1 = Percent Change from Year Ago\n        pca = Compounded Annual Rate of Change\n        cch = Continuously Compounded Rate of Change\n        cca = Continuously Compounded Annual Rate of Change\n        log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [

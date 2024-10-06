@@ -1,18 +1,21 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from typing_extensions import Annotated
 
 
 class ROUTER_commodity(Container):
     """/commodity
     petroleum_status_report
+    /price
+    short_term_energy_outlook
     """
 
     def __repr__(self) -> str:
@@ -176,6 +179,205 @@ class ROUTER_commodity(Container):
                                 "ulta_low_sulfur_distillate_reflassification_avg",
                                 "weekly",
                             ],
+                        }
+                    },
+                },
+            )
+        )
+
+    @property
+    def price(self):
+        # pylint: disable=import-outside-toplevel
+        from . import commodity_price
+
+        return commodity_price.ROUTER_commodity_price(
+            command_runner=self._command_runner
+        )
+
+    @exception_handler
+    @validate
+    def short_term_energy_outlook(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["eia"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: eia."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Monthly short term (18 month) projections using EIA's STEO model.
+
+        Source: www.eia.gov/steo/
+
+
+        Parameters
+        ----------
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['eia']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: eia.
+        table : Literal['01', '02', '03a', '03b', '03c', '03d', '03e', '04a', '04b', '04c', '04d', '05a', '05b', '06', '07a', '07b', '07c', '07d1', '07d2', '07e', '08', '09a', '09b', '09c', '10a', '10b']
+            The specific table within the STEO dataset. Default is '01'.
+
+            01: US Energy Markets Summary
+
+            02: Nominal Energy Prices
+
+            03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories
+
+            03b: Non-OPEC Petroleum and Other Liquid Fuels Production
+
+            03c: World Petroleum and Other Liquid Fuels Production
+
+            03d: World Crude Oil Production
+
+            03e: World Petroleum and Other Liquid Fuels Consumption
+
+            04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories
+
+            04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances
+
+            04c: US Regional Motor Gasoline Prices and Inventories
+
+            04d: US Biofuel Supply, Consumption, and Inventories
+
+            05a: US Natural Gas Supply, Consumption, and Inventories
+
+            05b: US Regional Natural Gas Prices
+
+            06: US Coal Supply, Consumption, and Inventories
+
+            07a: US Electricity Industry Overview
+
+            07b: US Regional Electricity Retail Sales
+
+            07c: US Regional Electricity Prices
+
+            07d1: US Regional Electricity Generation, Electric Power Sector
+
+            07d2: US Regional Electricity Generation, Electric Power Sector, continued
+
+            07e: US Electricity Generating Capacity
+
+            08: US Renewable Energy Consumption
+
+            09a: US Macroeconomic Indicators and CO2 Emissions
+
+            09b: US Regional Macroeconomic Data
+
+            09c: US Regional Weather Data
+
+            10a: Drilling Productivity Metrics
+
+            10b: Crude Oil and Natural Gas Production from Shale and Tight Formations
+                 (provider: eia)
+        frequency : Literal['month', 'quarter', 'annual']
+            The frequency of the data. Default is 'month'. (provider: eia)
+
+        Returns
+        -------
+        OBBject
+            results : List[ShortTermEnergyOutlook]
+                Serializable results.
+            provider : Optional[Literal['eia']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        ShortTermEnergyOutlook
+        ----------------------
+        date : date
+            The date of the data.
+        table : Optional[str]
+            Table name for the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        order : Optional[int]
+            Presented order of the data, relative to the table.
+        title : Optional[str]
+            Title of the data.
+        value : Union[int, float]
+            Value of the data.
+        unit : Optional[str]
+            Unit or scale of the data.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> # Get the EIA's Short Term Energy Outlook.
+        >>> obb.commodity.short_term_energy_outlook(provider='eia')
+        >>> # Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.
+        >>> obb.commodity.short_term_energy_outlook(table='03d', provider='eia')
+        """  # noqa: E501
+
+        return self._run(
+            "/commodity/short_term_energy_outlook",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "commodity.short_term_energy_outlook",
+                        ("eia",),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={
+                    "table": {
+                        "eia": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "01",
+                                "02",
+                                "03a",
+                                "03b",
+                                "03c",
+                                "03d",
+                                "03e",
+                                "04a",
+                                "04b",
+                                "04c",
+                                "04d",
+                                "05a",
+                                "05b",
+                                "06",
+                                "07a",
+                                "07b",
+                                "07c",
+                                "07d1",
+                                "07d2",
+                                "07e",
+                                "08",
+                                "09a",
+                                "09b",
+                                "09c",
+                                "10a",
+                                "10b",
+                            ],
+                        }
+                    },
+                    "frequency": {
+                        "eia": {
+                            "multiple_items_allowed": False,
+                            "choices": ["month", "quarter", "annual"],
                         }
                     },
                 },
