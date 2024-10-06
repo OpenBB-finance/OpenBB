@@ -1,6 +1,6 @@
 """EIA Short Term Energy Outlook Model."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,too-many-branches,too-many-statements,too-many-locals
 
 from typing import Any, Literal, Optional
 
@@ -116,29 +116,29 @@ class EiaShortTermEnergyOutlookFetcher(
         frequency = frequency_dict[query.frequency]
         base_url = f"https://api.eia.gov/v2/steo/data/?api_key={api_key}&frequency={frequency}&data[0]=value"
         urls: list[str] = []
-        start_date = query.start_date if query.start_date else ""
-        end_date = query.end_date if query.end_date else ""
+        start_date: str = ""
+        end_date: str = ""
 
         # Format the dates based on the frequency.
-        def resample_to_quarter(dt):
+        def resample_to_quarter(dt) -> str:
             """Resample a date to a string formatted as 'YYYY-QX'."""
             year = dt.year
             quarter = (dt.month - 1) // 3 + 1
             return f"{year}-Q{quarter}"
 
-        if start_date and frequency == "monthly":
-            start_date = f"&start={start_date.strftime('%Y-%m')}"
-        elif start_date and frequency == "quarterly":
-            start_date = f"&start={resample_to_quarter(start_date)}"
-        elif start_date and frequency == "annual":
-            start_date = f"&start={start_date.strftime('%Y')}"
+        if query.start_date is not None and frequency == "monthly":
+            start_date = f"&start={query.start_date.strftime('%Y-%m')}"
+        elif query.start_date is not None and frequency == "quarterly":
+            start_date = f"&start={resample_to_quarter(query.start_date)}"
+        elif query.start_date is not None and frequency == "annual":
+            start_date = f"&start={query.start_date.strftime('%Y')}"
 
-        if end_date and frequency == "monthly":
-            end_date = f"&end={end_date.strftime('%Y-%m')}"
-        elif end_date and frequency == "quarterly":
-            end_date = f"&end={resample_to_quarter(end_date)}"
-        elif end_date and frequency == "annual":
-            end_date = f"&end={end_date.strftime('%Y')}"
+        if query.end_date is not None and frequency == "monthly":
+            end_date = f"&end={query.end_date.strftime('%Y-%m')}"
+        elif query.end_date is not None and frequency == "quarterly":
+            end_date = f"&end={resample_to_quarter(query.end_date)}"
+        elif query.end_date is not None and frequency == "annual":
+            end_date = f"&end={query.end_date.strftime('%Y')}"
 
         # We chunk the request to avoid pagination and make the query execution faster.
         symbols = [d.upper() for d in SteoTableMap[query.table]]
@@ -160,7 +160,6 @@ class EiaShortTermEnergyOutlookFetcher(
             symbols_chunk = symbols[i : i + 10]
             for symbol in symbols_chunk:
                 url_symbols += encode_symbols(symbol)
-
             url = f"{base_url}{url_symbols}{start_date}{end_date}&offset=0&length=5000"
             urls.append(url)
 
@@ -206,9 +205,9 @@ class EiaShortTermEnergyOutlookFetcher(
             raise EmptyDataError(
                 "The request was returned empty with no error messages."
             )
-        elif not results and messages:
+        if not results and messages:
             raise EmptyDataError("\n".join(messages))
-        elif results and messages:
+        if results and messages:
             warn("\n".join(messages))
 
         return results
