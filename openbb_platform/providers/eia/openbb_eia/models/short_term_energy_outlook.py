@@ -116,7 +116,6 @@ class EiaShortTermEnergyOutlookFetcher(
         frequency = frequency_dict[query.frequency]
         base_url = f"https://api.eia.gov/v2/steo/data/?api_key={api_key}&frequency={frequency}&data[0]=value"
         urls: list[str] = []
-        symbols = SteoTableMap[query.table]
         start_date = query.start_date if query.start_date else ""
         end_date = query.end_date if query.end_date else ""
 
@@ -142,14 +141,26 @@ class EiaShortTermEnergyOutlookFetcher(
             end_date = f"&end={end_date.strftime('%Y')}"
 
         # We chunk the request to avoid pagination and make the query execution faster.
-        def encode_symbols(symbols_chunk):
+        symbols = [d.upper() for d in SteoTableMap[query.table]]
+        seen = set()
+        unique_symbols: list = []
+        for symbol in symbols:
+            if symbol not in seen:
+                unique_symbols.append(symbol)
+                seen.add(symbol)
+        symbols = unique_symbols
+
+        def encode_symbols(symbol: str):
             """Encodes a chunk of symbols to be used in a URL"""
             prefix = "&facets[seriesId][]="
-            return prefix + prefix.join(symbols_chunk)
+            return prefix + symbol.upper()
 
         for i in range(0, len(symbols), 10):
+            url_symbols: str = ""
             symbols_chunk = symbols[i : i + 10]
-            url_symbols = encode_symbols(symbols_chunk)
+            for symbol in symbols_chunk:
+                url_symbols += encode_symbols(symbol)
+
             url = f"{base_url}{url_symbols}{start_date}{end_date}&offset=0&length=5000"
             urls.append(url)
 
@@ -165,6 +176,26 @@ class EiaShortTermEnergyOutlookFetcher(
                 messages.append(f"No data returned for {masked_url}")
             if data:
                 results.extend(data)
+            response_total = int(res.get("response", {}).get("total", 0))
+            n_results = len(data)
+            # After conservatively chunking the request, we may still need to paginate.
+            # This is mostly out of an abundance of caution.
+            if response_total > 5000 and n_results == 5000:
+                offset = 5000
+                url = url.replace("&offset=0", f"&offset={offset}")
+                while n_results < response_total:
+                    additional_response = await amake_request(url)
+                    additional_data = additional_response.get("response", {}).get(
+                        "data", []
+                    )
+                    if not additional_data:
+                        masked_url = url.replace(api_key, "API_KEY")
+                        messages.append(f"No additional data returned for {masked_url}")
+                    if additional_data:
+                        results.extend(additional_data)
+                    n_results += len(additional_data)
+                    url = url.replace(f"&offset={offset}", f"&offset={offset+5000}")
+                    offset += 5000
 
         try:
             await asyncio.gather(*[get_one(url) for url in urls])
@@ -192,7 +223,15 @@ class EiaShortTermEnergyOutlookFetcher(
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame, to_datetime
 
-        symbols = SteoTableMap[query.table]
+        symbols = [d.upper() for d in SteoTableMap[query.table]]
+        seen = set()
+        unique_symbols: list = []
+        for symbol in symbols:
+            if symbol not in seen:
+                unique_symbols.append(symbol)
+                seen.add(symbol)
+        symbols = unique_symbols
+
         table = query.table
         df = DataFrame(data)
         df.period = to_datetime(df.period).dt.date

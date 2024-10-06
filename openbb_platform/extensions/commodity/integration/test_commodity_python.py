@@ -69,8 +69,31 @@ def test_commodity_price_spot(params, obb):
 )
 @pytest.mark.integration
 def test_petroleum_status_report(params, obb):
-    """Test Commodity extension."""
+    """Test Commodity Petroleum Status Report endpoint."""
     result = obb.commodity.petroleum_status_report(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "table": "01",
+                "start_date": "2024-09-01",
+                "end_date": "2024-10-01",
+                "provider": "eia",
+                "frequency": "month",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_short_term_energy_outlook(params, obb):
+    """Test Commodity Short Term Energy Outlook endpoint."""
+    result = obb.commodity.short_term_energy_outlook(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
