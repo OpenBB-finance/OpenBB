@@ -169,13 +169,13 @@ class EiaShortTermEnergyOutlookFetcher(
         async def get_one(url):
             """Callback to process the response"""
             res = await amake_request(url)
-            data = res.get("response", {}).get("data", [])
+            data = res.get("response", {}).get("data", [])  # type: ignore
             if not data:
                 masked_url = url.replace(api_key, "API_KEY")
                 messages.append(f"No data returned for {masked_url}")
             if data:
                 results.extend(data)
-            response_total = int(res.get("response", {}).get("total", 0))
+            response_total = int(res.get("response", {}).get("total", 0))  # type: ignore
             n_results = len(data)
             # After conservatively chunking the request, we may still need to paginate.
             # This is mostly out of an abundance of caution.
@@ -184,7 +184,7 @@ class EiaShortTermEnergyOutlookFetcher(
                 url = url.replace("&offset=0", f"&offset={offset}")
                 while n_results < response_total:
                     additional_response = await amake_request(url)
-                    additional_data = additional_response.get("response", {}).get(
+                    additional_data = additional_response.get("response", {}).get(  # type: ignore
                         "data", []
                     )
                     if not additional_data:
