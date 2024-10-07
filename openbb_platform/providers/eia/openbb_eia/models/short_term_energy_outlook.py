@@ -151,7 +151,7 @@ class EiaShortTermEnergyOutlookFetcher(
         symbols = unique_symbols
 
         def encode_symbols(symbol: str):
-            """Encodes a chunk of symbols to be used in a URL"""
+            """Encode a chunk of symbols to be used in a URL"""
             prefix = "&facets[seriesId][]="
             return prefix + symbol.upper()
 
@@ -167,7 +167,7 @@ class EiaShortTermEnergyOutlookFetcher(
         messages: list[str] = []
 
         async def get_one(url):
-            """Callback to process the response"""
+            """Response callback function."""
             res = await amake_request(url)
             data = res.get("response", {}).get("data", [])  # type: ignore
             if not data:
