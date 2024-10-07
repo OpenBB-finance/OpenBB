@@ -6,6 +6,8 @@ from openbb_defillama.models.tvl_current import DeFiLlamaTvlCurrentFetcher
 from openbb_defillama.models.tvl_historical import DeFiLlamaTvlHistoricalFetcher
 from openbb_defillama.models.yields_pools import DeFiLlamaYieldsPoolsFetcher
 from openbb_defillama.models.yields_historical import DeFiLlamaYieldsHistoricalFetcher
+from openbb_defillama.models.fees_overview import DeFiLlamaFeesOverviewFetcher
+from openbb_defillama.models.fees_summary import DeFiLlamaFeesSummaryFetcher
 
 defillama_provider = Provider(
     name="defillama",
@@ -18,6 +20,8 @@ defillama_provider = Provider(
         "TvlHistorical": DeFiLlamaTvlHistoricalFetcher,
         "YieldsPools": DeFiLlamaYieldsPoolsFetcher,
         "YieldsHistorical": DeFiLlamaYieldsHistoricalFetcher,
+        "FeesOverview": DeFiLlamaFeesOverviewFetcher,
+        "FeesSummary": DeFiLlamaFeesSummaryFetcher,
     },
     repr_name="DeFiLlama",
 )
