@@ -68,7 +68,8 @@ class OptionsChainsData(OptionsChainsProperties):
     Methods
     -------
     filter_data(
-        date: Optional[Union[str, int]] = None, column: Optional[str] = None,
+        date: Optional[Union[str, int]] = None,
+        column: Optional[str] = None,
         option_type: Optional[Literal["call", "put"]] = None,
         moneyness: Optional[Literal["otm", "itm"]] = None,
         value_min: Optional[float] = None,
@@ -78,7 +79,7 @@ class OptionsChainsData(OptionsChainsProperties):
     ) -> DataFrame:
         Return statistics by strike or expiration; or, the filtered chains data.
     skew(
-        days: Optional[int] = None, underlying_price: Optional[float] = None)
+        date: Optional[Union[int, str]] = None, underlying_price: Optional[float] = None)
     -> DataFrame:
         Return skewness of the options, either vertical or horizontal, by nearest DTE.
     straddle(

@@ -1,6 +1,6 @@
 """Options Chains Properties."""
 
-# pylint: disable=too-many-lines, too-many-arguments, too-many-locals, too-many-statements
+# pylint: disable=too-many-lines, too-many-arguments, too-many-locals, too-many-statements, too-many-positional-arguments
 
 from datetime import datetime
 from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Union
@@ -1673,6 +1673,9 @@ class OptionsChainsProperties(Data):
             else data.underlying_price.iloc[0]
         )
 
+        if moneyness is not None and date is None:
+            date = -1
+
         if moneyness is None and date is None:
             date = 30
             moneyness = 20
@@ -1749,6 +1752,12 @@ class OptionsChainsProperties(Data):
                         puts = concat([puts, put_iv])  # type: ignore
                         atm_put_iv = concat([atm_put_iv, atm_put])  # type: ignore
 
+            if calls.empty or puts.empty:
+                raise OpenBBError(
+                    "Error: Not enough information to complete the operation."
+                    " Likely due to zero values in the IV field of the expiration."
+                )
+
             calls = calls.drop_duplicates(subset=["expiration"]).set_index("expiration")  # type: ignore
             atm_call_iv = atm_call_iv.drop_duplicates(subset=["expiration"]).set_index(  # type: ignore
                 "expiration"
@@ -1789,10 +1798,11 @@ class OptionsChainsProperties(Data):
                 call = _calls.set_index("expiration").copy()  # type: ignore
                 call_atm_iv = call.query("`strike` == @atm_call_strike")[
                     "implied_volatility"
-                ].iloc[0]
-                call["ATM IV"] = call_atm_iv
-                call["Skew"] = call["implied_volatility"] - call["ATM IV"]
-                call_skew = concat([call_skew, call])
+                ]
+                if len(call_atm_iv) > 0:
+                    call["ATM IV"] = call_atm_iv.iloc[0]
+                    call["Skew"] = call["implied_volatility"] - call["ATM IV"]
+                    call_skew = concat([call_skew, call])
 
             atm_put_strike = self._get_nearest_strike(
                 "put", day, force_otm=False
@@ -1805,11 +1815,15 @@ class OptionsChainsProperties(Data):
                 put = _puts.set_index("expiration").copy()  # type: ignore
                 put_atm_iv = put.query("`strike` == @atm_put_strike")[
                     "implied_volatility"
-                ].iloc[0]
-                put["ATM IV"] = put_atm_iv
-                put["Skew"] = put["implied_volatility"] - put["ATM IV"]
-                put_skew = concat([put_skew, put])
-
+                ]
+                if len(put_atm_iv) > 0:
+                    put["ATM IV"] = put_atm_iv.iloc[0]
+                    put["Skew"] = put["implied_volatility"] - put["ATM IV"]
+                    put_skew = concat([put_skew, put])
+        if call_skew.empty or put_skew.empty:
+            raise OpenBBError(
+                "Error: Not enough information to complete the operation. Likely due to zero values in the IV field."
+            )
         call_skew = call_skew.set_index(["strike", "option_type"], append=True)
         put_skew = put_skew.set_index(["strike", "option_type"], append=True)
         skew_df = concat([call_skew, put_skew]).sort_index().reset_index()
