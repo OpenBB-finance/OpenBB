@@ -31,13 +31,20 @@ async def pools(
     """Get the the latest data for all pools."""
     return await OBBject.from_query(Query(**locals()))
 
+
 @router.command(
     model="YieldsHistorical",
     examples=[
         APIEx(parameters={"provider": "defillama"}),
         APIEx(parameters={"provider": "defillama", "symbol": "uniswap"}),
         APIEx(parameters={"provider": "defillama", "symbol_type": "chain"}),
-        APIEx(parameters={"provider": "defillama", "symbol": "ethereum", "symbol_type": "chain"}),
+        APIEx(
+            parameters={
+                "provider": "defillama",
+                "symbol": "ethereum",
+                "symbol_type": "chain",
+            }
+        ),
     ],
 )
 async def historical(

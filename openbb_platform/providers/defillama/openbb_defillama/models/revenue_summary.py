@@ -115,7 +115,9 @@ class DeFiLlamaRevenueSummaryData(Data):
     total_48h_to_24h: int = Field(
         description="The total 48h to 24h of the protocol.", alias="total48hto24h"
     )
-    total_7d: Optional[int] = Field(default=None, description="The total 7d of the protocol.", alias="total7d")
+    total_7d: Optional[int] = Field(
+        default=None, description="The total 7d of the protocol.", alias="total7d"
+    )
     total_all_time: int = Field(
         description="The total all time of the protocol.", alias="totalAllTime"
     )
@@ -126,7 +128,9 @@ class DeFiLlamaRevenueSummaryData(Data):
         description="Aggregated chart data breakdown by chains.",
         alias="totalDataChartBreakdown",
     )
-    change_1d: Optional[float] = Field(default=None, description="The change 1d of the protocol.")
+    change_1d: Optional[float] = Field(
+        default=None, description="The change 1d of the protocol."
+    )
 
     @field_validator("total_data_chart_breakdown", mode="before")
     def validate_total_data_chart_breakdown(cls, v):
