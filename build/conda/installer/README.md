@@ -67,7 +67,7 @@ At the root of the installation folder (where this document is) are shortcuts fo
 
 There are several command line entry points available when either:
 - The OpenBB Platform environment (obb) is active.
-- The "openbb_platform" package has been installed in the active Python environment, including when `--no-deps` or `--only-root` flags were used to install.
+- The "openbb_platform_installer" package has been installed in the active Python environment.
 
 ### OpenBB Entry Points
 
