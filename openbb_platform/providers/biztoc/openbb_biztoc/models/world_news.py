@@ -99,7 +99,7 @@ class BiztocWorldNewsFetcher(
             query.term = query.term.replace(" ", "%20")
             url = base_url + f"search?q={query.term}"
             response = make_request(url, headers=headers).json()
-        if query.source is not None:
+        elif query.source is not None:
             sources_response = make_request(
                 "https://biztoc.p.rapidapi.com/sources",
                 headers=headers,
