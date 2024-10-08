@@ -1,6 +1,6 @@
 """Charting Class implementation."""
 
-# pylint: disable=too-many-arguments,unused-argument
+# pylint: disable=too-many-arguments,unused-argument,too-many-positional-arguments
 
 from typing import (
     TYPE_CHECKING,
@@ -57,6 +57,8 @@ class Charting:
         Create a line chart from external data.
     create_bar_chart
         Create a bar chart, on a single x-axis with one or more values for the y-axis, from external data.
+    create_correlation_matrix
+        Create a correlation matrix from external data.
     toggle_chart_style
         Toggle the chart style, of an existing chart, between light and dark mode.
     """
@@ -365,6 +367,54 @@ class Charting:
         if render:
             return fig.show(**kwargs)
 
+        return fig
+
+    def create_correlation_matrix(
+        self,
+        data: Union[
+            list[Data],
+            "DataFrame",
+        ],
+        method: Literal["pearson", "kendall", "spearman"] = "pearson",
+        colorscale: str = "RdBu",
+        title: str = "Asset Correlation Matrix",
+        layout_kwargs: Optional[Dict[str, Any]] = None,
+    ):
+        """Create a correlation matrix from external data.
+
+        Parameters
+        ----------
+        data : Union[list[Data], DataFrame]
+            Input dataset.
+        method : Literal["pearson", "kendall", "spearman"]
+            Method to use for correlation calculation. Default is "pearson".
+                pearson : standard correlation coefficient
+                kendall : Kendall Tau correlation coefficient
+                spearman : Spearman rank correlation
+        colorscale : str
+            Plotly colorscale to use for the heatmap. Default is "RdBu".
+        title : str
+            Title of the chart. Default is "Asset Correlation Matrix".
+        layout_kwargs : Dict[str, Any]
+            Additional keyword arguments to apply with figure.update_layout(), by default None.
+
+        Returns
+        -------
+        OpenBBFigure
+            The OpenBBFigure object.
+        """
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.correlation_matrix import correlation_matrix
+
+        kwargs = {
+            "data": data,
+            "method": method,
+            "colorscale": colorscale,
+            "title": title,
+            "layout_kwargs": layout_kwargs,
+        }
+        fig, _ = correlation_matrix(**kwargs)
+        fig = self._set_chart_style(fig)
         return fig
 
     # pylint: disable=inconsistent-return-statements

@@ -71,8 +71,8 @@ def get_data(menu: Literal["equity", "crypto"]):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": ""}, "equity"),
-        ({"data": ""}, "crypto"),
+        ({"data": "", "method": "pearson"}, "equity"),
+        ({"data": "", "method": "pearson"}, "crypto"),
     ],
 )
 @pytest.mark.integration
