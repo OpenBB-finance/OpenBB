@@ -3,7 +3,7 @@
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.3",
+        "core": "1.3.4",
         "extensions": {
             "openbb_core_extension": [
                 "commodity@1.2.3",

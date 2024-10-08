@@ -25,10 +25,23 @@ class ROUTER_fixedincome_spreads(Container):
     @validate
     def tcm(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        maturity: Annotated[Optional[Literal["3m", "2y"]], OpenBBField(description="The maturity")] = "3m",
-        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        maturity: Annotated[
+            Optional[Literal["3m", "2y"]], OpenBBField(description="The maturity")
+        ] = "3m",
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Treasury Constant Maturity.
@@ -37,7 +50,7 @@ class ROUTER_fixedincome_spreads(Container):
         Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
         Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
         yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
-        
+
 
         Parameters
         ----------
@@ -67,9 +80,9 @@ class ROUTER_fixedincome_spreads(Container):
         TreasuryConstantMaturity
         ------------------------
         date : date
-            The date of the data. 
+            The date of the data.
         rate : Optional[float]
-            TreasuryConstantMaturity Rate. 
+            TreasuryConstantMaturity Rate.
 
         Examples
         --------
@@ -101,10 +114,24 @@ class ROUTER_fixedincome_spreads(Container):
     @validate
     def tcm_effr(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        maturity: Annotated[Optional[Literal["10y", "5y", "1y", "6m", "3m"]], OpenBBField(description="The maturity")] = "10y",
-        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        maturity: Annotated[
+            Optional[Literal["10y", "5y", "1y", "6m", "3m"]],
+            OpenBBField(description="The maturity"),
+        ] = "10y",
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Select Treasury Constant Maturity.
@@ -113,7 +140,7 @@ class ROUTER_fixedincome_spreads(Container):
         Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
         Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
         yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
-        
+
 
         Parameters
         ----------
@@ -143,9 +170,9 @@ class ROUTER_fixedincome_spreads(Container):
         SelectedTreasuryConstantMaturity
         --------------------------------
         date : date
-            The date of the data. 
+            The date of the data.
         rate : Optional[float]
-            Selected Treasury Constant Maturity Rate. 
+            Selected Treasury Constant Maturity Rate.
 
         Examples
         --------
@@ -177,10 +204,23 @@ class ROUTER_fixedincome_spreads(Container):
     @validate
     def treasury_effr(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        maturity: Annotated[Optional[Literal["3m", "6m"]], OpenBBField(description="The maturity")] = "3m",
-        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        maturity: Annotated[
+            Optional[Literal["3m", "6m"]], OpenBBField(description="The maturity")
+        ] = "3m",
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Select Treasury Bill.
@@ -190,7 +230,7 @@ class ROUTER_fixedincome_spreads(Container):
         auctioned U.S. Treasuries.
         The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
         yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
-        
+
 
         Parameters
         ----------
@@ -220,9 +260,9 @@ class ROUTER_fixedincome_spreads(Container):
         SelectedTreasuryBill
         --------------------
         date : date
-            The date of the data. 
+            The date of the data.
         rate : Optional[float]
-            SelectedTreasuryBill Rate. 
+            SelectedTreasuryBill Rate.
 
         Examples
         --------
