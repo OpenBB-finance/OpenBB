@@ -1,44 +1,223 @@
 {
-    "openbb": "4.3.2",
+    "openbb": "4.3.3",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.2",
+        "core": "1.3.4",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.2.2",
-                "crypto@1.3.2",
-                "currency@1.3.2",
-                "derivatives@1.3.2",
-                "economy@1.3.2",
-                "equity@1.3.2",
-                "etf@1.3.2",
-                "fixedincome@1.3.2",
-                "index@1.3.2",
-                "news@1.3.2",
-                "regulators@1.3.2"
+                "commodity@1.2.3",
+                "crypto@1.3.3",
+                "currency@1.3.3",
+                "derivatives@1.3.3",
+                "economy@1.3.3",
+                "equity@1.3.3",
+                "etf@1.3.3",
+                "fixedincome@1.3.3",
+                "index@1.3.3",
+                "news@1.3.3",
+                "regulators@1.3.3"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.3.2",
-                "bls@1.0.0",
-                "cftc@1.0.0",
-                "econdb@1.2.2",
-                "federal_reserve@1.3.2",
-                "fmp@1.3.2",
-                "fred@1.3.2",
-                "imf@1.0.0b0",
-                "intrinio@1.3.2",
-                "oecd@1.3.2",
-                "polygon@1.3.2",
-                "sec@1.3.2",
-                "tiingo@1.3.2",
-                "tradingeconomics@1.3.2",
-                "yfinance@1.3.3"
+                "benzinga@1.3.3",
+                "bls@1.0.1",
+                "cftc@1.0.1",
+                "econdb@1.2.3",
+                "federal_reserve@1.3.3",
+                "fmp@1.3.3",
+                "fred@1.3.3",
+                "imf@1.0.0",
+                "intrinio@1.3.3",
+                "oecd@1.3.3",
+                "polygon@1.3.3",
+                "sec@1.3.3",
+                "tiingo@1.3.3",
+                "tradingeconomics@1.3.3",
+                "yfinance@1.3.4"
             ],
             "openbb_obbject_extension": []
         }
     },
     "paths": {
+        "/commodity/price/spot": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Commodity Spot Prices.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.commodity.price.spot(provider='fred')\nobb.commodity.price.spot(provider='fred', commodity=wti)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "commodity",
+                        "type": "Literal['wti', 'brent', 'natural_gas', 'jet_fuel', 'propane', 'heating_oil', 'diesel_gulf_coast', 'diesel_ny_harbor', 'diesel_la', 'gasoline_ny_harbor', 'gasoline_gulf_coast', 'rbob', 'all']",
+                        "description": "Commodity name associated with the EIA spot price commodity data, default is 'all'.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "wti",
+                            "brent",
+                            "natural_gas",
+                            "jet_fuel",
+                            "propane",
+                            "heating_oil",
+                            "diesel_gulf_coast",
+                            "diesel_ny_harbor",
+                            "diesel_la",
+                            "gasoline_ny_harbor",
+                            "gasoline_gulf_coast",
+                            "rbob",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        None = No change\n        a = Annual\n        q = Quarterly\n        m = Monthly\n        w = Weekly\n        d = Daily\n        wef = Weekly, Ending Friday\n        weth = Weekly, Ending Thursday\n        wew = Weekly, Ending Wednesday\n        wetu = Weekly, Ending Tuesday\n        wem = Weekly, Ending Monday\n        wesu = Weekly, Ending Sunday\n        wesa = Weekly, Ending Saturday\n        bwew = Biweekly, Ending Wednesday\n        bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        avg = Average\n        sum = Sum\n        eop = End of Period",
+                        "default": "eop",
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type\n        None = No transformation\n        chg = Change\n        ch1 = Change from Year Ago\n        pch = Percent Change\n        pc1 = Percent Change from Year Ago\n        pca = Compounded Annual Rate of Change\n        cch = Continuously Compounded Rate of Change\n        cca = Continuously Compounded Annual Rate of Change\n        log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CommoditySpotPrices]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "commodity",
+                        "type": "str",
+                        "description": "Commodity name.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price",
+                        "type": "float",
+                        "description": "Price of the commodity.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "Unit of the commodity price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "CommoditySpotPrices"
+        },
         "/crypto/price/historical": {
             "deprecated": {
                 "flag": null,
@@ -5668,7 +5847,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        None = No change\n        a = Annual\n        q = Quarterly\n        m = Monthly\n        w = Weekly\n        d = Daily\n        wef = Weekly, Ending Friday\n        weth = Weekly, Ending Thursday\n        wew = Weekly, Ending Wednesday\n        wetu = Weekly, Ending Tuesday\n        wem = Weekly, Ending Monday\n        wesu = Weekly, Ending Sunday\n        wesa = Weekly, Ending Saturday\n        bwew = Biweekly, Ending Wednesday\n        bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -5691,7 +5870,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        avg = Average\n        sum = Sum\n        eop = End of Period",
                         "default": "eop",
                         "optional": true,
                         "choices": [
@@ -5703,7 +5882,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                        "description": "Transformation type\n        None = No transformation\n        chg = Change\n        ch1 = Change from Year Ago\n        pch = Percent Change\n        pc1 = Percent Change from Year Ago\n        pca = Compounded Annual Rate of Change\n        cch = Continuously Compounded Rate of Change\n        cca = Continuously Compounded Annual Rate of Change\n        log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -38700,6 +38879,9 @@
         }
     },
     "routers": {
+        "/commodity": {
+            "description": "Commodity market data."
+        },
         "/crypto": {
             "description": "Cryptocurrency market data."
         },

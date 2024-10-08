@@ -8,6 +8,7 @@ from openbb_fred.models.ameribor import FredAmeriborFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
 from openbb_fred.models.bond_indices import FredBondIndicesFetcher
 from openbb_fred.models.commercial_paper import FREDCommercialPaperFetcher
+from openbb_fred.models.commodity_spot_prices import FredCommoditySpotPricesFetcher
 from openbb_fred.models.consumer_price_index import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
@@ -531,5 +532,19 @@ def test_fred_tips_yields_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredTipsYieldsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_commodity_spot_prices_fetcher(credentials=test_credentials):
+    """Test FRED Commodity Spot Prices."""
+    params = {
+        "start_date": datetime.date(2024, 7, 1),
+        "end_date": datetime.date(2024, 7, 10),
+        "commodity": "natural_gas",
+    }
+
+    fetcher = FredCommoditySpotPricesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
