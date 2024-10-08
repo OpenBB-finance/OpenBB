@@ -1,6 +1,6 @@
 """OpenBB Figure Class."""
 
-# pylint: disable=C0302,R0902,W3301
+# pylint: disable=C0302,R0902,W3301,R0917
 import json
 import textwrap
 from datetime import datetime, timedelta

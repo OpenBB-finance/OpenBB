@@ -1029,13 +1029,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "1.3.2"
+version = "1.3.4"
 description = "OpenBB package with core functionality."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "openbb_core-1.3.2-py3-none-any.whl", hash = "sha256:1dfd4d51892136364e5fc51308190df60ae10c3bc6ec8b66fe81a95514894685"},
-    {file = "openbb_core-1.3.2.tar.gz", hash = "sha256:d384f066c9d7cf07d628b176e4a1df69032f78a9b390f82fd7ebf8e83207bf88"},
+    {file = "openbb_core-1.3.4-py3-none-any.whl", hash = "sha256:890ae2f6c1d89fef34c595e9326715cadbcfd4bc4acbe9ef9d13074871f32d63"},
+    {file = "openbb_core-1.3.4.tar.gz", hash = "sha256:c23207bdfc4be4cc4b25763802da1d91a2b3fe28e3339d20b685ef0a35df3820"},
 ]
 
 [package.dependencies]
@@ -1050,7 +1050,7 @@ pyjwt = ">=2.8.0,<3.0.0"
 python-dotenv = ">=1.0.0,<2.0.0"
 python-multipart = ">=0.0.7,<0.0.8"
 requests = ">=2.32.1,<3.0.0"
-ruff = ">=0.1.6"
+ruff = ">=0.4.10"
 uuid7 = ">=0.1.0,<0.2.0"
 uvicorn = ">=0.24,<0.25"
 websockets = ">=12.0,<13.0"
@@ -1986,4 +1986,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9,<3.13"
-content-hash = "1f132bbbd784ba131f8498a3339e92609d042d103856f2c611e59267c108b9a4"
+content-hash = "c5377b887ec9814ee731a1d69979cc6ff276b8abf2358da903cfa64c0dd9f4af"
