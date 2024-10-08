@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-imf"
-version = "1.0.0b"
+version = "1.0.0"
 description = "https://datahelp.imf.org/knowledgebase/articles/630877-api"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_imf" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openbb-core = "^1.3.2"
+openbb-core = "^1.3.4"
 
 [build-system]
 requires = ["poetry-core"]

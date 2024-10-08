@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "1.3.2"
+version = "1.3.4"
 description = "OpenBB package with core functionality."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
