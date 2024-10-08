@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-etf"
-version = "1.3.2"
+version = "1.3.3"
 description = "ETF extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_etf" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-openbb-core = "^1.3.2"
+openbb-core = "^1.3.4"
 
 [build-system]
 requires = ["poetry-core"]
