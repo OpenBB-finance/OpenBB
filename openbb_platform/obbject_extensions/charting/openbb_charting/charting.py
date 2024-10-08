@@ -1,6 +1,6 @@
 """Charting Class implementation."""
 
-# pylint: disable=too-many-arguments,unused-argument
+# pylint: disable=too-many-arguments,unused-argument,too-many-positional-arguments
 
 from typing import (
     TYPE_CHECKING,

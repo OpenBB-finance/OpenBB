@@ -12,7 +12,7 @@ def correlation_matrix(  # noqa: PLR0912
 ) -> tuple[Union["OpenBBFigure", "Figure"], dict[str, Any]]:
     """Correlation Matrix Chart."""
     # pylint: disable=import-outside-toplevel
-    from numpy import nan, ones_like, triu  # noqa
+    from numpy import ones_like, triu  # noqa
     from openbb_core.app.utils import basemodel_to_df  # noqa
     from openbb_charting.core.openbb_figure import OpenBBFigure
     from openbb_charting.core.chart_style import ChartStyle
@@ -27,6 +27,16 @@ def correlation_matrix(  # noqa: PLR0912
         corr = basemodel_to_df(
             kwargs["obbject_item"], index=kwargs.get("index", "date")  # type: ignore
         )
+    if (
+        "symbol" in corr.columns
+        and len(corr.symbol.unique()) > 1
+        and "close" in corr.columns
+    ):
+        corr = corr.pivot(
+            columns="symbol",
+            values="close",
+        )
+
     method = kwargs.get("method") or "pearson"
     corr = corr.corr(method=method, numeric_only=True)
 
