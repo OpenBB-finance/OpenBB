@@ -7,4 +7,4 @@ RUN pip install openbb-platform-api
 
 EXPOSE 6900
 
-ENTRYPOINT ["openbb-api", "--host", "0.0.0.0"]
+ENTRYPOINT ["openbb-api", "--host", "0.0.0.0", "--login"]
