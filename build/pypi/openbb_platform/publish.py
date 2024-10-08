@@ -68,7 +68,7 @@ def parse_args():
         "--semver",
         help="Semantic version.",
         default="patch",
-        choices=["patch", "minor", "major"],
+        choices=["patch", "minor", "major", "none"],
         dest="semver",
     )
     return parser.parse_args()
@@ -80,7 +80,7 @@ def publish(
     extensions: bool = False,
     openbb: bool = False,
     verbose: bool = False,
-    semver: Literal["patch", "minor", "major"] = "patch",
+    semver: Literal["patch", "minor", "major", "none"] = "patch",
 ):
     """Publish the Platform to PyPi with optional core or extensions."""
     package_directories = []
@@ -127,10 +127,11 @@ def publish(
                         cwd=path.parent,
                     )
                 # Bump pyproject.toml version
-                partial_run(
-                    [sys.executable, "-m", "poetry", "version", semver],
-                    cwd=path.parent,
-                )
+                if semver != "none":
+                    partial_run(
+                        [sys.executable, "-m", "poetry", "version", semver],
+                        cwd=path.parent,
+                    )
                 # Publish (if not dry running)
                 if not dry_run:
                     partial_run(

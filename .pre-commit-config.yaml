@@ -3,6 +3,7 @@ repos:
     rev: v4.4.0
     hooks:
       - id: check-yaml
+        exclude: 'construct.yaml'
       - id: end-of-file-fixer
         exclude_types: [css, markdown, text, svg]
       - id: trailing-whitespace
