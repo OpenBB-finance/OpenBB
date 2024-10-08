@@ -56,9 +56,14 @@ def correlation_matrix(
 
     df = basemodel_to_df(data)
     # remove non float columns from the dataframe to perform the correlation
-    df = df.select_dtypes(include=["float64"])
 
-    corr = df.corr(method=method)
+    if "symbol" in df.columns and len(df.symbol.unique()) > 1 and "close" in df.columns:
+        df = df.pivot(
+            columns="symbol",
+            values="close",
+        )
+
+    corr = df.corr(method=method, numeric_only=True)
 
     # replace nan values with None to allow for json serialization
     corr = corr.replace(np.NaN, None)
