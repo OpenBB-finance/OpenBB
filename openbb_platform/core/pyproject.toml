@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "1.3.2"
+version = "1.3.4"
 description = "OpenBB package with core functionality."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -22,8 +22,11 @@ requests = "^2.32.1"
 importlib-metadata = "^6.8.0"
 python-dotenv = "^1.0.0"
 aiohttp = "^3.10.4"
-ruff = ">=0.1.6"              # Needed here to lint generated code
+ruff = ">=0.4.10"              # Needed here to lint generated code
 pyjwt = "^2.8.0"
+
+[tool.poetry.scripts]
+openbb-build = "openbb_core.build:main"
 
 [build-system]
 requires = ["poetry-core"]

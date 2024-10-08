@@ -1,6 +1,6 @@
 """OpenBB Figure Class."""
 
-# pylint: disable=C0302,R0902,W3301
+# pylint: disable=C0302,R0902,W3301,R0917
 import json
 import textwrap
 from datetime import datetime, timedelta
@@ -924,19 +924,6 @@ class OpenBBFigure(go.Figure):
                     data = json.loads(pending).get("json_data", {})
                     if data.get("layout", {}):
                         pio.show(data, *args, **kwargs)
-
-        self.update_layout(
-            legend=dict(
-                orientation=(
-                    "v"
-                    if not self.layout.legend.orientation
-                    else self.layout.legend.orientation
-                ),
-            ),
-            barmode="overlay",
-            bargap=0,
-            bargroupgap=0,
-        )
 
         return pio.show(self, *args, **kwargs)
 

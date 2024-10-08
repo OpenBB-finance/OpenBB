@@ -253,6 +253,7 @@ class ROUTER_equity_ownership(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={"transaction_type": {"fmp": {"multiple_items_allowed": False, "choices": ["award", "conversion", "return", "expire_short", "in_kind", "gift", "expire_long", "discretionary", "other", "small", "exempt", "otm", "purchase", "sale", "tender", "will", "itm", "trust"]}}},
             )
         )
 

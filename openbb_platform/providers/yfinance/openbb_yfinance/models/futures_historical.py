@@ -128,8 +128,8 @@ class YFinanceFuturesHistoricalFetcher(
 
         data = yf_download(
             query.symbol,
-            start=query.start_date,
-            end=query.end_date,
+            start_date=query.start_date,
+            end_date=query.end_date,
             interval=INTERVALS_DICT[query.interval],  # type: ignore
             prepost=True,
             auto_adjust=False,

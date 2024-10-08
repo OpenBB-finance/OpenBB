@@ -51,6 +51,7 @@ def logging_service():
             system_settings=mock_system_settings,
             user_settings=mock_user_settings,
         )
+        _logging_service._logger = MagicMock()
 
         return _logging_service
 
@@ -101,38 +102,35 @@ def test_logging_settings_setter(logging_service):
 
 def test_log_startup(logging_service):
     """Test the log_startup method."""
-    with patch("logging.getLogger") as mock_get_logger:
-        mock_info = mock_get_logger.return_value.info
 
-        class MockCredentials(BaseModel):
-            username: str
-            password: str
+    class MockCredentials(BaseModel):
+        username: str
+        password: str
 
-        logging_service._user_settings = MagicMock(
-            preferences="your_preferences",
-            credentials=MockCredentials(username="username", password="password"),
-        )
-        logging_service._system_settings = "your_system_settings"
+    logging_service._user_settings = MagicMock(
+        preferences="your_preferences",
+        credentials=MockCredentials(username="username", password="password"),
+    )
+    logging_service._system_settings = "your_system_settings"
 
-        logging_service._log_startup(
-            route="test_route", custom_headers={"X-OpenBB-Test": "test"}
-        )
+    logging_service._log_startup(
+        route="test_route", custom_headers={"X-OpenBB-Test": "test"}
+    )
 
-        expected_log_data = {
-            "route": "test_route",
-            "PREFERENCES": "your_preferences",
-            "KEYS": {
-                "username": "defined",
-                "password": "defined",  # pragma: allowlist secret
-            },
-            "SYSTEM": "your_system_settings",
-            "custom_headers": {"X-OpenBB-Test": "test"},
-        }
-        mock_info.assert_called_once_with(
-            "STARTUP: %s ",
-            json.dumps(expected_log_data),
-        )
-        mock_get_logger.assert_called_once()
+    expected_log_data = {
+        "route": "test_route",
+        "PREFERENCES": "your_preferences",
+        "KEYS": {
+            "username": "defined",
+            "password": "defined",  # pragma: allowlist secret
+        },
+        "SYSTEM": "your_system_settings",
+        "custom_headers": {"X-OpenBB-Test": "test"},
+    }
+    logging_service._logger.info.assert_called_once_with(
+        "STARTUP: %s ",
+        json.dumps(expected_log_data),
+    )
 
 
 @pytest.mark.parametrize(
@@ -190,7 +188,7 @@ def test_log(
     with patch(
         "openbb_core.app.logs.logging_service.LoggingSettings",
         MockLoggingSettings,
-    ), patch("logging.getLogger") as mock_get_logger:
+    ):
         if route == "login":
             with patch(
                 "openbb_core.app.logs.logging_service.LoggingService._log_startup"
@@ -221,15 +219,13 @@ def test_log(
             )
 
             if expected_log_message.startswith("ERROR"):
-                mock_error = mock_get_logger.return_value.error
-                mock_error.assert_called_once_with(
+                logging_service._logger.error.assert_called_once_with(
                     expected_log_message,
                     extra={"func_name_override": "mock_func"},
                     exc_info=exec_info,
                 )
             if expected_log_message.startswith("CMD"):
-                mock_info = mock_get_logger.return_value.info
-                mock_info.assert_called_once_with(
+                logging_service._logger.info.assert_called_once_with(
                     expected_log_message,
                     extra={"func_name_override": "mock_func"},
                     exc_info=exec_info,

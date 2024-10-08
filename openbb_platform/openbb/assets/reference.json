@@ -1,43 +1,223 @@
 {
-    "openbb": "4.3.2",
+    "openbb": "4.3.3",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.2",
+        "core": "1.3.3",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.2.2",
-                "crypto@1.3.2",
-                "currency@1.3.2",
-                "derivatives@1.3.2",
-                "economy@1.3.2",
-                "equity@1.3.2",
-                "etf@1.3.2",
-                "fixedincome@1.3.2",
-                "index@1.3.2",
-                "news@1.3.2",
-                "regulators@1.3.2"
+                "commodity@1.2.3",
+                "crypto@1.3.3",
+                "currency@1.3.3",
+                "derivatives@1.3.3",
+                "economy@1.3.3",
+                "equity@1.3.3",
+                "etf@1.3.3",
+                "fixedincome@1.3.3",
+                "index@1.3.3",
+                "news@1.3.3",
+                "regulators@1.3.3"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.3.2",
-                "bls@1.0.0",
-                "cftc@1.0.0",
-                "econdb@1.2.2",
-                "federal_reserve@1.3.2",
-                "fmp@1.3.2",
-                "fred@1.3.2",
-                "intrinio@1.3.2",
-                "oecd@1.3.2",
-                "polygon@1.3.2",
-                "sec@1.3.2",
-                "tiingo@1.3.2",
-                "tradingeconomics@1.3.2",
-                "yfinance@1.3.3"
+                "benzinga@1.3.3",
+                "bls@1.0.1",
+                "cftc@1.0.1",
+                "econdb@1.2.3",
+                "federal_reserve@1.3.3",
+                "fmp@1.3.3",
+                "fred@1.3.3",
+                "imf@1.0.0",
+                "intrinio@1.3.3",
+                "oecd@1.3.3",
+                "polygon@1.3.3",
+                "sec@1.3.3",
+                "tiingo@1.3.3",
+                "tradingeconomics@1.3.3",
+                "yfinance@1.3.4"
             ],
             "openbb_obbject_extension": []
         }
     },
     "paths": {
+        "/commodity/price/spot": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Commodity Spot Prices.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.commodity.price.spot(provider='fred')\nobb.commodity.price.spot(provider='fred', commodity=wti)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "commodity",
+                        "type": "Literal['wti', 'brent', 'natural_gas', 'jet_fuel', 'propane', 'heating_oil', 'diesel_gulf_coast', 'diesel_ny_harbor', 'diesel_la', 'gasoline_ny_harbor', 'gasoline_gulf_coast', 'rbob', 'all']",
+                        "description": "Commodity name associated with the EIA spot price commodity data, default is 'all'.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "wti",
+                            "brent",
+                            "natural_gas",
+                            "jet_fuel",
+                            "propane",
+                            "heating_oil",
+                            "diesel_gulf_coast",
+                            "diesel_ny_harbor",
+                            "diesel_la",
+                            "gasoline_ny_harbor",
+                            "gasoline_gulf_coast",
+                            "rbob",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        None = No change\n        a = Annual\n        q = Quarterly\n        m = Monthly\n        w = Weekly\n        d = Daily\n        wef = Weekly, Ending Friday\n        weth = Weekly, Ending Thursday\n        wew = Weekly, Ending Wednesday\n        wetu = Weekly, Ending Tuesday\n        wem = Weekly, Ending Monday\n        wesu = Weekly, Ending Sunday\n        wesa = Weekly, Ending Saturday\n        bwew = Biweekly, Ending Wednesday\n        bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        avg = Average\n        sum = Sum\n        eop = End of Period",
+                        "default": "eop",
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type\n        None = No transformation\n        chg = Change\n        ch1 = Change from Year Ago\n        pch = Percent Change\n        pc1 = Percent Change from Year Ago\n        pca = Compounded Annual Rate of Change\n        cch = Continuously Compounded Rate of Change\n        cca = Continuously Compounded Annual Rate of Change\n        log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CommoditySpotPrices]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "commodity",
+                        "type": "str",
+                        "description": "Commodity name.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price",
+                        "type": "float",
+                        "description": "Price of the commodity.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "Unit of the commodity price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "CommoditySpotPrices"
+        },
         "/crypto/price/historical": {
             "deprecated": {
                 "flag": null,
@@ -4469,7 +4649,11 @@
                         "description": "Importance of the event.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "low",
+                            "medium",
+                            "high"
+                        ]
                     },
                     {
                         "name": "group",
@@ -4495,15 +4679,11 @@
                     },
                     {
                         "name": "calendar_id",
-                        "type": "Union[Union[int, str], List[Union[int, str]]]",
+                        "type": "Union[Union[None, int, str], List[Union[None, int, str]]]",
                         "description": "Get events by TradingEconomics Calendar ID. Multiple items allowed for provider(s): tradingeconomics.",
                         "default": null,
                         "optional": true,
-                        "choices": [
-                            "low",
-                            "medium",
-                            "high"
-                        ]
+                        "choices": null
                     }
                 ]
             },
@@ -5667,7 +5847,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        None = No change\n        a = Annual\n        q = Quarterly\n        m = Monthly\n        w = Weekly\n        d = Daily\n        wef = Weekly, Ending Friday\n        weth = Weekly, Ending Thursday\n        wew = Weekly, Ending Wednesday\n        wetu = Weekly, Ending Tuesday\n        wem = Weekly, Ending Monday\n        wesu = Weekly, Ending Sunday\n        wesa = Weekly, Ending Saturday\n        bwew = Biweekly, Ending Wednesday\n        bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -5690,7 +5870,7 @@
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        avg = Average\n        sum = Sum\n        eop = End of Period",
                         "default": "eop",
                         "optional": true,
                         "choices": [
@@ -5702,7 +5882,7 @@
                     {
                         "name": "transform",
                         "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                        "description": "Transformation type\n        None = No transformation\n        chg = Change\n        ch1 = Change from Year Ago\n        pch = Percent Change\n        pc1 = Percent Change from Year Ago\n        pca = Compounded Annual Rate of Change\n        cch = Continuously Compounded Rate of Change\n        cca = Continuously Compounded Annual Rate of Change\n        log = Natural Log",
                         "default": null,
                         "optional": true,
                         "choices": [
@@ -5817,7 +5997,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], List[Union[str, date]]]",
+                        "type": "Union[Union[None, date, str], List[Union[None, date, str]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -7050,7 +7230,8 @@
                         "optional": true,
                         "choices": null
                     }
-                ]
+                ],
+                "imf": []
             },
             "returns": {
                 "OBBject": [
@@ -7061,7 +7242,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['econdb']]",
+                        "type": "Optional[Literal['econdb', 'imf']]",
                         "description": "Provider name."
                     },
                     {
@@ -7197,6 +7378,32 @@
                         "optional": true,
                         "choices": null
                     }
+                ],
+                "imf": [
+                    {
+                        "name": "table",
+                        "type": "str",
+                        "description": "The name of the table associated with the symbol.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "level",
+                        "type": "int",
+                        "description": "The indentation level of the data, relative to the table and symbol_root",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "order",
+                        "type": "int",
+                        "description": "Order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
                 ]
             },
             "model": "AvailableIndicators"
@@ -7207,24 +7414,233 @@
                 "message": null
             },
             "description": "Get economic indicators by country and indicator.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol='PCOCO')\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol='main', country='eu')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol=PCOCO)\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol=CPI, country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol=main, country='eu')\n# When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'. Use 'IRFCL' to get all the data from the set of indicators.\nobb.economy.indicators(provider='imf')\n# When the provider is 'imf', complete tables are returned by using a 'preset'. Refer to the function's docstring for descriptions of each preset. When no country is supplied, the data is returned for all countries.\nobb.economy.indicators(provider='imf', symbol=gold_reserves)\n# When the provider is 'imf', multiple countries and symbols can be supplied. Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.\nobb.economy.indicators(provider='imf', symbol=RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO, country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency=annual)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
-                        "name": "symbol",
-                        "type": "Union[str, List[str]]",
-                        "description": "Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple items allowed for provider(s): econdb.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
                         "name": "country",
                         "type": "Union[str, List[str]]",
-                        "description": "The country to get data. The country represented by the indicator, if available. Multiple items allowed for provider(s): econdb.",
+                        "description": "The country to get data. The country represented by the indicator, if available. Multiple items allowed for provider(s): econdb, imf.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "all",
+                            "afghanistan",
+                            "albania",
+                            "algeria",
+                            "american_samoa",
+                            "angola",
+                            "anguilla",
+                            "antigua_and_barbuda",
+                            "argentina",
+                            "armenia",
+                            "aruba",
+                            "australia",
+                            "austria",
+                            "azerbaijan",
+                            "bahamas",
+                            "bahrain",
+                            "bangladesh",
+                            "barbados",
+                            "belarus",
+                            "belgium",
+                            "belize",
+                            "benin",
+                            "bermuda",
+                            "bhutan",
+                            "bolivia",
+                            "bosnia_and_herzegovina",
+                            "botswana",
+                            "brazil",
+                            "brunei_darussalam",
+                            "bulgaria",
+                            "burkina_faso",
+                            "burundi",
+                            "cabo_verde",
+                            "cambodia",
+                            "cameroon",
+                            "canada",
+                            "central_african_republic",
+                            "chad",
+                            "chile",
+                            "hong_kong",
+                            "macao",
+                            "china",
+                            "colombia",
+                            "comoros",
+                            "democratic_republic_of_the_congo",
+                            "congo",
+                            "costa_rica",
+                            "ivory_coast",
+                            "croatia",
+                            "cuba",
+                            "curacao",
+                            "cyprus",
+                            "czech_republic",
+                            "denmark",
+                            "djibouti",
+                            "dominica",
+                            "dominican_republic",
+                            "ecuador",
+                            "egypt",
+                            "el_salvador",
+                            "equatorial_guinea",
+                            "eritrea",
+                            "estonia",
+                            "eswatini",
+                            "ethiopia",
+                            "falkland_islands",
+                            "faroe_islands",
+                            "fiji",
+                            "finland",
+                            "france",
+                            "french_polynesia",
+                            "gabon",
+                            "gambia",
+                            "georgia",
+                            "germany",
+                            "ghana",
+                            "gibraltar",
+                            "greece",
+                            "greenland",
+                            "grenada",
+                            "guam",
+                            "guatemala",
+                            "guinea",
+                            "guyana",
+                            "haiti",
+                            "vatican_city_state",
+                            "honduras",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "iran",
+                            "iraq",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "jamaica",
+                            "japan",
+                            "jordan",
+                            "kazakhstan",
+                            "kenya",
+                            "kiribati",
+                            "north_korea",
+                            "south_korea",
+                            "kosovo",
+                            "kuwait",
+                            "kyrgyzstan",
+                            "lao",
+                            "latvia",
+                            "lebanon",
+                            "lesotho",
+                            "liberia",
+                            "libya",
+                            "lithuania",
+                            "luxembourg",
+                            "madagascar",
+                            "malawi",
+                            "malaysia",
+                            "maldives",
+                            "mali",
+                            "malta",
+                            "marshall_islands",
+                            "mauritania",
+                            "mauritius",
+                            "mexico",
+                            "micronesia",
+                            "moldova",
+                            "mongolia",
+                            "montenegro",
+                            "montserrat",
+                            "morocco",
+                            "mozambique",
+                            "myanmar",
+                            "namibia",
+                            "nauru",
+                            "nepal",
+                            "antilles",
+                            "netherlands",
+                            "new_caledonia",
+                            "new_zealand",
+                            "nicaragua",
+                            "niger",
+                            "nigeria",
+                            "north_macedonia",
+                            "norway",
+                            "oman",
+                            "pakistan",
+                            "palau",
+                            "panama",
+                            "papua_new_guinea",
+                            "paraguay",
+                            "peru",
+                            "philippines",
+                            "poland",
+                            "portugal",
+                            "qatar",
+                            "romania",
+                            "russia",
+                            "rwanda",
+                            "samoa",
+                            "san_marino",
+                            "sao_tome_and_principe",
+                            "saudi_arabia",
+                            "senegal",
+                            "serbia_and_montenegro",
+                            "serbia",
+                            "seychelles",
+                            "sierra_leone",
+                            "singapore",
+                            "sint_maarten",
+                            "slovakia",
+                            "slovenia",
+                            "solomon_islands",
+                            "somalia",
+                            "south_africa",
+                            "south_sudan",
+                            "spain",
+                            "sri_lanka",
+                            "saint_kitts_and_nevis",
+                            "saint_lucia",
+                            "saint_vincent_and_the_grenadines",
+                            "sudan",
+                            "suriname",
+                            "sweden",
+                            "switzerland",
+                            "syria",
+                            "taiwan",
+                            "tajikistan",
+                            "tanzania",
+                            "thailand",
+                            "timor-leste",
+                            "togo",
+                            "tonga",
+                            "trinidad_and_tobago",
+                            "tunisia",
+                            "turkey",
+                            "turkmenistan",
+                            "tuvalu",
+                            "uganda",
+                            "ukraine",
+                            "united_arab_emirates",
+                            "united_kingdom",
+                            "united_states",
+                            "uruguay",
+                            "uzbekistan",
+                            "vanuatu",
+                            "venezuela",
+                            "viet_nam",
+                            "palestine",
+                            "yemen",
+                            "zambia",
+                            "zimbabwe",
+                            "euro_area",
+                            "europe",
+                            "european_union",
+                            "unspecified"
+                        ]
                     },
                     {
                         "name": "start_date",
@@ -7244,6 +7660,14 @@
                     }
                 ],
                 "econdb": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Use `available_indicators()` to get a list of available symbols. Multiple items allowed for provider(s): econdb.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
                     {
                         "name": "transform",
                         "type": "Literal['toya', 'tpop', 'tusd', 'tpgp']",
@@ -7268,6 +7692,28 @@
                         "optional": true,
                         "choices": null
                     }
+                ],
+                "imf": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Use `available_indicators()` to get the list of available symbols. Use 'IRFCL' to get all the data from the set of indicators. Complete tables are available only by single country, and are keyed as described below. The default is 'irfcl_top_lines'. Available presets not listed in `available_indicators()` are:\n\n        'IRFCL': All the data from the set of indicators. Not compatible with multiple countries.\n        'irfcl_top_lines': The default, top line items from the IRFCL data. Compatible with multiple countries.\n        'reserve_assets_and_other_fx_assets': Table I of the IRFCL data. Not compatible with multiple countries.\n        'predetermined_drains_on_fx_assets': Table II of the IRFCL data. Not compatible with multiple countries.\n        'contingent_drains_fx_assets': Table III of the IRFCL data. Not compatible with multiple countries.\n        'memorandum_items': The memorandum items table of the IRFCL data. Not compatible with multiple countries.\n        'gold_reserves': Gold reserves as value in USD and Fine Troy Ounces. Compatible with multiple countries.\n        'derivative_assets': Net derivative assets as value in USD. Compatible with multipile countries. Multiple items allowed for provider(s): imf.",
+                        "default": "irfcl_top_lines",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter', 'month']",
+                        "description": "Frequency of the data.",
+                        "default": "quarter",
+                        "optional": true,
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "month"
+                        ]
+                    }
                 ]
             },
             "returns": {
@@ -7279,7 +7725,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['econdb']]",
+                        "type": "Optional[Literal['econdb', 'imf']]",
                         "description": "Provider name."
                     },
                     {
@@ -7342,7 +7788,57 @@
                         "choices": null
                     }
                 ],
-                "econdb": []
+                "econdb": [],
+                "imf": [
+                    {
+                        "name": "scale",
+                        "type": "str",
+                        "description": "The scale of the value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "table",
+                        "type": "str",
+                        "description": "The name of the table associated with the symbol.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "level",
+                        "type": "int",
+                        "description": "The indentation level of the data, relative to the table and symbol_root",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "order",
+                        "type": "int",
+                        "description": "Order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "reference_sector",
+                        "type": "str",
+                        "description": "The reference sector for the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "The title of the series associated with the symbol.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "model": "EconomicIndicators"
         },
@@ -8954,6 +9450,905 @@
             },
             "model": "ExportDestinations"
         },
+        "/economy/primary_dealer_fails": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Primary Dealer Statistics for Fails to Deliver and Fails to Receive.\n\nData from the NY Federal Reserve are updated on Thursdays at approximately\n4:15 p.m. with the previous week's statistics.\n\nFor research on the topic, see:\nhttps://www.federalreserve.gov/econres/notes/feds-notes/the-systemic-nature-of-settlement-fails-20170703.html\n\n\"Large and protracted settlement fails are believed to undermine the liquidity\nand well-functioning of securities markets.\n\nNear-100 percent pass-through of fails suggests a high degree of collateral\nre-hypothecation together with the inability or unwillingness to borrow or buy the needed securities.\"",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.primary_dealer_fails(provider='federal_reserve')\n# Transform the data to be percentage totals by asset class\nobb.economy.primary_dealer_fails(provider='federal_reserve', unit=percent)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "asset_class",
+                        "type": "Literal['all', 'treasuries', 'tips', 'agency', 'mbs', 'corporate']",
+                        "description": "Asset class to return, default is 'all'.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "treasuries",
+                            "tips",
+                            "agency",
+                            "mbs",
+                            "corporate"
+                        ]
+                    },
+                    {
+                        "name": "unit",
+                        "type": "Literal['value', 'percent']",
+                        "description": "Unit of the data returned to the 'value' field. Default is 'value', which represents millions of USD. 'percent' returns data as the percentage of the total fails-to-receive and fails-to-deliver, by asset class.",
+                        "default": "value",
+                        "optional": true,
+                        "choices": [
+                            "value",
+                            "percent"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PrimaryDealerFails]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['federal_reserve']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series' symbol.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Value of the data returned, in millions of USD if the `unit` parameter is 'value' else a normalized percent.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "PrimaryDealerFails"
+        },
+        "/economy/port_volume": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get average dwelling times and TEU volumes from the top ports.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.port_volume(provider='econdb')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "econdb": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PortVolume]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "port_code",
+                        "type": "str",
+                        "description": "Port code.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "port_name",
+                        "type": "str",
+                        "description": "Port name.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "Country where the port is located.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "export_dwell_time",
+                        "type": "float",
+                        "description": "EconDB model estimate for the average number of days from when a container enters the terminal gates until it is loaded on a vessel. High dwelling times can indicate vessel delays.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "import_dwell_time",
+                        "type": "float",
+                        "description": "EconDB model estimate for the average number of days from when a container is discharged from a vessel until it exits the terminal gates. High dwelling times can indicate trucking or port congestion.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "import_teu",
+                        "type": "int",
+                        "description": "EconDB model estimate for the number of twenty-foot equivalent units (TEUs) of containers imported through the port.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "export_teu",
+                        "type": "int",
+                        "description": "EconDB model estimate for the number of twenty-foot equivalent units (TEUs) of containers exported through the port.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "PortVolume"
+        },
+        "/economy/direction_of_trade": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get Direction Of Trade Statistics from the IMF database.\n\nThe Direction of Trade Statistics (DOTS) presents the value of merchandise exports and\nimports disaggregated according to a country's primary trading partners.\nArea and world aggregates are included in the display of trade flows between major areas of the world.\nReported data is supplemented by estimates whenever such data is not available or current.\nImports are reported on a cost, insurance and freight (CIF) basis\nand exports are reported on a free on board (FOB) basis.\nTime series data includes estimates derived from reports of partner countries\nfor non-reporting and slow-reporting countries.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.direction_of_trade(provider='imf', country='all', counterpart='china')\n# Select multiple countries or counterparts by entering a comma-separated list. The direction of trade can be 'exports', 'imports', 'balance', or 'all'.\nobb.economy.direction_of_trade(provider='imf', country='us', counterpart='world,eu', frequency='annual', direction='exports')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. None is an equiavlent to 'all'. If 'all' is used, the counterpart field cannot be 'all'. Multiple items allowed for provider(s): imf.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "advanced_economies",
+                            "afghanistan",
+                            "africa",
+                            "africa_not_allocated",
+                            "albania",
+                            "algeria",
+                            "american_samoa",
+                            "angola",
+                            "anguilla",
+                            "antigua_and_barbuda",
+                            "antilles",
+                            "argentina",
+                            "armenia",
+                            "aruba",
+                            "asia_not_allocated",
+                            "australia",
+                            "austria",
+                            "azerbaijan",
+                            "bahamas",
+                            "bahrain",
+                            "bangladesh",
+                            "barbados",
+                            "belarus",
+                            "belgium",
+                            "belgo-luxembourg_economic_union",
+                            "belize",
+                            "benin",
+                            "bermuda",
+                            "bhutan",
+                            "bolivia",
+                            "bosnia_and_herzegovina",
+                            "botswana",
+                            "brazil",
+                            "brunei_darussalam",
+                            "bulgaria",
+                            "burkina_faso",
+                            "burundi",
+                            "cabo_verde",
+                            "cambodia",
+                            "cameroon",
+                            "canada",
+                            "central_african_republic",
+                            "chad",
+                            "chile",
+                            "china",
+                            "colombia",
+                            "community_of_independent_states",
+                            "comoros",
+                            "congo",
+                            "costa_rica",
+                            "croatia",
+                            "cuba",
+                            "curacao",
+                            "cyprus",
+                            "czech_republic",
+                            "democratic_republic_of_the_congo",
+                            "denmark",
+                            "developing_asia",
+                            "djibouti",
+                            "dominica",
+                            "dominican_republic",
+                            "east_germany",
+                            "ecuador",
+                            "egypt",
+                            "el_salvador",
+                            "emerging_and_developing_countries",
+                            "emerging_and_developing_europe",
+                            "equatorial_guinea",
+                            "eritrea",
+                            "estonia",
+                            "eswatini",
+                            "ethiopia",
+                            "euro_area",
+                            "europe",
+                            "europe_not_allocated",
+                            "european_union",
+                            "export_earnings_fuel",
+                            "export_earnings_nonfuel",
+                            "falkland_islands",
+                            "faroe_islands",
+                            "fiji",
+                            "finland",
+                            "former_czechoslovakia",
+                            "former_ussr",
+                            "former_yugoslavia",
+                            "france",
+                            "french_polynesia",
+                            "gabon",
+                            "gambia",
+                            "georgia",
+                            "germany",
+                            "ghana",
+                            "gibraltar",
+                            "greece",
+                            "greenland",
+                            "grenada",
+                            "guam",
+                            "guatemala",
+                            "guinea",
+                            "guyana",
+                            "haiti",
+                            "honduras",
+                            "hong_kong",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "iran",
+                            "iraq",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "ivory_coast",
+                            "jamaica",
+                            "japan",
+                            "jordan",
+                            "kazakhstan",
+                            "kenya",
+                            "kiribati",
+                            "kosovo",
+                            "kuwait",
+                            "kyrgyzstan",
+                            "lao",
+                            "latvia",
+                            "lebanon",
+                            "lesotho",
+                            "liberia",
+                            "libya",
+                            "lithuania",
+                            "luxembourg",
+                            "macao",
+                            "madagascar",
+                            "malawi",
+                            "malaysia",
+                            "maldives",
+                            "mali",
+                            "malta",
+                            "marshall_islands",
+                            "mauritania",
+                            "mauritius",
+                            "mexico",
+                            "micronesia",
+                            "middle_east",
+                            "middle_east_and_central_asia",
+                            "middle_east_and_central_asia_not_specified",
+                            "middle_east_north_africa_afghanistan_and_pakistan",
+                            "moldova",
+                            "mongolia",
+                            "montenegro",
+                            "montserrat",
+                            "morocco",
+                            "mozambique",
+                            "myanmar",
+                            "namibia",
+                            "nauru",
+                            "nepal",
+                            "netherlands",
+                            "new_caledonia",
+                            "new_zealand",
+                            "nicaragua",
+                            "niger",
+                            "nigeria",
+                            "north_korea",
+                            "north_macedonia",
+                            "north_vietnam",
+                            "norway",
+                            "oman",
+                            "other_countries_nie",
+                            "pakistan",
+                            "palau",
+                            "palestine",
+                            "panama",
+                            "papua_new_guinea",
+                            "paraguay",
+                            "peru",
+                            "philippines",
+                            "poland",
+                            "portugal",
+                            "qatar",
+                            "romania",
+                            "russia",
+                            "rwanda",
+                            "saint_kitts_and_nevis",
+                            "saint_lucia",
+                            "saint_vincent_and_the_grenadines",
+                            "samoa",
+                            "san_marino",
+                            "sao_tome_and_principe",
+                            "saudi_arabia",
+                            "senegal",
+                            "serbia",
+                            "serbia_and_montenegro",
+                            "seychelles",
+                            "sierra_leone",
+                            "singapore",
+                            "sint_maarten",
+                            "slovakia",
+                            "slovenia",
+                            "solomon_islands",
+                            "somalia",
+                            "south_africa",
+                            "south_african_common_customs_area",
+                            "south_korea",
+                            "south_sudan",
+                            "spain",
+                            "special_categories_and_economic_zones",
+                            "sri_lanka",
+                            "sub-saharan_africa",
+                            "sudan",
+                            "suriname",
+                            "sweden",
+                            "switzerland",
+                            "syria",
+                            "taiwan",
+                            "tajikistan",
+                            "tanzania",
+                            "thailand",
+                            "timor-leste",
+                            "togo",
+                            "tonga",
+                            "trinidad_and_tobago",
+                            "tunisia",
+                            "turkey",
+                            "turkmenistan",
+                            "tuvalu",
+                            "uganda",
+                            "ukraine",
+                            "united_arab_emirates",
+                            "united_kingdom",
+                            "united_states",
+                            "uruguay",
+                            "uzbekistan",
+                            "vanuatu",
+                            "vatican_city_state",
+                            "venezuela",
+                            "viet_nam",
+                            "west_malaysia",
+                            "western_hemisphere",
+                            "western_hemisphere_not_allocated",
+                            "world",
+                            "yemen",
+                            "yemen_arab_rep",
+                            "yemen_pd_rep",
+                            "zambia",
+                            "zimbabwe"
+                        ]
+                    },
+                    {
+                        "name": "counterpart",
+                        "type": "Union[str, List[str]]",
+                        "description": "Counterpart country to the trade. None is an equiavlent to 'all'. If 'all' is used, the country field cannot be 'all'. Multiple items allowed for provider(s): imf.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "advanced_economies",
+                            "afghanistan",
+                            "africa",
+                            "africa_not_allocated",
+                            "albania",
+                            "algeria",
+                            "american_samoa",
+                            "angola",
+                            "anguilla",
+                            "antigua_and_barbuda",
+                            "antilles",
+                            "argentina",
+                            "armenia",
+                            "aruba",
+                            "asia_not_allocated",
+                            "australia",
+                            "austria",
+                            "azerbaijan",
+                            "bahamas",
+                            "bahrain",
+                            "bangladesh",
+                            "barbados",
+                            "belarus",
+                            "belgium",
+                            "belgo-luxembourg_economic_union",
+                            "belize",
+                            "benin",
+                            "bermuda",
+                            "bhutan",
+                            "bolivia",
+                            "bosnia_and_herzegovina",
+                            "botswana",
+                            "brazil",
+                            "brunei_darussalam",
+                            "bulgaria",
+                            "burkina_faso",
+                            "burundi",
+                            "cabo_verde",
+                            "cambodia",
+                            "cameroon",
+                            "canada",
+                            "central_african_republic",
+                            "chad",
+                            "chile",
+                            "china",
+                            "colombia",
+                            "community_of_independent_states",
+                            "comoros",
+                            "congo",
+                            "costa_rica",
+                            "croatia",
+                            "cuba",
+                            "curacao",
+                            "cyprus",
+                            "czech_republic",
+                            "democratic_republic_of_the_congo",
+                            "denmark",
+                            "developing_asia",
+                            "djibouti",
+                            "dominica",
+                            "dominican_republic",
+                            "east_germany",
+                            "ecuador",
+                            "egypt",
+                            "el_salvador",
+                            "emerging_and_developing_countries",
+                            "emerging_and_developing_europe",
+                            "equatorial_guinea",
+                            "eritrea",
+                            "estonia",
+                            "eswatini",
+                            "ethiopia",
+                            "euro_area",
+                            "europe",
+                            "europe_not_allocated",
+                            "european_union",
+                            "export_earnings_fuel",
+                            "export_earnings_nonfuel",
+                            "falkland_islands",
+                            "faroe_islands",
+                            "fiji",
+                            "finland",
+                            "former_czechoslovakia",
+                            "former_ussr",
+                            "former_yugoslavia",
+                            "france",
+                            "french_polynesia",
+                            "gabon",
+                            "gambia",
+                            "georgia",
+                            "germany",
+                            "ghana",
+                            "gibraltar",
+                            "greece",
+                            "greenland",
+                            "grenada",
+                            "guam",
+                            "guatemala",
+                            "guinea",
+                            "guyana",
+                            "haiti",
+                            "honduras",
+                            "hong_kong",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "iran",
+                            "iraq",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "ivory_coast",
+                            "jamaica",
+                            "japan",
+                            "jordan",
+                            "kazakhstan",
+                            "kenya",
+                            "kiribati",
+                            "kosovo",
+                            "kuwait",
+                            "kyrgyzstan",
+                            "lao",
+                            "latvia",
+                            "lebanon",
+                            "lesotho",
+                            "liberia",
+                            "libya",
+                            "lithuania",
+                            "luxembourg",
+                            "macao",
+                            "madagascar",
+                            "malawi",
+                            "malaysia",
+                            "maldives",
+                            "mali",
+                            "malta",
+                            "marshall_islands",
+                            "mauritania",
+                            "mauritius",
+                            "mexico",
+                            "micronesia",
+                            "middle_east",
+                            "middle_east_and_central_asia",
+                            "middle_east_and_central_asia_not_specified",
+                            "middle_east_north_africa_afghanistan_and_pakistan",
+                            "moldova",
+                            "mongolia",
+                            "montenegro",
+                            "montserrat",
+                            "morocco",
+                            "mozambique",
+                            "myanmar",
+                            "namibia",
+                            "nauru",
+                            "nepal",
+                            "netherlands",
+                            "new_caledonia",
+                            "new_zealand",
+                            "nicaragua",
+                            "niger",
+                            "nigeria",
+                            "north_korea",
+                            "north_macedonia",
+                            "north_vietnam",
+                            "norway",
+                            "oman",
+                            "other_countries_nie",
+                            "pakistan",
+                            "palau",
+                            "palestine",
+                            "panama",
+                            "papua_new_guinea",
+                            "paraguay",
+                            "peru",
+                            "philippines",
+                            "poland",
+                            "portugal",
+                            "qatar",
+                            "romania",
+                            "russia",
+                            "rwanda",
+                            "saint_kitts_and_nevis",
+                            "saint_lucia",
+                            "saint_vincent_and_the_grenadines",
+                            "samoa",
+                            "san_marino",
+                            "sao_tome_and_principe",
+                            "saudi_arabia",
+                            "senegal",
+                            "serbia",
+                            "serbia_and_montenegro",
+                            "seychelles",
+                            "sierra_leone",
+                            "singapore",
+                            "sint_maarten",
+                            "slovakia",
+                            "slovenia",
+                            "solomon_islands",
+                            "somalia",
+                            "south_africa",
+                            "south_african_common_customs_area",
+                            "south_korea",
+                            "south_sudan",
+                            "spain",
+                            "special_categories_and_economic_zones",
+                            "sri_lanka",
+                            "sub-saharan_africa",
+                            "sudan",
+                            "suriname",
+                            "sweden",
+                            "switzerland",
+                            "syria",
+                            "taiwan",
+                            "tajikistan",
+                            "tanzania",
+                            "thailand",
+                            "timor-leste",
+                            "togo",
+                            "tonga",
+                            "trinidad_and_tobago",
+                            "tunisia",
+                            "turkey",
+                            "turkmenistan",
+                            "tuvalu",
+                            "uganda",
+                            "ukraine",
+                            "united_arab_emirates",
+                            "united_kingdom",
+                            "united_states",
+                            "uruguay",
+                            "uzbekistan",
+                            "vanuatu",
+                            "vatican_city_state",
+                            "venezuela",
+                            "viet_nam",
+                            "west_malaysia",
+                            "western_hemisphere",
+                            "western_hemisphere_not_allocated",
+                            "world",
+                            "yemen",
+                            "yemen_arab_rep",
+                            "yemen_pd_rep",
+                            "zambia",
+                            "zimbabwe"
+                        ]
+                    },
+                    {
+                        "name": "direction",
+                        "type": "Literal['exports', 'imports', 'balance', 'all']",
+                        "description": "Trade direction. Use 'all' to get all data for this dimension.",
+                        "default": "balance",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['month', 'quarter', 'annual']",
+                        "description": "The frequency of the data.",
+                        "default": "month",
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "imf": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[DirectionOfTrade]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['imf']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "counterpart",
+                        "type": "str",
+                        "description": "Counterpart country or region to the trade.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title corresponding to the symbol.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "Trade value.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "scale",
+                        "type": "str",
+                        "description": "Scale of the value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "imf": []
+            },
+            "model": "DirectionOfTrade"
+        },
         "/equity/calendar/ipo": {
             "deprecated": {
                 "flag": null,
@@ -9717,16 +11112,6 @@
                         "description": "The fact to lookup, typically a GAAP-reporting measure. Choices vary by provider.",
                         "default": "",
                         "optional": true,
-                        "choices": null
-                    }
-                ],
-                "sec": [
-                    {
-                        "name": "fact",
-                        "type": "Literal['AccountsPayableCurrent', 'AccountsReceivableNet', 'AccountsReceivableNetCurrent', 'AccrualForTaxesOtherThanIncomeTaxesCurrent', 'AccrualForTaxesOtherThanIncomeTaxesCurrentAndNoncurrent', 'AccruedIncomeTaxesCurrent', 'AccruedIncomeTaxesNoncurrent', 'AccruedInsuranceCurrent', 'AccruedLiabilitiesCurrent', 'AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment', 'AccumulatedOtherComprehensiveIncomeLossNetOfTax', 'AcquisitionsNetOfCashAcquiredAndPurchasesOfIntangibleAndOtherAssets', 'AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationRequisiteServicePeriodRecognitionValue', 'AdvertisingExpense', 'AllocatedShareBasedCompensationExpense', 'AntidilutiveSecuritiesExcludedFromComputationOfEarningsPerShareAmount', 'Assets', 'AssetsCurrent', 'AssetsNoncurrent', 'NoncurrentAssets', 'AssetImpairmentCharges', 'BuildingsAndImprovementsGross', 'CapitalLeaseObligationsCurrent', 'CapitalLeaseObligationsNoncurrent', 'Cash', 'CashAndCashEquivalentsAtCarryingValue', 'CashCashEquivalentsAndShortTermInvestments', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect', 'CommitmentsAndContingencies', 'CommercialPaper', 'CommonStockDividendsPerShareDeclared', 'CommonStockDividendsPerShareCashPaid', 'CommonStocksIncludingAdditionalPaidInCapital', 'ComprehensiveIncomeNetOfTax', 'ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest', 'ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest', 'ConstructionInProgressGross', 'ContractWithCustomerAssetNet', 'ContractWithCustomerLiability', 'ContractWithCustomerLiabilityCurrent', 'ContractWithCustomerLiabilityNoncurrent', 'CostOfRevenue', 'CostOfGoodsAndServicesSold', 'CurrentFederalTaxExpenseBenefit', 'CurrentForeignTaxExpenseBenefit', 'CurrentIncomeTaxExpenseBenefit', 'CurrentStateAndLocalTaxExpenseBenefit', 'DebtInstrumentFaceAmount', 'DebtInstrumentFairValue', 'DebtLongtermAndShorttermCombinedAmount', 'DeferredFederalIncomeTaxExpenseBenefit', 'DeferredForeignIncomeTaxExpenseBenefit', 'DeferredIncomeTaxExpenseBenefit', 'DeferredIncomeTaxesAndTaxCredits', 'DeferredIncomeTaxLiabilities', 'DeferredIncomeTaxLiabilitiesNet', 'DeferredRevenue', 'DeferredTaxAssetsGross', 'DeferredTaxAssetsLiabilitiesNet', 'DeferredTaxAssetsNet', 'DeferredTaxLiabilities', 'DefinedContributionPlanCostRecognized', 'Depreciation', 'DepreciationAmortizationAndAccretionNet', 'DepreciationAmortizationAndOther', 'DepreciationAndAmortization', 'DepreciationDepletionAndAmortization', 'DerivativeCollateralObligationToReturnCash', 'DerivativeCollateralRightToReclaimCash', 'DerivativeFairValueOfDerivativeNet', 'DerivativeLiabilityCollateralRightToReclaimCashOffset', 'DerivativeNotionalAmount', 'Dividends', 'DividendsCash', 'DividendsPayableAmountPerShare', 'DividendsPayableCurrent', 'DistributedEarnings', 'EarningsPerShareBasic', 'EarningsPerShareDiluted', 'EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents', 'EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations', 'EmployeeRelatedLiabilitiesCurrent', 'EmployeeRelatedLiabilitiesCurrentAndNoncurrent', 'EmployeeServiceShareBasedCompensationTaxBenefitFromCompensationExpense', 'FinanceLeaseInterestExpense', 'FinanceLeaseInterestPaymentOnLiability', 'FinanceLeaseLiability', 'FinanceLeaseLiabilityCurrent', 'FinanceLeaseLiabilityNoncurrent', 'FinanceLeaseLiabilityPaymentsDue', 'FinanceLeaseLiabilityPaymentsDueAfterYearFive', 'FinanceLeaseLiabilityPaymentsDueNextTwelveMonths', 'FinanceLeaseLiabilityPaymentsDueYearFive', 'FinanceLeaseLiabilityPaymentsDueYearFour', 'FinanceLeaseLiabilityPaymentsDueYearThree', 'FinanceLeaseLiabilityPaymentsDueYearTwo', 'FinanceLeaseLiabilityPaymentsRemainderOfFiscalYear', 'FinanceLeaseLiabilityUndiscountedExcessAmount', 'FinanceLeasePrincipalPayments', 'FinanceLeaseRightOfUseAsset', 'FinancingReceivableAllowanceForCreditLosses', 'FiniteLivedIntangibleAssetsNet', 'FixturesAndEquipmentGross', 'GainLossOnInvestments', 'GainLossOnInvestmentsAndDerivativeInstruments', 'GainLossOnSaleOfBusiness', 'GainsLossesOnExtinguishmentOfDebt', 'GeneralAndAdministrativeExpense', 'Goodwill', 'GrossProfit', 'ImpairmentOfIntangibleAssetsExcludingGoodwill', 'ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill', 'IncomeLossFromContinuingOperations', 'IncomeLossFromContinuingOperationsAttributableToNoncontrollingEntity', 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest', 'IncomeLossFromContinuingOperationsPerBasicShare', 'IncomeLossFromContinuingOperationsPerDilutedShare', 'InterestAndDebtExpense', 'IncomeTaxExpenseBenefit', 'IncomeTaxesPaid', 'IncomeTaxesPaidNet', 'IncreaseDecreaseInAccountsAndOtherReceivables', 'IncreaseDecreaseInAccountsPayable', 'IncreaseDecreaseInAccountsReceivable', 'IncreaseDecreaseInAccruedLiabilities', 'IncreaseDecreaseInAccruedIncomeTaxesPayable', 'IncreaseDecreaseInAccruedTaxesPayable', 'IncreaseDecreaseInContractWithCustomerLiability', 'IncreaseDecreaseInDeferredIncomeTaxes', 'IncreaseDecreaseInInventories', 'IncreaseDecreaseInOtherCurrentAssets', 'IncreaseDecreaseInOtherCurrentLiabilities', 'IncreaseDecreaseInOtherNoncurrentAssets', 'IncreaseDecreaseInOtherNoncurrentLiabilities', 'IncreaseDecreaseInPensionPlanObligations', 'IncrementalCommonSharesAttributableToShareBasedPaymentArrangements', 'InterestExpenseDebt', 'InterestIncomeExpenseNet', 'InterestPaid', 'InterestPaidNet', 'InventoryNet', 'InvestmentIncomeInterest', 'Land', 'LeaseAndRentalExpense', 'LesseeOperatingLeaseLiabilityPaymentsDue', 'LesseeOperatingLeaseLiabilityPaymentsDueAfterYearFive', 'LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths', 'LesseeOperatingLeaseLiabilityPaymentsDueYearFive', 'LesseeOperatingLeaseLiabilityPaymentsDueYearFour', 'LesseeOperatingLeaseLiabilityPaymentsDueYearThree', 'LesseeOperatingLeaseLiabilityPaymentsDueYearTwo', 'LesseeOperatingLeaseLiabilityPaymentsRemainderOfFiscalYear', 'LettersOfCreditOutstandingAmount', 'Liabilities', 'LiabilitiesAndStockholdersEquity', 'LiabilitiesCurrent', 'LineOfCredit', 'LineOfCreditFacilityMaximumBorrowingCapacity', 'LongTermDebt', 'LongTermDebtCurrent', 'LongTermDebtMaturitiesRepaymentsOfPrincipalAfterYearFive', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFive', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFour', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearThree', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearTwo', 'LongTermDebtMaturitiesRepaymentsOfPrincipalRemainderOfFiscalYear', 'LongTermDebtNoncurrent', 'LongTermInvestments', 'LossContingencyEstimateOfPossibleLoss', 'MachineryAndEquipmentGross', 'MarketableSecuritiesCurrent', 'MarketableSecuritiesNoncurrent', 'MinorityInterest', 'NetCashProvidedByUsedInFinancingActivities', 'NetCashProvidedByUsedInInvestingActivities', 'NetCashProvidedByUsedInOperatingActivities', 'NetIncomeLoss', 'NetIncomeLossAttributableToNoncontrollingInterest', 'NetIncomeLossAttributableToNonredeemableNoncontrollingInterest', 'NetIncomeLossAttributableToRedeemableNoncontrollingInterest', 'NonoperatingIncomeExpense', 'NoninterestIncome', 'NotesReceivableNet', 'OperatingExpenses', 'OperatingIncomeLoss', 'OperatingLeaseCost', 'OperatingLeaseLiability', 'OperatingLeaseLiabilityCurrent', 'OperatingLeaseLiabilityNoncurrent', 'OperatingLeaseRightOfUseAsset', 'OtherAccruedLiabilitiesCurrent', 'OtherAssetsCurrent', 'OtherAssetsNoncurrent', 'OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax', 'OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax', 'OtherComprehensiveIncomeLossDerivativeInstrumentGainLossafterReclassificationandTax', 'OtherComprehensiveIncomeLossDerivativeInstrumentGainLossbeforeReclassificationafterTax', 'OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax', 'OtherComprehensiveIncomeLossNetOfTax', 'OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent', 'OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodNetOfTax', 'OtherIncome', 'OtherLiabilitiesCurrent', 'OtherLiabilitiesNoncurrent', 'OtherLongTermDebt', 'OtherNoncashIncomeExpense', 'PaymentsForCapitalImprovements', 'PaymentsOfDividends', 'PaymentsOfDividendsMinorityInterest', 'PaymentsForProceedsFromBusinessesAndInterestInAffiliates', 'PaymentsForProceedsFromOtherInvestingActivities', 'PaymentsForRent', 'PaymentsForRepurchaseOfCommonStock', 'PaymentsOfDebtExtinguishmentCosts', 'PaymentsToAcquireInvestments', 'PaymentsToAcquirePropertyPlantAndEquipment', 'PreferredStockSharesOutstanding', 'PreferredStockValue', 'PrepaidExpenseAndOtherAssetsCurrent', 'PrepaidExpenseCurrent', 'ProceedsFromDebtMaturingInMoreThanThreeMonths', 'ProceedsFromDebtNetOfIssuanceCosts', 'ProceedsFromDivestitureOfBusinesses', 'ProceedsFromInvestments', 'ProceedsFromIssuanceOfCommonStock', 'ProceedsFromIssuanceOfDebt', 'ProceedsFromIssuanceOfLongTermDebt', 'ProceedsFromIssuanceOfUnsecuredDebt', 'ProceedsFromIssuanceOrSaleOfEquity', 'ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities', 'ProceedsFromPaymentsForOtherFinancingActivities', 'ProceedsFromPaymentsToMinorityShareholders', 'ProceedsFromRepaymentsOfShortTermDebt', 'ProceedsFromRepaymentsOfShortTermDebtMaturingInThreeMonthsOrLess', 'ProceedsFromSaleOfPropertyPlantAndEquipment', 'ProceedsFromStockOptionsExercised', 'ProfitLoss', 'PropertyPlantAndEquipmentGross', 'PropertyPlantAndEquipmentNet', 'ReceivablesNetCurrent', 'RedeemableNoncontrollingInterestEquityCarryingAmount', 'RepaymentsOfDebtMaturingInMoreThanThreeMonths', 'RepaymentsOfLongTermDebt', 'ResearchAndDevelopmentExpense', 'RestrictedCash', 'RestrictedCashAndCashEquivalents', 'RestrictedStockExpense', 'RestructuringCharges', 'RetainedEarningsAccumulatedDeficit', 'Revenues', 'RevenueFromContractWithCustomerExcludingAssessedTax', 'SecuredLongTermDebt', 'SellingAndMarketingExpense', 'SellingGeneralAndAdministrativeExpense', 'ShareBasedCompensation', 'ShortTermBorrowings', 'ShortTermInvestments', 'StockholdersEquity', 'StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest', 'StockholdersEquityOther', 'StockIssuedDuringPeriodValueNewIssues', 'StockOptionPlanExpense', 'StockRedeemedOrCalledDuringPeriodValue', 'StockRepurchasedDuringPeriodValue', 'StockRepurchasedAndRetiredDuringPeriodValue', 'TaxesPayableCurrent', 'TradingSecuritiesDebt', 'TreasuryStockAcquiredAverageCostPerShare', 'TreasuryStockSharesAcquired', 'UnrealizedGainLossOnInvestments', 'UnrecognizedTaxBenefits', 'UnsecuredDebt', 'VariableLeaseCost', 'WeightedAverageNumberOfDilutedSharesOutstanding', 'WeightedAverageNumberOfSharesOutstandingBasic', 'WeightedAverageNumberDilutedSharesOutstandingAdjustment']",
-                        "description": "Fact or concept from the SEC taxonomy, in UpperCamelCase. Defaults to, 'Revenues'. AAPL, MSFT, GOOG, BRK-A currently report revenue as, 'RevenueFromContractWithCustomerExcludingAssessedTax'. In previous years, they have reported as 'Revenues'.",
-                        "default": "Revenues",
-                        "optional": true,
                         "choices": [
                             "AccountsPayableCurrent",
                             "AccountsReceivableNet",
@@ -10009,6 +11394,16 @@
                             "WeightedAverageNumberOfDilutedSharesOutstanding",
                             "WeightedAverageNumberOfSharesOutstandingBasic"
                         ]
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "fact",
+                        "type": "Literal['AccountsPayableCurrent', 'AccountsReceivableNet', 'AccountsReceivableNetCurrent', 'AccrualForTaxesOtherThanIncomeTaxesCurrent', 'AccrualForTaxesOtherThanIncomeTaxesCurrentAndNoncurrent', 'AccruedIncomeTaxesCurrent', 'AccruedIncomeTaxesNoncurrent', 'AccruedInsuranceCurrent', 'AccruedLiabilitiesCurrent', 'AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment', 'AccumulatedOtherComprehensiveIncomeLossNetOfTax', 'AcquisitionsNetOfCashAcquiredAndPurchasesOfIntangibleAndOtherAssets', 'AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationRequisiteServicePeriodRecognitionValue', 'AdvertisingExpense', 'AllocatedShareBasedCompensationExpense', 'AntidilutiveSecuritiesExcludedFromComputationOfEarningsPerShareAmount', 'Assets', 'AssetsCurrent', 'AssetsNoncurrent', 'NoncurrentAssets', 'AssetImpairmentCharges', 'BuildingsAndImprovementsGross', 'CapitalLeaseObligationsCurrent', 'CapitalLeaseObligationsNoncurrent', 'Cash', 'CashAndCashEquivalentsAtCarryingValue', 'CashCashEquivalentsAndShortTermInvestments', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect', 'CommitmentsAndContingencies', 'CommercialPaper', 'CommonStockDividendsPerShareDeclared', 'CommonStockDividendsPerShareCashPaid', 'CommonStocksIncludingAdditionalPaidInCapital', 'ComprehensiveIncomeNetOfTax', 'ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest', 'ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest', 'ConstructionInProgressGross', 'ContractWithCustomerAssetNet', 'ContractWithCustomerLiability', 'ContractWithCustomerLiabilityCurrent', 'ContractWithCustomerLiabilityNoncurrent', 'CostOfRevenue', 'CostOfGoodsAndServicesSold', 'CurrentFederalTaxExpenseBenefit', 'CurrentForeignTaxExpenseBenefit', 'CurrentIncomeTaxExpenseBenefit', 'CurrentStateAndLocalTaxExpenseBenefit', 'DebtInstrumentFaceAmount', 'DebtInstrumentFairValue', 'DebtLongtermAndShorttermCombinedAmount', 'DeferredFederalIncomeTaxExpenseBenefit', 'DeferredForeignIncomeTaxExpenseBenefit', 'DeferredIncomeTaxExpenseBenefit', 'DeferredIncomeTaxesAndTaxCredits', 'DeferredIncomeTaxLiabilities', 'DeferredIncomeTaxLiabilitiesNet', 'DeferredRevenue', 'DeferredTaxAssetsGross', 'DeferredTaxAssetsLiabilitiesNet', 'DeferredTaxAssetsNet', 'DeferredTaxLiabilities', 'DefinedContributionPlanCostRecognized', 'Depreciation', 'DepreciationAmortizationAndAccretionNet', 'DepreciationAmortizationAndOther', 'DepreciationAndAmortization', 'DepreciationDepletionAndAmortization', 'DerivativeCollateralObligationToReturnCash', 'DerivativeCollateralRightToReclaimCash', 'DerivativeFairValueOfDerivativeNet', 'DerivativeLiabilityCollateralRightToReclaimCashOffset', 'DerivativeNotionalAmount', 'Dividends', 'DividendsCash', 'DividendsPayableAmountPerShare', 'DividendsPayableCurrent', 'DistributedEarnings', 'EarningsPerShareBasic', 'EarningsPerShareDiluted', 'EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents', 'EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations', 'EmployeeRelatedLiabilitiesCurrent', 'EmployeeRelatedLiabilitiesCurrentAndNoncurrent', 'EmployeeServiceShareBasedCompensationTaxBenefitFromCompensationExpense', 'FinanceLeaseInterestExpense', 'FinanceLeaseInterestPaymentOnLiability', 'FinanceLeaseLiability', 'FinanceLeaseLiabilityCurrent', 'FinanceLeaseLiabilityNoncurrent', 'FinanceLeaseLiabilityPaymentsDue', 'FinanceLeaseLiabilityPaymentsDueAfterYearFive', 'FinanceLeaseLiabilityPaymentsDueNextTwelveMonths', 'FinanceLeaseLiabilityPaymentsDueYearFive', 'FinanceLeaseLiabilityPaymentsDueYearFour', 'FinanceLeaseLiabilityPaymentsDueYearThree', 'FinanceLeaseLiabilityPaymentsDueYearTwo', 'FinanceLeaseLiabilityPaymentsRemainderOfFiscalYear', 'FinanceLeaseLiabilityUndiscountedExcessAmount', 'FinanceLeasePrincipalPayments', 'FinanceLeaseRightOfUseAsset', 'FinancingReceivableAllowanceForCreditLosses', 'FiniteLivedIntangibleAssetsNet', 'FixturesAndEquipmentGross', 'GainLossOnInvestments', 'GainLossOnInvestmentsAndDerivativeInstruments', 'GainLossOnSaleOfBusiness', 'GainsLossesOnExtinguishmentOfDebt', 'GeneralAndAdministrativeExpense', 'Goodwill', 'GrossProfit', 'ImpairmentOfIntangibleAssetsExcludingGoodwill', 'ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill', 'IncomeLossFromContinuingOperations', 'IncomeLossFromContinuingOperationsAttributableToNoncontrollingEntity', 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest', 'IncomeLossFromContinuingOperationsPerBasicShare', 'IncomeLossFromContinuingOperationsPerDilutedShare', 'InterestAndDebtExpense', 'IncomeTaxExpenseBenefit', 'IncomeTaxesPaid', 'IncomeTaxesPaidNet', 'IncreaseDecreaseInAccountsAndOtherReceivables', 'IncreaseDecreaseInAccountsPayable', 'IncreaseDecreaseInAccountsReceivable', 'IncreaseDecreaseInAccruedLiabilities', 'IncreaseDecreaseInAccruedIncomeTaxesPayable', 'IncreaseDecreaseInAccruedTaxesPayable', 'IncreaseDecreaseInContractWithCustomerLiability', 'IncreaseDecreaseInDeferredIncomeTaxes', 'IncreaseDecreaseInInventories', 'IncreaseDecreaseInOtherCurrentAssets', 'IncreaseDecreaseInOtherCurrentLiabilities', 'IncreaseDecreaseInOtherNoncurrentAssets', 'IncreaseDecreaseInOtherNoncurrentLiabilities', 'IncreaseDecreaseInPensionPlanObligations', 'IncrementalCommonSharesAttributableToShareBasedPaymentArrangements', 'InterestExpenseDebt', 'InterestIncomeExpenseNet', 'InterestPaid', 'InterestPaidNet', 'InventoryNet', 'InvestmentIncomeInterest', 'Land', 'LeaseAndRentalExpense', 'LesseeOperatingLeaseLiabilityPaymentsDue', 'LesseeOperatingLeaseLiabilityPaymentsDueAfterYearFive', 'LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths', 'LesseeOperatingLeaseLiabilityPaymentsDueYearFive', 'LesseeOperatingLeaseLiabilityPaymentsDueYearFour', 'LesseeOperatingLeaseLiabilityPaymentsDueYearThree', 'LesseeOperatingLeaseLiabilityPaymentsDueYearTwo', 'LesseeOperatingLeaseLiabilityPaymentsRemainderOfFiscalYear', 'LettersOfCreditOutstandingAmount', 'Liabilities', 'LiabilitiesAndStockholdersEquity', 'LiabilitiesCurrent', 'LineOfCredit', 'LineOfCreditFacilityMaximumBorrowingCapacity', 'LongTermDebt', 'LongTermDebtCurrent', 'LongTermDebtMaturitiesRepaymentsOfPrincipalAfterYearFive', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFive', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFour', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearThree', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearTwo', 'LongTermDebtMaturitiesRepaymentsOfPrincipalRemainderOfFiscalYear', 'LongTermDebtNoncurrent', 'LongTermInvestments', 'LossContingencyEstimateOfPossibleLoss', 'MachineryAndEquipmentGross', 'MarketableSecuritiesCurrent', 'MarketableSecuritiesNoncurrent', 'MinorityInterest', 'NetCashProvidedByUsedInFinancingActivities', 'NetCashProvidedByUsedInInvestingActivities', 'NetCashProvidedByUsedInOperatingActivities', 'NetIncomeLoss', 'NetIncomeLossAttributableToNoncontrollingInterest', 'NetIncomeLossAttributableToNonredeemableNoncontrollingInterest', 'NetIncomeLossAttributableToRedeemableNoncontrollingInterest', 'NonoperatingIncomeExpense', 'NoninterestIncome', 'NotesReceivableNet', 'OperatingExpenses', 'OperatingIncomeLoss', 'OperatingLeaseCost', 'OperatingLeaseLiability', 'OperatingLeaseLiabilityCurrent', 'OperatingLeaseLiabilityNoncurrent', 'OperatingLeaseRightOfUseAsset', 'OtherAccruedLiabilitiesCurrent', 'OtherAssetsCurrent', 'OtherAssetsNoncurrent', 'OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax', 'OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax', 'OtherComprehensiveIncomeLossDerivativeInstrumentGainLossafterReclassificationandTax', 'OtherComprehensiveIncomeLossDerivativeInstrumentGainLossbeforeReclassificationafterTax', 'OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax', 'OtherComprehensiveIncomeLossNetOfTax', 'OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent', 'OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodNetOfTax', 'OtherIncome', 'OtherLiabilitiesCurrent', 'OtherLiabilitiesNoncurrent', 'OtherLongTermDebt', 'OtherNoncashIncomeExpense', 'PaymentsForCapitalImprovements', 'PaymentsOfDividends', 'PaymentsOfDividendsMinorityInterest', 'PaymentsForProceedsFromBusinessesAndInterestInAffiliates', 'PaymentsForProceedsFromOtherInvestingActivities', 'PaymentsForRent', 'PaymentsForRepurchaseOfCommonStock', 'PaymentsOfDebtExtinguishmentCosts', 'PaymentsToAcquireInvestments', 'PaymentsToAcquirePropertyPlantAndEquipment', 'PreferredStockSharesOutstanding', 'PreferredStockValue', 'PrepaidExpenseAndOtherAssetsCurrent', 'PrepaidExpenseCurrent', 'ProceedsFromDebtMaturingInMoreThanThreeMonths', 'ProceedsFromDebtNetOfIssuanceCosts', 'ProceedsFromDivestitureOfBusinesses', 'ProceedsFromInvestments', 'ProceedsFromIssuanceOfCommonStock', 'ProceedsFromIssuanceOfDebt', 'ProceedsFromIssuanceOfLongTermDebt', 'ProceedsFromIssuanceOfUnsecuredDebt', 'ProceedsFromIssuanceOrSaleOfEquity', 'ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities', 'ProceedsFromPaymentsForOtherFinancingActivities', 'ProceedsFromPaymentsToMinorityShareholders', 'ProceedsFromRepaymentsOfShortTermDebt', 'ProceedsFromRepaymentsOfShortTermDebtMaturingInThreeMonthsOrLess', 'ProceedsFromSaleOfPropertyPlantAndEquipment', 'ProceedsFromStockOptionsExercised', 'ProfitLoss', 'PropertyPlantAndEquipmentGross', 'PropertyPlantAndEquipmentNet', 'ReceivablesNetCurrent', 'RedeemableNoncontrollingInterestEquityCarryingAmount', 'RepaymentsOfDebtMaturingInMoreThanThreeMonths', 'RepaymentsOfLongTermDebt', 'ResearchAndDevelopmentExpense', 'RestrictedCash', 'RestrictedCashAndCashEquivalents', 'RestrictedStockExpense', 'RestructuringCharges', 'RetainedEarningsAccumulatedDeficit', 'Revenues', 'RevenueFromContractWithCustomerExcludingAssessedTax', 'SecuredLongTermDebt', 'SellingAndMarketingExpense', 'SellingGeneralAndAdministrativeExpense', 'ShareBasedCompensation', 'ShortTermBorrowings', 'ShortTermInvestments', 'StockholdersEquity', 'StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest', 'StockholdersEquityOther', 'StockIssuedDuringPeriodValueNewIssues', 'StockOptionPlanExpense', 'StockRedeemedOrCalledDuringPeriodValue', 'StockRepurchasedDuringPeriodValue', 'StockRepurchasedAndRetiredDuringPeriodValue', 'TaxesPayableCurrent', 'TradingSecuritiesDebt', 'TreasuryStockAcquiredAverageCostPerShare', 'TreasuryStockSharesAcquired', 'UnrealizedGainLossOnInvestments', 'UnrecognizedTaxBenefits', 'UnsecuredDebt', 'VariableLeaseCost', 'WeightedAverageNumberOfDilutedSharesOutstanding', 'WeightedAverageNumberOfSharesOutstandingBasic', 'WeightedAverageNumberDilutedSharesOutstandingAdjustment']",
+                        "description": "Fact or concept from the SEC taxonomy, in UpperCamelCase. Defaults to, 'Revenues'. AAPL, MSFT, GOOG, BRK-A currently report revenue as, 'RevenueFromContractWithCustomerExcludingAssessedTax'. In previous years, they have reported as 'Revenues'.",
+                        "default": "Revenues",
+                        "optional": true,
+                        "choices": null
                     },
                     {
                         "name": "year",
@@ -10024,7 +11419,13 @@
                         "description": "The fiscal period to retrieve the data for. If not provided, the most recent quarter is used. This parameter is ignored when a symbol is supplied.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "fy",
+                            "q1",
+                            "q2",
+                            "q3",
+                            "q4"
+                        ]
                     },
                     {
                         "name": "instantaneous",
@@ -23905,7 +25306,26 @@
                         "description": "Type of the transaction.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "award",
+                            "conversion",
+                            "return",
+                            "expire_short",
+                            "in_kind",
+                            "gift",
+                            "expire_long",
+                            "discretionary",
+                            "other",
+                            "small",
+                            "exempt",
+                            "otm",
+                            "purchase",
+                            "sale",
+                            "tender",
+                            "will",
+                            "itm",
+                            "trust"
+                        ]
                     }
                 ],
                 "intrinio": [
@@ -25354,7 +26774,20 @@
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "1m",
+                            "5m",
+                            "10m",
+                            "15m",
+                            "30m",
+                            "60m",
+                            "1h",
+                            "1d",
+                            "1W",
+                            "1M",
+                            "1Q",
+                            "1Y"
+                        ]
                     },
                     {
                         "name": "start_time",
@@ -28056,7 +29489,20 @@
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "1m",
+                            "5m",
+                            "10m",
+                            "15m",
+                            "30m",
+                            "60m",
+                            "1h",
+                            "1d",
+                            "1W",
+                            "1M",
+                            "1Q",
+                            "1Y"
+                        ]
                     },
                     {
                         "name": "start_time",
@@ -33269,7 +34715,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[str, List[str]]",
+                        "type": "Union[Union[None, date, str], List[Union[None, date, str]]]",
                         "description": "A specific date to get data for. By default is the current data. Multiple items allowed for provider(s): econdb, federal_reserve, fmp, fred.",
                         "default": null,
                         "optional": true,
@@ -37433,6 +38879,9 @@
         }
     },
     "routers": {
+        "/commodity": {
+            "description": "Commodity market data."
+        },
         "/crypto": {
             "description": "Cryptocurrency market data."
         },

@@ -23,7 +23,11 @@ class SecRssLitigationQueryParams(QueryParams):
 class SecRssLitigationData(Data):
     """SEC Litigation RSS Feed Data."""
 
-    published: datetime = Field(description="The date of publication.", alias="date")
+    __alias_dict__ = {
+        "published": "date",
+    }
+
+    published: datetime = Field(description="The date of publication.")
     title: str = Field(description="The title of the release.")
     summary: str = Field(description="Short summary of the release.")
     id: str = Field(description="The identifier associated with the release.")
@@ -48,9 +52,10 @@ class SecRssLitigationFetcher(
     ) -> List[Dict]:
         """Return the raw data from the SEC endpoint."""
         # pylint: disable=import-outside-toplevel
-        import xmltodict  # noqa
-        from openbb_core.provider.utils.helpers import make_request  # noqa
-        from pandas import DataFrame, to_datetime  # noqa
+        import re  # noqa
+        import xmltodict
+        from openbb_core.provider.utils.helpers import make_request
+        from pandas import DataFrame, to_datetime
 
         results: List = []
         url = "https://www.sec.gov/enforcement-litigation/litigation-releases/rss"
@@ -59,7 +64,13 @@ class SecRssLitigationFetcher(
         if r.status_code != 200:
             raise OpenBBError(f"Status code {r.status_code} returned.")
 
-        data = xmltodict.parse(r.content)
+        def clean_xml(xml_content):
+            """Clean the XML content before parsing."""
+            xml_content = re.sub(r"&(?!amp;|lt;|gt;|quot;|apos;)", "&amp;", xml_content)
+            return xml_content
+
+        cleaned_content = clean_xml(r.text)
+        data = xmltodict.parse(cleaned_content)
         cols = ["title", "link", "summary", "date", "id"]
         feed = DataFrame.from_records(data["rss"]["channel"]["item"])[
             ["title", "link", "description", "pubDate", "dc:creator"]
