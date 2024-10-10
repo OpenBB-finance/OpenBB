@@ -25,6 +25,7 @@ openbb-benzinga = { path = "./providers/benzinga", develop = true }
 openbb-bls = { path = "./providers/bls", develop = true }
 openbb-cftc = { path = "./providers/cftc", develop = true }
 openbb-econdb = { path = "./providers/econdb", develop = true }
+openbb-eia = { path = "./providers/eia", develop = true }
 openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
