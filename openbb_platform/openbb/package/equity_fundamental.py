@@ -1232,9 +1232,9 @@ class ROUTER_equity_fundamental(Container):
         provider : Optional[Literal['fmp', 'intrinio', 'sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
         start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format. (provider: intrinio)
+            Start date of the data, in YYYY-MM-DD format. (provider: intrinio, sec)
         end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format. (provider: intrinio)
+            End date of the data, in YYYY-MM-DD format. (provider: intrinio, sec)
         thea_enabled : Optional[bool]
             Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)
         cik : Optional[Union[int, str]]

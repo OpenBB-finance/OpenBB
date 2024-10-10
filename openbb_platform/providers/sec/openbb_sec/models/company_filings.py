@@ -34,6 +34,14 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         description="Lookup filings by Central Index Key (CIK) instead of by symbol.",
         default=None,
     )
+    start_date: Optional[dateType] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("start_date", ""),
+    )
+    end_date: Optional[dateType] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("end_date", ""),
+    )
     form_type: Optional[FORM_TYPES] = Field(
         description="Type of the SEC filing form.",
         default=None,
@@ -239,7 +247,7 @@ class SecCompanyFilingsFetcher(
     ) -> List[SecCompanyFilingsData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
-        from pandas import DataFrame
+        from pandas import DataFrame, to_datetime
 
         if not data:
             raise EmptyDataError(
@@ -267,7 +275,13 @@ class SecCompanyFilingsFetcher(
             .replace("N/A", None)
             .astype(str)
         )
+        filings["reportDate"] = to_datetime(filings["reportDate"]).dt.date
+        filings["filingDate"] = to_datetime(filings["filingDate"]).dt.date
         filings = filings.sort_values(by=["reportDate", "filingDate"], ascending=False)
+        if query.start_date:
+            filings = filings[filings["reportDate"] >= query.start_date]
+        if query.end_date:
+            filings = filings[filings["reportDate"] <= query.end_date]
         base_url = f"https://www.sec.gov/Archives/edgar/data/{query.cik}/"
         filings["primaryDocumentUrl"] = (
             base_url

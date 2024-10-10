@@ -23998,6 +23998,22 @@
                         "choices": null
                     },
                     {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "use_cache",
                         "type": "bool",
                         "description": "Whether or not to use cache.  If True, cache will store for one day.",
