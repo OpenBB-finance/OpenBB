@@ -1,5 +1,7 @@
 """SEC Definitions and Models."""
 
+# pylint: disable=too-many-lines
+
 from typing import Dict, Literal
 
 QUARTERS = Literal[1, 2, 3, 4]
