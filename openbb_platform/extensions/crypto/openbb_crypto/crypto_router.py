@@ -16,6 +16,7 @@ from openbb_crypto.tvl.tvl_router import router as tvl_router
 from openbb_crypto.yields.yields_router import router as yields_router
 from openbb_crypto.fees.fees_router import router as fees_router
 from openbb_crypto.revenue.revenue_router import router as revenue_router
+from openbb_crypto.volumes.volumes_router import router as volumes_router
 
 router = Router(prefix="", description="Cryptocurrency market data.")
 router.include_router(price_router)
@@ -23,6 +24,7 @@ router.include_router(tvl_router)
 router.include_router(yields_router)
 router.include_router(fees_router)
 router.include_router(revenue_router)
+router.include_router(volumes_router)
 
 
 # pylint: disable=unused-argument
