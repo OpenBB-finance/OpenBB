@@ -78,6 +78,7 @@ class FMPEtfHoldingsData(EtfHoldingsData):
     value: Optional[float] = Field(
         description="The value of the holding, in dollars.",
         default=None,
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     weight: Optional[float] = Field(
         description="The weight of the holding, as a normalized percent.",
