@@ -1,12 +1,12 @@
 """DefiLlama Yields Pools Model."""
 
-from pydantic import Field, field_validator
-from datetime import datetime
 from typing import Any, Dict, List, Optional
-from openbb_core.provider.abstract.data import Data
-from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.abstract.fetcher import Fetcher
+
 from defillama import yields
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.query_params import QueryParams
+from pydantic import Field, field_validator
 
 
 class DeFiLlamaYieldsPoolsQueryParams(QueryParams):

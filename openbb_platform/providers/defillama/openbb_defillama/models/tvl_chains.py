@@ -1,11 +1,12 @@
 """DeFiLlama TVL Chains model"""
 
-from typing import Dict, List, Optional, Any
-from pydantic import Field
-from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.abstract.data import Data
-from openbb_core.provider.abstract.query_params import QueryParams
+from typing import Any, Dict, List, Optional
+
 from defillama import tvl
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.query_params import QueryParams
+from pydantic import Field
 
 
 class DeFiLlamaTvlChainsQueryParams(QueryParams):

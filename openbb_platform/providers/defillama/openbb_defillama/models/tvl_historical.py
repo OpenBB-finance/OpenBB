@@ -1,16 +1,17 @@
 """DeFiLlama TVL Historical model"""
 
-from typing import Dict, List, Optional, Any, Literal, Union
-from pydantic import Field, field_validator, BaseModel
-from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.abstract.data import Data
-from openbb_core.provider.abstract.query_params import QueryParams
-from defillama import tvl
 from datetime import datetime
+from typing import Any, Dict, List, Literal, Optional, Union
+
+from defillama import tvl
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
+from pydantic import Field, field_validator
 
 
 class DeFiLlamaTvlHistoricalQueryParams(QueryParams):

@@ -1,12 +1,13 @@
 """DeFiLlama Fees Overview Model."""
 
-from typing import Any, Dict, List, Optional, Literal, Union
 from datetime import datetime
-from pydantic import Field, field_validator
-from openbb_core.provider.abstract.data import Data
-from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.abstract.fetcher import Fetcher
+from typing import Any, Dict, List, Optional, Union
+
 from defillama import fees_revenue
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.query_params import QueryParams
+from pydantic import Field, field_validator
 
 
 class DeFiLlamaFeesOverviewQueryParams(QueryParams):

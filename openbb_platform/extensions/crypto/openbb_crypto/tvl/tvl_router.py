@@ -2,7 +2,7 @@
 """Crypto TVL Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,

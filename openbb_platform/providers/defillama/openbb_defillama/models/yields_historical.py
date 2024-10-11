@@ -3,14 +3,13 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
-from openbb_core.provider.abstract.query_params import QueryParams
+from defillama import yields
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, field_validator
-from defillama import yields
+from openbb_core.provider.abstract.query_params import QueryParams
+from pydantic import Field
 
 
 class DeFiLlamaYieldsHistoricalQueryParams(QueryParams):
