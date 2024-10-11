@@ -12,6 +12,7 @@ from openbb_defillama.models.revenue_overview import DeFiLlamaRevenueOverviewFet
 from openbb_defillama.models.revenue_summary import DeFiLlamaRevenueSummaryFetcher
 from openbb_defillama.models.volumes_overview import DeFiLlamaVolumesOverviewFetcher
 from openbb_defillama.models.volumes_summary import DeFiLlamaVolumesSummaryFetcher
+from openbb_defillama.models.block_timestamp import DeFiLlamaBlockTimestampFetcher
 
 defillama_provider = Provider(
     name="defillama",
@@ -30,6 +31,7 @@ defillama_provider = Provider(
         "RevenueSummary": DeFiLlamaRevenueSummaryFetcher,
         "VolumesOverview": DeFiLlamaVolumesOverviewFetcher,
         "VolumesSummary": DeFiLlamaVolumesSummaryFetcher,
+        "BlockTimestamp": DeFiLlamaBlockTimestampFetcher,
     },
     repr_name="DeFiLlama",
 )
