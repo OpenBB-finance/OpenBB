@@ -1,13 +1,14 @@
 """DeFiLlama Coins Historical Model."""
 
-from typing import Any, Dict, Optional, List, Union
-from datetime import datetime
 import re
-from pydantic import Field, field_validator
-from openbb_core.provider.abstract.data import Data
-from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.abstract.fetcher import Fetcher
+from datetime import datetime
+from typing import Any, Dict, List, Optional, Union
+
 from defillama import coins
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.query_params import QueryParams
+from pydantic import Field, field_validator
 
 
 class DeFiLlamaCoinsHistoricalQueryParams(QueryParams):

@@ -1,6 +1,6 @@
 """DeFiLlama Helpers Module."""
 
-from typing import Any, List, Optional, Dict
+from typing import Any, Dict
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError
