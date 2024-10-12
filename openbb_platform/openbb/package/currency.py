@@ -13,6 +13,7 @@ from typing_extensions import Annotated
 class ROUTER_currency(Container):
     """/currency
     /price
+    reference_rates
     search
     snapshots
     """
@@ -26,6 +27,136 @@ class ROUTER_currency(Container):
         from . import currency_price
 
         return currency_price.ROUTER_currency_price(command_runner=self._command_runner)
+
+    @exception_handler
+    @validate
+    def reference_rates(
+        self,
+        provider: Annotated[
+            Optional[Literal["ecb"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ecb."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get current, official, currency reference rates.
+
+        Foreign exchange reference rates are the exchange rates set by a major financial institution or regulatory body,
+        serving as a benchmark for the value of currencies around the world.
+        These rates are used as a standard to facilitate international trade and financial transactions,
+        ensuring consistency and reliability in currency conversion.
+        They are typically updated on a daily basis and reflect the market conditions at a specific time.
+        Central banks and financial institutions often use these rates to guide their own exchange rates,
+        impacting global trade, loans, and investments.
+
+
+        Parameters
+        ----------
+        provider : Optional[Literal['ecb']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ecb.
+
+        Returns
+        -------
+        OBBject
+            results : CurrencyReferenceRates
+                Serializable results.
+            provider : Optional[Literal['ecb']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        CurrencyReferenceRates
+        ----------------------
+        date : date
+            The date of the data.
+        EUR : Optional[float]
+            Euro.
+        USD : Optional[float]
+            US Dollar.
+        JPY : Optional[float]
+            Japanese Yen.
+        BGN : Optional[float]
+            Bulgarian Lev.
+        CZK : Optional[float]
+            Czech Koruna.
+        DKK : Optional[float]
+            Danish Krone.
+        GBP : Optional[float]
+            Pound Sterling.
+        HUF : Optional[float]
+            Hungarian Forint.
+        PLN : Optional[float]
+            Polish Zloty.
+        RON : Optional[float]
+            Romanian Leu.
+        SEK : Optional[float]
+            Swedish Krona.
+        CHF : Optional[float]
+            Swiss Franc.
+        ISK : Optional[float]
+            Icelandic Krona.
+        NOK : Optional[float]
+            Norwegian Krone.
+        TRY : Optional[float]
+            Turkish Lira.
+        AUD : Optional[float]
+            Australian Dollar.
+        BRL : Optional[float]
+            Brazilian Real.
+        CAD : Optional[float]
+            Canadian Dollar.
+        CNY : Optional[float]
+            Chinese Yuan.
+        HKD : Optional[float]
+            Hong Kong Dollar.
+        IDR : Optional[float]
+            Indonesian Rupiah.
+        ILS : Optional[float]
+            Israeli Shekel.
+        INR : Optional[float]
+            Indian Rupee.
+        KRW : Optional[float]
+            South Korean Won.
+        MXN : Optional[float]
+            Mexican Peso.
+        MYR : Optional[float]
+            Malaysian Ringgit.
+        NZD : Optional[float]
+            New Zealand Dollar.
+        PHP : Optional[float]
+            Philippine Peso.
+        SGD : Optional[float]
+            Singapore Dollar.
+        THB : Optional[float]
+            Thai Baht.
+        ZAR : Optional[float]
+            South African Rand.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.currency.reference_rates(provider='ecb')
+        """  # noqa: E501
+
+        return self._run(
+            "/currency/reference_rates",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "currency.reference_rates",
+                        ("ecb",),
+                    )
+                },
+                standard_params={},
+                extra_params=kwargs,
+            )
+        )
 
     @exception_handler
     @validate
