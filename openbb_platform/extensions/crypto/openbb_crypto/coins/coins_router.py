@@ -94,3 +94,19 @@ async def chart(
 ) -> OBBject:
     """Get the price at regular intervals for a coin."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CoinsHistorical",
+    examples=[
+        APIEx(parameters={"provider": "defillama"}),
+    ],
+)
+async def historical(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the historical price for a coin."""
+    return await OBBject.from_query(Query(**locals()))

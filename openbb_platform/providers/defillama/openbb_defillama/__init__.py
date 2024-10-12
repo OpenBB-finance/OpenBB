@@ -5,6 +5,7 @@ from openbb_defillama.models.coins_change import DeFiLlamaCoinsChangeFetcher
 from openbb_defillama.models.coins_chart import DeFiLlamaCoinsChartFetcher
 from openbb_defillama.models.coins_current import DeFiLlamaCoinsCurrentFetcher
 from openbb_defillama.models.coins_first import DeFiLlamaCoinsFirstFetcher
+from openbb_defillama.models.coins_historical import DeFiLlamaCoinsHistoricalFetcher
 from openbb_defillama.models.fees_overview import DeFiLlamaFeesOverviewFetcher
 from openbb_defillama.models.fees_summary import DeFiLlamaFeesSummaryFetcher
 from openbb_defillama.models.revenue_overview import DeFiLlamaRevenueOverviewFetcher
@@ -27,22 +28,23 @@ defillama_provider = Provider(
     description="DeFiLlama is the largest TVL aggregator for DeFi (Decentralized Finance).",
     credentials=None,
     fetcher_dict={
-        "TvlChains": DeFiLlamaTvlChainsFetcher,
-        "TvlCurrent": DeFiLlamaTvlCurrentFetcher,
-        "TvlHistorical": DeFiLlamaTvlHistoricalFetcher,
-        "YieldsPools": DeFiLlamaYieldsPoolsFetcher,
-        "YieldsHistorical": DeFiLlamaYieldsHistoricalFetcher,
+        "BlockTimestamp": DeFiLlamaCoinsBlockTimestampFetcher,
+        "CoinsChange": DeFiLlamaCoinsChangeFetcher,
+        "CoinsChart": DeFiLlamaCoinsChartFetcher,
+        "CoinsCurrent": DeFiLlamaCoinsCurrentFetcher,
+        "CoinsFirst": DeFiLlamaCoinsFirstFetcher,
+        "CoinsHistorical": DeFiLlamaCoinsHistoricalFetcher,
         "FeesOverview": DeFiLlamaFeesOverviewFetcher,
         "FeesSummary": DeFiLlamaFeesSummaryFetcher,
         "RevenueOverview": DeFiLlamaRevenueOverviewFetcher,
         "RevenueSummary": DeFiLlamaRevenueSummaryFetcher,
+        "TvlChains": DeFiLlamaTvlChainsFetcher,
+        "TvlCurrent": DeFiLlamaTvlCurrentFetcher,
+        "TvlHistorical": DeFiLlamaTvlHistoricalFetcher,
         "VolumesOverview": DeFiLlamaVolumesOverviewFetcher,
         "VolumesSummary": DeFiLlamaVolumesSummaryFetcher,
-        "BlockTimestamp": DeFiLlamaCoinsBlockTimestampFetcher,
-        "CoinsCurrent": DeFiLlamaCoinsCurrentFetcher,
-        "CoinsFirst": DeFiLlamaCoinsFirstFetcher,
-        "CoinsChange": DeFiLlamaCoinsChangeFetcher,
-        "CoinsChart": DeFiLlamaCoinsChartFetcher,
+        "YieldsHistorical": DeFiLlamaYieldsHistoricalFetcher,
+        "YieldsPools": DeFiLlamaYieldsPoolsFetcher,
     },
     repr_name="DeFiLlama",
 )
