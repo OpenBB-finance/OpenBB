@@ -2,7 +2,7 @@
 """Crypto Coins Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -29,4 +29,20 @@ async def block(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get the closest block to a timestamp."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CoinsCurrent",
+    examples=[
+        APIEx(parameters={"provider": "defillama"}),
+    ],
+)
+async def current(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the current price of token by contract address."""
     return await OBBject.from_query(Query(**locals()))
