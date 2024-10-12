@@ -28,7 +28,7 @@ async def block(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the closest block to a timestamp."""
+    """Get the closest block to a timestamp for a coin."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -44,5 +44,5 @@ async def current(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the current price of token by contract address."""
+    """Get the current price of coin."""
     return await OBBject.from_query(Query(**locals()))
