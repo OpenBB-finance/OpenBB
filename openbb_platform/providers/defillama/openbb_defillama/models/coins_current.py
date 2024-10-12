@@ -42,6 +42,10 @@ class DeFiLlamaCoinsCurrentData(Data):
     timestamp: datetime = Field(description="The timestamp of the data.")
     confidence: float = Field(description="The confidence of the data.")
 
+    @field_validator("symbol", mode="before")
+    def validate_symbol(cls, v):
+        return v.upper()
+
     @field_validator("timestamp", mode="before")
     def validate_timestamp(cls, v):
         return datetime.fromtimestamp(v)
