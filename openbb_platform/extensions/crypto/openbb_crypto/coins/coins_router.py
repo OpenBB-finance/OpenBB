@@ -78,3 +78,19 @@ async def change(
 ) -> OBBject:
     """Get the percentage change in pricer over time for a coin."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CoinsChart",
+    examples=[
+        APIEx(parameters={"provider": "defillama"}),
+    ],
+)
+async def chart(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the price at regular intervals for a coin."""
+    return await OBBject.from_query(Query(**locals()))

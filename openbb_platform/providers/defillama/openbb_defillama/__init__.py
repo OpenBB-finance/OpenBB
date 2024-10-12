@@ -2,6 +2,7 @@
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_defillama.models.coins_change import DeFiLlamaCoinsChangeFetcher
+from openbb_defillama.models.coins_chart import DeFiLlamaCoinsChartFetcher
 from openbb_defillama.models.coins_current import DeFiLlamaCoinsCurrentFetcher
 from openbb_defillama.models.coins_first import DeFiLlamaCoinsFirstFetcher
 from openbb_defillama.models.fees_overview import DeFiLlamaFeesOverviewFetcher
@@ -41,6 +42,7 @@ defillama_provider = Provider(
         "CoinsCurrent": DeFiLlamaCoinsCurrentFetcher,
         "CoinsFirst": DeFiLlamaCoinsFirstFetcher,
         "CoinsChange": DeFiLlamaCoinsChangeFetcher,
+        "CoinsChart": DeFiLlamaCoinsChartFetcher,
     },
     repr_name="DeFiLlama",
 )
