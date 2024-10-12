@@ -70,12 +70,10 @@ class DeFiLlamaCoinsCurrentFetcher(
         """Extract data from DeFiLlama API"""
         token = [{query.token.split(":")[0]: query.token.split(":")[1]}]
 
-        data = coins.get_current_prices(
+        return coins.get_current_prices(
             tokens=token,
             search_width=query.search_width,
         )
-
-        return data
 
     @staticmethod
     def transform_data(
