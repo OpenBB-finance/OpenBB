@@ -104,7 +104,7 @@ class DeFiLlamaCoinsChartFetcher(
     Fetcher[DeFiLlamaCoinsChartQuery, List[DeFiLlamaCoinsChartData]]
 ):
     @staticmethod
-    def transform_query(params: DeFiLlamaCoinsChartQuery) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsChartQuery:
         transformed_params = params
 
         if params.get("end_date") is None:

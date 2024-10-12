@@ -31,7 +31,7 @@ class DeFiLlamaTvlCurrentFetcher(
     """Fetcher for DeFiLlama TVL Current data"""
 
     @staticmethod
-    def transform_query(params: DeFiLlamaTvlCurrentQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaTvlCurrentQueryParams:
         """Transform query parameters"""
         return DeFiLlamaTvlCurrentQueryParams(**params)
 

@@ -49,8 +49,8 @@ class DeFiLlamaCoinsBlockTimestampFetcher(
 
     @staticmethod
     def transform_query(
-        params: DeFiLlamaCoinsBlockTimestampQueryParams,
-    ) -> Dict[str, Any]:
+        params: Dict[str, Any]
+    ) -> DeFiLlamaCoinsBlockTimestampQueryParams:
         """Transform query parameters"""
         return DeFiLlamaCoinsBlockTimestampQueryParams(**params)
 

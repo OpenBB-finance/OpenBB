@@ -289,7 +289,7 @@ class DeFiLlamaTvlHistoricalFetcher(
     """Fetcher for DeFiLlama TVL Historical data"""
 
     @staticmethod
-    def transform_query(params: DeFiLlamaTvlHistoricalQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaTvlHistoricalQueryParams:
         """Transform query parameters"""
         return DeFiLlamaTvlHistoricalQueryParams(**params)
 

@@ -57,7 +57,7 @@ class DeFiLlamaCoinsCurrentFetcher(
     """Fetcher for DeFiLlama Coins Current data"""
 
     @staticmethod
-    def transform_query(params: DeFiLlamaCoinsCurrentQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsCurrentQueryParams:
         """Transform query parameters"""
         return DeFiLlamaCoinsCurrentQueryParams(**params)
 

@@ -180,7 +180,7 @@ class DeFiLlamaVolumesOverviewFetcher(
     """Fetcher for DeFiLlama Volumes Overview data"""
 
     @staticmethod
-    def transform_query(params: DeFiLlamaVolumesOverviewQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaVolumesOverviewQueryParams:
         """Transform query parameters"""
         return DeFiLlamaVolumesOverviewQueryParams(**params)
 

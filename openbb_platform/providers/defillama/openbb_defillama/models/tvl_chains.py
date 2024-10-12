@@ -40,7 +40,7 @@ class DeFiLlamaTvlChainsFetcher(
     """Fetcher for DeFiLlama TVL Chains data"""
 
     @staticmethod
-    def transform_query(params: DeFiLlamaTvlChainsQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaTvlChainsQueryParams:
         """Transform query parameters"""
         return DeFiLlamaTvlChainsQueryParams(**params)
 

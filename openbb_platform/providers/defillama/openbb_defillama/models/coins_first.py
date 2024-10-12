@@ -42,7 +42,7 @@ class DeFiLlamaCoinsFirstFetcher(
     """Fetcher for DeFiLlama Coins First data"""
 
     @staticmethod
-    def transform_query(params: DeFiLlamaCoinsFirstQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsFirstQueryParams:
         """Transform query parameters"""
         return DeFiLlamaCoinsFirstQueryParams(**params)
 

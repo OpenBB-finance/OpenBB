@@ -61,7 +61,7 @@ class DeFiLlamaCoinsChangeFetcher(
     Fetcher[DeFiLlamaCoinsChangeQueryParams, List[DeFiLlamaCoinsChangeData]]
 ):
     @staticmethod
-    def transform_query(params: DeFiLlamaCoinsChangeQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsChangeQueryParams:
         return DeFiLlamaCoinsChangeQueryParams(**params)
 
     @staticmethod

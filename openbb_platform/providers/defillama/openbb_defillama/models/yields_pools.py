@@ -92,7 +92,7 @@ class DeFiLlamaYieldsPoolsFetcher(
     """Fetcher for DeFiLlama Yields Pools data"""
 
     @staticmethod
-    def transform_query(params: DeFiLlamaYieldsPoolsQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaYieldsPoolsQueryParams:
         """Transform query parameters"""
         return DeFiLlamaYieldsPoolsQueryParams(**params)
 

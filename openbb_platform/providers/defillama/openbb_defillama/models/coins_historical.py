@@ -69,7 +69,7 @@ class DeFiLlamaCoinsHistoricalFetcher(
     Fetcher[DeFiLlamaCoinsHistoricalQueryParams, List[DeFiLlamaCoinsHistoricalData]]
 ):
     @staticmethod
-    def transform_query(params: DeFiLlamaCoinsHistoricalQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsHistoricalQueryParams:
         return DeFiLlamaCoinsHistoricalQueryParams(**params)
 
     @staticmethod

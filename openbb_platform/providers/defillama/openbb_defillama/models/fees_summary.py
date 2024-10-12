@@ -140,7 +140,7 @@ class DeFiLlamaFeesSummaryFetcher(
     """Fetcher for DeFiLlama Fees Summary data"""
 
     @staticmethod
-    def transform_query(params: DeFiLlamaFeesSummaryQueryParams) -> Dict[str, Any]:
+    def transform_query(params: Dict[str, Any]) -> DeFiLlamaFeesSummaryQueryParams:
         """Transform query parameters"""
         return DeFiLlamaFeesSummaryQueryParams(**params)
 
