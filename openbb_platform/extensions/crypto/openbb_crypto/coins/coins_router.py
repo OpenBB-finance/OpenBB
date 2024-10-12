@@ -17,7 +17,7 @@ router = Router(prefix="/coins")
 
 # pylint: disable=unused-argument,line-too-long
 @router.command(
-    model="BlockTimestamp",
+    model="CoinsBlockTimestamp",
     examples=[
         APIEx(parameters={"provider": "defillama"}),
     ],

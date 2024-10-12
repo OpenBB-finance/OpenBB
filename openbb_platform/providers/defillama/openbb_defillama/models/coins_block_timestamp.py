@@ -1,4 +1,4 @@
-"""DeFiLlama Block Timestamp Model."""
+"""DeFiLlama Coins Block Timestamp Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
@@ -10,8 +10,8 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, field_validator
 
 
-class DeFiLlamaBlockTimestampQueryParams(QueryParams):
-    """DeFiLlama Block Timestamp Query."""
+class DeFiLlamaCoinsBlockTimestampQueryParams(QueryParams):
+    """DeFiLlama Coins Block Timestamp Query."""
 
     chain: str = Field(description="The chain to fetch the block timestamp for.")
     timestamp: Union[int, str, datetime] = Field(
@@ -33,26 +33,30 @@ class DeFiLlamaBlockTimestampQueryParams(QueryParams):
             raise ValueError(f"Invalid timestamp type: {type(v)}")
 
 
-class DeFiLlamaBlockTimestampData(Data):
-    """DeFiLlama Block Timestamp Data."""
+class DeFiLlamaCoinsBlockTimestampData(Data):
+    """DeFiLlama Coins Block Timestamp Data."""
 
     height: int = Field(description="The block number.")
     timestamp: datetime = Field(description="The timestamp of the block.")
 
 
-class DeFiLlamaBlockTimestampFetcher(
-    Fetcher[DeFiLlamaBlockTimestampQueryParams, List[DeFiLlamaBlockTimestampData]]
+class DeFiLlamaCoinsBlockTimestampFetcher(
+    Fetcher[
+        DeFiLlamaCoinsBlockTimestampQueryParams, List[DeFiLlamaCoinsBlockTimestampData]
+    ]
 ):
-    """Fetcher for DeFiLlama Block Timestampq data"""
+    """Fetcher for DeFiLlama Coins Block Timestampq data"""
 
     @staticmethod
-    def transform_query(params: DeFiLlamaBlockTimestampQueryParams) -> Dict[str, Any]:
+    def transform_query(
+        params: DeFiLlamaCoinsBlockTimestampQueryParams,
+    ) -> Dict[str, Any]:
         """Transform query parameters"""
-        return DeFiLlamaBlockTimestampQueryParams(**params)
+        return DeFiLlamaCoinsBlockTimestampQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: DeFiLlamaBlockTimestampQueryParams,
+        query: DeFiLlamaCoinsBlockTimestampQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict[str, Any]:
@@ -64,7 +68,9 @@ class DeFiLlamaBlockTimestampFetcher(
 
     @staticmethod
     def transform_data(
-        query: DeFiLlamaBlockTimestampQueryParams, data: Dict[str, Any], **kwargs: Any
-    ) -> DeFiLlamaBlockTimestampData:
+        query: DeFiLlamaCoinsBlockTimestampQueryParams,
+        data: Dict[str, Any],
+        **kwargs: Any,
+    ) -> DeFiLlamaCoinsBlockTimestampData:
         """Transform the data into the desired format"""
-        return DeFiLlamaBlockTimestampData.model_validate(data)
+        return DeFiLlamaCoinsBlockTimestampData.model_validate(data)
