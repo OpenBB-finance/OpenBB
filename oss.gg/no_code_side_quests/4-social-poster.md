@@ -24,4 +24,7 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Social Media Post: https://x.com/...
 
+» 12-October-2024 by Bhavesh Mishra
+» Link to Social Media Post: [Click here](https://x.com/thefool1135/status/1845134180965130280)
+
 ---
