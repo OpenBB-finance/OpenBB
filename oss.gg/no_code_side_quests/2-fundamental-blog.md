@@ -24,4 +24,8 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Blog Post: https://medium.com/...
 
+
+» 12-October-2024 by Bhavesh Mishra
+» Link to Blog Post: [Click here](https://k5lo7h.hashnode.dev/the-power-of-fundamental-analysis-with-openbb-an-open-source-tool-for-free)
+
 ---
