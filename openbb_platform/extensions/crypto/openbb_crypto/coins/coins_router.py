@@ -46,3 +46,19 @@ async def current(
 ) -> OBBject:
     """Get the current price of coin."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CoinsFirst",
+    examples=[
+        APIEx(parameters={"provider": "defillama"}),
+    ],
+)
+async def first(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the earliest timestamp price record for a coin."""
+    return await OBBject.from_query(Query(**locals()))
