@@ -23,10 +23,32 @@ class ROUTER_crypto_price(Container):
     @validate
     def historical(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.")],
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        provider: Annotated[Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance.")] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
+            ),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        chart: Annotated[
+            bool,
+            OpenBBField(
+                description="Whether to create a chart or not, by default False."
+            ),
+        ] = False,
+        provider: Annotated[
+            Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical price data for cryptocurrency pair(s) within a provider.
@@ -39,6 +61,8 @@ class ROUTER_crypto_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance.
         interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], str, Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
@@ -67,19 +91,19 @@ class ROUTER_crypto_price(Container):
         CryptoHistorical
         ----------------
         date : Union[date, datetime]
-            The date of the data. 
+            The date of the data.
         open : float
-            The open price. 
+            The open price.
         high : float
-            The high price. 
+            The high price.
         low : float
-            The low price. 
+            The low price.
         close : float
-            The close price. 
+            The close price.
         volume : float
-            The trading volume. 
+            The trading volume.
         vwap : Optional[Annotated[float, Gt(gt=0)]]
-            Volume Weighted Average Price over the period. 
+            Volume Weighted Average Price over the period.
         adj_close : Optional[float]
             The adjusted close price. (provider: fmp)
         change : Optional[float]
@@ -117,6 +141,42 @@ class ROUTER_crypto_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}, "polygon": {"multiple_items_allowed": True, "choices": None}, "tiingo": {"multiple_items_allowed": True, "choices": None}, "yfinance": {"multiple_items_allowed": True, "choices": None}}, "interval": {"fmp": {"multiple_items_allowed": False, "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]}, "tiingo": {"multiple_items_allowed": False, "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]}, "yfinance": {"multiple_items_allowed": False, "choices": ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1W", "1M", "1Q"]}}},
+                chart=chart,
+                info={
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "polygon": {"multiple_items_allowed": True, "choices": None},
+                        "tiingo": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
+                    },
+                    "interval": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+                        },
+                        "tiingo": {
+                            "multiple_items_allowed": False,
+                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+                        },
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "1m",
+                                "2m",
+                                "5m",
+                                "15m",
+                                "30m",
+                                "60m",
+                                "90m",
+                                "1h",
+                                "1d",
+                                "5d",
+                                "1W",
+                                "1M",
+                                "1Q",
+                            ],
+                        },
+                    },
+                },
             )
         )

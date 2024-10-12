@@ -29,8 +29,18 @@ class ROUTER_economy_survey(Container):
     @validate
     def bls_search(
         self,
-        query: Annotated[str, OpenBBField(description="The search word(s). Use semi-colon to separate multiple queries as an & operator.")] = "",
-        provider: Annotated[Optional[Literal["bls"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.")] = None,
+        query: Annotated[
+            str,
+            OpenBBField(
+                description="The search word(s). Use semi-colon to separate multiple queries as an & operator."
+            ),
+        ] = "",
+        provider: Annotated[
+            Optional[Literal["bls"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search BLS surveys by category and keyword or phrase to identify BLS series IDs.
@@ -44,31 +54,31 @@ class ROUTER_economy_survey(Container):
         category : Optional[Literal['cpi', 'pce', 'ppi', 'ip', 'jolts', 'nfp', 'cps', 'lfs', 'wages', 'ec', 'sla', 'bed', 'tu']]
             The category of BLS survey to search within.
                 An empty search query will return all series within the category. Options are:
-                
+
             cpi - Consumer Price Index
-                
+
             pce - Personal Consumption Expenditure
-                
+
             ppi - Producer Price Index
-                
+
             ip - Industry Productivity
-                
+
             jolts - Job Openings and Labor Turnover Survey
-                
+
             nfp - Nonfarm Payrolls
-                
+
             cps - Current Population Survey
-                
+
             lfs - Labor Force Statistics
-                
+
             wages - Wages
-                
+
             ec - Employer Costs
-                
+
             sla - State and Local Area Employment
-                
+
             bed - Business Employment Dynamics
-                
+
             tu - Time Use
                  (provider: bls)
         include_extras : bool
@@ -93,11 +103,11 @@ class ROUTER_economy_survey(Container):
         BlsSearch
         ---------
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         title : Optional[str]
-            The title of the series. 
+            The title of the series.
         survey_name : Optional[str]
-            The name of the survey. 
+            The name of the survey.
 
         Examples
         --------
@@ -121,7 +131,28 @@ class ROUTER_economy_survey(Container):
                     "query": query,
                 },
                 extra_params=kwargs,
-                info={"category": {"bls": {"multiple_items_allowed": False, "choices": ["cpi", "pce", "ppi", "ip", "jolts", "nfp", "cps", "lfs", "wages", "ec", "sla", "bed", "tu"]}}},
+                info={
+                    "category": {
+                        "bls": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "cpi",
+                                "pce",
+                                "ppi",
+                                "ip",
+                                "jolts",
+                                "nfp",
+                                "cps",
+                                "lfs",
+                                "wages",
+                                "ec",
+                                "sla",
+                                "bed",
+                                "tu",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -129,10 +160,32 @@ class ROUTER_economy_survey(Container):
     @validate
     def bls_series(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. Multiple comma separated items allowed for provider(s): bls.")],
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        provider: Annotated[Optional[Literal["bls"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.")] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): bls."
+            ),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        chart: Annotated[
+            bool,
+            OpenBBField(
+                description="Whether to create a chart or not, by default False."
+            ),
+        ] = False,
+        provider: Annotated[
+            Optional[Literal["bls"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get time series data for one, or more, BLS series IDs.
@@ -145,6 +198,8 @@ class ROUTER_economy_survey(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['bls']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.
         calculations : bool
@@ -171,13 +226,13 @@ class ROUTER_economy_survey(Container):
         BlsSeries
         ---------
         date : date
-            The date of the data. 
+            The date of the data.
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         title : Optional[str]
-            Title of the series. 
+            Title of the series.
         value : Optional[float]
-            Observation value for the symbol and date. 
+            Observation value for the symbol and date.
         change_1_m : Optional[float]
             One month change in value. (provider: bls)
         change_3_m : Optional[float]
@@ -221,7 +276,10 @@ class ROUTER_economy_survey(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"bls": {"multiple_items_allowed": True, "choices": None}}},
+                chart=chart,
+                info={
+                    "symbol": {"bls": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -229,9 +287,20 @@ class ROUTER_economy_survey(Container):
     @validate
     def economic_conditions_chicago(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get The Survey Of Economic Conditions For The Chicago Region.
@@ -248,32 +317,32 @@ class ROUTER_economy_survey(Container):
             Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
             A key that indicates the aggregation method used for frequency aggregation.
-                
+
             avg = Average
-                
+
             sum = Sum
-                
+
             eop = End of Period
                  (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
             Transformation type
-                
+
             None = No transformation
-                
+
             chg = Change
-                
+
             ch1 = Change from Year Ago
-                
+
             pch = Percent Change
-                
+
             pc1 = Percent Change from Year Ago
-                
+
             pca = Compounded Annual Rate of Change
-                
+
             cch = Continuously Compounded Rate of Change
-                
+
             cca = Continuously Compounded Annual Rate of Change
-                
+
             log = Natural Log
                  (provider: fred)
 
@@ -294,25 +363,25 @@ class ROUTER_economy_survey(Container):
         SurveyOfEconomicConditionsChicago
         ---------------------------------
         date : date
-            The date of the data. 
+            The date of the data.
         activity_index : Optional[float]
-            Activity Index. 
+            Activity Index.
         one_year_outlook : Optional[float]
-            One Year Outlook Index. 
+            One Year Outlook Index.
         manufacturing_activity : Optional[float]
-            Manufacturing Activity Index. 
+            Manufacturing Activity Index.
         non_manufacturing_activity : Optional[float]
-            Non-Manufacturing Activity Index. 
+            Non-Manufacturing Activity Index.
         capital_expenditures_expectations : Optional[float]
-            Capital Expenditures Expectations Index. 
+            Capital Expenditures Expectations Index.
         hiring_expectations : Optional[float]
-            Hiring Expectations Index. 
+            Hiring Expectations Index.
         current_hiring : Optional[float]
-            Current Hiring Index. 
+            Current Hiring Index.
         labor_costs : Optional[float]
-            Labor Costs Index. 
+            Labor Costs Index.
         non_labor_costs : Optional[float]
-            Non-Labor Costs Index. 
+            Non-Labor Costs Index.
 
         Examples
         --------
@@ -342,9 +411,20 @@ class ROUTER_economy_survey(Container):
     @validate
     def manufacturing_outlook_texas(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get The Manufacturing Outlook Survey For The Texas Region.
@@ -360,18 +440,18 @@ class ROUTER_economy_survey(Container):
         topic : Union[Literal['business_activity', 'business_outlook', 'capex', 'prices_paid', 'production', 'inventory', 'new_orders', 'new_orders_growth', 'unfilled_orders', 'shipments', 'delivery_time', 'employment', 'wages', 'hours_worked'], str]
             The topic for the survey response. Multiple comma separated items allowed. (provider: fred)
         frequency : Optional[Literal['annual', 'quarter']]
-            
+
                 Frequency aggregation to convert monthly data to lower frequency. None is monthly.
                  (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
-            
+
                 A key that indicates the aggregation method used for frequency aggregation.
                     avg = Average
                     sum = Sum
                     eop = End of Period
                  (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
-            
+
                 Transformation type
                     None = No transformation
                     chg = Change
@@ -401,17 +481,17 @@ class ROUTER_economy_survey(Container):
         ManufacturingOutlookTexas
         -------------------------
         date : date
-            The date of the data. 
+            The date of the data.
         topic : Optional[str]
-            Topic of the survey response. 
+            Topic of the survey response.
         diffusion_index : Optional[float]
-            Diffusion Index. 
+            Diffusion Index.
         percent_reporting_increase : Optional[float]
-            Percent of respondents reporting an increase over the last month. 
+            Percent of respondents reporting an increase over the last month.
         percent_reporting_decrease : Optional[float]
-            Percent of respondents reporting a decrease over the last month. 
+            Percent of respondents reporting a decrease over the last month.
         percent_reporting_no_change : Optional[float]
-            Percent of respondents reporting no change over the last month. 
+            Percent of respondents reporting no change over the last month.
 
         Examples
         --------
@@ -435,7 +515,29 @@ class ROUTER_economy_survey(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"topic": {"fred": {"multiple_items_allowed": True, "choices": ["business_activity", "business_outlook", "capex", "prices_paid", "production", "inventory", "new_orders", "new_orders_growth", "unfilled_orders", "shipments", "delivery_time", "employment", "wages", "hours_worked"]}}},
+                info={
+                    "topic": {
+                        "fred": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "business_activity",
+                                "business_outlook",
+                                "capex",
+                                "prices_paid",
+                                "production",
+                                "inventory",
+                                "new_orders",
+                                "new_orders_growth",
+                                "unfilled_orders",
+                                "shipments",
+                                "delivery_time",
+                                "employment",
+                                "wages",
+                                "hours_worked",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -443,15 +545,25 @@ class ROUTER_economy_survey(Container):
     @validate
     def nonfarm_payrolls(
         self,
-        date: Annotated[Union[str, datetime.date, None, List[Union[str, datetime.date, None]]], OpenBBField(description="A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.")] = None,
-        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
+        date: Annotated[
+            Union[datetime.date, str, None, List[Union[datetime.date, str, None]]],
+            OpenBBField(
+                description="A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get Nonfarm Payrolls Survey.
 
         Parameters
         ----------
-        date : Union[str, date, None, List[Union[str, date, None]]]
+        date : Union[date, str, None, List[Union[date, str, None]]]
             A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
@@ -475,11 +587,11 @@ class ROUTER_economy_survey(Container):
         NonFarmPayrolls
         ---------------
         date : date
-            The date of the data. 
+            The date of the data.
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         value : float
-            
+
         name : Optional[str]
             The name of the series. (provider: fred)
         element_id : Optional[str]
@@ -512,7 +624,9 @@ class ROUTER_economy_survey(Container):
                     "date": date,
                 },
                 extra_params=kwargs,
-                info={"date": {"fred": {"multiple_items_allowed": True, "choices": None}}},
+                info={
+                    "date": {"fred": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -520,9 +634,20 @@ class ROUTER_economy_survey(Container):
     @validate
     def sloos(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get Senior Loan Officers Opinion Survey.
@@ -538,7 +663,7 @@ class ROUTER_economy_survey(Container):
         category : Literal['spreads', 'consumer', 'auto', 'credit_card', 'firms', 'mortgage', 'commercial_real_estate', 'standards', 'demand', 'foreign_banks']
             Category of survey response. (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
-            
+
                 Transformation type
                     None = No transformation
                     chg = Change
@@ -568,13 +693,13 @@ class ROUTER_economy_survey(Container):
         SeniorLoanOfficerSurvey
         -----------------------
         date : date
-            The date of the data. 
+            The date of the data.
         symbol : Optional[str]
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         value : float
-            Survey value. 
+            Survey value.
         title : Optional[str]
-            Survey title. 
+            Survey title.
 
         Examples
         --------
@@ -605,9 +730,20 @@ class ROUTER_economy_survey(Container):
     @validate
     def university_of_michigan(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        provider: Annotated[Optional[Literal["fred"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.
@@ -624,32 +760,32 @@ class ROUTER_economy_survey(Container):
             Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
             A key that indicates the aggregation method used for frequency aggregation.
-                
+
             avg = Average
-                
+
             sum = Sum
-                
+
             eop = End of Period
                  (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
             Transformation type
-                
+
             None = No transformation
-                
+
             chg = Change
-                
+
             ch1 = Change from Year Ago
-                
+
             pch = Percent Change
-                
+
             pc1 = Percent Change from Year Ago
-                
+
             pca = Compounded Annual Rate of Change
-                
+
             cch = Continuously Compounded Rate of Change
-                
+
             cca = Continuously Compounded Annual Rate of Change
-                
+
             log = Natural Log
                  (provider: fred)
 
@@ -670,11 +806,11 @@ class ROUTER_economy_survey(Container):
         UniversityOfMichigan
         --------------------
         date : date
-            The date of the data. 
+            The date of the data.
         consumer_sentiment : Optional[float]
-            Index of the results of the University of Michigan's monthly Survey of Consumers, which is used to estimate future spending and saving.  (1966:Q1=100). 
+            Index of the results of the University of Michigan's monthly Survey of Consumers, which is used to estimate future spending and saving.  (1966:Q1=100).
         inflation_expectation : Optional[float]
-            Median expected price change next 12 months, Surveys of Consumers. 
+            Median expected price change next 12 months, Surveys of Consumers.
 
         Examples
         --------
