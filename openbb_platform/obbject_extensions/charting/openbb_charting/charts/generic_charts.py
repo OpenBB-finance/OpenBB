@@ -1,6 +1,6 @@
 """Generic Charts Module."""
 
-# pylint: disable=too-many-arguments,unused-argument,too-many-locals, too-many-branches, too-many-lines, too-many-statements, use-dict-literal, broad-exception-caught, too-many-nested-blocks
+# pylint: disable=too-many-arguments,unused-argument,too-many-locals, too-many-branches, too-many-lines, too-many-statements, use-dict-literal, broad-exception-caught, too-many-nested-blocks, too-many-positional-arguments
 
 from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
 
