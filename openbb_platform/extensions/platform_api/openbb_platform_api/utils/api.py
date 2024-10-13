@@ -5,7 +5,6 @@ import os
 import socket
 import sys
 from pathlib import Path
-from typing import Dict
 
 from deepdiff import DeepDiff
 
@@ -89,9 +88,9 @@ def get_user_settings(
     if pat:
         from openbb_core.app.service.hub_service import HubService
 
-        hub_credentials: Dict = {}
-        hub_preferences: Dict = {}
-        hub_defaults: Dict = {}
+        hub_credentials: dict = {}
+        hub_preferences: dict = {}
+        hub_defaults: dict = {}
         try:
             Hub = HubService()
             _ = Hub.connect(pat=pat)
@@ -183,7 +182,7 @@ def get_widgets_json(_build: bool, _openapi, widget_exclude_filter: list):
         widgets_json_path.parent.mkdir(parents=True, exist_ok=True)
         _build = True
 
-    existing_widgets_json: Dict = {}
+    existing_widgets_json: dict = {}
 
     if json_exists:
         with open(widgets_json_path, encoding="utf-8") as f:
@@ -229,16 +228,21 @@ def get_widgets_json(_build: bool, _openapi, widget_exclude_filter: list):
 def parse_args():
     """Parse the launch script command line arguments."""
     args = sys.argv[1:].copy()
-    _kwargs: Dict = {}
+    _kwargs: dict = {}
     for i, arg in enumerate(args):
         if arg == "--help":
             print(LAUNCH_SCRIPT_DESCRIPTION)  # noqa: T201
             sys.exit(0)
         if arg.startswith("--"):
             key = arg[2:]
-            if i + 1 < len(args) and not args[i + 1].startswith("--"):
+            if key in ["no-use-colors", "use-colors"]:
+                _kwargs["use_colors"] = key == "use-colors"
+            elif i + 1 < len(args) and not args[i + 1].startswith("--"):
                 value = args[i + 1]
+                if isinstance(value, str) and value.lower() in ["false", "true"]:
+                    value = value.lower() == "true"
                 _kwargs[key] = value
             else:
                 _kwargs[key] = True
+
     return _kwargs

@@ -4,6 +4,7 @@ Launch script and widgets builder for the OpenBB Terminal Custom Backend.
 """
 
 import json
+import logging
 import os
 
 import uvicorn
@@ -11,6 +12,16 @@ from fastapi.responses import JSONResponse
 from openbb_core.api.rest_api import app
 
 from .utils.api import check_port, get_user_settings, get_widgets_json, parse_args
+
+logger = logging.getLogger("openbb_platform_api")
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter("\n%(message)s\n")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+
 
 FIRST_RUN = True
 
@@ -37,9 +48,9 @@ if not dont_filter and os.path.exists(WIDGET_SETTINGS):
         try:
             widget_exclude_filter = json.load(f)["exclude"]
         except json.JSONDecodeError:
-            widget_exclude_filter = []
+            widget_exclude_filter: list = []
 else:
-    widget_exclude_filter = []
+    widget_exclude_filter: list = []
 
 openapi = app.openapi()
 
@@ -71,12 +82,12 @@ async def get_widgets():
     return JSONResponse(content=get_widgets_json(False, openapi, widget_exclude_filter))
 
 
-def launch_api(**_kwargs):  # noqa PRL0912
+def launch_api(*args, **_kwargs):  # noqa PRL0912
     """Main function."""
     host = _kwargs.pop("host", os.getenv("OPENBB_API_HOST", "127.0.0.1"))
     if not host:
-        print(  # noqa: T201
-            "\n\nOPENBB_API_HOST is set incorrectly. It should be an IP address or hostname."
+        logger.info(
+            "OPENBB_API_HOST is set incorrectly. It should be an IP address or hostname."
         )
         host = input("Enter the host IP address or hostname: ")
         if not host:
@@ -87,36 +98,38 @@ def launch_api(**_kwargs):  # noqa PRL0912
     try:
         port = int(port)
     except ValueError:
-        print(  # noqa: T201
-            "\n\nOPENBB_API_PORT is set incorrectly. It should be an port number."
-        )
+        logger.info("OPENBB_API_PORT is set incorrectly. It should be an port number.")
         port = input("Enter the port number: ")
         try:
             port = int(port)
         except ValueError:
-            print("\n\nInvalid port number. Defaulting to 6900.")  # noqa: T201
+            logger.info("Invalid port number. Defaulting to 6900.")
             port = 6900
     if port < 1025:
         port = 6900
-        print(  # noqa: T201
-            "\n\nInvalid port number, must be above 1024. Defaulting to 6900."
-        )
+        logger.info("Invalid port number, must be above 1024. Defaulting to 6900.")
 
     free_port = check_port(host, port)
 
     if free_port != port:
-        print(  # noqa: T201
-            f"\n\nPort {port} is already in use. Using port {free_port}.\n"
-        )
+        logger.info(f"Port {port} is already in use. Using port {free_port}.")
         port = free_port
+
+    if "use_colors" not in _kwargs:
+        _kwargs["use_colors"] = "win" not in os.sys.platform or os.name != "nt"
 
     try:
         package_name = __package__
+        logger.info(
+            "Chrome browser is recommended for connecting the API as an OpenBB Terminal backend."
+            "\nUse the address displayed below after the application startup completes."
+            "\nDocumentation is available at /docs."
+        )
         uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
     finally:
         # If user_settings_copy.json exists, then restore the original settings.
         if os.path.exists(USER_SETTINGS_COPY):
-            print("\n\nRestoring the original settings.\n")  # noqa: T201
+            logger.info("Restoring the original settings.")
             os.replace(USER_SETTINGS_COPY, CURRENT_USER_SETTINGS)
 
 
@@ -130,4 +143,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("Restoring the original settings.")  # noqa: T201
+        logger.info("Closing the server...")
