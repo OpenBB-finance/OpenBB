@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-cftc"
-version = "1.0.0"
+version = "1.0.1"
 description = "The mission of the Commodity Futures Trading Commission (CFTC) is to promote the integrity, resilience, and vibrancy of the U.S. derivatives markets through sound regulation."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_cftc" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openbb-core = "^1.3.2"
+openbb-core = "^1.3.4"
 
 [build-system]
 requires = ["poetry-core"]
