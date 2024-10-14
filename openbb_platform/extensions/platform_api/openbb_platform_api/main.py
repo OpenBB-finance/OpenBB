@@ -123,7 +123,7 @@ def launch_api(*args, **_kwargs):  # noqa PRL0912
         package_name = __package__
         logger.info(
             "\nTo access this data from OpenBB Terminal, use the link displayed after the application startup completes."
-            "\nChrome is the recommended browswer. Other browswers may conflict or require additional configuration."
+            "\nChrome is the recommended browser. Other browsers may conflict or require additional configuration."
             "\nDocumentation is available at /docs."
         )
         uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
