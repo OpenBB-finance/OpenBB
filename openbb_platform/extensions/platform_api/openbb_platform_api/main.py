@@ -50,7 +50,7 @@ if not dont_filter and os.path.exists(WIDGET_SETTINGS):
         try:
             widget_exclude_filter = json.load(f)["exclude"]
         except json.JSONDecodeError as e:
-            logger.info(f"Error loading widget filter settings: {e}")
+            logger.info("Error loading widget filter settings: %d", e)
 
 
 openapi = app.openapi()
@@ -83,7 +83,7 @@ async def get_widgets():
     return JSONResponse(content=get_widgets_json(False, openapi, widget_exclude_filter))
 
 
-def launch_api(*args, **_kwargs):  # noqa PRL0912
+def launch_api(**_kwargs):  # noqa PRL0912
     """Main function."""
     host = _kwargs.pop("host", os.getenv("OPENBB_API_HOST", "127.0.0.1"))
     if not host:
@@ -113,7 +113,7 @@ def launch_api(*args, **_kwargs):  # noqa PRL0912
     free_port = check_port(host, port)
 
     if free_port != port:
-        logger.info(f"Port {port} is already in use. Using port {free_port}.")
+        logger.info("Port %d is already in use. Using port %d.", port, free_port)
         port = free_port
 
     if "use_colors" not in _kwargs:
