@@ -50,7 +50,7 @@ if not dont_filter and os.path.exists(WIDGET_SETTINGS):
         try:
             widget_exclude_filter = json.load(f)["exclude"]
         except json.JSONDecodeError as e:
-            logger.info("Error loading widget filter settings: %d", e)
+            logger.info("Error loading widget filter settings -> %s", e)
 
 
 openapi = app.openapi()
