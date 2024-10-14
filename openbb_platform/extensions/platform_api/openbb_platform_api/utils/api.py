@@ -240,8 +240,9 @@ def parse_args():
             elif i + 1 < len(args) and not args[i + 1].startswith("--"):
                 value = args[i + 1]
                 if isinstance(value, str) and value.lower() in ["false", "true"]:
-                    value = value.lower() == "true"
-                _kwargs[key] = value
+                    _kwargs[key] = value.lower() == "true"
+                else:
+                    _kwargs[key] = value
             else:
                 _kwargs[key] = True
 

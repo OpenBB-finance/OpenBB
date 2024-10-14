@@ -6,6 +6,7 @@ Launch script and widgets builder for the OpenBB Terminal Custom Backend.
 import json
 import logging
 import os
+import sys
 
 import uvicorn
 from fastapi.responses import JSONResponse
@@ -42,15 +43,15 @@ build = kwargs.pop("build", True)
 build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
 dont_filter = kwargs.pop("no-filter", False)
+widget_exclude_filter: list = []
 
 if not dont_filter and os.path.exists(WIDGET_SETTINGS):
     with open(WIDGET_SETTINGS) as f:
         try:
             widget_exclude_filter = json.load(f)["exclude"]
-        except json.JSONDecodeError:
-            widget_exclude_filter: list = []
-else:
-    widget_exclude_filter: list = []
+        except json.JSONDecodeError as e:
+            logger.info(f"Error loading widget filter settings: {e}")
+
 
 openapi = app.openapi()
 
@@ -116,13 +117,13 @@ def launch_api(*args, **_kwargs):  # noqa PRL0912
         port = free_port
 
     if "use_colors" not in _kwargs:
-        _kwargs["use_colors"] = "win" not in os.sys.platform or os.name != "nt"
+        _kwargs["use_colors"] = "win" not in sys.platform or os.name != "nt"
 
     try:
         package_name = __package__
         logger.info(
-            "Chrome browser is recommended for connecting the API as an OpenBB Terminal backend."
-            "\nUse the address displayed below after the application startup completes."
+            "\nTo access this data from OpenBB Terminal, use the link displayed after the application startup completes."
+            "\nChrome is the recommended browswer. Other browswers may conflict or require additional configuration."
             "\nDocumentation is available at /docs."
         )
         uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
@@ -143,4 +144,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        logger.info("Closing the server...")
+        sys.exit(0)
