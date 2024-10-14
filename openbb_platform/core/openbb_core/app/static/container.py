@@ -1,6 +1,6 @@
 """Container class."""
 
-from typing import TYPE_CHECKING, Any, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -22,6 +22,26 @@ class Container:
 
     def _run(self, *args, **kwargs) -> Any:
         """Run a command in the container."""
+        endpoint = args[0][1:].replace("/", ".") if args else ""
+        defaults = self._command_runner.user_settings.defaults.commands
+
+        if endpoint and defaults and defaults.get(endpoint):
+            default_params = {
+                k: v for k, v in defaults[endpoint].items() if k != "provider"
+            }
+            for k, v in default_params.items():
+                if k == "chart" and v is True:
+                    kwargs["chart"] = True
+                elif (
+                    k in kwargs["standard_params"]
+                    and kwargs["standard_params"][k] is None
+                ):
+                    kwargs["standard_params"][k] = v
+                elif (
+                    k in kwargs["extra_params"] and kwargs["extra_params"][k] is None
+                ) or k not in kwargs["extra_params"]:
+                    kwargs["extra_params"][k] = v
+
         obbject = self._command_runner.sync_run(*args, **kwargs)
         output_type = self._command_runner.user_settings.preferences.output_type
         if output_type == "OBBject":
@@ -37,7 +57,7 @@ class Container:
         return all(getattr(credentials, r, None) for r in required)
 
     def _get_provider(
-        self, choice: Optional[str], command: str, default_priority: Tuple[str, ...]
+        self, choice: Optional[str], command: str, default_priority: tuple[str, ...]
     ) -> str:
         """Get the provider to use in execution.
 
@@ -69,6 +89,8 @@ class Container:
                 commands.get(command, {}).get("provider", []) or default_priority
             )
             tries = []
+            if len(providers) == 1:
+                return providers[0]
             for p in providers:
                 result = self._check_credentials(p)
                 if result:

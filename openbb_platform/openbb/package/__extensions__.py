@@ -8,6 +8,7 @@ class Extensions(Container):
     # fmt: off
     """
 Routers:
+    /commodity
     /crypto
     /currency
     /derivatives
@@ -20,37 +21,44 @@ Routers:
     /regulators
 
 Extensions:
-    - commodity@1.2.2
-    - crypto@1.3.2
-    - currency@1.3.2
-    - derivatives@1.3.2
-    - economy@1.3.2
-    - equity@1.3.2
-    - etf@1.3.2
-    - fixedincome@1.3.2
-    - index@1.3.2
-    - news@1.3.2
-    - regulators@1.3.2
+    - commodity@1.2.3
+    - crypto@1.3.3
+    - currency@1.3.3
+    - derivatives@1.3.3
+    - economy@1.3.3
+    - equity@1.3.3
+    - etf@1.3.3
+    - fixedincome@1.3.3
+    - index@1.3.3
+    - news@1.3.3
+    - regulators@1.3.3
 
-    - benzinga@1.3.2
-    - bls@1.0.0
-    - cftc@1.0.0
-    - econdb@1.2.2
-    - federal_reserve@1.3.2
-    - fmp@1.3.2
-    - fred@1.3.2
-    - imf@1.0.0b0
-    - intrinio@1.3.2
-    - oecd@1.3.2
-    - polygon@1.3.2
-    - sec@1.3.2
-    - tiingo@1.3.2
-    - tradingeconomics@1.3.2
-    - yfinance@1.3.3    """
+    - benzinga@1.3.3
+    - bls@1.0.1
+    - cftc@1.0.1
+    - econdb@1.2.3
+    - federal_reserve@1.3.3
+    - fmp@1.3.3
+    - fred@1.3.3
+    - imf@1.0.0
+    - intrinio@1.3.3
+    - oecd@1.3.3
+    - polygon@1.3.3
+    - sec@1.3.3
+    - tiingo@1.3.3
+    - tradingeconomics@1.3.3
+    - yfinance@1.3.4    """
     # fmt: on
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
+
+    @property
+    def commodity(self):
+        # pylint: disable=import-outside-toplevel
+        from . import commodity
+
+        return commodity.ROUTER_commodity(command_runner=self._command_runner)
 
     @property
     def crypto(self):
