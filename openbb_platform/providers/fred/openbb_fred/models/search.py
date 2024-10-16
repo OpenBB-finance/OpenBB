@@ -249,10 +249,9 @@ class FredSearchFetcher(
         if isinstance(response, dict) and "count" in response:
             results = response.get("seriess", [])
             return results
-        else:
-            raise OpenBBError(
-                f"Unexpected response format. Expected a dictionary, got {type(response)}"
-            )
+        raise OpenBBError(
+            f"Unexpected response format. Expected a dictionary, got {type(response)}"
+        )
 
     @staticmethod
     def transform_data(
