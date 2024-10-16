@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Literal, Optional
 
 from dateutil import parser
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -53,11 +53,11 @@ class FredSearchQueryParams(SearchQueryParams):
         default="full_text",
         description="The type of search to perform. Automatically set to 'release' when a 'release_id' is provided.",
     )
-    release_id: Optional[Union[str, int]] = Field(
+    release_id: Optional[NonNegativeInt] = Field(
         default=None,
         description="A specific release ID to target.",
     )
-    limit: Optional[int] = Field(
+    limit: Optional[NonNegativeInt] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", "") + " (1-1000)",
     )
@@ -211,6 +211,8 @@ class FredSearchFetcher(
 
             if results:
                 return results
+            else:
+                raise EmptyDataError("No results found for the provided series_id(s).")
 
         if query.search_type == "release" and query.release_id is None:
             url = f"https://api.stlouisfed.org/fred/releases?api_key={api_key}&file_type=json"
@@ -229,10 +231,12 @@ class FredSearchFetcher(
             else "https://api.stlouisfed.org/fred/series/search?"
         )
 
-        exclude = ["search_text"] if query.release_id is not None else []
+        exclude = (
+            ["search_text", "limit"] if query.release_id is not None else ["limit"]
+        )
 
         if query.release_id is not None and query.order_by == "search_rank":
-            query.order_by = None
+            query.order_by = ""
 
         querystring = get_querystring(query.model_dump(), exclude).replace(" ", "%20")
         url = url + querystring + f"&file_type=json&api_key={api_key}"
@@ -240,11 +244,12 @@ class FredSearchFetcher(
 
         if isinstance(response, dict) and "error_code" in response:
             raise OpenBBError(
-                f"FRED API Error -> Status Code: {response.get('error_code')}"
-                f" -> {response.get('error_message')}"
+                f"FRED API Error -> Status Code: {response['error_code']}"
+                f" -> {response.get('error_message', '')}"
             )
         elif isinstance(response, dict) and "count" in response:
-            return response.get("seriess")
+            results = response.get("seriess", [])
+            return results
         else:
             raise OpenBBError(
                 f"Unexpected response format. Expected a dictionary, got {type(response)}"
@@ -267,7 +272,7 @@ class FredSearchFetcher(
         if query.search_type == "release" and query.release_id is None:
             df = df.rename(columns={"id": "release_id"})
 
-        terms = [term for term in query.query.split(";")] if query.query else []
+        terms = [term.strip() for term in query.query.split(";")] if query.query else []
         tags = (
             [tag.strip() for tag in query.tag_names.split(";")]
             if query.tag_names and query.search_type != "series_id"
@@ -304,7 +309,9 @@ class FredSearchFetcher(
 
         if "release_id" in df.columns:
             df.release_id = df.release_id.astype(str)
-            print(df.release_id.dtype)
+
+        if query.limit is not None and len(df) > query.limit:
+            df = df.iloc[: query.limit]
 
         records = df.to_dict(orient="records")
 
