@@ -51,6 +51,7 @@ def test_imf_economic_indicators_fetcher(credentials=test_credentials):
 
 
 # The data for this request are local files, so we can't record them.
+@pytest.mark.record
 def test_imf_available_indicators_fetcher(credentials=test_credentials):
     """Test the IMF Available Indicators fetcher."""
     params = {}
