@@ -236,7 +236,7 @@ class FredSearchFetcher(
         )
 
         if query.release_id is not None and query.order_by == "search_rank":
-            query.order_by = ""
+            query.order_by = None  # type: ignore
 
         querystring = get_querystring(query.model_dump(), exclude).replace(" ", "%20")
         url = url + querystring + f"&file_type=json&api_key={api_key}"
