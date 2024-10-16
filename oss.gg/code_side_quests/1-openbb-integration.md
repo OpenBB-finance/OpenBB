@@ -27,3 +27,6 @@ Your turn 👇
 » Link to Repo: https://github.com/...
 
 ---
+» 16-October-2024 by Shrey
+» Link to Video : https://youtu.be/hn5KLi12g_w
+» Link to Repo: https://github.com/shreykx/opendash-streamlit
