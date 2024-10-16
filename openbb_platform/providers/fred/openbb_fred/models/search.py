@@ -211,8 +211,7 @@ class FredSearchFetcher(
 
             if results:
                 return results
-            else:
-                raise EmptyDataError("No results found for the provided series_id(s).")
+            raise EmptyDataError("No results found for the provided series_id(s).")
 
         if query.search_type == "release" and query.release_id is None:
             url = f"https://api.stlouisfed.org/fred/releases?api_key={api_key}&file_type=json"
@@ -220,10 +219,9 @@ class FredSearchFetcher(
             results = response.get("releases")  # type: ignore
             if results:
                 return results
-            else:
-                raise OpenBBError(
-                    "Unexpected result while retrieving the list of releases from the FRED API."
-                )
+            raise OpenBBError(
+                "Unexpected result while retrieving the list of releases from the FRED API."
+            )
 
         url = (
             "https://api.stlouisfed.org/fred/release/series?"
@@ -247,7 +245,8 @@ class FredSearchFetcher(
                 f"FRED API Error -> Status Code: {response['error_code']}"
                 f" -> {response.get('error_message', '')}"
             )
-        elif isinstance(response, dict) and "count" in response:
+
+        if isinstance(response, dict) and "count" in response:
             results = response.get("seriess", [])
             return results
         else:
