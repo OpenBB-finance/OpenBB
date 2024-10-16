@@ -21,3 +21,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
 econometrics = "openbb_econometrics.econometrics_router:router"
+
+[tool.poetry.plugins."openbb_charting_extension"]
+econometrics = "openbb_econometrics.econometrics_views:EconometricsViews"

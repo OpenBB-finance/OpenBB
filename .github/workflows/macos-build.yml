@@ -1,0 +1,218 @@
+name: MacOS Build
+
+env:
+  OPENBB_LOG_COLLECT: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
+  OPENBB_FILE_OVERWRITE: true
+  PIP_DEFAULT_TIMEOUT: 100
+  PYTHONNOUSERSITE: 1
+
+on: workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  M1-MacOs-Build:
+    name: M1 MacOS Build
+    runs-on: [self-hosted, macos, ARM64]
+    steps:
+      # Checkout repository main branch. this allows for the commit hashes to line up
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Git Log
+        run: git log
+      # The following commands to clear previous PATHS and restore to defaults since we have to maintain the instance ourselves
+      - name: Clean Previous Path
+        run: |
+          export PATH=""
+          export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+          echo $PATH
+      # Set up caching for conda env so that the workflow runs quickly after the first time
+      - name: Setup Conda Caching
+        uses: actions/cache@v3
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-macos-3-10-${{ hashFiles('build/conda/environments/constructor.yml') }}
+      # Set up miniconda using the environment yaml file within the repo
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3.0.4
+        with:
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge,defaults
+          show-channel-urls: true
+          channel-priority: flexible
+          environment-file: build/conda/environments/constructor.yml
+          activate-environment: constructor
+          auto-activate-base: false
+
+      - name: Creating Application Keychain
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run:
+          | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
+          echo "Ensuring Keychain with same name does not exist"
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+          echo "Decoding certificate"
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+          echo "Creating Keychain"
+          security create-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Setting Default Keychain"
+          security default-keychain -s build.keychain
+          echo "Unlocking Keychain"
+          security unlock-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Importing Keychain"
+          security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          echo "Setting Partition List"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
+
+      - name: Create Signed Package
+        env:
+          MACOS_INSTALLER_KEYCHAIN_PWD: ${{ secrets.MACOS_INSTALLER_KEYCHAIN_PWD }}
+          MACOS_INSTALLER_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_INSTALLER_IDENTITY_NAME }}
+          MACOS_APPLICATION_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: |
+          security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
+          echo "signing_identity_name: $MACOS_INSTALLER_SIGNING_IDENTITY_NAME" >> build/conda/installer/construct.yaml
+          echo "notarization_identity_name: $MACOS_APPLICATION_SIGNING_IDENTITY" >> build/conda/installer/construct.yaml
+          cd build/conda && constructor installer/. && cd ../../
+          mv build/conda/OpenBB-Platform-MacOSX-arm64.pkg OpenBB-Platform-MacOSX-arm64.pkg
+        shell: bash -l {0}
+
+      - name: Deleting Previous Keychain
+        run: |
+          echo "Deleting Previous Keychain to Clean Instance"
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+
+      - name: Clean up Build Artifacts
+        run: |
+          rm -rf build/conda/tmp
+
+      - name: Notarize DMG
+        env:
+          NOTARIZE_APPLE_ID: ${{ secrets.NOTARIZE_APPLE_ID }}
+          NOTARIZE_APPLE_PWD: ${{ secrets.NOTARIZE_APPLE_PWD }}
+          NOTARIZE_APPLE_TEAM_ID: ${{ secrets.NOTARIZE_APPLE_TEAM_ID }}
+        run: |
+          xcrun notarytool submit OpenBB-Platform-MacOSX-arm64.pkg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
+
+      - name: Staple
+        run: |
+          xcrun stapler staple OpenBB-Platform-MacOSX-arm64.pkg
+
+      - name: Save Build Artifact PKG
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenBBM1.pkg
+          path: OpenBB-Platform-MacOSX-arm64.pkg
+
+      - name: Clean up Build Artifacts
+        run: |
+          rm OpenBB-Platform-MacOSX-arm64.pkg
+
+  # Job to build the MacOS Intel version of the Terminal===================================
+  Intel-MacOs-Build:
+    name: Intel MacOS Build
+    runs-on: [self-hosted, macos, x64]
+    steps:
+      # Checkout repository main branch. this allows for the commit hashes to line up
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Git Log
+        run: git log
+      # The following commands to clear previous PATHS and restore to defaults since we have to maintain the instance ourselves
+      - name: Clean Previous Path
+        run: |
+          export PATH=""
+          export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+          echo $PATH
+      # Set up caching for conda env so that the workflow runs quickly after the first time
+      - name: Setup Conda Caching
+        uses: actions/cache@v3
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-macos-3-10-${{ hashFiles('build/conda/environments/constructor.yml') }}
+      # Set up miniconda using the environment yaml file within the repo
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3.0.4
+        with:
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge,defaults
+          show-channel-urls: true
+          channel-priority: flexible
+          environment-file: build/conda/environments/constructor.yml
+          activate-environment: constructor
+          auto-activate-base: false
+
+      - name: Creating Application Keychain
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run:
+          | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
+          echo "Ensuring Keychain with same name does not exist"
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+          echo "Decoding certificate"
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+          echo "Creating Keychain"
+          security create-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Setting Default Keychain"
+          security default-keychain -s build.keychain
+          echo "Unlocking Keychain"
+          security unlock-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Importing Keychain"
+          security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          echo "Setting Partition List"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
+
+      - name: Create Signed Package
+        env:
+          MACOS_INSTALLER_KEYCHAIN_PWD: ${{ secrets.MACOS_INSTALLER_KEYCHAIN_PWD }}
+          MACOS_INSTALLER_SIGNING_IDENTITY_NAME: ${{ secrets.MACOS_CODESIGN_INSTALLER_IDENTITY_NAME }}
+          MACOS_APPLICATION_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: |
+          security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
+          echo "signing_identity_name: $MACOS_INSTALLER_SIGNING_IDENTITY_NAME" >> build/conda/installer/construct.yaml
+          echo "notarization_identity_name: $MACOS_APPLICATION_SIGNING_IDENTITY" >> build/conda/installer/construct.yaml
+          cd build/conda && constructor installer/. && cd ../../
+          mv build/conda/OpenBB-Platform-MacOSX-x86_64.pkg OpenBB-Platform-MacOSX-x86_64.pkg
+        shell: bash -l {0}
+
+      - name: Deleting Previous Keychain
+        run: |
+          echo "Deleting Previous Keychain to Clean Instance"
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+
+      - name: Clean up Build Artifacts
+        run: |
+          rm -rf build/conda/tmp
+
+      - name: Notarize DMG
+        env:
+          NOTARIZE_APPLE_ID: ${{ secrets.NOTARIZE_APPLE_ID }}
+          NOTARIZE_APPLE_PWD: ${{ secrets.NOTARIZE_APPLE_PWD }}
+          NOTARIZE_APPLE_TEAM_ID: ${{ secrets.NOTARIZE_APPLE_TEAM_ID }}
+        run: |
+          xcrun notarytool submit OpenBB-Platform-MacOSX-x86_64.pkg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
+
+      - name: Staple
+        run: |
+          xcrun stapler staple OpenBB-Platform-MacOSX-x86_64.pkg
+
+      - name: Save Build Artifact PKG
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenBBIntel.pkg
+          path: OpenBB-Platform-MacOSX-x86_64.pkg
+
+      - name: Clean up Build Artifacts
+        run: |
+          rm OpenBB-Platform-MacOSX-x86_64.pkg

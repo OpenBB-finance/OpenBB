@@ -728,3 +728,34 @@ def test_charting_economy_survey_bls_series(params, obb):
     assert len(result.results) > 0
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "method": "pearson",
+                "chart": True,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_econometrics_correlation_matrix(params, obb):
+    """Test chart econometrics correlation matrix."""
+
+    symbols = "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK".split(",")
+    params["data"] = (
+        obb.equity.price.historical(symbol=symbols, provider="yfinance")
+        .to_df()
+        .pivot(columns="symbol", values="close")
+        .filter(items=symbols, axis=1)
+    )
+    result = obb.econometrics.correlation_matrix(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)

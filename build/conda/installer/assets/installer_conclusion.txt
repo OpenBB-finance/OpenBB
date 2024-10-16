@@ -1,0 +1,12 @@
+Thank you for installing OpenBB Platform!
+
+To get started, open the installed OpenBB folder, in the home folder of your user, and review the README.md file. Or, open one of the launchers using the provided shortcuts.
+
+The OpenBB Platform Documentation is found here:
+https://docs.openbb.co
+
+Bugs/Issues/Requests can be posted here:
+https://github.com/OpenBB-finance/OpenBB/issues
+
+Security vulnerabilities can be reported here:
+https://github.com/OpenBB-finance/OpenBB/security/advisories
