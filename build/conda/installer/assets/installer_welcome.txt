@@ -1,0 +1,8 @@
+Welcome to the OpenBB Platform Installer.
+
+
+This application will install the latest version of the OpenBB Platform on your computer in a self-contained, Python 3.12, Conda environment. It contains everything required to get started immediately, both as a user and a developer.
+
+Several launch scripts are included; OpenBB CLI, OpenBB API, Jupyter Notebook, IPython, Update, and shortcuts to key folders.
+
+Find them at the base of the installation folder, along with the README.md file for getting started.
