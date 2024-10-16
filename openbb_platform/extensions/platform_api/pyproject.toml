@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "openbb-platform-api"
+version = "1.0.2"
+description = "OpenBB Platform API: Launch script and widgets builder for the OpenBB Platform API and Terminal Pro Connector."
+authors = ["OpenBB <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+homepage = "https://openbb.co"
+repository = "https://github.com/openbb-finance/openbb"
+documentation = "https://docs.openbb.co"
+packages = [{ include = "openbb_platform_api" }]
+
+[tool.poetry.scripts]
+openbb-api = "openbb_platform_api.main:main"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+poetry = "^1.8"
+setuptools = "*"
+openbb-core = "*"
+deepdiff = "*"
+ruff = "*"
+black = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

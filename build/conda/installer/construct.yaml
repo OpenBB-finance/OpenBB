@@ -1,0 +1,96 @@
+name: "OpenBB"
+version: "Platform"
+company: OpenBB, Inc.
+license_file: ./assets/installer_license.txt
+
+installer_type: all
+
+register_python: false # [win]
+register_python_default: false # [win]
+register_envs: false
+initialize_by_default: false
+initialize_conda: false
+write_condarc: true
+
+default_location_pkg: OpenBB  # [osx]
+default_prefix_domain_user: "%USERPROFILE%\\OpenBB\\conda" # [win]
+default_prefix: "${HOME}/OpenBB"  # [linux]
+default_prefix: "%USERPROFILE%\\OpenBB\\conda" # [win]
+pkg_name: conda
+
+specs:
+  - conda
+  - bash  # [unix]
+  - python=3.12
+
+extra_envs:
+  obb:
+    environment_file: ./assets/openbb_platform_installer/obb-env.yml
+
+channels:
+  - conda-forge
+
+condarc:
+  {channels: [conda-forge],
+  default_channels: [conda-forge],
+  allow_softlinks: false,
+  auto_activate_base: false,
+  always_copy: true,
+  register_envs: false,
+  pip_interop_enabled: true}
+
+pkg_domains:
+  enable_anywhere: false
+  enable_currentUserHome: true
+
+post_install: post_install.sh  # [unix]
+post_install: post_install.bat  # [win]
+
+extra_files:
+  # Bundle launcher assets
+  - ./README.md: ../README.md
+  - ./assets/openbb_platform_installer/obb-env.yml: ../extensions/openbb_platform_installer/obb-env.yml
+  - ./assets/openbb_platform_installer/pyproject.toml: ../extensions/openbb_platform_installer/pyproject.toml
+  - ./assets/openbb_platform_installer/README.md: ../extensions/openbb_platform_installer/README.md
+  - ./assets/openbb_platform_installer/openbb_platform_installer/__init__.py: ../extensions/openbb_platform_installer/openbb_platform_installer/__init__.py
+  - ./assets/openbb_platform_installer/openbb_platform_installer/update.py: ../extensions/openbb_platform_installer/openbb_platform_installer/update.py
+  - ./assets/openbb_icon.ico: assets/openbb_icon.ico  # [win]
+  - ./assets/openbb.icns: ../openbb_icon.icns  # [osx]
+  - ./assets/create_shortcut.vbs: assets/create_shortcut.vbs  # [win]
+  - ./assets/installer_license.txt: assets/installer_license.txt # [win]
+  - ./assets/installer_vertical2.bmp: assets/installer_vertical2.bmp # [win]
+  - ./assets/installer_horizontal.bmp: assets/installer_horizontal.bmp # [win]
+  - ./assets/examples/README.md: ../extensions/examples/README.md
+  - ./assets/examples/install_examples.py: ../extensions/examples/install_examples.py
+  - ./assets/examples/empty_provider/pyproject.toml: ../extensions/examples/empty_provider/pyproject.toml
+  - ./assets/examples/empty_provider/README.md: ../extensions/examples/empty_provider/README.md
+  - ./assets/examples/empty_provider/empty_provider/__init__.py: ../extensions/examples/empty_provider/empty_provider/__init__.py
+  - ./assets/examples/empty_provider/empty_provider/models/__init__.py: ../extensions/examples/empty_provider/empty_provider/models/__init__.py
+  - ./assets/examples/empty_provider/empty_provider/models/empty_model.py: ../extensions/examples/empty_provider/empty_provider/models/empty_model.py
+  - ./assets/examples/empty_provider/empty_provider/utils/__init__.py: ../extensions/examples/empty_provider/empty_provider/utils/__init__.py
+  - ./assets/examples/empty_router/pyproject.toml: ../extensions/examples/empty_router/pyproject.toml
+  - ./assets/examples/empty_router/README.md: ../extensions/examples/empty_router/README.md
+  - ./assets/examples/empty_router/empty_router/__init__.py: ../extensions/examples/empty_router/empty_router/__init__.py
+  - ./assets/examples/empty_router/empty_router/empty_router.py: ../extensions/examples/empty_router/empty_router/empty_router.py
+  - ./assets/examples/empty_router/empty_router/empty_views.py: ../extensions/examples/empty_router/empty_router/empty_views.py
+  - ./assets/examples/empty_obbject/pyproject.toml: ../extensions/examples/empty_obbject/pyproject.toml
+  - ./assets/examples/empty_obbject/README.md: ../extensions/examples/empty_obbject/README.md
+  - ./assets/examples/empty_obbject/empty_obbject/__init__.py: ../extensions/examples/empty_obbject/empty_obbject/__init__.py
+  - ./assets/examples/python_basics.ipynb: ../notebooks/python_basics.ipynb
+  - ../../../examples/platform_standardization.ipynb: ../notebooks/how_platform_works.ipynb
+
+icon_image: ../openbb_icon.icns  # [osx]
+icon_image: ./assets/openbb_icon.ico  # [win]
+welcome_image: ./assets/openbb_osx.png  # [unix]
+welcome_image: ./assets/Installer_vertical2.bmp  # [win]
+header_image: ./assets/Installer_horizontal2.png  # [win]
+welcome_image_text: "OpenBB Platform"
+readme_file: ./assets/installer_readme.txt  # [unix]
+conclusion_file: ./assets/installer_conclusion.txt  # [unix]
+welcome_file: ./assets/installer_welcome.txt  # [unix]
+welcome_file: ./assets/custom_welcome.nsi  # [win]
+conclusion_file: ./assets/custom_conclusion.nsi  # [win]
+
+# Add extra files to the installer - this is another way - was playing with this
+temp_extra_files:
+  - ./assets/Installer_vertical2.bmp: Installer_vertical2.bmp  # [win]

@@ -25,7 +25,9 @@ router = Router(prefix="", description="Econometrics analysis tools.")
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
+def correlation_matrix(
+    data: List[Data], method: Literal["pearson", "kendall", "spearman"] = "pearson"
+) -> OBBject[List[Data]]:
     """Get the correlation matrix of an input dataset.
 
     The correlation matrix provides a view of how different variables in your dataset relate to one another.
@@ -37,6 +39,11 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     ----------
     data : List[Data]
         Input dataset.
+    method : Literal["pearson", "kendall", "spearman"]
+        Method to use for correlation calculation. Default is "pearson".
+            pearson : standard correlation coefficient
+            kendall : Kendall Tau correlation coefficient
+            spearman : Spearman rank correlation
 
     Returns
     -------
@@ -49,9 +56,14 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
 
     df = basemodel_to_df(data)
     # remove non float columns from the dataframe to perform the correlation
-    df = df.select_dtypes(include=["float64"])
 
-    corr = df.corr()
+    if "symbol" in df.columns and len(df.symbol.unique()) > 1 and "close" in df.columns:
+        df = df.pivot(
+            columns="symbol",
+            values="close",
+        )
+
+    corr = df.corr(method=method, numeric_only=True)
 
     # replace nan values with None to allow for json serialization
     corr = corr.replace(np.NaN, None)

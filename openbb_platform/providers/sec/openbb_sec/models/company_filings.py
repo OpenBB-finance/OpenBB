@@ -7,6 +7,7 @@ from datetime import (
     datetime,
 )
 from typing import Any, Dict, List, Optional, Union
+from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -16,7 +17,7 @@ from openbb_core.provider.standard_models.company_filings import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_sec.utils.definitions import FORM_TYPES, HEADERS
+from openbb_sec.utils.definitions import FORM_LIST, FORM_TYPES, HEADERS
 from pydantic import Field, field_validator
 
 
@@ -26,6 +27,13 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     Source: https://sec.gov/
     """
 
+    __json_schema_extra__ = {
+        "form_type": {
+            "multiple_items_allowed": True,
+            "choices": FORM_LIST,
+        }
+    }
+
     symbol: Optional[str] = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
         default=None,
@@ -34,7 +42,15 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         description="Lookup filings by Central Index Key (CIK) instead of by symbol.",
         default=None,
     )
-    form_type: Optional[FORM_TYPES] = Field(
+    start_date: Optional[dateType] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("start_date", ""),
+    )
+    end_date: Optional[dateType] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("end_date", ""),
+    )
+    form_type: Optional[Union[FORM_TYPES, str]] = Field(
         description="Type of the SEC filing form.",
         default=None,
     )
@@ -42,6 +58,34 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         description="Whether or not to use cache.  If True, cache will store for one day.",
         default=True,
     )
+
+    @field_validator("form_type", mode="before", check_fields=False)
+    @classmethod
+    def validate_form_type(cls, v):
+        """Validate form_type."""
+        if not v:
+            return None
+        if isinstance(v, str):
+            forms = v.split(",")
+        elif isinstance(v, list):
+            forms = v
+        else:
+            raise OpenBBError("Unexpected form_type value.")
+        new_forms: list = []
+        messages: list = []
+        for form in forms:
+            if form.upper().replace("_", " ") in FORM_LIST:
+                new_forms.append(form.upper().replace("_", " "))
+            else:
+                messages.append(f"Invalid form type: {form}")
+
+        if not new_forms:
+            raise OpenBBError(f"No valid forms provided -> {', '.join(messages)}")
+
+        if new_forms and messages:
+            warn("\n ".join(messages))
+
+        return ",".join(new_forms) if len(new_forms) > 1 else new_forms[0]
 
 
 class SecCompanyFilingsData(CompanyFilingsData):
@@ -239,7 +283,7 @@ class SecCompanyFilingsFetcher(
     ) -> List[SecCompanyFilingsData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
-        from pandas import DataFrame
+        from pandas import DataFrame, to_datetime
 
         if not data:
             raise EmptyDataError(
@@ -267,7 +311,13 @@ class SecCompanyFilingsFetcher(
             .replace("N/A", None)
             .astype(str)
         )
+        filings["reportDate"] = to_datetime(filings["reportDate"]).dt.date
+        filings["filingDate"] = to_datetime(filings["filingDate"]).dt.date
         filings = filings.sort_values(by=["reportDate", "filingDate"], ascending=False)
+        if query.start_date:
+            filings = filings[filings["reportDate"] >= query.start_date]
+        if query.end_date:
+            filings = filings[filings["reportDate"] <= query.end_date]
         base_url = f"https://www.sec.gov/Archives/edgar/data/{query.cik}/"
         filings["primaryDocumentUrl"] = (
             base_url
@@ -282,7 +332,11 @@ class SecCompanyFilingsFetcher(
             base_url + filings["accessionNumber"] + "-index.htm"
         )
         if query.form_type:
-            filings = filings[filings["form"] == query.form_type.replace("_", " ")]
+            form_types = query.form_type.replace("_", " ").replace(",", "|")
+
+            filings = filings[
+                filings.form.str.contains(form_types, case=False, regex=True, na=False)
+            ]
 
         if query.limit:
             filings = filings.head(query.limit) if query.limit != 0 else filings
