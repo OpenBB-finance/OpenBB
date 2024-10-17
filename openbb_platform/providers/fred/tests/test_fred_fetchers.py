@@ -314,7 +314,12 @@ def test_fred_selected_treasury_bill_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fred_search_fetcher(credentials=test_credentials):
     """Test FredSearchFetcher."""
-    params = {"query": "Consumer Price Index"}
+    params = {
+        "query": "leading index",
+        "limit": 20,
+        "tag_names": "gdp",
+        "exclude_tag_names": "oecd",
+    }
 
     fetcher = FredSearchFetcher()
     result = fetcher.test(params, credentials)
