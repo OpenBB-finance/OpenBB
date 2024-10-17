@@ -50,6 +50,8 @@ from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
 from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
 from openbb_fmp.models.historical_market_cap import FmpHistoricalMarketCapFetcher
 from openbb_fmp.models.historical_splits import FMPHistoricalSplitsFetcher
+from openbb_fmp.models.house_disclosure import FMPHouseDisclosureFetcher
+from openbb_fmp.models.house_disclosure_rss_feed import FMPHouseDisclosureRSSFeedFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
 from openbb_fmp.models.index_constituents import (
@@ -68,6 +70,8 @@ from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetc
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
 from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
+from openbb_fmp.models.senate_trading import FMPSenateTradingFetcher
+from openbb_fmp.models.senate_trading_rss_feed import FMPSenateTradingRSSFeedFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
@@ -775,5 +779,49 @@ def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
     }
 
     fetcher = FmpHistoricalMarketCapFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+@pytest.mark.record_http
+def test_fmp_senate_trading_fetcher(credentials=test_credentials):
+    """Test FMP senate trading fetcher."""
+    params = {
+        "symbol": "AAPL,MSFT",
+    }
+
+    fetcher = FMPSenateTradingFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+@pytest.mark.record_http
+def test_fmp_senate_trading_rss_feed_fetcher(credentials=test_credentials):
+    """Test FMP senate trading rss feed fetcher."""
+    params = {
+        "page": 0,
+    }
+
+    fetcher = FMPSenateTradingRSSFeedFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+@pytest.mark.record_http
+def test_fmp_house_disclosure_fetcher(credentials=test_credentials):
+    """Test FMP House Disclosure fetcher."""
+    params = {
+        "symbol": "AAPL,MSFT",
+    }
+
+    fetcher = FMPHouseDisclosureFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+@pytest.mark.record_http
+def test_fmp_house_disclosure_fetcher(credentials=test_credentials):
+    """Test FMP House Disclosure rss feed fetcher."""
+    params = {
+        "page": 0,
+    }
+
+    fetcher = FMPHouseDisclosureRSSFeedFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
