@@ -24,4 +24,6 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to the post: https://x.com/...
 
+» 15-October-2024 by Suvam Das
+» Link to the post:https://www.linkedin.com/posts/suvamd_openbb-decisions-optimization-activity-7251919213701824512-WLSg?utm_source=share&utm_medium=member_desktop
 ---
