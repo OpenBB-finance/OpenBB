@@ -42,8 +42,8 @@ class TiingoCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
                 "2h",
                 "4h",
                 "1d",
-                "5d",
-                "21d",
+                "7d",
+                "30d",
             ]
         },
     }
@@ -59,8 +59,8 @@ class TiingoCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
             "2h",
             "4h",
             "1d",
-            "5d",
-            "21d",
+            "7d",
+            "30d",
         ],
         str,
     ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
