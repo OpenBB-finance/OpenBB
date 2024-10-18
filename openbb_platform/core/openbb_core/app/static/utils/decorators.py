@@ -100,6 +100,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                 raise OpenBBError(
                     f"\n[Unexpected Error] -> {e.__class__.__name__} -> {str(e.args[0] or e.args)}"
                 ).with_traceback(tb) from None
-            return
+
+        return None
 
     return wrapper
