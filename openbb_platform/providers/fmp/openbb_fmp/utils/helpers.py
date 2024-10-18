@@ -16,16 +16,15 @@ async def response_callback(response, _):
         if error_message is not None:
             conditions = (
                 "upgrade" in error_message.lower()
-                or "Exclusive Endpoint" in error_message.lower()
+                or "exclusive endpoint" in error_message.lower()
                 or "subscription" in error_message.lower()
                 or "unauthorized" in error_message.lower()
             )
             if conditions:
                 raise UnauthorizedError(f"{error_message}")
-            else:
-                raise OpenBBError(
-                    f"FMP Error Message -> Status code: {response.status} -> {error_message}"
-                )
+            raise OpenBBError(
+                f"FMP Error Message -> Status code: {response.status} -> {error_message}"
+            )
 
     return data
 

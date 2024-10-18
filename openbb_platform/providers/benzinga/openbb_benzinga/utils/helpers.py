@@ -16,8 +16,7 @@ async def response_callback(response, _):
     ):
         if "access denied" in results[0].lower():
             raise UnauthorizedError(results[0])
-        else:
-            raise OpenBBError(results[0])
+        raise OpenBBError(results[0])
 
     if isinstance(results, list) and not results:
         raise EmptyDataError("The request was returned empty.")
