@@ -138,7 +138,11 @@ class TiingoCurrencyHistoricalFetcher(
             except UnauthorizedError as e:
                 raise e from e
             except OpenBBError as e:
-                if "Ticker" in e.original:
+                if (
+                    e.original
+                    and isinstance(e.original, str)
+                    and "ticker" in e.original.lower()
+                ):
                     messages.append(e.original)
                 else:
                     messages.append(f"{symbol}: {e.original}")

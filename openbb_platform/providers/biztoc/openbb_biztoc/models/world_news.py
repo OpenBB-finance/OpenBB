@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any, Optional, Union
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -104,7 +104,7 @@ class BiztocWorldNewsFetcher(
         }
         base_url = "https://biztoc.p.rapidapi.com/"
         url = ""
-        response: list = []
+        response: Union[list, dict] = []
         if query.term:
             query.term = query.term.replace(" ", "%20")
             url = base_url + f"search?q={query.term}"

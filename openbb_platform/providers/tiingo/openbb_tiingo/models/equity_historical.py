@@ -112,7 +112,7 @@ class TiingoEquityHistoricalFetcher(
     @staticmethod
     def transform_query(params: dict[str, Any]) -> TiingoEquityHistoricalQueryParams:
         """Transform the query params."""
-        # pylint: disable=imgport-outside-toplevel
+        # pylint: disable=import-outside-toplevel
         from dateutil.relativedelta import relativedelta
 
         transformed_params = params
@@ -156,7 +156,7 @@ class TiingoEquityHistoricalFetcher(
             "1Y": "annually",
         }
         frequency = (
-            frequency_dict.get(query.interval)
+            frequency_dict.get(query.interval, "")
             if query.interval in frequency_dict
             else query.interval
         )
@@ -181,7 +181,11 @@ class TiingoEquityHistoricalFetcher(
             except UnauthorizedError as e:
                 raise e from e
             except OpenBBError as e:
-                if "Ticker" in e.original:
+                if (
+                    e.original
+                    and isinstance(e.original, str)
+                    and "ticker" in e.original.lower()
+                ):
                     messages.append(e.original)
                 else:
                     messages.append(f"{symbol}: {e.original}")
