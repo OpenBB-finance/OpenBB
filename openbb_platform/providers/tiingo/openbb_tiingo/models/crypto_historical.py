@@ -129,7 +129,6 @@ class TiingoCryptoHistoricalFetcher(
     ) -> list[dict]:
         """Return the raw data from the Tiingo endpoint."""
         # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
         from openbb_core.provider.utils.helpers import get_querystring
         from openbb_tiingo.utils.helpers import get_data
 
@@ -181,15 +180,15 @@ class TiingoCryptoHistoricalFetcher(
             if not price_data:
                 warn(f"No data found for {symbol}")
                 continue
-            else:
-                for row in price_data:
-                    if len(returned_symbols) > 1:
-                        row["symbol"] = symbol
-                    if query.interval.endswith("d"):
-                        row["date"] = to_datetime(row["date"]).date()
-                    else:
-                        row["date"] = to_datetime(row["date"], utc=True)
 
-                    results.append(TiingoCryptoHistoricalData.model_validate(row))
+            for row in price_data:
+                if len(returned_symbols) > 1:
+                    row["symbol"] = symbol
+                if query.interval.endswith("d"):
+                    row["date"] = to_datetime(row["date"]).date()
+                else:
+                    row["date"] = to_datetime(row["date"], utc=True)
+
+                results.append(TiingoCryptoHistoricalData.model_validate(row))
 
         return sorted(results, key=lambda x: x.date)
