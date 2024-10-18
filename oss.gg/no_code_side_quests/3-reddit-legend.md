@@ -24,4 +24,8 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Reddit Post: https://reddit.com/r/...
 
+» 13-October-2024 by Bhavesh Mishra
+» Link to Reddit Post: [Click Here](https://www.reddit.com/r/StockMarketIndia/s/2dU0gEXF87)
+
+
 ---
