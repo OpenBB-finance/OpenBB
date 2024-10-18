@@ -138,7 +138,7 @@ class BiztocWorldNewsFetcher(
                 for topic in response2:
                     stories = topic.get("stories", [])
                     if stories:
-                        response.extend(
+                        response.extend(  # type: ignore
                             {
                                 "text" if k == "body_preview" else k: v
                                 for k, v in story.items()
@@ -146,7 +146,7 @@ class BiztocWorldNewsFetcher(
                             for story in stories
                         )
 
-        return response
+        return response  # type: ignore
 
     @staticmethod
     def transform_data(

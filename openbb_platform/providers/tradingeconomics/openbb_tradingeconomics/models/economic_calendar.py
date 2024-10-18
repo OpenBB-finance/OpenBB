@@ -200,7 +200,7 @@ class TEEconomicCalendarData(EconomicCalendarData):
 
     @field_validator("reference_date", mode="before", check_fields=False)
     @classmethod
-    def validate_date(cls, v: str) -> dateType:
+    def validate_date(cls, v):
         """Validate the date."""
         # pylint: disable=import-outside-toplevel
         from pandas import to_datetime
