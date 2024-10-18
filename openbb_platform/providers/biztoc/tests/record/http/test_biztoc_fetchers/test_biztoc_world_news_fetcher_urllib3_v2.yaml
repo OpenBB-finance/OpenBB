@@ -26,7 +26,7 @@ interactions:
         Herald","web":"https://www.bostonherald.com/business/"},{"id":"bizjournals","title":"Business
         Journals","web":"https://www.bizjournals.com/"},{"id":"cbc","title":"CBC","web":"https://www.cbc.ca/s"},{"id":"cbs","title":"CBS","web":"https://www.cbsnews.com"},{"id":"cnbc","title":"CNBC","web":"https://www.cnbc.com/"},{"id":"cnn","title":"CNN","web":"https://edition.cnn.com/business"},{"id":"chicago","title":"Chicago
         Tribune","web":"https://www.chicagotribune.com/business/"},{"id":"coindesk","title":"Coindesk","web":"https://www.coindesk.com"},{"id":"dw","title":"DW","web":"https://www.dw.com/en/business/s-1431"},{"id":"dailyupside","title":"Daily
-        Upside","web":"https://www.thedailyupside.com/"},{"id":"dealbreaker","title":"Dealbreaker","web":"https://dealbreaker.com/"},{"id":"entrepreneur","title":"Entrepreneur","web":"https://www.entrepreneur.com/"},{"id":"euronews","title":"Euronews","web":"https://www.euronews.com/"},{"id":"fastcompany","title":"FastCompany","web":"https://www.fastcompany.com"},{"id":"finpost","title":"Financial
+        Upside","web":"https://www.thedailyupside.com/"},{"id":"dealbreaker","title":"Dealbreaker","web":"https://dealbreaker.com/"},{"id":"entrepreneur","title":"Entrepreneur","web":"https://www.entrepreneur.com/"},{"id":"stocktwits","title":"EurActiv","web":"https://www.euractiv.com/"},{"id":"euronews","title":"Euronews","web":"https://www.euronews.com/"},{"id":"fastcompany","title":"FastCompany","web":"https://www.fastcompany.com"},{"id":"finpost","title":"Financial
         Post","web":"https://financialpost.com/"},{"id":"ft","title":"Financial Times","web":"https://www.ft.com"},{"id":"forbes","title":"Forbes","web":"https://www.forbes.com"},{"id":"fortune","title":"Fortune","web":"https://fortune.com/"},{"id":"fox","title":"Fox
         Business","web":"https://www.foxbusiness.com"},{"id":"globeandmail","title":"Globe
         And Mail","web":"https://www.theglobeandmail.com"},{"id":"google_business","title":"Google
@@ -63,45 +63,47 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 89a4a7f40c219f15-FRA
+      - 8d46253b4f35c990-IAD
       Cache-Control:
       - no-store, no-cache, must-revalidate, max-age=0
       Connection:
       - keep-alive
       Content-Encoding:
       - gzip
-      Content-Length:
-      - '1800'
       Content-Type:
       - application/json
       Date:
-      - Thu, 27 Jun 2024 10:11:58 GMT
+      - Fri, 18 Oct 2024 05:32:01 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=qqd5%2FZT%2FpjnF59niBWwAAMKoNSHaARhHE%2BCScAOamvVMXueCOGrH6Cyf6yENE0qdAIp4u8QJXurzuHxBuuFVmpVCkBu%2BqOoko4Gt%2BezOVomoB2E5UoYXIZXwGcg%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=6AJ37sdn9g018QqveznvFOUcc06J0MlsSB7CDEFKhN7XOhnexO7oUWGOx9%2BTeTH%2BUfbmxCFfUB9dRstLZUvq6koiunLgudzqseaUyrLMRwcL9G4TTGHbblRtT88%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - RapidAPI-1.2.8
       Strict-Transport-Security:
       - max-age=31556926; includeSubDomains
+      Transfer-Encoding:
+      - chunked
       Vary:
       - Accept-Encoding, Cookie
       X-RapidAPI-Region:
-      - AWS - eu-central-1
+      - AWS - us-east-1
+      X-RapidAPI-Request-Id:
+      - bb52b953b619ebdbae3d20f65f30c5041993d53bfcb4bd646a484856e7ad1bad
       X-RapidAPI-Version:
       - 1.2.8
       X-RateLimit-Requests-Limit:
       - '2000'
       X-RateLimit-Requests-Remaining:
-      - '1995'
+      - '1914'
       X-RateLimit-Requests-Reset:
-      - '1996936'
+      - '1620568'
       X-RateLimit-rapid-free-plans-hard-limit-Limit:
       - '500000'
       X-RateLimit-rapid-free-plans-hard-limit-Remaining:
-      - '499995'
+      - '499961'
       X-RateLimit-rapid-free-plans-hard-limit-Reset:
-      - '1996936'
+      - '1620568'
       alt-svc:
       - h3=":443"; ma=86400
       permissions-policy:
@@ -109,7 +111,7 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       rndr-id:
-      - 78f5e9bd-116f-4106
+      - 96769602-78bc-4d9d
       x-content-type-options:
       - nosniff
       x-render-origin-server:
@@ -124,8 +126,6 @@ interactions:
       - application/json
       Accept-Encoding:
       - gzip
-      Connection:
-      - keep-alive
       X-RapidAPI-Host:
       - biztoc.p.rapidapi.com
       X-RapidAPI-Key:
@@ -134,171 +134,153 @@ interactions:
     uri: https://biztoc.p.rapidapi.com/news/source/bloomberg
   response:
     body:
-      string: '[{"body_preview":"","img":{"s":"https://cdn.biztoc.com/671d384ea549859a_s.webp","sq":"https://cdn.biztoc.com/671d384ea549859a_sq.webp"},"published":"Thu,
-        27 Jun 2024 10:00:32 GMT","title":"The Secret to a Long Life Is in Your Garage","url":"https://www.bloomberg.com/news/newsletters/2024-06-27/biking-is-the-secret-to-longevity?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/7a092becc648f312_s.webp","sq":"https://cdn.biztoc.com/7a092becc648f312_sq.webp"},"published":"Thu,
-        27 Jun 2024 10:00:32 GMT","title":"RTO Mandates Are Killing the Euphoric Work-Life
-        Balance Some Moms Found","url":"https://www.bloomberg.com/news/features/2024-06-27/return-to-office-is-killing-work-life-balance-dream-for-moms?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/ce50045cff5cc694_s.webp","sq":"https://cdn.biztoc.com/ce50045cff5cc694_sq.webp"},"published":"Thu,
-        27 Jun 2024 10:00:29 GMT","title":"Game-Changing HIV Shot Can\u2019t Get to
-        High-Risk Groups Fast Enough","url":"https://www.bloomberg.com/opinion/articles/2024-06-27/gilead-hiv-shot-lenacapavir-can-t-get-to-high-risk-groups-fast-enough?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/05c5bdea66614330_s.webp","sq":"https://cdn.biztoc.com/05c5bdea66614330_sq.webp"},"published":"Thu,
-        27 Jun 2024 10:00:31 GMT","title":"What to Watch in Biden and Trump\u2019s
-        First Presidential Debate of 2024","url":"https://www.bloomberg.com/news/articles/2024-06-27/trump-vs-biden-1st-debate-what-to-expect-polls-how-to-watch?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/e3ca73bdd000e5c0_s.webp","sq":"https://cdn.biztoc.com/e3ca73bdd000e5c0_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:57:49 GMT","title":"Hedge Funds Sell Tech Stocks \u2018Aggressively,\u2019
-        Goldman Says","url":"https://www.bloomberg.com/news/articles/2024-06-27/hedge-funds-are-selling-tech-stocks-aggressively-goldman-says?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/2cdcc4f31a5bc8a7_s.webp","sq":"https://cdn.biztoc.com/2cdcc4f31a5bc8a7_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:30:01 GMT","title":"BOE Warns on \u2018Struggling\u2019 Private
-        Equity-Backed Firms","url":"https://www.bloomberg.com/news/articles/2024-06-27/boe-warns-on-struggling-private-equity-backed-firms?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/4c381d961d53cf72_s.webp","sq":"https://cdn.biztoc.com/4c381d961d53cf72_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:59:15 GMT","title":"Economic Insecurity Roils Politics From
-        Kenya to France","url":"https://www.bloomberg.com/news/newsletters/2024-06-27/economic-insecurity-is-agitating-politics-from-kenya-to-france?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/e3225d824ef43d63_s.webp","sq":"https://cdn.biztoc.com/e3225d824ef43d63_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:21:46 GMT","title":"China\u2019s Offshore Wind Power Prices
-        to Undercut Coal This Year","url":"https://www.bloomberg.com/news/articles/2024-06-27/china-s-offshore-wind-power-prices-to-undercut-coal-this-year?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/f273766c417f6d3c_s.webp","sq":"https://cdn.biztoc.com/f273766c417f6d3c_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:33:49 GMT","title":"Largest Thai Mobile Operator True Debuts
-        Yen Sustainability Loan","url":"https://www.bloomberg.com/news/articles/2024-06-27/largest-thai-mobile-operator-true-debuts-yen-sustainability-loan?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/e088074911846227_s.webp","sq":"https://cdn.biztoc.com/e088074911846227_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:41:28 GMT","title":"India Credit Seen Benefiting From Index-Related
-        Bond Flows","url":"https://www.bloomberg.com/news/articles/2024-06-27/india-credit-seen-benefiting-from-index-related-bond-flows?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/460acda0d69de5b1_s.webp","sq":"https://cdn.biztoc.com/460acda0d69de5b1_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:30:43 GMT","title":"Zambia Inflation Hits 29-Month High on
-        Worst Drought in Decades","url":"https://www.bloomberg.com/news/articles/2024-06-27/zambia-inflation-hits-29-month-high-on-worst-drought-in-decades?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/72e6e5767c04fe2d_s.webp","sq":"https://cdn.biztoc.com/72e6e5767c04fe2d_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:30:00 GMT","title":"RBA\u2019s Hauser Says Current Account
-        Surpluses May Not Persist","url":"https://www.bloomberg.com/news/articles/2024-06-27/rba-s-hauser-says-current-account-surpluses-may-not-persist?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/961c40ef2d2996a6_s.webp","sq":"https://cdn.biztoc.com/961c40ef2d2996a6_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:44:02 GMT","title":"UK Mortgage Costs Could Fall For 1.5 Million
-        This Year, BOE Says","url":"https://www.bloomberg.com/news/articles/2024-06-27/uk-mortgage-costs-could-fall-for-1-5-million-this-year-boe-says?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/916efa0233eddfa8_s.webp","sq":"https://cdn.biztoc.com/916efa0233eddfa8_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:49:43 GMT","title":"Housing Crises Take a Toll on the World\u2019s
-        Most Liveable Cities","url":"https://www.bloomberg.com/news/articles/2024-06-27/housing-crises-take-a-toll-on-the-world-s-most-liveable-cities?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/0c8d68a121623d42_s.webp","sq":"https://cdn.biztoc.com/0c8d68a121623d42_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:27:11 GMT","title":"Boeing Sees Fewer Fuselage Defects, Helping
-        Lift Productivity","url":"https://www.bloomberg.com/news/articles/2024-06-27/boeing-sees-lower-fuselage-defects-helping-lift-productivity?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/bbd12d7a7df1d29f_s.webp","sq":"https://cdn.biztoc.com/bbd12d7a7df1d29f_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:15:26 GMT","title":"Rand Resumes Losses as South Africa Cabinet
-        Delay Fuels Angst","url":"https://www.bloomberg.com/news/articles/2024-06-27/rand-resumes-losses-as-south-africa-cabinet-delay-fuels-angst?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/c2798367d9d8a2ea_s.webp","sq":"https://cdn.biztoc.com/c2798367d9d8a2ea_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:20:00 GMT","title":"Egypt\u2019s $10 Billion Wind Farm Is Poised
-        to Break Ground in 2026","url":"https://www.bloomberg.com/news/articles/2024-06-27/egypt-s-10-billion-wind-farm-is-poised-to-break-ground-in-2026?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/86425a91d3933c5a_s.webp","sq":"https://cdn.biztoc.com/86425a91d3933c5a_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:15:01 GMT","title":"Boeing Said Cleared to Resume Wide-Body
-        Jet Deliveries to China","url":"https://www.bloomberg.com/news/articles/2024-06-27/boeing-said-cleared-to-resume-wide-body-jet-deliveries-to-china?ref=biztoc.com"},{"body_preview":"","img":null,"published":"Thu,
-        27 Jun 2024 08:48:39 GMT","title":"ECB May Only Cut Rates Once More This Year,
-        Kazimir Says","url":"https://www.bloomberg.com/news/articles/2024-06-27/ecb-may-only-cut-rates-once-more-this-year-kazimir-says?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/ae4962855a7a53f4_s.webp","sq":"https://cdn.biztoc.com/ae4962855a7a53f4_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:15:20 GMT","title":"Macron? Le Pen? A Guide to France\u2019s
-        Crucial Election","url":"https://www.bloomberg.com/news/articles/2024-06-27/france-election-2024-macron-le-pen-and-a-political-system-under-strain?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/86d725dd5c6e6ff1_s.webp","sq":"https://cdn.biztoc.com/86d725dd5c6e6ff1_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:00:31 GMT","title":"Democrats Keep Feuding in Philly, Imperiling
-        Biden''s Reelection","url":"https://www.bloomberg.com/news/features/2024-06-27/election-2024-to-beat-trump-biden-needs-philly-democrats-to-get-along?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/78394a8d264dc840_s.webp","sq":"https://cdn.biztoc.com/78394a8d264dc840_sq.webp"},"published":"Thu,
-        27 Jun 2024 09:00:29 GMT","title":"Trump Can\u2019t Handle the Foreign Policy
-        Debate America Needs","url":"https://www.bloomberg.com/opinion/articles/2024-06-27/trump-can-t-handle-the-foreign-policy-debate-america-needs?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/b4b892b60b395257_s.webp","sq":"https://cdn.biztoc.com/b4b892b60b395257_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:56:15 GMT","title":"Crypto Exchange Bybit Grabs Global Spotlight
-        in Void Left by FTX","url":"https://www.bloomberg.com/news/articles/2024-06-27/crypto-exchange-bybit-grabs-global-spotlight-in-void-left-by-ftx?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/9ab810dfd969627b_s.webp","sq":"https://cdn.biztoc.com/9ab810dfd969627b_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:12:24 GMT","title":"Suu Kyi\u2019s Family Mansion Will Be Up
-        for Bidding Again in August","url":"https://www.bloomberg.com/news/articles/2024-06-27/suu-kyi-s-family-mansion-will-be-up-for-bidding-again-in-august?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/a93b0f0f54e85b83_s.webp","sq":"https://cdn.biztoc.com/a93b0f0f54e85b83_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:43:10 GMT","title":"Japan\u2019s Jet Fuel Crunch Hits Narita,
-        One of Its Biggest Airports","url":"https://www.bloomberg.com/news/articles/2024-06-27/japan-s-jet-fuel-crunch-hits-narita-one-of-its-biggest-airports?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/e2f7dbdee28becd4_s.webp","sq":"https://cdn.biztoc.com/e2f7dbdee28becd4_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:05:22 GMT","title":"Thai Energy Billionaire Steps Up Data Center
-        Push to Tap AI Boom","url":"https://www.bloomberg.com/news/articles/2024-06-27/thai-energy-billionaire-steps-up-data-center-push-to-tap-ai-boom?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/71fdba8a4bfc9639_s.webp","sq":"https://cdn.biztoc.com/71fdba8a4bfc9639_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:24:40 GMT","title":"ECB Will Be Agile in Deciding on Interest-Rate
-        Path, Lane Says","url":"https://www.bloomberg.com/news/articles/2024-06-27/ecb-will-be-agile-in-deciding-on-interest-rate-path-lane-says?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/a41d31526e60312e_s.webp","sq":"https://cdn.biztoc.com/a41d31526e60312e_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:25:24 GMT","title":"Activist Fund in Japan Wins Daidoh Board
-        Seats in Rare Victory","url":"https://www.bloomberg.com/news/articles/2024-06-27/activist-fund-in-japan-wins-daidoh-board-seats-in-rare-victory?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/2da6f0fcc289cdb1_s.webp","sq":"https://cdn.biztoc.com/2da6f0fcc289cdb1_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:23:15 GMT","title":"Zimbabwe Holds Key Interest Rate at 20%
-        With Eye on Inflation","url":"https://www.bloomberg.com/news/articles/2024-06-27/-zwg-usd-zimbabwe-leaves-benchmark-interest-rate-unchanged-at-20?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/d3aba268bc340b4b_s.webp","sq":"https://cdn.biztoc.com/d3aba268bc340b4b_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:00:00 GMT","title":"South Korea Asks Banks for Help When Won\u2019s
-        Trading Hours Extend","url":"https://www.bloomberg.com/news/articles/2024-06-27/south-korea-asks-banks-for-help-when-won-s-trading-hours-extend?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/7cdd1a163283880b_s.webp","sq":"https://cdn.biztoc.com/7cdd1a163283880b_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:01:09 GMT","title":"Chinese Builder Sino-Ocean Group Gets Wind-Up
-        Petition in HK","url":"https://www.bloomberg.com/news/articles/2024-06-27/chinese-builder-sino-ocean-group-gets-wind-up-petition-in-hk-lxwz6hu3?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/b9fab14c1ca609f1_s.webp","sq":"https://cdn.biztoc.com/b9fab14c1ca609f1_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:44:58 GMT","title":"Bloomberg French Poll of Polls: Le Pen\u2019s
-        Group Makes More Gains","url":"https://www.bloomberg.com/news/articles/2024-06-27/bloomberg-french-poll-of-polls-le-pen-s-group-makes-more-gains?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/228308de25690dd0_s.webp","sq":"https://cdn.biztoc.com/228308de25690dd0_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:50:58 GMT","title":"China Says Two Pandas Are Heading to US
-        in Show of \u2018Friendship\u2019","url":"https://www.bloomberg.com/news/articles/2024-06-27/china-says-two-pandas-are-heading-to-us-in-show-of-friendship?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/69a6870fe063ddec_s.webp","sq":"https://cdn.biztoc.com/69a6870fe063ddec_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:00:00 GMT","title":"South Africa Achieves First Primary Budget
-        Surplus in 15 Years","url":"https://www.bloomberg.com/news/articles/2024-06-27/south-africa-achieves-first-primary-budget-surplus-in-15-years?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/3be9366671dc10b4_s.webp","sq":"https://cdn.biztoc.com/3be9366671dc10b4_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:01:42 GMT","title":"CVC Agrees to Buy UK Infrastructure Contractor
-        M Group Services","url":"https://www.bloomberg.com/news/articles/2024-06-27/cvc-agrees-to-buy-uk-infrastructure-contractor-m-group-services?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/e2926786e44722b4_s.webp","sq":"https://cdn.biztoc.com/e2926786e44722b4_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:01:30 GMT","title":"Riksbank Signals as Many as Three More
-        Rate Cuts This Year","url":"https://www.bloomberg.com/news/articles/2024-06-27/riksbank-signals-as-many-as-three-more-rate-cuts-this-year?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/34fec51cafcaf87c_s.webp","sq":"https://cdn.biztoc.com/34fec51cafcaf87c_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:36:36 GMT","title":"UBS Creates New Wealth Unit in Khan, Karofsky
-        Strategy Reboot","url":"https://www.bloomberg.com/news/articles/2024-06-27/ubs-unveils-new-wealth-strategy-under-khan-karofsky?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/4ea2d73048f23c34_s.webp","sq":"https://cdn.biztoc.com/4ea2d73048f23c34_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:49:43 GMT","title":"Russia Has Sent Around 10,000 Immigrants
-        to Front in Ukraine","url":"https://www.bloomberg.com/news/articles/2024-06-27/russia-has-sent-around-10-000-immigrants-to-front-in-ukraine?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/79f4306688fef94c_s.webp","sq":"https://cdn.biztoc.com/79f4306688fef94c_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:00:29 GMT","title":"Bonus Clawback: The Bloomberg Close, Asia
-        Edition","url":"https://www.bloomberg.com/news/newsletters/2024-06-27/bonus-clawback-the-bloomberg-close-asia-edition?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/8151aef0dd4fa159_s.webp","sq":"https://cdn.biztoc.com/8151aef0dd4fa159_sq.webp"},"published":"Thu,
-        27 Jun 2024 08:00:31 GMT","title":"The American Entrepreneurs Who First Opened
-        The Chinese Market","url":"https://www.bloomberg.com/news/articles/2024-06-27/the-american-entrepreneurs-who-first-opened-the-chinese-market?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/06997e3c080c6a47_s.webp","sq":"https://cdn.biztoc.com/06997e3c080c6a47_sq.webp"},"published":"Thu,
-        27 Jun 2024 06:52:18 GMT","title":"Foreign Funds Sell Japan\u2019s Stocks,
-        Longest Run Since March 2023","url":"https://www.bloomberg.com/news/articles/2024-06-27/foreign-funds-sell-japan-s-stocks-longest-run-since-march-2023?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/c8d8bd948e0f19a8_s.webp","sq":"https://cdn.biztoc.com/c8d8bd948e0f19a8_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:12:26 GMT","title":"India Plans \u2018Historic Steps\u2019
-        in Budget Under New Government","url":"https://www.bloomberg.com/news/articles/2024-06-27/india-plans-historic-steps-in-budget-under-new-government?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/a023e218ff87db3a_s.webp","sq":"https://cdn.biztoc.com/a023e218ff87db3a_sq.webp"},"published":"Thu,
-        27 Jun 2024 06:47:27 GMT","title":"Quant Mutual\u2019s Clients Pull $168 Million
-        in Days After Probe","url":"https://www.bloomberg.com/news/articles/2024-06-27/quant-mutual-s-clients-pull-168-million-in-days-after-probe?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/6d4cac6984c2b656_s.webp","sq":"https://cdn.biztoc.com/6d4cac6984c2b656_sq.webp"},"published":"Thu,
-        27 Jun 2024 05:38:33 GMT","title":"Japan Inflation Outlook Jumps, Backing
-        BOJ Case for Rate Hike","url":"https://www.bloomberg.com/news/articles/2024-06-27/japan-inflation-outlook-jumps-backing-boj-case-for-rate-hike?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/db178aca5d2e7f0a_s.webp","sq":"https://cdn.biztoc.com/db178aca5d2e7f0a_sq.webp"},"published":"Thu,
-        27 Jun 2024 05:49:13 GMT","title":"Macquarie Foresees Risk of Wider Yuan Trading
-        Band in China","url":"https://www.bloomberg.com/news/articles/2024-06-27/macquarie-foresees-risk-of-wider-yuan-trading-band-in-china?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/e83fb6bce870ccf7_s.webp","sq":"https://cdn.biztoc.com/e83fb6bce870ccf7_sq.webp"},"published":"Thu,
-        27 Jun 2024 04:01:31 GMT","title":"India\u2019s Busy IPO Queue for Second
-        Half Goes Beyond Hyundai Unit","url":"https://www.bloomberg.com/news/articles/2024-06-27/india-s-busy-ipo-queue-for-second-half-goes-beyond-hyundai-unit?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/b9dabf7b272601a8_s.webp","sq":"https://cdn.biztoc.com/b9dabf7b272601a8_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:17:26 GMT","title":"GSK Drops as RSV Shot Suffers Fresh Blow
-        With US Recommendation","url":"https://www.bloomberg.com/news/articles/2024-06-27/gsk-drops-as-rsv-shot-suffers-fresh-blow-with-us-recommendation?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/e0ab66f4e886d30a_s.webp","sq":"https://cdn.biztoc.com/e0ab66f4e886d30a_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:08:51 GMT","title":"North Korea\u2019s Trash Balloons Can Endanger
-        Airplanes, Aviation Official Warns","url":"https://www.bloomberg.com/news/articles/2024-06-27/north-korea-s-trash-balloons-can-endanger-airplanes-aviation-official-warns?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/575d48ea58ba7100_s.webp","sq":"https://cdn.biztoc.com/575d48ea58ba7100_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:05:19 GMT","title":"Toyota to Offload Shares in Parts Maker
-        Aisin in $1 Billion Deal","url":"https://www.bloomberg.com/news/articles/2024-06-27/toyota-to-offload-shares-in-parts-maker-aisin-in-1-billion-deal?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/c8a7619792ea7414_s.webp","sq":"https://cdn.biztoc.com/c8a7619792ea7414_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:13:52 GMT","title":"China Miscalculated With Europe in Backing
-        Russia, US Envoy Says","url":"https://www.bloomberg.com/news/articles/2024-06-27/china-miscalculated-with-europe-in-backing-russia-us-envoy-say?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/32227393ba658fb1_s.webp","sq":"https://cdn.biztoc.com/32227393ba658fb1_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:00:06 GMT","title":"Weak Yen\u2019s Sway Over Japanese Stock
-        Market Is Unravelling","url":"https://www.bloomberg.com/news/articles/2024-06-27/weak-yen-s-sway-over-japanese-stock-market-is-unravelling?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/b32d08a7bf5b7ca2_s.webp","sq":"https://cdn.biztoc.com/b32d08a7bf5b7ca2_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:01:49 GMT","title":"Philippines Keeps Key Rate Steady as Peso
-        Hovers Near Record Low","url":"https://www.bloomberg.com/news/articles/2024-06-27/philippines-keeps-key-rate-steady-as-peso-hovers-near-record-low?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/399ef6b97458c6de_s.webp","sq":"https://cdn.biztoc.com/399ef6b97458c6de_sq.webp"},"published":"Thu,
-        27 Jun 2024 07:11:42 GMT","title":"Campari Owner Rejects Claims After Reports
-        of \u20ac1 Billion Unpaid Taxes","url":"https://www.bloomberg.com/news/articles/2024-06-27/campari-owner-rejects-claims-after-reports-of-1b-unpaid-taxes?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/3d1ef51d324ca86d_s.webp","sq":"https://cdn.biztoc.com/3d1ef51d324ca86d_sq.webp"},"published":"Thu,
-        27 Jun 2024 05:53:50 GMT","title":"Australia\u2019s No. 2 Pension Fund Says
-        RBA Won\u2019t Hike in August","url":"https://www.bloomberg.com/news/articles/2024-06-27/australia-s-no-2-pension-fund-reckons-rba-won-t-cut-in-august?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/939468f0d35ff041_s.webp","sq":"https://cdn.biztoc.com/939468f0d35ff041_sq.webp"},"published":"Thu,
-        27 Jun 2024 06:30:10 GMT","title":"Rahul Gandhi Shares the Stage With Modi
-        After Years in His Shadow","url":"https://www.bloomberg.com/news/articles/2024-06-27/rahul-gandhi-finally-shares-stage-with-india-s-modi-bjp-after-years-in-shadows?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/98e137541f0e753e_s.webp","sq":"https://cdn.biztoc.com/98e137541f0e753e_sq.webp"},"published":"Thu,
-        27 Jun 2024 06:45:25 GMT","title":"Top Rolex Seller Sees Signs of Stability
-        in UK Watch Market","url":"https://www.bloomberg.com/news/articles/2024-06-27/top-rolex-seller-sees-signs-of-stability-in-uk-watch-market?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/f8fce111e1d36341_s.webp","sq":"https://cdn.biztoc.com/f8fce111e1d36341_sq.webp"},"published":"Thu,
-        27 Jun 2024 06:24:47 GMT","title":"Le Maire Says France Pulled in Extra \u20ac3
-        billion in Tax Receipts","url":"https://www.bloomberg.com/news/articles/2024-06-27/le-maire-says-france-pulled-in-extra-eu3-billion-in-tax-receipts?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/15450a902a4d0722_s.webp","sq":"https://cdn.biztoc.com/15450a902a4d0722_sq.webp"},"published":"Thu,
-        27 Jun 2024 03:16:49 GMT","title":"New World Tells Investors It Will Try to
-        Pay Perp Bond Next Year","url":"https://www.bloomberg.com/news/articles/2024-06-27/new-world-tells-investors-it-will-try-to-pay-perp-bond-next-year?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/0dfb5779d1e86302_s.webp","sq":"https://cdn.biztoc.com/0dfb5779d1e86302_sq.webp"},"published":"Thu,
-        27 Jun 2024 06:26:29 GMT","title":"H&M Profit Misses as Summer Collections
-        Fail to Lure Shoppers","url":"https://www.bloomberg.com/news/articles/2024-06-27/h-m-profit-misses-as-summer-collections-fail-to-lure-shoppers?ref=biztoc.com"},{"body_preview":"","img":{"s":"https://cdn.biztoc.com/6b892da2567303db_s.webp","sq":"https://cdn.biztoc.com/6b892da2567303db_sq.webp"},"published":"Thu,
-        27 Jun 2024 05:34:36 GMT","title":"Australian PM\u2019s Assange Welcome Sparks
-        Concern Over US Relations","url":"https://www.bloomberg.com/news/articles/2024-06-27/australian-pm-s-assange-welcome-sparks-concern-over-us-relations?ref=biztoc.com"}]
-
-        '
+      string: !!binary |
+        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
+        E83837/9PwAAAP//AwCUFTALXFsAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 89a4a7f75ec918de-FRA
+      - 8d46253e7fd558ba-IAD
       Cache-Control:
       - no-store, no-cache, must-revalidate, max-age=0
       Connection:
       - keep-alive
       Content-Encoding:
       - gzip
-      Content-Length:
-      - '5904'
       Content-Type:
       - application/json
       Date:
-      - Thu, 27 Jun 2024 10:11:59 GMT
+      - Fri, 18 Oct 2024 05:32:01 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=yNZDg0%2BZ2k%2FVgkUiTSGQCmqLRboOxdmahSxGhMzK2yxlnLsMIPrriLCq5vOBmzsVz5jCzYKR0LYKlBNcIaW05p5i55ZwAAjhWP77VyyyNwQUe393E1bdGzZetho%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=1jncDmrg1XfuP0IcLzSdFqxnDMUXcq%2FYLEq7Y47JCzrfHGKMIYKTdVDqO5wAJ1CDVG8lCorUMgO5Aw5pGQ4cBY8eGoB%2FI0iTPcN%2FHHf9%2Bz3zMUu9I%2FdQYPbfHmI%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - RapidAPI-1.2.8
       Strict-Transport-Security:
       - max-age=31556926; includeSubDomains
+      Transfer-Encoding:
+      - chunked
       Vary:
       - Accept-Encoding, Cookie
       X-RapidAPI-Region:
-      - AWS - eu-central-1
+      - AWS - us-east-1
+      X-RapidAPI-Request-Id:
+      - c9f0a6fb613c5c0a2361b3f48bba6dcc7bc83feaa827675cb22eb492b1669872
       X-RapidAPI-Version:
       - 1.2.8
       X-RateLimit-Requests-Limit:
       - '2000'
       X-RateLimit-Requests-Remaining:
-      - '1994'
+      - '1913'
       X-RateLimit-Requests-Reset:
-      - '1996935'
+      - '1620568'
       X-RateLimit-rapid-free-plans-hard-limit-Limit:
       - '500000'
       X-RateLimit-rapid-free-plans-hard-limit-Remaining:
-      - '499994'
+      - '499960'
       X-RateLimit-rapid-free-plans-hard-limit-Reset:
-      - '1996935'
+      - '1620568'
       alt-svc:
       - h3=":443"; ma=86400
       permissions-policy:
@@ -306,7 +288,7 @@ interactions:
       referrer-policy:
       - strict-origin-when-cross-origin
       rndr-id:
-      - 6526935a-5651-4667
+      - 8911030f-1e15-4bb9
       x-content-type-options:
       - nosniff
       x-render-origin-server:
