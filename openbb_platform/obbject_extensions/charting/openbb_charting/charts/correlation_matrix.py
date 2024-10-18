@@ -92,11 +92,11 @@ def correlation_matrix(  # noqa: PLR0912
             autorange="reversed",
             showline=False,
             ticklen=0,
-            domain=[0.05, 1],
-            automargin=False,
+            automargin="height+width+left",
+            tickmode="auto",
         ),
         margin=dict(l=10, r=0, t=0, b=10),
-        dragmode="zoom",
+        dragmode="pan",
     )
     fig = Figure(data=[heatmap], layout=layout)
     figure = OpenBBFigure(fig=fig)
