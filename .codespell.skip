@@ -1,5 +1,6 @@
 ./tests
 .git
+*.bat
 *.css
 *.csv
 *.html
@@ -8,6 +9,7 @@
 *.js
 *.json
 *.lock
+*.nsi
 *.scss
 *.txt
 *.yaml
