@@ -9,22 +9,22 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/release/series?api_key=MOCK_API_KEY&file_type=json&offset=0&release_id=483
+    uri: https://api.stlouisfed.org/fred/release/series?api_key=MOCK_API_KEY&file_type=json&offset=0&order_by=observation_end&release_id=483&search_type=release&sort_order=desc
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zW0VNJByKbmpaDL5RelpBbFJ1Uq
-        WSkVpxZlphbHZ6Yo6SgV5xeVxIPllKyUEouTlXSUkvNL80qUrEx0lPLT0opTS5SsDHSUcjJzM0uU
-        rAwNDAx0oAYUK1lFVytlgmwK9ncLMrQwcHGMdAxzR3YIyc4sySzJSVWyUjK0MNB1SaxUcCxLLUpM
-        T1UA2aCko5SfVJxaVJZYkpmfhxQEhha6hga6BoZoCrCEQlpRamFpal4yKBhcEjNzKpV0lOBi8cUZ
-        +eBAdVHSUSrNyywpVrJSCkgtSk7NK4GJwNWoggIvNbE4Py8xJz4xJau0uCQXpM5KyS+/RCEYKpNT
-        qeAIlksFBzZUFEk93Dy/YEclHaWcxOKS+NKClMSSVFC4ImJXwcDcysDQysBc18BUSUepIL+gNCex
-        KLOkUsnK1ExHKb0ov7QgHl00L78kFeQHx2KFxDyF1IqS1LzizPw8hfw0hZKMVIXElJRMUEgm5iik
-        5CeXgpwPDlmFxKT80hKwkpCi1MTi0qJKhaDUgnyFoNS01KLUvORUhaDEktRiPQWNjJKSgmKrGP0Y
-        /fLycr281PLK/KLstNQUvfyi9Bj93MSi7NSS4hj9EqgxukWpBfm6RTBjdItAxuhm5qXlF+WCrdZU
-        qtVBSlPG1ExSxqSlKANTXQOjEZCiLDBTlDnWFAUSHfIpypKaKcqSxBRlPmJTlBnWFAUSHfIpytPP
-        xTWCKnUeqI5T8MxLSa1AK3YQtaihha6BCY1SEdhmBceCIgUjHQUjA0MLBVsFUJUKrgnh9RQuVcWY
-        dZsSjetCS8ySy8wIW10IEh2S6Qyw2FoAKuX8fPMJAAA=
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TU00DU0U9JByKbmpaDL5RelpBbFJ1Uq
+        WSnlJxWnFpUllmTm58WDVOooFecXlcSDVShZKaWkFicr6Sgl55fmlShZmego5aelFaeWKFkZ6Cjl
+        ZOZmlihZGRoYGOgoFacWZaYWFytZRVcrZYIsDPZ3CzK0MHBxjHQMc0d2D8muLcksyUlVslIytDDQ
+        dUmsVHAsSy1KTE9VANmgpIPiA4TZhha6hga6BoZoCkBeRAuotKLUwtLUvGRQaLgkZuZUKukowcXi
+        izPywWHroqSjVJqXWVKsZKUUkFqUnJpXAhOBq1FVAoVDYnF+XmJOfGJKVmlxSS5InZWSX36JQnAq
+        RCanUsERLJeagl093Dy/YEclHaWcxOKS+NKClMSSVFC4IiJZwcDcysDQysBM18BUSUepIL+gNCex
+        KLOkUsnK1ExHKb0ov7QgHl00L78kFeQHx2KFxDyF1IqS1LzizPw8hfw0hZKMVIXElJRMUFpIzFFI
+        yU8uBTkfnDYUEpPyS0vASkKKUhOLS4sqFYJSC/IVglLTUotS85JTFYISS1KL9RQ0MkpKCoqtYvRj
+        9MvLy/XyUssr84uy01JT9PKL0mP0cxOLslNLimP0S6DG6BalFuTrFsGM0S0CGaObmZeWX5QLtlpT
+        qVYHKU0ZUzNJGZOWogxMdQ2MRkCKMsdMUeZYUxRIdMinKEtqpihLElOU+YhNUWZYUxRIdMinKE8/
+        F9cIqtR5oDpOwTMvJbUCrdhBqekMTGiUisA2KzgWFCkY6SgYGRhaKNgqgKpUcE0Ir6dwqSqG1nh0
+        rAstMEsuMyNsdSFIdEimM8BiawHt+Pwz+gkAAA==
     headers:
       Cache-Control:
       - max-age=0, no-cache
@@ -33,22 +33,19 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '659'
+      - '655'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 20 Jul 2024 03:14:16 GMT
+      - Wed, 16 Oct 2024 18:17:31 GMT
       Expires:
-      - Sat, 20 Jul 2024 03:14:16 GMT
+      - Wed, 16 Oct 2024 18:17:31 GMT
       Last-Modified:
-      - Sat, 20 Jul 2024 03:14:16 GMT
+      - Wed, 16 Oct 2024 18:07:56 GMT
       Pragma:
       - no-cache
       Server:
       - Apache
-      Set-Cookie:
-      - ak_bmsc=ECA8DBF6CBB000B1069E9D75FD977737~000000000000000000000000000000~YAAQhnfZFzz5U82QAQAAGA4izhicvj04D6saom/DwbFXWvSyg0d9i2waekXRdbVjVHR2RWf9NO4eHKf5m3CJ5qNX2q/W1jBJLCmWxWMBGx0VvUmrnnKMDEGHPJZYn0KDVp+vzGJV+ZHk4qlR3G7fUWbaIMXNjHlkTD1YcKmnk7bZ1R3pjuKAC7dTQ5oQFZ6ebKpYbJQpNGJQZnBn3DBgYiEHGlfV0hCbR+h+hJ0ichyNHj91Tfdebcwke6G44I6ptGe6H7W82kW/2sBdKYCMjBqVIgDGhUuMX8NBWOhjDDs2u+JMRNvzf2BwJmMK6B89o1etzpEQ5tnDVoptKaTvkJvcO5ZRLscszS18uFJXkOKxsfqGLMegSwSAZcTEP2Cf;
-        Domain=.stlouisfed.org; Path=/; Expires=Sat, 20 Jul 2024 05:14:16 GMT; Max-Age=7200
       Strict-Transport-Security:
       - max-age=86400
       Vary:
@@ -88,11 +85,11 @@ interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 20 Jul 2024 03:14:17 GMT
+      - Wed, 16 Oct 2024 18:17:32 GMT
       Expires:
-      - Sat, 20 Jul 2024 03:14:17 GMT
+      - Wed, 16 Oct 2024 18:17:32 GMT
       Last-Modified:
-      - Sat, 20 Jul 2024 03:14:16 GMT
+      - Wed, 16 Oct 2024 18:07:56 GMT
       Pragma:
       - no-cache
       Server:
