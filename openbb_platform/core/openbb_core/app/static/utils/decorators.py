@@ -5,6 +5,7 @@ from typing import Any, Callable, Optional, TypeVar, overload
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 from pydantic import ValidationError, validate_call
 from typing_extensions import ParamSpec
 
@@ -85,10 +86,19 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                 raise OpenBBError(f"\n[Error] -> {error_str}").with_traceback(
                     tb
                 ) from None
+            if isinstance(e, UnauthorizedError):
+                raise UnauthorizedError(f"\n[Error] -> {str(e)}").with_traceback(
+                    tb
+                ) from None
+            if isinstance(e, EmptyDataError):
+                raise EmptyDataError(f"\n[Empty] -> {str(e)}").with_traceback(
+                    tb
+                ) from None
             if isinstance(e, OpenBBError):
                 raise OpenBBError(f"\n[Error] -> {str(e)}").with_traceback(tb) from None
-            raise OpenBBError("\n[Error] -> Unexpected error.").with_traceback(
-                tb
-            ) from None
+            if isinstance(e, Exception):
+                raise OpenBBError(
+                    f"\n[Unexpected Error] -> {e.__class__.__name__} -> {str(e.args[0] or e.args)}"
+                ).with_traceback(tb) from None
 
     return wrapper

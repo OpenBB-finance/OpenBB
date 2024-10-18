@@ -4,19 +4,28 @@ from datetime import date
 from typing import Any, List, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 from openbb_core.provider.utils.helpers import get_querystring
 
 
 async def response_callback(response, _):
     """Use callback for make_request."""
     data = await response.json()
-    if isinstance(data, dict) and "Error Message" in data:
-        raise OpenBBError(f"FMP Error Message -> {data['Error Message']}")
-    if isinstance(data, dict) and "error" in data:
-        raise OpenBBError(
-            f"FMP Error Message -> {data['error']}. Status code: {response.status}"
-        )
+    if isinstance(data, dict):
+        error_message = data.get("Error Message", data.get("error"))
+        if error_message is not None:
+            conditions = (
+                "upgrade" in error_message.lower()
+                or "Exclusive Endpoint" in error_message.lower()
+                or "subscription" in error_message.lower()
+                or "unauthorized" in error_message.lower()
+            )
+            if conditions:
+                raise UnauthorizedError(f"{error_message}")
+            else:
+                raise OpenBBError(
+                    f"FMP Error Message -> Status code: {response.status} -> {error_message}"
+                )
 
     return data
 

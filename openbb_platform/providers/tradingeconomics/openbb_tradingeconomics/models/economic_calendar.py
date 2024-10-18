@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -104,7 +104,7 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import check_item
 
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             check_item(v.lower(), COUNTRIES)
@@ -224,51 +224,47 @@ class TEEconomicCalendarData(EconomicCalendarData):
 class TEEconomicCalendarFetcher(
     Fetcher[
         TEEconomicCalendarQueryParams,
-        List[TEEconomicCalendarData],
+        list[TEEconomicCalendarData],
     ]
 ):
     """Transform the query, extract and transform the data from the Trading Economics endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TEEconomicCalendarQueryParams:
+    def transform_query(params: dict[str, Any]) -> TEEconomicCalendarQueryParams:
         """Transform the query params."""
         return TEEconomicCalendarQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TEEconomicCalendarQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> Union[dict, List[dict]]:
+    ) -> Union[dict, list[dict]]:
         """Return the raw data from the TE endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import ClientResponse, amake_request
+        from openbb_core.provider.utils.helpers import amake_request
         from openbb_tradingeconomics.utils import url_generator
+        from openbb_tradingeconomics.utils.helpers import response_callback
 
         api_key = credentials.get("tradingeconomics_api_key") if credentials else ""
+
         if query.group is not None:
             query.group = query.group.replace("_", " ")  # type: ignore
+
         url = url_generator.generate_url(query)
+
         if not url:
             raise OpenBBError(
                 "No url generated. Check combination of input parameters."
             )
+
         url = f"{url}{api_key}"
 
-        async def callback(response: ClientResponse, _: Any) -> Union[dict, List[dict]]:
-            """Return the response."""
-            if response.status != 200:
-                raise OpenBBError(
-                    f"Error in TE request: \n{await response.text()}"
-                    f"\nInfo -> TE API tend to fail if the number of countries is above {TE_COUNTRY_LIMIT}."
-                )
-            return await response.json()
-
-        return await amake_request(url, response_callback=callback, **kwargs)
+        return await amake_request(url, response_callback=response_callback, **kwargs)
 
     @staticmethod
     def transform_data(
-        query: TEEconomicCalendarQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[TEEconomicCalendarData]:
+        query: TEEconomicCalendarQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[TEEconomicCalendarData]:
         """Return the transformed data."""
         return [TEEconomicCalendarData.model_validate(d) for d in data]

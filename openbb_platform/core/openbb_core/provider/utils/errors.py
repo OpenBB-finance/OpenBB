@@ -12,3 +12,15 @@ class EmptyDataError(OpenBBError):
         """Initialize the exception."""
         self.message = message
         super().__init__(self.message)
+
+
+class UnauthorizedError(OpenBBError):
+    """Exception raised for an unauthorized request response."""
+
+    def __init__(
+        self,
+        message: str = "Unauthorized request. Please check your credentials and subscription access from the provider.",
+    ):
+        """Initialize the exception."""
+        self.message = message
+        super().__init__(self.message)

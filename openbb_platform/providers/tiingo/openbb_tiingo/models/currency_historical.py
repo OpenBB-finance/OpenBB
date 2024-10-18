@@ -3,65 +3,65 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal, Optional, Union
 from warnings import warn
 
-from dateutil.relativedelta import relativedelta
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_historical import (
     CurrencyHistoricalData,
     CurrencyHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    amake_requests,
-    get_querystring,
-)
-from pydantic import Field, PrivateAttr, model_validator
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
+from pydantic import Field
 
 
 class TiingoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     """Tiingo Currency Historical Price Query.
 
-    Source: https://www.tiingo.com/documentation/end-of-day
+    Source: https://www.tiingo.com/documentation/forex
     """
 
     __alias_dict__ = {
-        "symbol": "tickers",
         "start_date": "startDate",
         "end_date": "endDate",
-        "interval": "resampleFreq",
     }
     __json_schema_extra__ = {
         "symbol": {"multiple_items_allowed": True},
-        "interval": {"choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]},
+        "interval": {
+            "choices": [
+                "1m",
+                "5m",
+                "15m",
+                "30m",
+                "90m",
+                "1h",
+                "2h",
+                "4h",
+                "1d",
+                "5d",
+                "21d",
+            ]
+        },
     }
 
-    interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
-        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
-    )
-    _frequency: Literal["daily", "weekly", "monthly", "annually"] = PrivateAttr(
-        default=None
-    )
-
-    # pylint: disable=protected-access
-    @model_validator(mode="after")  # type: ignore[arg-type]
-    @classmethod
-    def set_time_params(cls, values: "TiingoCurrencyHistoricalQueryParams"):
-        """Set the default start & end date and time params for Tiingo API."""
-        frequency_dict = {
-            "1d": "1Day",
-            "1m": "1Min",
-            "5m": "5Min",
-            "15m": "15Min",
-            "30m": "30Min",
-            "1h": "1Hour",
-            "4h": "4Hour",
-        }
-        values._frequency = frequency_dict[values.interval]  # type: ignore[assignment]
-
-        return values
+    interval: Union[
+        Literal[
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "90m",
+            "1h",
+            "2h",
+            "4h",
+            "1d",
+            "5d",
+            "21d",
+        ],
+        str,
+    ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
 
 
 class TiingoCurrencyHistoricalData(CurrencyHistoricalData):
@@ -73,14 +73,17 @@ class TiingoCurrencyHistoricalData(CurrencyHistoricalData):
 class TiingoCurrencyHistoricalFetcher(
     Fetcher[
         TiingoCurrencyHistoricalQueryParams,
-        List[TiingoCurrencyHistoricalData],
+        list[TiingoCurrencyHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Tiingo endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TiingoCurrencyHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> TiingoCurrencyHistoricalQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+
         transformed_params = params
 
         now = datetime.now().date()
@@ -92,51 +95,88 @@ class TiingoCurrencyHistoricalFetcher(
 
         return TiingoCurrencyHistoricalQueryParams(**transformed_params)
 
-    # pylint: disable=protected-access,unused-argument
     @staticmethod
     async def aextract_data(
         query: TiingoCurrencyHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Tiingo endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_tiingo.utils.helpers import get_data
+        from pandas import to_datetime
 
         api_key = credentials.get("tiingo_token") if credentials else ""
-
-        base_url = "https://api.tiingo.com/tiingo/fx/prices"
+        base_url = "https://api.tiingo.com/tiingo/fx"
         query_str = get_querystring(
             query.model_dump(by_alias=False), ["tickers", "resampleFreq"]
         )
-        results: List[dict] = []
 
-        async def callback(response: ClientResponse, _: Any) -> List[Dict]:
-            result = await response.json()
-            symbol = response.url.query.get("tickers", "")
-            if not result:
-                warn(f"No data found the the symbol: {symbol}")
-                return results
-            data = result
-            if len(data) > 0:
-                if "," not in query.symbol:
-                    _ = [d.pop("ticker") for d in data]
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["symbol", "interval"]
+        )
+        frequency = query.interval
+
+        if frequency.endswith("m"):
+            frequency = f"{frequency[:-1]}min"
+        elif frequency == "h":
+            frequency = f"{frequency[:-1]}hour"
+        elif frequency.endswith("d"):
+            frequency = f"{frequency[:-1]}day"
+
+        results: list = []
+        messages: list = []
+
+        async def get_one(symbol):
+            """Get data for one symbol."""
+            url = f"{base_url}/{symbol}/prices?{query_str}&resampleFreq={frequency}&token={api_key}"
+            data = None
+            try:
+                data = await get_data(url)
+            except UnauthorizedError as e:
+                raise e from e
+            except OpenBBError as e:
+                if "Ticker" in e.original:
+                    messages.append(e.original)
                 else:
-                    for d in data:
-                        d["ticker"] = d["ticker"].upper()
+                    messages.append(f"{symbol}: {e.original}")
+
+            if isinstance(data, list):
+                for d in data:
+                    if "," in query.symbol:
+                        d["symbol"] = symbol
+                    if query.interval.endswith("d"):
+                        d["date"] = to_datetime(d["date"]).date()
+                    else:
+                        d["date"] = to_datetime(d["date"], utc=True)
+
                 results.extend(data)
-            return results
 
-        urls = [
-            f"{base_url}?tickers={symbol}&{query_str}&resampleFreq={query._frequency}&token={api_key}"
-            for symbol in query.symbol.split(",")
-        ]
+        symbols = query.symbol.split(",")
+        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
 
-        return await amake_requests(urls, callback, **kwargs)
+        if not results and messages:
+            raise OpenBBError(f"{messages}")
+
+        if not results and not messages:
+            raise EmptyDataError("The request was returned empty.")
+
+        if results and messages:
+            for message in messages:
+                warn(message)
+
+        return results
 
     @staticmethod
     def transform_data(
         query: TiingoCurrencyHistoricalQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TiingoCurrencyHistoricalData]:
+    ) -> list[TiingoCurrencyHistoricalData]:
         """Return the transformed data."""
-        return [TiingoCurrencyHistoricalData.model_validate(d) for d in data]
+        return sorted(
+            [TiingoCurrencyHistoricalData.model_validate(d) for d in data],
+            key=lambda x: x.date,
+        )
