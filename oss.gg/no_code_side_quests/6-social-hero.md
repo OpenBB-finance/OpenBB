@@ -10,8 +10,8 @@ Please follow the following schema:
 
 ---
 
-» 05-April-2024 by YOUR NAME
-» Link to the post: https://linkedin.com/...
+» 10-october-2024  by Anjali sharma
+» Link to the post:  https://www.linkedin.com/posts/anjali-sharma-760a06238_opensource-investmenttools-finance-activity-7250156507839819778-iOxG?utm_source=share&utm_medium=member_android
 
 ---
 
@@ -21,7 +21,9 @@ Your turn 👇
 
 ////////////////////////////
 
-» 01-October-2024 by YOUR NAME
-» Link to the post: https://x.com/...
+» 10-October-2024 by Anjali sharma
+» Link to the post:  https://x.com/AnjaliS57610098/status/1844391459581198659?t=komZnwk6nGkJ07X77LekKQ&s=08
 
+» 15-October-2024 by Suvam Das
+» Link to the post:https://www.linkedin.com/posts/suvamd_openbb-decisions-optimization-activity-7251919213701824512-WLSg?utm_source=share&utm_medium=member_desktop
 ---

@@ -1,0 +1,3615 @@
+{
+    "economy_survey_sloos_fred_obb": {
+        "name": "SLOOS",
+        "description": "Get Senior Loan Officers Opinion Survey.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_survey_sloos_fred_obb",
+        "params": [
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "label": "Category",
+                "description": "Category of survey response.",
+                "optional": true,
+                "value": "spreads",
+                "type": "text",
+                "show": true,
+                "options": [
+                    {
+                        "label": "spreads",
+                        "value": "spreads"
+                    },
+                    {
+                        "label": "consumer",
+                        "value": "consumer"
+                    },
+                    {
+                        "label": "auto",
+                        "value": "auto"
+                    },
+                    {
+                        "label": "credit_card",
+                        "value": "credit_card"
+                    },
+                    {
+                        "label": "firms",
+                        "value": "firms"
+                    },
+                    {
+                        "label": "mortgage",
+                        "value": "mortgage"
+                    },
+                    {
+                        "label": "commercial_real_estate",
+                        "value": "commercial_real_estate"
+                    },
+                    {
+                        "label": "standards",
+                        "value": "standards"
+                    },
+                    {
+                        "label": "demand",
+                        "value": "demand"
+                    },
+                    {
+                        "label": "foreign_banks",
+                        "value": "foreign_banks"
+                    }
+                ],
+                "paramName": "category"
+            },
+            {
+                "label": "Transform",
+                "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "chg",
+                        "value": "chg"
+                    },
+                    {
+                        "label": "ch1",
+                        "value": "ch1"
+                    },
+                    {
+                        "label": "pch",
+                        "value": "pch"
+                    },
+                    {
+                        "label": "pc1",
+                        "value": "pc1"
+                    },
+                    {
+                        "label": "pca",
+                        "value": "pca"
+                    },
+                    {
+                        "label": "cch",
+                        "value": "cch"
+                    },
+                    {
+                        "label": "cca",
+                        "value": "cca"
+                    },
+                    {
+                        "label": "log",
+                        "value": "log"
+                    }
+                ],
+                "type": "text",
+                "paramName": "transform"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/survey/sloos",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "symbol",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Symbol",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "value",
+                        "headerName": "Value",
+                        "description": "Survey value.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "title",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Title",
+                        "description": "Survey title.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ],
+        "subCategory": "Survey"
+    },
+    "economy_survey_university_of_michigan_fred_obb": {
+        "name": "University Of Michigan",
+        "description": "Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_survey_university_of_michigan_fred_obb",
+        "params": [
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "label": "Frequency",
+                "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "annual",
+                        "value": "annual"
+                    },
+                    {
+                        "label": "quarter",
+                        "value": "quarter"
+                    }
+                ],
+                "type": "text",
+                "paramName": "frequency"
+            },
+            {
+                "label": "Aggregation Method",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "avg",
+                        "value": "avg"
+                    },
+                    {
+                        "label": "sum",
+                        "value": "sum"
+                    },
+                    {
+                        "label": "eop",
+                        "value": "eop"
+                    }
+                ],
+                "type": "text",
+                "paramName": "aggregation_method"
+            },
+            {
+                "label": "Transform",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "chg",
+                        "value": "chg"
+                    },
+                    {
+                        "label": "ch1",
+                        "value": "ch1"
+                    },
+                    {
+                        "label": "pch",
+                        "value": "pch"
+                    },
+                    {
+                        "label": "pc1",
+                        "value": "pc1"
+                    },
+                    {
+                        "label": "pca",
+                        "value": "pca"
+                    },
+                    {
+                        "label": "cch",
+                        "value": "cch"
+                    },
+                    {
+                        "label": "cca",
+                        "value": "cca"
+                    },
+                    {
+                        "label": "log",
+                        "value": "log"
+                    }
+                ],
+                "type": "text",
+                "paramName": "transform"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/survey/university_of_michigan",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "consumer_sentiment",
+                        "headerName": "Consumer Sentiment",
+                        "description": "Index of the results of the University of Michigan's monthly Survey of Consumers, which is used to estimate future spending and saving.  (1966:Q1=100).",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "inflation_expectation",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Inflation Expectation",
+                        "description": "Median expected price change next 12 months, Surveys of Consumers.",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ],
+        "subCategory": "Survey"
+    },
+    "economy_survey_economic_conditions_chicago_fred_obb": {
+        "name": "Economic Conditions Chicago",
+        "description": "Get The Survey Of Economic Conditions For The Chicago Region.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_survey_economic_conditions_chicago_fred_obb",
+        "params": [
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "label": "Frequency",
+                "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "annual",
+                        "value": "annual"
+                    },
+                    {
+                        "label": "quarter",
+                        "value": "quarter"
+                    }
+                ],
+                "type": "text",
+                "paramName": "frequency"
+            },
+            {
+                "label": "Aggregation Method",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "avg",
+                        "value": "avg"
+                    },
+                    {
+                        "label": "sum",
+                        "value": "sum"
+                    },
+                    {
+                        "label": "eop",
+                        "value": "eop"
+                    }
+                ],
+                "type": "text",
+                "paramName": "aggregation_method"
+            },
+            {
+                "label": "Transform",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "chg",
+                        "value": "chg"
+                    },
+                    {
+                        "label": "ch1",
+                        "value": "ch1"
+                    },
+                    {
+                        "label": "pch",
+                        "value": "pch"
+                    },
+                    {
+                        "label": "pc1",
+                        "value": "pc1"
+                    },
+                    {
+                        "label": "pca",
+                        "value": "pca"
+                    },
+                    {
+                        "label": "cch",
+                        "value": "cch"
+                    },
+                    {
+                        "label": "cca",
+                        "value": "cca"
+                    },
+                    {
+                        "label": "log",
+                        "value": "log"
+                    }
+                ],
+                "type": "text",
+                "paramName": "transform"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/survey/economic_conditions_chicago",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "activity_index",
+                        "headerName": "Activity Index",
+                        "description": "Activity Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "one_year_outlook",
+                        "headerName": "One Year Outlook",
+                        "description": "One Year Outlook Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "manufacturing_activity",
+                        "headerName": "Manufacturing Activity",
+                        "description": "Manufacturing Activity Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "non_manufacturing_activity",
+                        "headerName": "Non Manufacturing Activity",
+                        "description": "Non-Manufacturing Activity Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "capital_expenditures_expectations",
+                        "headerName": "Capital Expenditures Expectations",
+                        "description": "Capital Expenditures Expectations Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "hiring_expectations",
+                        "headerName": "Hiring Expectations",
+                        "description": "Hiring Expectations Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "current_hiring",
+                        "headerName": "Current Hiring",
+                        "description": "Current Hiring Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "labor_costs",
+                        "headerName": "Labor Costs",
+                        "description": "Labor Costs Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "non_labor_costs",
+                        "headerName": "Non Labor Costs",
+                        "description": "Non-Labor Costs Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ],
+        "subCategory": "Survey"
+    },
+    "economy_survey_manufacturing_outlook_texas_fred_obb": {
+        "name": "Manufacturing Outlook Texas",
+        "description": "Get The Manufacturing Outlook Survey For The Texas Region.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_survey_manufacturing_outlook_texas_fred_obb",
+        "params": [
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "label": "Topic",
+                "description": "The topic for the survey response. Multiple comma separated items allowed.",
+                "optional": true,
+                "value": "new_orders_growth",
+                "show": true,
+                "type": "text",
+                "multiSelect": true,
+                "options": [
+                    {
+                        "label": "business_activity",
+                        "value": "business_activity"
+                    },
+                    {
+                        "label": "business_outlook",
+                        "value": "business_outlook"
+                    },
+                    {
+                        "label": "capex",
+                        "value": "capex"
+                    },
+                    {
+                        "label": "prices_paid",
+                        "value": "prices_paid"
+                    },
+                    {
+                        "label": "production",
+                        "value": "production"
+                    },
+                    {
+                        "label": "inventory",
+                        "value": "inventory"
+                    },
+                    {
+                        "label": "new_orders",
+                        "value": "new_orders"
+                    },
+                    {
+                        "label": "new_orders_growth",
+                        "value": "new_orders_growth"
+                    },
+                    {
+                        "label": "unfilled_orders",
+                        "value": "unfilled_orders"
+                    },
+                    {
+                        "label": "shipments",
+                        "value": "shipments"
+                    },
+                    {
+                        "label": "delivery_time",
+                        "value": "delivery_time"
+                    },
+                    {
+                        "label": "employment",
+                        "value": "employment"
+                    },
+                    {
+                        "label": "wages",
+                        "value": "wages"
+                    },
+                    {
+                        "label": "hours_worked",
+                        "value": "hours_worked"
+                    }
+                ],
+                "paramName": "topic"
+            },
+            {
+                "label": "Frequency",
+                "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "annual",
+                        "value": "annual"
+                    },
+                    {
+                        "label": "quarter",
+                        "value": "quarter"
+                    }
+                ],
+                "type": "text",
+                "paramName": "frequency"
+            },
+            {
+                "label": "Aggregation Method",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "avg",
+                        "value": "avg"
+                    },
+                    {
+                        "label": "sum",
+                        "value": "sum"
+                    },
+                    {
+                        "label": "eop",
+                        "value": "eop"
+                    }
+                ],
+                "type": "text",
+                "paramName": "aggregation_method"
+            },
+            {
+                "label": "Transform",
+                "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "chg",
+                        "value": "chg"
+                    },
+                    {
+                        "label": "ch1",
+                        "value": "ch1"
+                    },
+                    {
+                        "label": "pch",
+                        "value": "pch"
+                    },
+                    {
+                        "label": "pc1",
+                        "value": "pc1"
+                    },
+                    {
+                        "label": "pca",
+                        "value": "pca"
+                    },
+                    {
+                        "label": "cch",
+                        "value": "cch"
+                    },
+                    {
+                        "label": "cca",
+                        "value": "cca"
+                    },
+                    {
+                        "label": "log",
+                        "value": "log"
+                    }
+                ],
+                "type": "text",
+                "paramName": "transform"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/survey/manufacturing_outlook_texas",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "topic",
+                        "formatterFn": null,
+                        "headerName": "Topic",
+                        "description": "Topic of the survey response.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "diffusion_index",
+                        "headerName": "Diffusion Index",
+                        "description": "Diffusion Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "percent_reporting_increase",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Percent Reporting Increase",
+                        "description": "Percent of respondents reporting an increase over the last month.",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "percent_reporting_decrease",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Percent Reporting Decrease",
+                        "description": "Percent of respondents reporting a decrease over the last month.",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "percent_reporting_no_change",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Percent Reporting No Change",
+                        "description": "Percent of respondents reporting no change over the last month.",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ],
+        "subCategory": "Survey"
+    },
+    "economy_survey_nonfarm_payrolls_fred_obb": {
+        "name": "Nonfarm Payrolls",
+        "description": "Get Nonfarm Payrolls Survey.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_survey_nonfarm_payrolls_fred_obb",
+        "params": [
+            {
+                "label": "Date",
+                "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed.",
+                "optional": true,
+                "value": null,
+                "type": "text",
+                "show": true,
+                "multiSelect": true,
+                "paramName": "date"
+            },
+            {
+                "label": "Category",
+                "description": "The category to query.",
+                "optional": true,
+                "value": "employees_nsa",
+                "type": "text",
+                "show": true,
+                "options": [
+                    {
+                        "label": "employees_nsa",
+                        "value": "employees_nsa"
+                    },
+                    {
+                        "label": "employees_sa",
+                        "value": "employees_sa"
+                    },
+                    {
+                        "label": "employees_production_and_nonsupervisory",
+                        "value": "employees_production_and_nonsupervisory"
+                    },
+                    {
+                        "label": "employees_women",
+                        "value": "employees_women"
+                    },
+                    {
+                        "label": "employees_women_percent",
+                        "value": "employees_women_percent"
+                    },
+                    {
+                        "label": "avg_hours",
+                        "value": "avg_hours"
+                    },
+                    {
+                        "label": "avg_hours_production_and_nonsupervisory",
+                        "value": "avg_hours_production_and_nonsupervisory"
+                    },
+                    {
+                        "label": "avg_hours_overtime",
+                        "value": "avg_hours_overtime"
+                    },
+                    {
+                        "label": "avg_hours_overtime_production_and_nonsupervisory",
+                        "value": "avg_hours_overtime_production_and_nonsupervisory"
+                    },
+                    {
+                        "label": "avg_earnings_hourly",
+                        "value": "avg_earnings_hourly"
+                    },
+                    {
+                        "label": "avg_earnings_hourly_production_and_nonsupervisory",
+                        "value": "avg_earnings_hourly_production_and_nonsupervisory"
+                    },
+                    {
+                        "label": "avg_earnings_weekly",
+                        "value": "avg_earnings_weekly"
+                    },
+                    {
+                        "label": "avg_earnings_weekly_production_and_nonsupervisory",
+                        "value": "avg_earnings_weekly_production_and_nonsupervisory"
+                    },
+                    {
+                        "label": "index_weekly_hours",
+                        "value": "index_weekly_hours"
+                    },
+                    {
+                        "label": "index_weekly_hours_production_and_nonsupervisory",
+                        "value": "index_weekly_hours_production_and_nonsupervisory"
+                    },
+                    {
+                        "label": "index_weekly_payrolls",
+                        "value": "index_weekly_payrolls"
+                    },
+                    {
+                        "label": "index_weekly_payrolls_production_and_nonsupervisory",
+                        "value": "index_weekly_payrolls_production_and_nonsupervisory"
+                    }
+                ],
+                "paramName": "category"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/survey/nonfarm_payrolls",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "symbol",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Symbol",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "value",
+                        "headerName": "Value",
+                        "description": "",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "name",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Name",
+                        "description": "The name of the series.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "element_id",
+                        "formatterFn": null,
+                        "headerName": "Element Id",
+                        "description": "The element id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "parent_id",
+                        "formatterFn": null,
+                        "headerName": "Parent Id",
+                        "description": "The parent id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "children",
+                        "formatterFn": null,
+                        "headerName": "Children",
+                        "description": "The element_id of each child, as a comma-separated string.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "level",
+                        "headerName": "Level",
+                        "description": "The indentation level of the element.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ],
+        "subCategory": "Survey"
+    },
+    "economy_cpi_fred_obb": {
+        "name": "CPI",
+        "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_cpi_fred_obb",
+        "params": [
+            {
+                "label": "Country",
+                "description": "The country to get data. Multiple comma separated items allowed.",
+                "optional": true,
+                "value": "united_states",
+                "type": "text",
+                "show": true,
+                "multiSelect": true,
+                "options": [
+                    {
+                        "label": "australia",
+                        "value": "australia"
+                    },
+                    {
+                        "label": "austria",
+                        "value": "austria"
+                    },
+                    {
+                        "label": "belgium",
+                        "value": "belgium"
+                    },
+                    {
+                        "label": "brazil",
+                        "value": "brazil"
+                    },
+                    {
+                        "label": "bulgaria",
+                        "value": "bulgaria"
+                    },
+                    {
+                        "label": "canada",
+                        "value": "canada"
+                    },
+                    {
+                        "label": "chile",
+                        "value": "chile"
+                    },
+                    {
+                        "label": "china",
+                        "value": "china"
+                    },
+                    {
+                        "label": "croatia",
+                        "value": "croatia"
+                    },
+                    {
+                        "label": "cyprus",
+                        "value": "cyprus"
+                    },
+                    {
+                        "label": "czech_republic",
+                        "value": "czech_republic"
+                    },
+                    {
+                        "label": "denmark",
+                        "value": "denmark"
+                    },
+                    {
+                        "label": "estonia",
+                        "value": "estonia"
+                    },
+                    {
+                        "label": "euro_area",
+                        "value": "euro_area"
+                    },
+                    {
+                        "label": "finland",
+                        "value": "finland"
+                    },
+                    {
+                        "label": "france",
+                        "value": "france"
+                    },
+                    {
+                        "label": "germany",
+                        "value": "germany"
+                    },
+                    {
+                        "label": "greece",
+                        "value": "greece"
+                    },
+                    {
+                        "label": "hungary",
+                        "value": "hungary"
+                    },
+                    {
+                        "label": "iceland",
+                        "value": "iceland"
+                    },
+                    {
+                        "label": "india",
+                        "value": "india"
+                    },
+                    {
+                        "label": "indonesia",
+                        "value": "indonesia"
+                    },
+                    {
+                        "label": "ireland",
+                        "value": "ireland"
+                    },
+                    {
+                        "label": "israel",
+                        "value": "israel"
+                    },
+                    {
+                        "label": "italy",
+                        "value": "italy"
+                    },
+                    {
+                        "label": "japan",
+                        "value": "japan"
+                    },
+                    {
+                        "label": "korea",
+                        "value": "korea"
+                    },
+                    {
+                        "label": "latvia",
+                        "value": "latvia"
+                    },
+                    {
+                        "label": "lithuania",
+                        "value": "lithuania"
+                    },
+                    {
+                        "label": "luxembourg",
+                        "value": "luxembourg"
+                    },
+                    {
+                        "label": "malta",
+                        "value": "malta"
+                    },
+                    {
+                        "label": "mexico",
+                        "value": "mexico"
+                    },
+                    {
+                        "label": "netherlands",
+                        "value": "netherlands"
+                    },
+                    {
+                        "label": "new_zealand",
+                        "value": "new_zealand"
+                    },
+                    {
+                        "label": "norway",
+                        "value": "norway"
+                    },
+                    {
+                        "label": "poland",
+                        "value": "poland"
+                    },
+                    {
+                        "label": "portugal",
+                        "value": "portugal"
+                    },
+                    {
+                        "label": "romania",
+                        "value": "romania"
+                    },
+                    {
+                        "label": "russian_federation",
+                        "value": "russian_federation"
+                    },
+                    {
+                        "label": "slovak_republic",
+                        "value": "slovak_republic"
+                    },
+                    {
+                        "label": "slovakia",
+                        "value": "slovakia"
+                    },
+                    {
+                        "label": "slovenia",
+                        "value": "slovenia"
+                    },
+                    {
+                        "label": "south_africa",
+                        "value": "south_africa"
+                    },
+                    {
+                        "label": "spain",
+                        "value": "spain"
+                    },
+                    {
+                        "label": "sweden",
+                        "value": "sweden"
+                    },
+                    {
+                        "label": "switzerland",
+                        "value": "switzerland"
+                    },
+                    {
+                        "label": "turkey",
+                        "value": "turkey"
+                    },
+                    {
+                        "label": "united_kingdom",
+                        "value": "united_kingdom"
+                    },
+                    {
+                        "label": "united_states",
+                        "value": "united_states"
+                    }
+                ],
+                "paramName": "country"
+            },
+            {
+                "label": "Transform",
+                "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
+                "optional": true,
+                "value": "yoy",
+                "type": "text",
+                "show": true,
+                "options": [
+                    {
+                        "label": "index",
+                        "value": "index"
+                    },
+                    {
+                        "label": "yoy",
+                        "value": "yoy"
+                    },
+                    {
+                        "label": "period",
+                        "value": "period"
+                    }
+                ],
+                "paramName": "transform"
+            },
+            {
+                "label": "Frequency",
+                "description": "The frequency of the data.",
+                "optional": true,
+                "value": "monthly",
+                "type": "text",
+                "show": true,
+                "options": [
+                    {
+                        "label": "annual",
+                        "value": "annual"
+                    },
+                    {
+                        "label": "quarter",
+                        "value": "quarter"
+                    },
+                    {
+                        "label": "monthly",
+                        "value": "monthly"
+                    }
+                ],
+                "paramName": "frequency"
+            },
+            {
+                "label": "Harmonized",
+                "description": "If true, returns harmonized data.",
+                "optional": true,
+                "value": false,
+                "type": "boolean",
+                "show": true,
+                "paramName": "harmonized"
+            },
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/cpi",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "country",
+                        "formatterFn": null,
+                        "headerName": "Country",
+                        "description": "Country",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "value",
+                        "headerName": "Value",
+                        "description": "CPI index value or period change.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ]
+    },
+    "economy_balance_of_payments_fred_obb": {
+        "name": "Balance Of Payments",
+        "description": "Balance of Payments Reports.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_balance_of_payments_fred_obb",
+        "params": [
+            {
+                "label": "Country",
+                "description": "The country to get data. Enter as a 3-letter ISO country code, default is USA.",
+                "optional": true,
+                "value": "united_states",
+                "type": "text",
+                "show": true,
+                "options": [
+                    {
+                        "label": "argentina",
+                        "value": "argentina"
+                    },
+                    {
+                        "label": "australia",
+                        "value": "australia"
+                    },
+                    {
+                        "label": "austria",
+                        "value": "austria"
+                    },
+                    {
+                        "label": "belgium",
+                        "value": "belgium"
+                    },
+                    {
+                        "label": "brazil",
+                        "value": "brazil"
+                    },
+                    {
+                        "label": "canada",
+                        "value": "canada"
+                    },
+                    {
+                        "label": "chile",
+                        "value": "chile"
+                    },
+                    {
+                        "label": "china",
+                        "value": "china"
+                    },
+                    {
+                        "label": "colombia",
+                        "value": "colombia"
+                    },
+                    {
+                        "label": "costa_rica",
+                        "value": "costa_rica"
+                    },
+                    {
+                        "label": "czechia",
+                        "value": "czechia"
+                    },
+                    {
+                        "label": "denmark",
+                        "value": "denmark"
+                    },
+                    {
+                        "label": "estonia",
+                        "value": "estonia"
+                    },
+                    {
+                        "label": "finland",
+                        "value": "finland"
+                    },
+                    {
+                        "label": "france",
+                        "value": "france"
+                    },
+                    {
+                        "label": "germany",
+                        "value": "germany"
+                    },
+                    {
+                        "label": "greece",
+                        "value": "greece"
+                    },
+                    {
+                        "label": "hungary",
+                        "value": "hungary"
+                    },
+                    {
+                        "label": "iceland",
+                        "value": "iceland"
+                    },
+                    {
+                        "label": "india",
+                        "value": "india"
+                    },
+                    {
+                        "label": "indonesia",
+                        "value": "indonesia"
+                    },
+                    {
+                        "label": "ireland",
+                        "value": "ireland"
+                    },
+                    {
+                        "label": "israel",
+                        "value": "israel"
+                    },
+                    {
+                        "label": "italy",
+                        "value": "italy"
+                    },
+                    {
+                        "label": "japan",
+                        "value": "japan"
+                    },
+                    {
+                        "label": "korea",
+                        "value": "korea"
+                    },
+                    {
+                        "label": "latvia",
+                        "value": "latvia"
+                    },
+                    {
+                        "label": "lithuania",
+                        "value": "lithuania"
+                    },
+                    {
+                        "label": "luxembourg",
+                        "value": "luxembourg"
+                    },
+                    {
+                        "label": "mexico",
+                        "value": "mexico"
+                    },
+                    {
+                        "label": "netherlands",
+                        "value": "netherlands"
+                    },
+                    {
+                        "label": "new_zealand",
+                        "value": "new_zealand"
+                    },
+                    {
+                        "label": "norway",
+                        "value": "norway"
+                    },
+                    {
+                        "label": "poland",
+                        "value": "poland"
+                    },
+                    {
+                        "label": "portugal",
+                        "value": "portugal"
+                    },
+                    {
+                        "label": "russia",
+                        "value": "russia"
+                    },
+                    {
+                        "label": "saudi_arabia",
+                        "value": "saudi_arabia"
+                    },
+                    {
+                        "label": "slovak_republic",
+                        "value": "slovak_republic"
+                    },
+                    {
+                        "label": "slovenia",
+                        "value": "slovenia"
+                    },
+                    {
+                        "label": "south_africa",
+                        "value": "south_africa"
+                    },
+                    {
+                        "label": "spain",
+                        "value": "spain"
+                    },
+                    {
+                        "label": "sweden",
+                        "value": "sweden"
+                    },
+                    {
+                        "label": "switzerland",
+                        "value": "switzerland"
+                    },
+                    {
+                        "label": "turkey",
+                        "value": "turkey"
+                    },
+                    {
+                        "label": "united_kingdom",
+                        "value": "united_kingdom"
+                    },
+                    {
+                        "label": "united_states",
+                        "value": "united_states"
+                    },
+                    {
+                        "label": "g7",
+                        "value": "g7"
+                    },
+                    {
+                        "label": "g20",
+                        "value": "g20"
+                    }
+                ],
+                "paramName": "country"
+            },
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/balance_of_payments",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "period",
+                        "formatterFn": null,
+                        "headerName": "Period",
+                        "description": "The date representing the beginning of the reporting period.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "balance_percent_of_gdp",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Balance Percent Of Gdp",
+                        "description": "Current Account Balance as Percent of GDP",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "balance_total",
+                        "headerName": "Balance Total",
+                        "description": "Current Account Total Balance (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "balance_total_services",
+                        "headerName": "Balance Total Services",
+                        "description": "Current Account Total Services Balance (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "balance_total_secondary_income",
+                        "headerName": "Balance Total Secondary Income",
+                        "description": "Current Account Total Secondary Income Balance (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "balance_total_goods",
+                        "headerName": "Balance Total Goods",
+                        "description": "Current Account Total Goods Balance (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "balance_total_primary_income",
+                        "headerName": "Balance Total Primary Income",
+                        "description": "Current Account Total Primary Income Balance (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_services_percent_of_goods_and_services",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Credits Services Percent Of Goods And Services",
+                        "description": "Current Account Credits Services as Percent of Goods and Services",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "credits_services_percent_of_current_account",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Credits Services Percent Of Current Account",
+                        "description": "Current Account Credits Services as Percent of Current Account",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "credits_total_services",
+                        "headerName": "Credits Total Services",
+                        "description": "Current Account Credits Total Services (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_total_goods",
+                        "headerName": "Credits Total Goods",
+                        "description": "Current Account Credits Total Goods (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_total_primary_income",
+                        "headerName": "Credits Total Primary Income",
+                        "description": "Current Account Credits Total Primary Income (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_total_secondary_income",
+                        "headerName": "Credits Total Secondary Income",
+                        "description": "Current Account Credits Total Secondary Income (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_total",
+                        "headerName": "Credits Total",
+                        "description": "Current Account Credits Total (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_services_percent_of_goods_and_services",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Debits Services Percent Of Goods And Services",
+                        "description": "Current Account Debits Services as Percent of Goods and Services",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "debits_services_percent_of_current_account",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Debits Services Percent Of Current Account",
+                        "description": "Current Account Debits Services as Percent of Current Account",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "debits_total_services",
+                        "headerName": "Debits Total Services",
+                        "description": "Current Account Debits Total Services (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_total_goods",
+                        "headerName": "Debits Total Goods",
+                        "description": "Current Account Debits Total Goods (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_total_primary_income",
+                        "headerName": "Debits Total Primary Income",
+                        "description": "Current Account Debits Total Primary Income (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_total",
+                        "headerName": "Debits Total",
+                        "description": "Current Account Debits Total (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_total_secondary_income",
+                        "headerName": "Debits Total Secondary Income",
+                        "description": "Current Account Debits Total Secondary Income (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ]
+    },
+    "economy_fred_search_fred_obb": {
+        "name": "FRED Search",
+        "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_fred_search_fred_obb",
+        "params": [
+            {
+                "label": "Query",
+                "description": "The search word(s).",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "paramName": "query"
+            },
+            {
+                "label": "Is Release",
+                "description": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True.",
+                "optional": true,
+                "value": false,
+                "type": "boolean",
+                "show": true,
+                "paramName": "is_release"
+            },
+            {
+                "label": "Release ID",
+                "description": "A specific release ID to target.",
+                "optional": true,
+                "type": "text",
+                "show": true,
+                "paramName": "release_id"
+            },
+            {
+                "label": "Limit",
+                "description": "The number of data entries to return. (1-1000)",
+                "optional": true,
+                "value": null,
+                "type": "number",
+                "show": true,
+                "paramName": "limit"
+            },
+            {
+                "label": "Offset",
+                "description": "Offset the results in conjunction with limit.",
+                "optional": true,
+                "value": 0,
+                "type": "number",
+                "show": true,
+                "paramName": "offset"
+            },
+            {
+                "label": "Filter Variable",
+                "description": "Filter by an attribute.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "frequency",
+                        "value": "frequency"
+                    },
+                    {
+                        "label": "units",
+                        "value": "units"
+                    },
+                    {
+                        "label": "seasonal_adjustment",
+                        "value": "seasonal_adjustment"
+                    }
+                ],
+                "type": "text",
+                "paramName": "filter_variable"
+            },
+            {
+                "label": "Filter Value",
+                "description": "String value to filter the variable by.  Used in conjunction with filter_variable.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "paramName": "filter_value"
+            },
+            {
+                "label": "Tag Names",
+                "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "type": "text",
+                "multiSelect": true,
+                "paramName": "tag_names"
+            },
+            {
+                "label": "Exclude Tag Names",
+                "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "type": "text",
+                "multiSelect": true,
+                "paramName": "exclude_tag_names"
+            },
+            {
+                "label": "Series ID",
+                "description": "A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas.",
+                "optional": true,
+                "type": "text",
+                "show": true,
+                "paramName": "series_id"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/fred_search",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "release_id",
+                        "headerName": "Release Id",
+                        "description": "The release ID for queries.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "series_id",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Series Id",
+                        "description": "The series ID for the item in the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "name",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Name",
+                        "description": "The name of the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "title",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Title",
+                        "description": "The title of the series.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "observation_start",
+                        "formatterFn": null,
+                        "headerName": "Observation Start",
+                        "description": "The date of the first observation in the series.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "observation_end",
+                        "formatterFn": null,
+                        "headerName": "Observation End",
+                        "description": "The date of the last observation in the series.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "frequency",
+                        "formatterFn": null,
+                        "headerName": "Frequency",
+                        "description": "The frequency of the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "frequency_short",
+                        "formatterFn": null,
+                        "headerName": "Frequency Short",
+                        "description": "Short form of the data frequency.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "units",
+                        "formatterFn": null,
+                        "headerName": "Units",
+                        "description": "The units of the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "units_short",
+                        "formatterFn": null,
+                        "headerName": "Units Short",
+                        "description": "Short form of the data units.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "seasonal_adjustment",
+                        "formatterFn": null,
+                        "headerName": "Seasonal Adjustment",
+                        "description": "The seasonal adjustment of the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "seasonal_adjustment_short",
+                        "formatterFn": null,
+                        "headerName": "Seasonal Adjustment Short",
+                        "description": "Short form of the data seasonal adjustment.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "last_updated",
+                        "formatterFn": null,
+                        "headerName": "Last Updated",
+                        "description": "The datetime of the last update to the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "notes",
+                        "formatterFn": null,
+                        "headerName": "Notes",
+                        "description": "Description of the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "press_release",
+                        "formatterFn": null,
+                        "headerName": "Press Release",
+                        "description": "If the release is a press release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "url",
+                        "formatterFn": null,
+                        "headerName": "Url",
+                        "description": "URL to the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "popularity",
+                        "headerName": "Popularity",
+                        "description": "Popularity of the series",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "group_popularity",
+                        "headerName": "Group Popularity",
+                        "description": "Group popularity of the release",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "region_type",
+                        "formatterFn": null,
+                        "headerName": "Region Type",
+                        "description": "The region type of the series.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "series_group",
+                        "headerName": "Series Group",
+                        "description": "The series group ID of the series. This value is used to query for regional data.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ]
+    },
+    "economy_fred_series_fred_obb": {
+        "name": "FRED Series",
+        "description": "Get data by series ID from FRED.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_fred_series_fred_obb",
+        "params": [
+            {
+                "label": "Symbol",
+                "description": "Symbol to get data for. Multiple comma separated items allowed.",
+                "optional": false,
+                "type": "text",
+                "show": true,
+                "multiSelect": true,
+                "paramName": "symbol"
+            },
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "label": "Limit",
+                "description": "The number of data entries to return.",
+                "optional": true,
+                "value": 100000,
+                "type": "number",
+                "show": true,
+                "paramName": "limit"
+            },
+            {
+                "label": "Frequency",
+                "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "a",
+                        "value": "a"
+                    },
+                    {
+                        "label": "q",
+                        "value": "q"
+                    },
+                    {
+                        "label": "m",
+                        "value": "m"
+                    },
+                    {
+                        "label": "w",
+                        "value": "w"
+                    },
+                    {
+                        "label": "d",
+                        "value": "d"
+                    },
+                    {
+                        "label": "wef",
+                        "value": "wef"
+                    },
+                    {
+                        "label": "weth",
+                        "value": "weth"
+                    },
+                    {
+                        "label": "wew",
+                        "value": "wew"
+                    },
+                    {
+                        "label": "wetu",
+                        "value": "wetu"
+                    },
+                    {
+                        "label": "wem",
+                        "value": "wem"
+                    },
+                    {
+                        "label": "wesu",
+                        "value": "wesu"
+                    },
+                    {
+                        "label": "wesa",
+                        "value": "wesa"
+                    },
+                    {
+                        "label": "bwew",
+                        "value": "bwew"
+                    },
+                    {
+                        "label": "bwem",
+                        "value": "bwem"
+                    }
+                ],
+                "type": "text",
+                "paramName": "frequency"
+            },
+            {
+                "label": "Aggregation Method",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "optional": true,
+                "value": "eop",
+                "show": true,
+                "options": [
+                    {
+                        "label": "avg",
+                        "value": "avg"
+                    },
+                    {
+                        "label": "sum",
+                        "value": "sum"
+                    },
+                    {
+                        "label": "eop",
+                        "value": "eop"
+                    }
+                ],
+                "type": "text",
+                "paramName": "aggregation_method"
+            },
+            {
+                "label": "Transform",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "chg",
+                        "value": "chg"
+                    },
+                    {
+                        "label": "ch1",
+                        "value": "ch1"
+                    },
+                    {
+                        "label": "pch",
+                        "value": "pch"
+                    },
+                    {
+                        "label": "pc1",
+                        "value": "pc1"
+                    },
+                    {
+                        "label": "pca",
+                        "value": "pca"
+                    },
+                    {
+                        "label": "cch",
+                        "value": "cch"
+                    },
+                    {
+                        "label": "cca",
+                        "value": "cca"
+                    },
+                    {
+                        "label": "log",
+                        "value": "log"
+                    }
+                ],
+                "type": "text",
+                "paramName": "transform"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/fred_series",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ]
+    },
+    "economy_fred_series_fred_obb_chart": {
+        "name": "FRED Series (Chart)",
+        "description": "Get data by series ID from FRED.",
+        "category": "Economy",
+        "searchCategory": "chart",
+        "widgetId": "economy_fred_series_fred_obb_chart",
+        "params": [
+            {
+                "label": "Symbol",
+                "description": "Symbol to get data for. Multiple comma separated items allowed.",
+                "optional": false,
+                "type": "text",
+                "show": true,
+                "multiSelect": true,
+                "paramName": "symbol"
+            },
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "label": "Limit",
+                "description": "The number of data entries to return.",
+                "optional": true,
+                "value": 100000,
+                "type": "number",
+                "show": true,
+                "paramName": "limit"
+            },
+            {
+                "label": "Frequency",
+                "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "a",
+                        "value": "a"
+                    },
+                    {
+                        "label": "q",
+                        "value": "q"
+                    },
+                    {
+                        "label": "m",
+                        "value": "m"
+                    },
+                    {
+                        "label": "w",
+                        "value": "w"
+                    },
+                    {
+                        "label": "d",
+                        "value": "d"
+                    },
+                    {
+                        "label": "wef",
+                        "value": "wef"
+                    },
+                    {
+                        "label": "weth",
+                        "value": "weth"
+                    },
+                    {
+                        "label": "wew",
+                        "value": "wew"
+                    },
+                    {
+                        "label": "wetu",
+                        "value": "wetu"
+                    },
+                    {
+                        "label": "wem",
+                        "value": "wem"
+                    },
+                    {
+                        "label": "wesu",
+                        "value": "wesu"
+                    },
+                    {
+                        "label": "wesa",
+                        "value": "wesa"
+                    },
+                    {
+                        "label": "bwew",
+                        "value": "bwew"
+                    },
+                    {
+                        "label": "bwem",
+                        "value": "bwem"
+                    }
+                ],
+                "type": "text",
+                "paramName": "frequency"
+            },
+            {
+                "label": "Aggregation Method",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "optional": true,
+                "value": "eop",
+                "show": true,
+                "options": [
+                    {
+                        "label": "avg",
+                        "value": "avg"
+                    },
+                    {
+                        "label": "sum",
+                        "value": "sum"
+                    },
+                    {
+                        "label": "eop",
+                        "value": "eop"
+                    }
+                ],
+                "type": "text",
+                "paramName": "aggregation_method"
+            },
+            {
+                "label": "Transform",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "chg",
+                        "value": "chg"
+                    },
+                    {
+                        "label": "ch1",
+                        "value": "ch1"
+                    },
+                    {
+                        "label": "pch",
+                        "value": "pch"
+                    },
+                    {
+                        "label": "pc1",
+                        "value": "pc1"
+                    },
+                    {
+                        "label": "pca",
+                        "value": "pca"
+                    },
+                    {
+                        "label": "cch",
+                        "value": "cch"
+                    },
+                    {
+                        "label": "cca",
+                        "value": "cca"
+                    },
+                    {
+                        "label": "log",
+                        "value": "log"
+                    }
+                ],
+                "type": "text",
+                "paramName": "transform"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            },
+            {
+                "paramName": "chart",
+                "label": "Chart",
+                "description": "Returns chart",
+                "optional": true,
+                "value": true,
+                "type": "boolean",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/fred_series",
+        "gridData": {
+            "w": 50,
+            "h": 20
+        },
+        "data": {
+            "dataKey": "chart.content",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ],
+        "defaultViz": "chart"
+    },
+    "economy_fred_release_table_fred_obb": {
+        "name": "FRED Release Table",
+        "description": "Get economic release data by ID and/or element from FRED.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_fred_release_table_fred_obb",
+        "params": [
+            {
+                "label": "Release ID",
+                "description": "The ID of the release. Use `fred_search` to find releases.",
+                "optional": false,
+                "type": "text",
+                "show": true,
+                "paramName": "release_id"
+            },
+            {
+                "label": "Element Id",
+                "description": "The element ID of a specific table in the release.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "paramName": "element_id"
+            },
+            {
+                "label": "Date",
+                "description": "A specific date to get data for. Multiple comma separated items allowed.",
+                "optional": true,
+                "value": null,
+                "type": "text",
+                "show": true,
+                "multiSelect": true,
+                "paramName": "date"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/fred_release_table",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "level",
+                        "headerName": "Level",
+                        "description": "The indentation level of the element.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "element_type",
+                        "formatterFn": null,
+                        "headerName": "Element Type",
+                        "description": "The type of the element.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "line",
+                        "headerName": "Line",
+                        "description": "The line number of the element.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "element_id",
+                        "formatterFn": null,
+                        "headerName": "Element Id",
+                        "description": "The element id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "parent_id",
+                        "formatterFn": null,
+                        "headerName": "Parent Id",
+                        "description": "The parent id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "children",
+                        "formatterFn": null,
+                        "headerName": "Children",
+                        "description": "The element_id of each child, as a comma-separated string.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "symbol",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Symbol",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "name",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Name",
+                        "description": "The name of the series.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "value",
+                        "headerName": "Value",
+                        "description": "The reported value of the series.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ]
+    },
+    "economy_fred_regional_fred_obb": {
+        "name": "FRED Regional",
+        "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_fred_regional_fred_obb",
+        "params": [
+            {
+                "label": "Symbol",
+                "description": "Symbol to get data for.",
+                "optional": false,
+                "type": "text",
+                "show": true,
+                "paramName": "symbol"
+            },
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "label": "Limit",
+                "description": "The number of data entries to return.",
+                "optional": true,
+                "value": 100000,
+                "type": "number",
+                "show": true,
+                "paramName": "limit"
+            },
+            {
+                "label": "Is Series Group",
+                "description": "When True, the symbol provided is for a series_group, else it is for a series ID.",
+                "optional": true,
+                "value": false,
+                "type": "boolean",
+                "show": true,
+                "paramName": "is_series_group"
+            },
+            {
+                "label": "Region Type",
+                "description": "The type of regional data. Parameter is only valid when `is_series_group` is True.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "bea",
+                        "value": "bea"
+                    },
+                    {
+                        "label": "msa",
+                        "value": "msa"
+                    },
+                    {
+                        "label": "frb",
+                        "value": "frb"
+                    },
+                    {
+                        "label": "necta",
+                        "value": "necta"
+                    },
+                    {
+                        "label": "state",
+                        "value": "state"
+                    },
+                    {
+                        "label": "country",
+                        "value": "country"
+                    },
+                    {
+                        "label": "county",
+                        "value": "county"
+                    },
+                    {
+                        "label": "censusregion",
+                        "value": "censusregion"
+                    }
+                ],
+                "type": "text",
+                "paramName": "region_type"
+            },
+            {
+                "label": "Season",
+                "description": "The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True.",
+                "optional": true,
+                "value": "nsa",
+                "type": "text",
+                "show": true,
+                "options": [
+                    {
+                        "label": "sa",
+                        "value": "sa"
+                    },
+                    {
+                        "label": "nsa",
+                        "value": "nsa"
+                    },
+                    {
+                        "label": "ssa",
+                        "value": "ssa"
+                    }
+                ],
+                "paramName": "season"
+            },
+            {
+                "label": "Units",
+                "description": "The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "paramName": "units"
+            },
+            {
+                "label": "Frequency",
+                "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "a",
+                        "value": "a"
+                    },
+                    {
+                        "label": "q",
+                        "value": "q"
+                    },
+                    {
+                        "label": "m",
+                        "value": "m"
+                    },
+                    {
+                        "label": "w",
+                        "value": "w"
+                    },
+                    {
+                        "label": "d",
+                        "value": "d"
+                    },
+                    {
+                        "label": "wef",
+                        "value": "wef"
+                    },
+                    {
+                        "label": "weth",
+                        "value": "weth"
+                    },
+                    {
+                        "label": "wew",
+                        "value": "wew"
+                    },
+                    {
+                        "label": "wetu",
+                        "value": "wetu"
+                    },
+                    {
+                        "label": "wem",
+                        "value": "wem"
+                    },
+                    {
+                        "label": "wesu",
+                        "value": "wesu"
+                    },
+                    {
+                        "label": "wesa",
+                        "value": "wesa"
+                    },
+                    {
+                        "label": "bwew",
+                        "value": "bwew"
+                    },
+                    {
+                        "label": "bwem",
+                        "value": "bwem"
+                    }
+                ],
+                "type": "text",
+                "paramName": "frequency"
+            },
+            {
+                "label": "Aggregation Method",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "optional": true,
+                "value": "eop",
+                "show": true,
+                "options": [
+                    {
+                        "label": "avg",
+                        "value": "avg"
+                    },
+                    {
+                        "label": "sum",
+                        "value": "sum"
+                    },
+                    {
+                        "label": "eop",
+                        "value": "eop"
+                    }
+                ],
+                "type": "text",
+                "paramName": "aggregation_method"
+            },
+            {
+                "label": "Transform",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "chg",
+                        "value": "chg"
+                    },
+                    {
+                        "label": "ch1",
+                        "value": "ch1"
+                    },
+                    {
+                        "label": "pch",
+                        "value": "pch"
+                    },
+                    {
+                        "label": "pc1",
+                        "value": "pc1"
+                    },
+                    {
+                        "label": "pca",
+                        "value": "pca"
+                    },
+                    {
+                        "label": "cch",
+                        "value": "cch"
+                    },
+                    {
+                        "label": "cca",
+                        "value": "cca"
+                    },
+                    {
+                        "label": "log",
+                        "value": "log"
+                    }
+                ],
+                "type": "text",
+                "paramName": "transform"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/fred_regional",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "region",
+                        "formatterFn": null,
+                        "headerName": "Region",
+                        "description": "The name of the region.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "code",
+                        "headerName": "Code",
+                        "description": "The code of the region.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "value",
+                        "headerName": "Value",
+                        "description": "The obersvation value. The units are defined in the search results by series ID.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "series_id",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Series Id",
+                        "description": "The individual series ID for the region.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ]
+    },
+    "economy_retail_prices_fred_obb": {
+        "name": "Retail Prices",
+        "description": "Get retail prices for common items.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_retail_prices_fred_obb",
+        "params": [
+            {
+                "label": "Item",
+                "description": "The item or basket of items to query.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "paramName": "item"
+            },
+            {
+                "label": "Country",
+                "description": "The country to get data.",
+                "optional": true,
+                "value": "united_states",
+                "type": "text",
+                "show": true,
+                "paramName": "country"
+            },
+            {
+                "label": "Start Date",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "start_date"
+            },
+            {
+                "label": "End Date",
+                "description": "End date of the data, in YYYY-MM-DD format.",
+                "optional": true,
+                "value": null,
+                "type": "date",
+                "show": true,
+                "paramName": "end_date"
+            },
+            {
+                "label": "Region",
+                "description": "The region to get average price levels for.",
+                "optional": true,
+                "value": "all_city",
+                "type": "text",
+                "show": true,
+                "options": [
+                    {
+                        "label": "all_city",
+                        "value": "all_city"
+                    },
+                    {
+                        "label": "northeast",
+                        "value": "northeast"
+                    },
+                    {
+                        "label": "midwest",
+                        "value": "midwest"
+                    },
+                    {
+                        "label": "south",
+                        "value": "south"
+                    },
+                    {
+                        "label": "west",
+                        "value": "west"
+                    }
+                ],
+                "paramName": "region"
+            },
+            {
+                "label": "Frequency",
+                "description": "The frequency of the data.",
+                "optional": true,
+                "value": "monthly",
+                "type": "text",
+                "show": true,
+                "options": [
+                    {
+                        "label": "annual",
+                        "value": "annual"
+                    },
+                    {
+                        "label": "quarter",
+                        "value": "quarter"
+                    },
+                    {
+                        "label": "monthly",
+                        "value": "monthly"
+                    }
+                ],
+                "paramName": "frequency"
+            },
+            {
+                "label": "Transform",
+                "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "options": [
+                    {
+                        "label": "chg",
+                        "value": "chg"
+                    },
+                    {
+                        "label": "ch1",
+                        "value": "ch1"
+                    },
+                    {
+                        "label": "pch",
+                        "value": "pch"
+                    },
+                    {
+                        "label": "pc1",
+                        "value": "pc1"
+                    },
+                    {
+                        "label": "pca",
+                        "value": "pca"
+                    },
+                    {
+                        "label": "cch",
+                        "value": "cch"
+                    },
+                    {
+                        "label": "cca",
+                        "value": "cca"
+                    },
+                    {
+                        "label": "log",
+                        "value": "log"
+                    }
+                ],
+                "type": "text",
+                "paramName": "transform"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/retail_prices",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "symbol",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Symbol",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "country",
+                        "formatterFn": null,
+                        "headerName": "Country",
+                        "description": "",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "description",
+                        "formatterFn": null,
+                        "headerName": "Description",
+                        "description": "Description of the item.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "value",
+                        "headerName": "Value",
+                        "description": "Price, or change in price, per unit.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ]
+    },
+    "economy_pce_fred_obb": {
+        "name": "PCE",
+        "description": "Get Personal Consumption Expenditures (PCE) reports.",
+        "category": "Economy",
+        "searchCategory": "Economy",
+        "widgetId": "economy_pce_fred_obb",
+        "params": [
+            {
+                "label": "Date",
+                "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed.",
+                "optional": true,
+                "value": null,
+                "type": "text",
+                "show": true,
+                "multiSelect": true,
+                "paramName": "date"
+            },
+            {
+                "label": "Category",
+                "description": "The category to query.",
+                "optional": true,
+                "value": "personal_income",
+                "type": "text",
+                "show": true,
+                "options": [
+                    {
+                        "label": "personal_income",
+                        "value": "personal_income"
+                    },
+                    {
+                        "label": "wages_by_industry",
+                        "value": "wages_by_industry"
+                    },
+                    {
+                        "label": "real_pce_percent_change",
+                        "value": "real_pce_percent_change"
+                    },
+                    {
+                        "label": "real_pce_quantity_index",
+                        "value": "real_pce_quantity_index"
+                    },
+                    {
+                        "label": "pce_price_index",
+                        "value": "pce_price_index"
+                    },
+                    {
+                        "label": "pce_dollars",
+                        "value": "pce_dollars"
+                    },
+                    {
+                        "label": "real_pce_chained_dollars",
+                        "value": "real_pce_chained_dollars"
+                    },
+                    {
+                        "label": "pce_price_percent_change",
+                        "value": "pce_price_percent_change"
+                    }
+                ],
+                "paramName": "category"
+            },
+            {
+                "paramName": "provider",
+                "value": "fred",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/economy/pce",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "symbol",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Symbol",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "value",
+                        "headerName": "Value",
+                        "description": "",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "name",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Name",
+                        "description": "The name of the series.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "element_id",
+                        "formatterFn": null,
+                        "headerName": "Element Id",
+                        "description": "The element id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "parent_id",
+                        "formatterFn": null,
+                        "headerName": "Parent Id",
+                        "description": "The parent id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "children",
+                        "formatterFn": null,
+                        "headerName": "Children",
+                        "description": "The element_id of each child, as a comma-separated string.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "level",
+                        "headerName": "Level",
+                        "description": "The indentation level of the element.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "line",
+                        "headerName": "Line",
+                        "description": "The line number of the series in the table.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "FRED"
+        ]
+    },
+    "regulators_sec_cik_map_sec_obb": {
+        "name": "CIK Map",
+        "description": "Map a ticker symbol to a CIK number.",
+        "category": "Regulators",
+        "searchCategory": "Regulators",
+        "widgetId": "regulators_sec_cik_map_sec_obb",
+        "params": [
+            {
+                "label": "Symbol",
+                "description": "Symbol to get data for.",
+                "optional": false,
+                "type": "text",
+                "show": true,
+                "paramName": "symbol"
+            },
+            {
+                "label": "Use Cache",
+                "description": "Whether or not to use cache for the request, default is True.",
+                "optional": true,
+                "value": true,
+                "type": "boolean",
+                "show": true,
+                "paramName": "use_cache"
+            },
+            {
+                "paramName": "provider",
+                "value": "sec",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/regulators/sec/cik_map",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true
+            }
+        },
+        "source": [
+            "SEC"
+        ],
+        "subCategory": "SEC"
+    },
+    "regulators_sec_institutions_search_sec_obb": {
+        "name": "Institutions Search",
+        "description": "Search SEC-regulated institutions by name and return a list of results with CIK numbers.",
+        "category": "Regulators",
+        "searchCategory": "Regulators",
+        "widgetId": "regulators_sec_institutions_search_sec_obb",
+        "params": [
+            {
+                "label": "Query",
+                "description": "Search query.",
+                "optional": true,
+                "value": "",
+                "type": "text",
+                "show": true,
+                "paramName": "query"
+            },
+            {
+                "label": "Use Cache",
+                "description": "Whether or not to use cache.",
+                "optional": true,
+                "value": true,
+                "type": "boolean",
+                "show": true,
+                "paramName": "use_cache"
+            },
+            {
+                "paramName": "provider",
+                "value": "sec",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/regulators/sec/institutions_search",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "institution",
+                        "formatterFn": null,
+                        "headerName": "Institution",
+                        "description": "The name of the institution.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "cik_number",
+                        "headerName": "Cik Number",
+                        "description": "Central Index Key (CIK)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "SEC"
+        ],
+        "subCategory": "SEC"
+    },
+    "regulators_sec_schema_files_sec_obb": {
+        "name": "Schema Files",
+        "description": "Use tool for navigating the directory of SEC XML schema files by year.",
+        "category": "Regulators",
+        "searchCategory": "Regulators",
+        "widgetId": "regulators_sec_schema_files_sec_obb",
+        "params": [
+            {
+                "label": "Query",
+                "description": "Search query.",
+                "optional": true,
+                "value": "",
+                "type": "text",
+                "show": true,
+                "paramName": "query"
+            },
+            {
+                "label": "Use Cache",
+                "description": "Whether or not to use cache.",
+                "optional": true,
+                "value": true,
+                "type": "boolean",
+                "show": true,
+                "paramName": "use_cache"
+            },
+            {
+                "label": "Url",
+                "description": "Enter an optional URL path to fetch the next level.",
+                "optional": true,
+                "value": null,
+                "show": true,
+                "paramName": "url"
+            },
+            {
+                "paramName": "provider",
+                "value": "sec",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/regulators/sec/schema_files",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true
+            }
+        },
+        "source": [
+            "SEC"
+        ],
+        "subCategory": "SEC"
+    },
+    "regulators_sec_symbol_map_sec_obb": {
+        "name": "Symbol Map",
+        "description": "Map a CIK number to a ticker symbol, leading 0s can be omitted or included.",
+        "category": "Regulators",
+        "searchCategory": "Regulators",
+        "widgetId": "regulators_sec_symbol_map_sec_obb",
+        "params": [
+            {
+                "label": "Query",
+                "description": "Search query.",
+                "optional": false,
+                "value": null,
+                "type": "text",
+                "show": true,
+                "paramName": "query"
+            },
+            {
+                "label": "Use Cache",
+                "description": "Whether or not to use cache. If True, cache will store for seven days.",
+                "optional": true,
+                "value": true,
+                "type": "boolean",
+                "show": true,
+                "paramName": "use_cache"
+            },
+            {
+                "paramName": "provider",
+                "value": "sec",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/regulators/sec/symbol_map",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true
+            }
+        },
+        "source": [
+            "SEC"
+        ],
+        "subCategory": "SEC"
+    },
+    "regulators_sec_rss_litigation_sec_obb": {
+        "name": "RSS Litigation",
+        "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
+        "category": "Regulators",
+        "searchCategory": "Regulators",
+        "widgetId": "regulators_sec_rss_litigation_sec_obb",
+        "params": [
+            {
+                "paramName": "provider",
+                "value": "sec",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/regulators/sec/rss_litigation",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Date",
+                        "description": "The date of publication.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "title",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Title",
+                        "description": "The title of the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "summary",
+                        "formatterFn": null,
+                        "headerName": "Summary",
+                        "description": "Short summary of the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "id",
+                        "formatterFn": null,
+                        "headerName": "Id",
+                        "description": "The identifier associated with the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "link",
+                        "formatterFn": null,
+                        "headerName": "Link",
+                        "description": "URL to the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "SEC"
+        ],
+        "subCategory": "SEC"
+    },
+    "regulators_sec_sic_search_sec_obb": {
+        "name": "SIC Search",
+        "description": "Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.",
+        "category": "Regulators",
+        "searchCategory": "Regulators",
+        "widgetId": "regulators_sec_sic_search_sec_obb",
+        "params": [
+            {
+                "label": "Query",
+                "description": "Search query.",
+                "optional": true,
+                "value": "",
+                "type": "text",
+                "show": true,
+                "paramName": "query"
+            },
+            {
+                "label": "Use Cache",
+                "description": "Whether or not to use cache.",
+                "optional": true,
+                "value": true,
+                "type": "boolean",
+                "show": true,
+                "paramName": "use_cache"
+            },
+            {
+                "paramName": "provider",
+                "value": "sec",
+                "show": false
+            }
+        ],
+        "endpoint": "api/v1/regulators/sec/sic_search",
+        "gridData": {
+            "w": 45,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "results",
+            "table": {
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "sic_code",
+                        "headerName": "Sic Code",
+                        "description": "Sector Industrial Code (SIC)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "industry_title",
+                        "formatterFn": null,
+                        "headerName": "Industry Title",
+                        "description": "Industry title.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "office",
+                        "formatterFn": null,
+                        "headerName": "Office",
+                        "description": "Reporting office within the Corporate Finance Office",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    }
+                ]
+            }
+        },
+        "source": [
+            "SEC"
+        ],
+        "subCategory": "SEC"
+    }
+}
