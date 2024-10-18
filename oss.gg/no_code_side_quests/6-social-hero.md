@@ -24,4 +24,6 @@ Your turn 👇
 » 10-October-2024 by Anjali sharma
 » Link to the post:  https://x.com/AnjaliS57610098/status/1844391459581198659?t=komZnwk6nGkJ07X77LekKQ&s=08
 
+» 15-October-2024 by Suvam Das
+» Link to the post:https://www.linkedin.com/posts/suvamd_openbb-decisions-optimization-activity-7251919213701824512-WLSg?utm_source=share&utm_medium=member_desktop
 ---
