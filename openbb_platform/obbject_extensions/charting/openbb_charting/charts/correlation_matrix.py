@@ -51,6 +51,7 @@ def correlation_matrix(  # noqa: PLR0912
     title = kwargs.get("title") or "Asset Correlation Matrix"
     text_color = "white" if ChartStyle().plt_style == "dark" else "black"
     colorscale = kwargs.get("colorscale") or "RdBu"
+
     heatmap = Heatmap(
         z=df,
         x=X,
@@ -60,28 +61,30 @@ def correlation_matrix(  # noqa: PLR0912
         colorscale=colorscale,
         colorbar=dict(
             orientation="v",
-            x=0.9,
-            y=0.45,
+            x=0.8,
+            y=0.5,
             xanchor="left",
             yanchor="middle",
-            len=0.75,
+            xref="container",
+            yref="paper",
+            len=0.66,
             bgcolor="rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)",
         ),
         text=df.fillna(""),
         texttemplate="%{text:.4f}",
-        hoverinfo="skip",
+        hoverongaps=False,
+        hovertemplate="%{x} - %{y} : %{z:.4f}<extra></extra>",
     )
     layout = Layout(
         title=title,
         title_x=0.5,
-        title_y=0.95,
         xaxis=dict(
             showgrid=False,
             showline=False,
             ticklen=0,
-            tickfont=dict(size=16),
-            ticklabelstandoff=10,
-            domain=[0.05, 1],
+            domain=[0.03, 1],
+            tickangle=90,
+            automargin=False,
         ),
         yaxis=dict(
             showgrid=False,
@@ -89,12 +92,11 @@ def correlation_matrix(  # noqa: PLR0912
             autorange="reversed",
             showline=False,
             ticklen=0,
-            tickfont=dict(size=16),
-            ticklabelstandoff=15,
-            domain=[0.05, 1],
+            automargin="height+width+left",
+            tickmode="auto",
         ),
-        margin=dict(r=20, t=0, b=50),
-        dragmode=False,
+        margin=dict(l=10, r=0, t=0, b=10),
+        dragmode="pan",
     )
     fig = Figure(data=[heatmap], layout=layout)
     figure = OpenBBFigure(fig=fig)
