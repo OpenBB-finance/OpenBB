@@ -82,6 +82,7 @@ def test_petroleum_status_report(params, obb):
         (
             {
                 "table": "01",
+                "symbol": None,
                 "start_date": "2024-09-01",
                 "end_date": "2024-10-01",
                 "provider": "eia",
