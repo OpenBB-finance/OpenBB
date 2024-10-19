@@ -188,7 +188,7 @@ class EiaShortTermEnergyOutlookFetcher(
             data = res.get("response", {}).get("data", [])  # type: ignore
             if not data:
                 series_id = (
-                    res.get("request", {})
+                    res.get("request", {})  # type: ignore
                     .get("params", {})
                     .get("facets", {})
                     .get("seriesId", [])
@@ -211,7 +211,7 @@ class EiaShortTermEnergyOutlookFetcher(
                     )
                     if not additional_data:
                         series_id = (
-                            res.get("request", {})
+                            res.get("request", {})  # type: ignore
                             .get("params", {})
                             .get("facets", {})
                             .get("seriesId", [])
