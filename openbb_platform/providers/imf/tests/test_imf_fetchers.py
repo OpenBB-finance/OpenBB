@@ -17,7 +17,9 @@ def scrub_string(key):
     """Scrub a string from the response."""
 
     def before_record_response(response):
-        response["headers"][key] = response["headers"].update({key: None})
+        """Before record response."""
+        if key in response["headers"]:
+            response["headers"][key] = None
         return response
 
     return before_record_response
@@ -35,7 +37,7 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_imf_economic_indicators_fetcher(credentials=test_credentials):
+def test_imf_economic_indicators_fetcher(credentials=None):
     """Test the IMF EconomicIndicators fetcher."""
     params = {
         "country": "JP",
@@ -52,7 +54,7 @@ def test_imf_economic_indicators_fetcher(credentials=test_credentials):
 
 # The data for this request are local files, so we can't record them.
 @pytest.mark.record
-def test_imf_available_indicators_fetcher(credentials=test_credentials):
+def test_imf_available_indicators_fetcher(credentials=None):
     """Test the IMF Available Indicators fetcher."""
     params = {}
 
@@ -62,7 +64,7 @@ def test_imf_available_indicators_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_imf_direction_of_trade_fetcher(credentials=test_credentials):
+def test_imf_direction_of_trade_fetcher(credentials=None):
     """Test the ImfDirectionOfTrade fetcher."""
     params = {
         "provider": "imf",
