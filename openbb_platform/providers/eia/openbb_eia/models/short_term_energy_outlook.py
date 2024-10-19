@@ -115,7 +115,6 @@ class EiaShortTermEnergyOutlookFetcher(
         """Extract the data from the EIA API."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from warnings import warn
         from openbb_core.provider.utils.helpers import amake_request
         from openbb_eia.utils.helpers import response_callback
 
