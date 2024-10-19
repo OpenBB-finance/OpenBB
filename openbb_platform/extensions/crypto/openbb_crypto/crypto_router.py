@@ -15,6 +15,7 @@ from openbb_crypto.coins.coins_router import router as coins_router
 from openbb_crypto.fees.fees_router import router as fees_router
 from openbb_crypto.price.price_router import router as price_router
 from openbb_crypto.revenue.revenue_router import router as revenue_router
+from openbb_crypto.stablecoins.stablecoins_router import router as stablecoins_router
 from openbb_crypto.tvl.tvl_router import router as tvl_router
 from openbb_crypto.volumes.volumes_router import router as volumes_router
 from openbb_crypto.yields.yields_router import router as yields_router
@@ -27,6 +28,7 @@ router.include_router(fees_router)
 router.include_router(revenue_router)
 router.include_router(volumes_router)
 router.include_router(coins_router)
+router.include_router(stablecoins_router)
 
 
 # pylint: disable=unused-argument
