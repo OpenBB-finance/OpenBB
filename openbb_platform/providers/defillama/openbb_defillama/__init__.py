@@ -18,7 +18,7 @@ from openbb_defillama.models.volumes_overview import DeFiLlamaVolumesOverviewFet
 from openbb_defillama.models.volumes_summary import DeFiLlamaVolumesSummaryFetcher
 from openbb_defillama.models.yields_historical import DeFiLlamaYieldsHistoricalFetcher
 from openbb_defillama.models.yields_pools import DeFiLlamaYieldsPoolsFetcher
-
+from openbb_defillama.models.stablecoins_current import DeFiLlamaStablecoinsCurrentFetcher
 from openbb_platform.providers.defillama.openbb_defillama.models.coins_block_timestamp import (
     DeFiLlamaCoinsBlockTimestampFetcher,
 )
@@ -39,6 +39,7 @@ defillama_provider = Provider(
         "FeesSummary": DeFiLlamaFeesSummaryFetcher,
         "RevenueOverview": DeFiLlamaRevenueOverviewFetcher,
         "RevenueSummary": DeFiLlamaRevenueSummaryFetcher,
+        "StablecoinsCurrent": DeFiLlamaStablecoinsCurrentFetcher,
         "StablecoinsList": DeFiLlamaStablecoinsListFetcher,
         "TvlChains": DeFiLlamaTvlChainsFetcher,
         "TvlCurrent": DeFiLlamaTvlCurrentFetcher,

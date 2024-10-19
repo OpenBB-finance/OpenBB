@@ -30,3 +30,18 @@ async def list(
 ) -> OBBject:
     """Get all stablecoins along with their circulating amounts."""
     return await OBBject.from_query(Query(**locals()))
+
+@router.command(
+    model="StablecoinsCurrent",
+    examples=[
+        APIEx(parameters={"provider": "defillama"}),
+    ],
+)
+async def current(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get current market cap sum of all stablecoins on each chain."""
+    return await OBBject.from_query(Query(**locals()))
