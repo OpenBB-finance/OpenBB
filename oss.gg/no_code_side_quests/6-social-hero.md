@@ -27,3 +27,6 @@ Your turn 👇
 » 15-October-2024 by Suvam Das
 » Link to the post:https://www.linkedin.com/posts/suvamd_openbb-decisions-optimization-activity-7251919213701824512-WLSg?utm_source=share&utm_medium=member_desktop
 ---
+
+» 19-October-2024 by Harsh Raj
+» Link to the post: https://www.linkedin.com/posts/harshraj1512_opensource-financetool-investmentresearch-activity-7253401682892447744-sxQF?utm_source=share&utm_medium=member_desktop
