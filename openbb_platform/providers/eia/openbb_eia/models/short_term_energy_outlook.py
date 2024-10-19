@@ -3,6 +3,7 @@
 # pylint: disable=unused-argument,too-many-branches,too-many-statements,too-many-locals
 
 from typing import Any, Literal, Optional
+from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,6 +11,7 @@ from openbb_core.provider.standard_models.short_term_energy_outlook import (
     ShortTermEnergyOutlookData,
     ShortTermEnergyOutlookQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
@@ -29,6 +31,9 @@ class EiaShortTermEnergyOutlookQueryParams(ShortTermEnergyOutlookQueryParams):
     """
 
     __json_schema_extra__ = {
+        "symbol": {
+            "multiple_items_allowed": True,
+        },
         "table": {
             "multiple_items_allowed": False,
             "choices": list(SteoTableNames),
@@ -38,9 +43,15 @@ class EiaShortTermEnergyOutlookQueryParams(ShortTermEnergyOutlookQueryParams):
             "choices": ["month", "quarter", "annual"],
         },
     }
+    symbol: Optional[str] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("symbol", "")
+        + " If provided, overrides the 'table' parameter to return only the specified symbol from the STEO API.",
+    )
     table: SteoTableType = Field(
         default="01",
         description="""The specific table within the STEO dataset. Default is '01'.
+        When 'symbol' is provided, this parameter is ignored.
         \n    01: US Energy Markets Summary
         \n    02: Nominal Energy Prices
         \n    03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories
@@ -106,6 +117,7 @@ class EiaShortTermEnergyOutlookFetcher(
         import asyncio  # noqa
         from warnings import warn
         from openbb_core.provider.utils.helpers import amake_request
+        from openbb_eia.utils.helpers import response_callback
 
         api_key = credentials.get("eia_api_key") if credentials else ""
         frequency_dict = {
@@ -141,7 +153,11 @@ class EiaShortTermEnergyOutlookFetcher(
             end_date = f"&end={query.end_date.strftime('%Y')}"
 
         # We chunk the request to avoid pagination and make the query execution faster.
-        symbols = [d.upper() for d in SteoTableMap[query.table]]
+        symbols = (
+            query.symbol.upper().split(",")
+            if query.symbol
+            else [d.upper() for d in SteoTableMap[query.table]]
+        )
         seen = set()
         unique_symbols: list = []
         for symbol in symbols:
@@ -168,11 +184,17 @@ class EiaShortTermEnergyOutlookFetcher(
 
         async def get_one(url):
             """Response callback function."""
-            res = await amake_request(url)
+            res = await amake_request(url, response_callback=response_callback)
             data = res.get("response", {}).get("data", [])  # type: ignore
             if not data:
+                series_id = (
+                    res.get("request", {})
+                    .get("params", {})
+                    .get("facets", {})
+                    .get("seriesId", [])
+                )
                 masked_url = url.replace(api_key, "API_KEY")
-                messages.append(f"No data returned for {masked_url}")
+                messages.append(f"No data returned for {series_id or masked_url}")
             if data:
                 results.extend(data)
             response_total = int(res.get("response", {}).get("total", 0))  # type: ignore
@@ -188,8 +210,16 @@ class EiaShortTermEnergyOutlookFetcher(
                         "data", []
                     )
                     if not additional_data:
+                        series_id = (
+                            res.get("request", {})
+                            .get("params", {})
+                            .get("facets", {})
+                            .get("seriesId", [])
+                        )
                         masked_url = url.replace(api_key, "API_KEY")
-                        messages.append(f"No additional data returned for {masked_url}")
+                        messages.append(
+                            f"No additional data returned for {series_id or masked_url}"
+                        )
                     if additional_data:
                         results.extend(additional_data)
                     n_results += len(additional_data)
@@ -206,7 +236,7 @@ class EiaShortTermEnergyOutlookFetcher(
                 "The request was returned empty with no error messages."
             )
         if not results and messages:
-            raise EmptyDataError("\n".join(messages))
+            raise OpenBBError("\n".join(messages))
         if results and messages:
             warn("\n".join(messages))
 
@@ -222,7 +252,11 @@ class EiaShortTermEnergyOutlookFetcher(
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame, to_datetime
 
-        symbols = [d.upper() for d in SteoTableMap[query.table]]
+        symbols = (
+            query.symbol.upper().split(",")
+            if query.symbol
+            else [d.upper() for d in SteoTableMap[query.table]]
+        )
         seen = set()
         unique_symbols: list = []
         for symbol in symbols:
@@ -237,10 +271,17 @@ class EiaShortTermEnergyOutlookFetcher(
         df.seriesId = Categorical(df.seriesId, categories=symbols, ordered=True)
         df = df.sort_values(["period", "seriesId"])
         df = df.reset_index(drop=True)
-        df["order"] = df.groupby("period").cumcount() + 1
-        df["table"] = (
-            f"STEO - {table.replace('0', '') if table[0] == '0' else table}: {SteoTableNames[table]}"
-        )
+        returned_symbols = df.seriesId.unique().tolist()
+        missing_symbols = [s for s in symbols if s not in returned_symbols]
+
+        if query.symbol and missing_symbols:
+            warn(f"No data was returned for: {', '.join(missing_symbols)}")
+
+        if not query.symbol:
+            df["order"] = df.groupby("period").cumcount() + 1
+            df["table"] = (
+                f"STEO - {table.replace('0', '') if table[0] == '0' else table}: {SteoTableNames[table]}"
+            )
         records = df.to_dict(orient="records")
 
         return [EiaShortTermEnergyOutlookData.model_validate(d) for d in records]

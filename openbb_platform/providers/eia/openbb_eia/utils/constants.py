@@ -7,7 +7,7 @@ from typing import Literal
 WpsrCategoryType = Literal[
     "balance_sheet",
     "inputs_and_production",
-    "refiner_and_blender_net_production",
+    "refiner_blender_net_production",
     "crude_petroleum_stocks",
     "gasoline_fuel_stocks",
     "total_gasoline_by_sub_padd",
@@ -22,7 +22,7 @@ WpsrCategoryType = Literal[
 WpsrCategoryChoices = [
     "balance_sheet",
     "inputs_and_production",
-    "refiner_and_blender_net_production",
+    "refiner_blender_net_production",
     "crude_petroleum_stocks",
     "gasoline_fuel_stocks",
     "total_gasoline_by_sub_padd",
@@ -119,7 +119,7 @@ WpsrTableChoices = [
 WpsrFileMap = {
     "balance_sheet": "https://ir.eia.gov/wpsr/psw01.xls",
     "inputs_and_production": "https://ir.eia.gov/wpsr/psw02.xls",
-    "refiner_and_blender_net_production": "https://ir.eia.gov/wpsr/psw03.xls",
+    "refiner_blender_net_production": "https://ir.eia.gov/wpsr/psw03.xls",
     "crude_petroleum_stocks": "https://ir.eia.gov/wpsr/psw04.xls",
     "gasoline_fuel_stocks": "https://ir.eia.gov/wpsr/psw05.xls",
     "total_gasoline_by_sub_padd": "https://ir.eia.gov/wpsr/psw05a.xls",

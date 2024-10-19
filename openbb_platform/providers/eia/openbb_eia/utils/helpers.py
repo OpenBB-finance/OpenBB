@@ -3,9 +3,20 @@
 from typing import TYPE_CHECKING
 
 from async_lru import alru_cache
+from openbb_core.app.model.abstract.error import OpenBBError
 
 if TYPE_CHECKING:
     from pandas import ExcelFile
+
+
+async def response_callback(response, _):
+    """Response callback to read the response."""
+    if response.status == 403:
+        res = await response.json()
+        code = res.get("error", {}).get("code", "")
+        msg = res.get("error", {}).get("message", "An invalid api_key was supplied.")
+        raise OpenBBError(f"{code} -> {msg}")
+    return await response.json()
 
 
 @alru_cache(maxsize=14)

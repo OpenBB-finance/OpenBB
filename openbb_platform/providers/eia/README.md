@@ -7,7 +7,7 @@ This module integrates the [EIA](https://eia.gov) data provider into the OpenBB 
 ### PyPI
 
 ```sh
-pip install openbb-eia
+pip install openbb-us-eia
 ```
 
 ### From Source
@@ -115,3 +115,5 @@ The Short Term Energy Outlook (STEO) is curated by table, and relies on the EIA 
     09c: US Regional Weather Data
     10a: Drilling Productivity Metrics
     10b: Crude Oil and Natural Gas Production from Shale and Tight Formations
+
+    A "symbol" parameter allows lookup by individual series ID(s) within the dataset.
