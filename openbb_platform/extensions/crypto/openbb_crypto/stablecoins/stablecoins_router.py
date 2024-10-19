@@ -45,3 +45,18 @@ async def current(
 ) -> OBBject:
     """Get current market cap sum of all stablecoins on each chain."""
     return await OBBject.from_query(Query(**locals()))
+
+@router.command(
+    model="StablecoinsHistorical",
+    examples=[
+        APIEx(parameters={"provider": "defillama"}),
+    ],
+)
+async def historical(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get historical prices of all stablecoins."""
+    return await OBBject.from_query(Query(**locals()))
