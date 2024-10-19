@@ -22,6 +22,4 @@ Your turn 👇
 ////////////////////////////
 
 » 01-October-2024 by YOUR NAME
-» Link to Blog Post: https://medium.com/...
-
----
+» Link to Blog Post:https://medium.com/@oyetunjiibukunoluwa8/how-individual-investors-traders-and-financial-analysts-can-make-use-of-openbb-for-their-720e1c63281f
