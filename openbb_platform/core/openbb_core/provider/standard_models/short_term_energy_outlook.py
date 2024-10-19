@@ -30,7 +30,7 @@ class ShortTermEnergyOutlookData(Data):
     """Short Term Energy Outlook Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    table: Optional[str] = Field(description="Table name for the data.")
+    table: Optional[str] = Field(default=None, description="Table name for the data.")
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     order: Optional[int] = Field(
         default=None, description="Presented order of the data, relative to the table."

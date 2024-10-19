@@ -51,7 +51,7 @@ class ROUTER_commodity(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['eia']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: eia.
-        category : Literal['balance_sheet', 'inputs_and_production', 'refiner_and_blender_net_production', 'crude_petroleum_stocks', 'gasoline_fuel_stocks', 'total_gasoline_by_sub_padd', 'distillate_fuel_oil_stocks', 'imports', 'imports_by_country', 'weekly_estimates', 'spot_prices_crude_gas_heating', 'spot_prices_diesel_jet_fuel_propane', 'retail_prices']
+        category : Literal['balance_sheet', 'inputs_and_production', 'refiner_blender_net_production', 'crude_petroleum_stocks', 'gasoline_fuel_stocks', 'total_gasoline_by_sub_padd', 'distillate_fuel_oil_stocks', 'imports', 'imports_by_country', 'weekly_estimates', 'spot_prices_crude_gas_heating', 'spot_prices_diesel_jet_fuel_propane', 'retail_prices']
             The group of data to be returned. The default is the balance sheet. (provider: eia)
         table : Literal['all', 'conventional_gas', 'crude', 'crude_production', 'crude_production_avg', 'diesel', 'ethanol_plant_production', 'ethanol_plant_production_avg', 'exports', 'exports_avg', 'heating_oil', 'imports', 'imports_avg', 'imports_by_country', 'imports_by_country_avg', 'inputs_and_utilization', 'inputs_and_utilization_avg', 'jet_fuel', 'monthly', 'net_imports_inc_spr_avg', 'net_imports_incl_spr', 'net_production', 'net_production_avg', 'net_production_by_product', 'net_production_by_production_avg', 'product_by_region', 'product_by_region_avg', 'product_supplied', 'product_supplied_avg', 'propane', 'rbob', 'refiner_blender_net_production', 'refiner_blender_net_production_avg', 'stocks', 'supply', 'supply_avg', 'ulta_low_sulfur_distillate_reflassification', 'ulta_low_sulfur_distillate_reflassification_avg', 'weekly']
             The specific table element within the category to be returned, default is 'stocks'.
@@ -121,7 +121,7 @@ class ROUTER_commodity(Container):
                             "choices": [
                                 "balance_sheet",
                                 "inputs_and_production",
-                                "refiner_and_blender_net_production",
+                                "refiner_blender_net_production",
                                 "crude_petroleum_stocks",
                                 "gasoline_fuel_stocks",
                                 "total_gasoline_by_sub_padd",
@@ -227,8 +227,11 @@ class ROUTER_commodity(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['eia']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: eia.
+        symbol : Optional[str]
+            Symbol to get data for. If provided, overrides the 'table' parameter to return only the specified symbol from the STEO API. Multiple comma separated items allowed. (provider: eia)
         table : Literal['01', '02', '03a', '03b', '03c', '03d', '03e', '04a', '04b', '04c', '04d', '05a', '05b', '06', '07a', '07b', '07c', '07d1', '07d2', '07e', '08', '09a', '09b', '09c', '10a', '10b']
             The specific table within the STEO dataset. Default is '01'.
+                When 'symbol' is provided, this parameter is ignored.
 
             01: US Energy Markets Summary
 
@@ -341,6 +344,9 @@ class ROUTER_commodity(Container):
                 },
                 extra_params=kwargs,
                 info={
+                    "symbol": {
+                        "eia": {"multiple_items_allowed": True, "choices": None}
+                    },
                     "table": {
                         "eia": {
                             "multiple_items_allowed": False,
