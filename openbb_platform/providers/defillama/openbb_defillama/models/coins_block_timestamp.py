@@ -15,7 +15,7 @@ class DeFiLlamaCoinsBlockTimestampQueryParams(QueryParams):
 
     chain: str = Field(description="The chain to fetch the block timestamp for.")
     timestamp: Union[int, str, datetime] = Field(
-        description="The timestamp to fetch the block for. If a string is provided, it should follow the 'day-first' format."
+        description="The timestamp to fetch the block for. If a string is provided, it should follow the 'day-first' format."  # noqa: E501
     )
 
     @field_validator("timestamp", mode="before")

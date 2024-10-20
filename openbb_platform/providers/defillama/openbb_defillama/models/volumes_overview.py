@@ -26,7 +26,10 @@ class DeFiLlamaVolumesOverviewQueryParams(QueryParams):
         default="premium", description="The type of volume to fetch."
     )
     # NOTE: Disabled since the API does not return any data
-    # aggregate: Literal["daily", "total"] = Field(default="daily", description="Whether to fetch daily or total aggregate data.")
+    # aggregate: Literal["daily", "total"] = Field(
+    #     default="daily",
+    #     description="Whether to fetch daily or total aggregate data.",
+    # )
 
 
 class DeFiLlamaChainsBreakdownData(Data):

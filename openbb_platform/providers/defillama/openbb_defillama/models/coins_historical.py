@@ -20,7 +20,7 @@ class DeFiLlamaCoinsHistoricalQueryParams(QueryParams):
     )
     search_width: str = Field(
         default="6h",
-        description="Time range to get the current price for. Acceptable format: <int>W, <int>D, <int>H, or <int>M (case insensitive).",
+        description="Time range to get the current price for. Acceptable format: <int>W, <int>D, <int>H, or <int>M (case insensitive).",  # noqa: E501
     )
 
     @field_validator("timestamp", mode="before")

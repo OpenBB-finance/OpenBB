@@ -14,7 +14,7 @@ from pydantic import Field, field_validator
 class DeFiLlamaCoinsChangeQueryParams(QueryParams):
     token: str = Field(description="The token to fetch data for.")
     timestamp: Union[int, str, datetime] = Field(
-        description="The timestamp to fetch the block for. If a string is provided, it should follow the 'day-first' format."
+        description="The timestamp to fetch the block for. If a string is provided, it should follow the 'day-first' format."  # noqa: E501
     )
     look_forward: bool = Field(
         default=False,
@@ -22,7 +22,7 @@ class DeFiLlamaCoinsChangeQueryParams(QueryParams):
     )
     period: str = Field(
         default="24h",
-        description="Time range to get the current price for. Acceptable format: <int>W, <int>D, <int>H, or <int>M (case insensitive).",
+        description="Time range to get the current price for. Acceptable format: <int>W, <int>D, <int>H, or <int>M (case insensitive).",  # noqa: E501
     )
 
     @field_validator("timestamp", mode="before")

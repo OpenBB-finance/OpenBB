@@ -17,20 +17,20 @@ class DeFiLlamaCoinsChartQuery(QueryParams):
     token: str = Field(description="The token to get the chart for.")
     start_date: Optional[Union[int, str, datetime]] = Field(
         default=None,
-        description="The start date to get the chart for. If a string is provided, it should follow the 'day-first' format.",
+        description="The start date to get the chart for. If a string is provided, it should follow the 'day-first' format.",  # noqa: E501
     )
     end_date: Optional[Union[int, str, datetime]] = Field(
         default=None,
-        description="The end date to get the chart for. If a string is provided, it should follow the 'day-first' format.",
+        description="The end date to get the chart for. If a string is provided, it should follow the 'day-first' format.",  # noqa: E501
     )
     span: int = Field(default=0, description="The number of data points to return.")
     period: str = Field(
         default="24h",
-        description="Duration between data points. Acceptable format: <int>W, <int>D, <int>H, or <int>M (case insensitive).",
+        description="Duration between data points. Acceptable format: <int>W, <int>D, <int>H, or <int>M (case insensitive).",  # noqa: E501
     )
     search_width: str = Field(
         default="2h",
-        description="Time range to get the current price for. Acceptable format: <int>W, <int>D, <int>H, or <int>M (case insensitive).",
+        description="Time range to get the current price for. Acceptable format: <int>W, <int>D, <int>H, or <int>M (case insensitive).",  # noqa: E501
     )
 
     @field_validator("start_date", "end_date", mode="before")
