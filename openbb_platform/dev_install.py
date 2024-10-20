@@ -2,8 +2,8 @@
 
 # flake8: noqa: S603
 
-import subprocess
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
