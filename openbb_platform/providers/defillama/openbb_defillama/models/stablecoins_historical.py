@@ -20,7 +20,9 @@ class DeFiLlamaStablecoinsHistoricalData(Data):
     """DeFiLlama Stablecoins Historical Data."""
 
     date: datetime = Field(description="Date of the data.")
-    prices: Dict[str, float] = Field(description="Prices of the stablecoin on each chain.")
+    prices: Dict[str, float] = Field(
+        description="Prices of the stablecoin on each chain."
+    )
 
     @field_validator("date", mode="before")
     def validate_date(cls, v):

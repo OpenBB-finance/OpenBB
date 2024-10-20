@@ -34,12 +34,16 @@ class DeFiLlamaStablecoinsCurrentData(Data):
 
 
 class DeFiLlamaStablecoinsCurrentFetcher(
-    Fetcher[DeFiLlamaStablecoinsCurrentQueryParams, List[DeFiLlamaStablecoinsCurrentData]]
+    Fetcher[
+        DeFiLlamaStablecoinsCurrentQueryParams, List[DeFiLlamaStablecoinsCurrentData]
+    ]
 ):
     """Fetcher for DeFiLlama Stablecoins Current data"""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> DeFiLlamaStablecoinsCurrentQueryParams:
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> DeFiLlamaStablecoinsCurrentQueryParams:
         """Transform query parameters"""
         return DeFiLlamaStablecoinsCurrentQueryParams(**params)
 
@@ -54,7 +58,9 @@ class DeFiLlamaStablecoinsCurrentFetcher(
 
     @staticmethod
     def transform_data(
-        query: DeFiLlamaStablecoinsCurrentQueryParams, data: Dict[str, Any], **kwargs: Any
+        query: DeFiLlamaStablecoinsCurrentQueryParams,
+        data: Dict[str, Any],
+        **kwargs: Any
     ) -> List[DeFiLlamaStablecoinsCurrentData]:
         """Transform the data into the desired format"""
         return [DeFiLlamaStablecoinsCurrentData.model_validate(d) for d in data]

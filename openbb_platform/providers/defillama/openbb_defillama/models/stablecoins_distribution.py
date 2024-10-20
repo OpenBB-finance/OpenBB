@@ -103,7 +103,10 @@ class DeFiLlamaStablecoinsDistributionData(Data):
 
     @field_validator("chain_balances", mode="before")
     def validate_chain_balances(cls, v):
-        return {c: [DeFiLlamaStablecoinsChainTokensData.model_validate(i) for i in d] for c,d in v.items()}
+        return {
+            c: [DeFiLlamaStablecoinsChainTokensData.model_validate(i) for i in d]
+            for c, d in v.items()
+        }
 
     @field_validator("tokens", mode="before")
     def validate_tokens(cls, v):
@@ -145,9 +148,7 @@ class DeFiLlamaStablecoinsDistributionFetcher(
 
         transformed_data = {
             **data,
-            "chainBalances": {
-                k: v["tokens"] for k, v in data["chainBalances"].items()
-            },
+            "chainBalances": {k: v["tokens"] for k, v in data["chainBalances"].items()},
         }
 
         return DeFiLlamaStablecoinsDistributionData.model_validate(transformed_data)
