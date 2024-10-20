@@ -3,6 +3,7 @@
 # flake8: noqa: S603
 
 import subprocess
+import shutil
 import sys
 from pathlib import Path
 
@@ -139,6 +140,9 @@ def install_platform_local(_extras: bool = False):
     TEMP_PYPROJECT = dumps(pyproject_toml)
 
     try:
+        if shutil.which("poetry") is None:
+            raise Exception("poetry not found. Please install poetry first.")
+
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
             f.write(TEMP_PYPROJECT)
 
