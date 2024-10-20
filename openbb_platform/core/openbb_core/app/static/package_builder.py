@@ -5,7 +5,6 @@ import builtins
 import inspect
 import re
 import shutil
-import sys
 from dataclasses import Field as DCField
 from functools import partial
 from inspect import Parameter, _empty, isclass, signature
