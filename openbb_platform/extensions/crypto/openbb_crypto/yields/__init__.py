@@ -1,0 +1,1 @@
+"""OpenBB Crypto Yields Router."""
