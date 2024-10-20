@@ -10,6 +10,7 @@ from openbb_defillama.models.fees_overview import DeFiLlamaFeesOverviewFetcher
 from openbb_defillama.models.fees_summary import DeFiLlamaFeesSummaryFetcher
 from openbb_defillama.models.revenue_overview import DeFiLlamaRevenueOverviewFetcher
 from openbb_defillama.models.revenue_summary import DeFiLlamaRevenueSummaryFetcher
+from openbb_defillama.models.stablecoins_charts import DeFiLlamaStablecoinsChartsFetcher
 from openbb_defillama.models.stablecoins_current import (
     DeFiLlamaStablecoinsCurrentFetcher,
 )
@@ -48,6 +49,7 @@ defillama_provider = Provider(
         "FeesSummary": DeFiLlamaFeesSummaryFetcher,
         "RevenueOverview": DeFiLlamaRevenueOverviewFetcher,
         "RevenueSummary": DeFiLlamaRevenueSummaryFetcher,
+        "StablecoinsCharts": DeFiLlamaStablecoinsChartsFetcher,
         "StablecoinsCurrent": DeFiLlamaStablecoinsCurrentFetcher,
         "StablecoinsDistribution": DeFiLlamaStablecoinsDistributionFetcher,
         "StablecoinsList": DeFiLlamaStablecoinsListFetcher,

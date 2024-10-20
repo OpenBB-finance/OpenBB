@@ -78,3 +78,19 @@ async def distribution(
 ) -> OBBject:
     """Get historical prices of all stablecoins."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="StablecoinsCharts",
+    examples=[
+        APIEx(parameters={"provider": "defillama"}),
+    ],
+)
+async def charts(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get historical market cap sum of all stablecoins and also in a chain."""
+    return await OBBject.from_query(Query(**locals()))
