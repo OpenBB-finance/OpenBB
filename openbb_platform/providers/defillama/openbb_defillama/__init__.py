@@ -10,6 +10,15 @@ from openbb_defillama.models.fees_overview import DeFiLlamaFeesOverviewFetcher
 from openbb_defillama.models.fees_summary import DeFiLlamaFeesSummaryFetcher
 from openbb_defillama.models.revenue_overview import DeFiLlamaRevenueOverviewFetcher
 from openbb_defillama.models.revenue_summary import DeFiLlamaRevenueSummaryFetcher
+from openbb_defillama.models.stablecoins_current import (
+    DeFiLlamaStablecoinsCurrentFetcher,
+)
+from openbb_defillama.models.stablecoins_distribution import (
+    DeFiLlamaStablecoinsDistributionFetcher,
+)
+from openbb_defillama.models.stablecoins_historical import (
+    DeFiLlamaStablecoinsHistoricalFetcher,
+)
 from openbb_defillama.models.stablecoins_list import DeFiLlamaStablecoinsListFetcher
 from openbb_defillama.models.tvl_chains import DeFiLlamaTvlChainsFetcher
 from openbb_defillama.models.tvl_current import DeFiLlamaTvlCurrentFetcher
@@ -18,8 +27,7 @@ from openbb_defillama.models.volumes_overview import DeFiLlamaVolumesOverviewFet
 from openbb_defillama.models.volumes_summary import DeFiLlamaVolumesSummaryFetcher
 from openbb_defillama.models.yields_historical import DeFiLlamaYieldsHistoricalFetcher
 from openbb_defillama.models.yields_pools import DeFiLlamaYieldsPoolsFetcher
-from openbb_defillama.models.stablecoins_current import DeFiLlamaStablecoinsCurrentFetcher
-from openbb_defillama.models.stablecoins_historical import DeFiLlamaStablecoinsHistoricalFetcher
+
 from openbb_platform.providers.defillama.openbb_defillama.models.coins_block_timestamp import (
     DeFiLlamaCoinsBlockTimestampFetcher,
 )
@@ -41,6 +49,7 @@ defillama_provider = Provider(
         "RevenueOverview": DeFiLlamaRevenueOverviewFetcher,
         "RevenueSummary": DeFiLlamaRevenueSummaryFetcher,
         "StablecoinsCurrent": DeFiLlamaStablecoinsCurrentFetcher,
+        "StablecoinsDistribution": DeFiLlamaStablecoinsDistributionFetcher,
         "StablecoinsList": DeFiLlamaStablecoinsListFetcher,
         "StablecoinsHistorical": DeFiLlamaStablecoinsHistoricalFetcher,
         "TvlChains": DeFiLlamaTvlChainsFetcher,

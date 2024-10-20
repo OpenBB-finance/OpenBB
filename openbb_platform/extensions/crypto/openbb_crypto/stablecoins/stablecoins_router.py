@@ -31,6 +31,7 @@ async def list(
     """Get all stablecoins along with their circulating amounts."""
     return await OBBject.from_query(Query(**locals()))
 
+
 @router.command(
     model="StablecoinsCurrent",
     examples=[
@@ -46,6 +47,7 @@ async def current(
     """Get current market cap sum of all stablecoins on each chain."""
     return await OBBject.from_query(Query(**locals()))
 
+
 @router.command(
     model="StablecoinsHistorical",
     examples=[
@@ -53,6 +55,22 @@ async def current(
     ],
 )
 async def historical(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get historical prices of all stablecoins."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="StablecoinsDistribution",
+    examples=[
+        APIEx(parameters={"provider": "defillama"}),
+    ],
+)
+async def distribution(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
