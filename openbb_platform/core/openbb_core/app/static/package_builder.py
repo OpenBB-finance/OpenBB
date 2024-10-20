@@ -377,10 +377,7 @@ class ImportDefinition:
         code += "\nfrom typing import TYPE_CHECKING, ForwardRef, List, Dict, Union, Optional, Literal, Any"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         code += "\nfrom warnings import warn, simplefilter"
-        if sys.version_info < (3, 9):
-            code += "\nimport typing_extensions"
-        else:
-            code += "\nfrom typing_extensions import Annotated, deprecated"
+        code += "\nfrom typing_extensions import Annotated, deprecated"
         # code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.utils.decorators import exception_handler, validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
