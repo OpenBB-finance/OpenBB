@@ -30,7 +30,12 @@ Your turn 👇
 
 >> 21-October-2024 by Mitarth Pandey(github Profile - newcomer119)
 Link to the post : https://x.com/12a_5615909/status/1848097312087970158
----
 
 » 19-October-2024 by Harsh Raj
 » Link to the post: https://www.linkedin.com/posts/harshraj1512_opensource-financetool-investmentresearch-activity-7253401682892447744-sxQF?utm_source=share&utm_medium=member_desktop
+
+» 21-October-2024 by sateshcharan
+» Link to the post:  https://www.linkedin.com/posts/sateshcharan_homepage-openbb-activity-7254168994327195650-EtyJ?utm_source=share&utm_medium=member_desktop
+
+---
+
