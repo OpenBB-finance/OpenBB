@@ -24,4 +24,7 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Article: https://medium.com/...
 
+» 21-October-2024 by sateshcharan
+» Link to Article: https://dev.to/sateshcharan/openbb-vs-proprietary-financial-tools-why-open-source-is-the-future-of-investment-research-5617
+
 ---
