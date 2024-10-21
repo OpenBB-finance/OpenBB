@@ -2257,9 +2257,9 @@ class ROUTER_economy(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         search_type : Literal['full_text', 'series_id', 'release']
             The type of search to perform. Automatically set to 'release' when a 'release_id' is provided. (provider: fred)
-        release_id : Optional[Union[int, str]]
+        release_id : Optional[Annotated[int, Ge(ge=0)]]
             A specific release ID to target. (provider: fred)
-        limit : Optional[int]
+        limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return. (1-1000) (provider: fred)
         offset : Optional[Annotated[int, Ge(ge=0)]]
             Offset the results in conjunction with limit. This parameter is ignored When search_type is 'release'. (provider: fred)
