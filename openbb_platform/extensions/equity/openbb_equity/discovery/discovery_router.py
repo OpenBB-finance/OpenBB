@@ -201,6 +201,5 @@ async def senate_trading(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Trades executed by Senate members for the last 100 days.
-    """
+    """Get Trades executed by Senate members for the last 100 days."""
     return await OBBject.from_query(Query(**locals()))
