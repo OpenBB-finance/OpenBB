@@ -28,11 +28,12 @@ class FMPSenateTradingRSSQueryParams(QueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs#senate-trading
     """
 
+
 class FMPSenateTradingRSSData(Data):
     """FMP Senate Trading Data."""
-    __alias_dict__ = {
-        "dateRecieved": "dateReceived"
-    }
+    __alias_dict__ = {"dateRecieved": "dateReceived"}
+
+
 class FMPSenateTradingRSSFetcher(
     Fetcher[
         FMPSenateTradingRSSQueryParams,
@@ -59,9 +60,7 @@ class FMPSenateTradingRSSFetcher(
 
         async def get_one():
             """Get data for one symbol."""
-            url = create_url(
-            4, 'senate-trading-rss-feed', api_key, query, ["symbol"]
-            )
+            url = create_url(4, 'senate-trading-rss-feed', api_key, query, ["symbol"])
             url += "&page=0"
             result = await amake_request(
                 url, response_callback=response_callback, **kwargs
@@ -77,22 +76,16 @@ class FMPSenateTradingRSSFetcher(
         if not results:
             raise EmptyDataError("No data returned for the given symbols.")
 
-        return sorted(
-            results, key=lambda x: (x["transactionDate"]), reverse=True
-        )
+        return sorted(results, key=lambda x: (x["transactionDate"]), reverse=True)
 
     @staticmethod
     def transform_data(
         query: FMPSenateTradingRSSQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPSenateTradingRSSData]:
         """Return the transformed data."""
-        lookback_date = (date.today() - BDay(30)).date()
         results: List[FMPSenateTradingRSSData] = []
         for item in data:
 
-            new_item = {
-                k : v
-                for k, v in item.items()
-            }
+            new_item = {k: v for k, v in item.items()}
             results.append(FMPSenateTradingRSSData.model_validate(new_item))
         return results
