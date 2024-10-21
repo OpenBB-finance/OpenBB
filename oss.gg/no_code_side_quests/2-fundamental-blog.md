@@ -24,4 +24,7 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Blog Post: https://medium.com/...
 
+» 22-October-2024 by sateshcharan
+» Link to Blog Post: https://dev.to/sateshcharan/unlocking-fundamental-analysis-with-openbb-a-comprehensive-guide-2pbo
+
 ---
