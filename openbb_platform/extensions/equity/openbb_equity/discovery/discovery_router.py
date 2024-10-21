@@ -181,3 +181,25 @@ async def filings(
     and audited financial statements.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SenateTradingRSS",
+    examples=[
+        APIEx(parameters={"provider": "fmp"}),
+        APIEx(
+            description="Get trades executed by senate members in last 100 days",
+            parameters={
+                "provider": "fmp",
+            },
+        ),
+    ],
+)
+async def senate_trading(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Trades executed by Senate members for the last 100 days."""
+    return await OBBject.from_query(Query(**locals()))
