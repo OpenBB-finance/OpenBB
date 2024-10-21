@@ -26,6 +26,10 @@ Your turn 👇
 
 » 15-October-2024 by Suvam Das
 » Link to the post:https://www.linkedin.com/posts/suvamd_openbb-decisions-optimization-activity-7251919213701824512-WLSg?utm_source=share&utm_medium=member_desktop
+
+
+>> 21-October-2024 by Mitarth Pandey(github Profile - newcomer119)
+Link to the post : https://x.com/12a_5615909/status/1848097312087970158
 ---
 
 » 19-October-2024 by Harsh Raj
