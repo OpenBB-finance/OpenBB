@@ -5523,16 +5523,20 @@
                 ],
                 "fred": [
                     {
-                        "name": "is_release",
-                        "type": "bool",
-                        "description": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True.",
-                        "default": false,
+                        "name": "search_type",
+                        "type": "Literal['full_text', 'series_id', 'release']",
+                        "description": "The type of search to perform. Automatically set to 'release' when a 'release_id' is provided.",
+                        "default": "full_text",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "full_text",
+                            "series_id",
+                            "release"
+                        ]
                     },
                     {
                         "name": "release_id",
-                        "type": "Union[int, str]",
+                        "type": "Annotated[int, Ge(ge=0)]",
                         "description": "A specific release ID to target.",
                         "default": null,
                         "optional": true,
@@ -5540,7 +5544,7 @@
                     },
                     {
                         "name": "limit",
-                        "type": "int",
+                        "type": "Annotated[int, Ge(ge=0)]",
                         "description": "The number of data entries to return. (1-1000)",
                         "default": null,
                         "optional": true,
@@ -5549,8 +5553,38 @@
                     {
                         "name": "offset",
                         "type": "Annotated[int, Ge(ge=0)]",
-                        "description": "Offset the results in conjunction with limit.",
+                        "description": "Offset the results in conjunction with limit. This parameter is ignored When search_type is 'release'.",
                         "default": 0,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "order_by",
+                        "type": "Literal['search_rank', 'series_id', 'title', 'units', 'frequency', 'seasonal_adjustment', 'realtime_start', 'realtime_end', 'last_updated', 'observation_start', 'observation_end', 'popularity', 'group_popularity']",
+                        "description": "Order the results by a specific attribute. The default is 'observation_end'.",
+                        "default": "observation_end",
+                        "optional": true,
+                        "choices": [
+                            "search_rank",
+                            "series_id",
+                            "title",
+                            "units",
+                            "frequency",
+                            "seasonal_adjustment",
+                            "realtime_start",
+                            "realtime_end",
+                            "last_updated",
+                            "observation_start",
+                            "observation_end",
+                            "popularity",
+                            "group_popularity"
+                        ]
+                    },
+                    {
+                        "name": "sort_order",
+                        "type": "Literal['asc', 'desc']",
+                        "description": "Sort the 'order_by' item in ascending or descending order. The default is 'desc'.",
+                        "default": "desc",
                         "optional": true,
                         "choices": null
                     },
@@ -5565,7 +5599,7 @@
                     {
                         "name": "filter_value",
                         "type": "str",
-                        "description": "String value to filter the variable by.  Used in conjunction with filter_variable.",
+                        "description": "String value to filter the variable by.  Used in conjunction with filter_variable. This parameter is ignored when search_type is 'release'.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5573,7 +5607,7 @@
                     {
                         "name": "tag_names",
                         "type": "Union[str, List[str]]",
-                        "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple items allowed for provider(s): fred.",
+                        "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' This parameter is ignored when search_type is 'release'. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5581,7 +5615,7 @@
                     {
                         "name": "exclude_tag_names",
                         "type": "Union[str, List[str]]",
-                        "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple items allowed for provider(s): fred.",
+                        "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. This parameter is ignored when search_type is 'release'. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5629,7 +5663,7 @@
                 "standard": [
                     {
                         "name": "release_id",
-                        "type": "Union[int, str]",
+                        "type": "str",
                         "description": "The release ID for queries.",
                         "default": null,
                         "optional": true,
@@ -5639,6 +5673,22 @@
                         "name": "series_id",
                         "type": "str",
                         "description": "The series ID for the item in the release.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "series_group",
+                        "type": "str",
+                        "description": "The series group ID of the series. This value is used to query for regional data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "region_type",
+                        "type": "str",
+                        "description": "The region type of the series.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5732,6 +5782,38 @@
                         "choices": null
                     },
                     {
+                        "name": "popularity",
+                        "type": "int",
+                        "description": "Popularity of the series",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "group_popularity",
+                        "type": "int",
+                        "description": "Group popularity of the release",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "realtime_start",
+                        "type": "date",
+                        "description": "The realtime start date of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "realtime_end",
+                        "type": "date",
+                        "description": "The realtime end date of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "notes",
                         "type": "str",
                         "description": "Description of the release.",
@@ -5756,40 +5838,7 @@
                         "choices": null
                     }
                 ],
-                "fred": [
-                    {
-                        "name": "popularity",
-                        "type": "int",
-                        "description": "Popularity of the series",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "group_popularity",
-                        "type": "int",
-                        "description": "Group popularity of the release",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "region_type",
-                        "type": "str",
-                        "description": "The region type of the series.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "series_group",
-                        "type": "Union[int, str]",
-                        "description": "The series group ID of the series. This value is used to query for regional data.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
+                "fred": []
             },
             "model": "FredSearch"
         },
