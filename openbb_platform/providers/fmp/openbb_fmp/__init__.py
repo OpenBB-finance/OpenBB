@@ -61,6 +61,7 @@ from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetc
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
 from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
+from openbb_fmp.models.senate_trading_rss import FMPSenateTradingRSSFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
@@ -133,6 +134,7 @@ stock market information (news, currencies, and stock prices).""",
         "RevenueBusinessLine": FMPRevenueBusinessLineFetcher,
         "RevenueGeographic": FMPRevenueGeographicFetcher,
         "RiskPremium": FMPRiskPremiumFetcher,
+        "SenateTradingRSS": FMPSenateTradingRSSFetcher,
         "ShareStatistics": FMPShareStatisticsFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "WorldNews": FMPWorldNewsFetcher,

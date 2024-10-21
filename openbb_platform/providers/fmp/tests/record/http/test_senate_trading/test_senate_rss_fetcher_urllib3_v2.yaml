@@ -1,0 +1,114 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/senate-trading-rss-feed?apikey=MOCK_API_KEY&page=0
+  response:
+    body:
+      string: !!binary |
+        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
+        TwAcuwAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 21 Oct 2024 09:07:00 GMT
+      Etag:
+      - W/"bb1c-Ujsej/RlZ3p583UkilL3g6DPeIY"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
