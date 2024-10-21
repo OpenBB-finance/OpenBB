@@ -2,7 +2,6 @@
 
 # pylint: disable=unused-argument
 
-import math
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -12,7 +11,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_requests, get_querystring
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
 
@@ -27,7 +26,10 @@ class TiingoCompanyNewsQueryParams(CompanyNewsQueryParams):
         "start_date": "startDate",
         "end_date": "endDate",
     }
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "source": {"multiple_items_allowed": True},
+    }
 
     offset: Optional[int] = Field(
         default=0, description="Page offset, used in conjunction with limit."
@@ -87,6 +89,12 @@ class TiingoCompanyNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the tiingo endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import math
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_tiingo.utils.helpers import get_data
+
         api_key = credentials.get("tiingo_token") if credentials else ""
 
         base_url = "https://api.tiingo.com/tiingo/news"
@@ -106,7 +114,22 @@ class TiingoCompanyNewsFetcher(
         else:
             urls = [f"{base_url}?{query_str}&token={api_key}&limit={limit}"]
 
-        return await amake_requests(urls)
+        results: list = []
+
+        async def get_one(url):
+            """Get data for one URL and append results to list."""
+            response = await get_data(url)
+            if isinstance(response, list):
+                results.extend(response)
+            elif isinstance(response, dict):
+                results.append(response)
+
+        await asyncio.gather(*[get_one(url) for url in urls])
+
+        if not results:
+            raise EmptyDataError()
+
+        return results
 
     @staticmethod
     def transform_data(

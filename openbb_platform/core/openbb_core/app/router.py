@@ -293,6 +293,10 @@ class Router:
                         "model": OpenBBErrorResponse,
                         "description": "Internal Error",
                     },
+                    502: {
+                        "model": OpenBBErrorResponse,
+                        "description": "Unauthorized",
+                    },
                 },
             )
 
