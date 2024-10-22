@@ -5,7 +5,7 @@ description = "The U.S. Energy Information Administration is committed to its fr
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
 readme = "README.md"
-packages = [{ include = "openbb_eia" }]
+packages = [{ include = "openbb_us_eia" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -19,4 +19,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
-eia = "openbb_eia:eia_provider"
+us_eia = "openbb_us_eia:eia_provider"

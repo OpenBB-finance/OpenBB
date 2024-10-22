@@ -68,7 +68,7 @@ def test_commodity_price_spot(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_petroleum_status_report(params, obb):
+def test_commodity_petroleum_status_report(params, obb):
     """Test Commodity Petroleum Status Report endpoint."""
     result = obb.commodity.petroleum_status_report(**params)
     assert result
@@ -92,7 +92,7 @@ def test_petroleum_status_report(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_short_term_energy_outlook(params, obb):
+def test_commodity_short_term_energy_outlook(params, obb):
     """Test Commodity Short Term Energy Outlook endpoint."""
     result = obb.commodity.short_term_energy_outlook(**params)
     assert result

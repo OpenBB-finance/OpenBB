@@ -11,9 +11,7 @@ from openbb_core.provider.standard_models.petroleum_status_report import (
     PetroleumStatusReportQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field
-
-from openbb_eia.utils.constants import (
+from openbb_us_eia.utils.constants import (
     WpsrCategoryChoices,
     WpsrCategoryType,
     WpsrFileMap,
@@ -21,6 +19,7 @@ from openbb_eia.utils.constants import (
     WpsrTableMap,
     WpsrTableType,
 )
+from pydantic import Field
 
 
 class EiaPetroleumStatusReportQueryParams(PetroleumStatusReportQueryParams):
@@ -91,7 +90,7 @@ class EiaPetroleumStatusReportFetcher(
     ) -> dict:
         """Extract the data from the EIA website."""
         # pylint: disable=import-outside-toplevel
-        from openbb_eia.utils.helpers import download_excel_file
+        from openbb_us_eia.utils.helpers import download_excel_file
 
         url = WpsrFileMap.get(query.category, "balance_sheet")
 

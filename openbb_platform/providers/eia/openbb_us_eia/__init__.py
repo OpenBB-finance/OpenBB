@@ -1,9 +1,10 @@
 """OpenBB EIA Provider Module."""
 
 from openbb_core.provider.abstract.provider import Provider
-
-from openbb_eia.models.petroleum_status_report import EiaPetroleumStatusReportFetcher
-from openbb_eia.models.short_term_energy_outlook import EiaShortTermEnergyOutlookFetcher
+from openbb_us_eia.models.petroleum_status_report import EiaPetroleumStatusReportFetcher
+from openbb_us_eia.models.short_term_energy_outlook import (
+    EiaShortTermEnergyOutlookFetcher,
+)
 
 eia_provider = Provider(
     name="eia",

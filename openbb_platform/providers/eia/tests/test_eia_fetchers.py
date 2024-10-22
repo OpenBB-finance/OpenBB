@@ -4,8 +4,10 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_eia.models.petroleum_status_report import EiaPetroleumStatusReportFetcher
-from openbb_eia.models.short_term_energy_outlook import EiaShortTermEnergyOutlookFetcher
+from openbb_us_eia.models.petroleum_status_report import EiaPetroleumStatusReportFetcher
+from openbb_us_eia.models.short_term_energy_outlook import (
+    EiaShortTermEnergyOutlookFetcher,
+)
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"

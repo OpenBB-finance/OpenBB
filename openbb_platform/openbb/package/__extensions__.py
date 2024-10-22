@@ -37,7 +37,6 @@ Extensions:
     - bls@1.0.1
     - cftc@1.0.1
     - econdb@1.2.3
-    - eia@1.0.0b0
     - federal_reserve@1.3.3
     - fmp@1.3.3
     - fred@1.3.3
@@ -48,6 +47,7 @@ Extensions:
     - sec@1.3.3
     - tiingo@1.3.3
     - tradingeconomics@1.3.3
+    - us_eia@1.0.0b0
     - yfinance@1.3.4    """
     # fmt: on
 

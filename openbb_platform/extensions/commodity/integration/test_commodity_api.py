@@ -74,7 +74,7 @@ def test_commodity_price_spot(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_petroleum_status_report(params, headers):
+def test_commodity_petroleum_status_report(params, headers):
     """Test the Petroleum Status Report endpoint."""
     params = {p: v for p, v in params.items() if v}
 
@@ -101,7 +101,7 @@ def test_petroleum_status_report(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_short_term_energy_outlook(params, headers):
+def test_commodity_short_term_energy_outlook(params, headers):
     """Test the Short Term Energy Outlook endpoint."""
     params = {p: v for p, v in params.items() if v}
 

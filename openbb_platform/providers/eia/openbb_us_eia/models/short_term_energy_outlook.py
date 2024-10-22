@@ -13,13 +13,12 @@ from openbb_core.provider.standard_models.short_term_energy_outlook import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field
-
-from openbb_eia.utils.constants import (
+from openbb_us_eia.utils.constants import (
     SteoTableMap,
     SteoTableNames,
     SteoTableType,
 )
+from pydantic import Field
 
 
 class EiaShortTermEnergyOutlookQueryParams(ShortTermEnergyOutlookQueryParams):
@@ -116,7 +115,7 @@ class EiaShortTermEnergyOutlookFetcher(
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_core.provider.utils.helpers import amake_request
-        from openbb_eia.utils.helpers import response_callback
+        from openbb_us_eia.utils.helpers import response_callback
 
         api_key = credentials.get("eia_api_key") if credentials else ""
         frequency_dict = {
