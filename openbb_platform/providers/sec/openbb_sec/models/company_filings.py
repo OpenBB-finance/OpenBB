@@ -283,7 +283,8 @@ class SecCompanyFilingsFetcher(
     ) -> List[SecCompanyFilingsData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
-        from pandas import DataFrame, to_datetime
+        from numpy import nan
+        from pandas import NA, DataFrame, to_datetime
 
         if not data:
             raise EmptyDataError(
@@ -333,6 +334,7 @@ class SecCompanyFilingsFetcher(
         )
         if query.form_type:
             form_types = query.form_type.replace("_", " ").replace(",", "|")
+            form_types = f"\\b{form_types}\\b"
 
             filings = filings[
                 filings.form.str.contains(form_types, case=False, regex=True, na=False)
@@ -343,6 +345,7 @@ class SecCompanyFilingsFetcher(
 
         if len(filings) == 0:
             raise EmptyDataError("No filings were found using the filters provided.")
+        filings = filings.replace({NA: None, nan: None})
 
         return [
             SecCompanyFilingsData.model_validate(d) for d in filings.to_dict("records")
