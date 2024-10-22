@@ -328,13 +328,8 @@ class SecCompanyFilingsFetcher(
             base_url + filings["accessionNumber"] + "-index.htm"
         )
         if query.form_type:
-            form_types = query.form_type.replace("_", " ").replace(",", "|")
-            form_types = f"\\b{form_types}\\b"
-
-            filings = filings[
-                filings.form.str.contains(form_types, case=False, regex=True, na=False)
-            ]
-
+            form_types = query.form_type.replace("_", " ").split(",")
+            filings = filings[filings.form.isin(form_types)]
         if query.limit:
             filings = filings.head(query.limit) if query.limit != 0 else filings
 
