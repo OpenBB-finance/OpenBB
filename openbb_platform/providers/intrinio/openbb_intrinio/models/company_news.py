@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 from openbb_core.provider.utils.helpers import (
     amake_request,
     get_querystring,
@@ -219,8 +219,13 @@ class IntrinioCompanyNewsFetcher(
         async def callback(response, session):
             """Response callback."""
             result = await response.json()
-            if "error" in result:
-                raise OpenBBError(f"Intrinio Error Message -> {result['error']}")
+            if isinstance(result, dict) and "error" in result:
+                if "api key" in result.get("message", "").lower():
+                    raise UnauthorizedError(
+                        f"Unauthorized Intrinio request -> {result.get('message')}"
+                    )
+                else:
+                    raise OpenBBError(f"Error in Intrinio request -> {result}")
             symbol = response.url.parts[-2]
             _data = result.get("news", [])
             data = []

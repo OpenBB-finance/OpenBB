@@ -90,7 +90,9 @@ class BiztocWorldNewsFetcher(
             res = await response.json()
             if isinstance(res, dict) and "message" in res:
                 if "subscribed" in res["message"].lower():
-                    raise UnauthorizedError(res["message"])
+                    raise UnauthorizedError(
+                        f"Unauthorized Biztoc request -> {res['message']}"
+                    )
                 raise OpenBBError(res["message"])
 
             return await response.json()

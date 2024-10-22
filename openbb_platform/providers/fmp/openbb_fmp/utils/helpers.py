@@ -21,7 +21,7 @@ async def response_callback(response, _):
                 or "unauthorized" in error_message.lower()
             )
             if conditions:
-                raise UnauthorizedError(f"{error_message}")
+                raise UnauthorizedError(f"Unauthorized FMP request -> {error_message}")
             raise OpenBBError(
                 f"FMP Error Message -> Status code: {response.status} -> {error_message}"
             )

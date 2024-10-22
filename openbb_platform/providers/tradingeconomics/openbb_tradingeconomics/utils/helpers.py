@@ -12,7 +12,9 @@ async def response_callback(response, _) -> Union[dict, list[dict]]:
         message = await response.text()
 
         if "credentials" in message or "unauthorized" in message.lower():
-            raise UnauthorizedError(message)
+            raise UnauthorizedError(
+                f"Unauthorized TradingEconomics request -> {message}"
+            )
 
         raise OpenBBError(f"{response.status} -> {message}")
 

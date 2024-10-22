@@ -27,7 +27,9 @@ async def get_data(url: str) -> Union[dict, list]:
                 or "permission" in response["detail"]
                 or "authorized" in response["detail"]
             ):
-                raise UnauthorizedError(response["detail"])
+                raise UnauthorizedError(
+                    f"Unauthorized Tiingo request -> {response['detail']}"
+                )
             raise OpenBBError(response["detail"])
 
         if not response:
