@@ -306,12 +306,7 @@ class SecCompanyFilingsFetcher(
             "isXBRL",
             "size",
         ]
-        filings = (
-            DataFrame(data, columns=cols)
-            .fillna(value="N/A")
-            .replace("N/A", None)
-            .astype(str)
-        )
+        filings = DataFrame(data, columns=cols).astype(str)
         filings["reportDate"] = to_datetime(filings["reportDate"]).dt.date
         filings["filingDate"] = to_datetime(filings["filingDate"]).dt.date
         filings = filings.sort_values(by=["reportDate", "filingDate"], ascending=False)
