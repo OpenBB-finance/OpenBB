@@ -203,13 +203,14 @@ class IntrinioWorldNewsFetcher(
         async def callback(response, session):
             """Response callback."""
             result = await response.json()
+
             if isinstance(result, dict) and "error" in result:
                 if "api key" in result.get("message", "").lower():
                     raise UnauthorizedError(
                         f"Unauthorized Intrinio request -> {result.get('message')}"
                     )
-                else:
-                    raise OpenBBError(f"Error in Intrinio request -> {result}")
+                raise OpenBBError(f"Error in Intrinio request -> {result}")
+
             _data = result.get("news", [])
             data = []
             data.extend(
