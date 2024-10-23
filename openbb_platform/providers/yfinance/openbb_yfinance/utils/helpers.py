@@ -362,7 +362,9 @@ def yf_download(
         raise EmptyDataError() from exc
 
     tickers = symbol.split(",")
-    if len(tickers) > 1:
+    if len(tickers) == 1:
+        data = data.get(symbol)
+    elif len(tickers) > 1:
         _data = DataFrame()
         for ticker in tickers:
             temp = data[ticker].copy().dropna(how="all")
