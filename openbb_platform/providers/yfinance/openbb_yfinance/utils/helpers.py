@@ -404,6 +404,12 @@ def yf_download(
         if adjusted is False:
             data = data.drop(columns=["Adj Close"])  # type: ignore
         data.columns = data.columns.str.lower().str.replace(" ", "_").to_list()  # type: ignore
+
+        # Remove columns with no information.
+        for col in ["dividends", "capital_gains", "stock_splits"]:
+            if col in data.columns and data[col].sum() == 0:
+                data = data.drop(columns=[col])
+
     return data  # type: ignore
 
 
