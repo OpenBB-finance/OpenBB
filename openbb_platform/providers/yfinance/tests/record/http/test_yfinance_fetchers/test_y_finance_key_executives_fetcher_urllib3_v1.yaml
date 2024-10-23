@@ -72,7 +72,7 @@ interactions:
     headers:
       ' x-yahoo-request-id': null
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT: null
@@ -96,7 +96,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 23 Oct 2024 22:57:47 GMT
+      - Wed, 23 Oct 2024 23:16:13 GMT
       server:
       - ATS
       vary:
