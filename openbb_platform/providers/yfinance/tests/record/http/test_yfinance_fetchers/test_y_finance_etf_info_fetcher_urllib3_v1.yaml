@@ -15,34 +15,35 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
+      ' x-yahoo-request-id': null
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
+      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -56,21 +57,18 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1080'
+      - '1075'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 20:02:58 GMT
+      - Wed, 23 Oct 2024 20:11:52 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '6'
-      y-rid:
-      - 54hv7mhj862rj
+      x-envoy-decorator-operation: null
+      x-envoy-upstream-service-time: null
+      y-rid: null
     status:
       code: 200
       message: OK
@@ -91,14 +89,15 @@ interactions:
     body:
       string: '{"timeseries":{"result":[{"meta":{"symbol":["QQQ"],"type":["trailingPegRatio"]}}],"error":null}}'
     headers:
+      ' x-yahoo-request-id': null
       Age:
-      - '0'
+      - '2'
       Connection:
       - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
+      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -114,17 +113,14 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 20:02:59 GMT
+      - Wed, 23 Oct 2024 20:11:52 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '1'
-      y-rid:
-      - 4pmq6edj862rj
+      x-envoy-decorator-operation: null
+      x-envoy-upstream-service-time: null
+      y-rid: null
     status:
       code: 200
       message: OK

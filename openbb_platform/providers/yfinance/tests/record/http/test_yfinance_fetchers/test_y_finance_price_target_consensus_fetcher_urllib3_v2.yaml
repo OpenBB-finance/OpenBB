@@ -8,157 +8,6 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-    method: GET
-    uri: https://fc.yahoo.com/
-  response:
-    body:
-      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n  <head>\n    <meta http-equiv=\"content-type\"
-        content=\"text/html; charset=UTF-8\">\n    <meta charset=\"utf-8\">\n    <title>Yahoo</title>\n
-        \   <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimal-ui\">\n
-        \   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <style>\n
-        \     html {\n          height: 100%;\n      }\n      body {\n          background:
-        #fafafc url(https://s.yimg.com/nn/img/sad-panda-201402200631.png) 50% 50%;\n
-        \         background-size: cover;\n          height: 100%;\n          text-align:
-        center;\n          font: 300 18px \"helvetica neue\", helvetica, verdana,
-        tahoma, arial, sans-serif;\n          margin: 0;\n      }\n      table {\n
-        \         height: 100%;\n          width: 100%;\n          table-layout: fixed;\n
-        \         border-collapse: collapse;\n          border-spacing: 0;\n          border:
-        none;\n      }\n      h1 {\n          font-size: 42px;\n          font-weight:
-        400;\n          color: #400090;\n      }\n      p {\n          color: #1A1A1A;\n
-        \     }\n      #message-1 {\n          font-weight: bold;\n          margin:
-        0;\n      }\n      #message-2 {\n          display: inline-block;\n          *display:
-        inline;\n          zoom: 1;\n          max-width: 17em;\n          _width:
-        17em;\n      }\n      </style>\n      <script>\n      !function(){if(window==window.top){var
-        o=window.location.host;o.endsWith(\".yahoo.com\")&&window.location.replace(\"https://www.yahoo.com/\"),o.endsWith(\".aol.com\")&&window.location.replace(\"https://www.aol.com/\"),o.endsWith(\".huffpost.com\")&&window.location.replace(\"https://www.huffpost.com/\"),o.endsWith(\".engadget.com\")&&window.location.replace(\"https://www.engadget.com/\")}}();\n
-        \     </script>\n  </head>\n  <body>\n  <!-- status code : 404 -->\n  <!--
-        Not Found on Accelerator -->\n  <!-- host machine: e8.ycpi.nya.yahoo.com -->\n
-        \ <!-- timestamp: 1719837833.853 -->\n  <!-- url: https://fc.yahoo.com/-->\n
-        \ <script type=\"text/javascript\">\n    function buildUrl(url, parameters){\n
-        \     var qs = [];\n      for(var key in parameters) {\n        var value
-        = parameters[key];\n        qs.push(encodeURIComponent(key) + \"=\" + encodeURIComponent(value));\n
-        \     }\n      url = url + \"?\" + qs.join('&');\n      return url;\n    }\n\n
-        \   function generateBRBMarkup(site) {\n      params.source = 'brb';\n      generateBeaconMarkup(params);\n
-        \     var englishHeader = 'Will be right back...';\n      var englishMessage1
-        = 'Thank you for your patience.';\n      var englishMessage2 = 'Our engineers
-        are working quickly to resolve the issue.';\n      var defaultLogoStyle =
-        '';\n      var siteDataMap = {\n        'default': {\n          logo: 'https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_205x58_frontpage.png',\n
-        \         logoAlt: 'Yahoo Logo',\n          logoStyle: defaultLogoStyle,\n
-        \         header: englishHeader,\n          message1: englishMessage1,\n          message2:
-        englishMessage2\n        }\n      };\n\n      var siteDetails = siteDataMap['default'];\n\n
-        \     document.write('<table><tbody><tr><td>');\n      document.write('<div
-        id=\"content\">');\n      document.write('<img src=\"' + siteDetails['logo']
-        + '\" alt=\"' + siteDetails['logoAlt'] + '\" style=\"' + siteDetails['logoStyle']
-        + '\">');\n      document.write('<h1 style=\"margin-top:20px;\">' + siteDetails['header']
-        + '</h1>');\n      document.write('<p id=\"message-1\">' + siteDetails['message1']
-        + '</p>');\n      document.write('<p id=\"message-2\">' + siteDetails['message2']
-        + '</p>');\n      document.write('</div>');\n      document.write('</td></tr></tbody></table>');\n
-        \   }\n\n    function generateBeaconMarkup(params) {\n        document.write('<img
-        src=\"' + buildUrl('//geo.yahoo.com/b', params) + '\" style=\"display:none;\"
-        width=\"0px\" height=\"0px\"/>');\n        var beacon = new Image();\n        beacon.src
-        = buildUrl('//bcn.fp.yahoo.com/p', params);\n    }\n\n    var hostname = window.location.hostname;\n
-        \   var device = 'desktop';\n    var ynet = ('-' === '1');\n    var time =
-        new Date().getTime();\n    var params = {\n        s: '1197757129',\n        t:
-        time,\n        err_url: document.URL,\n        err: '404',\n        test:
-        '-',\n        ats_host: 'e8.ycpi.nya.yahoo.com',\n        rid: '-',\n        message:
-        'Not Found on Accelerator'\n    };\n\n    if(ynet) {\n        document.write('<div
-        style=\"height: 5px; background-color: red;\"></div>');\n    }\n    generateBRBMarkup(hostname,
-        params);\n\n  </script>\n  <noscript>\n  <table>\n    <tbody>\n      <tr>\n
-        \       <td>\n          <div id=\"englishContent\">\n            <h1 style=\"margin-top:20px;\">Will
-        be right back...</h1>\n            <p id=\"message-1\">Thank you for your
-        patience.</p>\n            <p id=\"message-2\">Our engineers are working quickly
-        to resolve the issue.</p>\n          </div>\n        </td>\n      </tr>\n
-        \   </tbody>\n  </table>\n  </noscript>\n  </body>\n</html>\n"
-    headers:
-      Cache-Control:
-      - no-store
-      Connection:
-      - keep-alive
-      Content-Language:
-      - en
-      Content-Length:
-      - '4742'
-      Content-Type:
-      - text/html
-      Date:
-      - Mon, 01 Jul 2024 12:43:53 GMT
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Server:
-      - ATS
-      Set-Cookie:
-      - A3=d=AQABBImkgmYCEMtR_JH222lYW_jSXE20tGwFEgEBAQH2g2aMZtxH0iMA_eMAAA&S=AQAAAiIVYoo6bM0cbhUAf_6MFbs;
-        Expires=Tue, 1 Jul 2025 18:43:53 GMT; Max-Age=31557600; Domain=.yahoo.com;
-        Path=/; SameSite=None; Secure; HttpOnly
-      X-Content-Type-Options:
-      - nosniff
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 404
-      message: Not Found on Accelerator
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Cookie:
-      - MOCK_COOKIE
-    method: GET
-    uri: https://query1.finance.yahoo.com/v1/test/getcrumb
-  response:
-    body:
-      string: ZOfFIvbv3h4
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - private, max-age=60, stale-while-revalidate=30
-      content-length:
-      - '11'
-      content-type:
-      - text/plain;charset=utf-8
-      date:
-      - Mon, 01 Jul 2024 12:43:54 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-external-services-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '0'
-      y-rid:
-      - 257jkjlj8594a
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
       Cookie:
       - MOCK_COOKIE
     method: GET
@@ -188,7 +37,7 @@ interactions:
         through the App Store. The company also sells its products through its retail
         and online stores, and direct sales force; and third-party cellular network
         carriers, wholesalers, retailers, and resellers. Apple Inc. was founded in
-        1976 and is headquartered in Cupertino, California.","fullTimeEmployees":150000,"companyOfficers":[{"maxAge":1,"name":"Mr.
+        1976 and is headquartered in Cupertino, California.","fullTimeEmployees":161000,"companyOfficers":[{"maxAge":1,"name":"Mr.
         Timothy D. Cook","age":62,"title":"CEO & Director","yearBorn":1961,"fiscalYear":2023,"totalPay":{"raw":16239562,"fmt":"16.24M","longFmt":"16,239,562"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
         Luca  Maestri","age":60,"title":"CFO & Senior VP","yearBorn":1963,"fiscalYear":2023,"totalPay":{"raw":4612242,"fmt":"4.61M","longFmt":"4,612,242"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
         Jeffrey E. Williams","age":59,"title":"Chief Operating Officer","yearBorn":1964,"fiscalYear":2023,"totalPay":{"raw":4637585,"fmt":"4.64M","longFmt":"4,637,585"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Ms.
@@ -198,17 +47,18 @@ interactions:
         James  Wilson","title":"Chief Technology Officer","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Suhasini  Chandramouli","title":"Director
         of Investor Relations","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
         Greg  Joswiak","title":"Senior Vice President of Worldwide Marketing","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
-        Adrian  Perica","age":49,"title":"Head of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":4,"boardRisk":1,"compensationRisk":6,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1719619200,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":214.1,"open":215.805,"dayLow":210.3,"dayHigh":216.07,"regularMarketPreviousClose":214.1,"regularMarketOpen":215.805,"regularMarketDayLow":210.3,"regularMarketDayHigh":216.07,"dividendRate":1.0,"dividendYield":0.0047,"exDividendDate":1715299200,"payoutRatio":0.14930001,"fiveYearAvgDividendYield":0.69,"beta":1.25,"trailingPE":32.806854,"forwardPE":28.891632,"volume":82542718,"regularMarketVolume":82542718,"averageVolume":68708574,"averageVolume10days":91229060,"averageDailyVolume10Day":91229060,"bid":210.48,"ask":217.17,"bidSize":100,"askSize":100,"marketCap":3229668081664,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":220.2,"priceToSalesTrailing12Months":8.46298,"fiftyDayAverage":190.6822,"twoHundredDayAverage":183.69585,"trailingAnnualDividendRate":0.96,"trailingAnnualDividendYield":0.0044838856,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3267104342016,"forwardPE":28.891632,"profitMargins":0.26306,"floatShares":15308474083,"sharesOutstanding":15334099968,"sharesShort":153405579,"sharesShortPriorMonth":99287450,"sharesShortPreviousMonthDate":1715731200,"dateShortInterest":1718323200,"sharesPercentSharesOut":0.01,"heldPercentInsiders":0.052199997,"heldPercentInstitutions":0.57607,"shortRatio":2.29,"shortPercentOfFloat":0.01,"beta":1.25,"impliedSharesOutstanding":15334099968,"category":null,"bookValue":4.837,"priceToBook":43.543518,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1696032000,"nextFiscalYearEnd":1727654400,"mostRecentQuarter":1711756800,"earningsQuarterlyGrowth":-0.022,"netIncomeToCommon":100389003264,"trailingEps":6.42,"forwardEps":7.29,"pegRatio":3.09,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":8.561,"enterpriseToEbitda":25.203,"52WeekChange":0.09435725,"SandP52WeekChange":0.22553468,"lastDividendValue":0.25,"lastDividendDate":1715299200},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
-        Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":210.62,"targetHighPrice":275.0,"targetLowPrice":164.0,"targetMeanPrice":211.8,"targetMedianPrice":210.0,"recommendationMean":2.0,"recommendationKey":"buy","numberOfAnalystOpinions":37,"totalCash":67150000128,"totalCashPerShare":4.379,"ebitda":129629003776,"totalDebt":104590000128,"quickRatio":0.875,"currentRatio":1.037,"totalRevenue":381623009280,"debtToEquity":140.968,"revenuePerShare":24.537,"returnOnAssets":0.22073999,"returnOnEquity":1.4725,"freeCashflow":84726874112,"operatingCashflow":110563000320,"earningsGrowth":0.007,"revenueGrowth":-0.043,"grossMargins":0.45586,"ebitdaMargins":0.33968,"operatingMargins":0.30743,"profitMargins":0.26306,"financialCurrency":"USD"}}],"error":null}}'
+        Adrian  Perica","age":49,"title":"Head of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":6,"boardRisk":1,"compensationRisk":2,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1727740800,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":235.86,"open":234.32,"dayLow":227.76,"dayHigh":235.144,"regularMarketPreviousClose":235.86,"regularMarketOpen":234.32,"regularMarketDayLow":227.76,"regularMarketDayHigh":235.144,"dividendRate":1.0,"dividendYield":0.0042,"exDividendDate":1723420800,"payoutRatio":0.1476,"fiveYearAvgDividendYield":0.64,"beta":1.239,"trailingPE":35.02439,"forwardPE":30.716578,"volume":38193847,"regularMarketVolume":38193847,"averageVolume":50981675,"averageVolume10days":38644190,"averageDailyVolume10Day":38644190,"bid":0.0,"ask":0.0,"bidSize":0,"askSize":0,"marketCap":3493293981696,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":237.49,"priceToSalesTrailing12Months":9.059301,"fiftyDayAverage":226.301,"twoHundredDayAverage":200.3755,"trailingAnnualDividendRate":0.97,"trailingAnnualDividendYield":0.004112609,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3625550872576,"forwardPE":30.716578,"profitMargins":0.26441,"floatShares":15179506298,"sharesOutstanding":15204100096,"sharesShort":141741381,"sharesShortPriorMonth":135042504,"sharesShortPreviousMonthDate":1724976000,"dateShortInterest":1727654400,"sharesPercentSharesOut":0.0093,"heldPercentInsiders":0.02704,"heldPercentInstitutions":0.60877997,"shortRatio":2.32,"shortPercentOfFloat":0.0093,"beta":1.239,"impliedSharesOutstanding":15228399616,"category":null,"bookValue":4.382,"priceToBook":52.43268,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1696032000,"nextFiscalYearEnd":1727654400,"mostRecentQuarter":1719619200,"earningsQuarterlyGrowth":0.079,"netIncomeToCommon":101956001792,"trailingEps":6.56,"forwardEps":7.48,"pegRatio":3.19,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":9.402,"enterpriseToEbitda":27.512,"52WeekChange":0.37849212,"SandP52WeekChange":0.3975451,"lastDividendValue":0.25,"lastDividendDate":1723420800},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
+        Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":229.76,"targetHighPrice":300.0,"targetLowPrice":183.86,"targetMeanPrice":240.78,"targetMedianPrice":243.0,"recommendationMean":2.1,"recommendationKey":"buy","numberOfAnalystOpinions":40,"totalCash":61801000960,"totalCashPerShare":4.065,"ebitda":131781001216,"totalDebt":101304000512,"quickRatio":0.798,"currentRatio":0.953,"totalRevenue":385603010560,"debtToEquity":151.862,"revenuePerShare":24.957,"returnOnAssets":0.22612,"returnOnEquity":1.60583,"freeCashflow":86158123008,"operatingCashflow":113040998400,"earningsGrowth":0.111,"revenueGrowth":0.049,"grossMargins":0.45962003,"ebitdaMargins":0.34175,"operatingMargins":0.29556,"profitMargins":0.26441,"financialCurrency":"USD"}}],"error":null}}'
     headers:
+      ' x-yahoo-request-id': null
       Age:
       - '0'
       Connection:
       - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
+      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -222,75 +72,18 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '3056'
+      - '3044'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 12:43:54 GMT
+      - Wed, 23 Oct 2024 19:33:16 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '3'
-      y-rid:
-      - 3d5434lj8594a
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Cookie:
-      - MOCK_COOKIE
-    method: GET
-    uri: https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?crumb=MOCK_CRUMB&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&symbol=AAPL&type=trailingPegRatio
-  response:
-    body:
-      string: '{"timeseries":{"result":[{"meta":{"symbol":["AAPL"],"type":["trailingPegRatio"]},"timestamp":[1717977600,1719532800],"trailingPegRatio":[{"dataId":14021,"asOfDate":"2024-06-10","periodType":"TTM","reportedValue":{"raw":2.0439,"fmt":"2.04"}},{"dataId":14021,"asOfDate":"2024-06-28","periodType":"TTM","reportedValue":{"raw":2.2292,"fmt":"2.23"}}]}],"error":null}}'
-    headers:
-      Age:
-      - '3'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=60, stale-while-revalidate=30
-      content-length:
-      - '362'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Mon, 01 Jul 2024 12:43:54 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '1'
-      y-rid:
-      - 52mar95j8594a
+      x-envoy-decorator-operation: null
+      x-envoy-upstream-service-time: null
+      y-rid: null
     status:
       code: 200
       message: OK

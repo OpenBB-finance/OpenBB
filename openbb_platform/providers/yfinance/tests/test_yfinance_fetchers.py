@@ -48,6 +48,16 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
+def scrub_string(key):
+    """Scrub a string from the response."""
+
+    def before_record_response(response):
+        response["headers"][key] = None
+        return response
+
+    return before_record_response
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     """VCR configuration."""
@@ -62,6 +72,14 @@ def vcr_config():
             ("period2", "MOCK_PERIOD_2"),
             ("crumb", "MOCK_CRUMB"),
             ("date", "MOCK_DATE"),
+        ],
+        "before_record_response": [
+            scrub_string("Set-Cookie"),
+            scrub_string("y-rid"),
+            scrub_string("x-envoy-decorator-operation"),
+            scrub_string("x-envoy-upstream-service-time"),
+            scrub_string(" x-yahoo-request-id"),
+            scrub_string("Expect-CT"),
         ],
     }
 
