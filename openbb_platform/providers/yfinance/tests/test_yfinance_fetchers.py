@@ -81,6 +81,7 @@ def vcr_config():
             scrub_string(" x-yahoo-request-id"),
             scrub_string("Expect-CT"),
         ],
+        "match_on": ["method", "scheme", "port", "query"],
     }
 
 
