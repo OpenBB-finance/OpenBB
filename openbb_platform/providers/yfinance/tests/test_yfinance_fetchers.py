@@ -67,17 +67,6 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_y_finance_options_chains_fetcher(credentials=test_credentials):
-    """Test YFinanceOptionsChainsFetcher."""
-
-    params = {"symbol": "OXY"}
-
-    fetcher = YFinanceOptionsChainsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_y_finance_crypto_historical_fetcher(credentials=test_credentials):
     """Test YFinanceCryptoHistoricalFetcher."""
     params = {
@@ -369,5 +358,16 @@ def test_y_finance_etf_info_fetcher(credentials=test_credentials):
     params = {"symbol": "QQQ"}
 
     fetcher = YFinanceEtfInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_options_chains_fetcher(credentials=test_credentials):
+    """Test YFinanceOptionsChainsFetcher."""
+
+    params = {"symbol": "OXY"}
+
+    fetcher = YFinanceOptionsChainsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
