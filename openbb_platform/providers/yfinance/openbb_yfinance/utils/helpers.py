@@ -293,7 +293,7 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
     return DataFrame({"price": futures_curve, "expiration": futures_index})
 
 
-def yf_download(
+def yf_download(  # pylint: disable=too-many-positional-arguments
     symbol: str,
     start_date: Optional[Union[str, "date"]] = None,
     end_date: Optional[Union[str, "date"]] = None,
