@@ -283,7 +283,8 @@ class SecCompanyFilingsFetcher(
     ) -> List[SecCompanyFilingsData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
-        from pandas import DataFrame, to_datetime
+        from numpy import nan
+        from pandas import NA, DataFrame, to_datetime
 
         if not data:
             raise EmptyDataError(
@@ -305,12 +306,7 @@ class SecCompanyFilingsFetcher(
             "isXBRL",
             "size",
         ]
-        filings = (
-            DataFrame(data, columns=cols)
-            .fillna(value="N/A")
-            .replace("N/A", None)
-            .astype(str)
-        )
+        filings = DataFrame(data, columns=cols).astype(str)
         filings["reportDate"] = to_datetime(filings["reportDate"]).dt.date
         filings["filingDate"] = to_datetime(filings["filingDate"]).dt.date
         filings = filings.sort_values(by=["reportDate", "filingDate"], ascending=False)
@@ -332,17 +328,14 @@ class SecCompanyFilingsFetcher(
             base_url + filings["accessionNumber"] + "-index.htm"
         )
         if query.form_type:
-            form_types = query.form_type.replace("_", " ").replace(",", "|")
-
-            filings = filings[
-                filings.form.str.contains(form_types, case=False, regex=True, na=False)
-            ]
-
+            form_types = query.form_type.replace("_", " ").split(",")
+            filings = filings[filings.form.isin(form_types)]
         if query.limit:
             filings = filings.head(query.limit) if query.limit != 0 else filings
 
         if len(filings) == 0:
             raise EmptyDataError("No filings were found using the filters provided.")
+        filings = filings.replace({NA: None, nan: None})
 
         return [
             SecCompanyFilingsData.model_validate(d) for d in filings.to_dict("records")
