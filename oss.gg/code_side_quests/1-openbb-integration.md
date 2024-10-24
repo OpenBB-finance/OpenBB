@@ -27,3 +27,8 @@ Your turn 👇
 » Link to Repo: https://github.com/...
 
 ---
+» 25-October-2024 by AMAN NEGI
+» Link to Video: https://youtu.be/FGdYxcRQwFQ
+» Link to Repo: https://github.com/soamn/oss-obb-dashboard
+
+---
