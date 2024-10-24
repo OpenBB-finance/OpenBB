@@ -74,18 +74,12 @@ def vcr_config():
             ("date", "MOCK_DATE"),
             ("corsDomain", "MOCK_CORS_DOMAIN"),
         ],
+        "before_record_response": [
+            scrub_string("Set-Cookie"),
+            scrub_string("x-envoy-decorator-operation"),
+            scrub_string("y-rid"),
+        ],
     }
-
-
-@pytest.mark.record_http
-def test_y_finance_options_chains_fetcher(credentials=test_credentials):
-    """Test YFinanceOptionsChainsFetcher."""
-
-    params = {"symbol": "OXY"}
-
-    fetcher = YFinanceOptionsChainsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
 
 
 @pytest.mark.record_http
@@ -180,6 +174,17 @@ def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
     }
 
     fetcher = YFinanceFuturesHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_options_chains_fetcher(credentials=test_credentials):
+    """Test YFinanceOptionsChainsFetcher."""
+
+    params = {"symbol": "OXY"}
+
+    fetcher = YFinanceOptionsChainsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
