@@ -15,7 +15,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaTvlHistoricalQueryParams(QueryParams):
-    """DeFiLlama TVL Query Historical Parameters"""
+    """DeFiLlama TVL Historical Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     symbol: Optional[str] = Field(
         default=None,
@@ -29,6 +32,7 @@ class DeFiLlamaTvlHistoricalQueryParams(QueryParams):
 
 
 class DeFiLlamaProtocolTokens(Data):
+    """DeFiLlama Protocol Tokens Data."""
     date: datetime = Field(description="Date of the token")
     tokens: Dict[str, float] = Field(description="Total Value Locked for each token")
 
@@ -38,6 +42,7 @@ class DeFiLlamaProtocolTokens(Data):
 
 
 class DeFiLlamaTvlData(Data):
+    """DeFiLlama TVL Data"""
     date: datetime = Field(description="Date of the TVL")
     total_liquidity_usd: float = Field(
         description="Total Value Locked in USD", alias="totalLiquidityUSD"
@@ -49,6 +54,7 @@ class DeFiLlamaTvlData(Data):
 
 
 class DeFiLlamaChainTvlsData(Data):
+    """DeFiLlama Chain TVLs Data."""
     tvl: List[DeFiLlamaTvlData] = Field(description="Date of the chain")
     tokens: Optional[List[DeFiLlamaProtocolTokens]] = Field(
         default=None, description="Total Value Locked for each token"
@@ -72,6 +78,7 @@ class DeFiLlamaChainTvlsData(Data):
 
 
 class DeFiLlamaProtocolRaisesData(Data):
+    """DeFiLlama Protocol Raises Data."""
     date: datetime = Field(description="Date of the raise")
     name: str = Field(description="Name of the protocol")
     round: str = Field(description="Round of the raise")
@@ -99,6 +106,7 @@ class DeFiLlamaProtocolRaisesData(Data):
 
 
 class DeFiLlamaProtocolHallmarksData(Data):
+    """DeFiLlama Protocol Hallmarks Data"""
     date: datetime = Field(description="Date of the hallmark")
     label: str = Field(description="Label of the hallmark")
 
@@ -108,7 +116,7 @@ class DeFiLlamaProtocolHallmarksData(Data):
 
 
 class DeFiLlamaTvlHistoricalData(Data):
-    """DeFiLlama TVL Historical Data"""
+    """DeFiLlama TVL Historical Data."""
 
     # Field(s) returned for both protocols and chains
     tvl: Optional[Union[float, List[DeFiLlamaTvlData]]] = Field(
@@ -286,11 +294,11 @@ class DeFiLlamaTvlHistoricalData(Data):
 class DeFiLlamaTvlHistoricalFetcher(
     Fetcher[DeFiLlamaTvlHistoricalQueryParams, List[DeFiLlamaTvlHistoricalData]]
 ):
-    """Fetcher for DeFiLlama TVL Historical data"""
+    """DeFiLlama TVL Historical Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaTvlHistoricalQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaTvlHistoricalQueryParams(**params)
 
     @staticmethod
@@ -299,7 +307,7 @@ class DeFiLlamaTvlHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict[str, Any]]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
         if query.symbol_type == "protocol":
             if query.symbol is None:
                 return tvl.get_protocols()
@@ -319,7 +327,7 @@ class DeFiLlamaTvlHistoricalFetcher(
         data: List[Dict[str, Any]],
         **kwargs: Any,
     ) -> List[DeFiLlamaTvlHistoricalData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         data = [
             {
                 **d,

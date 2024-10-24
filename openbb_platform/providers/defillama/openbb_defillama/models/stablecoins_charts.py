@@ -11,7 +11,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaStablecoinsChartsQueryParams(QueryParams):
-    """DeFiLlama Stablecoins Charts Query."""
+    """DeFiLlama Stablecoins Charts Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     stablecoin: Optional[str] = Field(
         default=None,
@@ -57,13 +60,13 @@ class DeFiLlamaStablecoinsChartsFetcher(
         List[DeFiLlamaStablecoinsChartsData],
     ]
 ):
-    """Fetcher for DeFiLlama Stablecoins Charts data"""
+    """DeFiLlama Stablecoins Charts Fetcher."""
 
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> DeFiLlamaStablecoinsChartsQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaStablecoinsChartsQueryParams(**params)
 
     @staticmethod
@@ -72,7 +75,7 @@ class DeFiLlamaStablecoinsChartsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> List[Dict[str, Any]]:
-        """Fetch data from DeFiLlama"""
+        """Fetch data from DeFiLlama."""
         return stablecoins.get_charts(chain=query.chain, stablecoin=query.stablecoin)
 
     @staticmethod
@@ -81,5 +84,5 @@ class DeFiLlamaStablecoinsChartsFetcher(
         data: List[Dict[str, Any]],
         **kwargs: Any
     ) -> List[DeFiLlamaStablecoinsChartsData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         return [DeFiLlamaStablecoinsChartsData.model_validate(d) for d in data]

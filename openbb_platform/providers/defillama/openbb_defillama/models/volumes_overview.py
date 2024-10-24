@@ -11,7 +11,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaVolumesOverviewQueryParams(QueryParams):
-    """DeFiLlama Volumes Overview Query."""
+    """DeFiLlama Volumes Overview Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     chain: Optional[str] = Field(
         default=None, description="The chain to fetch data for."
@@ -33,7 +36,7 @@ class DeFiLlamaVolumesOverviewQueryParams(QueryParams):
 
 
 class DeFiLlamaChainsBreakdownData(Data):
-    """DeFiLlama Chains Breakdown."""
+    """DeFiLlama Chains Breakdown Data."""
 
     date: datetime = Field(description="The date of the data.")
     chains: Dict[str, int] = Field(description="The chains data.")
@@ -180,11 +183,11 @@ class DeFiLlamaVolumesOverviewData(Data):
 class DeFiLlamaVolumesOverviewFetcher(
     Fetcher[DeFiLlamaVolumesOverviewQueryParams, List[DeFiLlamaVolumesOverviewData]]
 ):
-    """Fetcher for DeFiLlama Volumes Overview data"""
+    """DeFiLlama Volumes Overview Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaVolumesOverviewQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaVolumesOverviewQueryParams(**params)
 
     @staticmethod
@@ -193,7 +196,7 @@ class DeFiLlamaVolumesOverviewFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
 
         if query.is_options:
             data = volumes.get_options_overview(
@@ -219,7 +222,7 @@ class DeFiLlamaVolumesOverviewFetcher(
     def transform_data(
         query: DeFiLlamaVolumesOverviewQueryParams, data: Dict[str, Any], **kwargs: Any
     ) -> List[DeFiLlamaVolumesOverviewData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = {}
 
         for k, v in data.items():

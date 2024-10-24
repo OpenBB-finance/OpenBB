@@ -11,13 +11,16 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaRevenueSummaryQueryParams(QueryParams):
-    """DeFiLlama Revenue Summary Query."""
+    """DeFiLlama Revenue Summary Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     protocol: str = Field(description="The protocol to fetch data for.")
 
 
 class DeFiLlamaChainsBreakdownData(Data):
-    """DeFiLlama Chains Breakdown."""
+    """DeFiLlama Chains Breakdown Data."""
 
     date: datetime = Field(description="The date of the data.")
     chains: Dict[str, Dict[str, int]] = Field(description="The chains data.")
@@ -141,11 +144,11 @@ class DeFiLlamaRevenueSummaryData(Data):
 class DeFiLlamaRevenueSummaryFetcher(
     Fetcher[DeFiLlamaRevenueSummaryQueryParams, List[DeFiLlamaRevenueSummaryData]]
 ):
-    """Fetcher for DeFiLlama Revenue Summary data"""
+    """DeFiLlama Revenue Summary Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaRevenueSummaryQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaRevenueSummaryQueryParams(**params)
 
     @staticmethod
@@ -154,7 +157,7 @@ class DeFiLlamaRevenueSummaryFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
         return fees_revenue.get_summary(
             protocol=query.protocol,
             data="daily",
@@ -165,7 +168,7 @@ class DeFiLlamaRevenueSummaryFetcher(
     def transform_data(
         query: DeFiLlamaRevenueSummaryQueryParams, data: Dict[str, Any], **kwargs: Any
     ) -> List[DeFiLlamaRevenueSummaryData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = dict(data)
 
         transformed_data["totalDataChart"] = [

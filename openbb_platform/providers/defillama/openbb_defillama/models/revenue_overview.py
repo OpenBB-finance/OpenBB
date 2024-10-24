@@ -11,7 +11,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaRevenueOverviewQueryParams(QueryParams):
-    """DeFiLlama Revenue Overview Query."""
+    """DeFiLlama Revenue Overview Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     chain: Optional[str] = Field(
         default=None, description="The chain to fetch data for."
@@ -27,7 +30,7 @@ class DeFiLlamaRevenueOverviewQueryParams(QueryParams):
 
 
 class DeFiLlamaChainsBreakdownData(Data):
-    """DeFiLlama Chains Breakdown."""
+    """DeFiLlama Chains Breakdown Data."""
 
     date: datetime = Field(description="The date of the data.")
     chains: Dict[str, int] = Field(description="The chains data.")
@@ -174,11 +177,11 @@ class DeFiLlamaRevenueOverviewData(Data):
 class DeFiLlamaRevenueOverviewFetcher(
     Fetcher[DeFiLlamaRevenueOverviewQueryParams, List[DeFiLlamaRevenueOverviewData]]
 ):
-    """Fetcher for DeFiLlama Revenue Overview data"""
+    """DeFiLlama Revenue Overview Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaRevenueOverviewQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaRevenueOverviewQueryParams(**params)
 
     @staticmethod
@@ -187,7 +190,7 @@ class DeFiLlamaRevenueOverviewFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
         data = fees_revenue.get_overview(
             chain=query.chain,
             exclude_total_data_chart=False,
@@ -205,7 +208,7 @@ class DeFiLlamaRevenueOverviewFetcher(
     def transform_data(
         query: DeFiLlamaRevenueOverviewQueryParams, data: Dict[str, Any], **kwargs: Any
     ) -> List[DeFiLlamaRevenueOverviewData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = {}
 
         for k, v in data.items():

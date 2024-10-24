@@ -11,7 +11,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaCoinsFirstQueryParams(QueryParams):
-    """DeFiLlama Coins First Query."""
+    """DeFiLlama Coins First Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     token: str = Field(
         description="Token to fetch data for. Must be in chain:address format."
@@ -39,11 +42,11 @@ class DeFiLlamaCoinsFirstData(Data):
 class DeFiLlamaCoinsFirstFetcher(
     Fetcher[DeFiLlamaCoinsFirstQueryParams, List[DeFiLlamaCoinsFirstData]]
 ):
-    """Fetcher for DeFiLlama Coins First data"""
+    """DeFiLlama Coins First Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsFirstQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaCoinsFirstQueryParams(**params)
 
     @staticmethod
@@ -52,7 +55,7 @@ class DeFiLlamaCoinsFirstFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> Dict[str, Any]:
-        """Fetch data from DeFiLlama"""
+        """Fetch data from DeFiLlama."""
         token = [{query.token.split(":")[0]: query.token.split(":")[1]}]
         return coins.get_first_prices(tokens=token)
 
@@ -60,7 +63,7 @@ class DeFiLlamaCoinsFirstFetcher(
     def transform_data(
         query: DeFiLlamaCoinsFirstQueryParams, data: Dict[str, Any], **kwargs: Any
     ) -> List[DeFiLlamaCoinsFirstData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
 
         transformed_data: List[Dict[str, Any]] = []
 

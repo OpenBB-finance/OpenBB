@@ -11,7 +11,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaVolumesSummaryQueryParams(QueryParams):
-    """DeFiLlama Volumes Summary Query."""
+    """DeFiLlama Volumes Summary Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     protocol: str = Field(description="The protocol to fetch data for.")
     is_options: bool = Field(
@@ -28,7 +31,7 @@ class DeFiLlamaVolumesSummaryQueryParams(QueryParams):
 
 
 class DeFiLlamaChainsBreakdownData(Data):
-    """DeFiLlama Chains Breakdown."""
+    """DeFiLlama Chains Breakdown Data."""
 
     date: datetime = Field(description="The date of the data.")
     chains: Dict[str, Dict[str, int]] = Field(description="The chains data.")
@@ -163,11 +166,11 @@ class DeFiLlamaVolumesSummaryData(Data):
 class DeFiLlamaVolumesSummaryFetcher(
     Fetcher[DeFiLlamaVolumesSummaryQueryParams, List[DeFiLlamaVolumesSummaryData]]
 ):
-    """Fetcher for DeFiLlama Volumes Summary data"""
+    """DeFiLlama Volumes Summary Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaVolumesSummaryQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaVolumesSummaryQueryParams(**params)
 
     @staticmethod
@@ -176,7 +179,7 @@ class DeFiLlamaVolumesSummaryFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
 
         if query.is_options:
             return volumes.get_options_summary(
@@ -194,7 +197,7 @@ class DeFiLlamaVolumesSummaryFetcher(
     def transform_data(
         query: DeFiLlamaVolumesSummaryQueryParams, data: Dict[str, Any], **kwargs: Any
     ) -> List[DeFiLlamaVolumesSummaryData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = dict(data)
 
         transformed_data["totalDataChart"] = [

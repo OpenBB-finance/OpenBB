@@ -12,7 +12,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaCoinsHistoricalQueryParams(QueryParams):
-    """DeFiLlama Coins Historical Query."""
+    """DeFiLlama Coins Historical Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     token: str = Field(description="The token to get historical data for.")
     timestamp: Union[int, str, datetime] = Field(
@@ -68,8 +71,11 @@ class DeFiLlamaCoinsHistoricalData(Data):
 class DeFiLlamaCoinsHistoricalFetcher(
     Fetcher[DeFiLlamaCoinsHistoricalQueryParams, List[DeFiLlamaCoinsHistoricalData]]
 ):
+    """DeFiLlama Coins Historical Fetcher."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsHistoricalQueryParams:
+        """Transform query parameters."""
         return DeFiLlamaCoinsHistoricalQueryParams(**params)
 
     @staticmethod

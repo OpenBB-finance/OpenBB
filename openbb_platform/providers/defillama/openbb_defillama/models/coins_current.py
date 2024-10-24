@@ -12,7 +12,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaCoinsCurrentQueryParams(QueryParams):
-    """DeFiLlama Coins Current Query."""
+    """DeFiLlama Coins Current Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     token: str = Field(
         description="Token to fetch data for. Must be in chain:address format."
@@ -54,7 +57,7 @@ class DeFiLlamaCoinsCurrentData(Data):
 class DeFiLlamaCoinsCurrentFetcher(
     Fetcher[DeFiLlamaCoinsCurrentQueryParams, List[DeFiLlamaCoinsCurrentData]]
 ):
-    """Fetcher for DeFiLlama Coins Current data"""
+    """DeFiLlama Coins Current Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsCurrentQueryParams:
@@ -67,7 +70,7 @@ class DeFiLlamaCoinsCurrentFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
         token = [{query.token.split(":")[0]: query.token.split(":")[1]}]
 
         return coins.get_current_prices(
@@ -79,7 +82,7 @@ class DeFiLlamaCoinsCurrentFetcher(
     def transform_data(
         query: DeFiLlamaCoinsCurrentQueryParams, data: Dict[str, Any], **kwargs: Any
     ) -> List[DeFiLlamaCoinsCurrentData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         transformed_data: List[Dict[str, Any]] = []
 
         transformed_data = [

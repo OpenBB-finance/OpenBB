@@ -11,7 +11,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaStablecoinsDistributionQueryParams(QueryParams):
-    """DeFiLlama Stablecoins Distribution Query."""
+    """DeFiLlama Stablecoins Distribution Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     stablecoin: str = Field(description="Stablecoin to get the distribution of.")
 
@@ -40,7 +43,7 @@ class DeFiLlamaStablecoinsChainTokensData(Data):
 
 
 class DeFiLlamaStablecoinsTokensData(Data):
-    """DeFiLlama Stablecoins Distribution Tokens."""
+    """DeFiLlama Stablecoins Distribution Tokens Data."""
 
     date: datetime = Field(description="Date of the data.")
     circulating: Optional[Dict[str, float]] = Field(
@@ -119,13 +122,13 @@ class DeFiLlamaStablecoinsDistributionFetcher(
         DeFiLlamaStablecoinsDistributionData,
     ]
 ):
-    """Fetcher for DeFiLlama Stablecoins Distribution data"""
+    """DeFiLlama Stablecoins Distribution Fetcher."""
 
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> DeFiLlamaStablecoinsDistributionQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaStablecoinsDistributionQueryParams(**params)
 
     @staticmethod
@@ -134,7 +137,7 @@ class DeFiLlamaStablecoinsDistributionFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> Dict[str, Any]:
-        """Fetch data from DeFiLlama"""
+        """Fetch data from DeFiLlama."""
         return stablecoins.get_distribution(query.stablecoin)
 
     @staticmethod
@@ -143,7 +146,7 @@ class DeFiLlamaStablecoinsDistributionFetcher(
         data: Dict[str, Any],
         **kwargs: Any
     ) -> DeFiLlamaStablecoinsDistributionData:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = {}
 
         transformed_data = {

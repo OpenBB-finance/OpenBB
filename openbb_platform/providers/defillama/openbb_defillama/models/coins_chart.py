@@ -12,7 +12,10 @@ from pydantic import Field, field_validator, model_validator
 
 
 class DeFiLlamaCoinsChartQuery(QueryParams):
-    """DeFiLlama Coins Chart Query."""
+    """DeFiLlama Coins Chart Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     token: str = Field(description="The token to get the chart for.")
     start_date: Optional[Union[int, str, datetime]] = Field(
@@ -103,8 +106,10 @@ class DeFiLlamaCoinsChartData(Data):
 class DeFiLlamaCoinsChartFetcher(
     Fetcher[DeFiLlamaCoinsChartQuery, List[DeFiLlamaCoinsChartData]]
 ):
+    """DeFiLlama Coins Chart Fetcher."""
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsChartQuery:
+        """Transform query parameters."""
         transformed_params = params
 
         if params.get("end_date") is None:

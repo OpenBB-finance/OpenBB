@@ -11,7 +11,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaCoinsBlockTimestampQueryParams(QueryParams):
-    """DeFiLlama Coins Block Timestamp Query."""
+    """DeFiLlama Coins Block Timestamp Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     chain: str = Field(description="The chain to fetch the block timestamp for.")
     timestamp: Union[int, str, datetime] = Field(
@@ -45,7 +48,7 @@ class DeFiLlamaCoinsBlockTimestampFetcher(
         DeFiLlamaCoinsBlockTimestampQueryParams, List[DeFiLlamaCoinsBlockTimestampData]
     ]
 ):
-    """Fetcher for DeFiLlama Coins Block Timestampq data"""
+    """DeFiLlama Coins Block Timestamp Fetcher."""
 
     @staticmethod
     def transform_query(
@@ -60,7 +63,7 @@ class DeFiLlamaCoinsBlockTimestampFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
         return coins.get_nearest_block(
             chain=query.chain,
             timestamp=query.timestamp,
@@ -72,5 +75,5 @@ class DeFiLlamaCoinsBlockTimestampFetcher(
         data: Dict[str, Any],
         **kwargs: Any,
     ) -> DeFiLlamaCoinsBlockTimestampData:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         return DeFiLlamaCoinsBlockTimestampData.model_validate(data)

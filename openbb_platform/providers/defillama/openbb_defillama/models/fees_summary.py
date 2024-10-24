@@ -17,7 +17,10 @@ class DeFiLlamaFeesSummaryQueryParams(QueryParams):
 
 
 class DeFiLlamaChainsBreakdownData(Data):
-    """DeFiLlama Chains Breakdown."""
+    """DeFiLlama Chains Breakdown.
+
+    Source: https://defillama.com/docs/api
+    """
 
     date: datetime = Field(description="The date of the data.")
     chains: Dict[str, Dict[str, int]] = Field(description="The chains data.")
@@ -137,11 +140,11 @@ class DeFiLlamaFeesSummaryData(Data):
 class DeFiLlamaFeesSummaryFetcher(
     Fetcher[DeFiLlamaFeesSummaryQueryParams, List[DeFiLlamaFeesSummaryData]]
 ):
-    """Fetcher for DeFiLlama Fees Summary data"""
+    """DeFiLlama Fees Summary Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaFeesSummaryQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaFeesSummaryQueryParams(**params)
 
     @staticmethod
@@ -150,7 +153,7 @@ class DeFiLlamaFeesSummaryFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
         return fees_revenue.get_summary(
             protocol=query.protocol,
             data="daily",
@@ -161,7 +164,7 @@ class DeFiLlamaFeesSummaryFetcher(
     def transform_data(
         query: DeFiLlamaFeesSummaryQueryParams, data: Dict[str, Any], **kwargs: Any
     ) -> List[DeFiLlamaFeesSummaryData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = dict(data)
 
         transformed_data["totalDataChart"] = [

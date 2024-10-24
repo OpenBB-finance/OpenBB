@@ -12,6 +12,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaCoinsChangeQueryParams(QueryParams):
+    """DeFiLlama Coins Change Query.
+
+    Source: https://defillama.com/docs/api
+    """
     token: str = Field(description="The token to fetch data for.")
     timestamp: Union[int, str, datetime] = Field(
         description="The timestamp to fetch the block for. If a string is provided, it should follow the 'day-first' format."  # noqa: E501
@@ -60,8 +64,11 @@ class DeFiLlamaCoinsChangeData(Data):
 class DeFiLlamaCoinsChangeFetcher(
     Fetcher[DeFiLlamaCoinsChangeQueryParams, List[DeFiLlamaCoinsChangeData]]
 ):
+    """DeFiLlama Coins Change Fetcher"""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsChangeQueryParams:
+        """Transform query parameters."""
         return DeFiLlamaCoinsChangeQueryParams(**params)
 
     @staticmethod

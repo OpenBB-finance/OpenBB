@@ -11,7 +11,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaStablecoinsHistoricalQueryParams(QueryParams):
-    """DeFiLlama Stablecoins Historical Query."""
+    """DeFiLlama Stablecoins Historical Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     pass
 
@@ -35,13 +38,13 @@ class DeFiLlamaStablecoinsHistoricalFetcher(
         List[DeFiLlamaStablecoinsHistoricalData],
     ]
 ):
-    """Fetcher for DeFiLlama Stablecoins Historical data"""
+    """DeFiLlama Stablecoins Historical Fetcher."""
 
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> DeFiLlamaStablecoinsHistoricalQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaStablecoinsHistoricalQueryParams(**params)
 
     @staticmethod
@@ -50,7 +53,7 @@ class DeFiLlamaStablecoinsHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> Dict[str, Any]:
-        """Fetch data from DeFiLlama"""
+        """Fetch data from DeFiLlama."""
         return stablecoins.get_prices()
 
     @staticmethod
@@ -59,5 +62,5 @@ class DeFiLlamaStablecoinsHistoricalFetcher(
         data: Dict[str, Any],
         **kwargs: Any
     ) -> List[DeFiLlamaStablecoinsHistoricalData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         return [DeFiLlamaStablecoinsHistoricalData.model_validate(d) for d in data]

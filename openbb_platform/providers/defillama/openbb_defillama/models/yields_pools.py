@@ -10,7 +10,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaYieldsPoolsQueryParams(QueryParams):
-    """DefiLlama Yields Pools Query Params."""
+    """DefiLlama Yields Pools Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     pass
 
@@ -89,11 +92,11 @@ class DeFiLlamaYieldsPoolsData(Data):
 class DeFiLlamaYieldsPoolsFetcher(
     Fetcher[DeFiLlamaYieldsPoolsQueryParams, List[DeFiLlamaYieldsPoolsData]]
 ):
-    """Fetcher for DeFiLlama Yields Pools data"""
+    """DeFiLlama Yields Pools Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaYieldsPoolsQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaYieldsPoolsQueryParams(**params)
 
     @staticmethod
@@ -102,7 +105,7 @@ class DeFiLlamaYieldsPoolsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict[str, Any]]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
         if data := yields.get_pools():
             return data
 
@@ -114,5 +117,5 @@ class DeFiLlamaYieldsPoolsFetcher(
         data: List[Dict[str, Any]],
         **kwargs: Any,
     ) -> List[DeFiLlamaYieldsPoolsData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         return [DeFiLlamaYieldsPoolsData.model_validate(d) for d in data]

@@ -10,13 +10,16 @@ from pydantic import Field
 
 
 class DeFiLlamaTvlChainsQueryParams(QueryParams):
-    """DeFiLlama TVL Chains Query Parameters"""
+    """DeFiLlama TVL Chains Query Parameters.
+
+    Source: https://defillama.com/docs/api
+    """
 
     pass
 
 
 class DeFiLlamaTvlChainsData(Data):
-    """DeFiLlama TVL Chains Data"""
+    """DeFiLlama TVL Chains Data."""
 
     gecko_id: Optional[str] = Field(
         default=None, description="CoinGecko ID of the chain"
@@ -37,11 +40,11 @@ class DeFiLlamaTvlChainsData(Data):
 class DeFiLlamaTvlChainsFetcher(
     Fetcher[DeFiLlamaTvlChainsQueryParams, List[DeFiLlamaTvlChainsData]]
 ):
-    """Fetcher for DeFiLlama TVL Chains data"""
+    """DeFiLlama TVL Chains Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaTvlChainsQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaTvlChainsQueryParams(**params)
 
     @staticmethod
@@ -50,12 +53,12 @@ class DeFiLlamaTvlChainsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict[str, Any]]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
         return tvl.get_chains()
 
     @staticmethod
     def transform_data(
         query: DeFiLlamaTvlChainsQueryParams, data: List[Dict[str, Any]], **kwargs: Any
     ) -> List[DeFiLlamaTvlChainsData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         return [DeFiLlamaTvlChainsData.model_validate(d) for d in data]

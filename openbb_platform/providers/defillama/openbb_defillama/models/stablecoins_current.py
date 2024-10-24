@@ -10,7 +10,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaStablecoinsCurrentQueryParams(QueryParams):
-    """DeFiLlama Stablecoins Current Query."""
+    """DeFiLlama Stablecoins Current Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     pass
 
@@ -38,13 +41,13 @@ class DeFiLlamaStablecoinsCurrentFetcher(
         DeFiLlamaStablecoinsCurrentQueryParams, List[DeFiLlamaStablecoinsCurrentData]
     ]
 ):
-    """Fetcher for DeFiLlama Stablecoins Current data"""
+    """DeFiLlama Stablecoins Current Fetcher."""
 
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> DeFiLlamaStablecoinsCurrentQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaStablecoinsCurrentQueryParams(**params)
 
     @staticmethod
@@ -53,7 +56,7 @@ class DeFiLlamaStablecoinsCurrentFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> Dict[str, Any]:
-        """Fetch data from DeFiLlama"""
+        """Fetch data from DeFiLlama."""
         return stablecoins.get_chains()
 
     @staticmethod
@@ -62,5 +65,5 @@ class DeFiLlamaStablecoinsCurrentFetcher(
         data: Dict[str, Any],
         **kwargs: Any
     ) -> List[DeFiLlamaStablecoinsCurrentData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         return [DeFiLlamaStablecoinsCurrentData.model_validate(d) for d in data]

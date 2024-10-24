@@ -10,7 +10,10 @@ from pydantic import Field, field_validator
 
 
 class DeFiLlamaStablecoinsListQueryParams(QueryParams):
-    """DeFiLlama Stablecoins List Query."""
+    """DeFiLlama Stablecoins List Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     include_prices: bool = Field(
         description="Whether to include prices.", default=False
@@ -94,11 +97,11 @@ class DeFiLlamaStablecoinsListData(Data):
 class DeFiLlamaStablecoinsListFetcher(
     Fetcher[DeFiLlamaStablecoinsListQueryParams, List[DeFiLlamaStablecoinsListData]]
 ):
-    """Fetcher for DeFiLlama Stablecoins List data"""
+    """DeFiLlama Stablecoins List Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaStablecoinsListQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaStablecoinsListQueryParams(**params)
 
     @staticmethod
@@ -107,7 +110,7 @@ class DeFiLlamaStablecoinsListFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> List[Dict[str, Any]]:
-        """Fetch data from DeFiLlama"""
+        """Fetch data from DeFiLlama."""
         return stablecoins.get_stablecoins(include_prices=query.include_prices)
 
     @staticmethod
@@ -116,7 +119,7 @@ class DeFiLlamaStablecoinsListFetcher(
         data: List[Dict[str, Any]],
         **kwargs: Any
     ) -> List[DeFiLlamaStablecoinsListData]:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
 
         transformed_data: List[Dict[str, Any]] = []
 

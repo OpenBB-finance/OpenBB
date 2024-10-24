@@ -11,7 +11,10 @@ from pydantic import Field
 
 
 class DeFiLlamaTvlCurrentQueryParams(QueryParams):
-    """DeFiLlama TVL Current Query Parameters"""
+    """DeFiLlama TVL Current Query Parameters.
+
+    Source: https://defillama.com/docs/api
+    """
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", "") + " Should be a protocol."
@@ -19,7 +22,7 @@ class DeFiLlamaTvlCurrentQueryParams(QueryParams):
 
 
 class DeFiLlamaTvlCurrentData(Data):
-    """DeFiLlama TVL Current Data"""
+    """DeFiLlama TVL Current Data."""
 
     protocol: str = Field(description="Protocol name")
     tvl: float = Field(description="Current TVL in USD")
@@ -28,11 +31,11 @@ class DeFiLlamaTvlCurrentData(Data):
 class DeFiLlamaTvlCurrentFetcher(
     Fetcher[DeFiLlamaTvlCurrentQueryParams, List[DeFiLlamaTvlCurrentData]]
 ):
-    """Fetcher for DeFiLlama TVL Current data"""
+    """DeFiLlama TVL Current Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaTvlCurrentQueryParams:
-        """Transform query parameters"""
+        """Transform query parameters."""
         return DeFiLlamaTvlCurrentQueryParams(**params)
 
     @staticmethod
@@ -41,7 +44,7 @@ class DeFiLlamaTvlCurrentFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        """Extract data from DeFiLlama API"""
+        """Extract data from DeFiLlama API."""
         if current_tvl := tvl.get_protocol_tvl(query.symbol):
             return {"protocol": query.symbol, "tvl": current_tvl}
         else:
@@ -51,5 +54,5 @@ class DeFiLlamaTvlCurrentFetcher(
     def transform_data(
         query: DeFiLlamaTvlCurrentQueryParams, data: Dict[str, Any], **kwargs: Any
     ) -> DeFiLlamaTvlCurrentData:
-        """Transform the data into the desired format"""
+        """Transform the data into the desired format."""
         return DeFiLlamaTvlCurrentData.model_validate(data)

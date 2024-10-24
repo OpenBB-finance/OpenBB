@@ -13,7 +13,10 @@ from pydantic import Field
 
 
 class DeFiLlamaYieldsHistoricalQueryParams(QueryParams):
-    """DeFiLlama Yields Historical Price Query."""
+    """DeFiLlama Yields Historical Price Query.
+
+    Source: https://defillama.com/docs/api
+    """
 
     pool_id: str = Field(description="The pool id to get data for.")
 
@@ -56,7 +59,7 @@ class DeFiLlamaYieldsHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extract raw data from the Polygon endpoint."""
+        """Extract raw data from the DeFiLlama endpoint."""
 
         return yields.get_pool_chart(query.pool_id)
 
@@ -64,5 +67,5 @@ class DeFiLlamaYieldsHistoricalFetcher(
     def transform_data(
         query: DeFiLlamaYieldsHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[DeFiLlamaYieldsHistoricalData]:
-        """Transform the data."""
+        """Transform the data into the desired format."""
         return [DeFiLlamaYieldsHistoricalData.model_validate(d) for d in data]
