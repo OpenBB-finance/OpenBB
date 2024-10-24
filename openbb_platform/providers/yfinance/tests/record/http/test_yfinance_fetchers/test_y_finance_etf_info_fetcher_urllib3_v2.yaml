@@ -8,157 +8,6 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-    method: GET
-    uri: https://fc.yahoo.com/
-  response:
-    body:
-      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n  <head>\n    <meta http-equiv=\"content-type\"
-        content=\"text/html; charset=UTF-8\">\n    <meta charset=\"utf-8\">\n    <title>Yahoo</title>\n
-        \   <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimal-ui\">\n
-        \   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <style>\n
-        \     html {\n          height: 100%;\n      }\n      body {\n          background:
-        #fafafc url(https://s.yimg.com/nn/img/sad-panda-201402200631.png) 50% 50%;\n
-        \         background-size: cover;\n          height: 100%;\n          text-align:
-        center;\n          font: 300 18px \"helvetica neue\", helvetica, verdana,
-        tahoma, arial, sans-serif;\n          margin: 0;\n      }\n      table {\n
-        \         height: 100%;\n          width: 100%;\n          table-layout: fixed;\n
-        \         border-collapse: collapse;\n          border-spacing: 0;\n          border:
-        none;\n      }\n      h1 {\n          font-size: 42px;\n          font-weight:
-        400;\n          color: #400090;\n      }\n      p {\n          color: #1A1A1A;\n
-        \     }\n      #message-1 {\n          font-weight: bold;\n          margin:
-        0;\n      }\n      #message-2 {\n          display: inline-block;\n          *display:
-        inline;\n          zoom: 1;\n          max-width: 17em;\n          _width:
-        17em;\n      }\n      </style>\n      <script>\n      !function(){if(window==window.top){var
-        o=window.location.host;o.endsWith(\".yahoo.com\")&&window.location.replace(\"https://www.yahoo.com/\"),o.endsWith(\".aol.com\")&&window.location.replace(\"https://www.aol.com/\"),o.endsWith(\".huffpost.com\")&&window.location.replace(\"https://www.huffpost.com/\"),o.endsWith(\".engadget.com\")&&window.location.replace(\"https://www.engadget.com/\")}}();\n
-        \     </script>\n  </head>\n  <body>\n  <!-- status code : 404 -->\n  <!--
-        Not Found on Accelerator -->\n  <!-- host machine: e41.ycpi.nya.yahoo.com
-        -->\n  <!-- timestamp: 1719838005.429 -->\n  <!-- url: https://fc.yahoo.com/-->\n
-        \ <script type=\"text/javascript\">\n    function buildUrl(url, parameters){\n
-        \     var qs = [];\n      for(var key in parameters) {\n        var value
-        = parameters[key];\n        qs.push(encodeURIComponent(key) + \"=\" + encodeURIComponent(value));\n
-        \     }\n      url = url + \"?\" + qs.join('&');\n      return url;\n    }\n\n
-        \   function generateBRBMarkup(site) {\n      params.source = 'brb';\n      generateBeaconMarkup(params);\n
-        \     var englishHeader = 'Will be right back...';\n      var englishMessage1
-        = 'Thank you for your patience.';\n      var englishMessage2 = 'Our engineers
-        are working quickly to resolve the issue.';\n      var defaultLogoStyle =
-        '';\n      var siteDataMap = {\n        'default': {\n          logo: 'https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_205x58_frontpage.png',\n
-        \         logoAlt: 'Yahoo Logo',\n          logoStyle: defaultLogoStyle,\n
-        \         header: englishHeader,\n          message1: englishMessage1,\n          message2:
-        englishMessage2\n        }\n      };\n\n      var siteDetails = siteDataMap['default'];\n\n
-        \     document.write('<table><tbody><tr><td>');\n      document.write('<div
-        id=\"content\">');\n      document.write('<img src=\"' + siteDetails['logo']
-        + '\" alt=\"' + siteDetails['logoAlt'] + '\" style=\"' + siteDetails['logoStyle']
-        + '\">');\n      document.write('<h1 style=\"margin-top:20px;\">' + siteDetails['header']
-        + '</h1>');\n      document.write('<p id=\"message-1\">' + siteDetails['message1']
-        + '</p>');\n      document.write('<p id=\"message-2\">' + siteDetails['message2']
-        + '</p>');\n      document.write('</div>');\n      document.write('</td></tr></tbody></table>');\n
-        \   }\n\n    function generateBeaconMarkup(params) {\n        document.write('<img
-        src=\"' + buildUrl('//geo.yahoo.com/b', params) + '\" style=\"display:none;\"
-        width=\"0px\" height=\"0px\"/>');\n        var beacon = new Image();\n        beacon.src
-        = buildUrl('//bcn.fp.yahoo.com/p', params);\n    }\n\n    var hostname = window.location.hostname;\n
-        \   var device = 'desktop';\n    var ynet = ('-' === '1');\n    var time =
-        new Date().getTime();\n    var params = {\n        s: '1197757129',\n        t:
-        time,\n        err_url: document.URL,\n        err: '404',\n        test:
-        '-',\n        ats_host: 'e41.ycpi.nya.yahoo.com',\n        rid: '-',\n        message:
-        'Not Found on Accelerator'\n    };\n\n    if(ynet) {\n        document.write('<div
-        style=\"height: 5px; background-color: red;\"></div>');\n    }\n    generateBRBMarkup(hostname,
-        params);\n\n  </script>\n  <noscript>\n  <table>\n    <tbody>\n      <tr>\n
-        \       <td>\n          <div id=\"englishContent\">\n            <h1 style=\"margin-top:20px;\">Will
-        be right back...</h1>\n            <p id=\"message-1\">Thank you for your
-        patience.</p>\n            <p id=\"message-2\">Our engineers are working quickly
-        to resolve the issue.</p>\n          </div>\n        </td>\n      </tr>\n
-        \   </tbody>\n  </table>\n  </noscript>\n  </body>\n</html>\n"
-    headers:
-      Cache-Control:
-      - no-store
-      Connection:
-      - keep-alive
-      Content-Language:
-      - en
-      Content-Length:
-      - '4744'
-      Content-Type:
-      - text/html
-      Date:
-      - Mon, 01 Jul 2024 12:46:45 GMT
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Server:
-      - ATS
-      Set-Cookie:
-      - A3=d=AQABBDWlgmYCEPVGb2spuBqQU2o1rgphcfQFEgEBAQH2g2aMZtxH0iMA_eMAAA&S=AQAAAleminkrOVbSyni0NkjXDnA;
-        Expires=Tue, 1 Jul 2025 18:46:45 GMT; Max-Age=31557600; Domain=.yahoo.com;
-        Path=/; SameSite=None; Secure; HttpOnly
-      X-Content-Type-Options:
-      - nosniff
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 404
-      message: Not Found on Accelerator
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Cookie:
-      - MOCK_COOKIE
-    method: GET
-    uri: https://query1.finance.yahoo.com/v1/test/getcrumb
-  response:
-    body:
-      string: i6xzA4jGdZc
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - private, max-age=60, stale-while-revalidate=30
-      content-length:
-      - '11'
-      content-type:
-      - text/plain;charset=utf-8
-      date:
-      - Mon, 01 Jul 2024 12:46:45 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-external-services-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '1'
-      y-rid:
-      - 407p5elj8599l
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
       Cookie:
       - MOCK_COOKIE
     method: GET
@@ -171,17 +20,15 @@ interactions:
         the adviser adjusts the securities from time to time to conform to periodic
         changes in the identity and/or relative weights of index securities. The composition
         and weighting of the securities portion of a portfolio deposit are also adjusted
-        to conform to changes in the index.\",\"companyOfficers\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":481.61,\"open\":482.4,\"dayLow\":478.4613,\"dayHigh\":487.19,\"regularMarketPreviousClose\":481.61,\"regularMarketOpen\":482.4,\"regularMarketDayLow\":478.4613,\"regularMarketDayHigh\":487.19,\"trailingPE\":39.068314,\"volume\":34881581,\"regularMarketVolume\":34881581,\"averageVolume\":37239408,\"averageVolume10days\":30903920,\"averageDailyVolume10Day\":30903920,\"bid\":478.13,\"ask\":479.52,\"bidSize\":4300,\"askSize\":4300,\"yield\":0.0058,\"totalAssets\":270069170176,\"fiftyTwoWeekLow\":342.35,\"fiftyTwoWeekHigh\":487.2,\"fiftyDayAverage\":452.7508,\"twoHundredDayAverage\":415.66074,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.003675173,\"navPrice\":478.92,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
-        Growth\",\"ytdReturn\":0.173393,\"beta3Year\":1.19,\"totalAssets\":270069170176,\"yield\":0.0058,\"fundFamily\":\"Invesco\",\"fundInceptionDate\":921024000,\"legalType\":\"Exchange
-        Traded Fund\",\"threeYearAverageReturn\":0.112927504,\"fiveYearAverageReturn\":0.21541959,\"lastSplitFactor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
+        to conform to changes in the index.\",\"companyOfficers\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":495.96,\"open\":493.58,\"dayLow\":485.05,\"dayHigh\":494.24,\"regularMarketPreviousClose\":495.96,\"regularMarketOpen\":493.58,\"regularMarketDayLow\":485.05,\"regularMarketDayHigh\":494.24,\"trailingPE\":39.82259,\"volume\":37505461,\"regularMarketVolume\":37505461,\"averageVolume\":35330324,\"averageVolume10days\":27900730,\"averageDailyVolume10Day\":27900730,\"bid\":0.0,\"ask\":0.0,\"bidSize\":0,\"askSize\":0,\"yield\":0.0062,\"totalAssets\":294781157376,\"fiftyTwoWeekLow\":342.35,\"fiftyTwoWeekHigh\":503.52,\"fiftyDayAverage\":479.6332,\"twoHundredDayAverage\":455.843,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.0035688363,\"navPrice\":496.03,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
+        Growth\",\"ytdReturn\":0.21636249,\"beta3Year\":1.18,\"totalAssets\":294781157376,\"yield\":0.0062,\"fundFamily\":\"Invesco\",\"fundInceptionDate\":921024000,\"legalType\":\"Exchange
+        Traded Fund\",\"threeYearAverageReturn\":0.105835505,\"fiveYearAverageReturn\":0.2171112,\"lastSplitFactor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
         QQQ Trust, Series 1\",\"longName\":\"Invesco QQQ Trust\",\"firstTradeDateEpochUtc\":921076200,\"timeZoneFullName\":\"America/New_York\",\"timeZoneShortName\":\"EDT\",\"uuid\":\"714d32d4-5f6c-33bc-b36a-765119cb3c4c\",\"messageBoardId\":\"finmb_8108558\",\"gmtOffSetMilliseconds\":-14400000,\"maxAge\":1}}],\"error\":null}}"
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
       Referrer-Policy:
       - no-referrer-when-downgrade
       Strict-Transport-Security:
@@ -197,21 +44,21 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1077'
+      - '1076'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 12:46:46 GMT
+      - Thu, 24 Oct 2024 05:13:19 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '6'
+      - '5'
       y-rid:
-      - 2oni6gpj8599m
+      - 62m2ootjhjlrg
     status:
       code: 200
       message: OK
@@ -233,11 +80,9 @@ interactions:
       string: '{"timeseries":{"result":[{"meta":{"symbol":["QQQ"],"type":["trailingPegRatio"]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
       Referrer-Policy:
       - no-referrer-when-downgrade
       Strict-Transport-Security:
@@ -255,17 +100,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 01 Jul 2024 12:46:46 GMT
+      - Thu, 24 Oct 2024 05:13:19 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '1'
       y-rid:
-      - 2thiqfhj8599m
+      - 6blo6jljhjlrg
     status:
       code: 200
       message: OK
