@@ -1,0 +1,1 @@
+"""OpenBB Crypto Stablecoins Router."""

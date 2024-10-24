@@ -2,6 +2,7 @@
 
 # flake8: noqa: S603
 
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -54,6 +55,7 @@ openbb-regulators = { path = "./extensions/regulators", develop = true }
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
 openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
+openbb-defillama = { path = "./providers/defillama", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 openbb-finra = { path = "./providers/finra", optional = true, develop = true }
 openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
@@ -138,6 +140,9 @@ def install_platform_local(_extras: bool = False):
     TEMP_PYPROJECT = dumps(pyproject_toml)
 
     try:
+        if shutil.which("poetry") is None:
+            raise Exception("poetry not found. Please install poetry first.")
+
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
             f.write(TEMP_PYPROJECT)
 
