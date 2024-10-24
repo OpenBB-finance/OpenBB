@@ -107,15 +107,12 @@ interactions:
         Jx8Gz1Z62u2EH0jYyqynHM2LzZd1uSjzzpmddTj/USy+gnGwXeR5hL3/THcWxscNgFsU8z/ku3JV
         7s7Sk4614+tTHKb7tfeak0wZ4nR1s6y/F8VO8PV/Dv8JFrBujl5Wm+Xyx4//ARBqFTpXwgAA
     headers:
-      ' x-yahoo-request-id': null
       Age:
       - '0'
       Connection:
       - keep-alive
-      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
-      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       Transfer-Encoding:
@@ -133,14 +130,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 23 Oct 2024 23:16:02 GMT
+      - Thu, 24 Oct 2024 00:15:00 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
-      x-envoy-decorator-operation: null
-      x-envoy-upstream-service-time: null
-      y-rid: null
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '77'
+      y-rid:
+      - 686ogk1jhj4c4
     status:
       code: 200
       message: OK

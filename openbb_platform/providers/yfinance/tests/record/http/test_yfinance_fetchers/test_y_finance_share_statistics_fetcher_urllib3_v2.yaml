@@ -50,15 +50,12 @@ interactions:
         Adrian  Perica","age":49,"title":"Head of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":6,"boardRisk":1,"compensationRisk":2,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1727740800,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":235.86,"open":234.32,"dayLow":227.76,"dayHigh":235.144,"regularMarketPreviousClose":235.86,"regularMarketOpen":234.32,"regularMarketDayLow":227.76,"regularMarketDayHigh":235.144,"dividendRate":1.0,"dividendYield":0.0042,"exDividendDate":1723420800,"payoutRatio":0.1476,"fiveYearAvgDividendYield":0.64,"beta":1.239,"trailingPE":35.06991,"forwardPE":30.850267,"volume":50657958,"regularMarketVolume":50657958,"averageVolume":50981675,"averageVolume10days":38644190,"averageDailyVolume10Day":38644190,"bid":0.0,"ask":0.0,"bidSize":0,"askSize":0,"marketCap":3508498071552,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":237.49,"priceToSalesTrailing12Months":9.098731,"fiftyDayAverage":226.301,"twoHundredDayAverage":200.3755,"trailingAnnualDividendRate":0.97,"trailingAnnualDividendYield":0.004112609,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3548009725952,"forwardPE":30.850267,"profitMargins":0.26441,"floatShares":15179506298,"sharesOutstanding":15204100096,"sharesShort":141741381,"sharesShortPriorMonth":135042504,"sharesShortPreviousMonthDate":1724976000,"dateShortInterest":1727654400,"sharesPercentSharesOut":0.0093,"heldPercentInsiders":0.02704,"heldPercentInstitutions":0.60877997,"shortRatio":2.32,"shortPercentOfFloat":0.0093,"beta":1.239,"impliedSharesOutstanding":15228399616,"category":null,"bookValue":4.382,"priceToBook":52.660885,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1696032000,"nextFiscalYearEnd":1727654400,"mostRecentQuarter":1719619200,"earningsQuarterlyGrowth":0.079,"netIncomeToCommon":101956001792,"trailingEps":6.58,"forwardEps":7.48,"pegRatio":3.19,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":9.201,"enterpriseToEbitda":26.924,"52WeekChange":0.37849212,"SandP52WeekChange":0.3975451,"lastDividendValue":0.25,"lastDividendDate":1723420800},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
         Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":230.76,"targetHighPrice":300.0,"targetLowPrice":183.86,"targetMeanPrice":240.78,"targetMedianPrice":243.0,"recommendationMean":2.1,"recommendationKey":"buy","numberOfAnalystOpinions":40,"totalCash":61801000960,"totalCashPerShare":4.065,"ebitda":131781001216,"totalDebt":101304000512,"quickRatio":0.798,"currentRatio":0.953,"totalRevenue":385603010560,"debtToEquity":151.862,"revenuePerShare":24.957,"returnOnAssets":0.22612,"returnOnEquity":1.60583,"freeCashflow":86158123008,"operatingCashflow":113040998400,"earningsGrowth":0.111,"revenueGrowth":0.049,"grossMargins":0.45962003,"ebitdaMargins":0.34175,"operatingMargins":0.29556,"profitMargins":0.26441,"financialCurrency":"USD"}}],"error":null}}'
     headers:
-      ' x-yahoo-request-id': null
       Age:
       - '0'
       Connection:
       - keep-alive
-      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
-      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -76,14 +73,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 23 Oct 2024 23:20:38 GMT
+      - Thu, 24 Oct 2024 00:14:02 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
-      x-envoy-decorator-operation: null
-      x-envoy-upstream-service-time: null
-      y-rid: null
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-baseline-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '6'
+      y-rid:
+      - 203t11ljhj4aa
     status:
       code: 200
       message: OK
@@ -251,15 +251,12 @@ interactions:
         Information Technology Index Fund","pctHeld":{"raw":0.0049,"fmt":"0.49%"},"position":{"raw":76972129,"fmt":"76.97M","longFmt":"76,972,129"},"value":{"raw":14460753875,"fmt":"14.46B","longFmt":"14,460,753,875"}},{"maxAge":1,"reportDate":{"raw":1696032000,"fmt":"2023-09-30"},"organization":"Select
         Sector SPDR Fund-Technology","pctHeld":{"raw":0.0041,"fmt":"0.41%"},"position":{"raw":64568089,"fmt":"64.57M","longFmt":"64,568,089"},"value":{"raw":11054702517,"fmt":"11.05B","longFmt":"11,054,702,517"}}],"maxAge":1}}],"error":null}}'
     headers:
-      ' x-yahoo-request-id': null
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
-      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
-      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -275,18 +272,19 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 23 Oct 2024 23:20:38 GMT
+      - Thu, 24 Oct 2024 00:14:03 GMT
       server:
       - ATS
       vary:
       - Origin
       x-content-type-options:
       - nosniff
-      x-envoy-decorator-operation: null
-      x-envoy-upstream-service-time: null
+      x-envoy-decorator-operation:
+      - finance-yql--mtls-default-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '5'
       x-yahoo-request-id:
-      - 753nv8djhj167
-      y-rid: null
+      - 39btt7ljhj4ab
     status:
       code: 200
       message: OK

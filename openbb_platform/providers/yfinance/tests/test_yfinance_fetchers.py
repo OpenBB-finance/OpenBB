@@ -73,14 +73,6 @@ def vcr_config():
             ("crumb", "MOCK_CRUMB"),
             ("date", "MOCK_DATE"),
         ],
-        "before_record_response": [
-            scrub_string("Set-Cookie"),
-            scrub_string("y-rid"),
-            scrub_string("x-envoy-decorator-operation"),
-            scrub_string("x-envoy-upstream-service-time"),
-            scrub_string(" x-yahoo-request-id"),
-            scrub_string("Expect-CT"),
-        ],
         "match_on": ["method", "scheme", "port"],
     }
 

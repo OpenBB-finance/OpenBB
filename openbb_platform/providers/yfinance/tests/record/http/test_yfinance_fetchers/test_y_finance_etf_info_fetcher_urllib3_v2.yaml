@@ -25,15 +25,12 @@ interactions:
         Traded Fund\",\"threeYearAverageReturn\":0.105835505,\"fiveYearAverageReturn\":0.2171112,\"lastSplitFactor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
         QQQ Trust, Series 1\",\"longName\":\"Invesco QQQ Trust\",\"firstTradeDateEpochUtc\":921076200,\"timeZoneFullName\":\"America/New_York\",\"timeZoneShortName\":\"EDT\",\"uuid\":\"714d32d4-5f6c-33bc-b36a-765119cb3c4c\",\"messageBoardId\":\"finmb_8108558\",\"gmtOffSetMilliseconds\":-14400000,\"maxAge\":1}}],\"error\":null}}"
     headers:
-      ' x-yahoo-request-id': null
       Age:
       - '0'
       Connection:
       - keep-alive
-      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
-      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -51,14 +48,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 23 Oct 2024 23:20:39 GMT
+      - Thu, 24 Oct 2024 00:14:03 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
-      x-envoy-decorator-operation: null
-      x-envoy-upstream-service-time: null
-      y-rid: null
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '6'
+      y-rid:
+      - 3gqg5r9jhj4ab
     status:
       code: 200
       message: OK
@@ -79,15 +79,12 @@ interactions:
     body:
       string: '{"timeseries":{"result":[{"meta":{"symbol":["QQQ"],"type":["trailingPegRatio"]}}],"error":null}}'
     headers:
-      ' x-yahoo-request-id': null
       Age:
       - '0'
       Connection:
       - keep-alive
-      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
-      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -103,14 +100,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 23 Oct 2024 23:20:39 GMT
+      - Thu, 24 Oct 2024 00:14:03 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
-      x-envoy-decorator-operation: null
-      x-envoy-upstream-service-time: null
-      y-rid: null
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-baseline-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '1'
+      y-rid:
+      - 25ke29tjhj4ab
     status:
       code: 200
       message: OK

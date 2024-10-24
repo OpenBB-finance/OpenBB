@@ -35,15 +35,12 @@ interactions:
         Z6/pC2Znk5lNorEjgKR+VIRBEQ3jMsmHYTjPh/MwocM0iX1/lM/DPMrRu8Z3GjV+L6kqLu2+kol6
         /jXzvSyOM3SoaoPTfwrmmnGO7yM+GgV2z9CPbNEt4X3DPj3h4wBK7Qvy9ANoJb0rOwgAAA==
     headers:
-      ' x-yahoo-request-id': null
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
-      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
-      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -61,14 +58,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 23 Oct 2024 23:16:14 GMT
+      - Thu, 24 Oct 2024 00:15:11 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
-      x-envoy-decorator-operation: null
-      x-envoy-upstream-service-time: null
-      y-rid: null
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '5'
+      y-rid:
+      - 51l7111jhj4cg
     status:
       code: 200
       message: OK
@@ -89,15 +89,12 @@ interactions:
     body:
       string: '{"timeseries":{"result":[{"meta":{"symbol":["QQQ"],"type":["trailingPegRatio"]}}],"error":null}}'
     headers:
-      ' x-yahoo-request-id': null
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
-      Expect-CT: null
       Referrer-Policy:
       - no-referrer-when-downgrade
-      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -113,14 +110,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 23 Oct 2024 23:16:14 GMT
+      - Thu, 24 Oct 2024 00:15:11 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
-      x-envoy-decorator-operation: null
-      x-envoy-upstream-service-time: null
-      y-rid: null
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '2'
+      y-rid:
+      - 2fmoqo1jhj4cg
     status:
       code: 200
       message: OK
