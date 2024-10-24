@@ -363,7 +363,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
 
     tickers = symbol.split(",")
     if len(tickers) == 1:
-        data = data.get(symbol)
+        data = data.get(symbol, DataFrame())
     elif len(tickers) > 1:
         _data = DataFrame()
         for ticker in tickers:
@@ -378,37 +378,40 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
             index_keys = ["date", "symbol"] if "symbol" in _data.columns else "date"
             _data = _data.set_index(index_keys).sort_index()
             data = _data
-    if not data.empty:
-        data = data.reset_index()
-        data = data.rename(columns={"Date": "date", "Datetime": "date"})
-        data["date"] = data["date"].apply(to_datetime)
-        data = data[data["Open"] > 0]
-        if start_date is not None:
-            data = data[data["date"] >= to_datetime(start_date)]  # type: ignore
-        if (
-            end_date is not None
-            and start_date is not None
-            and to_datetime(end_date) > to_datetime(start_date)  # type: ignore
-        ):
-            data = data[
-                data["date"]
-                <= (
-                    to_datetime(end_date)  # type: ignore
-                    + relativedelta(minutes=719 if intraday is True else 0)
-                )
-            ]
-        if intraday is True:
-            data["date"] = data["date"].dt.strftime("%Y-%m-%d %H:%M:%S")  # type: ignore
-        else:
-            data["date"] = data["date"].dt.strftime("%Y-%m-%d")  # type: ignore
-        if adjusted is False:
-            data = data.drop(columns=["Adj Close"])  # type: ignore
-        data.columns = data.columns.str.lower().str.replace(" ", "_").to_list()  # type: ignore
 
-        # Remove columns with no information.
-        for col in ["dividends", "capital_gains", "stock_splits"]:
-            if col in data.columns and data[col].sum() == 0:
-                data = data.drop(columns=[col])
+    if data.empty:
+        raise EmptyDataError()
+
+    data = data.reset_index()
+    data = data.rename(columns={"Date": "date", "Datetime": "date"})
+    data["date"] = data["date"].apply(to_datetime)
+    data = data[data["Open"] > 0]
+    if start_date is not None:
+        data = data[data["date"] >= to_datetime(start_date)]  # type: ignore
+    if (
+        end_date is not None
+        and start_date is not None
+        and to_datetime(end_date) > to_datetime(start_date)  # type: ignore
+    ):
+        data = data[
+            data["date"]
+            <= (
+                to_datetime(end_date)  # type: ignore
+                + relativedelta(minutes=719 if intraday is True else 0)
+            )
+        ]
+    if intraday is True:
+        data["date"] = data["date"].dt.strftime("%Y-%m-%d %H:%M:%S")  # type: ignore
+    else:
+        data["date"] = data["date"].dt.strftime("%Y-%m-%d")  # type: ignore
+    if adjusted is False:
+        data = data.drop(columns=["Adj Close"])  # type: ignore
+    data.columns = data.columns.str.lower().str.replace(" ", "_").to_list()  # type: ignore
+
+    # Remove columns with no information.
+    for col in ["dividends", "capital_gains", "stock_splits"]:
+        if col in data.columns and data[col].sum() == 0:
+            data = data.drop(columns=[col])
 
     return data  # type: ignore
 
