@@ -71,13 +71,6 @@ def vcr_config():
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
             ("crumb", "MOCK_CRUMB"),
-            ("date", "MOCK_DATE"),
-            ("corsDomain", "MOCK_CORS_DOMAIN"),
-        ],
-        "before_record_response": [
-            scrub_string("Set-Cookie"),
-            scrub_string("x-envoy-decorator-operation"),
-            scrub_string("y-rid"),
         ],
     }
 
