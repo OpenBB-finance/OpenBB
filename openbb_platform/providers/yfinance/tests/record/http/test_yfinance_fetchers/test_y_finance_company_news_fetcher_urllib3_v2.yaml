@@ -15,22 +15,24 @@ interactions:
   response:
     body:
       string: '{"explains":[],"count":15,"quotes":[{"exchange":"NMS","shortname":"Apple
-        Inc.","quoteType":"EQUITY","symbol":"AAPL","index":"quotes","score":5232100.0,"typeDisp":"Equity","longname":"Apple
+        Inc.","quoteType":"EQUITY","symbol":"AAPL","index":"quotes","score":5387800.0,"typeDisp":"Equity","longname":"Apple
         Inc.","exchDisp":"NASDAQ","sector":"Technology","sectorDisp":"Technology","industry":"Consumer
         Electronics","industryDisp":"Consumer Electronics","dispSecIndFlag":true,"isYahooFinance":true},{"exchange":"NGM","shortname":"Direxion
         Daily AAPL Bull 2X Sha","quoteType":"ETF","symbol":"AAPU","index":"quotes","score":20007.0,"typeDisp":"ETF","longname":"Direxion
-        Daily AAPL Bull 2X Shares","exchDisp":"NASDAQ","isYahooFinance":true},{"exchange":"PCX","shortname":"Tidal
-        ETF Trust II YieldMax AAP","quoteType":"ETF","symbol":"APLY","index":"quotes","score":20007.0,"typeDisp":"ETF","longname":"YieldMax
-        AAPL Option Income Strategy ETF","exchDisp":"NYSEArca","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
+        Daily AAPL Bull 2X Shares","exchDisp":"NASDAQ","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
         Oct 2024 232.500 put","quoteType":"OPTION","symbol":"AAPL241025P00232500","index":"quotes","score":20007.0,"typeDisp":"Option","longname":"AAPL
-        Oct 2024 232.500 put","exchDisp":"OPR","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
+        Oct 2024 232.500 put","exchDisp":"OPR","isYahooFinance":true},{"exchange":"PCX","shortname":"Tidal
+        ETF Trust II YieldMax AAP","quoteType":"ETF","symbol":"APLY","index":"quotes","score":20006.0,"typeDisp":"ETF","longname":"YieldMax
+        AAPL Option Income Strategy ETF","exchDisp":"NYSEArca","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
         Dec 2025 70.000 call","quoteType":"OPTION","symbol":"AAPL251219C00070000","index":"quotes","score":20005.0,"typeDisp":"Option","longname":"AAPL
         Dec 2025 70.000 call","exchDisp":"OPR","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
         Dec 2024 190.000 put","quoteType":"OPTION","symbol":"AAPL241220P00190000","index":"quotes","score":20005.0,"typeDisp":"Option","longname":"AAPL
         Dec 2024 190.000 put","exchDisp":"OPR","isYahooFinance":true},{"exchange":"OPR","shortname":"AAPL
         Jan 2025 75.000 put","quoteType":"OPTION","symbol":"AAPL250117P00075000","index":"quotes","score":20005.0,"typeDisp":"Option","longname":"AAPL
-        Jan 2025 75.000 put","exchDisp":"OPR","isYahooFinance":true}],"news":[{"uuid":"e366e202-5eb3-36b4-a6ab-814e61a14358","title":"Apple
-        CEO says company to increase investment in China, reports Xinhua","publisher":"Reuters","link":"https://finance.yahoo.com/news/apple-ceo-says-company-increase-000229705.html","providerPublishTime":1729728149,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/mdEUNFr4fWi2nL1P2WIt.A--~B/aD01MzM7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/reuters-finance.com/07fa124b5e2810a9e2da34033ddec968","width":800,"height":533,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/U.fGAgrEd4oUj.xje2PNkw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/reuters-finance.com/07fa124b5e2810a9e2da34033ddec968","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL"]},{"uuid":"4f8e61ce-2d91-38d8-8e06-70ab584d8fa8","title":"Apple
+        Jan 2025 75.000 put","exchDisp":"OPR","isYahooFinance":true}],"news":[{"uuid":"85f44755-37db-3577-ace0-59fd884f87c2","title":"RBNZ
+        Thinking About Lingering Inflation Pressures, Orr Says","publisher":"Bloomberg","link":"https://finance.yahoo.com/news/orr-says-rbnz-still-thinking-181903248.html","providerPublishTime":1729736246,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/3xMxTB0oyxDqnc2j3NB7Hg--~B/aD0yNjY3O3c9NDAwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/bloomberg_markets_842/ebc3d2fe9a729189a50928799eaf2371","width":4000,"height":2667,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/DIGgzGGKNhMqnfTFT3VxVA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/bloomberg_markets_842/ebc3d2fe9a729189a50928799eaf2371","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL","GS","GOOG"]},{"uuid":"72c3ae96-fbbc-3f73-b31d-0f49a68a3173","title":"Apple
+        Inc. (AAPL): A Bull Case Theory","publisher":"Insider Monkey","link":"https://finance.yahoo.com/news/apple-inc-aapl-bull-case-014504133.html","providerPublishTime":1729734304,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/upK3xq9ys9V.giIaUvFOow--~B/aD01MDA7dz03NTA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/028e3a6767f8a3fa1de90f373ab6c0c2","width":750,"height":500,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/G653lcsVjoSqZno3PRnA_w--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/028e3a6767f8a3fa1de90f373ab6c0c2","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL"]},{"uuid":"e366e202-5eb3-36b4-a6ab-814e61a14358","title":"Apple
+        CEO Cook says company will increase investment in China, reports Xinhua","publisher":"Reuters","link":"https://finance.yahoo.com/news/apple-ceo-says-company-increase-000229705.html","providerPublishTime":1729728149,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/mdEUNFr4fWi2nL1P2WIt.A--~B/aD01MzM7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/reuters-finance.com/07fa124b5e2810a9e2da34033ddec968","width":800,"height":533,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/U.fGAgrEd4oUj.xje2PNkw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/reuters-finance.com/07fa124b5e2810a9e2da34033ddec968","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL"]},{"uuid":"4f8e61ce-2d91-38d8-8e06-70ab584d8fa8","title":"Apple
         stock slips after a big cut for iPhone 16 orders","publisher":"Quartz","link":"https://finance.yahoo.com/m/4f8e61ce-2d91-38d8-8e06-70ab584d8fa8/apple-stock-slips-after-a-big.html","providerPublishTime":1729718400,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/qEWiJ6m3ihOwdG0QyDcqmw--~B/aD00MjQ7dz02MzY7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/quartz.com/eca45379d39e276824066baba86d9bff","width":636,"height":424,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/0B07.awGj0hhVZHjv1sv1g--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/quartz.com/eca45379d39e276824066baba86d9bff","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL"]},{"uuid":"5c13395f-5b42-3ecd-9566-8bd9ec173a98","title":"Apple
         Gives a Sneak Peek of AI Features. Why They May Not Supercharge iPhone Sales.","publisher":"Barrons.com","link":"https://finance.yahoo.com/m/5c13395f-5b42-3ecd-9566-8bd9ec173a98/apple-gives-a-sneak-peek-of.html","providerPublishTime":1729718400,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/UzOerFCDREiGVcRvhE5ElA--~B/aD02NDA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/Barrons.com/5ea737053d877af8c6388e241a932589","width":1280,"height":640,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/OOX8kQPMSrSSEKucaJcDPQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/Barrons.com/5ea737053d877af8c6388e241a932589","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL"]},{"uuid":"bd255480-2a2b-3857-9398-6b7d5e44f21d","title":"Apple
         Stock Drops After Analyst Reports Cut In iPhone 16 Orders","publisher":"Investor''s
@@ -38,10 +40,7 @@ interactions:
         and Goldman Sachs ordered to pay $89M over Apple Card failures","publisher":"Fox
         Business","link":"https://finance.yahoo.com/news/apple-goldman-sachs-ordered-pay-195433061.html","providerPublishTime":1729713273,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/arXZvvSlgzQ8bVkzR4ufRQ--~B/aD03MjA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/fox_business_text_367/5f92d92cde2ab46d82d3d4fd656c4d6e","width":1280,"height":720,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/DYe_Rd1Sq4ZO0stzj.zfnQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/fox_business_text_367/5f92d92cde2ab46d82d3d4fd656c4d6e","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL","GSC"]},{"uuid":"b20ada99-2823-3450-ba30-f39055485ec0","title":"Apple
         and Goldman Sachs must pay $89 million for mishandling Apple Card transactions,
-        CFPB orders","publisher":"Associated Press Finance","link":"https://finance.yahoo.com/news/apple-goldman-sachs-must-pay-195301587.html","providerPublishTime":1729713181,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/GxcDy8OmkPmjoI8Y2zl1gg--~B/aD0yMDAwO3c9MzAwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/ap_finance_articles_694/d2118605cf8bdf7b6c64ec5614215882","width":3000,"height":2000,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/x8RHkAGZGDex33OleyPGWA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ap_finance_articles_694/d2118605cf8bdf7b6c64ec5614215882","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL","GSC"]},{"uuid":"2c494387-55d9-3a57-ad55-ae629cd14fef","title":"Sector
-        Update: Tech Stocks Fall Late Afternoon","publisher":"MT Newswires","link":"https://finance.yahoo.com/news/sector-tech-stocks-fall-afternoon-194941881.html","providerPublishTime":1729712981,"type":"STORY","relatedTickers":["AAPL","ENPH"]},{"uuid":"26837c2b-a5d1-30c6-9932-bcbe11cab376","title":"Apple
-        stock falls as confidence in iPhone 16 demand wavers","publisher":"Yahoo Finance
-        Video","link":"https://finance.yahoo.com/video/apple-stock-falls-confidence-iphone-193843435.html","providerPublishTime":1729712323,"type":"VIDEO","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/PPuh5uKMXEk9xj4ZPP0TzQ--~B/aD0yMzI4O3c9NDEzNDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-10/25dd6710-9176-11ef-abff-dfba65f47b1b","width":4134,"height":2328,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/dJdM2ox8RlMJgGD1lW8Wwg--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-10/25dd6710-9176-11ef-abff-dfba65f47b1b","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL"]}],"nav":[],"lists":[],"researchReports":[],"screenerFieldResults":[],"totalTime":80,"timeTakenForQuotes":461,"timeTakenForNews":600,"timeTakenForAlgowatchlist":400,"timeTakenForPredefinedScreener":400,"timeTakenForCrunchbase":0,"timeTakenForNav":400,"timeTakenForResearchReports":0,"timeTakenForScreenerField":0,"timeTakenForCulturalAssets":0,"timeTakenForSearchLists":0}'
+        CFPB orders","publisher":"Associated Press Finance","link":"https://finance.yahoo.com/news/apple-goldman-sachs-must-pay-195301587.html","providerPublishTime":1729713181,"type":"STORY","thumbnail":{"resolutions":[{"url":"https://s.yimg.com/uu/api/res/1.2/GxcDy8OmkPmjoI8Y2zl1gg--~B/aD0yMDAwO3c9MzAwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/ap_finance_articles_694/d2118605cf8bdf7b6c64ec5614215882","width":3000,"height":2000,"tag":"original"},{"url":"https://s.yimg.com/uu/api/res/1.2/x8RHkAGZGDex33OleyPGWA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ap_finance_articles_694/d2118605cf8bdf7b6c64ec5614215882","width":140,"height":140,"tag":"140x140"}]},"relatedTickers":["AAPL","GSC"]}],"nav":[],"lists":[],"researchReports":[],"screenerFieldResults":[],"totalTime":68,"timeTakenForQuotes":448,"timeTakenForNews":600,"timeTakenForAlgowatchlist":400,"timeTakenForPredefinedScreener":400,"timeTakenForCrunchbase":0,"timeTakenForNav":400,"timeTakenForResearchReports":0,"timeTakenForScreenerField":0,"timeTakenForCulturalAssets":0,"timeTakenForSearchLists":0}'
     headers:
       Age:
       - '0'
@@ -66,7 +65,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:39:08 GMT
+      - Thu, 24 Oct 2024 05:13:08 GMT
       server:
       - ATS
       vary:
@@ -74,9 +73,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-search--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '82'
+      - '71'
       y-rid:
-      - 7vjhtihjhj5pc
+      - 4fo67hpjhjlr4
     status:
       code: 200
       message: OK
@@ -96,7 +95,7 @@ interactions:
   response:
     body:
       string: "{\"explains\":[],\"count\":15,\"quotes\":[{\"exchange\":\"NMS\",\"shortname\":\"Microsoft
-        Corporation\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT\",\"index\":\"quotes\",\"score\":3918900.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
+        Corporation\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT\",\"index\":\"quotes\",\"score\":3988300.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
         Corporation\",\"exchDisp\":\"NASDAQ\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"dispSecIndFlag\":true,\"isYahooFinance\":true},{\"exchange\":\"NGM\",\"shortname\":\"Direxion
         Daily MSFT Bull 2X Sha\",\"quoteType\":\"ETF\",\"symbol\":\"MSFU\",\"index\":\"quotes\",\"score\":20025.0,\"typeDisp\":\"ETF\",\"longname\":\"Direxion
         Daily MSFT Bull 2X Shares\",\"exchDisp\":\"NASDAQ\",\"isYahooFinance\":true},{\"exchange\":\"NEO\",\"shortname\":\"MICROSOFT
@@ -109,7 +108,9 @@ interactions:
         Jan 2026 450.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116C00450000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
         Jan 2026 450.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
         Jun 2025 250.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT250620C00250000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
-        Jun 2025 250.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"9e2d85a5-0e4f-48ab-a0c0-78757496f932\",\"title\":\"Big
+        Jun 2025 250.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"9201a28a-4681-3fe2-8ab2-4e7d484b29db\",\"title\":\"Microsoft
+        Corporation (MSFT): Among the Best Esports Stocks to Buy According to Hedge
+        Funds\",\"publisher\":\"Insider Monkey\",\"link\":\"https://finance.yahoo.com/news/microsoft-corporation-msft-among-best-021250630.html\",\"providerPublishTime\":1729735970,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/FPV7LMJx9t7xViBmxMrZWw--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/ae3cb2a93ad8e5ddf6f94148e71f74b9\",\"width\":1456,\"height\":816,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/snE9DwM_Mhbq41k5r0NVHA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/ae3cb2a93ad8e5ddf6f94148e71f74b9\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"9e2d85a5-0e4f-48ab-a0c0-78757496f932\",\"title\":\"Big
         Tech is going all in on nuclear power as sustainability concerns around AI
         grow\",\"publisher\":\"Yahoo Finance\",\"link\":\"https://finance.yahoo.com/news/big-tech-is-going-all-in-on-nuclear-power-as-sustainability-concerns-around-ai-grow-201418764.html\",\"providerPublishTime\":1729714458,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/aDD5tq9R1LfWRv1xwvFDHw--~B/aD0yODkyO3c9Mzg1NjthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-10/8eadf320-915f-11ef-bef4-a2b6922b0605\",\"width\":3856,\"height\":2892,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/ZHQvaNW4p6ylmnXg.uktSQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-10/8eadf320-915f-11ef-bef4-a2b6922b0605\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\",\"GOOG\",\"AMZN\"]},{\"uuid\":\"bce4277f-73bc-3419-89a4-e0ed7ea44b6d\",\"title\":\"Microsoft
         Stock Today: This Bull Call Spread Could Generate A $730 Profit; Here's Why\",\"publisher\":\"Investor's
@@ -120,12 +121,10 @@ interactions:
         Stock Up Again This Week, Rallies Off This Key Technical Level; Why It's A
         Buy Now\",\"publisher\":\"Investor's Business Daily\",\"link\":\"https://finance.yahoo.com/m/f64f92ee-04f5-36b3-934d-7483425d6bc1/microsoft-stock-up-again-this.html\",\"providerPublishTime\":1729707607,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/1yQZD6AIA3Ur31xEBkbBGg--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/dbc525eb191bfaa8ef519e20b0e4714e\",\"width\":1000,\"height\":563,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/BT.RunS99fUsNCGrXBrRBA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/dbc525eb191bfaa8ef519e20b0e4714e\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"53656445-e12c-37eb-bc45-1087bf1f9beb\",\"title\":\"Sam
         Altman Pushes His Nuclear Start-Up. Oklo Busts Out.\",\"publisher\":\"Barrons.com\",\"link\":\"https://finance.yahoo.com/m/53656445-e12c-37eb-bc45-1087bf1f9beb/sam-altman-pushes-his-nuclear.html\",\"providerPublishTime\":1729706760,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/Y1y.0iUSAJHDCocKETq02A--~B/aD02NDA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/Barrons.com/9ef2cacef2f5589408c4a7e3a8444089\",\"width\":1280,\"height\":640,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/b9jc7JodSDiuMaeCl5p.3w--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/Barrons.com/9ef2cacef2f5589408c4a7e3a8444089\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"69c06f70-f0e7-3349-91be-9c47f905dc74\",\"title\":\"What
-        You Should Know About \\\"Magnificent 7\\\" Stocks Ahead of Earnings\",\"publisher\":\"Zacks\",\"link\":\"https://finance.yahoo.com/news/know-magnificent-7-stocks-ahead-170100776.html\",\"providerPublishTime\":1729702860,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/2FDDxp5yKDHqWib4tlp2mg--~B/aD00MTM7dz02MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/6de0de30e139b026aa75bb04192b8203\",\"width\":620,\"height\":413,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/JvJvs9W5fwOeDh1TqpSq2g--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/zacks.com/6de0de30e139b026aa75bb04192b8203\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AMZN\",\"MSFT\",\"META\",\"AAPL\",\"NVDA\",\"TSLA\",\"GOOG\"]},{\"uuid\":\"f96b62e9-21c0-3ed2-b925-c2e1db4357c3\",\"title\":\"Efforts
-        by Russia, Iran and China to sway US voters may escalate, new Microsoft report
-        says\",\"publisher\":\"Associated Press Finance\",\"link\":\"https://finance.yahoo.com/news/efforts-russia-iran-china-sway-163400465.html\",\"providerPublishTime\":1729701240,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/9LBZYmWpaNx3vLxgWTWwlA--~B/aD0yMDg0O3c9MzAwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/ap_finance_articles_694/bd2d67422655469fe39c141dcdb18f4b\",\"width\":3000,\"height\":2084,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/cVRExUuKEVQTJ8aOkAQVkw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ap_finance_articles_694/bd2d67422655469fe39c141dcdb18f4b\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":70,\"timeTakenForQuotes\":449,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0,\"timeTakenForSearchLists\":0}"
+        You Should Know About \\\"Magnificent 7\\\" Stocks Ahead of Earnings\",\"publisher\":\"Zacks\",\"link\":\"https://finance.yahoo.com/news/know-magnificent-7-stocks-ahead-170100776.html\",\"providerPublishTime\":1729702860,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/2FDDxp5yKDHqWib4tlp2mg--~B/aD00MTM7dz02MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/6de0de30e139b026aa75bb04192b8203\",\"width\":620,\"height\":413,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/JvJvs9W5fwOeDh1TqpSq2g--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/zacks.com/6de0de30e139b026aa75bb04192b8203\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AMZN\",\"MSFT\",\"META\",\"AAPL\",\"NVDA\",\"TSLA\",\"GOOG\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":58,\"timeTakenForQuotes\":438,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0,\"timeTakenForSearchLists\":0}"
     headers:
       Age:
-      - '3'
+      - '0'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -147,17 +146,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:39:08 GMT
+      - Thu, 24 Oct 2024 05:13:08 GMT
       server:
       - ATS
       vary:
       - Origin,Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-search--mtls-baseline-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-search--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '75'
+      - '60'
       y-rid:
-      - 70cgdp5jhj5pc
+      - 6it8af1jhjlr4
     status:
       code: 200
       message: OK

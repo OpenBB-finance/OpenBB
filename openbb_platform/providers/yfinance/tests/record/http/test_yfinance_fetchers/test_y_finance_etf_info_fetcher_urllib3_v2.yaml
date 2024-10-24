@@ -11,7 +11,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/QQQ?corsDomain=MOCK_CORS_DOMAIN&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=QQQ
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/QQQ?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=QQQ
   response:
     body:
       string: "{\"quoteSummary\":{\"result\":[{\"assetProfile\":{\"longBusinessSummary\":\"To
@@ -20,13 +20,13 @@ interactions:
         the adviser adjusts the securities from time to time to conform to periodic
         changes in the identity and/or relative weights of index securities. The composition
         and weighting of the securities portion of a portfolio deposit are also adjusted
-        to conform to changes in the index.\",\"companyOfficers\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":495.96,\"open\":493.58,\"dayLow\":485.05,\"dayHigh\":494.24,\"regularMarketPreviousClose\":495.96,\"regularMarketOpen\":493.58,\"regularMarketDayLow\":485.05,\"regularMarketDayHigh\":494.24,\"trailingPE\":39.82259,\"volume\":37505461,\"regularMarketVolume\":37505461,\"averageVolume\":35630378,\"averageVolume10days\":26468720,\"averageDailyVolume10Day\":26468720,\"bid\":0.0,\"ask\":0.0,\"bidSize\":0,\"askSize\":0,\"yield\":0.0062,\"totalAssets\":294781157376,\"fiftyTwoWeekLow\":342.35,\"fiftyTwoWeekHigh\":503.52,\"fiftyDayAverage\":479.1206,\"twoHundredDayAverage\":455.42996,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.0035688363,\"navPrice\":496.03,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
+        to conform to changes in the index.\",\"companyOfficers\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":495.96,\"open\":493.58,\"dayLow\":485.05,\"dayHigh\":494.24,\"regularMarketPreviousClose\":495.96,\"regularMarketOpen\":493.58,\"regularMarketDayLow\":485.05,\"regularMarketDayHigh\":494.24,\"trailingPE\":39.82259,\"volume\":37505461,\"regularMarketVolume\":37505461,\"averageVolume\":35330324,\"averageVolume10days\":27900730,\"averageDailyVolume10Day\":27900730,\"bid\":0.0,\"ask\":0.0,\"bidSize\":0,\"askSize\":0,\"yield\":0.0062,\"totalAssets\":294781157376,\"fiftyTwoWeekLow\":342.35,\"fiftyTwoWeekHigh\":503.52,\"fiftyDayAverage\":479.6332,\"twoHundredDayAverage\":455.843,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.0035688363,\"navPrice\":496.03,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
         Growth\",\"ytdReturn\":0.21636249,\"beta3Year\":1.18,\"totalAssets\":294781157376,\"yield\":0.0062,\"fundFamily\":\"Invesco\",\"fundInceptionDate\":921024000,\"legalType\":\"Exchange
         Traded Fund\",\"threeYearAverageReturn\":0.105835505,\"fiveYearAverageReturn\":0.2171112,\"lastSplitFactor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
         QQQ Trust, Series 1\",\"longName\":\"Invesco QQQ Trust\",\"firstTradeDateEpochUtc\":921076200,\"timeZoneFullName\":\"America/New_York\",\"timeZoneShortName\":\"EDT\",\"uuid\":\"714d32d4-5f6c-33bc-b36a-765119cb3c4c\",\"messageBoardId\":\"finmb_8108558\",\"gmtOffSetMilliseconds\":-14400000,\"maxAge\":1}}],\"error\":null}}"
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -44,11 +44,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1078'
+      - '1076'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:39:20 GMT
+      - Thu, 24 Oct 2024 05:13:19 GMT
       server:
       - ATS
       vary:
@@ -58,7 +58,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '5'
       y-rid:
-      - 7ae4kvpjhj5po
+      - 62m2ootjhjlrg
     status:
       code: 200
       message: OK
@@ -80,7 +80,7 @@ interactions:
       string: '{"timeseries":{"result":[{"meta":{"symbol":["QQQ"],"type":["trailingPegRatio"]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -100,7 +100,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:39:20 GMT
+      - Thu, 24 Oct 2024 05:13:19 GMT
       server:
       - ATS
       vary:
@@ -110,7 +110,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '1'
       y-rid:
-      - 7i7im55jhj5po
+      - 6blo6jljhjlrg
     status:
       code: 200
       message: OK

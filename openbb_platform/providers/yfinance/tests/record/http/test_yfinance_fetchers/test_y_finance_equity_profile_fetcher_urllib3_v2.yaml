@@ -11,7 +11,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=MOCK_CORS_DOMAIN&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
   response:
     body:
       string: '{"quoteSummary":{"result":[{"assetProfile":{"address1":"One Apple Park
@@ -47,11 +47,11 @@ interactions:
         James  Wilson","title":"Chief Technology Officer","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Suhasini  Chandramouli","title":"Director
         of Investor Relations","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
         Greg  Joswiak","title":"Senior Vice President of Worldwide Marketing","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
-        Adrian  Perica","age":49,"title":"Head of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":6,"boardRisk":1,"compensationRisk":2,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1727740800,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":235.86,"open":234.32,"dayLow":227.76,"dayHigh":235.144,"regularMarketPreviousClose":235.86,"regularMarketOpen":234.32,"regularMarketDayLow":227.76,"regularMarketDayHigh":235.144,"dividendRate":1.0,"dividendYield":0.0042,"exDividendDate":1723420800,"payoutRatio":0.1476,"fiveYearAvgDividendYield":0.64,"beta":1.239,"trailingPE":35.06991,"forwardPE":30.850267,"volume":50657958,"regularMarketVolume":50657958,"averageVolume":50981675,"averageVolume10days":38644190,"averageDailyVolume10Day":38644190,"bid":0.0,"ask":0.0,"bidSize":0,"askSize":0,"marketCap":3508498071552,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":237.49,"priceToSalesTrailing12Months":9.098731,"fiftyDayAverage":226.301,"twoHundredDayAverage":200.3755,"trailingAnnualDividendRate":0.97,"trailingAnnualDividendYield":0.004112609,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3548009725952,"forwardPE":30.850267,"profitMargins":0.26441,"floatShares":15179506298,"sharesOutstanding":15204100096,"sharesShort":141741381,"sharesShortPriorMonth":135042504,"sharesShortPreviousMonthDate":1724976000,"dateShortInterest":1727654400,"sharesPercentSharesOut":0.0093,"heldPercentInsiders":0.02704,"heldPercentInstitutions":0.60877997,"shortRatio":2.32,"shortPercentOfFloat":0.0093,"beta":1.239,"impliedSharesOutstanding":15228399616,"category":null,"bookValue":4.382,"priceToBook":52.660885,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1696032000,"nextFiscalYearEnd":1727654400,"mostRecentQuarter":1719619200,"earningsQuarterlyGrowth":0.079,"netIncomeToCommon":101956001792,"trailingEps":6.58,"forwardEps":7.48,"pegRatio":3.19,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":9.201,"enterpriseToEbitda":26.924,"52WeekChange":0.37849212,"SandP52WeekChange":0.3975451,"lastDividendValue":0.25,"lastDividendDate":1723420800},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
+        Adrian  Perica","age":49,"title":"Head of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":6,"boardRisk":1,"compensationRisk":2,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1727740800,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":235.86,"open":234.32,"dayLow":227.76,"dayHigh":235.144,"regularMarketPreviousClose":235.86,"regularMarketOpen":234.32,"regularMarketDayLow":227.76,"regularMarketDayHigh":235.144,"dividendRate":1.0,"dividendYield":0.0042,"exDividendDate":1723420800,"payoutRatio":0.1476,"fiveYearAvgDividendYield":0.64,"beta":1.239,"trailingPE":35.06991,"forwardPE":30.850267,"volume":50657958,"regularMarketVolume":50657958,"averageVolume":50834700,"averageVolume10days":40522200,"averageDailyVolume10Day":40522200,"bid":0.0,"ask":0.0,"bidSize":0,"askSize":0,"marketCap":3508498071552,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":237.49,"priceToSalesTrailing12Months":9.098731,"fiftyDayAverage":226.4908,"twoHundredDayAverage":200.6015,"trailingAnnualDividendRate":0.97,"trailingAnnualDividendYield":0.004112609,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3548009725952,"forwardPE":30.850267,"profitMargins":0.26441,"floatShares":15179506298,"sharesOutstanding":15204100096,"sharesShort":141741381,"sharesShortPriorMonth":135042504,"sharesShortPreviousMonthDate":1724976000,"dateShortInterest":1727654400,"sharesPercentSharesOut":0.0093,"heldPercentInsiders":0.02704,"heldPercentInstitutions":0.60877997,"shortRatio":2.32,"shortPercentOfFloat":0.0093,"beta":1.239,"impliedSharesOutstanding":15228399616,"category":null,"bookValue":4.382,"priceToBook":52.660885,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1696032000,"nextFiscalYearEnd":1727654400,"mostRecentQuarter":1719619200,"earningsQuarterlyGrowth":0.079,"netIncomeToCommon":101956001792,"trailingEps":6.58,"forwardEps":7.48,"pegRatio":3.19,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":9.201,"enterpriseToEbitda":26.924,"52WeekChange":0.38270712,"SandP52WeekChange":0.40128052,"lastDividendValue":0.25,"lastDividendDate":1723420800},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
         Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":230.76,"targetHighPrice":300.0,"targetLowPrice":183.86,"targetMeanPrice":240.78,"targetMedianPrice":243.0,"recommendationMean":2.1,"recommendationKey":"buy","numberOfAnalystOpinions":40,"totalCash":61801000960,"totalCashPerShare":4.065,"ebitda":131781001216,"totalDebt":101304000512,"quickRatio":0.798,"currentRatio":0.953,"totalRevenue":385603010560,"debtToEquity":151.862,"revenuePerShare":24.957,"returnOnAssets":0.22612,"returnOnEquity":1.60583,"freeCashflow":86158123008,"operatingCashflow":113040998400,"earningsGrowth":0.111,"revenueGrowth":0.049,"grossMargins":0.45962003,"ebitdaMargins":0.34175,"operatingMargins":0.29556,"profitMargins":0.26441,"financialCurrency":"USD"}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -69,11 +69,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '3047'
+      - '3048'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:39:18 GMT
+      - Thu, 24 Oct 2024 05:13:18 GMT
       server:
       - ATS
       vary:
@@ -83,7 +83,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '4'
       y-rid:
-      - 70nhckpjhj5pn
+      - 6hiutd5jhjlre
     status:
       code: 200
       message: OK
@@ -102,10 +102,10 @@ interactions:
     uri: https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?crumb=MOCK_CRUMB&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&symbol=AAPL&type=trailingPegRatio
   response:
     body:
-      string: '{"timeseries":{"result":[{"meta":{"symbol":["AAPL"],"type":["trailingPegRatio"]},"timestamp":[1717977600,1720742400,1726704000,1729555200],"trailingPegRatio":[{"dataId":14021,"asOfDate":"2024-06-10","periodType":"TTM","reportedValue":{"raw":2.0439,"fmt":"2.04"}},{"dataId":14021,"asOfDate":"2024-07-12","periodType":"TTM","reportedValue":{"raw":2.4183,"fmt":"2.42"}},{"dataId":14021,"asOfDate":"2024-09-19","periodType":"TTM","reportedValue":{"raw":2.1968,"fmt":"2.20"}},{"dataId":14021,"asOfDate":"2024-10-22","periodType":"TTM","reportedValue":{"raw":2.3872,"fmt":"2.39"}}]}],"error":null}}'
+      string: '{"timeseries":{"result":[{"meta":{"symbol":["AAPL"],"type":["trailingPegRatio"]},"timestamp":[1717977600,1720742400,1726704000,1729641600],"trailingPegRatio":[{"dataId":14021,"asOfDate":"2024-06-10","periodType":"TTM","reportedValue":{"raw":2.0439,"fmt":"2.04"}},{"dataId":14021,"asOfDate":"2024-07-12","periodType":"TTM","reportedValue":{"raw":2.4183,"fmt":"2.42"}},{"dataId":14021,"asOfDate":"2024-09-19","periodType":"TTM","reportedValue":{"raw":2.1968,"fmt":"2.20"}},{"dataId":14021,"asOfDate":"2024-10-23","periodType":"TTM","reportedValue":{"raw":2.3356,"fmt":"2.34"}}]}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -125,7 +125,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:39:18 GMT
+      - Thu, 24 Oct 2024 05:13:18 GMT
       server:
       - ATS
       vary:
@@ -133,9 +133,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '1'
       y-rid:
-      - 37ujte1jhj5pn
+      - 09d9tupjhjlre
     status:
       code: 200
       message: OK
