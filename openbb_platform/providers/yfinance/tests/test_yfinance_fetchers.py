@@ -72,8 +72,8 @@ def vcr_config():
             ("period2", "MOCK_PERIOD_2"),
             ("crumb", "MOCK_CRUMB"),
             ("date", "MOCK_DATE"),
+            ("corsDomain", "MOCK_CORS_DOMAIN"),
         ],
-        "match_on": ["method", "scheme", "port"],
     }
 
 

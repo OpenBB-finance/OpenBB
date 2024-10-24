@@ -11,7 +11,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=MOCK_CORS_DOMAIN&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
   response:
     body:
       string: '{"quoteSummary":{"result":[{"assetProfile":{"address1":"One Apple Park
@@ -51,7 +51,7 @@ interactions:
         Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":230.76,"targetHighPrice":300.0,"targetLowPrice":183.86,"targetMeanPrice":240.78,"targetMedianPrice":243.0,"recommendationMean":2.1,"recommendationKey":"buy","numberOfAnalystOpinions":40,"totalCash":61801000960,"totalCashPerShare":4.065,"ebitda":131781001216,"totalDebt":101304000512,"quickRatio":0.798,"currentRatio":0.953,"totalRevenue":385603010560,"debtToEquity":151.862,"revenuePerShare":24.957,"returnOnAssets":0.22612,"returnOnEquity":1.60583,"freeCashflow":86158123008,"operatingCashflow":113040998400,"earningsGrowth":0.111,"revenueGrowth":0.049,"grossMargins":0.45962003,"ebitdaMargins":0.34175,"operatingMargins":0.29556,"profitMargins":0.26441,"financialCurrency":"USD"}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -73,17 +73,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:14:02 GMT
+      - Thu, 24 Oct 2024 00:39:18 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-canary-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '5'
+      - '4'
       y-rid:
-      - 05j8tupjhj4aa
+      - 70nhckpjhj5pn
     status:
       code: 200
       message: OK
@@ -105,7 +105,7 @@ interactions:
       string: '{"timeseries":{"result":[{"meta":{"symbol":["AAPL"],"type":["trailingPegRatio"]},"timestamp":[1717977600,1720742400,1726704000,1729555200],"trailingPegRatio":[{"dataId":14021,"asOfDate":"2024-06-10","periodType":"TTM","reportedValue":{"raw":2.0439,"fmt":"2.04"}},{"dataId":14021,"asOfDate":"2024-07-12","periodType":"TTM","reportedValue":{"raw":2.4183,"fmt":"2.42"}},{"dataId":14021,"asOfDate":"2024-09-19","periodType":"TTM","reportedValue":{"raw":2.1968,"fmt":"2.20"}},{"dataId":14021,"asOfDate":"2024-10-22","periodType":"TTM","reportedValue":{"raw":2.3872,"fmt":"2.39"}}]}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -125,17 +125,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:14:02 GMT
+      - Thu, 24 Oct 2024 00:39:18 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-baseline-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '2'
       y-rid:
-      - 0sdh6cljhj4aa
+      - 37ujte1jhj5pn
     status:
       code: 200
       message: OK

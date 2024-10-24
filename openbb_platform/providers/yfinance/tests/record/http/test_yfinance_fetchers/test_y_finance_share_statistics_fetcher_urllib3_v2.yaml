@@ -11,7 +11,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=MOCK_CORS_DOMAIN&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
   response:
     body:
       string: '{"quoteSummary":{"result":[{"assetProfile":{"address1":"One Apple Park
@@ -73,17 +73,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:14:02 GMT
+      - Thu, 24 Oct 2024 00:39:19 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-baseline-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '6'
+      - '4'
       y-rid:
-      - 203t11ljhj4aa
+      - 6jqpaepjhj5pn
     status:
       code: 200
       message: OK
@@ -99,7 +99,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary//AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=institutionOwnership%2CfundOwnership%2CmajorDirectHolders%2CmajorHoldersBreakdown%2CinsiderTransactions%2CinsiderHolders%2CnetSharePurchaseActivity
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary//AAPL?corsDomain=MOCK_CORS_DOMAIN&crumb=MOCK_CRUMB&formatted=false&modules=institutionOwnership%2CfundOwnership%2CmajorDirectHolders%2CmajorHoldersBreakdown%2CinsiderTransactions%2CinsiderHolders%2CnetSharePurchaseActivity
   response:
     body:
       string: '{"quoteSummary":{"result":[{"institutionOwnership":{"ownershipList":[{"maxAge":1,"reportDate":{"raw":1688083200,"fmt":"2023-06-30"},"organization":"Vanguard
@@ -272,7 +272,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:14:03 GMT
+      - Thu, 24 Oct 2024 00:39:19 GMT
       server:
       - ATS
       vary:
@@ -282,9 +282,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-yql--mtls-default-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '5'
+      - '4'
       x-yahoo-request-id:
-      - 39btt7ljhj4ab
+      - 3mbodhpjhj5pn
     status:
       code: 200
       message: OK

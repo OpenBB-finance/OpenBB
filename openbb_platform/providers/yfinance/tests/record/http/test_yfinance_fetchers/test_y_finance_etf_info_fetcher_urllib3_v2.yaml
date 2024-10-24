@@ -11,7 +11,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/QQQ?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=QQQ
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/QQQ?corsDomain=MOCK_CORS_DOMAIN&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=QQQ
   response:
     body:
       string: "{\"quoteSummary\":{\"result\":[{\"assetProfile\":{\"longBusinessSummary\":\"To
@@ -48,7 +48,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:14:03 GMT
+      - Thu, 24 Oct 2024 00:39:20 GMT
       server:
       - ATS
       vary:
@@ -56,9 +56,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '6'
+      - '5'
       y-rid:
-      - 3gqg5r9jhj4ab
+      - 7ae4kvpjhj5po
     status:
       code: 200
       message: OK
@@ -100,17 +100,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:14:03 GMT
+      - Thu, 24 Oct 2024 00:39:20 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-baseline-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '1'
       y-rid:
-      - 25ke29tjhj4ab
+      - 7i7im55jhj5po
     status:
       code: 200
       message: OK

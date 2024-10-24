@@ -11,7 +11,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=MOCK_CORS_DOMAIN&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
   response:
     body:
       string: !!binary |
@@ -93,7 +93,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 00:15:11 GMT
+      - Thu, 24 Oct 2024 00:37:21 GMT
       server:
       - ATS
       vary:
@@ -103,7 +103,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '5'
       y-rid:
-      - 1ficu7pjhj4cf
+      - 3ruo015jhj5m1
     status:
       code: 200
       message: OK
