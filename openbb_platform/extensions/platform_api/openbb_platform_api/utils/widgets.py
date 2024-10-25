@@ -42,6 +42,8 @@ TO_CAPS_STRINGS = [
     "Cusip",
     "Ttm",
     "Id",
+    "Ytd",
+    "Yoy",
 ]
 
 
