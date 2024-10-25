@@ -7,6 +7,7 @@ TO_CAPS_STRINGS = [
     "Peg",
     "Sloos",
     "Eps",
+    "Ebit",
     "Ebitda",
     "Otc",
     "Cpi",
