@@ -91,6 +91,7 @@ class IntrinioEtfHoldingsData(EtfHoldingsData):
     coupon: Optional[float] = Field(
         default=None,
         description="The coupon rate of the debt security, if available.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     balance: Optional[Union[int, float]] = Field(
         default=None,
@@ -107,18 +108,22 @@ class IntrinioEtfHoldingsData(EtfHoldingsData):
     face_value: Optional[float] = Field(
         default=None,
         description="The face value of the debt security, if available.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     derivatives_value: Optional[float] = Field(
         default=None,
         description="The notional value of derivatives contracts held.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     value: Optional[float] = Field(
         default=None,
         description="The market value of the holding, on the 'as_of' date.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     weight: Optional[float] = Field(
         default=None,
         description="The weight of the holding, as a normalized percent.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     updated: Optional[dateType] = Field(
         default=None,
@@ -202,6 +207,8 @@ class IntrinioEtfHoldingsFetcher(
         for d in sorted(data, key=lambda x: x["weighting"], reverse=True):
             # This field is deprecated and is dupilcated in the response.
             _ = d.pop("composite_figi", None)
+            if d.get("coupon"):
+                d["coupon"] = d["coupon"] / 100
             results.append(IntrinioEtfHoldingsData.model_validate(d))
 
         return results

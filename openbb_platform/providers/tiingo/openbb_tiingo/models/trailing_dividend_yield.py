@@ -39,23 +39,22 @@ class TiingoTrailingDivYieldFetcher(
         return TiingoTrailingDivYieldQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: TiingoTrailingDivYieldQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Tiingo endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import make_request
+        from openbb_tiingo.utils.helpers import get_data
 
         api_key = credentials.get("tiingo_token") if credentials else ""
         url = (
             f"https://api.tiingo.com/tiingo/corporate-actions/{query.symbol}/distribution-yield?"
             f"token={api_key}"
         )
-        data = make_request(url)
 
-        return data.json()
+        return await get_data(url)  # type: ignore
 
     @staticmethod
     def transform_data(

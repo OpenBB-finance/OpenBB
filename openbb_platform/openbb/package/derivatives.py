@@ -18,11 +18,15 @@ class ROUTER_derivatives(Container):
         # pylint: disable=import-outside-toplevel
         from . import derivatives_futures
 
-        return derivatives_futures.ROUTER_derivatives_futures(command_runner=self._command_runner)
+        return derivatives_futures.ROUTER_derivatives_futures(
+            command_runner=self._command_runner
+        )
 
     @property
     def options(self):
         # pylint: disable=import-outside-toplevel
         from . import derivatives_options
 
-        return derivatives_options.ROUTER_derivatives_options(command_runner=self._command_runner)
+        return derivatives_options.ROUTER_derivatives_options(
+            command_runner=self._command_runner
+        )

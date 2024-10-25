@@ -913,6 +913,8 @@ def test_equity_fundamental_revenue_per_segment(params, headers):
                 "symbol": "AAPL",
                 "limit": 3,
                 "form_type": "8-K",
+                "start_date": None,
+                "end_date": None,
                 "cik": None,
                 "provider": "sec",
                 "use_cache": False,
@@ -924,6 +926,8 @@ def test_equity_fundamental_revenue_per_segment(params, headers):
                 "limit": 3,
                 "form_type": "10-Q",
                 "symbol": None,
+                "start_date": None,
+                "end_date": None,
                 "provider": "sec",
                 "use_cache": False,
             }

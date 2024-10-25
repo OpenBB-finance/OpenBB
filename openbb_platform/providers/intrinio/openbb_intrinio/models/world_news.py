@@ -5,14 +5,13 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request, get_querystring
-from openbb_intrinio.utils.helpers import get_data
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 from openbb_intrinio.utils.references import IntrinioCompany, IntrinioSecurity
 from pydantic import Field, field_validator
 
@@ -185,6 +184,10 @@ class IntrinioWorldNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import amake_request, get_querystring
+        from openbb_intrinio.utils.helpers import get_data
+
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com/companies"
@@ -200,6 +203,14 @@ class IntrinioWorldNewsFetcher(
         async def callback(response, session):
             """Response callback."""
             result = await response.json()
+
+            if isinstance(result, dict) and "error" in result:
+                if "api key" in result.get("message", "").lower():
+                    raise UnauthorizedError(
+                        f"Unauthorized Intrinio request -> {result.get('message')}"
+                    )
+                raise OpenBBError(f"Error in Intrinio request -> {result}")
+
             _data = result.get("news", [])
             data = []
             data.extend(

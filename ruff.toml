@@ -8,7 +8,8 @@ exclude = [
 ]
 
 line-length = 122
-target-version = "py38"
+target-version = "py39"
+fix = true
 
 [lint]
 select = [
@@ -27,7 +28,7 @@ select = [
     "T20",
 ]
 # These ignores should be seen as temporary solutions to problems that will NEED fixed
-ignore = ["PLR2004", "PLR0913", "PLR0915"]
+ignore = ["PLR2004", "PLR0913", "PLR0915", "UP035", "UP006"]
 
 [lint.per-file-ignores]
 "**/tests/*" = ["S101"]

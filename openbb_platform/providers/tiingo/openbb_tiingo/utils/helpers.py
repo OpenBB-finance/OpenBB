@@ -1,109 +1,41 @@
 """Tiingo Helpers Module."""
 
-import json
-from io import StringIO
-from typing import Any, List, Optional, TypeVar, Union
-
-import requests
-from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.provider import helpers
-from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import BaseModel
-from requests.exceptions import SSLError
-
-T = TypeVar("T", bound=BaseModel)
+from typing import Optional, Union
 
 
-class BasicResponse:
-    """Basic Response class."""
-
-    def __init__(self, response: StringIO):
-        """Initialize the BasicResponse class."""
-        # Find a way to get the status code
-        self.status_code = 200
-        response.seek(0)
-        self.text = response.read()
-
-    def json(self) -> dict:
-        """Return the response as a dictionary."""
-        return json.loads(self.text)
-
-
-def request(url: str) -> BasicResponse:
-    """
-    Request function for PyScript. Pass in Method and make sure to await.
-
-    Parameters:
-    -----------
-    url: str
-        URL to make request to
-
-    Return:
-    -------
-    response: BasicRequest
-        BasicRequest object with status_code and text attributes
-    """
+async def get_data(url: str) -> Union[dict, list]:
+    """Get data from Tiingo endpoint and parse the JSON response."""
     # pylint: disable=import-outside-toplevel
-    from pyodide.http import open_url  # type: ignore
+    from json import JSONDecodeError  # noqa
+    from openbb_core.app.model.abstract.error import OpenBBError
+    from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
+    from openbb_core.provider.utils.helpers import amake_request
 
-    response = open_url(url)
-    return BasicResponse(response)
+    response: Optional[Union[dict, list]] = None
 
-
-def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
-    """Get data from Tiingo endpoint."""
     try:
-        r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
-    except SSLError:
-        r = request(url)
-    if r.status_code == 404:
-        raise OpenBBError("Tiingo endpoint doesn't exist.")
+        response = await amake_request(url)
+        if (
+            response
+            and isinstance(response, dict)
+            and len(list(response.keys())) == 1
+            and response.get("detail")
+        ):
+            if (
+                "token" in response["detail"]
+                or "access" in response["detail"]
+                or "permission" in response["detail"]
+                or "authorized" in response["detail"]
+            ):
+                raise UnauthorizedError(
+                    f"Unauthorized Tiingo request -> {response['detail']}"
+                )
+            raise OpenBBError(response["detail"])
 
-    data = r.json()
-    if r.status_code != 200:
-        error = data.get("detail")
-        raise OpenBBError(f"Error in Tiingo request -> {error}")
+        if not response:
+            raise EmptyDataError("The response is empty")
 
-    if len(data) == 0:
-        raise EmptyDataError()
+        return response
 
-    return data
-
-
-def get_data_many(
-    url: str, sub_dict: Optional[str] = None, **kwargs: Any
-) -> List[dict]:
-    """Get data from Tiingo endpoint and convert to list of schemas.
-
-    Parameters:
-    -----------
-    url: str
-        The URL to get the data from.
-    sub_dict: Optional[str]
-        The sub-dictionary to use.
-
-    Returns:
-    --------
-    List[dict]
-        Dictionary of data.
-    """
-    data = get_data(url, **kwargs)
-    if sub_dict and isinstance(data, dict):
-        data = data.get(sub_dict, [])
-    if isinstance(data, dict):
-        raise ValueError("Expected list of dicts, got dict")
-    return data
-
-
-def get_data_one(url: str, **kwargs: Any) -> dict:
-    """Get data from Tiingo endpoint and convert to schema."""
-    data = get_data(url, **kwargs)
-    if isinstance(data, list):
-        if len(data) == 0:
-            raise ValueError("Expected dict, got empty list")
-        try:
-            data = {i: data[i] for i in range(len(data))} if len(data) > 1 else data[0]
-        except TypeError as e:
-            raise ValueError("Expected dict, got list of dicts") from e
-
-    return data
+    except JSONDecodeError as e:
+        raise OpenBBError(f"Failed to parse JSON response -> {e}") from e

@@ -608,7 +608,7 @@ Data(open=1, high=2, low=3, close=4, volume=5, date=2020-01-01)
 
 ```
 
-This means that the `Data` class is cleaver enough to understand that you are passing a dictionary and it will try to validate it for you.
+This means that the `Data` class is clever enough to understand that you are passing a dictionary and it will try to validate it for you.
 In other words, if you're using data that doesn't come from the OpenBBPlatform, you only need to ensure it's parsable by the `Data` class and you'll be able to use the data processing commands.
 In other words, imagine you have a dataframe that you want to use with the `ta` menu. You can do the following:
 

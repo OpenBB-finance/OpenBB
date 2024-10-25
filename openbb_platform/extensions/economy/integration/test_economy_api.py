@@ -285,26 +285,13 @@ def test_economy_balance_of_payments(params, headers):
     [
         (
             {
-                "query": None,
-                "is_release": False,
-                "release_id": 15,
-                "offset": 0,
-                "limit": 1000,
-                "filter_variable": "frequency",
-                "filter_value": "Monthly",
-                "tag_names": "nsa",
-                "exclude_tag_names": None,
-                "series_id": None,
-                "provider": "fred",
-            }
-        ),
-        (
-            {
-                "query": "GDP",
-                "is_release": True,
+                "query": "GDP*",
+                "search_type": "series_id",
                 "release_id": None,
                 "offset": 0,
-                "limit": 1000,
+                "limit": 10,
+                "order_by": "observation_end",
+                "sort_order": "desc",
                 "filter_variable": None,
                 "filter_value": None,
                 "tag_names": None,
@@ -316,10 +303,12 @@ def test_economy_balance_of_payments(params, headers):
         (
             {
                 "query": None,
-                "is_release": False,
+                "search_type": "release",
                 "release_id": None,
                 "offset": None,
                 "limit": None,
+                "order_by": "observation_end",
+                "sort_order": "desc",
                 "filter_variable": None,
                 "filter_value": None,
                 "tag_names": None,
@@ -331,10 +320,12 @@ def test_economy_balance_of_payments(params, headers):
         (
             {
                 "query": None,
-                "is_release": False,
+                "search_type": "full_text",
                 "release_id": None,
                 "offset": None,
                 "limit": None,
+                "order_by": "observation_end",
+                "sort_order": "desc",
                 "filter_variable": None,
                 "filter_value": None,
                 "tag_names": None,

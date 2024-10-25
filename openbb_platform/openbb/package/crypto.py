@@ -30,8 +30,15 @@ class ROUTER_crypto(Container):
     @validate
     def search(
         self,
-        query: Annotated[Optional[str], OpenBBField(description="Search query.")] = None,
-        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
+        query: Annotated[
+            Optional[str], OpenBBField(description="Search query.")
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search available cryptocurrency pairs within a provider.
@@ -60,9 +67,9 @@ class ROUTER_crypto(Container):
         CryptoSearch
         ------------
         symbol : str
-            Symbol representing the entity requested in the data. (Crypto) 
+            Symbol representing the entity requested in the data. (Crypto)
         name : Optional[str]
-            Name of the crypto. 
+            Name of the crypto.
         currency : Optional[str]
             The currency the crypto trades for. (provider: fmp)
         exchange : Optional[str]

@@ -5,7 +5,7 @@
 from datetime import datetime, timedelta
 
 from openbb import obb
-from openbb_biztoc.utils.helpers import get_all_tags, get_sources
+from numpy import nan
 
 import streamlit as st
 
@@ -59,21 +59,6 @@ news_sources = [d.upper() if d == "fmp" else d.title() for d in providers]
 
 if "news" not in st.session_state:
     st.session_state.news = None
-if "biztoc_tags" not in st.session_state:
-    st.session_state.biztoc_tags = []
-try:
-    _all_tags = []
-    _biztoc_tags = get_all_tags(api_key=obb.user.credentials.biztoc_api_key.get_secret_value())  # type: ignore
-    for key, value in _biztoc_tags.items():
-        _all_tags.extend(_biztoc_tags[key])
-    st.session_state.biztoc_tags = _all_tags
-except Exception:
-    st.session_state.biztoc_tags = []
-try:
-    _sources = get_sources(api_key=obb.user.credentials.biztoc_api_key.get_secret_value())  # type: ignore
-    st.session_state.biztoc_sources = [d["id"] for d in _sources]
-except Exception:
-    st.session_state.biztoc_sources = []
 
 if "biztoc_sources" not in st.session_state:
     st.session_state.biztoc_sources = []
@@ -145,7 +130,11 @@ def fetch_openbb():
         kwargs["filter"] = "tag" if kwargs.get("tag") else None
         if kwargs.get("filter") is None:
             kwargs["filter"] = "latest"
-        kwargs["source"] = st.session_state.selected_biztoc_source
+        kwargs["source"] = (
+            st.session_state.selected_biztoc_source
+            if st.session_state.selected_biztoc_source
+            else None
+        )
         kwargs["filter"] = "source" if kwargs.get("source") else kwargs.get("filter")
         if kwargs.get("filter") == "source":
             kwargs.pop("tag")
@@ -202,15 +191,10 @@ with st.sidebar:
             st.session_state.selected_tags = st.text_input(
                 label="Tag", value=st.session_state.selected_tags
             )
-        old_biztoc_tags = st.session_state.biztoc_tags
         old_biztoc_source = st.session_state.selected_biztoc_source
         if st.session_state.selected_provider == "Biztoc":
-            st.session_state.selected_tags = st.selectbox(
-                label="Tag", options=[None] + old_biztoc_tags
-            )
-            st.session_state.selected_biztoc_source = st.selectbox(
-                label="Source", options=[None] + st.session_state.biztoc_sources
-            )
+
+            st.session_state.selected_biztoc_source = st.text_input(label="Source")
         old_benzinga_tickers = st.session_state.benzinga_tickers
         if st.session_state.selected_provider == "Benzinga":
             st.session_state.benzinga_tickers = st.text_input(
@@ -284,11 +268,10 @@ with st.sidebar:
 def main():
     with st.session_state.news_container.container():
         st.markdown(
-            " <style> div[class^='block-container'] { padding-top: 1rem; } h1 { margin-bottom: -50px; } </style> "
+            " <style> div[class^='block-container'] { padding-top: 1rem; } h1 { margin-bottom: -10px; } </style> "
             "<h1 style='text-align: center;'>Headlines and Stories</h1> ",
             unsafe_allow_html=True,
         )
-        st.divider()
         if st.session_state.news is not None:
             story = -1
             expanded = False
@@ -303,7 +286,7 @@ def main():
                 src = st.session_state.news.loc[i].url
                 date = str(st.session_state.news.loc[i].date)
                 title = st.session_state.news.loc[i].title
-                if text != "":
+                if text and text is not nan and text != "":
                     with st.expander(label=f"{date}  -  {title}", expanded=expanded):
                         st.markdown(
                             f"""
@@ -348,7 +331,7 @@ def main():
                             """,
                                 unsafe_allow_html=True,
                             )
-                            if _images:
+                            if _images and _images is not nan:
                                 img = _images[0].get("url")
                                 if img is not None:
                                     st.markdown(
@@ -363,7 +346,7 @@ def main():
                                 st.markdown(
                                     f"##### Tags for this story:  \n {_tags}  \n"
                                 )
-                            if _stocks:
+                            if _stocks and _stocks is not nan:
                                 st.markdown(f"##### Stocks mentioned:\n {_stocks}  \n")
                             if _channels:
                                 st.markdown(
@@ -371,8 +354,11 @@ def main():
                                 )
 
                         if st.session_state.selected_provider == "Biztoc":
-                            if st.session_state.news.loc[i].get("images"):
-                                img = st.session_state.news.loc[i].images.get("s")
+                            if st.session_state.news.loc[i].get("images") not in [
+                                None,
+                                nan,
+                            ]:
+                                img = st.session_state.news.loc[i].images[0].get("s")
                                 img = (
                                     st.session_state.news.loc[i].images.get("o")
                                     if img is None
@@ -406,14 +392,19 @@ def main():
                             st.markdown(text, unsafe_allow_html=True)
                             if _url:
                                 st.write(_url)
-                            if _stocks:
+                            if _stocks and _stocks is not nan:
                                 st.divider()
                                 st.markdown(f"##### Stocks mentioned:\n {_stocks}  \n")
 
                         if st.session_state.selected_provider == "FMP":
                             _url = st.session_state.news.loc[i].get("url")
                             _images = st.session_state.news.loc[i].get("images")
-                            img = _images[0].get("o") if _images else None
+                            _symbols = st.session_state.news.loc[i].get("symbols")
+                            img = (
+                                _images[0].get("o") or _images[0].get("url")
+                                if _images
+                                else None
+                            )
                             if img is not None:
                                 st.markdown(
                                     f"""
@@ -424,9 +415,10 @@ def main():
                                 """,
                                     unsafe_allow_html=True,
                                 )
+                            if text:
                                 st.markdown(text, unsafe_allow_html=True)
-                                if _url:
-                                    st.write(_url)
+                            if _url:
+                                st.write(_url)
 
                         if st.session_state.selected_provider == "Tiingo":
                             _url = st.session_state.news.loc[i].get("url")
@@ -439,7 +431,7 @@ def main():
                                 st.markdown(
                                     f"##### Tags for this story:  \n {_tags}  \n"
                                 )
-                            if _stocks:
+                            if _stocks and _stocks is not nan:
                                 st.markdown(f"##### Stocks mentioned:\n {_stocks}  \n")
 
             st.divider()

@@ -1,0 +1,53 @@
+# If you will be using this as a template for your own package, please change the values accordingly.
+[tool.poetry]
+name = "openbb_platform_installer"  # Change this to your package name
+version = "1.0.0"  # Change this to your package version
+description = "A meta package for installing the OpenBB Platform: Investment research for everyone, anywhere."  # Change this to your description
+authors = ["OpenBB <hello@openbb.co>"]  # Change this to your name and email
+license = "AGPL-3.0-only"  # This license must be compatible with the OpenBB license
+readme = "README.md"  # Change this to your README file
+homepage = "https://openbb.co"  # Change this to your website
+repository = "https://github.com/openbb-finance/openbb"  # Change this to your repository
+documentation = "https://docs.openbb.co" # Change this to your documentation
+packages = [{ include = "openbb_platform_installer" }]  # Update accordingly - these are build scripts and entry points.
+
+[tool.poetry.scripts]
+openbb-update = "openbb_platform_installer.update:main"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+poetry = "^1.8"
+setuptools = "*"
+openbb-core = "^1"
+openbb-platform-api = "^1"
+deepdiff = "*"
+types-python-dateutil = "*"
+types-toml = "*"
+pandas-stubs = "*"
+codespell = "*"
+ruff = "*"
+mypy = "*"
+black = "*"
+pylint = "^3"
+pydocstyle = "~6.3"
+
+[tool.poetry.group.openbb-all]
+
+[tool.poetry.group.openbb-all.dependencies]
+openbb = { version = "^4", extras = ["all"] }
+
+[tool.poetry.group.cli]
+
+[tool.poetry.group.cli.dependencies]
+openbb-cli = "^1"
+
+[tool.poetry.group.notebook]
+
+[tool.poetry.group.notebook.dependencies]
+notebook = "^7"
+nbclassic = "^1"
+jedi-language-server = "^0.41"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
