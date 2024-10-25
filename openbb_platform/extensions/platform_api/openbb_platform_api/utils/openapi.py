@@ -365,8 +365,6 @@ def get_data_schema_for_widget(openapi_json, operation_id):
 
 def data_schema_to_columns_defs(openapi_json, operation_id, provider):
     """Convert data schema to column definitions for the widget."""
-    # pylint: disable=import-outside-toplevel
-    from .widgets import TO_CAPS_STRINGS
 
     # Initialize an empty list to hold the schema references
     schema_refs: list = []
