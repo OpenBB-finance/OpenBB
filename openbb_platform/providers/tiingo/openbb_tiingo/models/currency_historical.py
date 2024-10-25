@@ -117,17 +117,19 @@ class TiingoCurrencyHistoricalFetcher(
         query_str = get_querystring(
             query.model_dump(by_alias=True), ["symbol", "interval"]
         )
-        frequency = query.interval
 
-        if frequency.endswith("m"):
-            frequency = f"{frequency[:-1]}min"
-        elif frequency == "h":
-            frequency = f"{frequency[:-1]}hour"
-        elif frequency.endswith("d"):
-            frequency = f"{frequency[:-1]}day"
+        if query.interval.endswith("m"):
+            frequency = f"{query.interval[:-1]}min"
+        elif query.interval.endswith("h"):
+            frequency = f"{query.interval[:-1]}hour"
+        elif query.interval.endswith("d"):
+            frequency = f"{query.interval[:-1]}day"
+        else:
+            frequency = "1day"
 
         results: list = []
         messages: list = []
+        symbols = query.symbol.split(",")
 
         async def get_one(symbol):
             """Get data for one symbol."""
@@ -149,8 +151,10 @@ class TiingoCurrencyHistoricalFetcher(
 
             if isinstance(data, list):
                 for d in data:
-                    if "," in query.symbol:
-                        d["symbol"] = symbol
+                    ticker = d.pop("ticker", None)
+                    if ticker and len(symbols) > 1:
+                        d["ticker"] = d["ticker"].upper()
+
                     if query.interval.endswith("d"):
                         d["date"] = to_datetime(d["date"]).date()
                     else:
@@ -158,7 +162,6 @@ class TiingoCurrencyHistoricalFetcher(
 
                 results.extend(data)
 
-        symbols = query.symbol.split(",")
         await asyncio.gather(*[get_one(symbol) for symbol in symbols])
 
         if not results and messages:
