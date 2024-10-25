@@ -2,6 +2,52 @@
 
 from openbb_core.provider.utils.helpers import to_snake_case
 
+TO_CAPS_STRINGS = [
+    "Pe",
+    "Peg",
+    "Sloos",
+    "Eps",
+    "Ebit",
+    "Ebitda",
+    "Otc",
+    "Cpi",
+    "Pce",
+    "Gdp",
+    "Lbma",
+    "Ipo",
+    "Nbbo",
+    "Ameribor",
+    "Sonia",
+    "Effr",
+    "Sofr",
+    "Iorb",
+    "Estr",
+    "Ecb",
+    "Dpcredit",
+    "Tcm",
+    "Us",
+    "Ice",
+    "Bofa",
+    "Hqm",
+    "Sp500",
+    "Sec",
+    "Cftc",
+    "Cot",
+    "Etf",
+    "Eu",
+    "Tips",
+    "Rss",
+    "Sic",
+    "Cik",
+    "Bls",
+    "Fred",
+    "Cusip",
+    "Ttm",
+    "Id",
+    "Ytd",
+    "Yoy",
+]
+
 
 def extract_providers(params: list[dict]) -> list[str]:
     """
