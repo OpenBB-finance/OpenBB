@@ -37,3 +37,6 @@ Link to the post : https://x.com/12a_5615909/status/1848097312087970158
 
 » 22-October-2024 by adilkadivala
 » Link to the post: [https://www.linkedin.com/posts/harshraj1512_opensource-financetool-investmentresearch-activity-7253401682892447744-sxQF?utm_source=share&utm_medium=member_desktop](https://x.com/adil_kadival/status/1848576037954982310)
+
+» 24-October-2024 by Khaan25
+» Link to the post: https://x.com/zia_webdev/status/1849385144785793341
