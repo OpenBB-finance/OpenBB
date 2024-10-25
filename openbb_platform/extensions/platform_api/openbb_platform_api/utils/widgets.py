@@ -4,6 +4,7 @@ from copy import deepcopy
 
 TO_CAPS_STRINGS = [
     "Pe",
+    "Peg",
     "Sloos",
     "Eps",
     "Ebitda",
