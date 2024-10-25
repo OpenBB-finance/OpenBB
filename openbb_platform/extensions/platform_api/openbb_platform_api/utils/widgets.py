@@ -40,6 +40,8 @@ TO_CAPS_STRINGS = [
     "Bls",
     "Fred",
     "Cusip",
+    "Ttm",
+    "Id",
 ]
 
 

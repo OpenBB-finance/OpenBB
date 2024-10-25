@@ -2,6 +2,8 @@
 
 from openbb_core.provider.utils.helpers import to_snake_case
 
+from openbb_platform_api.utils.widgets import TO_CAPS_STRINGS
+
 
 def extract_providers(params: list[dict]) -> list[str]:
     """
@@ -420,7 +422,13 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
             column_def["pinned"] = "left"
 
         column_def["formatterFn"] = formatterFn
-        column_def["headerName"] = prop.get("title", key.title())
+        header_name = prop.get("title", key.title())
+        column_def["headerName"] = " ".join(
+            [
+                (word.upper() if word in TO_CAPS_STRINGS else word)
+                for word in header_name.split(" ")
+            ]
+        )
         column_def["description"] = prop.get(
             "description", prop.get("title", key.title())
         )
@@ -448,6 +456,10 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
             column_def["headerName"] = (
                 column_def["headerName"].upper() if k != "symbol" else "Symbol"
             )
+
+        if k in ["fiscal_year", "year"]:
+            column_def["cellDataType"] = "number"
+            column_def["formatterFn"] = "none"
 
         column_defs.append(column_def)
 
