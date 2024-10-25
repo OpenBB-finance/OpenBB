@@ -17,4 +17,6 @@ class ROUTER_commodity(Container):
         # pylint: disable=import-outside-toplevel
         from . import commodity_price
 
-        return commodity_price.ROUTER_commodity_price(command_runner=self._command_runner)
+        return commodity_price.ROUTER_commodity_price(
+            command_runner=self._command_runner
+        )
