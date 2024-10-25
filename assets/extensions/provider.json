@@ -59,7 +59,7 @@
     {
         "packageName": "openbb-cftc",
         "optional": false,
-        "reprName": "Commodity DFutures Trading Commission (CFTC) Public Reporting API",
+        "reprName": "Commodity Futures Trading Commission (CFTC) Public Reporting API",
         "description": "The mission of the Commodity Futures Trading Commission (CFTC) is to promote the integrity,\n    resilience, and vibrancy of the U.S. derivatives markets through sound regulation.",
         "credentials": [
             "cftc_app_token"
