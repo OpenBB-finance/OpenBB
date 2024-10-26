@@ -107,6 +107,7 @@ class DeFiLlamaCoinsChartFetcher(
     Fetcher[DeFiLlamaCoinsChartQuery, List[DeFiLlamaCoinsChartData]]
 ):
     """DeFiLlama Coins Chart Fetcher."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsChartQuery:
         """Transform query parameters."""

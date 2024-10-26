@@ -33,6 +33,7 @@ class DeFiLlamaTvlHistoricalQueryParams(QueryParams):
 
 class DeFiLlamaProtocolTokens(Data):
     """DeFiLlama Protocol Tokens Data."""
+
     date: datetime = Field(description="Date of the token")
     tokens: Dict[str, float] = Field(description="Total Value Locked for each token")
 
@@ -43,6 +44,7 @@ class DeFiLlamaProtocolTokens(Data):
 
 class DeFiLlamaTvlData(Data):
     """DeFiLlama TVL Data"""
+
     date: datetime = Field(description="Date of the TVL")
     total_liquidity_usd: float = Field(
         description="Total Value Locked in USD", alias="totalLiquidityUSD"
@@ -55,6 +57,7 @@ class DeFiLlamaTvlData(Data):
 
 class DeFiLlamaChainTvlsData(Data):
     """DeFiLlama Chain TVLs Data."""
+
     tvl: List[DeFiLlamaTvlData] = Field(description="Date of the chain")
     tokens: Optional[List[DeFiLlamaProtocolTokens]] = Field(
         default=None, description="Total Value Locked for each token"
@@ -79,6 +82,7 @@ class DeFiLlamaChainTvlsData(Data):
 
 class DeFiLlamaProtocolRaisesData(Data):
     """DeFiLlama Protocol Raises Data."""
+
     date: datetime = Field(description="Date of the raise")
     name: str = Field(description="Name of the protocol")
     round: str = Field(description="Round of the raise")
@@ -107,6 +111,7 @@ class DeFiLlamaProtocolRaisesData(Data):
 
 class DeFiLlamaProtocolHallmarksData(Data):
     """DeFiLlama Protocol Hallmarks Data"""
+
     date: datetime = Field(description="Date of the hallmark")
     label: str = Field(description="Label of the hallmark")
 

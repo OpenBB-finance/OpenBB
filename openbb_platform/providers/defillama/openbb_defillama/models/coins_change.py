@@ -16,6 +16,7 @@ class DeFiLlamaCoinsChangeQueryParams(QueryParams):
 
     Source: https://defillama.com/docs/api
     """
+
     token: str = Field(description="The token to fetch data for.")
     timestamp: Union[int, str, datetime] = Field(
         description="The timestamp to fetch the block for. If a string is provided, it should follow the 'day-first' format."  # noqa: E501
