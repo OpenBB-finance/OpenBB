@@ -23,7 +23,7 @@ class DeFiLlamaTvlHistoricalQueryParams(QueryParams):
     symbol: Optional[str] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " Should be a protocol of chain.",
+        + " Should be a protocol or chain.",
     )
     symbol_type: Optional[Literal["protocol", "chain"]] = Field(
         default="protocol",
