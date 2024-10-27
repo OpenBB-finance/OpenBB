@@ -53,14 +53,14 @@ async def overview(
         APIEx(
             parameters={
                 "provider": "defillama",
-                "protocol": "litecoin",
+                "protocol": "uniswap",
                 "is_options": True,
             }
         ),
         APIEx(
             parameters={
                 "provider": "defillama",
-                "protocol": "litecoin",
+                "protocol": "uniswap",
                 "volume_type": "notional",
             }
         ),
