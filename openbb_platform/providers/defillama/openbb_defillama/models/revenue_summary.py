@@ -113,17 +113,17 @@ class DeFiLlamaRevenueSummaryData(Data):
     protocol_type: str = Field(
         description="The protocol type of the protocol.", alias="protocolType"
     )
-    total_24h: int = Field(
-        description="The total 24h of the protocol.", alias="total24h"
+    total_24h: Optional[int] = Field(
+        default=None, description="The total 24h of the protocol.", alias="total24h"
     )
-    total_48h_to_24h: int = Field(
-        description="The total 48h to 24h of the protocol.", alias="total48hto24h"
+    total_48h_to_24h: Optional[int] = Field(
+        default=None, description="The total 48h to 24h of the protocol.", alias="total48hto24h"
     )
     total_7d: Optional[int] = Field(
         default=None, description="The total 7d of the protocol.", alias="total7d"
     )
-    total_all_time: int = Field(
-        description="The total all time of the protocol.", alias="totalAllTime"
+    total_all_time: Optional[int] = Field(
+        default=None, description="The total all time of the protocol.", alias="totalAllTime"
     )
     total_data_chart: List[Dict[datetime, int]] = Field(
         description="Aggregated chart data.", alias="totalDataChart"
@@ -142,7 +142,7 @@ class DeFiLlamaRevenueSummaryData(Data):
 
 
 class DeFiLlamaRevenueSummaryFetcher(
-    Fetcher[DeFiLlamaRevenueSummaryQueryParams, List[DeFiLlamaRevenueSummaryData]]
+    Fetcher[DeFiLlamaRevenueSummaryQueryParams, DeFiLlamaRevenueSummaryData]
 ):
     """DeFiLlama Revenue Summary Fetcher."""
 
@@ -167,7 +167,7 @@ class DeFiLlamaRevenueSummaryFetcher(
     @staticmethod
     def transform_data(
         query: DeFiLlamaRevenueSummaryQueryParams, data: Dict[str, Any], **kwargs: Any
-    ) -> List[DeFiLlamaRevenueSummaryData]:
+    ) -> DeFiLlamaRevenueSummaryData:
         """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = dict(data)
 
