@@ -117,13 +117,17 @@ class DeFiLlamaRevenueSummaryData(Data):
         default=None, description="The total 24h of the protocol.", alias="total24h"
     )
     total_48h_to_24h: Optional[int] = Field(
-        default=None, description="The total 48h to 24h of the protocol.", alias="total48hto24h"
+        default=None,
+        description="The total 48h to 24h of the protocol.",
+        alias="total48hto24h",
     )
     total_7d: Optional[int] = Field(
         default=None, description="The total 7d of the protocol.", alias="total7d"
     )
     total_all_time: Optional[int] = Field(
-        default=None, description="The total all time of the protocol.", alias="totalAllTime"
+        default=None,
+        description="The total all time of the protocol.",
+        alias="totalAllTime",
     )
     total_data_chart: List[Dict[datetime, int]] = Field(
         description="Aggregated chart data.", alias="totalDataChart"

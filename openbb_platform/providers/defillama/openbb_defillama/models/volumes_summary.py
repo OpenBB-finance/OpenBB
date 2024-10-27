@@ -1,16 +1,16 @@
 """DeFiLlama Volumes Summary Model."""
 
 from datetime import datetime
+from json.decoder import JSONDecodeError
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from defillama import volumes
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
-from openbb_core.provider.utils.errors import EmptyDataError
-from json.decoder import JSONDecodeError
 
 class DeFiLlamaVolumesSummaryQueryParams(QueryParams):
     """DeFiLlama Volumes Summary Query.

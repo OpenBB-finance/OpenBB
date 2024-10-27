@@ -1,7 +1,7 @@
 """DeFiLlama Coins Block Timestamp Model."""
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 from defillama import coins
 from openbb_core.provider.abstract.data import Data
@@ -44,9 +44,7 @@ class DeFiLlamaCoinsBlockTimestampData(Data):
 
 
 class DeFiLlamaCoinsBlockTimestampFetcher(
-    Fetcher[
-        DeFiLlamaCoinsBlockTimestampQueryParams, DeFiLlamaCoinsBlockTimestampData
-    ]
+    Fetcher[DeFiLlamaCoinsBlockTimestampQueryParams, DeFiLlamaCoinsBlockTimestampData]
 ):
     """DeFiLlama Coins Block Timestamp Fetcher."""
 

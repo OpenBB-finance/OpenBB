@@ -1,6 +1,6 @@
 """DeFiLlama TVL Current model"""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from defillama import tvl
 from openbb_core.provider.abstract.data import Data
