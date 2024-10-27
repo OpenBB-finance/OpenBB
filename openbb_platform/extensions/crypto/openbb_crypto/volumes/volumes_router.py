@@ -2,7 +2,7 @@
 """Crypto Volumes Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -20,6 +20,35 @@ router = Router(prefix="/volumes")
     model="VolumesOverview",
     examples=[
         APIEx(parameters={"provider": "defillama"}),
+        APIEx(parameters={"provider": "defillama", "all": True}),
+        APIEx(parameters={"provider": "defillama", "is_options": True}),
+        APIEx(parameters={"provider": "defillama", "chain": "ethereum"}),
+        APIEx(
+            parameters={"provider": "defillama", "chain": "solana", "is_options": True}
+        ),
+        APIEx(
+            parameters={
+                "provider": "defillama",
+                "chain": "solana",
+                "is_options": True,
+                "volume_type": "notional",
+            }
+        ),
+        PythonEx(parameters={"provider": "defillama"}),
+        PythonEx(parameters={"provider": "defillama", "all": True}),
+        PythonEx(parameters={"provider": "defillama", "is_options": True}),
+        PythonEx(parameters={"provider": "defillama", "chain": "ethereum"}),
+        PythonEx(
+            parameters={"provider": "defillama", "chain": "solana", "is_options": True}
+        ),
+        PythonEx(
+            parameters={
+                "provider": "defillama",
+                "chain": "solana",
+                "is_options": True,
+                "volume_type": "notional",
+            }
+        ),
     ],
 )
 async def overview(
@@ -35,7 +64,36 @@ async def overview(
 @router.command(
     model="VolumesSummary",
     examples=[
-        APIEx(parameters={"provider": "defillama"}),
+        APIEx(parameters={"provider": "defillama", "protocol": "litecoin"}),
+        APIEx(
+            parameters={
+                "provider": "defillama",
+                "protocol": "litecoin",
+                "is_options": True,
+            }
+        ),
+        APIEx(
+            parameters={
+                "provider": "defillama",
+                "protocol": "litecoin",
+                "volume_type": "notional",
+            }
+        ),
+        PythonEx(parameters={"provider": "defillama", "protocol": "litecoin"}),
+        PythonEx(
+            parameters={
+                "provider": "defillama",
+                "protocol": "litecoin",
+                "is_options": True,
+            }
+        ),
+        PythonEx(
+            parameters={
+                "provider": "defillama",
+                "protocol": "litecoin",
+                "volume_type": "notional",
+            }
+        ),
     ],
 )
 async def summary(
