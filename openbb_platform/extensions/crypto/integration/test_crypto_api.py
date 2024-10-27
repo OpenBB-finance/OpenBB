@@ -624,10 +624,34 @@ def test_crypto_tvl_current(params, headers):
     "params",
     [
         {"provider": "defillama"},
-        {"provider": "defillama", "chain": None, "is_options": False, "all": True, "volume_type": "premium"},
-        {"provider": "defillama", "chain": None, "is_options": True, "all": False, "volume_type": "premium"},
-        {"provider": "defillama", "chain": "ethereum", "is_options": False, "all": False, "volume_type": "premium"},
-        {"provider": "defillama", "chain": "ethereum", "is_options": True, "all": False, "volume_type": "premium"},
+        {
+            "provider": "defillama",
+            "chain": None,
+            "is_options": False,
+            "all": True,
+            "volume_type": "premium",
+        },
+        {
+            "provider": "defillama",
+            "chain": None,
+            "is_options": True,
+            "all": False,
+            "volume_type": "premium",
+        },
+        {
+            "provider": "defillama",
+            "chain": "ethereum",
+            "is_options": False,
+            "all": False,
+            "volume_type": "premium",
+        },
+        {
+            "provider": "defillama",
+            "chain": "ethereum",
+            "is_options": True,
+            "all": False,
+            "volume_type": "premium",
+        },
         {
             "provider": "defillama",
             "chain": "ethereum",
@@ -653,14 +677,24 @@ def test_crypto_volumes_overview(params, headers):
 @parametrize(
     "params",
     [
-        {"provider": "defillama", "protocol": "uniswap", "is_options": False, "volume_type": "premium"},
+        {
+            "provider": "defillama",
+            "protocol": "uniswap",
+            "is_options": False,
+            "volume_type": "premium",
+        },
         {
             "provider": "defillama",
             "protocol": "pancakeswap-options",
             "is_options": True,
             "volume_type": "premium",
         },
-        {"provider": "defillama", "protocol": "uniswap", "is_options": False, "volume_type": "notional"},
+        {
+            "provider": "defillama",
+            "protocol": "uniswap",
+            "is_options": False,
+            "volume_type": "notional",
+        },
     ],
 )
 @pytest.mark.integration
