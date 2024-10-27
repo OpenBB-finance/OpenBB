@@ -236,26 +236,29 @@ def test_crypto_coins_first(params, headers):
             "provider": "defillama",
             "token": "coingecko:ethereum",
             "timestamp": "2024-01-01",
+            "look_forward": False,
+            "period": "24h",
         },
         {
             "provider": "defillama",
             "token": "coingecko:ethereum",
             "timestamp": "2024-01-01T12:12:12",
+            "look_forward": False,
             "period": "1W",
         },
         {
             "provider": "defillama",
             "token": "coingecko:ethereum",
             "timestamp": "1729957601",
-            "period": "7D",
             "look_forward": True,
+            "period": "7D",
         },
         {
             "provider": "defillama",
             "token": "coingecko:ethereum",
             "timestamp": 1729957601,
-            "period": "24m",
             "look_forward": True,
+            "period": "24m",
         },
     ],
 )
@@ -279,22 +282,34 @@ def test_crypto_coins_change(params, headers):
             "provider": "defillama",
             "token": "coingecko:ethereum",
             "start_date": "2024-09-01",
+            "end_date": None,
+            "span": 0,
+            "period": "24h",
+            "search_width": "2h",
         },
         {
             "provider": "defillama",
             "token": "coingecko:ethereum",
+            "start_date": None,
             "end_date": "2024-10-01",
+            "span": 0,
+            "period": "24h",
+            "search_width": "2h",
         },
         {
             "provider": "defillama",
             "token": "coingecko:ethereum",
             "start_date": 1725129000,
+            "end_date": None,
             "span": 10,
+            "period": "24h",
+            "search_width": "2h",
         },
         {
             "provider": "defillama",
             "token": "coingecko:ethereum",
             "start_date": 1725129000,
+            "end_date": None,
             "span": 100,
             "period": "1D",
             "search_width": "8h",
@@ -302,6 +317,7 @@ def test_crypto_coins_change(params, headers):
         {
             "provider": "defillama",
             "token": "coingecko:ethereum",
+            "start_date": None,
             "end_date": 1727721000,
             "span": 10,
             "period": "1W",
@@ -367,8 +383,8 @@ def test_crypto_coins_historical(params, headers):
     "params",
     [
         {"provider": "defillama"},
-        {"provider": "defillama", "all": True},
-        {"provider": "defillama", "chain": "ethereum"},
+        {"provider": "defillama", "chain": None, "all": True},
+        {"provider": "defillama", "chain": "ethereum", "all": False},
         {"provider": "defillama", "chain": "ethereum", "all": True},
     ],
 )
@@ -408,8 +424,8 @@ def test_crypto_fees_summary(params, headers):
     "params",
     [
         {"provider": "defillama"},
-        {"provider": "defillama", "all": True},
-        {"provider": "defillama", "chain": "ethereum"},
+        {"provider": "defillama", "chain": None, "all": True},
+        {"provider": "defillama", "chain": "ethereum", "all": False},
         {"provider": "defillama", "chain": "ethereum", "all": True},
     ],
 )
@@ -526,8 +542,8 @@ def test_crypto_stablecoins_distribution(params, headers):
     "params",
     [
         {"provider": "defillama"},
-        {"provider": "defillama", "stablecoin": "1"},
-        {"provider": "defillama", "chain": "ethereum"},
+        {"provider": "defillama", "stablecoin": "1", "chain": None},
+        {"provider": "defillama", "stablecoin": None, "chain": "ethereum"},
         {"provider": "defillama", "stablecoin": "1", "chain": "ethereum"},
     ],
 )
@@ -567,8 +583,8 @@ def test_crypto_tvl_chains(params, headers):
     "params",
     [
         {"provider": "defillama"},
-        {"provider": "defillama", "symbol": "uniswap"},
-        {"provider": "defillama", "symbol_type": "chain"},
+        {"provider": "defillama", "symbol": "uniswap", "symbol_type": "protocol"},
+        {"provider": "defillama", "symbol": None, "symbol_type": "chain"},
         {"provider": "defillama", "symbol": "ethereum", "symbol_type": "chain"},
     ],
 )
@@ -608,14 +624,15 @@ def test_crypto_tvl_current(params, headers):
     "params",
     [
         {"provider": "defillama"},
-        {"provider": "defillama", "all": True},
-        {"provider": "defillama", "is_options": True},
-        {"provider": "defillama", "chain": "ethereum"},
-        {"provider": "defillama", "chain": "ethereum", "is_options": True},
+        {"provider": "defillama", "chain": None, "is_options": False, "all": True, "volume_type": "premium"},
+        {"provider": "defillama", "chain": None, "is_options": True, "all": False, "volume_type": "premium"},
+        {"provider": "defillama", "chain": "ethereum", "is_options": False, "all": False, "volume_type": "premium"},
+        {"provider": "defillama", "chain": "ethereum", "is_options": True, "all": False, "volume_type": "premium"},
         {
             "provider": "defillama",
             "chain": "ethereum",
             "is_options": True,
+            "all": False,
             "volume_type": "notional",
         },
     ],
@@ -636,13 +653,14 @@ def test_crypto_volumes_overview(params, headers):
 @parametrize(
     "params",
     [
-        {"provider": "defillama", "protocol": "uniswap"},
+        {"provider": "defillama", "protocol": "uniswap", "is_options": False, "volume_type": "premium"},
         {
             "provider": "defillama",
             "protocol": "pancakeswap-options",
             "is_options": True,
+            "volume_type": "premium",
         },
-        {"provider": "defillama", "protocol": "uniswap", "volume_type": "notional"},
+        {"provider": "defillama", "protocol": "uniswap", "is_options": False, "volume_type": "notional"},
     ],
 )
 @pytest.mark.integration
