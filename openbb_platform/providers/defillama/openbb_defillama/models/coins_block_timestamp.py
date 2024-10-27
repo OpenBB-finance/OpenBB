@@ -45,7 +45,7 @@ class DeFiLlamaCoinsBlockTimestampData(Data):
 
 class DeFiLlamaCoinsBlockTimestampFetcher(
     Fetcher[
-        DeFiLlamaCoinsBlockTimestampQueryParams, List[DeFiLlamaCoinsBlockTimestampData]
+        DeFiLlamaCoinsBlockTimestampQueryParams, DeFiLlamaCoinsBlockTimestampData
     ]
 ):
     """DeFiLlama Coins Block Timestamp Fetcher."""
