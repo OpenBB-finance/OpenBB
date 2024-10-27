@@ -9,6 +9,8 @@ from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, field_validator
 
+from openbb_core.provider.utils.errors import EmptyDataError
+from json.decoder import JSONDecodeError
 
 class DeFiLlamaVolumesSummaryQueryParams(QueryParams):
     """DeFiLlama Volumes Summary Query.
@@ -164,7 +166,7 @@ class DeFiLlamaVolumesSummaryData(Data):
 
 
 class DeFiLlamaVolumesSummaryFetcher(
-    Fetcher[DeFiLlamaVolumesSummaryQueryParams, List[DeFiLlamaVolumesSummaryData]]
+    Fetcher[DeFiLlamaVolumesSummaryQueryParams, DeFiLlamaVolumesSummaryData]
 ):
     """DeFiLlama Volumes Summary Fetcher."""
 
@@ -181,22 +183,25 @@ class DeFiLlamaVolumesSummaryFetcher(
     ) -> Dict[str, Any]:
         """Extract data from DeFiLlama API."""
 
-        if query.is_options:
-            return volumes.get_options_summary(
-                protocol=query.protocol,
-                type=query.volume_type,
-            )
-        else:
-            return volumes.get_dex_summary(
-                protocol=query.protocol,
-                exclude_total_data_chart=False,
-                exclude_total_data_chart_breakdown=False,
-            )
+        try:
+            if query.is_options:
+                return volumes.get_options_summary(
+                    protocol=query.protocol,
+                    type=query.volume_type,
+                )
+            else:
+                return volumes.get_dex_summary(
+                    protocol=query.protocol,
+                    exclude_total_data_chart=False,
+                    exclude_total_data_chart_breakdown=False,
+                )
+        except JSONDecodeError as e:
+            raise EmptyDataError() from e
 
     @staticmethod
     def transform_data(
         query: DeFiLlamaVolumesSummaryQueryParams, data: Dict[str, Any], **kwargs: Any
-    ) -> List[DeFiLlamaVolumesSummaryData]:
+    ) -> DeFiLlamaVolumesSummaryData:
         """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = dict(data)
 
