@@ -18,7 +18,7 @@ class DeFiLlamaStablecoinsChartsQueryParams(QueryParams):
 
     stablecoin: Optional[str] = Field(
         default=None,
-        description="Stablecoin to get the mcap of.",
+        description="Stablecoin ID to get the mcap of.",
     )
     chain: Optional[str] = Field(
         default=None,

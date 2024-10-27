@@ -16,7 +16,7 @@ class DeFiLlamaStablecoinsDistributionQueryParams(QueryParams):
     Source: https://defillama.com/docs/api
     """
 
-    stablecoin: str = Field(description="Stablecoin to get the distribution of.")
+    stablecoin: str = Field(description="Stablecoin ID to get the distribution of.")
 
 
 class DeFiLlamaStablecoinsChainTokensData(Data):
