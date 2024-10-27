@@ -90,7 +90,7 @@ class DeFiLlamaProtocolRaisesData(Data):
     chains: List[str] = Field(description="List of chains the protocol is deployed on")
     sector: str = Field(description="Sector of the protocol")
     category: str = Field(description="Category of the protocol")
-    source: str = Field(description="Source of the raise")
+    source: Optional[str] = Field(default=None, description="Source of the raise")
     lead_investors: List[str] = Field(
         description="List of lead investors", alias="leadInvestors"
     )
