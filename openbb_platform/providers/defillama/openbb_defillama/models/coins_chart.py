@@ -111,15 +111,7 @@ class DeFiLlamaCoinsChartFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DeFiLlamaCoinsChartQuery:
         """Transform query parameters."""
-        transformed_params = params
-
-        if params.get("end_date") is None:
-            transformed_params["start_date"] = datetime.now().timestamp()
-
-        if params.get("start_date") is None:
-            transformed_params["end_date"] = datetime.now().timestamp()
-
-        return DeFiLlamaCoinsChartQuery(**transformed_params)
+        return DeFiLlamaCoinsChartQuery(**params)
 
     @staticmethod
     async def aextract_data(
