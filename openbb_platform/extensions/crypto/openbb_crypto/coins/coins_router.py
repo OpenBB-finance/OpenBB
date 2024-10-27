@@ -207,7 +207,7 @@ async def change(
                 "provider": "defillama",
                 "token": "coingecko:ethereum",
                 "end_date": 1727721000,
-                "span": 100,
+                "span": 10,
                 "period": "1W",
                 "search_width": "1D",
             }
