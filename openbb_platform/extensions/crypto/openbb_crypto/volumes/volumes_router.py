@@ -24,12 +24,16 @@ router = Router(prefix="/volumes")
         APIEx(parameters={"provider": "defillama", "is_options": True}),
         APIEx(parameters={"provider": "defillama", "chain": "ethereum"}),
         APIEx(
-            parameters={"provider": "defillama", "chain": "solana", "is_options": True}
+            parameters={
+                "provider": "defillama",
+                "chain": "ethereum",
+                "is_options": True,
+            }
         ),
         APIEx(
             parameters={
                 "provider": "defillama",
-                "chain": "solana",
+                "chain": "ethereum",
                 "is_options": True,
                 "volume_type": "notional",
             }
@@ -53,7 +57,7 @@ async def overview(
         APIEx(
             parameters={
                 "provider": "defillama",
-                "protocol": "uniswap",
+                "protocol": "pancakeswap-options",
                 "is_options": True,
             }
         ),
