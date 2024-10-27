@@ -175,6 +175,12 @@ async def change(
                 "provider": "defillama",
                 "token": "coingecko:ethereum",
                 "start_date": "2024-09-01",
+            }
+        ),
+        APIEx(
+            parameters={
+                "provider": "defillama",
+                "token": "coingecko:ethereum",
                 "end_date": "2024-10-01",
             }
         ),
@@ -183,7 +189,6 @@ async def change(
                 "provider": "defillama",
                 "token": "coingecko:ethereum",
                 "start_date": 1725129000,
-                "end_date": 1727721000,
                 "span": 10,
             }
         ),
@@ -192,7 +197,6 @@ async def change(
                 "provider": "defillama",
                 "token": "coingecko:ethereum",
                 "start_date": 1725129000,
-                "end_date": 1727721000,
                 "span": 100,
                 "period": "1D",
                 "search_width": "8h",
@@ -202,7 +206,6 @@ async def change(
             parameters={
                 "provider": "defillama",
                 "token": "coingecko:ethereum",
-                "start_date": 1725129000,
                 "end_date": 1727721000,
                 "span": 100,
                 "period": "1W",
