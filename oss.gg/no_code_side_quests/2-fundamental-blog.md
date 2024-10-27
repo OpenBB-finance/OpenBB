@@ -24,4 +24,7 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Blog Post: https://medium.com/...
 
+» 27-October-2024 by Karan0207
+» Link to Blog Post: https://medium.com/@karansingh0201k/how-to-use-openbb-for-stock-market-fundamentals-analysis-1118adc89762
+
 ---
