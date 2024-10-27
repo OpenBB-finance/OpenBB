@@ -16,7 +16,8 @@ class DeFiLlamaStablecoinsListQueryParams(QueryParams):
     """
 
     include_prices: bool = Field(
-        description="Whether to include prices.", default=False
+        default=False,
+        description="Whether to include prices.",
     )
 
 
