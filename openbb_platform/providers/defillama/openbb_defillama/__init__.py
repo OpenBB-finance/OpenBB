@@ -1,6 +1,9 @@
 """DeFiLlama provider module."""
 
 from openbb_core.provider.abstract.provider import Provider
+from openbb_defillama.models.coins_block_timestamp import (
+    DeFiLlamaCoinsBlockTimestampFetcher,
+)
 from openbb_defillama.models.coins_change import DeFiLlamaCoinsChangeFetcher
 from openbb_defillama.models.coins_chart import DeFiLlamaCoinsChartFetcher
 from openbb_defillama.models.coins_current import DeFiLlamaCoinsCurrentFetcher
@@ -28,10 +31,6 @@ from openbb_defillama.models.volumes_overview import DeFiLlamaVolumesOverviewFet
 from openbb_defillama.models.volumes_summary import DeFiLlamaVolumesSummaryFetcher
 from openbb_defillama.models.yields_historical import DeFiLlamaYieldsHistoricalFetcher
 from openbb_defillama.models.yields_pools import DeFiLlamaYieldsPoolsFetcher
-
-from openbb_platform.providers.defillama.openbb_defillama.models.coins_block_timestamp import (
-    DeFiLlamaCoinsBlockTimestampFetcher,
-)
 
 defillama_provider = Provider(
     name="defillama",
