@@ -21,7 +21,7 @@ Your turn 👇
 
 ////////////////////////////
 
-» 01-October-2024 by YOUR NAME
-» Link to Article: https://medium.com/...
+» 27-October-2024 by Shrey
+» Link to Article: https://medium.com/@shreykx/collating-openbb-with-others-e826b062e19b
 
 ---
