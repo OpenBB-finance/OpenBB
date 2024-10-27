@@ -2,7 +2,7 @@
 """Crypto Stablecoins Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -20,6 +20,9 @@ router = Router(prefix="/stablecoins")
     model="StablecoinsList",
     examples=[
         APIEx(parameters={"provider": "defillama"}),
+        APIEx(parameters={"provider": "defillama", "include_prices": True}),
+        PythonEx(parameters={"provider": "defillama"}),
+        PythonEx(parameters={"provider": "defillama", "include_prices": True}),
     ],
 )
 async def list(
@@ -36,6 +39,7 @@ async def list(
     model="StablecoinsCurrent",
     examples=[
         APIEx(parameters={"provider": "defillama"}),
+        PythonEx(parameters={"provider": "defillama"}),
     ],
 )
 async def current(
@@ -52,6 +56,7 @@ async def current(
     model="StablecoinsHistorical",
     examples=[
         APIEx(parameters={"provider": "defillama"}),
+        PythonEx(parameters={"provider": "defillama"}),
     ],
 )
 async def historical(
@@ -67,7 +72,8 @@ async def historical(
 @router.command(
     model="StablecoinsDistribution",
     examples=[
-        APIEx(parameters={"provider": "defillama"}),
+        APIEx(parameters={"provider": "defillama", "stablecoin": "1"}),
+        PythonEx(parameters={"provider": "defillama", "stablecoin": "1"}),
     ],
 )
 async def distribution(
@@ -84,6 +90,17 @@ async def distribution(
     model="StablecoinsCharts",
     examples=[
         APIEx(parameters={"provider": "defillama"}),
+        APIEx(parameters={"provider": "defillama", "stablecoin": "1"}),
+        APIEx(parameters={"provider": "defillama", "chain": "ethereum"}),
+        APIEx(
+            parameters={"provider": "defillama", "stablecoin": "1", "chain": "ethereum"}
+        ),
+        PythonEx(parameters={"provider": "defillama"}),
+        PythonEx(parameters={"provider": "defillama", "stablecoin": "1"}),
+        PythonEx(parameters={"provider": "defillama", "chain": "ethereum"}),
+        PythonEx(
+            parameters={"provider": "defillama", "stablecoin": "1", "chain": "ethereum"}
+        ),
     ],
 )
 async def charts(
