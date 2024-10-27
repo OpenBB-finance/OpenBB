@@ -181,7 +181,7 @@ class DeFiLlamaVolumesOverviewData(Data):
 
 
 class DeFiLlamaVolumesOverviewFetcher(
-    Fetcher[DeFiLlamaVolumesOverviewQueryParams, List[DeFiLlamaVolumesOverviewData]]
+    Fetcher[DeFiLlamaVolumesOverviewQueryParams, DeFiLlamaVolumesOverviewData]
 ):
     """DeFiLlama Volumes Overview Fetcher."""
 
@@ -221,7 +221,7 @@ class DeFiLlamaVolumesOverviewFetcher(
     @staticmethod
     def transform_data(
         query: DeFiLlamaVolumesOverviewQueryParams, data: Dict[str, Any], **kwargs: Any
-    ) -> List[DeFiLlamaVolumesOverviewData]:
+    ) -> DeFiLlamaVolumesOverviewData:
         """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = {}
 

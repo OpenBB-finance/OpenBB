@@ -29,7 +29,7 @@ class DeFiLlamaTvlCurrentData(Data):
 
 
 class DeFiLlamaTvlCurrentFetcher(
-    Fetcher[DeFiLlamaTvlCurrentQueryParams, List[DeFiLlamaTvlCurrentData]]
+    Fetcher[DeFiLlamaTvlCurrentQueryParams, DeFiLlamaTvlCurrentData]
 ):
     """DeFiLlama TVL Current Fetcher."""
 

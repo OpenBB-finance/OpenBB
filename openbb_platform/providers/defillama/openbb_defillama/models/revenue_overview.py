@@ -175,7 +175,7 @@ class DeFiLlamaRevenueOverviewData(Data):
 
 
 class DeFiLlamaRevenueOverviewFetcher(
-    Fetcher[DeFiLlamaRevenueOverviewQueryParams, List[DeFiLlamaRevenueOverviewData]]
+    Fetcher[DeFiLlamaRevenueOverviewQueryParams, DeFiLlamaRevenueOverviewData]
 ):
     """DeFiLlama Revenue Overview Fetcher."""
 
@@ -207,7 +207,7 @@ class DeFiLlamaRevenueOverviewFetcher(
     @staticmethod
     def transform_data(
         query: DeFiLlamaRevenueOverviewQueryParams, data: Dict[str, Any], **kwargs: Any
-    ) -> List[DeFiLlamaRevenueOverviewData]:
+    ) -> DeFiLlamaRevenueOverviewData:
         """Transform the data into the desired format."""
         transformed_data: Dict[str, Any] = {}
 
