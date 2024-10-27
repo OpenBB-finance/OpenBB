@@ -1,3 +1,5 @@
+"""Unit tests for DeFiLlama provider modules."""
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_defillama.models.coins_block_timestamp import (
