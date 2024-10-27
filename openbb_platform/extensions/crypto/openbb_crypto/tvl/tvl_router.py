@@ -2,7 +2,7 @@
 """Crypto TVL Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -20,7 +20,6 @@ router = Router(prefix="/tvl")
     model="TvlChains",
     examples=[
         APIEx(parameters={"provider": "defillama"}),
-        PythonEx(parameters={"provider": "defillama"}),
     ],
 )
 async def chains(
@@ -46,16 +45,6 @@ async def chains(
                 "symbol_type": "chain",
             }
         ),
-        PythonEx(parameters={"provider": "defillama"}),
-        PythonEx(parameters={"provider": "defillama", "symbol": "uniswap"}),
-        PythonEx(parameters={"provider": "defillama", "symbol_type": "chain"}),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "symbol": "ethereum",
-                "symbol_type": "chain",
-            }
-        ),
     ],
 )
 async def historical(
@@ -72,7 +61,6 @@ async def historical(
     model="TvlCurrent",
     examples=[
         APIEx(parameters={"provider": "defillama", "symbol": "uniswap"}),
-        PythonEx(parameters={"provider": "defillama", "symbol": "uniswap"}),
     ],
 )
 async def current(

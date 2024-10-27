@@ -2,7 +2,7 @@
 """Crypto Volumes Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -34,21 +34,6 @@ router = Router(prefix="/volumes")
                 "volume_type": "notional",
             }
         ),
-        PythonEx(parameters={"provider": "defillama"}),
-        PythonEx(parameters={"provider": "defillama", "all": True}),
-        PythonEx(parameters={"provider": "defillama", "is_options": True}),
-        PythonEx(parameters={"provider": "defillama", "chain": "ethereum"}),
-        PythonEx(
-            parameters={"provider": "defillama", "chain": "solana", "is_options": True}
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "chain": "solana",
-                "is_options": True,
-                "volume_type": "notional",
-            }
-        ),
     ],
 )
 async def overview(
@@ -73,21 +58,6 @@ async def overview(
             }
         ),
         APIEx(
-            parameters={
-                "provider": "defillama",
-                "protocol": "litecoin",
-                "volume_type": "notional",
-            }
-        ),
-        PythonEx(parameters={"provider": "defillama", "protocol": "litecoin"}),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "protocol": "litecoin",
-                "is_options": True,
-            }
-        ),
-        PythonEx(
             parameters={
                 "provider": "defillama",
                 "protocol": "litecoin",

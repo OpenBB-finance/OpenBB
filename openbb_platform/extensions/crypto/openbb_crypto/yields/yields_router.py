@@ -2,7 +2,7 @@
 """Crypto Yields Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -20,7 +20,6 @@ router = Router(prefix="/yields")
     model="YieldsPools",
     examples=[
         APIEx(parameters={"provider": "defillama"}),
-        PythonEx(parameters={"provider": "defillama"}),
     ],
 )
 async def pools(
@@ -37,12 +36,6 @@ async def pools(
     model="YieldsHistorical",
     examples=[
         APIEx(
-            parameters={
-                "provider": "defillama",
-                "pool_id": "747c1d2a-c668-4682-b9f9-296708a3dd90",
-            }
-        ),
-        PythonEx(
             parameters={
                 "provider": "defillama",
                 "pool_id": "747c1d2a-c668-4682-b9f9-296708a3dd90",

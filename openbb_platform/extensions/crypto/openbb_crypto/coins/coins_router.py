@@ -2,7 +2,7 @@
 """Crypto Coins Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -41,34 +41,6 @@ router = Router(prefix="/coins")
             }
         ),
         APIEx(
-            parameters={
-                "provider": "defillama",
-                "chain": "ethereum",
-                "timestamp": 1729957601,
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "chain": "ethereum",
-                "timestamp": "2024-01-01",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "chain": "ethereum",
-                "timestamp": "2024-01-01T12:12:12",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "chain": "ethereum",
-                "timestamp": "1729957601",
-            }
-        ),
-        PythonEx(
             parameters={
                 "provider": "defillama",
                 "chain": "ethereum",
@@ -119,35 +91,6 @@ async def block(
                 "search_width": "1W",
             }
         ),
-        PythonEx(parameters={"provider": "defillama", "token": "coingecko:ethereum"}),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "search_width": "1D",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "search_width": "4H",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "search_width": "4m",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "search_width": "1W",
-            }
-        ),
     ],
 )
 async def current(
@@ -164,7 +107,6 @@ async def current(
     model="CoinsFirst",
     examples=[
         APIEx(parameters={"provider": "defillama", "token": "coingecko:ethereum"}),
-        PythonEx(parameters={"provider": "defillama", "token": "coingecko:ethereum"}),
     ],
 )
 async def first(
@@ -205,39 +147,6 @@ async def first(
             }
         ),
         APIEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "timestamp": 1729957601,
-                "period": "24m",
-                "look_forward": True,
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "timestamp": "2024-01-01",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "timestamp": "2024-01-01T12:12:12",
-                "period": "1W",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "timestamp": "1729957601",
-                "period": "7D",
-                "look_forward": True,
-            }
-        ),
-        PythonEx(
             parameters={
                 "provider": "defillama",
                 "token": "coingecko:ethereum",
@@ -300,45 +209,6 @@ async def change(
                 "search_width": "1D",
             }
         ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "start_date": "2024-09-01",
-                "end_date": "2024-10-01",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "start_date": 1725129000,
-                "end_date": 1727721000,
-                "span": 100,
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "start_date": 1725129000,
-                "end_date": 1727721000,
-                "span": 100,
-                "period": "1D",
-                "search_width": "8h",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "start_date": 1725129000,
-                "end_date": 1727721000,
-                "span": 100,
-                "period": "1W",
-                "search_width": "1D",
-            }
-        ),
     ],
 )
 async def chart(
@@ -378,37 +248,6 @@ async def chart(
             }
         ),
         APIEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "timestamp": 1729957601,
-                "search_width": "4m",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "timestamp": "2024-01-01",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "timestamp": "2024-01-01T12:12:12",
-                "search_width": "1W",
-            }
-        ),
-        PythonEx(
-            parameters={
-                "provider": "defillama",
-                "token": "coingecko:ethereum",
-                "timestamp": "1729957601",
-                "search_width": "7D",
-            }
-        ),
-        PythonEx(
             parameters={
                 "provider": "defillama",
                 "token": "coingecko:ethereum",

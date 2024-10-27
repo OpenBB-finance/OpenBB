@@ -2,7 +2,7 @@
 """Crypto Revenue Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -23,10 +23,6 @@ router = Router(prefix="/revenue")
         APIEx(parameters={"provider": "defillama", "all": True}),
         APIEx(parameters={"provider": "defillama", "chain": "ethereum"}),
         APIEx(parameters={"provider": "defillama", "chain": "solana", "all": True}),
-        PythonEx(parameters={"provider": "defillama"}),
-        PythonEx(parameters={"provider": "defillama", "all": True}),
-        PythonEx(parameters={"provider": "defillama", "chain": "ethereum"}),
-        PythonEx(parameters={"provider": "defillama", "chain": "solana", "all": True}),
     ],
 )
 async def overview(
@@ -43,7 +39,6 @@ async def overview(
     model="RevenueSummary",
     examples=[
         APIEx(parameters={"provider": "defillama", "protocol": "litecoin"}),
-        PythonEx(parameters={"provider": "defillama", "protocol": "litecoin"}),
     ],
 )
 async def summary(
