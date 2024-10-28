@@ -49,35 +49,34 @@ class EiaShortTermEnergyOutlookQueryParams(ShortTermEnergyOutlookQueryParams):
     )
     table: SteoTableType = Field(
         default="01",
-        description="""The specific table within the STEO dataset. Default is '01'.
-        When 'symbol' is provided, this parameter is ignored.
-        \n    01: US Energy Markets Summary
-        \n    02: Nominal Energy Prices
-        \n    03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories
-        \n    03b: Non-OPEC Petroleum and Other Liquid Fuels Production
-        \n    03c: World Petroleum and Other Liquid Fuels Production
-        \n    03d: World Crude Oil Production
-        \n    03e: World Petroleum and Other Liquid Fuels Consumption
-        \n    04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories
-        \n    04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances
-        \n    04c: US Regional Motor Gasoline Prices and Inventories
-        \n    04d: US Biofuel Supply, Consumption, and Inventories
-        \n    05a: US Natural Gas Supply, Consumption, and Inventories
-        \n    05b: US Regional Natural Gas Prices
-        \n    06: US Coal Supply, Consumption, and Inventories
-        \n    07a: US Electricity Industry Overview
-        \n    07b: US Regional Electricity Retail Sales
-        \n    07c: US Regional Electricity Prices
-        \n    07d1: US Regional Electricity Generation, Electric Power Sector
-        \n    07d2: US Regional Electricity Generation, Electric Power Sector, continued
-        \n    07e: US Electricity Generating Capacity
-        \n    08: US Renewable Energy Consumption
-        \n    09a: US Macroeconomic Indicators and CO2 Emissions
-        \n    09b: US Regional Macroeconomic Data
-        \n    09c: US Regional Weather Data
-        \n    10a: Drilling Productivity Metrics
-        \n    10b: Crude Oil and Natural Gas Production from Shale and Tight Formations
-        """,
+        description="The specific table within the STEO dataset. Default is '01'."
+        + " When 'symbol' is provided, this parameter is ignored."
+        + "\n        01: US Energy Markets Summary"
+        + "\n        02: Nominal Energy Prices"
+        + "\n        03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories"
+        + "\n        03b: Non-OPEC Petroleum and Other Liquid Fuels Production"
+        + "\n        03c: World Petroleum and Other Liquid Fuels Production"
+        + "\n        03d: World Crude Oil Production"
+        + "\n        03e: World Petroleum and Other Liquid Fuels Consumption"
+        + "\n        04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories"
+        + "\n        04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances"
+        + "\n        04c: US Regional Motor Gasoline Prices and Inventories"
+        + "\n        04d: US Biofuel Supply, Consumption, and Inventories"
+        + "\n        05a: US Natural Gas Supply, Consumption, and Inventories"
+        + "\n        05b: US Regional Natural Gas Prices"
+        + "\n        06: US Coal Supply, Consumption, and Inventories"
+        + "\n        07a: US Electricity Industry Overview"
+        + "\n        07b: US Regional Electricity Retail Sales"
+        + "\n        07c: US Regional Electricity Prices"
+        + "\n        07d1: US Regional Electricity Generation, Electric Power Sector"
+        + "\n        07d2: US Regional Electricity Generation, Electric Power Sector, continued"
+        + "\n        07e: US Electricity Generating Capacity"
+        + "\n        08: US Renewable Energy Consumption"
+        + "\n        09a: US Macroeconomic Indicators and CO2 Emissions"
+        + "\n        09b: US Regional Macroeconomic Data"
+        + "\n        09c: US Regional Weather Data"
+        + "\n        10a: Drilling Productivity Metrics"
+        + "\n        10b: Crude Oil and Natural Gas Production from Shale and Tight Formations",
     )
     frequency: Literal["month", "quarter", "annual"] = Field(
         default="month",

@@ -71,8 +71,8 @@ WpsrTableType = Literal[
     "stocks",
     "supply",
     "supply_avg",
-    "ulta_low_sulfur_distillate_reflassification",
-    "ulta_low_sulfur_distillate_reflassification_avg",
+    "ulta_low_sulfur_distillate_reclassification",
+    "ulta_low_sulfur_distillate_reclassification_avg",
     "weekly",
 ]
 WpsrTableChoices = [
@@ -112,8 +112,8 @@ WpsrTableChoices = [
     "stocks",
     "supply",
     "supply_avg",
-    "ulta_low_sulfur_distillate_reflassification",
-    "ulta_low_sulfur_distillate_reflassification_avg",
+    "ulta_low_sulfur_distillate_reclassification",
+    "ulta_low_sulfur_distillate_reclassification_avg",
     "weekly",
 ]
 WpsrFileMap = {
@@ -176,7 +176,7 @@ WpsrTableMap = {
         "exports": "Data 8",
         "net_imports_incl_spr": "Data 9",
         "product_supplied": "Data 10",
-        "ulta_low_sulfur_distillate_reflassification": "Data 11",
+        "ulta_low_sulfur_distillate_reclassification": "Data 11",
         "crude_production_avg": "Data 12",
         "inputs_utilization_avg": "Data 13",
         "refiner_blender_net_production_avg": "Data 14",
@@ -186,7 +186,7 @@ WpsrTableMap = {
         "exports_avg": "Data 18",
         "net_imports_inc_spr_avg": "Data 19",
         "product_supplied_avg": "Data 20",
-        "ulta_low_sulfur_distillate_reflassification_avg": "Data 21",
+        "ulta_low_sulfur_distillate_reclassification_avg": "Data 21",
     },
     "spot_prices_crude_gas_heating": {
         "crude": "Data 1",

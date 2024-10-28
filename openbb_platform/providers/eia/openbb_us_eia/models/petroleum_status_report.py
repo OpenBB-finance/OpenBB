@@ -3,6 +3,7 @@
 # pylint: disable=unused-argument
 
 from typing import Any, Optional
+from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -17,9 +18,10 @@ from openbb_us_eia.utils.constants import (
     WpsrFileMap,
     WpsrTableChoices,
     WpsrTableMap,
-    WpsrTableType,
 )
 from pydantic import Field
+
+WpsrTableChoicesString = "\n        ".join(WpsrTableChoices)
 
 
 class EiaPetroleumStatusReportQueryParams(PetroleumStatusReportQueryParams):
@@ -34,7 +36,7 @@ class EiaPetroleumStatusReportQueryParams(PetroleumStatusReportQueryParams):
             "choices": WpsrCategoryChoices,
         },
         "table": {
-            "multiple_items_allowed": False,
+            "multiple_items_allowed": True,
             "choices": WpsrTableChoices,
         },
     }
@@ -43,12 +45,16 @@ class EiaPetroleumStatusReportQueryParams(PetroleumStatusReportQueryParams):
         default="balance_sheet",
         description="The group of data to be returned. The default is the balance sheet.",
     )
-    table: WpsrTableType = Field(
-        default="stocks",
-        description="The specific table element within the category to be returned, default is 'stocks'."
+    table: Optional[str] = Field(
+        default=None,
+        description="The specific table element within the category to be returned,"
+        + " default is 'stocks', if the category is 'weekly_estimates', else 'all'."
         + "\n    Note: Choices represent all available tables from the entire collection and are not all"
-        + " available for every category. Invalid choices will raise a ValidationError with a message"
-        + " indicating the valid choices for the selected category.",
+        + " available for every category."
+        + "\n    Invalid choices will raise a ValidationError with a message"
+        + " indicating the valid choices for the selected category."
+        + "\n    Choices are:"
+        + f"\n        {WpsrTableChoicesString}\n   ",
     )
     use_cache: bool = Field(
         default=True,
@@ -72,13 +78,33 @@ class EiaPetroleumStatusReportFetcher(
         """Transform the query parameters."""
         category = params.get("category", "balance_sheet")
         tables = WpsrTableMap.get(category, {})
-        table = params.get("table")
-        if table and table != "all" and table not in tables:
+        _table = params.get("table", "")
+
+        if not _table:
+            _table = "stocks" if category == "weekly_estimates" else "all"
+
+        _tables = _table.split(",")
+
+        if len(_tables) == 1 and _tables[0] == "all" and category == "weekly_estimates":
             raise OpenBBError(
                 ValueError(
-                    f"Invalid table choice: {table}. Valid choices: {list(tables)}"
+                    f"'all' is not a supported choice for {category}. Please choose from: {list(tables)}"
                 )
             )
+
+        if "all" in _tables and len(_tables) > 1:
+            _tables.remove("all")
+            warn("'all' cannot be used with other table choices. Ignoring 'all'.")
+
+        for table in _tables:
+            if table != "all" and table not in tables:
+                raise OpenBBError(
+                    ValueError(
+                        f"Invalid table choice: {table}. Valid choices for {category}: {list(tables)}"
+                    )
+                )
+
+        params["table"] = ",".join(_tables)
 
         return EiaPetroleumStatusReportQueryParams(**params)
 
@@ -109,16 +135,21 @@ class EiaPetroleumStatusReportFetcher(
     ) -> list[EiaPetroleumStatusReportData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
-        import re  # noqa
+        import concurrent.futures  # noqa
+        import re
+        from functools import lru_cache
         from warnings import warn
         from pandas import Categorical, ExcelFile, concat, read_excel
 
         category = query.category
-        tables = (
-            list(WpsrTableMap[category])
-            if query.table == "all" or not query.table
-            else [query.table]
+
+        _tables = (
+            query.table.split(",")  # type: ignore
+            if query.table
+            else ["stocks"] if category == "weekly_estimates" else ["all"]
         )
+        all_tables = list(WpsrTableMap[category])
+        tables = all_tables if "all" in _tables else _tables
 
         file = data.get("file")
 
@@ -139,6 +170,7 @@ class EiaPetroleumStatusReportFetcher(
 
             return re.sub(pattern, replacer, text)
 
+        @lru_cache(maxsize=128)
         def read_excel_file(file, category, table):
             """Read the ExcelFile for the sheet name and flatten the table."""
             sheet_name = WpsrTableMap[category][table]
@@ -184,8 +216,10 @@ class EiaPetroleumStatusReportFetcher(
                 warn(f"No data for table: {table}")
 
         try:
-            for table in tables:
-                read_excel_file(file, category, table)
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                executor.map(
+                    lambda table: read_excel_file(file, category, table), tables
+                )
 
             results = concat(dfs)
 
