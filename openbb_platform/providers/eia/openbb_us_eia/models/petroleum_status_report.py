@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument
 
 from typing import Any, Optional
-from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -76,6 +75,9 @@ class EiaPetroleumStatusReportFetcher(
     @staticmethod
     def transform_query(params: dict[str, Any]) -> EiaPetroleumStatusReportQueryParams:
         """Transform the query parameters."""
+        # pylint: disable=import-outside-toplevel
+        from warnings import warn
+
         category = params.get("category", "balance_sheet")
         tables = WpsrTableMap.get(category, {})
         _table = params.get("table", "")
@@ -138,8 +140,9 @@ class EiaPetroleumStatusReportFetcher(
         import concurrent.futures  # noqa
         import re
         from functools import lru_cache
-        from warnings import warn
+        from numpy import nan
         from pandas import Categorical, ExcelFile, concat, read_excel
+        from warnings import warn
 
         category = query.category
 
@@ -226,7 +229,9 @@ class EiaPetroleumStatusReportFetcher(
             if len(results) < 1:
                 raise EmptyDataError("The data is empty.")
 
-            results = results.sort_values(by=["date", "table", "order"])
+            results = results.sort_values(by=["date", "table", "order"]).replace(
+                {nan: None}
+            )
 
             return [
                 EiaPetroleumStatusReportData.model_validate(d)
