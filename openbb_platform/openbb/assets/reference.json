@@ -1,40 +1,40 @@
 {
-    "openbb": "4.3.3",
+    "openbb": "4.3.4",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.4",
+        "core": "1.3.5",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.2.3",
-                "crypto@1.3.3",
-                "currency@1.3.3",
-                "derivatives@1.3.3",
-                "economy@1.3.3",
-                "equity@1.3.3",
-                "etf@1.3.3",
-                "fixedincome@1.3.3",
-                "index@1.3.3",
-                "news@1.3.3",
-                "regulators@1.3.3"
+                "commodity@1.2.5",
+                "crypto@1.3.4",
+                "currency@1.3.4",
+                "derivatives@1.3.4",
+                "economy@1.3.4",
+                "equity@1.3.4",
+                "etf@1.3.4",
+                "fixedincome@1.3.4",
+                "index@1.3.4",
+                "news@1.3.4",
+                "regulators@1.3.4"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.3.3",
-                "bls@1.0.1",
-                "cftc@1.0.1",
-                "econdb@1.2.3",
-                "federal_reserve@1.3.3",
-                "fmp@1.3.3",
-                "fred@1.3.3",
-                "imf@1.0.0",
-                "intrinio@1.3.3",
-                "oecd@1.3.3",
-                "polygon@1.3.3",
-                "sec@1.3.3",
-                "tiingo@1.3.3",
-                "tradingeconomics@1.3.3",
+                "benzinga@1.3.4",
+                "bls@1.0.2",
+                "cftc@1.0.2",
+                "econdb@1.2.4",
+                "federal_reserve@1.3.4",
+                "fmp@1.3.4",
+                "fred@1.3.4",
+                "imf@1.0.1",
+                "intrinio@1.3.4",
+                "oecd@1.3.4",
+                "polygon@1.3.4",
+                "sec@1.3.4",
+                "tiingo@1.3.4",
+                "tradingeconomics@1.3.4",
                 "us_eia@1.0.0b0",
-                "yfinance@1.3.4"
+                "yfinance@1.3.5"
             ],
             "openbb_obbject_extension": []
         }
@@ -675,7 +675,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '7d', '30d'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -684,15 +684,19 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "7d",
+                            "30d"
                         ]
                     },
                     {
                         "name": "exchanges",
-                        "type": "List[str]",
-                        "description": "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX']",
+                        "type": "Union[Union[list[str], str], List[Union[list[str], str]]]",
+                        "description": "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] Multiple items allowed for provider(s): tiingo.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -1047,7 +1051,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '5d', '21d'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -1056,9 +1060,13 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "5d",
+                            "21d"
                         ]
                     }
                 ],
@@ -12108,7 +12116,19 @@
                         "description": "Filter by a specific action_company.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "downgrades",
+                            "maintains",
+                            "reinstates",
+                            "reiterates",
+                            "upgrades",
+                            "assumes",
+                            "initiates",
+                            "terminates",
+                            "removes",
+                            "suspends",
+                            "firm_dissolved"
+                        ]
                     },
                     {
                         "name": "analyst_ids",
@@ -27671,7 +27691,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1d', '1W', '1M', '1Y']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -27680,9 +27700,14 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "1W",
+                            "1M",
+                            "1Y"
                         ]
                     }
                 ],
@@ -30386,7 +30411,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1d', '1W', '1M', '1Y']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -30395,9 +30420,14 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "1W",
+                            "1M",
+                            "1Y"
                         ]
                     }
                 ],
@@ -37955,8 +37985,8 @@
                     },
                     {
                         "name": "source",
-                        "type": "str",
-                        "description": "A comma-separated list of the domains requested.",
+                        "type": "Union[str, List[str]]",
+                        "description": "A comma-separated list of the domains requested. Multiple items allowed for provider(s): tiingo.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -38511,8 +38541,8 @@
                     },
                     {
                         "name": "source",
-                        "type": "str",
-                        "description": "A comma-separated list of the domains requested.",
+                        "type": "Union[str, List[str]]",
+                        "description": "A comma-separated list of the domains requested. Multiple items allowed for provider(s): tiingo.",
                         "default": null,
                         "optional": true,
                         "choices": null

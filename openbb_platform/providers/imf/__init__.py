@@ -1,1 +1,1 @@
-"""OpenBB IMF Provider Extension."""
+"""IMF Provoider Extension."""

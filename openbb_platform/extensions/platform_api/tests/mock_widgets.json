@@ -943,7 +943,7 @@
                     {
                         "field": "element_id",
                         "formatterFn": null,
-                        "headerName": "Element Id",
+                        "headerName": "Element ID",
                         "description": "The element id in the parent/child relationship.",
                         "cellDataType": "text",
                         "chartDataType": "category"
@@ -951,7 +951,7 @@
                     {
                         "field": "parent_id",
                         "formatterFn": null,
-                        "headerName": "Parent Id",
+                        "headerName": "Parent ID",
                         "description": "The parent id in the parent/child relationship.",
                         "cellDataType": "text",
                         "chartDataType": "category"
@@ -1569,7 +1569,7 @@
                     {
                         "field": "balance_percent_of_gdp",
                         "formatterFn": "normalizedPercent",
-                        "headerName": "Balance Percent Of Gdp",
+                        "headerName": "Balance Percent Of GDP",
                         "description": "Current Account Balance as Percent of GDP",
                         "cellDataType": "number",
                         "chartDataType": "series",
@@ -1850,7 +1850,7 @@
                 "columnsDefs": [
                     {
                         "field": "release_id",
-                        "headerName": "Release Id",
+                        "headerName": "Release ID",
                         "description": "The release ID for queries.",
                         "cellDataType": "number",
                         "chartDataType": "series"
@@ -1859,7 +1859,7 @@
                         "field": "series_id",
                         "pinned": "left",
                         "formatterFn": null,
-                        "headerName": "Series Id",
+                        "headerName": "Series ID",
                         "description": "The series ID for the item in the release.",
                         "cellDataType": "text",
                         "chartDataType": "category"
@@ -2523,7 +2523,7 @@
                     {
                         "field": "element_id",
                         "formatterFn": null,
-                        "headerName": "Element Id",
+                        "headerName": "Element ID",
                         "description": "The element id in the parent/child relationship.",
                         "cellDataType": "text",
                         "chartDataType": "category"
@@ -2531,7 +2531,7 @@
                     {
                         "field": "parent_id",
                         "formatterFn": null,
-                        "headerName": "Parent Id",
+                        "headerName": "Parent ID",
                         "description": "The parent id in the parent/child relationship.",
                         "cellDataType": "text",
                         "chartDataType": "category"
@@ -2885,7 +2885,7 @@
                         "field": "series_id",
                         "pinned": "left",
                         "formatterFn": null,
-                        "headerName": "Series Id",
+                        "headerName": "Series ID",
                         "description": "The individual series ID for the region.",
                         "cellDataType": "text",
                         "chartDataType": "category"
@@ -3213,7 +3213,7 @@
                     {
                         "field": "element_id",
                         "formatterFn": null,
-                        "headerName": "Element Id",
+                        "headerName": "Element ID",
                         "description": "The element id in the parent/child relationship.",
                         "cellDataType": "text",
                         "chartDataType": "category"
@@ -3221,7 +3221,7 @@
                     {
                         "field": "parent_id",
                         "formatterFn": null,
-                        "headerName": "Parent Id",
+                        "headerName": "Parent ID",
                         "description": "The parent id in the parent/child relationship.",
                         "cellDataType": "text",
                         "chartDataType": "category"
@@ -3352,7 +3352,7 @@
                     },
                     {
                         "field": "cik_number",
-                        "headerName": "Cik Number",
+                        "headerName": "CIK Number",
                         "description": "Central Index Key (CIK)",
                         "cellDataType": "number",
                         "chartDataType": "series"
@@ -3519,7 +3519,7 @@
                     {
                         "field": "id",
                         "formatterFn": null,
-                        "headerName": "Id",
+                        "headerName": "ID",
                         "description": "The identifier associated with the release.",
                         "cellDataType": "text",
                         "chartDataType": "category"
@@ -3583,7 +3583,7 @@
                 "columnsDefs": [
                     {
                         "field": "sic_code",
-                        "headerName": "Sic Code",
+                        "headerName": "SIC Code",
                         "description": "Sector Industrial Code (SIC)",
                         "cellDataType": "number",
                         "chartDataType": "series"
