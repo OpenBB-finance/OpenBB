@@ -136,14 +136,15 @@ class TiingoCryptoHistoricalFetcher(
 
         base_url = "https://api.tiingo.com/tiingo/crypto/prices"
         query_str = get_querystring(query.model_dump(by_alias=True), ["interval"])
-        frequency = query.interval
 
-        if frequency.endswith("m"):
-            frequency = f"{frequency[:-1]}min"
-        elif frequency == "h":
-            frequency = f"{frequency[:-1]}hour"
-        elif frequency.endswith("d"):
-            frequency = f"{frequency[:-1]}day"
+        if query.interval.endswith("m"):
+            frequency = f"{query.interval[:-1]}min"
+        elif query.interval.endswith("h"):
+            frequency = f"{query.interval[:-1]}hour"
+        elif query.interval.endswith("d"):
+            frequency = f"{query.interval[:-1]}day"
+        else:
+            frequency = "1day"
 
         results: list = []
         url = f"{base_url}?{query_str}&resampleFreq={frequency}&token={api_key}"
