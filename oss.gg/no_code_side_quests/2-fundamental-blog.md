@@ -24,4 +24,7 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Blog Post: https://medium.com/...
 
+» 28-October-2024 by AshishViradiya153
+» Link to Blog Post: https://medium.com/@ashishviradiya153/unlocking-fundamental-analysis-in-stock-markets-with-openbb-4eb1fe14b873
+
 ---

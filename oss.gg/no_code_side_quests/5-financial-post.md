@@ -24,4 +24,7 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Article: https://medium.com/...
 
+» 01-October-2024 by AshishViradiya153
+» Link to Article: https://medium.com/@ashishviradiya153/openbb-vs-proprietary-financial-tools-the-open-source-advantage-for-data-driven-finance-bf9d029a324c
+
 ---
