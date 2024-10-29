@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-currency"
-version = "1.3.3"
+version = "1.3.4"
 description = "Currency extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_currency" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openbb-core = "^1.3.4"
+openbb-core = "^1.3.5"
 
 [build-system]
 requires = ["poetry-core"]

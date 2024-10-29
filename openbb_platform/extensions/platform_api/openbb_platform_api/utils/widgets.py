@@ -2,46 +2,6 @@
 
 from copy import deepcopy
 
-TO_CAPS_STRINGS = [
-    "Pe",
-    "Sloos",
-    "Eps",
-    "Ebitda",
-    "Otc",
-    "Cpi",
-    "Pce",
-    "Gdp",
-    "Lbma",
-    "Ipo",
-    "Nbbo",
-    "Ameribor",
-    "Sonia",
-    "Effr",
-    "Sofr",
-    "Iorb",
-    "Estr",
-    "Ecb",
-    "Dpcredit",
-    "Tcm",
-    "Us",
-    "Ice",
-    "Bofa",
-    "Hqm",
-    "Sp500",
-    "Sec",
-    "Cftc",
-    "Cot",
-    "Etf",
-    "Eu",
-    "Tips",
-    "Rss",
-    "Sic",
-    "Cik",
-    "Bls",
-    "Fred",
-    "Cusip",
-]
-
 
 def modify_query_schema(query_schema: list[dict], provider_value: str):
     """Modify query_schema and the description for the current provider."""
@@ -103,7 +63,11 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
 def build_json(openapi: dict, widget_exclude_filter: list):
     """Build the widgets.json file."""
     # pylint: disable=import-outside-toplevel
-    from .openapi import data_schema_to_columns_defs, get_query_schema_for_widget
+    from .openapi import (
+        TO_CAPS_STRINGS,
+        data_schema_to_columns_defs,
+        get_query_schema_for_widget,
+    )
 
     if not openapi:
         return {}
