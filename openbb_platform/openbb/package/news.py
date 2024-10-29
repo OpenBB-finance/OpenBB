@@ -96,7 +96,7 @@ class ROUTER_news(Container):
             Page number of the results. Use in combination with limit. (provider: fmp)
         source : Optional[Union[Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases'], str]]
             The source of the news article. (provider: intrinio);
-            A comma-separated list of the domains requested. (provider: tiingo)
+            A comma-separated list of the domains requested. Multiple comma separated items allowed. (provider: tiingo)
         sentiment : Optional[Literal['positive', 'neutral', 'negative']]
             Return news only from this source. (provider: intrinio)
         language : Optional[str]
@@ -256,7 +256,8 @@ class ROUTER_news(Container):
                                 "moody_us_news",
                                 "moody_us_press_releases",
                             ],
-                        }
+                        },
+                        "tiingo": {"multiple_items_allowed": True, "choices": None},
                     },
                     "sentiment": {
                         "intrinio": {
@@ -332,7 +333,7 @@ class ROUTER_news(Container):
             Content types of the news to retrieve. (provider: benzinga)
         source : Optional[Union[Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases'], str]]
             The source of the news article. (provider: intrinio);
-            A comma-separated list of the domains requested. (provider: tiingo)
+            A comma-separated list of the domains requested. Multiple comma separated items allowed. (provider: tiingo)
         sentiment : Optional[Literal['positive', 'neutral', 'negative']]
             Return news only from this source. (provider: intrinio)
         language : Optional[str]
@@ -456,5 +457,10 @@ class ROUTER_news(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={
+                    "source": {
+                        "tiingo": {"multiple_items_allowed": True, "choices": None}
+                    }
+                },
             )
         )
