@@ -24,4 +24,6 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Article: https://medium.com/...
 
+» 30-October-2024 by aditya deshlahre » Link to Article: [artical](https://dev.to/adityadeshlahre/redefining-financial-analysis-with-openbb-the-power-of-open-source-versus-proprietary-tools-2j2p)
+
 ---
