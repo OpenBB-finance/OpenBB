@@ -24,4 +24,8 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Article: https://medium.com/...
 
+
+» 30-October-2024 by Adil Kadivala
+» Link to Article: https://dev.to/k-adi/financial-freedom-through-open-source-openbb-vs-proprietary-tools-2l6j
+
 ---
