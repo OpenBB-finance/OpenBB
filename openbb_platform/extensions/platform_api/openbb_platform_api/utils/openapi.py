@@ -2,6 +2,52 @@
 
 from openbb_core.provider.utils.helpers import to_snake_case
 
+TO_CAPS_STRINGS = [
+    "Pe",
+    "Peg",
+    "Sloos",
+    "Eps",
+    "Ebit",
+    "Ebitda",
+    "Otc",
+    "Cpi",
+    "Pce",
+    "Gdp",
+    "Lbma",
+    "Ipo",
+    "Nbbo",
+    "Ameribor",
+    "Sonia",
+    "Effr",
+    "Sofr",
+    "Iorb",
+    "Estr",
+    "Ecb",
+    "Dpcredit",
+    "Tcm",
+    "Us",
+    "Ice",
+    "Bofa",
+    "Hqm",
+    "Sp500",
+    "Sec",
+    "Cftc",
+    "Cot",
+    "Etf",
+    "Eu",
+    "Tips",
+    "Rss",
+    "Sic",
+    "Cik",
+    "Bls",
+    "Fred",
+    "Cusip",
+    "Ttm",
+    "Id",
+    "Ytd",
+    "Yoy",
+]
+
 
 def extract_providers(params: list[dict]) -> list[str]:
     """
@@ -319,6 +365,7 @@ def get_data_schema_for_widget(openapi_json, operation_id):
 
 def data_schema_to_columns_defs(openapi_json, operation_id, provider):
     """Convert data schema to column definitions for the widget."""
+
     # Initialize an empty list to hold the schema references
     schema_refs: list = []
 
@@ -420,7 +467,13 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
             column_def["pinned"] = "left"
 
         column_def["formatterFn"] = formatterFn
-        column_def["headerName"] = prop.get("title", key.title())
+        header_name = prop.get("title", key.title())
+        column_def["headerName"] = " ".join(
+            [
+                (word.upper() if word in TO_CAPS_STRINGS else word)
+                for word in header_name.split(" ")
+            ]
+        )
         column_def["description"] = prop.get(
             "description", prop.get("title", key.title())
         )
@@ -448,6 +501,10 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
             column_def["headerName"] = (
                 column_def["headerName"].upper() if k != "symbol" else "Symbol"
             )
+
+        if k in ["fiscal_year", "year"]:
+            column_def["cellDataType"] = "number"
+            column_def["formatterFn"] = "none"
 
         column_defs.append(column_def)
 

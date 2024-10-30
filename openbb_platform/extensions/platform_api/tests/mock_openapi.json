@@ -2000,7 +2000,7 @@
                 }
               ],
               "description": "The element ID of a specific table in the release.",
-              "title": "Element Id"
+              "title": "Element ID"
             },
             "description": "The element ID of a specific table in the release."
           },
