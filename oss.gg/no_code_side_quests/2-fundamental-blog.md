@@ -24,4 +24,7 @@ Your turn 👇
 » 01-October-2024 by YOUR NAME
 » Link to Blog Post: https://medium.com/...
 
+» 31-October-2024 by adityadeshlahre
+» Link to Blog Post: [article](https://dev.to/adityadeshlahre/streamlining-research-and-analysis-with-openbb-209h)
+
 ---
