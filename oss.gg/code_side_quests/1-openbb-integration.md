@@ -26,4 +26,8 @@ Your turn 👇
 » Link to Video: https://www.loom.com/share/3f422d3c44994e67961d1006053da8f9?sid=3726fa29-fcd4-4825-b806-6ade2ee2bcee
 » Link to Repo: https://github.com/Yash-1511/openbb-dashboard
 
+» 31-October-2024 by Sahil Bodke
+» Link to Video: https://www.loom.com/share/10ba203cb08e442b8e90334bae04a393?sid=cfb65e0c-bf5b-4f30-8a15-33be5084e21f
+» Link to Repo: https://github.com/SahiLmb/OpenBB
+
 ---
