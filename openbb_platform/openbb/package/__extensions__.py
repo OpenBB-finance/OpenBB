@@ -47,6 +47,7 @@ Extensions:
     - sec@1.3.4
     - tiingo@1.3.4
     - tradingeconomics@1.3.4
+    - us_eia@1.0.0b0
     - yfinance@1.3.5    """
     # fmt: on
 
