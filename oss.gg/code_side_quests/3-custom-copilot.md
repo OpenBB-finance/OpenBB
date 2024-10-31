@@ -22,8 +22,8 @@ Your turn 👇
 
 ////////////////////////////
 
-» 01-October-2024 by YOUR NAME
-» Link to Video: https://youtube.com/...
-» Link to Repo: https://github.com/...
+» 31-October-2024 by Jesse-Paul Osemeke
+» Link to Video: [https://youtube.com/...](https://youtu.be/oGvGeFXmWoY)
+» Link to Repo: [https://github.com/...](https://github.com/FloatinggOnion/openbb-terminal-copilot)
 
 ---
