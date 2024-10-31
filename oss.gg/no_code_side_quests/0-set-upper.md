@@ -35,4 +35,7 @@ Your turn 👇
 » 12-October-2024 by Aritra Sadhukhan
 » Link to Video: https://www.loom.com/share/91a9bf88a1c74d9daa0a5cd26a710159?sid=cadceda1-d434-4f2f-b300-e822e6bb24c1
 
+» 26-October-2024 by Zia Ur Rehman (Khaan25)
+» Link to Video: https://www.youtube.com/watch?v=7RMp9Pxwixs
+
 ---
