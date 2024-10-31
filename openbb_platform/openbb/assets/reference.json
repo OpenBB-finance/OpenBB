@@ -1,39 +1,40 @@
 {
-    "openbb": "4.3.3",
+    "openbb": "4.3.4",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.4",
+        "core": "1.3.5",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.2.3",
-                "crypto@1.3.3",
-                "currency@1.3.3",
-                "derivatives@1.3.3",
-                "economy@1.3.3",
-                "equity@1.3.3",
-                "etf@1.3.3",
-                "fixedincome@1.3.3",
-                "index@1.3.3",
-                "news@1.3.3",
-                "regulators@1.3.3"
+                "commodity@1.2.5",
+                "crypto@1.3.4",
+                "currency@1.3.4",
+                "derivatives@1.3.4",
+                "economy@1.3.4",
+                "equity@1.3.4",
+                "etf@1.3.4",
+                "fixedincome@1.3.4",
+                "index@1.3.4",
+                "news@1.3.4",
+                "regulators@1.3.4"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.3.3",
-                "bls@1.0.1",
-                "cftc@1.0.1",
-                "econdb@1.2.3",
-                "federal_reserve@1.3.3",
-                "fmp@1.3.3",
-                "fred@1.3.3",
-                "imf@1.0.0",
-                "intrinio@1.3.3",
-                "oecd@1.3.3",
-                "polygon@1.3.3",
-                "sec@1.3.3",
-                "tiingo@1.3.3",
-                "tradingeconomics@1.3.3",
-                "yfinance@1.3.4"
+                "benzinga@1.3.4",
+                "bls@1.0.2",
+                "cftc@1.0.2",
+                "econdb@1.2.4",
+                "federal_reserve@1.3.4",
+                "fmp@1.3.4",
+                "fred@1.3.4",
+                "imf@1.0.1",
+                "intrinio@1.3.4",
+                "oecd@1.3.4",
+                "polygon@1.3.4",
+                "sec@1.3.4",
+                "tiingo@1.3.4",
+                "tradingeconomics@1.3.4",
+                "us_eia@1.0.0b0",
+                "yfinance@1.3.5"
             ],
             "openbb_obbject_extension": []
         }
@@ -218,6 +219,381 @@
             },
             "model": "CommoditySpotPrices"
         },
+        "/commodity/petroleum_status_report": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "EIA Weekly Petroleum Status Report.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the EIA's Weekly Petroleum Status Report.\nobb.commodity.petroleum_status_report(provider='eia')\n# Select the category of data, and filter for a specific table within the report.\nobb.commodity.petroleum_status_report(category=weekly_estimates, table=imports, provider='eia')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": [
+                    {
+                        "name": "category",
+                        "type": "Literal['balance_sheet', 'inputs_and_production', 'refiner_blender_net_production', 'crude_petroleum_stocks', 'gasoline_fuel_stocks', 'total_gasoline_by_sub_padd', 'distillate_fuel_oil_stocks', 'imports', 'imports_by_country', 'weekly_estimates', 'spot_prices_crude_gas_heating', 'spot_prices_diesel_jet_fuel_propane', 'retail_prices']",
+                        "description": "The group of data to be returned. The default is the balance sheet.",
+                        "default": "balance_sheet",
+                        "optional": true,
+                        "choices": [
+                            "balance_sheet",
+                            "inputs_and_production",
+                            "refiner_blender_net_production",
+                            "crude_petroleum_stocks",
+                            "gasoline_fuel_stocks",
+                            "total_gasoline_by_sub_padd",
+                            "distillate_fuel_oil_stocks",
+                            "imports",
+                            "imports_by_country",
+                            "weekly_estimates",
+                            "spot_prices_crude_gas_heating",
+                            "spot_prices_diesel_jet_fuel_propane",
+                            "retail_prices"
+                        ]
+                    },
+                    {
+                        "name": "table",
+                        "type": "Union[str, List[str]]",
+                        "description": "The specific table element within the category to be returned, default is 'stocks', if the category is 'weekly_estimates', else 'all'.\n    Note: Choices represent all available tables from the entire collection and are not all available for every category.\n    Invalid choices will raise a ValidationError with a message indicating the valid choices for the selected category.\n    Choices are:\n        all\n        conventional_gas\n        crude\n        crude_production\n        crude_production_avg\n        diesel\n        ethanol_plant_production\n        ethanol_plant_production_avg\n        exports\n        exports_avg\n        heating_oil\n        imports\n        imports_avg\n        imports_by_country\n        imports_by_country_avg\n        inputs_and_utilization\n        inputs_and_utilization_avg\n        jet_fuel\n        monthly\n        net_imports_inc_spr_avg\n        net_imports_incl_spr\n        net_production\n        net_production_avg\n        net_production_by_product\n        net_production_by_production_avg\n        product_by_region\n        product_by_region_avg\n        product_supplied\n        product_supplied_avg\n        propane\n        rbob\n        refiner_blender_net_production\n        refiner_blender_net_production_avg\n        stocks\n        supply\n        supply_avg\n        ulta_low_sulfur_distillate_reclassification\n        ulta_low_sulfur_distillate_reclassification_avg\n        weekly Multiple items allowed for provider(s): eia.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "conventional_gas",
+                            "crude",
+                            "crude_production",
+                            "crude_production_avg",
+                            "diesel",
+                            "ethanol_plant_production",
+                            "ethanol_plant_production_avg",
+                            "exports",
+                            "exports_avg",
+                            "heating_oil",
+                            "imports",
+                            "imports_avg",
+                            "imports_by_country",
+                            "imports_by_country_avg",
+                            "inputs_and_utilization",
+                            "inputs_and_utilization_avg",
+                            "jet_fuel",
+                            "monthly",
+                            "net_imports_inc_spr_avg",
+                            "net_imports_incl_spr",
+                            "net_production",
+                            "net_production_avg",
+                            "net_production_by_product",
+                            "net_production_by_production_avg",
+                            "product_by_region",
+                            "product_by_region_avg",
+                            "product_supplied",
+                            "product_supplied_avg",
+                            "propane",
+                            "rbob",
+                            "refiner_blender_net_production",
+                            "refiner_blender_net_production_avg",
+                            "stocks",
+                            "supply",
+                            "supply_avg",
+                            "ulta_low_sulfur_distillate_reclassification",
+                            "ulta_low_sulfur_distillate_reclassification_avg",
+                            "weekly"
+                        ]
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Subsequent requests for the same source data are cached for the session using ALRU cache.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[PetroleumStatusReport]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['eia']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "table",
+                        "type": "str",
+                        "description": "Table name for the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "order",
+                        "type": "int",
+                        "description": "Presented order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Value of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "Unit or scale of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": []
+            },
+            "model": "PetroleumStatusReport"
+        },
+        "/commodity/short_term_energy_outlook": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Monthly short term (18 month) projections using EIA's STEO model.\n\nSource: www.eia.gov/steo/",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the EIA's Short Term Energy Outlook.\nobb.commodity.short_term_energy_outlook(provider='eia')\n# Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.\nobb.commodity.short_term_energy_outlook(table=03d, provider='eia')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. If provided, overrides the 'table' parameter to return only the specified symbol from the STEO API. Multiple items allowed for provider(s): eia.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "table",
+                        "type": "Literal['01', '02', '03a', '03b', '03c', '03d', '03e', '04a', '04b', '04c', '04d', '05a', '05b', '06', '07a', '07b', '07c', '07d1', '07d2', '07e', '08', '09a', '09b', '09c', '10a', '10b']",
+                        "description": "The specific table within the STEO dataset. Default is '01'. When 'symbol' is provided, this parameter is ignored.\n        01: US Energy Markets Summary\n        02: Nominal Energy Prices\n        03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories\n        03b: Non-OPEC Petroleum and Other Liquid Fuels Production\n        03c: World Petroleum and Other Liquid Fuels Production\n        03d: World Crude Oil Production\n        03e: World Petroleum and Other Liquid Fuels Consumption\n        04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories\n        04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances\n        04c: US Regional Motor Gasoline Prices and Inventories\n        04d: US Biofuel Supply, Consumption, and Inventories\n        05a: US Natural Gas Supply, Consumption, and Inventories\n        05b: US Regional Natural Gas Prices\n        06: US Coal Supply, Consumption, and Inventories\n        07a: US Electricity Industry Overview\n        07b: US Regional Electricity Retail Sales\n        07c: US Regional Electricity Prices\n        07d1: US Regional Electricity Generation, Electric Power Sector\n        07d2: US Regional Electricity Generation, Electric Power Sector, continued\n        07e: US Electricity Generating Capacity\n        08: US Renewable Energy Consumption\n        09a: US Macroeconomic Indicators and CO2 Emissions\n        09b: US Regional Macroeconomic Data\n        09c: US Regional Weather Data\n        10a: Drilling Productivity Metrics\n        10b: Crude Oil and Natural Gas Production from Shale and Tight Formations",
+                        "default": "01",
+                        "optional": true,
+                        "choices": [
+                            "01",
+                            "02",
+                            "03a",
+                            "03b",
+                            "03c",
+                            "03d",
+                            "03e",
+                            "04a",
+                            "04b",
+                            "04c",
+                            "04d",
+                            "05a",
+                            "05b",
+                            "06",
+                            "07a",
+                            "07b",
+                            "07c",
+                            "07d1",
+                            "07d2",
+                            "07e",
+                            "08",
+                            "09a",
+                            "09b",
+                            "09c",
+                            "10a",
+                            "10b"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['month', 'quarter', 'annual']",
+                        "description": "The frequency of the data. Default is 'month'.",
+                        "default": "month",
+                        "optional": true,
+                        "choices": [
+                            "month",
+                            "quarter",
+                            "annual"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ShortTermEnergyOutlook]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['eia']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "table",
+                        "type": "str",
+                        "description": "Table name for the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "order",
+                        "type": "int",
+                        "description": "Presented order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "Value of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "Unit or scale of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "eia": []
+            },
+            "model": "ShortTermEnergyOutlook"
+        },
         "/crypto/price/historical": {
             "deprecated": {
                 "flag": null,
@@ -299,7 +675,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '7d', '30d'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -308,15 +684,19 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "7d",
+                            "30d"
                         ]
                     },
                     {
                         "name": "exchanges",
-                        "type": "List[str]",
-                        "description": "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX']",
+                        "type": "Union[Union[list[str], str], List[Union[list[str], str]]]",
+                        "description": "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] Multiple items allowed for provider(s): tiingo.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -671,7 +1051,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '5d', '21d'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -680,9 +1060,13 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "5d",
+                            "21d"
                         ]
                     }
                 ],
@@ -11732,7 +12116,19 @@
                         "description": "Filter by a specific action_company.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "downgrades",
+                            "maintains",
+                            "reinstates",
+                            "reiterates",
+                            "upgrades",
+                            "assumes",
+                            "initiates",
+                            "terminates",
+                            "removes",
+                            "suspends",
+                            "firm_dissolved"
+                        ]
                     },
                     {
                         "name": "analyst_ids",
@@ -27295,7 +27691,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1d', '1W', '1M', '1Y']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -27304,9 +27700,14 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "1W",
+                            "1M",
+                            "1Y"
                         ]
                     }
                 ],
@@ -30010,7 +30411,7 @@
                 "tiingo": [
                     {
                         "name": "interval",
-                        "type": "Literal['1d', '1W', '1M', '1Y']",
+                        "type": "Union[Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], str]",
                         "description": "Time interval of the data to return.",
                         "default": "1d",
                         "optional": true,
@@ -30019,9 +30420,14 @@
                             "5m",
                             "15m",
                             "30m",
+                            "90m",
                             "1h",
+                            "2h",
                             "4h",
-                            "1d"
+                            "1d",
+                            "1W",
+                            "1M",
+                            "1Y"
                         ]
                     }
                 ],
@@ -37579,8 +37985,8 @@
                     },
                     {
                         "name": "source",
-                        "type": "str",
-                        "description": "A comma-separated list of the domains requested.",
+                        "type": "Union[str, List[str]]",
+                        "description": "A comma-separated list of the domains requested. Multiple items allowed for provider(s): tiingo.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -38135,8 +38541,8 @@
                     },
                     {
                         "name": "source",
-                        "type": "str",
-                        "description": "A comma-separated list of the domains requested.",
+                        "type": "Union[str, List[str]]",
+                        "description": "A comma-separated list of the domains requested. Multiple items allowed for provider(s): tiingo.",
                         "default": null,
                         "optional": true,
                         "choices": null
