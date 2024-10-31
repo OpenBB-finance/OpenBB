@@ -21,7 +21,11 @@ Your turn 👇
 
 ////////////////////////////
 
-» 01-October-2024 by YOUR NAME
-» Link to Article: https://medium.com/...
+» 28-October-2024 by [Atharva Deshmukh](https://oss.gg/Atharva-3000)
+» Link to Article [HERE](https://dev.to/atharva3000/openbb-vs-proprietary-tools-why-open-source-is-the-future-of-financial-analysis-391a)
+
+
+» 30-October-2024 by Adil Kadivala
+» Link to Article: https://dev.to/k-adi/financial-freedom-through-open-source-openbb-vs-proprietary-tools-2l6j
 
 ---
