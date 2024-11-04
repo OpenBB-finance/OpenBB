@@ -202,11 +202,14 @@ class IntrinioOptionsChainsFetcher(
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta  # noqa
         from openbb_core.provider.utils.helpers import (
-            ClientResponse,
             amake_requests,
             get_querystring,
         )
-        from openbb_intrinio.utils.helpers import get_data_many, get_weekday
+        from openbb_intrinio.utils.helpers import (
+            get_data_many,
+            get_weekday,
+            response_callback,
+        )
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -268,9 +271,9 @@ class IntrinioOptionsChainsFetcher(
 
             return [generate_url(expiration) for expiration in expirations]
 
-        async def callback(response: ClientResponse, _: Any) -> List:
+        async def callback(response, _) -> list:
             """Return the response."""
-            response_data = await response.json()
+            response_data = await response_callback(response, _)
             return response_data.get("chain", [])  # type: ignore
 
         results = await amake_requests(
