@@ -16,7 +16,7 @@ from openbb_core.provider.standard_models.options_chains import (
 from openbb_core.provider.utils.errors import OpenBBError
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
 
 class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -34,7 +34,10 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
         "oi_lt": "open_interest_less_than",
         "option_type": "type",
     }
-
+    delay: Literal["eod", "realtime", "delayed"] = Field(
+        description="Whether to return delayed, realtime, or eod data.",
+        default="eod",
+    )
     date: Optional[dateType] = Field(
         default=None, description="The end-of-day date for options chains data."
     )
@@ -94,6 +97,14 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
         description="Include related symbols that end in a 1 or 2 because of a corporate action,"
         + " default is False.",
     )
+
+    @model_validator(mode="after")
+    @classmethod
+    def date_not_allowed_with_realtime(cls, values: Any) -> Any:
+        """Return an error if the date is supplied when delay is realtime."""
+        if values.delay != "eod" and values.date:
+            warn("Date is ignored when accessing realtime or delayed data.")
+        return values
 
 
 class IntrinioOptionsChainsData(OptionsChainsData):
@@ -190,8 +201,10 @@ class IntrinioOptionsChainsFetcher(
                 "%Y-%m-%d"
             )
             url = (
-                f"{base_url}/expirations/{query.symbol}/eod?"
-                f"after={date}&api_key={api_key}"
+                f"{base_url}/expirations/{query.symbol}/"
+                f"{'eod' if query.delay == 'eod' else 'realtime'}?"
+                f"{'after=' + date + '&' if query.delay == 'eod' else 'source=' + query.delay + '&'}"
+                f"api_key={api_key}"
             )
             expirations = await get_data_many(url, "expirations", **kwargs)
 
