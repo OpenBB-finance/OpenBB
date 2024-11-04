@@ -1079,6 +1079,24 @@ class ROUTER_equity_estimates(Container):
                         "benzinga": {"multiple_items_allowed": True, "choices": None},
                         "fmp": {"multiple_items_allowed": True, "choices": None},
                     },
+                    "action": {
+                        "benzinga": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "downgrades",
+                                "maintains",
+                                "reinstates",
+                                "reiterates",
+                                "upgrades",
+                                "assumes",
+                                "initiates",
+                                "terminates",
+                                "removes",
+                                "suspends",
+                                "firm_dissolved",
+                            ],
+                        }
+                    },
                     "analyst_ids": {
                         "benzinga": {"multiple_items_allowed": True, "choices": None}
                     },

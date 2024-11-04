@@ -2255,22 +2255,26 @@ class ROUTER_economy(Container):
             The search word(s).
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-        is_release : Optional[bool]
-            Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)
-        release_id : Optional[Union[int, str]]
+        search_type : Literal['full_text', 'series_id', 'release']
+            The type of search to perform. Automatically set to 'release' when a 'release_id' is provided. (provider: fred)
+        release_id : Optional[Annotated[int, Ge(ge=0)]]
             A specific release ID to target. (provider: fred)
-        limit : Optional[int]
+        limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return. (1-1000) (provider: fred)
         offset : Optional[Annotated[int, Ge(ge=0)]]
-            Offset the results in conjunction with limit. (provider: fred)
+            Offset the results in conjunction with limit. This parameter is ignored When search_type is 'release'. (provider: fred)
+        order_by : Literal['search_rank', 'series_id', 'title', 'units', 'frequency', 'seasonal_adjustment', 'realtime_start', 'realtime_end', 'last_updated', 'observation_start', 'observation_end', 'popularity', 'group_popularity']
+            Order the results by a specific attribute. The default is 'observation_end'. (provider: fred)
+        sort_order : Literal['asc', 'desc']
+            Sort the 'order_by' item in ascending or descending order. The default is 'desc'. (provider: fred)
         filter_variable : Optional[Literal['frequency', 'units', 'seasonal_adjustment']]
             Filter by an attribute. (provider: fred)
         filter_value : Optional[str]
-            String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
+            String value to filter the variable by.  Used in conjunction with filter_variable. This parameter is ignored when search_type is 'release'. (provider: fred)
         tag_names : Optional[str]
-            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed. (provider: fred)
+            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' This parameter is ignored when search_type is 'release'. Multiple comma separated items allowed. (provider: fred)
         exclude_tag_names : Optional[str]
-            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed. (provider: fred)
+            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. This parameter is ignored when search_type is 'release'. Multiple comma separated items allowed. (provider: fred)
         series_id : Optional[str]
             A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)
 
@@ -2290,10 +2294,14 @@ class ROUTER_economy(Container):
 
         FredSearch
         ----------
-        release_id : Optional[Union[int, str]]
+        release_id : Optional[str]
             The release ID for queries.
         series_id : Optional[str]
             The series ID for the item in the release.
+        series_group : Optional[str]
+            The series group ID of the series. This value is used to query for regional data.
+        region_type : Optional[str]
+            The region type of the series.
         name : Optional[str]
             The name of the release.
         title : Optional[str]
@@ -2316,20 +2324,20 @@ class ROUTER_economy(Container):
             Short form of the data seasonal adjustment.
         last_updated : Optional[datetime]
             The datetime of the last update to the data.
+        popularity : Optional[int]
+            Popularity of the series
+        group_popularity : Optional[int]
+            Group popularity of the release
+        realtime_start : Optional[date]
+            The realtime start date of the series.
+        realtime_end : Optional[date]
+            The realtime end date of the series.
         notes : Optional[str]
             Description of the release.
         press_release : Optional[bool]
             If the release is a press release.
         url : Optional[str]
             URL to the release.
-        popularity : Optional[int]
-            Popularity of the series (provider: fred)
-        group_popularity : Optional[int]
-            Group popularity of the release (provider: fred)
-        region_type : Optional[str]
-            The region type of the series. (provider: fred)
-        series_group : Optional[Union[int, str]]
-            The series group ID of the series. This value is used to query for regional data. (provider: fred)
 
         Examples
         --------
@@ -2352,6 +2360,32 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={
+                    "search_type": {
+                        "fred": {
+                            "multiple_items_allowed": False,
+                            "choices": ["full_text", "series_id", "release"],
+                        }
+                    },
+                    "order_by": {
+                        "fred": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "search_rank",
+                                "series_id",
+                                "title",
+                                "units",
+                                "frequency",
+                                "seasonal_adjustment",
+                                "realtime_start",
+                                "realtime_end",
+                                "last_updated",
+                                "observation_start",
+                                "observation_end",
+                                "popularity",
+                                "group_popularity",
+                            ],
+                        }
+                    },
                     "tag_names": {
                         "fred": {"multiple_items_allowed": True, "choices": None}
                     },

@@ -8,17 +8,13 @@ from datetime import (
 )
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.analyst_search import (
     AnalystSearchData,
     AnalystSearchQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    amake_request,
-    get_querystring,
-    safe_fromtimestamp,
-)
 from pydantic import Field, field_validator, model_validator
 
 
@@ -367,6 +363,9 @@ class BenzingaAnalystSearchData(AnalystSearchData):
     @classmethod
     def validate_date(cls, v: float) -> Optional[dateType]:
         """Validate last_updated."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import safe_fromtimestamp
+
         if v:
             dt = safe_fromtimestamp(v, tz=timezone.utc)
             return dt.date() if dt.time() == dt.min.time() else dt
@@ -414,15 +413,31 @@ class BenzingaAnalystSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_benzinga.utils.helpers import response_callback
+        from openbb_core.provider.utils.helpers import amake_request, get_querystring
+
         token = credentials.get("benzinga_api_key") if credentials else ""
-        querystring = get_querystring(query.model_dump(), [])
+        querystring = get_querystring(query.model_dump(by_alias=True), [])
         url = f"https://api.benzinga.com/api/v2.1/calendar/ratings/analysts?{querystring}&token={token}"
-        response = await amake_request(url, **kwargs)
+        data = await amake_request(url, response_callback=response_callback, **kwargs)
 
-        if not response:
-            raise EmptyDataError()
+        if (isinstance(data, list) and not data) or (
+            isinstance(data, dict) and not data.get("analyst_ratings_analyst")
+        ):
+            raise EmptyDataError("No ratings data returned.")
 
-        return response.get("analyst_ratings_analyst")  # type: ignore
+        if isinstance(data, dict) and "analyst_ratings_analyst" not in data:
+            raise OpenBBError(
+                f"Unexpected data format. Expected 'analyst_ratings_analyst' key, got: {list(data.keys())}"
+            )
+
+        if not isinstance(data, dict):
+            raise OpenBBError(
+                f"Unexpected data format. Expected dict, got: {type(data).__name__}"
+            )
+
+        return data["analyst_ratings_analyst"]
 
     @staticmethod
     def transform_data(

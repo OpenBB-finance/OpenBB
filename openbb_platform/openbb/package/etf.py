@@ -219,7 +219,7 @@ class ROUTER_etf(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.
-        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'], str, Literal['1d', '1W', '1M', '1Y'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
+        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'], str, Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
             Time interval of the data to return. (provider: fmp, intrinio, polygon, tiingo, yfinance)
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
@@ -365,7 +365,20 @@ class ROUTER_etf(Container):
                         },
                         "tiingo": {
                             "multiple_items_allowed": False,
-                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+                            "choices": [
+                                "1m",
+                                "5m",
+                                "15m",
+                                "30m",
+                                "90m",
+                                "1h",
+                                "2h",
+                                "4h",
+                                "1d",
+                                "1W",
+                                "1M",
+                                "1Y",
+                            ],
                         },
                         "yfinance": {
                             "multiple_items_allowed": False,

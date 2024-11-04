@@ -14,7 +14,7 @@ cftc_provider = Provider(
         "COT": CftcCotFetcher,
         "COTSearch": CftcCotSearchFetcher,
     },
-    repr_name="Commodity DFutures Trading Commission (CFTC) Public Reporting API",
+    repr_name="Commodity Futures Trading Commission (CFTC) Public Reporting API",
     instructions="""Credentials are not required, but your IP address may be subject to throttling limits.
     API requests made using an application token are not throttled.
     Create an account here: https://evergreen.data.socrata.com/signup
