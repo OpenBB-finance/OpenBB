@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "openbb-us-eia"
+version = "1.0.0b"
+description = "The U.S. Energy Information Administration is committed to its free and open data by making it available through an Application Programming Interface (API) and its open data tools. See https://www.eia.gov/opendata/ for more information."
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_us_eia" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openbb-core = "^1.3.5"
+async-lru = "^2.0.4"
+openpyxl = "^3.1.5"
+xlrd = "^2.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+us_eia = "openbb_us_eia:eia_provider"
