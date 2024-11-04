@@ -41,6 +41,8 @@ class ROUTER_derivatives_options(Container):
             Symbol to get data for.
         provider : Optional[Literal['intrinio', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.
+        delay : Literal['eod', 'realtime', 'delayed']
+            Whether to return delayed, realtime, or eod data. (provider: intrinio)
         date : Optional[datetime.date]
             The end-of-day date for options chains data. (provider: intrinio)
         option_type : Optional[Literal['call', 'put']]
@@ -211,6 +213,32 @@ class ROUTER_derivatives_options(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                info={
+                    "delay": {
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["eod", "realtime", "delayed"],
+                        }
+                    },
+                    "option_type": {
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["call", "put"],
+                        }
+                    },
+                    "moneyness": {
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["otm", "itm", "all"],
+                        }
+                    },
+                    "model": {
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["black_scholes", "bjerk"],
+                        }
+                    },
+                },
             )
         )
 

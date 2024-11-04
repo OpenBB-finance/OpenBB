@@ -34,6 +34,25 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
         "oi_lt": "open_interest_less_than",
         "option_type": "type",
     }
+    __json_schema_extra__ = {
+        "moneyness": {
+            "multiple_items_allowed": False,
+            "choices": ["otm", "itm", "all"],
+        },
+        "delay": {
+            "multiple_items_allowed": False,
+            "choices": ["eod", "realtime", "delayed"],
+        },
+        "option_type": {
+            "multiple_items_allowed": False,
+            "choices": ["call", "put"],
+        },
+        "model": {
+            "multiple_items_allowed": False,
+            "choices": ["black_scholes", "bjerk"],
+        },
+    }
+
     delay: Literal["eod", "realtime", "delayed"] = Field(
         description="Whether to return delayed, realtime, or eod data.",
         default="eod",
@@ -44,13 +63,11 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     option_type: Optional[Literal["call", "put"]] = Field(
         default=None,
         description="The option type, call or put, 'None' is both (default).",
-        json_schema_extra={"choices": ["call", "put"]},
     )
     moneyness: Literal["otm", "itm", "all"] = Field(
         default="all",
         description="Return only contracts that are in or out of the money, default is 'all'."
         + " Parameter is ignored when a date is supplied.",
-        json_schema_extra={"choices": ["otm", "itm", "all"]},
     )
     strike_gt: Optional[int] = Field(
         default=None,
@@ -144,18 +161,25 @@ class IntrinioOptionsChainsData(OptionsChainsData):
         from dateutil import parser
         from pytz import timezone
 
-        if isinstance(v, str):
-            dt = parser.parse(v)
-            dt = dt.replace(tzinfo=timezone("UTC"))
-            dt = dt.astimezone(timezone("America/New_York"))
-            return dt.replace(microsecond=0)
-        return v if v else None
+        if not v:
+            return None
+        new_v: list = []
+        for item in v:
+            if item:
+                dt = parser.parse(item)
+                dt = dt.replace(tzinfo=timezone("UTC"))
+                dt = dt.astimezone(timezone("America/New_York"))
+                new_v.append(dt.replace(microsecond=0))
+            else:
+                new_v.append(None)
+
+        return new_v
 
     @field_validator("volume", "open_interest", mode="before", check_fields=False)
     @classmethod
     def _volume_oi_validate(cls, v):
         """Return the volume as an integer."""
-        return 0 if v is None else v
+        return [0 if item is None else item for item in v]
 
 
 class IntrinioOptionsChainsFetcher(
