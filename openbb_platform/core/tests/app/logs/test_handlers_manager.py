@@ -53,6 +53,8 @@ def test_handlers_added_correctly():
         settings = Mock()
         settings.verbosity = 20
         settings.handler_list = ["stdout", "stderr", "noop", "file", "posthog"]
+        settings.log_collect = True
+        settings.logging_suppress = False
         logger = logging.getLogger("test_handlers_added_correctly")
         handlers_manager = HandlersManager(logger=logger, settings=settings)
         handlers_manager.setup()
