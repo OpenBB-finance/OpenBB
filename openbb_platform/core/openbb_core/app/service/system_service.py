@@ -22,6 +22,7 @@ class SystemService(metaclass=SingletonMeta):
         "api_settings",
         "python_settings",
         "debug_mode",
+        "logging_suppress",
     }
 
     PRO_VALIDATION_HASH = "300ac59fdcc8f899e0bc5c18cda8652220735da1a00e2af365efe9d8e5fe8306"  # pragma: allowlist secret

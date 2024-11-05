@@ -217,42 +217,44 @@ class LoggingService(metaclass=SingletonMeta):
         )
         self._handlers_manager.update_handlers(self._logging_settings)
 
-        if "login" in route:
-            self._log_startup(route, custom_headers)
-        else:
+        if not self._logging_settings.logging_suppress:
 
-            # Remove CommandContext if any
-            kwargs.pop("cc", None)
+            if "login" in route:
+                self._log_startup(route, custom_headers)
+            else:
 
-            # Get provider for posthog logs
-            passed_model = kwargs.get("provider_choices", DummyProvider())
-            provider = (
-                passed_model.provider
-                if hasattr(passed_model, "provider")
-                else "not_passed_to_kwargs"
-            )
+                # Remove CommandContext if any
+                kwargs.pop("cc", None)
 
-            # Truncate kwargs if too long
-            kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
-            # Get execution info
-            error = None if all(i is None for i in exec_info) else str(exec_info[1])
+                # Get provider for posthog logs
+                passed_model = kwargs.get("provider_choices", DummyProvider())
+                provider = (
+                    passed_model.provider
+                    if hasattr(passed_model, "provider")
+                    else "not_passed_to_kwargs"
+                )
 
-            # Construct message
-            message_label = "ERROR" if error else "CMD"
-            log_message = json.dumps(
-                {
-                    "route": route,
-                    "input": kwargs,
-                    "error": error,
-                    "provider": provider,
-                    "custom_headers": custom_headers,
-                },
-                default=to_jsonable_python,
-            )
-            log_message = f"{message_label}: {log_message}"
-            log_level = self._logger.error if error else self._logger.info
-            log_level(
-                log_message,
-                extra={"func_name_override": func.__name__},
-                exc_info=exec_info,
-            )
+                # Truncate kwargs if too long
+                kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
+                # Get execution info
+                error = None if all(i is None for i in exec_info) else str(exec_info[1])
+
+                # Construct message
+                message_label = "ERROR" if error else "CMD"
+                log_message = json.dumps(
+                    {
+                        "route": route,
+                        "input": kwargs,
+                        "error": error,
+                        "provider": provider,
+                        "custom_headers": custom_headers,
+                    },
+                    default=to_jsonable_python,
+                )
+                log_message = f"{message_label}: {log_message}"
+                log_level = self._logger.error if error else self._logger.info
+                log_level(
+                    log_message,
+                    extra={"func_name_override": func.__name__},
+                    exc_info=exec_info,
+                )
