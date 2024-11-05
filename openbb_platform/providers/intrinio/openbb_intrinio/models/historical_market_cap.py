@@ -105,8 +105,7 @@ class IntrinioHistoricalMarketCapFetcher(
                     msg = f"Symbol not found: {symbol}"
                     messages.append(msg)
                     return
-                else:
-                    raise e from e
+                raise e from e
 
             if not isinstance(response, dict):
                 raise OpenBBError(
