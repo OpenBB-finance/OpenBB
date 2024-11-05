@@ -167,7 +167,7 @@ def test_intrinio_equity_quote_fetcher(credentials=test_credentials):
 def test_intrinio_options_chains_fetcher(credentials=test_credentials):
     """Test options chains fetcher."""
 
-    params = {"symbol": "AAPL", "date": date(2023, 9, 15)}
+    params = {"symbol": "AAPL", "date": date(2023, 9, 15), "delay": "eod"}
 
     fetcher = IntrinioOptionsChainsFetcher()
     result = fetcher.test(params, credentials)

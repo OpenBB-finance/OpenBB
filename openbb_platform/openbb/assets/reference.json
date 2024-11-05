@@ -1791,6 +1791,18 @@
                 ],
                 "intrinio": [
                     {
+                        "name": "delay",
+                        "type": "Literal['eod', 'realtime', 'delayed']",
+                        "description": "Whether to return delayed, realtime, or eod data.",
+                        "default": "eod",
+                        "optional": true,
+                        "choices": [
+                            "eod",
+                            "realtime",
+                            "delayed"
+                        ]
+                    },
+                    {
                         "name": "date",
                         "type": "Union[date, str]",
                         "description": "The end-of-day date for options chains data.",
@@ -1875,7 +1887,10 @@
                         "description": "The pricing model to use for options chains data, default is 'black_scholes'. Parameter is ignored when a date is supplied.",
                         "default": "black_scholes",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "black_scholes",
+                            "bjerk"
+                        ]
                     },
                     {
                         "name": "show_extended_price",
