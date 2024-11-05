@@ -235,7 +235,7 @@ class LoggingService(metaclass=SingletonMeta):
                 )
 
                 # Truncate kwargs if too long
-                kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
+                kwargs = {k: str(v)[:300] for k, v in kwargs.items()}
                 # Get execution info
                 error = None if all(i is None for i in exec_info) else str(exec_info[1])
 
