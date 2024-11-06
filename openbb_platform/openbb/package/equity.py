@@ -81,7 +81,7 @@ class ROUTER_equity(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
             ),
         ],
         start_date: Annotated[
@@ -93,9 +93,9 @@ class ROUTER_equity(Container):
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
-            Optional[Literal["fmp"]],
+            Optional[Literal["fmp", "intrinio"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
             ),
         ] = None,
         **kwargs
@@ -105,20 +105,22 @@ class ROUTER_equity(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        provider : Optional[Literal['fmp', 'intrinio']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
+        interval : Literal['day', 'week', 'month', 'quarter', 'year']
+            None
 
         Returns
         -------
         OBBject
             results : List[HistoricalMarketCap]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -149,7 +151,7 @@ class ROUTER_equity(Container):
                     "provider": self._get_provider(
                         provider,
                         "equity.historical_market_cap",
-                        ("fmp",),
+                        ("fmp", "intrinio"),
                     )
                 },
                 standard_params={
@@ -159,7 +161,16 @@ class ROUTER_equity(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                    },
+                    "interval": {
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["day", "week", "month", "quarter", "year"],
+                        }
+                    },
                 },
             )
         )

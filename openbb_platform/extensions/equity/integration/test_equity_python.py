@@ -1945,7 +1945,16 @@ def test_equity_compare_company_facts(params, obb):
                 "end_date": None,
                 "provider": "fmp",
             }
-        )
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+                "provider": "intrinio",
+                "interval": "week",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

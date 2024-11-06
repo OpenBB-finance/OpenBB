@@ -29944,7 +29944,7 @@
                     {
                         "name": "symbol",
                         "type": "Union[str, List[str]]",
-                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -29966,7 +29966,23 @@
                         "choices": null
                     }
                 ],
-                "fmp": []
+                "fmp": [],
+                "intrinio": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['day', 'week', 'month', 'quarter', 'year']",
+                        "description": "None",
+                        "default": "day",
+                        "optional": true,
+                        "choices": [
+                            "day",
+                            "week",
+                            "month",
+                            "quarter",
+                            "year"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -29977,7 +29993,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fmp']]",
+                        "type": "Optional[Literal['fmp', 'intrinio']]",
                         "description": "Provider name."
                     },
                     {
@@ -30024,7 +30040,8 @@
                         "choices": null
                     }
                 ],
-                "fmp": []
+                "fmp": [],
+                "intrinio": []
             },
             "model": "HistoricalMarketCap"
         },
