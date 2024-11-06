@@ -29970,11 +29970,12 @@
                 "intrinio": [
                     {
                         "name": "interval",
-                        "type": "Literal['week', 'month', 'quarter', 'year']",
+                        "type": "Literal['day', 'week', 'month', 'quarter', 'year']",
                         "description": "None",
-                        "default": "week",
+                        "default": "day",
                         "optional": true,
                         "choices": [
+                            "day",
                             "week",
                             "month",
                             "quarter",

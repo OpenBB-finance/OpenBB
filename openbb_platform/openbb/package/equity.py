@@ -112,7 +112,7 @@ class ROUTER_equity(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
-        interval : Literal['week', 'month', 'quarter', 'year']
+        interval : Literal['day', 'week', 'month', 'quarter', 'year']
             None
 
         Returns
@@ -168,7 +168,7 @@ class ROUTER_equity(Container):
                     "interval": {
                         "intrinio": {
                             "multiple_items_allowed": False,
-                            "choices": ["week", "month", "quarter", "year"],
+                            "choices": ["day", "week", "month", "quarter", "year"],
                         }
                     },
                 },
