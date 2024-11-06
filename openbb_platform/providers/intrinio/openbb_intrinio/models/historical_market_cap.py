@@ -24,12 +24,12 @@ class IntrinioHistoricalMarketCapQueryParams(HistoricalMarketCapQueryParams):
         "symbol": {"multiple_items_allowed": True},
         "interval": {
             "multiple_items_allowed": False,
-            "choices": ["week", "month", "quarter", "year"],
+            "choices": ["day", "week", "month", "quarter", "year"],
         },
     }
 
-    interval: Literal["week", "month", "quarter", "year"] = Field(
-        default="week",
+    interval: Literal["day", "week", "month", "quarter", "year"] = Field(
+        default="day",
     )
 
 
@@ -59,7 +59,7 @@ class IntrinioHistoricalMarketCapFetcher(
         now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = datetime(
-                2000,
+                2007,
                 1,
                 1,
             ).date()
@@ -83,7 +83,7 @@ class IntrinioHistoricalMarketCapFetcher(
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         base_url = "https://api-v2.intrinio.com/historical_data/"
-        frequency = query.interval + "ly"
+        frequency = f"frequency={query.interval}ly&" if query.interval != "day" else ""
         start_date = query.start_date
         end_date = query.end_date
         results: list = []
@@ -93,7 +93,7 @@ class IntrinioHistoricalMarketCapFetcher(
         async def get_one(symbol):
             """Get data for one symbol."""
             url_params = (
-                f"{symbol}/marketcap?frequency={frequency}&start_date={start_date}"
+                f"{symbol}/marketcap?{frequency}start_date={start_date}"
                 f"&end_date={end_date}&page_size=10000"
                 f"&api_key={api_key}"
             )
