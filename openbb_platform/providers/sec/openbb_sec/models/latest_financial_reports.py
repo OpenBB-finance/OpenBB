@@ -1,5 +1,7 @@
 """RSS Latest Financials Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import date as dateType
 from typing import Any, Optional
 
@@ -50,6 +52,7 @@ class SecLatestFinancialReportsQueryParams(LatestFinancialReportsQueryParams):
     )
 
     @field_validator("report_type", mode="before", check_fields=False)
+    @classmethod
     def validate_report_type(cls, v):
         """Validate the report type."""
         if v is None:
@@ -129,7 +132,10 @@ class SecLatestFinancialReportsFetcher(
         )
 
         def get_url(date, offset):
-            return f"https://efts.sec.gov/LATEST/search-index?dateRange=custom&category=form-cat1&startdt={date}&enddt={date}&forms={forms}&count=100&from={offset}"
+            return (
+                "https://efts.sec.gov/LATEST/search-index?dateRange=custom"
+                f"&category=form-cat1&startdt={date}&enddt={date}&forms={forms}&count=100&from={offset}"
+            )
 
         n_hits = 0
         results: list = []
