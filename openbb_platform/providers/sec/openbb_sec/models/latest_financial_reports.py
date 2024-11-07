@@ -187,7 +187,7 @@ class SecLatestFinancialReportsFetcher(
         **kwargs: Any,
     ) -> list[SecLatestFinancialReportsData]:
         """Transform the raw data."""
-        results: SecLatestFinancialReportsData = []
+        results: list[SecLatestFinancialReportsData] = []
 
         def parse_entry(entry):
             """Parse each entry in the response."""
