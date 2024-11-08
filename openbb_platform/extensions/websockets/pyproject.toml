@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-websockets"
+version = "1.0.0b"
+description = "Websockets extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_websockets" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openbb-core = "^1.3.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+websockets = "openbb_websockets.websockets_router:router"

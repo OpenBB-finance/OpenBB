@@ -61,6 +61,7 @@ openbb-charting = { version = "^2.2.4", optional = true }
 openbb-econometrics = { version = "^1.4.4", optional = true }
 openbb-quantitative = { version = "^1.3.4", optional = true }
 openbb-technical = { version = "^1.3.4", optional = true }
+openbb-websockets = { version = "^1.3.4", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
@@ -80,6 +81,7 @@ stockgrid = ["openbb-stockgrid"]
 technical = ["openbb-technical"]
 tmx = ["openbb-tmx"]
 tradier = ["openbb-tradier"]
+websockets = ["openbb-websockets"]
 wsj = ["openbb-wsj"]
 
 
@@ -101,6 +103,7 @@ all = [
     "openbb-technical",
     "openbb-tmx",
     "openbb-tradier",
+    "openbb-websockets",
     "openbb-wsj",
 ]
 

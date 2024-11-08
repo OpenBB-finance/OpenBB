@@ -6,6 +6,7 @@ from openbb_tiingo.models.crypto_historical import TiingoCryptoHistoricalFetcher
 from openbb_tiingo.models.currency_historical import TiingoCurrencyHistoricalFetcher
 from openbb_tiingo.models.equity_historical import TiingoEquityHistoricalFetcher
 from openbb_tiingo.models.trailing_dividend_yield import TiingoTrailingDivYieldFetcher
+from openbb_tiingo.models.websocket_connection import TiingoWebSocketFetcher
 from openbb_tiingo.models.world_news import TiingoWorldNewsFetcher
 
 tiingo_provider = Provider(
@@ -22,6 +23,7 @@ power hedge funds, tech companies, and individuals.""",
         "CryptoHistorical": TiingoCryptoHistoricalFetcher,
         "CurrencyHistorical": TiingoCurrencyHistoricalFetcher,
         "TrailingDividendYield": TiingoTrailingDivYieldFetcher,
+        "WebSocketConnection": TiingoWebSocketFetcher,
     },
     repr_name="Tiingo",
 )

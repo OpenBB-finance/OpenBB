@@ -1,0 +1,288 @@
+"""Tiingo WebSocket model."""
+
+from datetime import datetime
+from typing import Any, Literal, Optional
+
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.utils.descriptions import (
+    QUERY_DESCRIPTIONS,
+)
+from openbb_websockets.client import WebSocketClient
+from openbb_websockets.models import (
+    WebSocketConnection,
+    WebSocketData,
+    WebSocketQueryParams,
+)
+from pydantic import Field, field_validator
+
+URL_MAP = {
+    "stock": "wss://api.tiingo.com/iex",
+    "fx": "wss://api.tiingo.com/fx",
+    "crypto": "wss://api.tiingo.com/crypto",
+}
+
+# These are the data array order of definitions.
+IEX_FIELDS = [
+    "type",
+    "date",
+    "timestamp",
+    "symbol",
+    "bid_size",
+    "bid_price",
+    "mid_price",
+    "ask_price",
+    "ask_size",
+    "last_price",
+    "last_size",
+    "halted",
+    "after_hours",
+    "sweep_order",
+    "oddlot",
+    "nms_rule",
+]
+FX_FIELDS = [
+    "type",
+    "symbol",
+    "date",
+    "bid_size",
+    "bid_price",
+    "mid_price",
+    "ask_price",
+    "ask_size",
+    "ask_price",
+]
+CRYPTO_TRADE_FIELDS = [
+    "type",
+    "symbol",
+    "date",
+    "exchange",
+    "last_size",
+    "last_price",
+]
+CRYPTO_QUOTE_FIELDS = [
+    "type",
+    "symbol",
+    "date",
+    "exchange",
+    "bid_size",
+    "bid_price",
+    "mid_price",
+    "ask_size",
+    "ask_price",
+]
+
+
+class TiingoWebSocketQueryParams(WebSocketQueryParams):
+    """Tiingo WebSocket query parameters."""
+
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "asset_type": {
+            "multiple_items_allowed": False,
+            "choices": ["stock", "fx", "crypto"],
+        },
+        "feed": {
+            "multiple_items_allowed": False,
+            "choices": ["trade", "trade_and_quote"],
+        },
+    }
+
+    symbol: str = Field(
+        description=QUERY_DESCRIPTIONS.get("symbol", "") + "Use '*' for all symbols.",
+    )
+    asset_type: Literal["stock", "fx", "crypto"] = Field(
+        default="crypto",
+        description="The asset type for the feed.",
+    )
+    feed: Literal["trade", "trade_and_quote"] = Field(
+        default="trade_and_quote",
+        description="The type of data feed to subscribe to. FX only supports quote.",
+    )
+
+
+class TiingoWebSocketData(WebSocketData):
+    """Tiingo WebSocket data model."""
+
+    timestamp: Optional[int] = Field(
+        default=None,
+        description="Nanoseconds since POSIX time UTC.",
+    )
+    type: Literal["quote", "trade", "break"] = Field(
+        description="The type of data.",
+    )
+    exchange: Optional[str] = Field(
+        default=None,
+        description="The exchange of the data. Only for crypto.",
+    )
+    bid_size: Optional[float] = Field(
+        default=None,
+        description="The size of the bid.",
+    )
+    bid_price: Optional[float] = Field(
+        default=None,
+        description="The price of the bid.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    mid_price: Optional[float] = Field(
+        default=None,
+        description="The mid price.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    ask_price: Optional[float] = Field(
+        default=None,
+        description="The price of the ask.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    ask_size: Optional[float] = Field(
+        default=None,
+        description="The size of the ask.",
+    )
+    last_price: Optional[float] = Field(
+        default=None,
+        description="The last trade price.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    last_size: Optional[float] = Field(
+        default=None,
+        description="The size of the trade.",
+    )
+    halted: Optional[bool] = Field(
+        default=None,
+        description="If the asset is halted. Only for stock.",
+    )
+    after_hours: Optional[bool] = Field(
+        default=None,
+        description="If the data is after hours. Only for stock.",
+    )
+    sweep_order: Optional[bool] = Field(
+        default=None,
+        description="If the order is an intermarket sweep order. Only for stock.",
+    )
+    oddlot: Optional[bool] = Field(
+        default=None,
+        description="If the order is an oddlot. Only for stock.",
+    )
+    nms_rule: Optional[bool] = Field(
+        default=None,
+        description="True if the order is not subject to NMS Rule 611. Only for stock.",
+    )
+
+    @field_validator("type", mode="before", check_fields=False)
+    def _valiidate_data_type(cls, v):
+        """Validate the data type."""
+        return (
+            "quote" if v == "Q" else "trade" if v == "T" else "break" if v == "B" else v
+        )
+
+    @field_validator("date", mode="before", check_fields=False)
+    def _validate_date(cls, v):
+        """Validate the date."""
+        # pylint: disable=import-outside-toplevel
+        from pytz import timezone
+
+        if isinstance(v, str):
+            return datetime.fromisoformat(v)
+        try:
+            return datetime.fromtimestamp(v / 1000)
+        except Exception:
+            if isinstance(v, (int, float)):
+                # Check if the timestamp is in nanoseconds and convert to seconds
+                if v > 1e12:
+                    v = v / 1e9  # Convert nanoseconds to seconds
+                dt = datetime.fromtimestamp(v)
+                dt = timezone("America/New_York").localize(dt)
+                return dt
+        return v
+
+
+class TiingoWebSocketConnection(WebSocketConnection):
+    """Tiingo WebSocket connection model."""
+
+
+class TiingoWebSocketFetcher(
+    Fetcher[TiingoWebSocketQueryParams, TiingoWebSocketConnection]
+):
+    """Tiingo WebSocket model."""
+
+    @staticmethod
+    def transform_query(params: dict[str, Any]) -> TiingoWebSocketQueryParams:
+        """Transform the query parameters."""
+        asset_type = params.get("asset_type")
+        feed = params.get("feed")
+
+        if asset_type == "fx" and feed == "trade":
+            raise ValueError("FX only supports quote feed.")
+
+        return TiingoWebSocketQueryParams(**params)
+
+    @staticmethod
+    async def aextract_data(
+        query: TiingoWebSocketQueryParams,
+        credentials: Optional[dict[str, str]],
+        **kwargs: Any,
+    ) -> WebSocketClient:
+        """Initiailze the WebSocketClient and connect."""
+        # pylint: disable=import-outside-toplevel
+        from asyncio import sleep
+
+        api_key = credentials.get("tiingo_token") if credentials else ""
+        url = URL_MAP[query.asset_type]
+        threshold_level = (
+            5
+            if query.asset_type == "fx" or query.feed == "trade"
+            else (
+                2
+                if query.asset_type == "crypto" and query.feed == "trade_and_quote"
+                else 0
+            )
+        )
+
+        symbol = query.symbol.lower()
+
+        kwargs = {
+            "url": url,
+            "api_key": api_key,
+            "threshold_level": threshold_level,
+        }
+
+        client = WebSocketClient(
+            name=query.name,
+            module="openbb_tiingo.utils.websocket_client",
+            symbol=symbol.lower(),
+            limit=query.limit,
+            results_file=query.results_file,
+            table_name=query.table_name,
+            save_results=query.save_results,
+            data_model=TiingoWebSocketData,
+            sleep_time=query.sleep_time,
+            broadcast_host=query.broadcast_host,
+            broadcast_port=query.broadcast_port,
+            auth_token=query.auth_token,
+            **kwargs,
+        )
+
+        try:
+            client.connect()
+        # Unhandled exceptions are caught and raised as OpenBBError
+        except Exception as e:  # pylint: disable=broad-except
+            client.disconnect()
+            raise OpenBBError(e) from e
+
+        # Wait for the connection to be established before returning.
+        await sleep(2)
+
+        if client.is_running:
+            return client
+
+        client.disconnect()
+        raise OpenBBError("Failed to connect to the WebSocket.")
+
+    @staticmethod
+    def transform_data(
+        data: WebSocketClient,
+        query: TiingoWebSocketQueryParams,
+        **kwargs: Any,
+    ) -> TiingoWebSocketConnection:
+        """Return the client as an instance of Data."""
+        return TiingoWebSocketConnection(client=data)
