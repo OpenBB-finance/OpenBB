@@ -112,7 +112,7 @@ class WebSocketClient:
         self._auth_token = auth_token
         self._symbol = symbol
         self._kwargs = (
-            [f"{k}={str(v).strip().replace(" ", "_")}" for k, v in kwargs.items()]
+            [f"{k}={str(v).strip().replace(' ', '_')}" for k, v in kwargs.items()]
             if kwargs
             else None
         )
