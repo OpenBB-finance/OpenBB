@@ -170,12 +170,12 @@ class WebSocketClient:
         if os.path.exists(self.results_file):
             os.remove(self.results_file)
 
-    async def _setup_database(self):
+    def _setup_database(self):
         """Set up the SQLite database and table."""
         # pylint: disable=import-outside-toplevel
         from openbb_websockets.helpers import setup_database
 
-        return await setup_database(self.results_path, self.table_name)
+        return setup_database(self.results_path, self.table_name)
 
     def _log_provider_output(self, output_queue):
         """Log output from the provider server queue."""
@@ -401,19 +401,13 @@ class WebSocketClient:
     def results(self):
         """Clear results stored from the WebSocket stream."""
         # pylint: disable=import-outside-toplevel
-        import asyncio
         import sqlite3
 
         try:
             with sqlite3.connect(self.results_path) as conn:
                 conn.execute(f"DELETE FROM {self.table_name}")  # noqa
                 conn.commit()
-
-            try:
-                loop = asyncio.get_event_loop()
-            except RuntimeError:
-                loop = asyncio.new_event_loop()
-            loop.run_until_complete(self._setup_database())
+            self._setup_database()
             self.logger.info(
                 "Results cleared from table %s in %s",
                 self.table_name,
