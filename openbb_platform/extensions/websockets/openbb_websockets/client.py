@@ -146,7 +146,7 @@ class WebSocketClient:
 
         try:
             loop = asyncio.get_event_loop()
-        except RuntimeError:
+        except (RuntimeError, RuntimeWarning):
             loop = asyncio.new_event_loop()
         try:
             if loop.is_running():
@@ -401,15 +401,36 @@ class WebSocketClient:
     def results(self):
         """Clear results stored from the WebSocket stream."""
         # pylint: disable=import-outside-toplevel
+        import sqlite3  # noqa
         import asyncio
-        import sqlite3
+        import threading
+
+        def run_in_new_loop():
+            """Run setup in new event loop."""
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            try:
+                loop.run_until_complete(self._setup_database())
+            finally:
+                loop.close()
+
+        def run_in_thread():
+            """Run setup in separate thread."""
+            thread = threading.Thread(target=run_in_new_loop)
+            thread.start()
+            thread.join()
 
         try:
             with sqlite3.connect(self.results_path) as conn:
                 conn.execute(f"DELETE FROM {self.table_name}")  # noqa
                 conn.commit()
 
-            asyncio.create_task(self._setup_database())
+            try:
+                loop = asyncio.get_running_loop()  # noqa
+                run_in_thread()
+            except RuntimeError:
+                run_in_new_loop()
+
             self.logger.info(
                 "Results cleared from table %s in %s",
                 self.table_name,
