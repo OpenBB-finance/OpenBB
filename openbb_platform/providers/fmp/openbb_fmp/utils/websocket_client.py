@@ -86,7 +86,7 @@ async def process_message(message, results_path, table_name, limit):
     message = json.loads(message)
     if message.get("event") != "heartbeat":
         if message.get("event") in ["login", "subscribe", "unsubscribe"]:
-            msg = f"PROVIDER INFO:      {message.get("message")}"
+            msg = f"PROVIDER INFO:      {message.get('message')}"
             logger.info(msg)
             return None
         try:
