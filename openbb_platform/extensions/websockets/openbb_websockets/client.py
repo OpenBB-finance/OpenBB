@@ -145,14 +145,7 @@ class WebSocketClient:
         atexit.register(self._atexit)
 
         try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-        try:
-            if loop.is_running():
-                loop.create_task(self._setup_database())
-            else:
-                asyncio.run(self._setup_database())
+            self._setup_database()
         except DatabaseError as e:
             self.logger.error("Error setting up the SQLite database and table: %s", e)
 
