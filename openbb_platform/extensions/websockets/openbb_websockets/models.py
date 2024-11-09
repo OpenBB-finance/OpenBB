@@ -123,3 +123,47 @@ class WebSocketConnection(Data):
         if not isinstance(v, WebSocketClient):
             raise ValueError("Client must be an instance of WebSocketClient.")
         return v
+
+
+class WebSocketConnectionStatus(Data):
+    """Data model for WebSocketConnection status information."""
+
+    name: str = Field(
+        description="Name assigned to the client connection.",
+    )
+    auth_required: bool = Field(
+        description="True when 'auth_token' is supplied at initialization."
+        " When True, interactions with the client from the Python or API"
+        + " endpoints requires it to be supplied as a query parameter.",
+    )
+    subscribed_symbols: str = Field(
+        description="Symbols subscribed to by the client connection.",
+    )
+    is_running: bool = Field(
+        description="Whether the client connection is running.",
+    )
+    provider_pid: Optional[int] = Field(
+        default=None,
+        description="Process ID of the provider connection.",
+    )
+    is_broadcasting: bool = Field(
+        description="Whether the client connection is broadcasting.",
+    )
+    broadcast_address: Optional[str] = Field(
+        default=None,
+        description="URI to the broadcast server.",
+    )
+    broadcast_pid: Optional[int] = Field(
+        default=None,
+        description="Process ID of the broadcast server.",
+    )
+    results_file: Optional[str] = Field(
+        description="Absolute path to the file for continuous writing.",
+    )
+    table_name: Optional[str] = Field(
+        default=None,
+        description="Name of the SQL table to write the results to.",
+    )
+    save_results: bool = Field(
+        description="Whether to save the results after the session ends.",
+    )

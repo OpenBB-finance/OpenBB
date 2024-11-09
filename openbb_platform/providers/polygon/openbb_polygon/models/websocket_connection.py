@@ -193,8 +193,6 @@ class PolygonCryptoAggsWebSocketData(WebSocketData):
     def _validate_model(cls, values):
         """Validate the model."""
         _ = values.pop("s", None)
-        if values.get("z") and values["z"] == 0 or not values.get("z"):
-            _ = values.pop("z", None)
         return values
 
 
@@ -839,12 +837,14 @@ class PolygonWebSocketFetcher(
 
         try:
             client.connect()
-
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             client.disconnect()
             raise OpenBBError(e) from e
 
         time.sleep(1)
+
+        if client._exception:
+            raise client._exception from client._exception
 
         if client.is_running:
             return client

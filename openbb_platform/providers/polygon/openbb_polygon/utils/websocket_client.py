@@ -195,7 +195,7 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
         sys.exit(1)
 
     except Exception as e:
-        msg = f"PROVIDER ERROR:     Unexpected error -> {e}"
+        msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
         logger.error(msg)
         sys.exit(1)
 

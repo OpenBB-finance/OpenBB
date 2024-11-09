@@ -3,7 +3,7 @@
 # pylint: disable=too-many-statements
 # flake8: noqa: PLR0915
 import logging
-from typing import TYPE_CHECKING, Literal, Optional
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 if TYPE_CHECKING:
     from openbb_core.provider.abstract.data import Data
@@ -23,7 +23,7 @@ class WebSocketClient:
         The symbol(s) requested to subscribe. Enter multiple symbols separated by commas without spaces.
     limit : Optional[int]
         The limit of records to hold in memory. Once the limit is reached, the oldest records are removed.
-        Default is None.
+        Default is 300. Set to None to keep all records.
     results_file : Optional[str]
         Absolute path to the file for continuous writing. By default, a temporary file is created.
     table_name : Optional[str]
@@ -37,9 +37,11 @@ class WebSocketClient:
         The authentication token to use for the WebSocket connection. Default is None.
         Only used for API and Python application endpoints.
     logger : Optional[logging.Logger]
-        The logger instance to use this connection. By default, a new logger is created.
-    kwargs : dict
-        Additional keyword arguments to pass to the target module.
+        The pre-configured logger instance to use for this connection. By default, a new logger is created.
+    kwargs : Optional[dict]
+        Additional keyword arguments to pass to the target provider module. Keywords and values must not contain spaces.
+        To pass items to 'websocket.connect()', include them in the 'kwargs' dictionary as,
+        {'connect_kwargs': {'key': 'value'}}.
 
     Properties
     ----------
@@ -48,9 +50,9 @@ class WebSocketClient:
     module : str
         Path to the provider connection script.
     is_running : bool
-        Check if the provider connection is running.
+        Check if the provider connection process is running.
     is_broadcasting : bool
-        Check if the broadcast server is running.
+        Check if the broadcast server process is running.
     broadcast_address : str
         URI address for the results broadcast server.
     results : list
@@ -83,7 +85,7 @@ class WebSocketClient:
         name: str,
         module: str,
         symbol: Optional[str] = None,
-        limit: Optional[int] = None,
+        limit: Optional[int] = 300,
         results_file: Optional[str] = None,
         table_name: Optional[str] = None,
         save_results: bool = False,
@@ -91,7 +93,7 @@ class WebSocketClient:
         auth_token: Optional[str] = None,
         logger: Optional[logging.Logger] = None,
         **kwargs,
-    ):
+    ) -> None:
         """Initialize the WebSocketClient class."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -130,6 +132,7 @@ class WebSocketClient:
         self._broadcast_thread = None
         self._broadcast_log_thread = None
         self._broadcast_message_queue = Queue()
+        self._exception = None
 
         if not results_file:
             with tempfile.NamedTemporaryFile(delete=False) as temp_file:
@@ -144,6 +147,8 @@ class WebSocketClient:
 
         atexit.register(self._atexit)
 
+        # Set up the SQLite database and table.
+        # Loop handling is for when the class is used directly instead of from the app or API.
         try:
             loop = asyncio.get_event_loop()
         except (RuntimeError, RuntimeWarning):
@@ -156,7 +161,7 @@ class WebSocketClient:
         except DatabaseError as e:
             self.logger.error("Error setting up the SQLite database and table: %s", e)
 
-    def _atexit(self):
+    def _atexit(self) -> None:
         """Clean up the WebSocket client processes at exit."""
         # pylint: disable=import-outside-toplevel
         import os
@@ -170,14 +175,14 @@ class WebSocketClient:
         if os.path.exists(self.results_file):
             os.remove(self.results_file)
 
-    async def _setup_database(self):
+    async def _setup_database(self) -> None:
         """Set up the SQLite database and table."""
         # pylint: disable=import-outside-toplevel
         from openbb_websockets.helpers import setup_database
 
         return await setup_database(self.results_path, self.table_name)
 
-    def _log_provider_output(self, output_queue):
+    def _log_provider_output(self, output_queue) -> None:
         """Log output from the provider server queue."""
         # pylint: disable=import-outside-toplevel
         import queue  # noqa
@@ -191,11 +196,13 @@ class WebSocketClient:
                     if (
                         "server rejected" in output.lower()
                         or "PROVIDER ERROR" in output
+                        or "Unexpected error" in output
                     ):
-                        self._stop_log_thread_event.set()
-                        self._psutil_process.kill()
+                        err = ChildProcessError(output)
+                        self._exception = err
                         self.logger.error(output)
                         break
+
                     output = clean_message(output)
                     output = output + "\n"
                     sys.stdout.write(output + "\n")
@@ -203,7 +210,7 @@ class WebSocketClient:
             except queue.Empty:
                 continue
 
-    def _log_broadcast_output(self, output_queue):
+    def _log_broadcast_output(self, output_queue) -> None:
         """Log output from the broadcast server queue."""
         # pylint: disable=import-outside-toplevel
         import queue  # noqa
@@ -245,7 +252,7 @@ class WebSocketClient:
             except queue.Empty:
                 continue
 
-    def connect(self):
+    def connect(self) -> None:
         """Connect to the provider WebSocket."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
@@ -313,7 +320,7 @@ class WebSocketClient:
 
     def send_message(
         self, message, target: Literal["provider", "broadcast"] = "provider"
-    ):
+    ) -> None:
         """Send a message to the WebSocket process."""
         if target == "provider":
             self._provider_message_queue.put(message)
@@ -322,7 +329,7 @@ class WebSocketClient:
             self._broadcast_message_queue.put(message)
             read_message_queue(self, self._broadcast_message_queue, target="broadcast")
 
-    def disconnect(self):
+    def disconnect(self) -> None:
         """Disconnect from the provider WebSocket."""
         self._stop_log_thread_event.set()
         if self._process is None or self.is_running is False:
@@ -339,9 +346,11 @@ class WebSocketClient:
         self._log_thread.join()
         self._stop_log_thread_event.clear()
         self.logger.info("Disconnected from the provider WebSocket.")
+        if hasattr(self, "_exception") and self._exception:
+            raise self._exception
         return
 
-    def subscribe(self, symbol):
+    def subscribe(self, symbol) -> None:
         """Subscribe to a new symbol or list of symbols."""
         # pylint: disable=import-outside-toplevel
         import json
@@ -353,7 +362,7 @@ class WebSocketClient:
         new_symbols = list(set(old_symbols + ticker))
         self._symbol = ",".join(new_symbols)
 
-    def unsubscribe(self, symbol):
+    def unsubscribe(self, symbol) -> None:
         """Unsubscribe from a symbol or list of symbols."""
         # pylint: disable=import-outside-toplevel
         import json
@@ -370,22 +379,22 @@ class WebSocketClient:
         self._symbol = ",".join(new_symbols)
 
     @property
-    def is_running(self):
+    def is_running(self) -> bool:
         """Check if the provider connection is running."""
         if hasattr(self._psutil_process, "is_running"):
             return self._psutil_process.is_running()
         return False
 
     @property
-    def is_broadcasting(self):
+    def is_broadcasting(self) -> bool:
         """Check if the broadcast server is running."""
         if hasattr(self._psutil_broadcast_process, "is_running"):
             return self._psutil_broadcast_process.is_running()
         return False
 
     @property
-    def results(self):
-        """Retrieve the raw results dumped by the WebSocket stream."""
+    def results(self) -> Union[list[dict], None]:
+        """Retrieve the deserialized results from the results file."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         import sqlite3
@@ -397,13 +406,14 @@ class WebSocketClient:
                 cursor = conn.execute(f"SELECT * FROM {self.table_name}")  # noqa
                 for row in cursor:
                     index, message = row
-                    output.append(json.loads(message))
+                    output.append(json.loads(json.loads(message)))
 
+        if output:
             return output
 
         self.logger.info("No results found in %s", self.results_file)
 
-        return []
+        return
 
     @results.deleter
     def results(self):
@@ -448,7 +458,7 @@ class WebSocketClient:
             self.logger.error("Error clearing results: %s", e)
 
     @property
-    def module(self):
+    def module(self) -> str:
         """Path to the provider connection script."""
         return self._module
 
@@ -465,12 +475,12 @@ class WebSocketClient:
         ]
 
     @property
-    def symbol(self):
+    def symbol(self) -> str:
         """Symbol(s) requested to subscribe."""
         return self._symbol
 
     @property
-    def limit(self):
+    def limit(self) -> Union[int, None]:
         """Get the limit of records to hold in memory."""
         return self._limit
 
@@ -480,7 +490,7 @@ class WebSocketClient:
         self._limit = limit
 
     @property
-    def broadcast_address(self):
+    def broadcast_address(self) -> Union[str, None]:
         """Get the WebSocket broadcast address."""
         return (
             self._broadcast_address
@@ -493,7 +503,7 @@ class WebSocketClient:
         host: str = "127.0.0.1",
         port: int = 6666,
         **kwargs,
-    ):
+    ) -> None:
         """Broadcast results over a network connection."""
         # pylint: disable=import-outside-toplevel
         import os  # noqa
@@ -594,15 +604,11 @@ class WebSocketClient:
         return
 
     @property
-    def transformed_results(self):
-        """Deserialize the records from the results file."""
-        # pylint: disable=import-outside-toplevel
-        import json
-
+    def transformed_results(self) -> list["Data"]:
+        """Model validated records from the results file."""
         if not self.data_model:
             raise NotImplementedError("No model provided to transform the results.")
-
-        return [self.data_model.model_validate(json.loads(d)) for d in self.results]
+        return [self.data_model.model_validate(d) for d in self.results]
 
     def __repr__(self):
         """Return the WebSocketClient representation."""
@@ -617,7 +623,7 @@ class WebSocketClient:
         )
 
 
-def non_blocking_websocket(client, output_queue, provider_message_queue):
+def non_blocking_websocket(client, output_queue, provider_message_queue) -> None:
     """Communicate with the threaded process."""
     try:
         while not client._stop_log_thread_event.is_set():
@@ -639,8 +645,8 @@ def non_blocking_websocket(client, output_queue, provider_message_queue):
 
 def send_message(
     client, message, target: Literal["provider", "broadcast"] = "provider"
-):
-    """Send a message to the WebSocket process."""
+) -> None:
+    """Send a message to the WebSocketConnection process."""
     try:
         if target == "provider":
             if client._process and client._process.stdin:
@@ -661,7 +667,7 @@ def send_message(
 def read_message_queue(
     client, message_queue, target: Literal["provider", "broadcast"] = "provider"
 ):
-    """Read messages from the queue and send them to the WebSocket process."""
+    """Read messages from the queue and send them to the WebSocketConnection process."""
     while not message_queue.empty():
         try:
             if target == "provider":
@@ -681,7 +687,7 @@ def read_message_queue(
             break
 
 
-def non_blocking_broadcast(client, output_queue, broadcast_message_queue):
+def non_blocking_broadcast(client, output_queue, broadcast_message_queue) -> None:
     """Continuously read the output from the broadcast process and log it to the main thread."""
     try:
         while not client._stop_broadcasting_event.is_set():

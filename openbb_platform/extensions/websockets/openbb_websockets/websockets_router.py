@@ -25,6 +25,7 @@ from openbb_websockets.helpers import (
     connected_clients,
     get_status,
 )
+from openbb_websockets.models import WebSocketConnectionStatus
 
 router = Router("", description="WebSockets Router")
 sys.stdout = StdOutSink()
@@ -38,7 +39,7 @@ async def create_connection(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:
+) -> OBBject[WebSocketConnectionStatus]:
     """Create a new provider websocket connection."""
     name = extra_params.name
     if name in connected_clients:
@@ -67,7 +68,7 @@ async def create_connection(
     connected_clients[client_name] = client
     results = await get_status(client_name)
 
-    obbject.results = results
+    obbject.results = WebSocketConnectionStatus(**results)
 
     return obbject
 
@@ -205,7 +206,9 @@ async def unsubscribe(
 @router.command(
     methods=["GET"],
 )
-async def get_client_status(name: str = "all") -> OBBject[list[dict]]:
+async def get_client_status(
+    name: str = "all",
+) -> OBBject[list[WebSocketConnectionStatus]]:
     """Get the status of a client, or all client connections.
 
     Parameters
@@ -226,7 +229,7 @@ async def get_client_status(name: str = "all") -> OBBject[list[dict]]:
         ]
     else:
         connections = [await get_status(name)]
-    return OBBject(results=connections)
+    return OBBject(results=[WebSocketConnectionStatus(**d) for d in connections])
 
 
 @router.command(
