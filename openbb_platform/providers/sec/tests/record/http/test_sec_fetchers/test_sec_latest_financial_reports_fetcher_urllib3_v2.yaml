@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+    method: GET
+    uri: https://efts.sec.gov/LATEST/search-index?category=form-cat1&count=100&dateRange=custom&enddt=2024-11-05&forms=10-K&from=0&startdt=2024-11-05
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAALVV247aMBD9lchPrZRsnRtkeWspbVfdBan3qlpZIRnAIomp7XShaP+9HgeWEFip
+        rbQ8kMSeOXNmcnyyJVqIJRnEPZdoXkLORK3JYJYWClzC1CKVuSKDrQnTaWHiqEtUnWWg1KzePy/5
+        agU5GZj7WcoLe3vvkgXX7dQt+ZUWNZBB4BIJRaq5qMiAwE9iYst0zVQmpNmu6qLYJ//YEsarHNYY
+        mM9TyWYGnxhm3BQhlFI/6vcvw8ALIo/SXpLEg2Jab5hPlxcLXWLkESxTopYZIJuML7GCBelFYT/w
+        ya1LViC5yBlUOa/mpkRAEbnnhdRgYXFW1eUuzYvjJI4xK+dqVaQbVqUlWNDr0cs3rz5/H31wPo2G
+        78aT68nbq9FH17kaDy8c59m12XtursOr986h/nOEWqtiT1bBzxoqZOubkQmh2UzI0uL71HuP0ZZR
+        nmrYU/V9j8aG6pT/ZkqbDRs+nGCw4pl9SvpRYJMNmsmzWC5Jc7V4ZKZN6+W+9SDyoyAJ/EsEwUKF
+        yOzrtOhvJUB1J0TufOFFkc7BdZrylqverOBQs6EPKpN8tdPDm8mHG2e3zaus1cT4C6JwDXYEt0Y1
+        Skgj1h9+P6T9XpRQ/Jn1vxDNZejHTYNR2AviAY7CFF2m/6KaxMAk9BHVhJ4feKF/ohrfi2iY9M6q
+        ZlLBDeRj0M5QyJXRx2R889p18P9rWy5N4aeTyzd6LJfQ78jlxcuOYDrzPCeY+DIMzwrmYy0lbFyn
+        qdpViS11qpOm5WOBvB79nUBwJ53PJcz3JLYEKs31BpWiQeJCLjKWibrSDKQUktXG4ySbmpXG6VRd
+        MqEXZu0h0q5P62wJO+9awsZ08Z9e4JIWsI+qbuD+VSQdHDsWnj1Jp1Ypj/G2rnOGzEF6T8LJeM9j
+        jL7Rc3xQ5k/CZGdqrbDAFDQVzbGVG6zV8hlYZ0WdA8oaEzSsNbltx06FsB/VslYocSN8vGOV2D2p
+        haiLvLnfd2OomGtpBX/OIO5xNhiBAQc7efhy+/c2QqbV3C637GRL5qeuUnSXTL7teCZF2UyP/0Zc
+        Sk9PZOc9PBCfccC+2g3scUKK4CdH+ST1yHgvZHrXQTg+Hyfp1hiPM86K+CSx5bLt9INRdUYqZI5I
+        BJ2P2NH9AWSYZluwCQAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '870'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 06 Nov 2024 23:47:05 GMT
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains ; preload
+      Vary:
+      - Accept-Encoding
+      X-Amz-Cf-Id:
+      - tiBqDHiaTK40xZ4q6fGRdhkr42yULJlGDxNihuuBCeqTOzjzp-61Rw==
+      X-Amz-Cf-Pop:
+      - ORD58-P1
+      X-Amzn-Trace-Id:
+      - Root=1-672bfff9-3c12ad3373afc4f500502c9b;Parent=381e677e9b9f417b;Sampled=0;Lineage=1:fc027ad0:0
+      x-amz-apigw-id:
+      - A2TvEEsLIAMEUMw=
+      x-amzn-RequestId:
+      - 806da0b3-66f4-43b3-a50e-dc0f6073d264
+    status:
+      code: 200
+      message: OK
+version: 1

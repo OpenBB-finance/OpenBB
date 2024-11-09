@@ -18,6 +18,7 @@ class ROUTER_equity_discovery(Container):
     filings
     gainers
     growth_tech
+    latest_financial_reports
     losers
     undervalued_growth
     undervalued_large_caps
@@ -476,6 +477,117 @@ class ROUTER_equity_discovery(Container):
                     "sort": sort,
                 },
                 extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def latest_financial_reports(
+        self,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get the newest quarterly, annual, and current reports for all companies.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['sec']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
+        date : Optional[datetime.date]
+            A specific date to get data for. Defaults to today. (provider: sec)
+        report_type : Optional[str]
+            Return only a specific form type. Default is all quarterly, annual, and current reports. Choices: 1-K, 1-SA, 1-U, 10-D, 10-K, 10-KT, 10-Q, 10-QT, 20-F, 40-F, 6-K, 8-K. Multiple comma separated items allowed. (provider: sec)
+
+        Returns
+        -------
+        OBBject
+            results : List[LatestFinancialReports]
+                Serializable results.
+            provider : Optional[Literal['sec']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        LatestFinancialReports
+        ----------------------
+        filing_date : date
+            The date of the filing.
+        period_ending : Optional[date]
+            Report for the period ending.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Name of the company.
+        cik : Optional[str]
+            Central Index Key (CIK) for the requested entity.
+        sic : Optional[str]
+            Standard Industrial Classification code.
+        report_type : Optional[str]
+            Type of filing.
+        description : Optional[str]
+            Description of the report.
+        url : str
+            URL to the filing page.
+        items : Optional[str]
+            Item codes associated with the filing. (provider: sec)
+        index_headers : Optional[str]
+            URL to the index headers file. (provider: sec)
+        complete_submission : Optional[str]
+            URL to the complete submission text file. (provider: sec)
+        metadata : Optional[str]
+            URL to the MetaLinks.json file, if available. (provider: sec)
+        financial_report : Optional[str]
+            URL to the Financial_Report.xlsx file, if available. (provider: sec)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.discovery.latest_financial_reports(provider='sec')
+        >>> obb.equity.discovery.latest_financial_reports(provider='sec', date='2024-09-30')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/discovery/latest_financial_reports",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.discovery.latest_financial_reports",
+                        ("sec",),
+                    )
+                },
+                standard_params={},
+                extra_params=kwargs,
+                info={
+                    "report_type": {
+                        "sec": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "1-K",
+                                "1-SA",
+                                "1-U",
+                                "10-D",
+                                "10-K",
+                                "10-KT",
+                                "10-Q",
+                                "10-QT",
+                                "20-F",
+                                "40-F",
+                                "6-K",
+                                "8-K",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
