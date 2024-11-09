@@ -188,6 +188,14 @@ class WebSocketClient:
             try:
                 output = output_queue.get(timeout=1)
                 if output:
+                    if (
+                        "server rejected" in output.lower()
+                        or "PROVIDER ERROR" in output
+                    ):
+                        self._stop_log_thread_event.set()
+                        self._psutil_process.kill()
+                        self.logger.error(output)
+                        break
                     output = clean_message(output)
                     output = output + "\n"
                     sys.stdout.write(output + "\n")

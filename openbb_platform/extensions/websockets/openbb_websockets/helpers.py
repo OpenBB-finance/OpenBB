@@ -90,6 +90,7 @@ def handle_termination_signal(logger):
 def parse_kwargs():
     """Parse command line keyword arguments."""
     # pylint: disable=import-outside-toplevel
+    import json
     import sys
 
     args = sys.argv[1:].copy()
@@ -97,11 +98,17 @@ def parse_kwargs():
     for i, arg in enumerate(args):
         if "=" in arg:
             key, value = arg.split("=")
+
+            if key == "connect_kwargs":
+                value = {} if value == "None" else json.loads(value)
+
             _kwargs[key] = value
         elif arg.startswith("--"):
             key = arg[2:]
+
             if i + 1 < len(args) and not args[i + 1].startswith("--"):
                 value = args[i + 1]
+
                 if isinstance(value, str) and value.lower() in ["false", "true"]:
                     value = value.lower() == "true"
                 elif isinstance(value, str) and value.lower() == "none":

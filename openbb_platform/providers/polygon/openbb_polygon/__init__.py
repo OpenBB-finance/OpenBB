@@ -15,6 +15,7 @@ from openbb_polygon.models.index_historical import (
     PolygonIndexHistoricalFetcher,
 )
 from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
+from openbb_polygon.models.websocket_connection import PolygonWebSocketFetcher
 
 polygon_provider = Provider(
     name="polygon",
@@ -38,6 +39,7 @@ company financials, stock market holidays, corporate actions, and more.""",
         "IndexHistorical": PolygonIndexHistoricalFetcher,
         "MarketIndices": PolygonIndexHistoricalFetcher,
         "MarketSnapshots": PolygonMarketSnapshotsFetcher,
+        "WebSocketConnection": PolygonWebSocketFetcher,
     },
     repr_name="Polygon.io",
     deprecated_credentials={"API_POLYGON_KEY": "polygon_api_key"},

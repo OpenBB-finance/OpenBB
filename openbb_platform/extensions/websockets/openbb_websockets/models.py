@@ -3,6 +3,7 @@
 from datetime import datetime
 from typing import Any, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -58,11 +59,37 @@ class WebSocketQueryParams(QueryParams):
         description="Port to bind the broadcast server to.",
     )
     start_broadcast: bool = Field(
-        default=True,
+        default=False,
         description="Whether to start the broadcast server."
         + " Set to False if system or network conditions do not allow it."
         + " Can be started manually with the 'start_broadcasting' method.",
     )
+    connect_kwargs: Optional[Any] = Field(
+        default=None,
+        description="A formatted dictionary, or serialized JSON string, of keyword arguments to pass"
+        + " directly to websockets.connect().",
+    )
+
+    @field_validator("connect_kwargs", mode="before", check_fields=False)
+    @classmethod
+    def _validate_connect_kwargs(cls, v):
+        """Validate the connect_kwargs format."""
+        # pylint: disable=import-outside-toplevel
+        import json
+
+        if isinstance(v, str):
+            try:
+                v = json.loads(v)
+            except json.JSONDecodeError as e:
+                raise OpenBBError(
+                    f"Invalid JSON format for 'connect_kwargs': {e}"
+                ) from e
+        if v is not None and not isinstance(v, dict):
+            raise OpenBBError(
+                "Invalid 'connect_kwargs' format. Must be a dictionary or serialized JSON string."
+            )
+
+        return json.dumps(v, separators=(",", ":"))
 
 
 class WebSocketData(Data):

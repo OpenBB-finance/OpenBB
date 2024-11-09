@@ -17,13 +17,10 @@ from openbb_websockets.helpers import (
     write_to_db,
 )
 
-queue = MessageQueue()
-command_queue = MessageQueue()
-
-
-# Create a logger instance.
 logger = get_logger("openbb.websocket.fmp")
 kwargs = parse_kwargs()
+queue = MessageQueue(max_size=kwargs.get("limit", 1000))
+command_queue = MessageQueue()
 
 
 async def login(websocket, api_key):
