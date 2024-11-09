@@ -775,15 +775,6 @@ MODEL_MAP = {
 class PolygonWebSocketData(Data):
     """Polygon WebSocket data model."""
 
-    # model_config = ConfigDict(
-    #    extra="allow",
-    #    populate_by_alias=True,
-    #    arbitrary_types_allowed=True,
-    #    validate_default=False,
-    #    frozen=False,
-    #    strict=False,
-    # )
-
     def __new__(cls, **data):
         """Create new instance of appropriate model type."""
         model = MODEL_MAP.get(data.get("ev")) or MODEL_MAP.get(data.get("type"))
