@@ -25,6 +25,31 @@ AUTH_TOKEN = kwargs.pop("auth_token", None)
 app = FastAPI()
 
 
+async def read_stdin(broadcast_server):
+    """Read from stdin."""
+    while True:
+        line = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
+        sys.stdin.flush()
+
+        if not line:
+            break
+
+        try:
+            command = (
+                json.loads(line.strip())
+                if line.strip().startswith("{") or line.strip().startswith("[")
+                else line.strip()
+            )
+            msg = (
+                "BROADCAST INFO:     Message received from parent process and relayed to active listeners ->"
+                + f" {json.dumps(command)}"
+            )
+            await broadcast_server.broadcast(json.dumps(command))
+            broadcast_server.logger.info(msg)
+        except json.JSONDecodeError:
+            broadcast_server.logger.error("Invalid JSON received from stdin")
+
+
 @app.websocket("/")
 async def websocket_endpoint(  # noqa: PLR0915
     websocket: WebSocket, auth_token: Optional[str] = None
@@ -61,29 +86,35 @@ async def websocket_endpoint(  # noqa: PLR0915
     connected_clients.add(broadcast_server)
 
     stream_task = asyncio.create_task(broadcast_server.stream_results())
+    stdin_task = asyncio.create_task(read_stdin(broadcast_server))
     try:
         await websocket.receive_text()
 
     except WebSocketDisconnect:
         pass
     except Exception as e:
-        broadcast_server.logger.error(f"Unexpected error: {e}")
+        msg = f"Unexpected error: {e.__class__.__name__} -> {e}"
+        broadcast_server.logger.error(msg)
         pass
     finally:
         if broadcast_server in connected_clients:
             connected_clients.remove(broadcast_server)
         stream_task.cancel()
+        stdin_task.cancel()
         try:
             await stream_task
+            await stdin_task
         except asyncio.CancelledError:
             broadcast_server.logger.info("Stream task cancelled")
         except Exception as e:
-            broadcast_server.logger.error(f"Error while cancelling stream task: {e}")
+            msg = f"Unexpected error while cancelling stream task: {e.__class__.__name__} -> {e}"
+            broadcast_server.logger.error(msg)
         if websocket.client_state != WebSocketState.DISCONNECTED:
             try:
                 await websocket.close()
             except RuntimeError as e:
-                broadcast_server.logger.error(f"Error while closing websocket: {e}")
+                msg = f"Unexpected error while closing websocket: {e.__class__.__name__} -> {e}"
+                broadcast_server.logger.error(msg)
 
 
 class BroadcastServer:
@@ -147,7 +178,7 @@ class BroadcastServer:
                                 await self.broadcast(json.dumps(json.loads(message)))
                             last_id = max(row[0] for row in rows)
                     else:
-                        self.logger.error(f"Results file not found: {file_path}")
+                        self.logger.error("Results file not found: %s", str(file_path))
                         break
 
                     await asyncio.sleep(self.sleep_time)
@@ -167,7 +198,8 @@ class BroadcastServer:
         except WebSocketDisconnect:
             pass
         except Exception as e:
-            self.logger.error(f"Unexpected error: {e}")
+            msg = f"Unexpected error: {e.__class__.__name__} -> {e}"
+            self.logger.error(msg)
         finally:
             return
 
@@ -220,9 +252,8 @@ def main():
             **kwargs,
         )
     except TypeError as e:
-        broadcast_server.logger.error(
-            f"Invalid keyword argument passed to unvicorn. -> {e.args[0]}\n"
-        )
+        msg = f"Invalid keyword argument passed to unvicorn. -> {e.args[0]}\n"
+        broadcast_server.logger.error(msg)
     except KeyboardInterrupt:
         broadcast_server.logger.info("Broadcast server terminated.")
     finally:

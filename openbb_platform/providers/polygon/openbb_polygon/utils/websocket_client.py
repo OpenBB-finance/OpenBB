@@ -38,6 +38,11 @@ async def handle_symbol(symbol):
     new_symbols: list = []
     feed = FEED_MAP.get(ASSET_TYPE, {}).get(FEED)
     for s in symbols:
+
+        if s == "*":
+            new_symbols.append(f"{feed}.*")
+            continue
+
         if "." in s:
             _check = s.split(".")[0]
             if _check not in list(FEED_MAP.get(ASSET_TYPE, {}).values()):
@@ -48,28 +53,21 @@ async def handle_symbol(symbol):
                 )
                 continue
 
-        if s == "*":
-            new_symbols.append(f"{feed}.*")
-            continue
         ticker = s.upper()
-        if ticker and "." not in ticker and not ticker.startswith(feed):
+
+        if ticker and "." not in ticker:
             ticker = f"{feed}.{ticker}"
-        elif (
-            ASSET_TYPE == "crypto"
-            and "." not in ticker
-            and "-" not in ticker
-            and ticker != "*"
-        ):
+
+        if ASSET_TYPE == "crypto" and "-" not in ticker and ticker != "*":
             ticker = ticker[:3] + "-" + ticker[3:]
-        elif (
-            ASSET_TYPE == "fx"
-            and "." not in ticker
-            and "/" not in ticker
-            and ticker != "*"
-        ):
+        elif ASSET_TYPE == "fx" and "/" not in ticker and ticker != "*":
             ticker = ticker[:3] + "/" + ticker[3:]
         elif ASSET_TYPE == "fx" and "-" in ticker:
             ticker = ticker.replace("-", "/")
+        elif ASSET_TYPE == "index" and ":" not in ticker and ticker != "*":
+            _feed, _ticker = ticker.split(".") if "." in ticker else (feed, ticker)
+            ticker = f"{_feed}.I:{_ticker}"
+
         new_symbols.append(ticker)
 
     return ",".join(new_symbols)
@@ -87,12 +85,12 @@ async def login(websocket, api_key):
                 logger.info("PROVIDER INFO:      %s", msg.get("message"))
                 continue
             if msg.get("status") != "auth_success":
-                err = f"PROVIDER ERROR:    {msg.get('status')} -> {msg.get('message')}"
+                err = f"PROVIDER ERROR:     {msg.get('status')} -> {msg.get('message')}"
                 logger.error(err)
                 sys.exit(1)
             logger.info("PROVIDER INFO:      %s", msg.get("message"))
     except Exception as e:
-        logger.error("PROVIDER ERROR:    %s", e.args[0])
+        logger.error("PROVIDER ERROR:     %s -> %s", e.__class__.__name__, e.args[0])
         sys.exit(1)
 
 
@@ -103,7 +101,7 @@ async def subscribe(websocket, symbol, event):
     try:
         await websocket.send(subscribe_event)
     except Exception as e:
-        msg = f"PROVIDER ERROR:    {e}"
+        msg = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
         logger.error(msg)
 
 
@@ -146,6 +144,8 @@ async def process_message(message, results_path, table_name, limit):
 
             if result:
                 await write_to_db(result, results_path, table_name, limit)
+        else:
+            logger.info("PROVIDER INFO:      %s", msg)
 
 
 async def connect_and_stream(url, symbol, api_key, results_path, table_name, limit):
@@ -255,7 +255,7 @@ if __name__ == "__main__":
         logger.error("PROVIDER ERROR:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:    {e.args[0]}"
+        msg = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
         logger.error(msg)
 
     finally:

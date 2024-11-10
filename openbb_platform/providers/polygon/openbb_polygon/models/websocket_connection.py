@@ -30,11 +30,13 @@ from pydantic import Field, field_validator, model_validator
 URL_MAP = {
     "stock": "wss://socket.polygon.io/stocks",
     "stock_delayed": "wss://delayed.polygon.io/stocks",
+    "index": "wss://socket.polygon.io/indices",
+    "index_delayed": "wss://delayed.polygon.io/indices",
     "fx": "wss://socket.polygon.io/forex",
     "crypto": "wss://socket.polygon.io/crypto",
 }
 
-ASSET_CHOICES = ["stock", "stock_delayed", "fx", "crypto"]
+ASSET_CHOICES = ["stock", "stock_delayed", "fx", "crypto", "index", "index_delayed"]
 
 FEED_MAP = {
     "crypto": {
@@ -64,6 +66,16 @@ FEED_MAP = {
         "trade": "T",
         "quote": "Q",
         "fmv": "FMV",
+    },
+    "index": {
+        "aggs_min": "AM",
+        "aggs_sec": "AS",
+        "value": "V",
+    },
+    "index_delayed": {
+        "aggs_min": "AM",
+        "aggs_sec": "AS",
+        "value": "V",
     },
 }
 
@@ -101,7 +113,9 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
     )
-    asset_type: Literal["stock", "stock_delayed", "fx", "crypto"] = Field(
+    asset_type: Literal[
+        "stock", "stock_delayed", "fx", "crypto", "index", "index_delayed"
+    ] = Field(
         default="crypto",
         description="The asset type associated with the symbol(s)."
         + " Choose from: stock, stock_delayed, fx, crypto.",
@@ -150,7 +164,8 @@ class PolygonCryptoAggsWebSocketData(WebSocketData):
         description="The type of data.",
     )
     date: datetime = Field(
-        description="The start of the aggregate window.",
+        description=DATA_DESCRIPTIONS.get("date", "")
+        + "The end of the aggregate window.",
     )
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
@@ -464,7 +479,8 @@ class PolygonStockAggsWebSocketData(WebSocketData):
         description="The type of data.",
     )
     date: datetime = Field(
-        description="The start of the aggregate window.",
+        description=DATA_DESCRIPTIONS.get("date", "")
+        + "The end of the aggregate window.",
     )
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
@@ -547,7 +563,8 @@ class PolygonStockTradeWebSocketData(WebSocketData):
         description="The type of data.",
     )
     date: datetime = Field(
-        description="The start of the aggregate window.",
+        description=DATA_DESCRIPTIONS.get("date", "")
+        + "The end of the aggregate window.",
     )
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
@@ -641,7 +658,8 @@ class PolygonStockQuoteWebSocketData(WebSocketData):
         description="The type of data.",
     )
     date: datetime = Field(
-        description="The start of the aggregate window.",
+        description=DATA_DESCRIPTIONS.get("date", "")
+        + "The end of the aggregate window.",
     )
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
@@ -727,6 +745,94 @@ class PolygonStockQuoteWebSocketData(WebSocketData):
         return values
 
 
+class PolygonIndexAggsWebSocketData(WebSocketData):
+    """Polygon Index Aggregates WebSocket data model."""
+
+    __alias_dict__ = {
+        "type": "ev",
+        "symbol": "sym",
+        "date": "e",
+        "day_open": "op",
+        "open": "o",
+        "high": "h",
+        "low": "l",
+        "close": "c",
+    }
+
+    type: str = Field(
+        description="The type of data.",
+    )
+    date: datetime = Field(
+        description=DATA_DESCRIPTIONS.get("date", "")
+        + "The end of the aggregate window.",
+    )
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+    )
+    day_open: float = Field(
+        description="Today's official opening level.",
+    )
+    open: float = Field(
+        description=DATA_DESCRIPTIONS.get("open", "")
+        + " For the current aggregate window.",
+    )
+    high: float = Field(
+        description=DATA_DESCRIPTIONS.get("high", "")
+        + " For the current aggregate window.",
+    )
+    low: float = Field(
+        description=DATA_DESCRIPTIONS.get("low", "")
+        + " For the current aggregate window.",
+    )
+    close: float = Field(
+        description=DATA_DESCRIPTIONS.get("close", "")
+        + " For the current aggregate window.",
+    )
+
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def _validate_date(cls, v):
+        """Validate the date."""
+        return validate_date(cls, v)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_model(cls, values):
+        """Validate the model."""
+        _ = values.pop("s", None)
+        return values
+
+
+class PolygonIndexValueWebSocketData(WebSocketData):
+    """Polygon Index Value WebSocket data model."""
+
+    __alias_dict__ = {
+        "type": "ev",
+        "symbol": "T",
+        "date": "t",
+        "value": "val",
+    }
+
+    type: str = Field(
+        description="The type of data.",
+    )
+    date: datetime = Field(
+        description=DATA_DESCRIPTIONS.get("date", ""),
+    )
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+    )
+    value: float = Field(
+        description="The value of the index.",
+    )
+
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def _validate_date(cls, v):
+        """Validate the date."""
+        return validate_date(cls, v)
+
+
 class PolygonFairMarketValueData(WebSocketData):
     """Polygon Fair Market Value WebSocket Data."""
 
@@ -767,6 +873,8 @@ MODEL_MAP = {
     "AS": PolygonStockAggsWebSocketData,
     "T": PolygonStockTradeWebSocketData,
     "Q": PolygonStockQuoteWebSocketData,
+    "A": PolygonIndexAggsWebSocketData,
+    "V": PolygonIndexValueWebSocketData,
 }
 
 
@@ -775,7 +883,14 @@ class PolygonWebSocketData(Data):
 
     def __new__(cls, **data):
         """Create new instance of appropriate model type."""
-        model = MODEL_MAP.get(data.get("ev")) or MODEL_MAP.get(data.get("type"))
+        index_symbol = data.get("sym", "").startswith("I:") or data.get(
+            "symbol", ""
+        ).startswith("I:")
+        model = (
+            MODEL_MAP["A"]
+            if index_symbol
+            else MODEL_MAP.get(data.get("ev")) or MODEL_MAP.get(data.get("type"))
+        )
         if not model:
             return super().__new__(cls)
 

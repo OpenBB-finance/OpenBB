@@ -224,7 +224,7 @@ class WebSocketClient:
                         self._thread.join()
                         err = ChildProcessError(output)
                         self._exception = err
-                        sys.stdout.write(msg + "\n")
+                        sys.stdout.write(output + "\n")
                         sys.stdout.flush()
                         break
 
@@ -672,6 +672,11 @@ def send_message(
     client, message, target: Literal["provider", "broadcast"] = "provider"
 ) -> None:
     """Send a message to the WebSocketConnection process."""
+    # pylint: disable=import-outside-toplevel
+    import json
+
+    if isinstance(message, (dict, list)):
+        message = json.dumps(message)
     try:
         if target == "provider":
             if client._process and client._process.stdin:
