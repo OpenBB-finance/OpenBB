@@ -217,14 +217,15 @@ class WebSocketClient:
                     if (
                         "server rejected" in output.lower()
                         or "PROVIDER ERROR" in output
-                        or "Unexpected error" in output
+                        or "unexpected error" in output.lower()
                     ):
-                        err = ChildProcessError(output)
-                        self._exception = err
-                        self.logger.error(output)
                         self._psutil_process.kill()
                         self._process.wait()
                         self._thread.join()
+                        err = ChildProcessError(output)
+                        self._exception = err
+                        sys.stdout.write(msg + "\n")
+                        sys.stdout.flush()
                         break
 
                     output = clean_message(output)
@@ -265,9 +266,9 @@ class WebSocketClient:
                     output = None
 
                 if output:
-                    if "ERROR:" in output:
+                    if output.startswith("ERROR:"):
                         output = output.replace("ERROR:", "BROADCAST ERROR:") + "\n"
-                    if "INFO:" in output:
+                    elif output.startswith("INFO:"):
                         output = output.replace("INFO:", "BROADCAST INFO:") + "\n"
                     output = output[0] if isinstance(output, tuple) else output
                     output = clean_message(output)
