@@ -58,7 +58,11 @@ async def create_connection(
     await asyncio.sleep(1)
 
     if not client.is_running:
-        client._atexit()
+        if client._exception:
+            exc = getattr(client, "_exception", None)
+            delattr(client, "_exception")
+            client._atexit()
+            raise OpenBBError(exc)
         raise OpenBBError("Client failed to connect.")
 
     if hasattr(extra_params, "start_broadcast") and extra_params.start_broadcast:

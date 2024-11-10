@@ -7,6 +7,7 @@ from typing import Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import UnauthorizedError
+from pydantic import ValidationError
 
 AUTH_TOKEN_FILTER = re.compile(
     r"(auth_token=)([^&]*)",
@@ -34,7 +35,15 @@ def get_logger(name, level=logging.INFO):
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     logger.setLevel(level)
+
     return logger
+
+
+def handle_validation_error(logger: logging.Logger, error: ValidationError):
+    """Log and raise a Pydantic ValidationError from a provider connection."""
+    err = f"{error.__class__.__name__} -> {error.title}: {str(error.json())}"
+    logger.error(err)
+    raise error from error
 
 
 async def get_status(name: str) -> dict:

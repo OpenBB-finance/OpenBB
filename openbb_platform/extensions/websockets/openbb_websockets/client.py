@@ -185,14 +185,35 @@ class WebSocketClient:
     def _log_provider_output(self, output_queue) -> None:
         """Log output from the provider server queue."""
         # pylint: disable=import-outside-toplevel
-        import queue  # noqa
+        import json  # noqa
+        import queue
         import sys
         from openbb_websockets.helpers import clean_message
+        from pydantic import ValidationError
 
         while not self._stop_log_thread_event.is_set():
             try:
                 output = output_queue.get(timeout=1)
                 if output:
+                    if "ValidationError" in output:
+                        self._psutil_process.kill()
+                        self._process.wait()
+                        self._thread.join()
+                        title, errors = output.split(" -> ")[-1].split(": ")
+                        line_errors = json.loads(errors.strip())
+                        err = ValidationError.from_exception_data(
+                            title=title.strip(), line_errors=line_errors
+                        )
+                        self._exception = err
+                        msg = (
+                            "PROVIDER ERROR:     Disconnecting because a ValidatonError was raised"
+                            + " by the provider while processing data."
+                            + f"\n\n{str(err)}\n"
+                        )
+                        sys.stdout.write(msg + "\n")
+                        sys.stdout.flush()
+                        break
+
                     if (
                         "server rejected" in output.lower()
                         or "PROVIDER ERROR" in output
@@ -201,6 +222,9 @@ class WebSocketClient:
                         err = ChildProcessError(output)
                         self._exception = err
                         self.logger.error(output)
+                        self._psutil_process.kill()
+                        self._process.wait()
+                        self._thread.join()
                         break
 
                     output = clean_message(output)

@@ -25,7 +25,7 @@ from openbb_websockets.models import (
     WebSocketData,
     WebSocketQueryParams,
 )
-from pydantic import ConfigDict, Field, field_validator, model_validator
+from pydantic import Field, field_validator, model_validator
 
 URL_MAP = {
     "stock": "wss://socket.polygon.io/stocks",

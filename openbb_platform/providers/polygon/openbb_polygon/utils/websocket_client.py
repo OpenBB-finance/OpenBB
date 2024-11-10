@@ -16,9 +16,11 @@ from openbb_websockets.helpers import (
     MessageQueue,
     get_logger,
     handle_termination_signal,
+    handle_validation_error,
     parse_kwargs,
     write_to_db,
 )
+from pydantic import ValidationError
 
 logger = get_logger("openbb.websocket.polygon")
 queue = MessageQueue()
@@ -36,19 +38,38 @@ async def handle_symbol(symbol):
     new_symbols: list = []
     feed = FEED_MAP.get(ASSET_TYPE, {}).get(FEED)
     for s in symbols:
+        if "." in s:
+            _check = s.split(".")[0]
+            if _check not in list(FEED_MAP.get(ASSET_TYPE, {}).values()):
+                logger.error(
+                    "PROVIDER INFO:      Invalid feed, %s, for  asset type, %s",
+                    _check,
+                    ASSET_TYPE,
+                )
+                continue
+
         if s == "*":
             new_symbols.append(f"{feed}.*")
             continue
         ticker = s.upper()
-        if ASSET_TYPE == "crypto" and "-" not in ticker and ticker != "*":
+        if ticker and "." not in ticker and not ticker.startswith(feed):
+            ticker = f"{feed}.{ticker}"
+        elif (
+            ASSET_TYPE == "crypto"
+            and "." not in ticker
+            and "-" not in ticker
+            and ticker != "*"
+        ):
             ticker = ticker[:3] + "-" + ticker[3:]
-        elif ASSET_TYPE == "fx" and "/" not in ticker and ticker != "*":
+        elif (
+            ASSET_TYPE == "fx"
+            and "." not in ticker
+            and "/" not in ticker
+            and ticker != "*"
+        ):
             ticker = ticker[:3] + "/" + ticker[3:]
         elif ASSET_TYPE == "fx" and "-" in ticker:
             ticker = ticker.replace("-", "/")
-
-        if ticker and "." not in ticker and not ticker.startswith(feed):
-            ticker = f"{feed}.{ticker}"
         new_symbols.append(ticker)
 
     return ",".join(new_symbols)
@@ -117,10 +138,12 @@ async def process_message(message, results_path, table_name, limit):
                 result = PolygonWebSocketData(**msg).model_dump_json(
                     exclude_none=True, exclude_unset=True
                 )
-            except Exception as e:
-                err = f"PROVIDER ERROR:    Error validating data: {e}"
-                logger.error(err)
-                return None
+            except ValidationError as e:
+                try:
+                    handle_validation_error(logger, e)
+                except ValidationError:
+                    raise e from e
+
             if result:
                 await write_to_db(result, results_path, table_name, limit)
 
