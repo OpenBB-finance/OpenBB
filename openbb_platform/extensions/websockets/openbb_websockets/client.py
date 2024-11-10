@@ -188,6 +188,7 @@ class WebSocketClient:
         import json  # noqa
         import queue
         import sys
+        from openbb_core.provider.utils.errors import UnauthorizedError
         from openbb_websockets.helpers import clean_message
         from pydantic import ValidationError
 
@@ -195,6 +196,17 @@ class WebSocketClient:
             try:
                 output = output_queue.get(timeout=1)
                 if output:
+                    # Handle raised exceptions from the provider connection thread.
+                    if "UnauthorizedError" in output:
+                        self._psutil_process.kill()
+                        self._process.wait()
+                        self._thread.join()
+                        err = UnauthorizedError(output)
+                        self._exception = err
+                        sys.stdout.write(output + "\n")
+                        sys.stdout.flush()
+                        break
+
                     if "ValidationError" in output:
                         self._psutil_process.kill()
                         self._process.wait()

@@ -1,5 +1,7 @@
 """Polygon WebSocket Connection Model."""
 
+# pylint: disable=unused-argument, too-many-lines
+
 from datetime import datetime
 from typing import Any, Literal, Optional
 
@@ -13,6 +15,8 @@ from openbb_core.provider.utils.descriptions import (
 from openbb_polygon.utils.constants import (
     CRYPTO_EXCHANGE_MAP,
     FX_EXCHANGE_MAP,
+    OPTIONS_EXCHANGE_MAP,
+    OPTIONS_TRADE_CONDITIONS,
     STOCK_EXCHANGE_MAP,
     STOCK_QUOTE_CONDITIONS,
     STOCK_QUOTE_INDICATORS,
@@ -30,13 +34,24 @@ from pydantic import Field, field_validator, model_validator
 URL_MAP = {
     "stock": "wss://socket.polygon.io/stocks",
     "stock_delayed": "wss://delayed.polygon.io/stocks",
-    "index": "wss://socket.polygon.io/indices",
-    "index_delayed": "wss://delayed.polygon.io/indices",
+    "options": "wss://socket.polygon.io/options",
+    "options_delayed": "wss://delayed.polygon.io/options",
     "fx": "wss://socket.polygon.io/forex",
     "crypto": "wss://socket.polygon.io/crypto",
+    "index": "wss://socket.polygon.io/indices",
+    "index_delayed": "wss://delayed.polygon.io/indices",
 }
 
-ASSET_CHOICES = ["stock", "stock_delayed", "fx", "crypto", "index", "index_delayed"]
+ASSET_CHOICES = [
+    "stock",
+    "stock_delayed",
+    "options",
+    "options_delayed",
+    "fx",
+    "crypto",
+    "index",
+    "index_delayed",
+]
 
 FEED_MAP = {
     "crypto": {
@@ -77,6 +92,20 @@ FEED_MAP = {
         "aggs_sec": "AS",
         "value": "V",
     },
+    "options": {
+        "aggs_min": "AM",
+        "aggs_sec": "A",
+        "trade": "T",
+        "quote": "Q",
+        "fmv": "FMV",
+    },
+    "options_delayed": {
+        "aggs_min": "AM",
+        "aggs_sec": "A",
+        "trade": "T",
+        "quote": "Q",
+        "fmv": "FMV",
+    },
 }
 
 
@@ -111,10 +140,20 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
     }
 
     symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", ""),
+        description=QUERY_DESCRIPTIONS.get("symbol", "")
+        + " All feeds, except Options, support the wildcard symbol, '*', to subscribe to all symbols."
+        + " For Options, the OCC contract symbol is used to subscribe up to 1000 individual contracts"
+        + " per connection."
     )
     asset_type: Literal[
-        "stock", "stock_delayed", "fx", "crypto", "index", "index_delayed"
+        "stock",
+        "stock_delayed",
+        "options",
+        "options_delayed",
+        "fx",
+        "crypto",
+        "index",
+        "index_delayed",
     ] = Field(
         default="crypto",
         description="The asset type associated with the symbol(s)."
@@ -833,6 +872,146 @@ class PolygonIndexValueWebSocketData(WebSocketData):
         return validate_date(cls, v)
 
 
+class PolygonOptionsTradeWebSocketData(WebSocketData):
+    """Polygon Options Trade WebSocket data model."""
+
+    __alias_dict__ = {
+        "type": "ev",
+        "symbol": "sym",
+        "date": "t",
+        "exchange": "x",
+        "price": "p",
+        "size": "s",
+        "conditions": "c",
+    }
+
+    type: str = Field(
+        description="The type of data.",
+    )
+    date: datetime = Field(
+        description=DATA_DESCRIPTIONS.get("date", ""),
+    )
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+    )
+    price: float = Field(
+        description="The price of the trade.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    size: float = Field(
+        description="The size of the trade.",
+    )
+    exchange: str = Field(
+        description="The exchange where the trade originated.",
+    )
+    conditions: Optional[str] = Field(
+        default=None,
+        description="The conditions of the trade.",
+    )
+
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def _validate_date(cls, v):
+        """Validate the date."""
+        return validate_date(cls, v)
+
+    @field_validator("exchange", mode="before", check_fields=False)
+    @classmethod
+    def _validate_exchange(cls, v):
+        """Validate the exchange."""
+        return OPTIONS_EXCHANGE_MAP.get(v, str(v))
+
+    @field_validator("conditions", mode="before", check_fields=False)
+    @classmethod
+    def _validate_conditions(cls, v):
+        """Validate the conditions."""
+        if v is None or not v:
+            return None
+        new_conditions: list = []
+        if isinstance(v, list):
+            for c in v:
+                new_conditions.append(OPTIONS_TRADE_CONDITIONS.get(c, str(c)))
+        elif isinstance(v, int):
+            new_conditions.append(OPTIONS_TRADE_CONDITIONS.get(v, str(v)))
+
+        if not new_conditions:
+            return None
+        return "; ".join(new_conditions)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_model(cls, values):
+        """Validate the model."""
+        _ = values.pop("q", None)
+        return values
+
+
+class PolygonOptionsQuoteWebSocketData(WebSocketData):
+    """Polygon Options Quote WebSocket data model."""
+
+    __alias_dict__ = {
+        "type": "ev",
+        "symbol": "sym",
+        "date": "t",
+        "bid_exchange": "bx",
+        "bid_size": "bs",
+        "bid": "bp",
+        "ask": "ap",
+        "ask_size": "as",
+        "ask_exchange": "ax",
+    }
+
+    type: str = Field(
+        description="The type of data.",
+    )
+    date: datetime = Field(
+        description=DATA_DESCRIPTIONS.get("date", "")
+        + "The end of the aggregate window.",
+    )
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+    )
+    bid_exchange: str = Field(
+        description="The exchange where the bid originated.",
+    )
+    bid_size: float = Field(
+        description="The size of the bid.",
+    )
+    bid: float = Field(
+        description="The bid price.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    ask: float = Field(
+        description="The ask price.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    ask_size: float = Field(
+        description="The size of the ask.",
+    )
+    ask_exchange: str = Field(
+        description="The exchange where the ask originated.",
+    )
+
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def _validate_date(cls, v):
+        """Validate the date."""
+        return validate_date(cls, v)
+
+    @field_validator("bid_exchange", "ask_exchange", mode="before", check_fields=False)
+    @classmethod
+    def _validate_exchange(cls, v):
+        """Validate the exchange."""
+        return OPTIONS_EXCHANGE_MAP.get(v, str(v))
+
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_model(cls, values):
+        """Validate the model."""
+        _ = values.pop("q", None)
+        return values
+
+
 class PolygonFairMarketValueData(WebSocketData):
     """Polygon Fair Market Value WebSocket Data."""
 
@@ -877,20 +1056,73 @@ MODEL_MAP = {
     "V": PolygonIndexValueWebSocketData,
 }
 
+OPTIONS_MODEL_MAP = {
+    "AM": PolygonStockAggsWebSocketData,
+    "A": PolygonStockAggsWebSocketData,
+    "T": PolygonOptionsTradeWebSocketData,
+    "Q": PolygonOptionsQuoteWebSocketData,
+    "FMV": PolygonFairMarketValueData,
+}
+
 
 class PolygonWebSocketData(Data):
-    """Polygon WebSocket data model."""
+    """Polygon WebSocket data model. This model is used to identify the appropriate model for the data.
+    The model is determined based on the type of data received from the WebSocket.
+    Some asset feeds share common data structures with other asset feeds - for example, FX and Crypto aggregates.
+
+    Stock
+    -----
+    - Aggs: AS, AM - PolygonStockAggsWebSocketData
+    - Trade: T - PolygonStockTradeWebSocketData
+    - Quote: Q - PolygonStockQuoteWebSocketData
+    - Fair Market Value: FMV - PolygonFairMarketValueData
+
+    Options
+    -------
+    - Aggs: A, AM - PolygonStockAggsWebSocketData
+    - Trade: T - PolygonOptionsTradeWebSocketData
+    - Quote: Q - PolygonOptionsQuoteWebSocketData
+    - Fair Market Value: FMV - PolygonFairMarketValueData
+
+    Index
+    -----
+    - Aggs: A, AM - PolygonIndexAggsWebSocketData
+    - Value: V - PolygonIndexValueWebSocketData
+
+    Crypto
+    ------
+    - Aggs: XAS, XA - PolygonCryptoAggsWebSocketData
+    - Trade: XT - PolygonCryptoTradeWebSocketData
+    - Quote: XQ - PolygonCryptoQuoteWebSocketData
+    - L2: XL2 - PolygonCryptoL2WebSocketData
+    - Fair Market Value: FMV - PolygonFairMarketValueData
+
+    FX
+    --
+    - Aggs: CAS, CA - PolygonCryptoAggsWebSocketData
+    - Quote: C - PolygonFXQuoteWebSocketData
+    - Fair Market Value: FMV - PolygonFairMarketValueData
+    """
 
     def __new__(cls, **data):
         """Create new instance of appropriate model type."""
         index_symbol = data.get("sym", "").startswith("I:") or data.get(
             "symbol", ""
         ).startswith("I:")
-        model = (
-            MODEL_MAP["A"]
-            if index_symbol
-            else MODEL_MAP.get(data.get("ev")) or MODEL_MAP.get(data.get("type"))
-        )
+        options_symbol = data.get("sym", "").startswith("O:") or data.get(
+            "symbol", ""
+        ).startswith("O:")
+
+        if options_symbol:
+            model = OPTIONS_MODEL_MAP.get(data.get("ev")) or OPTIONS_MODEL_MAP.get(
+                data.get("type")
+            )
+        else:
+            model = (
+                MODEL_MAP["A"]
+                if index_symbol
+                else MODEL_MAP.get(data.get("ev")) or MODEL_MAP.get(data.get("type"))
+            )
         if not model:
             return super().__new__(cls)
 

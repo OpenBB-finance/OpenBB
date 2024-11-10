@@ -8,6 +8,7 @@ import sys
 
 import websockets
 import websockets.exceptions
+from openbb_core.provider.utils.errors import UnauthorizedError
 from openbb_polygon.models.websocket_connection import (
     FEED_MAP,
     PolygonWebSocketData,
@@ -39,6 +40,12 @@ async def handle_symbol(symbol):
     feed = FEED_MAP.get(ASSET_TYPE, {}).get(FEED)
     for s in symbols:
 
+        if ASSET_TYPE == "options" and "*" in s:
+            logger.error(
+                "PROVIDER INFO:      Options symbols do not support wildcards."
+            )
+            continue
+
         if s == "*":
             new_symbols.append(f"{feed}.*")
             continue
@@ -64,9 +71,16 @@ async def handle_symbol(symbol):
             ticker = ticker[:3] + "/" + ticker[3:]
         elif ASSET_TYPE == "fx" and "-" in ticker:
             ticker = ticker.replace("-", "/")
-        elif ASSET_TYPE == "index" and ":" not in ticker and ticker != "*":
+        elif (
+            ASSET_TYPE in ["index", "index_delayed"]
+            and ":" not in ticker
+            and ticker != "*"
+        ):
             _feed, _ticker = ticker.split(".") if "." in ticker else (feed, ticker)
             ticker = f"{_feed}.I:{_ticker}"
+        elif ASSET_TYPE in ["options", "options_delayed"] and ":" not in ticker:
+            _feed, _ticker = ticker.split(".") if "." in ticker else (feed, ticker)
+            ticker = f"{_feed}.O:{_ticker}"
 
         new_symbols.append(ticker)
 
@@ -85,9 +99,12 @@ async def login(websocket, api_key):
                 logger.info("PROVIDER INFO:      %s", msg.get("message"))
                 continue
             if msg.get("status") != "auth_success":
-                err = f"PROVIDER ERROR:     {msg.get('status')} -> {msg.get('message')}"
+                err = (
+                    f"UnauthorizedError -> {msg.get('status')} -> {msg.get('message')}"
+                )
                 logger.error(err)
                 sys.exit(1)
+                raise UnauthorizedError(f"{msg.get('status')} -> {msg.get('message')}")
             logger.info("PROVIDER INFO:      %s", msg.get("message"))
     except Exception as e:
         logger.error("PROVIDER ERROR:     %s -> %s", e.__class__.__name__, e.args[0])
@@ -125,6 +142,12 @@ async def process_message(message, results_path, table_name, limit):
     """Process the WebSocket message."""
     messages = message if isinstance(message, list) else [message]
     for msg in messages:
+        if "Your plan doesn't include websocket access" in msg.get("message"):
+            err = f"UnauthorizedError -> {msg.get('message')}"
+            logger.error(err)
+            sys.exit(1)
+            raise UnauthorizedError(msg.get("message"))
+
         if "status" in msg or "message" in msg:
             if "status" in msg and msg["status"] == "error":
                 err = msg.get("message")
@@ -198,14 +221,27 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
                                 await subscribe(websocket, symbol, event)
         except websockets.InvalidStatusCode as e:
             if e.status_code == 404:
-                msg = f"PROVIDER ERROR:    {e}"
+                msg = f"PROVIDER ERROR:     {e.__str__()}"
                 logger.error(msg)
                 sys.exit(1)
             else:
                 raise
+        except websockets.InvalidURI as e:
+            msg = f"PROVIDER ERROR:     {e.__str__()}"
+            logger.error(msg)
+            sys.exit(1)
+
+    except websockets.ConnectionClosedOK as e:
+        msg = (
+            f"PROVIDER INFO:      The WebSocket connection was closed -> {e.__str__()}"
+        )
+        logger.info(msg)
+        sys.exit(0)
 
     except websockets.ConnectionClosed as e:
-        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {str(e)}"
+        msg = (
+            f"PROVIDER INFO:      The WebSocket connection was closed -> {e.__str__()}"
+        )
         logger.info(msg)
         # Attempt to reopen the connection
         logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds.")
@@ -213,12 +249,12 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
         await connect_and_stream(url, symbol, api_key, results_path, table_name, limit)
 
     except websockets.WebSocketException as e:
-        msg = f"PROVIDER ERROR:     WebSocketException -> {e}"
+        msg = f"PROVIDER ERROR:     WebSocketException -> {e.__str__()}"
         logger.error(msg)
         sys.exit(1)
 
     except Exception as e:
-        msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
+        msg = f"Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
         logger.error(msg)
         sys.exit(1)
 

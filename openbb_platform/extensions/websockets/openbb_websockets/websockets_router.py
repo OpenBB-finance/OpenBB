@@ -17,7 +17,7 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 
 from openbb_websockets.helpers import (
     StdOutSink,
@@ -62,6 +62,8 @@ async def create_connection(
             exc = getattr(client, "_exception", None)
             delattr(client, "_exception")
             client._atexit()
+            if isinstance(exc, UnauthorizedError):
+                raise exc
             raise OpenBBError(exc)
         raise OpenBBError("Client failed to connect.")
 
