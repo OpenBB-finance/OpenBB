@@ -166,6 +166,8 @@ class WebSocketClient:
         # pylint: disable=import-outside-toplevel
         import os
 
+        self._exception = None
+
         if self.is_running:
             self.disconnect()
         if self.is_broadcasting:

@@ -60,7 +60,6 @@ async def create_connection(
     if not client.is_running:
         if client._exception:
             exc = getattr(client, "_exception", None)
-            delattr(client, "_exception")
             client._atexit()
             if isinstance(exc, UnauthorizedError):
                 raise exc
@@ -159,14 +158,19 @@ async def subscribe(
     """
     if not await check_auth(name, auth_token):
         raise OpenBBError("Error finding client.")
+
     client = connected_clients[name]
     symbols = client.symbol.split(",")
+
     if symbols and symbol in symbols:
         raise OpenBBError(f"Client {name} already subscribed to {symbol}.")
+
     client.subscribe(symbol)
-    # await asyncio.sleep(2)
+    await asyncio.sleep(1)
+
     if client.is_running:
         return OBBject(results=f"Added {symbol} to client {name} connection.")
+
     client.logger.error(
         f"Client {name} failed to subscribe to {symbol} and is not running."
     )
