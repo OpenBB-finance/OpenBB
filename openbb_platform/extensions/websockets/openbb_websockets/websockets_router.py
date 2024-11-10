@@ -57,9 +57,9 @@ async def create_connection(
 
     await asyncio.sleep(1)
 
-    if not client.is_running:
-        if client._exception:
-            exc = getattr(client, "_exception", None)
+    if not client.is_running or client._exception:
+        exc = getattr(client, "_exception", None)
+        if exc:
             client._atexit()
             if isinstance(exc, UnauthorizedError):
                 raise exc

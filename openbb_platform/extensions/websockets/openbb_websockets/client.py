@@ -705,7 +705,8 @@ def send_message(
             else:
                 client.logger.error("Broadcast process is not running.")
     except Exception as e:
-        client.logger.error(f"Error sending message to WebSocket process: {e}")
+        msg = f"Error sending message to WebSocket process: {e.__class__.__name__} -> {e.__str__()}"
+        client.logger.error(msg)
 
 
 def read_message_queue(
