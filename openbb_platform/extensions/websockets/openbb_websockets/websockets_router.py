@@ -55,9 +55,7 @@ async def create_connection(
     obbject = await OBBject.from_query(Query(**locals()))
     client = obbject.results.client
 
-    await asyncio.sleep(1)
-
-    if not client.is_running or client._exception:
+    if not client.is_running or client._exception is not None:
         exc = getattr(client, "_exception", None)
         if exc:
             client._atexit()
@@ -139,7 +137,7 @@ async def clear_results(name: str, auth_token: Optional[str] = None) -> OBBject[
 )
 async def subscribe(
     name: str, symbol: str, auth_token: Optional[str] = None
-) -> OBBject[str]:
+) -> OBBject[WebSocketConnectionStatus]:
     """Subscribe to a new symbol.
 
     Parameters
@@ -153,8 +151,8 @@ async def subscribe(
 
     Returns
     -------
-    str
-        The message that the client subscribed to the symbol.
+    WebSocketConnectionStatus
+        The status of the client connection.
     """
     if not await check_auth(name, auth_token):
         raise OpenBBError("Error finding client.")
@@ -170,8 +168,10 @@ async def subscribe(
     except OpenBBError as e:
         raise e from e
 
+    status = await get_status(name)
+
     if client.is_running:
-        return OBBject(results=f"Added {symbol} to client {name} connection.")
+        return OBBject(results=WebSocketConnectionStatus(**status))
 
     client.logger.error(
         f"Client {name} failed to subscribe to {symbol} and is not running."
@@ -183,7 +183,7 @@ async def subscribe(
 )
 async def unsubscribe(
     name: str, symbol: str, auth_token: Optional[str] = None
-) -> OBBject[str]:
+) -> OBBject[WebSocketConnectionStatus]:
     """Unsubscribe to a symbol.
 
     Parameters
@@ -197,22 +197,23 @@ async def unsubscribe(
 
     Returns
     -------
-    str
-        The message that the client unsubscribed from the symbol.
+    WebSocketConnectionStatus
+        The status of the client connection.
     """
     if not await check_auth(name, auth_token):
         raise OpenBBError("Error finding client.")
+
     client = connected_clients[name]
     symbols = client.symbol.split(",")
+
     if symbol not in symbols:
         raise OpenBBError(f"Client {name} not subscribed to {symbol}.")
+
     client.unsubscribe(symbol)
-    # await asyncio.sleep(2)
-    if client.is_running:
-        return OBBject(results=f"Client {name} unsubscribed to {symbol}.")
-    client.logger.error(
-        f"Client {name} failed to unsubscribe to {symbol} and is not running."
-    )
+
+    status = await get_status(name)
+
+    return OBBject(results=WebSocketConnectionStatus(**status))
 
 
 @router.command(
@@ -230,7 +231,7 @@ async def get_client_status(
 
     Returns
     -------
-    list[dict]
+    list[WebSocketConnectionStatus]
         The status of the client(s).
     """
     if not connected_clients:
@@ -272,7 +273,9 @@ async def get_client(name: str, auth_token: Optional[str] = None) -> OBBject:
 @router.command(
     methods=["GET"],
 )
-async def stop_connection(name: str, auth_token: Optional[str] = None) -> OBBject[str]:
+async def stop_connection(
+    name: str, auth_token: Optional[str] = None
+) -> OBBject[WebSocketConnectionStatus]:
     """Stop a the connection to the provider's websocket. Does not stop the broadcast server.
 
     Parameters
@@ -284,16 +287,16 @@ async def stop_connection(name: str, auth_token: Optional[str] = None) -> OBBjec
 
     Returns
     -------
-    str
-        The message that the provider connection was stopped.
+    WebSocketConnectionStatus
+        The status of the client connection.
     """
     if not await check_auth(name, auth_token):
         raise OpenBBError("Error finding client.")
     client = connected_clients[name]
     client.disconnect()
-    return OBBject(
-        results=f"Client {name} connection to the provider's websocket was stopped."
-    )
+    status = await get_status(name)
+
+    return OBBject(results=WebSocketConnectionStatus(**status))
 
 
 @router.command(
@@ -301,7 +304,7 @@ async def stop_connection(name: str, auth_token: Optional[str] = None) -> OBBjec
 )
 async def restart_connection(
     name: str, auth_token: Optional[str] = None
-) -> OBBject[str]:
+) -> OBBject[WebSocketConnectionStatus]:
     """Restart a websocket connection.
 
     Parameters
@@ -313,16 +316,23 @@ async def restart_connection(
 
     Returns
     -------
-    str
-        The message that the client connection was restarted.
+    WebSocketConnectionStatus
+        The status of the client connection.
     """
     if name not in connected_clients:
         raise OpenBBError(f"No active client named, {name}. Use create_connection.")
     if not await check_auth(name, auth_token):
         raise OpenBBError("Error finding client.")
     client = connected_clients[name]
-    client.connect()
-    return OBBject(results=f"Client {name} connection was restarted.")
+
+    try:
+        client.connect()
+    except OpenBBError as e:
+        raise e from e
+
+    status = await get_status(name)
+
+    return OBBject(results=WebSocketConnectionStatus(**status))
 
 
 @router.command(
@@ -330,7 +340,7 @@ async def restart_connection(
 )
 async def stop_broadcasting(
     name: str, auth_token: Optional[str] = None
-) -> OBBject[str]:
+) -> OBBject[WebSocketConnectionStatus]:
     """Stop the broadcast server.
 
     Parameters
@@ -342,8 +352,8 @@ async def stop_broadcasting(
 
     Returns
     -------
-    str
-        The message that the client stopped broadcasting to the address.
+    WebSocketConnectionStatus
+        The status of the client connection.
     """
     if name not in connected_clients:
         raise OpenBBError(f"Client {name} not connected.")
@@ -356,7 +366,6 @@ async def stop_broadcasting(
     if not client.is_broadcasting:
         raise OpenBBError(f"Client {name} not broadcasting.")
 
-    old_address = client.broadcast_address
     client.stop_broadcasting()
 
     if not client.is_running:
@@ -366,7 +375,9 @@ async def stop_broadcasting(
             results=f"Client {name} stopped broadcasting and was not running, client removed."
         )
 
-    return OBBject(results=f"Client {name} stopped broadcasting to: {old_address}")
+    status = await get_status(name)
+
+    return OBBject(results=WebSocketConnectionStatus(**status))
 
 
 @router.command(
@@ -378,7 +389,7 @@ async def start_broadcasting(
     host: str = "127.0.0.1",
     port: int = 6666,
     uvicorn_kwargs: Optional[dict[str, Any]] = None,
-) -> OBBject[str]:
+) -> OBBject[WebSocketConnectionStatus]:
     """Start broadcasting from a websocket.
 
     Parameters
@@ -396,23 +407,27 @@ async def start_broadcasting(
 
     Returns
     -------
-    str
-        The message that the client started broadcasting.
+    WebSocketConnectionStatus
+        The status of the client connection.
     """
     if name not in connected_clients:
         raise OpenBBError(f"Client {name} not connected.")
+
     if not await check_auth(name, auth_token):
         raise OpenBBError("Error finding client.")
+
     client = connected_clients[name]
     kwargs = uvicorn_kwargs if uvicorn_kwargs else {}
     client.start_broadcasting(host=host, port=port, **kwargs)
 
     await asyncio.sleep(2)
+
     if not client.is_broadcasting:
         raise OpenBBError(f"Client {name} failed to broadcast.")
-    return OBBject(
-        results=f"Client {name} started broadcasting to {client.broadcast_address}."
-    )
+
+    status = await get_status(name)
+
+    return OBBject(results=WebSocketConnectionStatus(**status))
 
 
 @router.command(
@@ -435,9 +450,12 @@ async def kill(name: str, auth_token: Optional[str] = None) -> OBBject[str]:
     """
     if not connected_clients:
         raise OpenBBError("No connections to kill.")
-    elif name and name not in connected_clients:
+
+    if name and name not in connected_clients:
         raise OpenBBError(f"Client {name} not connected.")
+
     client = connected_clients[name]
     client._atexit()
     del connected_clients[name]
+
     return OBBject(results=f"Clients {name} killed.")

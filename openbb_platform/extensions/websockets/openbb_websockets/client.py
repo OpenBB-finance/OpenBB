@@ -199,6 +199,7 @@ class WebSocketClient:
                 output = output_queue.get(timeout=1)
                 if output:
                     # Handle raised exceptions from the provider connection thread, killing the process if required.
+                    # UnauthorizedError should be raised by the parent thread, but we kill the process here.
                     if "UnauthorizedError" in output:
                         self._psutil_process.kill()
                         self._process.wait()
@@ -208,7 +209,9 @@ class WebSocketClient:
                         sys.stdout.write(output + "\n")
                         sys.stdout.flush()
                         break
-
+                    # ValidationError may occur after the provider connection is established.
+                    # We write to stdout in case the exception can't be raised before the main function returns.
+                    # We kill the connection here.
                     if "ValidationError" in output:
                         self._psutil_process.kill()
                         self._process.wait()
@@ -227,7 +230,14 @@ class WebSocketClient:
                         sys.stdout.write(msg + "\n")
                         sys.stdout.flush()
                         break
-
+                    # We don't kill the process on SymbolError, but raise the exception in the main thread instead.
+                    # This is likely a subscribe event and the connection is already streaming.
+                    if "SymbolError" in output:
+                        err = ValueError(output)
+                        self._exception = err
+                        continue
+                    # Other errors are logged to stdout and the process is killed.
+                    # If the exception is raised by the parent thread, it will be treated as an unexpected error.
                     if (
                         "server rejected" in output.lower()
                         or "PROVIDER ERROR" in output
@@ -241,11 +251,6 @@ class WebSocketClient:
                         sys.stdout.write(output + "\n")
                         sys.stdout.flush()
                         break
-                    # We don't kill the process on SymbolError, but raise the exception in the main thread instead.
-                    if "SymbolError" in output:
-                        err = ValueError(output)
-                        self._exception = err
-                        continue
 
                     output = clean_message(output)
                     output = output + "\n"
@@ -360,7 +365,8 @@ class WebSocketClient:
         self._log_thread.daemon = True
         self._log_thread.start()
 
-        time.sleep(0.75)
+        # Give it some startup time to allow the connection to be establised and for exceptions to populate.
+        time.sleep(2)
 
         if self._exception is not None:
             exc = getattr(self, "_exception", None)

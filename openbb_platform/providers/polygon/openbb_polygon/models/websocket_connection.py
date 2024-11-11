@@ -1205,9 +1205,6 @@ class PolygonWebSocketFetcher(
         **kwargs: Any,
     ) -> WebSocketClient:
         """Extract data from the WebSocket."""
-        # pylint: disable=import-outside-toplevel
-        import time
-
         api_key = credentials.get("polygon_api_key") if credentials else ""
         url = URL_MAP[query.asset_type]
 
@@ -1239,11 +1236,10 @@ class PolygonWebSocketFetcher(
 
         try:
             client.connect()
-        except Exception as e:
-            client.disconnect()
-            raise OpenBBError(e) from e
-
-        time.sleep(1)
+        except OpenBBError as e:
+            if client.is_running:
+                client.disconnect()
+            raise e from e
 
         if client._exception:
             raise client._exception from client._exception

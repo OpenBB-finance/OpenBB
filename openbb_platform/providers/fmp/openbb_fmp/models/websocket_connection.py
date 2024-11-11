@@ -32,7 +32,7 @@ class FmpWebSocketQueryParams(WebSocketQueryParams):
     }
 
     symbol: str = Field(
-        description="The symbol(s) of the asset to fetch data for.",
+        description="The FMP symbol to get data for.",
     )
     asset_type: Literal["stock", "fx", "crypto"] = Field(
         default="crypto",
@@ -138,14 +138,14 @@ class FMPWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnectio
         return FmpWebSocketQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FmpWebSocketQueryParams,
         credentials: Optional[dict[str, str]],
         **kwargs: Any,
     ) -> WebSocketClient:
         """Extract data from the WebSocket."""
         # pylint: disable=import-outside-toplevel
-        import time
+        import asyncio
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
         url = URL_MAP[query.asset_type]
@@ -155,6 +155,7 @@ class FMPWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnectio
         kwargs = {
             "url": url,
             "api_key": api_key,
+            "connect_kwargs": query.connect_kwargs,
         }
 
         client = WebSocketClient(
@@ -175,17 +176,17 @@ class FMPWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnectio
 
         try:
             client.connect()
-
-        except Exception as e:  # pylint: disable=broad-except
-            client.disconnect()
-            raise OpenBBError(e) from e
-
-        time.sleep(1)
+            await asyncio.sleep(2)
+            if client._exception:
+                raise client._exception
+        except OpenBBError as e:
+            if client.is_running:
+                client.disconnect()
+            raise e from e
 
         if client.is_running:
             return client
 
-        client.disconnect()
         raise OpenBBError("Failed to connect to the WebSocket.")
 
     @staticmethod
