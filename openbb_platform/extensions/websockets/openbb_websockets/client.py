@@ -365,7 +365,7 @@ class WebSocketClient:
         self._log_thread.daemon = True
         self._log_thread.start()
 
-        # Give it some startup time to allow the connection to be establised and for exceptions to populate.
+        # Give it some startup time to allow the connection to be established and for exceptions to populate.
         time.sleep(2)
 
         if self._exception is not None:
