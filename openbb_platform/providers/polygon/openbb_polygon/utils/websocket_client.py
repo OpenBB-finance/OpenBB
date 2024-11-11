@@ -8,7 +8,6 @@ import sys
 
 import websockets
 import websockets.exceptions
-from openbb_core.provider.utils.errors import UnauthorizedError
 from openbb_polygon.models.websocket_connection import (
     FEED_MAP,
     PolygonWebSocketData,
@@ -40,10 +39,11 @@ async def handle_symbol(symbol):
     feed = FEED_MAP.get(ASSET_TYPE, {}).get(FEED)
     for s in symbols:
 
-        if ASSET_TYPE == "options" and "*" in s:
-            logger.error(
-                "PROVIDER INFO:      Options symbols do not support wildcards."
+        if ASSET_TYPE in ["options", "options_delayed"] and "*" in s:
+            symbol_error = (
+                f"SymbolError -> {symbol}: Options symbols do not support wildcards."
             )
+            logger.error(symbol_error)
             continue
 
         if s == "*":
@@ -53,12 +53,9 @@ async def handle_symbol(symbol):
         if "." in s:
             _check = s.split(".")[0]
             if _check not in list(FEED_MAP.get(ASSET_TYPE, {}).values()):
-                logger.error(
-                    "PROVIDER INFO:      Invalid feed, %s, for  asset type, %s",
-                    _check,
-                    ASSET_TYPE,
+                raise ValueError(
+                    f"SymbolError -> Invalid feed, {_check}, for asset type, {ASSET_TYPE}"
                 )
-                continue
 
         ticker = s.upper()
 
@@ -66,7 +63,7 @@ async def handle_symbol(symbol):
             ticker = f"{feed}.{ticker}"
 
         if ASSET_TYPE == "crypto" and "-" not in ticker and "*" not in ticker:
-            ticker = ticker[:3] + "-" + ticker[3:]
+            ticker = ticker[:-3] + "-" + ticker[-3:]
         elif ASSET_TYPE == "fx" and "/" not in ticker and "*" not in ticker:
             ticker = ticker[:3] + "/" + ticker[3:]
         elif ASSET_TYPE == "fx" and "-" in ticker:
@@ -74,7 +71,7 @@ async def handle_symbol(symbol):
         elif (
             ASSET_TYPE in ["index", "index_delayed"]
             and ":" not in ticker
-            and ticker != "*"
+            and "*" not in ticker
         ):
             _feed, _ticker = ticker.split(".") if "." in ticker else (feed, ticker)
             ticker = f"{_feed}.I:{_ticker}"
@@ -98,13 +95,18 @@ async def login(websocket, api_key):
             if msg.get("status") == "connected":
                 logger.info("PROVIDER INFO:      %s", msg.get("message"))
                 continue
+            if "Your plan doesn't include websocket access" in msg.get("message"):
+                err = f"UnauthorizedError -> {msg.get('message')}"
+                logger.error(err)
+                sys.exit(1)
+                break
             if msg.get("status") != "auth_success":
                 err = (
                     f"UnauthorizedError -> {msg.get('status')} -> {msg.get('message')}"
                 )
                 logger.error(err)
                 sys.exit(1)
-                raise UnauthorizedError(f"{msg.get('status')} -> {msg.get('message')}")
+                break
             logger.info("PROVIDER INFO:      %s", msg.get("message"))
     except Exception as e:
         logger.error("PROVIDER ERROR:     %s -> %s", e.__class__.__name__, e.args[0])
@@ -113,7 +115,11 @@ async def login(websocket, api_key):
 
 async def subscribe(websocket, symbol, event):
     """Subscribe or unsubscribe to a symbol."""
-    ticker = await handle_symbol(symbol)
+    try:
+        ticker = await handle_symbol(symbol)
+    except ValueError as e:
+        logger.error(e)
+        return
     subscribe_event = f'{{"action":"{event}","params":"{ticker}"}}'
     try:
         await websocket.send(subscribe_event)
@@ -122,7 +128,7 @@ async def subscribe(websocket, symbol, event):
         logger.error(msg)
 
 
-async def read_stdin_and_queue_commands():
+async def read_stdin(command_queue):
     """Read from stdin and queue commands."""
     while True:
         line = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
@@ -138,21 +144,31 @@ async def read_stdin_and_queue_commands():
             logger.error("Invalid JSON received from stdin")
 
 
+async def process_stdin_queue(websocket):
+    """Process the command queue."""
+    while True:
+        command = await command_queue.dequeue()
+        symbol = command.get("symbol")
+        event = command.get("event")
+        if symbol and event:
+            await subscribe(websocket, symbol, event)
+
+
 async def process_message(message, results_path, table_name, limit):
     """Process the WebSocket message."""
     messages = message if isinstance(message, list) else [message]
     for msg in messages:
-        if "Your plan doesn't include websocket access" in msg.get("message"):
-            err = f"UnauthorizedError -> {msg.get('message')}"
-            logger.error(err)
-            sys.exit(1)
-            raise UnauthorizedError(msg.get("message"))
-
         if "status" in msg or "message" in msg:
             if "status" in msg and msg["status"] == "error":
                 err = msg.get("message")
                 raise websockets.WebSocketException(err)
             if "message" in msg and msg.get("message"):
+                if "Your plan doesn't include websocket access" in msg.get("message"):
+                    err = f"UnauthorizedError -> {msg.get('message')}"
+                    logger.error(err)
+                    sys.exit(1)
+                    break
+
                 logger.info("PROVIDER INFO:      %s", msg.get("message"))
         elif msg and "ev" in msg and "status" not in msg:
             try:
@@ -179,9 +195,7 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
             lambda message: process_message(message, results_path, table_name, limit)
         )
     )
-
-    stdin_task = asyncio.create_task(read_stdin_and_queue_commands())
-
+    stdin_task = asyncio.create_task(read_stdin(command_queue))
     try:
         connect_kwargs = CONNECT_KWARGS.copy()
         if "ping_timeout" not in connect_kwargs:
@@ -191,6 +205,7 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
 
         try:
             async with websockets.connect(url, **connect_kwargs) as websocket:
+
                 await login(websocket, api_key)
                 response = await websocket.recv()
                 messages = json.loads(response)
@@ -200,25 +215,22 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
                 messages = json.loads(response)
                 await process_message(messages, results_path, table_name, limit)
                 while True:
-                    ws_task = asyncio.create_task(websocket.recv())
-                    cmd_task = asyncio.create_task(command_queue.dequeue())
-
+                    cmd_task = asyncio.create_task(process_stdin_queue(websocket))
+                    msg_task = asyncio.create_task(websocket.recv())
                     done, pending = await asyncio.wait(
-                        [ws_task, cmd_task], return_when=asyncio.FIRST_COMPLETED
+                        [cmd_task, msg_task],
+                        return_when=asyncio.FIRST_COMPLETED,
                     )
                     for task in pending:
                         task.cancel()
 
                     for task in done:
-                        if task == ws_task:
+                        if task == cmd_task:
+                            await cmd_task
+                        elif task == msg_task:
                             messages = task.result()
                             await asyncio.shield(queue.enqueue(json.loads(messages)))
-                        elif task == cmd_task:
-                            command = task.result()
-                            symbol = command.get("symbol")
-                            event = command.get("event")
-                            if symbol and event:
-                                await subscribe(websocket, symbol, event)
+
         except websockets.InvalidStatusCode as e:
             if e.status_code == 404:
                 msg = f"PROVIDER ERROR:     {e.__str__()}"
@@ -254,7 +266,7 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
         sys.exit(1)
 
     except Exception as e:
-        msg = f"Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
+        msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
         logger.error(msg)
         sys.exit(1)
 

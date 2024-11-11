@@ -18,9 +18,6 @@ from openbb_websockets.client import WebSocketClient
 class WebSocketQueryParams(QueryParams):
     """Query parameters for WebSocket connection creation."""
 
-    symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", ""),
-    )
     name: str = Field(
         description="Name to assign the client connection.",
     )

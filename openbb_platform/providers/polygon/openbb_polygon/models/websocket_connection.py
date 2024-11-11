@@ -140,10 +140,52 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
     }
 
     symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " All feeds, except Options, support the wildcard symbol, '*', to subscribe to all symbols."
-        + " For Options, the OCC contract symbol is used to subscribe up to 1000 individual contracts"
-        + " per connection."
+        description="Polygon symbol to get data for."
+        + " All feeds, except Options, support the wildcard symbol, '*', for all symbols."
+        + "\n    Options symbols are the OCC contract symbol and support up to 1000 individual contracts"
+        + " per connection. Crypto and FX symbols should be entered as a pair, i.e., 'BTCUSD', 'JPYUSD'."
+        + "\n    Multiple feeds can be subscribed to - i.e, aggs and quote - by formatting the symbol"
+        + " with prefixes described below. No prefix required for symbols within the 'feed' parameter."
+        + " All subscribed symbols must be from the same 'asset_type' for a single connection."
+        + """        \n
+        Stock
+        -----
+        - aggs_min: AM.<SYMBOL>
+        - aggs_sec: AS.<SYMBOL>
+        - trade: T.<SYMBOL>
+        - quote: Q.<SYMBOL>
+        - fmv: FMV.<SYMBOL>
+
+        Options
+        -------
+        - aggs_min: AM.O:<SYMBOL>
+        - aggs_sec: A.O:<SYMBOL>
+        - trade: T.O:<SYMBOL>
+        - quote: Q.O:<SYMBOL>
+        - fmv: FMV.O:<SYMBOL>
+
+        Index
+        -----
+        - aggs_min: AM.I:<SYMBOL>
+        - aggs_sec: A.I:<SYMBOL>
+        - value: V.I:<SYMBOL>
+
+        Crypto
+        ------
+        - aggs_min: XA.<SYMBOL>
+        - aggs_sec: XAS.<SYMBOL>
+        - trade: XT.<SYMBOL>
+        - quote: XQ.<SYMBOL>
+        - l2: XL2.<SYMBOL>
+        - fmv: FMV.<SYMBOL>
+
+        FX
+        --
+        - aggs_min: CA.<SYMBOL>
+        - aggs_sec: CAS.<SYMBOL>
+        - quote: C.<SYMBOL>
+        - fmv: FMV.<SYMBOL>
+        \n\n"""
     )
     asset_type: Literal[
         "stock",
@@ -159,10 +201,12 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
         description="The asset type associated with the symbol(s)."
         + " Choose from: stock, stock_delayed, fx, crypto.",
     )
-    feed: Literal["aggs_min", "aggs_sec", "trade", "quote", "l2"] = Field(
-        default="aggs_sec",
-        description="The feed type to subscribe to. Choose from: aggs_min, aggs_sec, trade, quote, l2."
-        + "l2 is only available for crypto.",
+    feed: Literal["aggs_min", "aggs_sec", "trade", "quote", "l2", "fmv", "value"] = (
+        Field(
+            default="aggs_sec",
+            description="The feed type to subscribe to. Choose from: aggs_min, aggs_sec, trade, quote, l2, fmv, value"
+            + "l2 is only available for crypto. value is only available for index.",
+        )
     )
 
     @model_validator(mode="before")
@@ -171,15 +215,26 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
         """Validate the feed."""
         feed = values.get("feed")
         asset_type = values.get("asset_type")
-        if asset_type == "fx" and feed in ["trade", "l2"]:
-            raise ValueError("FX does not support the trade or l2 feeds.")
-        if asset_type in ["stock", "stock_delayed"] and feed == "l2":
-            raise ValueError("Stock does not support the l2 feed.")
-        if asset_type == "index" and feed in ["trade", "quote", "l2", "fmv"]:
+        if asset_type == "fx" and feed in ["trade", "l2", "value"]:
+            raise ValueError(f"FX does not support the {feed} feed.")
+        if asset_type in [
+            "stock",
+            "stock_delayed",
+            "options",
+            "options_delayed",
+        ] and feed in ["l2", "value"]:
             raise ValueError(
-                "Index does not support the trade, quote, l2, or fmv feeds."
+                f"Asset type, {asset_type}, does not support the {feed} feed."
             )
-
+        if asset_type in ["index", "index_delayed"] and feed in [
+            "trade",
+            "quote",
+            "l2",
+            "fmv",
+        ]:
+            raise ValueError(f"Index does not support the {feed} feed.")
+        if asset_type == "crypto" and feed == "value":
+            raise ValueError(f"Crypto does not support the {feed} feed.")
         return values
 
 

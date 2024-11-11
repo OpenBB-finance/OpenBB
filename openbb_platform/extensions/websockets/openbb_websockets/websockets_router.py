@@ -165,8 +165,10 @@ async def subscribe(
     if symbols and symbol in symbols:
         raise OpenBBError(f"Client {name} already subscribed to {symbol}.")
 
-    client.subscribe(symbol)
-    await asyncio.sleep(1)
+    try:
+        client.subscribe(symbol)
+    except OpenBBError as e:
+        raise e from e
 
     if client.is_running:
         return OBBject(results=f"Added {symbol} to client {name} connection.")

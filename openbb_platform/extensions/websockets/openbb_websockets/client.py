@@ -185,7 +185,7 @@ class WebSocketClient:
         return await setup_database(self.results_path, self.table_name)
 
     def _log_provider_output(self, output_queue) -> None:
-        """Log output from the provider server queue."""
+        """Log output from the provider logger, handling exceptions, errors, and messages that are not data."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         import queue
@@ -198,7 +198,7 @@ class WebSocketClient:
             try:
                 output = output_queue.get(timeout=1)
                 if output:
-                    # Handle raised exceptions from the provider connection thread.
+                    # Handle raised exceptions from the provider connection thread, killing the process if required.
                     if "UnauthorizedError" in output:
                         self._psutil_process.kill()
                         self._process.wait()
@@ -241,6 +241,11 @@ class WebSocketClient:
                         sys.stdout.write(output + "\n")
                         sys.stdout.flush()
                         break
+                    # We don't kill the process on SymbolError, but raise the exception in the main thread instead.
+                    if "SymbolError" in output:
+                        err = ValueError(output)
+                        self._exception = err
+                        continue
 
                     output = clean_message(output)
                     output = output + "\n"
@@ -296,10 +301,11 @@ class WebSocketClient:
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         import os
+        import psutil
         import queue
         import subprocess
         import threading
-        import psutil
+        import time
 
         if self.is_running:
             self.logger.info("Provider connection already running.")
@@ -354,6 +360,13 @@ class WebSocketClient:
         self._log_thread.daemon = True
         self._log_thread.start()
 
+        time.sleep(0.75)
+
+        if self._exception is not None:
+            exc = getattr(self, "_exception", None)
+            self._exception = None
+            raise exc
+
         if not self.is_running:
             self.logger.error("The provider server failed to start.")
 
@@ -392,11 +405,18 @@ class WebSocketClient:
     def subscribe(self, symbol) -> None:
         """Subscribe to a new symbol or list of symbols."""
         # pylint: disable=import-outside-toplevel
-        import json
+        import json  # noqa
+        import time
+        from openbb_core.app.model.abstract.error import OpenBBError
 
         ticker = symbol if isinstance(symbol, list) else symbol.split(",")
         msg = {"event": "subscribe", "symbol": ticker}
         self.send_message(json.dumps(msg))
+        time.sleep(0.1)
+        if self._exception:
+            exc = getattr(self, "_exception", None)
+            self._exception = None
+            raise OpenBBError(exc)
         old_symbols = self.symbol.split(",")
         new_symbols = list(set(old_symbols + ticker))
         self._symbol = ",".join(new_symbols)
