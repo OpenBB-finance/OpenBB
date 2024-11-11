@@ -147,17 +147,8 @@ class WebSocketClient:
 
         atexit.register(self._atexit)
 
-        # Set up the SQLite database and table.
-        # Loop handling is for when the class is used directly instead of from the app or API.
         try:
-            loop = asyncio.get_event_loop()
-        except (RuntimeError, RuntimeWarning):
-            loop = asyncio.new_event_loop()
-        try:
-            if loop.is_running():
-                loop.create_task(self._setup_database())
-            else:
-                asyncio.run(self._setup_database())
+            self._setup_database()
         except DatabaseError as e:
             self.logger.error("Error setting up the SQLite database and table: %s", e)
 
@@ -177,12 +168,38 @@ class WebSocketClient:
         if os.path.exists(self.results_file):
             os.remove(self.results_file)
 
-    async def _setup_database(self) -> None:
+    def _setup_database(self) -> None:
         """Set up the SQLite database and table."""
         # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import threading
         from openbb_websockets.helpers import setup_database
 
-        return await setup_database(self.results_path, self.table_name)
+        def run_in_new_loop():
+            """Run setup in new event loop."""
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            try:
+                loop.run_until_complete(
+                    setup_database(self.results_path, self.table_name)
+                )
+            finally:
+                loop.close()
+
+        def run_in_thread():
+            """Run setup in separate thread."""
+            thread = threading.Thread(target=run_in_new_loop)
+            thread.start()
+            thread.join()
+
+        try:
+            try:
+                loop = asyncio.get_running_loop()  # noqa
+                run_in_thread()
+            except RuntimeError:
+                run_in_new_loop()
+        finally:
+            return
 
     def _log_provider_output(self, output_queue) -> None:
         """Log output from the provider logger, handling exceptions, errors, and messages that are not data."""
@@ -485,34 +502,13 @@ class WebSocketClient:
         """Clear results stored from the WebSocket stream."""
         # pylint: disable=import-outside-toplevel
         import sqlite3  # noqa
-        import asyncio
-        import threading
-
-        def run_in_new_loop():
-            """Run setup in new event loop."""
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            try:
-                loop.run_until_complete(self._setup_database())
-            finally:
-                loop.close()
-
-        def run_in_thread():
-            """Run setup in separate thread."""
-            thread = threading.Thread(target=run_in_new_loop)
-            thread.start()
-            thread.join()
 
         try:
             with sqlite3.connect(self.results_path) as conn:
                 conn.execute(f"DELETE FROM {self.table_name}")  # noqa
                 conn.commit()
 
-            try:
-                loop = asyncio.get_running_loop()  # noqa
-                run_in_thread()
-            except RuntimeError:
-                run_in_new_loop()
+            self._setup_database()
 
             self.logger.info(
                 "Results cleared from table %s in %s",
