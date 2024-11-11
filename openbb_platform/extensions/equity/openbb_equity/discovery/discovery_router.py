@@ -181,3 +181,20 @@ async def filings(
     and audited financial statements.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="LatestFinancialReports",
+    examples=[
+        APIEx(parameters={"provider": "sec"}),
+        APIEx(parameters={"provider": "sec", "date": "2024-09-30"}),
+    ],
+)
+async def latest_financial_reports(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the newest quarterly, annual, and current reports for all companies."""
+    return await OBBject.from_query(Query(**locals()))

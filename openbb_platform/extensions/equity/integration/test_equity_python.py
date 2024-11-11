@@ -1966,3 +1966,26 @@ def test_equity_historical_market_cap(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "date": None,
+                "report_type": None,
+                "provider": "sec",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_discovery_latest_financial_reports(params, obb):
+    """Test the equity discovery latest financial reports endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.discovery.latest_financial_reports(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

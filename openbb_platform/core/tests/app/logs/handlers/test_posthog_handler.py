@@ -54,6 +54,8 @@ logging_settings.platform = "Windows"
 logging_settings.python_version = "3.9"
 logging_settings.platform_version = "1.2.3"
 logging_settings.user_id = "user123"
+logging_settings.logging_suppress = False
+logging_settings.log_collect = True
 
 
 @pytest.fixture

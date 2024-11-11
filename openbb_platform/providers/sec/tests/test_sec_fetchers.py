@@ -1,5 +1,7 @@
 """Tests for the SEC fetchers."""
 
+from datetime import date
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_sec.models.cik_map import SecCikMapFetcher
@@ -10,6 +12,7 @@ from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
+from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.sic_search import SecSicSearchFetcher
@@ -152,5 +155,18 @@ def test_sec_compare_company_facts_fetcher(credentials=test_credentials):
     }
 
     fetcher = SecCompareCompanyFactsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_latest_financial_reports_fetcher(credentials=test_credentials):
+    """Test the SEC Latest Financial Reports fetcher."""
+    params = {
+        "date": date(2024, 11, 5),
+        "report_type": "10-K",
+    }
+
+    fetcher = SecLatestFinancialReportsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
