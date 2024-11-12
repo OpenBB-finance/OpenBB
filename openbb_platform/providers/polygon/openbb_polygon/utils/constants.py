@@ -155,9 +155,11 @@ STOCK_QUOTE_CONDITIONS = {
     90: "Syndicate Bid",
     91: "Pre Syndicate Bid",
     92: "Penalty Bid",
+    95: "CQS Generated",
 }
 
 STOCK_QUOTE_INDICATORS = {
+    1: "EXCHANGE_ACQUISITION",
     601: "NBBO_NO_CHANGE",
     602: "NBBO_QUOTE_IS_NBBO",
     603: "NBBO_NO_BB_NO_BO",

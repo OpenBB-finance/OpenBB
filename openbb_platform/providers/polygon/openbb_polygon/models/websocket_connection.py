@@ -8,10 +8,7 @@ from typing import Any, Literal, Optional
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.utils.descriptions import (
-    DATA_DESCRIPTIONS,
-    QUERY_DESCRIPTIONS,
-)
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_polygon.utils.constants import (
     CRYPTO_EXCHANGE_MAP,
     FX_EXCHANGE_MAP,
@@ -775,18 +772,22 @@ class PolygonStockQuoteWebSocketData(WebSocketData):
     bid_exchange: str = Field(
         description="The exchange where the bid originated.",
     )
-    bid_size: float = Field(
+    bid_size: Optional[float] = Field(
+        default=None,
         description="The size of the bid.",
     )
-    bid: float = Field(
+    bid: Optional[float] = Field(
+        default=None,
         description="The bid price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask: float = Field(
+    ask: Optional[float] = Field(
+        default=None,
         description="The ask price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_size: float = Field(
+    ask_size: Optional[float] = Field(
+        default=None,
         description="The size of the ask.",
     )
     ask_exchange: str = Field(

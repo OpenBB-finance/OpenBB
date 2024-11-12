@@ -77,7 +77,7 @@ The table below is not intended as a source of truth.
 
 Availability will depend on the access level permitted by the provider's API key.
 
-#### Usage
+#### Example
 
 ```python
 conn = obb.websockets.create_connection(provider="tiingo", asset_type="crypto", symbol="*", feed="trade", start_broadcast=True)
