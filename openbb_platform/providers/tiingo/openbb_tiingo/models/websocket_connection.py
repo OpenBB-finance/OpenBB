@@ -14,7 +14,7 @@ from openbb_websockets.models import (
     WebSocketData,
     WebSocketQueryParams,
 )
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
 URL_MAP = {
     "stock": "wss://api.tiingo.com/iex",
@@ -89,25 +89,22 @@ class TiingoWebSocketQueryParams(WebSocketQueryParams):
     }
 
     symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", "") + "Use '*' for all symbols.",
+        description=QUERY_DESCRIPTIONS.get("symbol", "") + " Use '*' for all symbols.",
     )
     asset_type: Literal["stock", "fx", "crypto"] = Field(
         default="crypto",
-        description="The asset type for the feed.",
+        description="The asset type for the feed. Choices are 'stock', 'fx', or 'crypto'.",
     )
     feed: Literal["trade", "trade_and_quote"] = Field(
         default="trade_and_quote",
-        description="The type of data feed to subscribe to. FX only supports quote.",
+        description="The type of data feed to subscribe to. FX only supports quote."
+        + " Choices are 'trade' or 'trade_and_quote'.",
     )
 
 
 class TiingoWebSocketData(WebSocketData):
     """Tiingo WebSocket data model."""
 
-    timestamp: Optional[int] = Field(
-        default=None,
-        description="Nanoseconds since POSIX time UTC.",
-    )
     type: Literal["quote", "trade", "break"] = Field(
         description="The type of data.",
     )
@@ -175,25 +172,35 @@ class TiingoWebSocketData(WebSocketData):
             "quote" if v == "Q" else "trade" if v == "T" else "break" if v == "B" else v
         )
 
-    @field_validator("date", mode="before", check_fields=False)
+    @field_validator("date", "timestamp", mode="before", check_fields=False)
     def _validate_date(cls, v):
         """Validate the date."""
         # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
         from pytz import timezone
 
         if isinstance(v, str):
-            return datetime.fromisoformat(v)
-        try:
-            return datetime.fromtimestamp(v / 1000)
-        except Exception:
-            if isinstance(v, (int, float)):
-                # Check if the timestamp is in nanoseconds and convert to seconds
-                if v > 1e12:
-                    v = v / 1e9  # Convert nanoseconds to seconds
-                dt = datetime.fromtimestamp(v)
-                dt = timezone("America/New_York").localize(dt)
-                return dt
-        return v
+            dt = to_datetime(v, utc=True).tz_convert(timezone("America/New_York"))
+        else:
+            try:
+                dt = datetime.fromtimestamp(v / 1000)
+            except Exception:
+                if isinstance(v, (int, float)):
+                    # Check if the timestamp is in nanoseconds and convert to seconds
+                    if v > 1e12:
+                        v = v / 1e9  # Convert nanoseconds to seconds
+                    dt = datetime.fromtimestamp(v)
+                else:
+                    dt = v
+
+        return dt
+
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_model(cls, values):
+        """Validate the model."""
+
+        return values
 
 
 class TiingoWebSocketConnection(WebSocketConnection):
@@ -244,6 +251,7 @@ class TiingoWebSocketFetcher(
             "url": url,
             "api_key": api_key,
             "threshold_level": threshold_level,
+            "connect_kwargs": query.connect_kwargs,
         }
 
         client = WebSocketClient(
@@ -264,13 +272,18 @@ class TiingoWebSocketFetcher(
 
         try:
             client.connect()
-        # Unhandled exceptions are caught and raised as OpenBBError
-        except Exception as e:  # pylint: disable=broad-except
-            client.disconnect()
-            raise OpenBBError(e) from e
+        except OpenBBError as e:
+            if client.is_running:
+                client.disconnect()
+            raise e from e
 
-        # Wait for the connection to be established before returning.
-        await sleep(2)
+        await sleep(1)
+
+        if client._exception:
+            exc = getattr(client, "_exception", None)
+            client._exception = None
+            client._atexit()
+            raise OpenBBError(exc)
 
         if client.is_running:
             return client

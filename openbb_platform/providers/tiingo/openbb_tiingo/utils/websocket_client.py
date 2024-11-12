@@ -13,9 +13,11 @@ from openbb_websockets.helpers import (
     MessageQueue,
     get_logger,
     handle_termination_signal,
+    handle_validation_error,
     parse_kwargs,
     write_to_db,
 )
+from pydantic import ValidationError
 
 # These are the data array definitions.
 IEX_FIELDS = [
@@ -66,10 +68,11 @@ CRYPTO_QUOTE_FIELDS = [
     "ask_size",
     "ask_price",
 ]
-subscription_id = None
+SUBSCRIPTION_ID = ""
 queue = MessageQueue()
 logger = get_logger("openbb.websocket.tiingo")
 kwargs = parse_kwargs()
+CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 
 
 # Subscribe and unsubscribe events are handled in a separate connection using the subscription_id set by the login event.
@@ -77,7 +80,7 @@ async def update_symbols(symbol, event):
     """Update the symbols to subscribe to."""
     url = kwargs["url"]
 
-    if not subscription_id:
+    if not SUBSCRIPTION_ID:
         logger.error(
             "PROVIDER ERROR:    Must be assigned a subscription ID to update symbols. Try logging in."
         )
@@ -87,7 +90,7 @@ async def update_symbols(symbol, event):
         "eventName": event,
         "authorization": kwargs["api_key"],
         "eventData": {
-            "subscriptionId": subscription_id,
+            "subscriptionId": SUBSCRIPTION_ID,
             "tickers": symbol,
         },
     }
@@ -96,13 +99,10 @@ async def update_symbols(symbol, event):
         await websocket.send(json.dumps(update_event))
         response = await websocket.recv()
         message = json.loads(response)
-        if message.get("response", {}).get("code") != 200:
-            logger.error(f"PROVIDER ERROR:     {message}")
-        else:
-            msg = (
-                f"PROVIDER INFO:      {message.get('response', {}).get('message')}. "
-                f"Subscribed to symbols: {message.get('data', {}).get('tickers')}"
-            )
+        if "tickers" in message.get("data", {}):
+            tickers = message["data"]["tickers"]
+            threshold_level = message["data"].get("thresholdLevel")
+            msg = f"PROVIDER INFO:      Subscribed to {tickers} with threshold level {threshold_level}"
             logger.info(msg)
 
 
@@ -124,10 +124,11 @@ async def read_stdin_and_update_symbols():
 
 
 async def process_message(message, results_path, table_name, limit):
-    result = {}
-    data_message = {}
-    message = json.loads(message)
-    msg = ""
+    """Process the message and write to the database."""
+    result: dict = {}
+    data_message: dict = {}
+    message = message if isinstance(message, (dict, list)) else json.loads(message)
+    msg: str = ""
     if message.get("messageType") == "E":
         response = message.get("response", {})
         msg = f"PROVIDER ERROR:     {response.get('code')}: {response.get('message')}"
@@ -147,20 +148,21 @@ async def process_message(message, results_path, table_name, limit):
             msg = f"PROVIDER INFO:      Authorization: {response.get('message')}"
             logger.info(msg)
             if message.get("data", {}).get("subscriptionId"):
-                global subscription_id
+                global SUBSCRIPTION_ID
+                SUBSCRIPTION_ID = message["data"]["subscriptionId"]
 
-                subscription_id = message["data"]["subscriptionId"]
+        if "tickers" in response.get("data", {}):
+            tickers = message["data"]["tickers"]
+            threshold_level = message["data"].get("thresholdLevel")
+            msg = f"PROVIDER INFO:      Subscribed to {tickers} with threshold level {threshold_level}"
+            logger.info(msg)
 
-            if "tickers" in message.get("data", {}):
-                tickers = message["data"]["tickers"]
-                threshold_level = message["data"].get("thresholdLevel")
-                msg = f"PROVIDER INFO:      Subscribed to {tickers} with threshold level {threshold_level}"
-                logger.info(msg)
     elif message.get("messageType") == "A":
         data = message.get("data", [])
         service = message.get("service")
         if service == "iex":
             data_message = {IEX_FIELDS[i]: data[i] for i in range(len(data))}
+            _ = data_message.pop("timestamp", None)
         elif service == "fx":
             data_message = {FX_FIELDS[i]: data[i] for i in range(len(data))}
         elif service == "crypto_data":
@@ -179,10 +181,12 @@ async def process_message(message, results_path, table_name, limit):
             result = TiingoWebSocketData.model_validate(data_message).model_dump_json(
                 exclude_none=True, exclude_unset=True
             )
-        except Exception as e:
-            msg = f"PROVIDER ERROR:    Error validating data: {e}"
-            logger.error(msg)
-            return
+        except ValidationError as e:
+            try:
+                handle_validation_error(logger, e)
+            except ValidationError:
+                raise e from e
+
         if result:
             await write_to_db(result, results_path, table_name, limit)
     return
@@ -207,33 +211,45 @@ async def connect_and_stream(
     subscribe_event = {
         "eventName": "subscribe",
         "authorization": api_key,
-        "eventData": {"thresholdLevel": threshold_level, "tickers": ticker},
+        "eventData": {
+            "thresholdLevel": threshold_level,
+            "tickers": ticker,
+        },
     }
+    connect_kwargs = CONNECT_KWARGS.copy()
+    if "ping_timeout" not in connect_kwargs:
+        connect_kwargs["ping_timeout"] = None
+    if "close_timeout" not in connect_kwargs:
+        connect_kwargs["close_timeout"] = None
+
     try:
-        async with websockets.connect(
-            url, ping_interval=20, ping_timeout=20, max_queue=1000
-        ) as websocket:
+        async with websockets.connect(url, **connect_kwargs) as websocket:
             logger.info("PROVIDER INFO:      WebSocket connection established.")
             await websocket.send(json.dumps(subscribe_event))
             while True:
                 message = await websocket.recv()
                 await queue.enqueue(message)
 
+    except UnauthorizedError as e:
+        logger.error(str(e))
+        sys.exit(1)
+
     except websockets.ConnectionClosed as e:
         msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e.reason}"
         logger.info(msg)
         # Attempt to reopen the connection
+        logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds...")
         await asyncio.sleep(5)
         await connect_and_stream(
             url, symbol, threshold_level, api_key, results_path, table_name, limit
         )
 
     except websockets.WebSocketException as e:
-        logger.error(e)
+        logger.error(str(e))
         sys.exit(1)
 
     except Exception as e:
-        msg = f"PROVIDER ERROR:    Unexpected error -> {e}"
+        msg = f"Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
         logger.error(msg)
         sys.exit(1)
 
@@ -268,10 +284,10 @@ if __name__ == "__main__":
         loop.run_forever()
 
     except (KeyboardInterrupt, websockets.ConnectionClosed):
-        logger.error("PROVIDER ERROR:    WebSocket connection closed")
+        logger.error("PROVIDER ERROR:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:    {e.args[0]}"
+        msg = f"Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
         logger.error(msg)
 
     finally:
