@@ -343,7 +343,8 @@ class PolygonCryptoTradeWebSocketData(WebSocketData):
         description="The price of the trade.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    size: float = Field(
+    size: Optional[float] = Field(
+        default=None,
         description="The size of the trade.",
     )
 
@@ -669,7 +670,8 @@ class PolygonStockTradeWebSocketData(WebSocketData):
         description="The price of the trade.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    size: float = Field(
+    size: Optional[float] = Field(
+        default=None,
         description="The size of the trade.",
     )
     exchange: str = Field(
@@ -958,7 +960,8 @@ class PolygonOptionsTradeWebSocketData(WebSocketData):
         description="The price of the trade.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    size: float = Field(
+    size: Optional[float] = Field(
+        default=None,
         description="The size of the trade.",
     )
     exchange: str = Field(
