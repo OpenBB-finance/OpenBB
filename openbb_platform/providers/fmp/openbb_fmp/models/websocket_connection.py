@@ -69,23 +69,23 @@ class FmpWebSocketData(WebSocketData):
     type: Literal["quote", "trade", "break"] = Field(
         description="The type of data.",
     )
+    bid_size: Optional[float] = Field(
+        default=None,
+        description="The size of the bid.",
+    )
     bid_price: Optional[float] = Field(
         default=None,
         description="The price of the bid.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_size: Optional[float] = Field(
-        default=None,
-        description="The size of the bid.",
-    )
-    ask_size: Optional[float] = Field(
-        default=None,
-        description="The size of the ask.",
-    )
     ask_price: Optional[float] = Field(
         default=None,
         description="The price of the ask.",
         json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    ask_size: Optional[float] = Field(
+        default=None,
+        description="The size of the ask.",
     )
     last_price: Optional[float] = Field(
         default=None,
@@ -96,6 +96,11 @@ class FmpWebSocketData(WebSocketData):
         default=None,
         description="The size of the trade.",
     )
+
+    @field_validator("symbol", mode="before")
+    def _validate_symbol(cls, v):
+        """Validate the symbol."""
+        return v.upper()
 
     @field_validator("type", mode="before", check_fields=False)
     def _valiidate_data_type(cls, v):

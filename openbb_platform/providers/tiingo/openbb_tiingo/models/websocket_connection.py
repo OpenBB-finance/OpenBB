@@ -165,6 +165,11 @@ class TiingoWebSocketData(WebSocketData):
         description="True if the order is not subject to NMS Rule 611. Only for stock.",
     )
 
+    @field_validator("symbol", mode="before", check_fields=False)
+    def _validate_symbol(cls, v):
+        """Validate the symbol."""
+        return v.upper()
+
     @field_validator("type", mode="before", check_fields=False)
     def _valiidate_data_type(cls, v):
         """Validate the data type."""

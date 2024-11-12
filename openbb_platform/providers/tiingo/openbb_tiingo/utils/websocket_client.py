@@ -223,16 +223,17 @@ async def connect_and_stream(
         connect_kwargs["close_timeout"] = None
 
     try:
-        async with websockets.connect(url, **connect_kwargs) as websocket:
-            logger.info("PROVIDER INFO:      WebSocket connection established.")
-            await websocket.send(json.dumps(subscribe_event))
-            while True:
-                message = await websocket.recv()
-                await queue.enqueue(message)
+        try:
+            async with websockets.connect(url, **connect_kwargs) as websocket:
+                logger.info("PROVIDER INFO:      WebSocket connection established.")
+                await websocket.send(json.dumps(subscribe_event))
+                while True:
+                    message = await websocket.recv()
+                    await queue.enqueue(message)
 
-    except UnauthorizedError as e:
-        logger.error(str(e))
-        sys.exit(1)
+        except UnauthorizedError as e:
+            logger.error(str(e))
+            sys.exit(1)
 
     except websockets.ConnectionClosed as e:
         msg = (
@@ -283,9 +284,6 @@ if __name__ == "__main__":
             loop,
         )
         loop.run_forever()
-
-    except websockets.ConnectionClosed:
-        logger.error("PROVIDER ERROR:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
         msg = f"Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
