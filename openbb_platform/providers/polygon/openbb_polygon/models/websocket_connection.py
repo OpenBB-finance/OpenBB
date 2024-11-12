@@ -550,6 +550,13 @@ class PolygonFXQuoteWebSocketData(WebSocketData):
         """Validate the exchange."""
         return FX_EXCHANGE_MAP.get(v, str(v))
 
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_model(cls, values):
+        """Validate the model."""
+        _ = values.pop("i", None)
+        return values
+
 
 class PolygonStockAggsWebSocketData(WebSocketData):
     """Polygon Stock Aggregates WebSocket data model."""

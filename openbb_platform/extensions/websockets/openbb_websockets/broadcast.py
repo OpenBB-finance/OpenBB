@@ -105,7 +105,7 @@ async def websocket_endpoint(  # noqa: PLR0915
             await stream_task
             await stdin_task
         except asyncio.CancelledError:
-            broadcast_server.logger.info("Stream task cancelled")
+            broadcast_server.logger.info("INFO:     A listener task was cancelled.")
         except Exception as e:
             msg = f"Unexpected error while cancelling stream task: {e.__class__.__name__} -> {e}"
             broadcast_server.logger.error(msg)

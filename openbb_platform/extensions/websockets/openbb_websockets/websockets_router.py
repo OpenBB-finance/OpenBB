@@ -66,6 +66,7 @@ async def create_connection(
 
     if hasattr(extra_params, "start_broadcast") and extra_params.start_broadcast:
         client.start_broadcasting()
+        await asyncio.sleep(1)
 
     client_name = client.name
     connected_clients[client_name] = client
@@ -403,7 +404,7 @@ async def start_broadcasting(
     port : int
         The port to broadcast to. Default is 6666.
     uvicorn_kwargs : Optional[dict[str, Any]]
-        Additional keyword arguments for passing directly to the uvicorn server.
+        Additional keyword arguments to pass directly to `uvicorn.run()`.
 
     Returns
     -------

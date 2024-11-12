@@ -65,7 +65,7 @@ async def handle_symbol(symbol):
         if ASSET_TYPE == "crypto" and "-" not in ticker and "*" not in ticker:
             ticker = ticker[:-3] + "-" + ticker[-3:]
         elif ASSET_TYPE == "fx" and "/" not in ticker and "*" not in ticker:
-            ticker = ticker[:3] + "/" + ticker[3:]
+            ticker = ticker[:-3] + "/" + ticker[-3:]
         elif ASSET_TYPE == "fx" and "-" in ticker:
             ticker = ticker.replace("-", "/")
         elif (

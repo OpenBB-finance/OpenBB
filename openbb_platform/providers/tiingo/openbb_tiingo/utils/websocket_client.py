@@ -235,7 +235,9 @@ async def connect_and_stream(
         sys.exit(1)
 
     except websockets.ConnectionClosed as e:
-        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e.reason}"
+        msg = (
+            f"PROVIDER INFO:      The WebSocket connection was closed -> {e.__str__()}"
+        )
         logger.info(msg)
         # Attempt to reopen the connection
         logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds...")
@@ -266,8 +268,7 @@ if __name__ == "__main__":
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
-        for sig in (signal.SIGINT, signal.SIGTERM):
-            loop.add_signal_handler(sig, handle_termination_signal, logger)
+        loop.add_signal_handler(signal.SIGTERM, handle_termination_signal, logger)
 
         asyncio.run_coroutine_threadsafe(
             connect_and_stream(
@@ -283,7 +284,7 @@ if __name__ == "__main__":
         )
         loop.run_forever()
 
-    except (KeyboardInterrupt, websockets.ConnectionClosed):
+    except websockets.ConnectionClosed:
         logger.error("PROVIDER ERROR:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
@@ -291,4 +292,6 @@ if __name__ == "__main__":
         logger.error(msg)
 
     finally:
+        loop.stop()
+        loop.close
         sys.exit(0)
