@@ -328,6 +328,7 @@ class WebSocketClient:
         import subprocess
         import threading
         import time
+        from openbb_core.app.model.abstract.error import OpenBBError
 
         if self.is_running:
             self.logger.info("Provider connection already running.")
@@ -388,7 +389,7 @@ class WebSocketClient:
         if self._exception is not None:
             exc = getattr(self, "_exception", None)
             self._exception = None
-            raise exc
+            raise OpenBBError(exc)
 
         if not self.is_running:
             self.logger.error("The provider server failed to start.")

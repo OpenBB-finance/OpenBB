@@ -650,7 +650,9 @@ class PolygonStockTradeWebSocketData(WebSocketData):
         "trf_id": "trfi",
         "tape": "z",
         "price": "p",
+        "size": "s",
         "conditions": "c",
+        "trf_timestamp": "trft",
     }
 
     type: str = Field(
@@ -658,7 +660,7 @@ class PolygonStockTradeWebSocketData(WebSocketData):
     )
     date: datetime = Field(
         description=DATA_DESCRIPTIONS.get("date", "")
-        + "The end of the aggregate window.",
+        + "The SIP timestamp of the trade.",
     )
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
@@ -666,6 +668,9 @@ class PolygonStockTradeWebSocketData(WebSocketData):
     price: float = Field(
         description="The price of the trade.",
         json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    size: float = Field(
+        description="The size of the trade.",
     )
     exchange: str = Field(
         description="The exchange where the trade originated.",
@@ -677,7 +682,7 @@ class PolygonStockTradeWebSocketData(WebSocketData):
         default=None,
         description="The conditions of the trade.",
     )
-    trf_id: Optional[str] = Field(
+    trf_id: Optional[int] = Field(
         default=None,
         description="The ID for the Trade Reporting Facility where the trade took place.",
     )
