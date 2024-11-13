@@ -37,7 +37,7 @@ obb.websockets
 >
 > |Parameter|Type | Required| Description |
 > |:-------|:-----|:--------:|------------:|
-> |name |String |Yes |The 'nane' assigned from `create_connection` |
+> |name |String |Yes |The 'name' assigned from `create_connection` |
 > |auth_token |String |No |The 'auth_token' assigned, if any, from `create_connection` |
 >
 > Below is an explanation of each function, with `create_connection` representing the bulk of details.
@@ -864,3 +864,4 @@ The missing pieces that get created locally include:
   - Raise the message as an unexpected error:
     - `logger.error("Unexpected error -> %s", message.get('message'))`
 
+> With all the functions built, the file should run as a script where keyword arguments are formatted as `key=value`, with a space between each pair.
