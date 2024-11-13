@@ -845,7 +845,7 @@ if __name__ == "__main__":
 
 #### To-Build
 
-THe missing pieces that get created locally include:
+The missing pieces that get created locally include:
 
 - Read `stdin` function for receiving subscribe/unsubscribe events while the connection is running.
   - Messages to handle will always have the same format: `'{"event": "subscribe", "symbol": ticker}'`
