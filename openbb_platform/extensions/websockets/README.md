@@ -617,7 +617,7 @@ class FmpWebSocketConnection(WebSocketConnection):
 
 #### WebSocketFetcher
 
-This is where things diverge slightly. Instead of returning `FmpWebSocketData`, we will pass it to the client connection insteadd, for validating records as they are received. What gets returned by the Fetcher is the `WebSocketConnection`.
+This is where things diverge slightly. Instead of returning `FmpWebSocketData`, it gets passed to the client connection for validating records as they are received. What gets returned by the Fetcher is the `WebSocketConnection`.
 
 ```python
 class FmpWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnection]):
