@@ -134,7 +134,7 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
     stdin_task = asyncio.create_task(read_stdin_and_queue_commands())
 
     try:
-        websocket = await websockets.connect(url)
+        websocket = await websockets.connect(url, **CONNECT_KWARGS)
         await login(websocket, api_key)
         await subscribe(websocket, symbol, "subscribe")
 

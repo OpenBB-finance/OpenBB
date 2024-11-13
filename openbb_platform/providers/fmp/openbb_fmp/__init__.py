@@ -63,7 +63,7 @@ from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
-from openbb_fmp.models.websocket_connection import FMPWebSocketFetcher
+from openbb_fmp.models.websocket_connection import FmpWebSocketFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
 
@@ -138,7 +138,7 @@ stock market information (news, currencies, and stock prices).""",
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "WorldNews": FMPWorldNewsFetcher,
         "EtfHistorical": FMPEquityHistoricalFetcher,
-        "WebSocketConnection": FMPWebSocketFetcher,
+        "WebSocketConnection": FmpWebSocketFetcher,
         "YieldCurve": FMPYieldCurveFetcher,
     },
     repr_name="Financial Modeling Prep (FMP)",

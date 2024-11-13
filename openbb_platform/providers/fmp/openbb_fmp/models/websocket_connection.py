@@ -36,7 +36,7 @@ class FmpWebSocketQueryParams(WebSocketQueryParams):
     )
     asset_type: Literal["stock", "fx", "crypto"] = Field(
         default="crypto",
-        description="The asset type, required for the provider URI.",
+        description="The asset type associated with the symbol.",
     )
 
 
@@ -56,12 +56,6 @@ class FmpWebSocketData(WebSocketData):
         "last_size": "ls",
     }
 
-    symbol: str = Field(
-        description="The symbol of the asset.",
-    )
-    date: datetime = Field(
-        description="The datetime of the data.",
-    )
     exchange: Optional[str] = Field(
         default=None,
         description="The exchange of the data.",
@@ -116,25 +110,24 @@ class FmpWebSocketData(WebSocketData):
         from pytz import timezone
 
         if isinstance(v, str):
-            return datetime.fromisoformat(v)
+            dt = datetime.fromisoformat(v)
         try:
-            return datetime.fromtimestamp(v / 1000)
-        except Exception:
+            dt = datetime.fromtimestamp(v / 1000)
+        except Exception:  # pylint: disable=broad-except
             if isinstance(v, (int, float)):
                 # Check if the timestamp is in nanoseconds and convert to seconds
                 if v > 1e12:
                     v = v / 1e9  # Convert nanoseconds to seconds
                 dt = datetime.fromtimestamp(v)
-                dt = timezone("America/New_York").localize(dt)
-                return dt
-        return v
+
+        return dt.astimezone(timezone("America/New_York"))
 
 
 class FmpWebSocketConnection(WebSocketConnection):
     """FMP WebSocket connection model."""
 
 
-class FMPWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnection]):
+class FmpWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnection]):
     """FMP WebSocket model."""
 
     @staticmethod

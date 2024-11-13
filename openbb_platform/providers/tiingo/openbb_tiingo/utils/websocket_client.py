@@ -148,7 +148,7 @@ async def process_message(message, results_path, table_name, limit):
             msg = f"PROVIDER INFO:      Authorization: {response.get('message')}"
             logger.info(msg)
             if message.get("data", {}).get("subscriptionId"):
-                global SUBSCRIPTION_ID
+                global SUBSCRIPTION_ID  # noqa: PLW0603
                 SUBSCRIPTION_ID = message["data"]["subscriptionId"]
 
         if "tickers" in response.get("data", {}):
