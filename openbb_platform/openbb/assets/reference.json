@@ -1791,6 +1791,18 @@
                 ],
                 "intrinio": [
                     {
+                        "name": "delay",
+                        "type": "Literal['eod', 'realtime', 'delayed']",
+                        "description": "Whether to return delayed, realtime, or eod data.",
+                        "default": "eod",
+                        "optional": true,
+                        "choices": [
+                            "eod",
+                            "realtime",
+                            "delayed"
+                        ]
+                    },
+                    {
                         "name": "date",
                         "type": "Union[date, str]",
                         "description": "The end-of-day date for options chains data.",
@@ -1875,7 +1887,10 @@
                         "description": "The pricing model to use for options chains data, default is 'black_scholes'. Parameter is ignored when a date is supplied.",
                         "default": "black_scholes",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "black_scholes",
+                            "bjerk"
+                        ]
                     },
                     {
                         "name": "show_extended_price",
@@ -15371,6 +15386,196 @@
                 "fmp": []
             },
             "model": "DiscoveryFilings"
+        },
+        "/equity/discovery/latest_financial_reports": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the newest quarterly, annual, and current reports for all companies.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.latest_financial_reports(provider='sec')\nobb.equity.discovery.latest_financial_reports(provider='sec', date=2024-09-30)\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "A specific date to get data for. Defaults to today.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "report_type",
+                        "type": "Union[str, List[str]]",
+                        "description": "Return only a specific form type. Default is all quarterly, annual, and current reports. Choices: 1-K, 1-SA, 1-U, 10-D, 10-K, 10-KT, 10-Q, 10-QT, 20-F, 40-F, 6-K, 8-K. Multiple items allowed for provider(s): sec.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "1-K",
+                            "1-SA",
+                            "1-U",
+                            "10-D",
+                            "10-K",
+                            "10-KT",
+                            "10-Q",
+                            "10-QT",
+                            "20-F",
+                            "40-F",
+                            "6-K",
+                            "8-K"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[LatestFinancialReports]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "filing_date",
+                        "type": "date",
+                        "description": "The date of the filing.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "Report for the period ending.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the company.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cik",
+                        "type": "str",
+                        "description": "Central Index Key (CIK) for the requested entity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "sic",
+                        "type": "str",
+                        "description": "Standard Industrial Classification code.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "report_type",
+                        "type": "str",
+                        "description": "Type of filing.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "Description of the report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL to the filing page.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "items",
+                        "type": "str",
+                        "description": "Item codes associated with the filing.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "index_headers",
+                        "type": "str",
+                        "description": "URL to the index headers file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "complete_submission",
+                        "type": "str",
+                        "description": "URL to the complete submission text file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "metadata",
+                        "type": "str",
+                        "description": "URL to the MetaLinks.json file, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "financial_report",
+                        "type": "str",
+                        "description": "URL to the Financial_Report.xlsx file, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "LatestFinancialReports"
         },
         "/equity/fundamental/multiples": {
             "deprecated": {
@@ -29929,7 +30134,7 @@
                     {
                         "name": "symbol",
                         "type": "Union[str, List[str]]",
-                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -29951,7 +30156,23 @@
                         "choices": null
                     }
                 ],
-                "fmp": []
+                "fmp": [],
+                "intrinio": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['day', 'week', 'month', 'quarter', 'year']",
+                        "description": "None",
+                        "default": "day",
+                        "optional": true,
+                        "choices": [
+                            "day",
+                            "week",
+                            "month",
+                            "quarter",
+                            "year"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -29962,7 +30183,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fmp']]",
+                        "type": "Optional[Literal['fmp', 'intrinio']]",
                         "description": "Provider name."
                     },
                     {
@@ -30009,7 +30230,8 @@
                         "choices": null
                     }
                 ],
-                "fmp": []
+                "fmp": [],
+                "intrinio": []
             },
             "model": "HistoricalMarketCap"
         },

@@ -242,4 +242,6 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
         query: OECDCPIQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDCPIData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDCPIData.model_validate(d) for d in data]
+        return [
+            OECDCPIData.model_validate(d) for d in sorted(data, key=lambda x: x["date"])
+        ]

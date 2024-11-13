@@ -9,6 +9,7 @@ from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
+from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.sic_search import SecSicSearchFetcher
@@ -29,6 +30,7 @@ sec_provider = Provider(
         "Filings": SecCompanyFilingsFetcher,
         "Form13FHR": SecForm13FHRFetcher,
         "InstitutionsSearch": SecInstitutionsSearchFetcher,
+        "LatestFinancialReports": SecLatestFinancialReportsFetcher,
         "RssLitigation": SecRssLitigationFetcher,
         "SchemaFiles": SecSchemaFilesFetcher,
         "SicSearch": SecSicSearchFetcher,
