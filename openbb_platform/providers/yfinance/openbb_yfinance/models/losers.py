@@ -51,7 +51,7 @@ class YFLosersFetcher(Fetcher[YFLosersQueryParams, list[YFLosersData]]):
     @staticmethod
     def transform_data(
         query: EquityPerformanceQueryParams,
-        data: dict[list],
+        data: list[dict],
         **kwargs: Any,
     ) -> list[YFLosersData]:
         """Transform data."""

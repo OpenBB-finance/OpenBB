@@ -39,7 +39,7 @@ class YFGainersFetcher(Fetcher[YFGainersQueryParams, list[YFGainersData]]):
     @staticmethod
     async def aextract_data(
         query: YFGainersQueryParams,
-        credentials: Optional[list[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
     ) -> list[dict]:
         """Get data from YF."""
