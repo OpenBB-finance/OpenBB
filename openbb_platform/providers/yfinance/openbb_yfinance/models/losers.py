@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Literal, Optional
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (

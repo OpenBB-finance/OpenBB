@@ -749,6 +749,7 @@ class YFPredefinedScreenerData(EquityPerformanceData):
     )
 
     @field_validator("percent_change", mode="before", check_fields=False)
+    @classmethod
     def _validate_percent_change(cls, v):
         """Normalize percent change."""
         if v is not None:
