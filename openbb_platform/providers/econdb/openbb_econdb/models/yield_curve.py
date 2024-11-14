@@ -79,7 +79,7 @@ class EconDbYieldCurveFetcher(
         query: EconDbYieldCurveQueryParams,
         credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> list[dict]:
+    ) -> dict:
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  #  noqa
@@ -160,7 +160,7 @@ class EconDbYieldCurveFetcher(
     @staticmethod
     def transform_data(
         query: EconDbYieldCurveQueryParams,
-        data: list[dict],
+        data: dict,
         **kwargs: Any,
     ) -> AnnotatedResult[list[EconDbYieldCurveData]]:
         """Transform the data."""

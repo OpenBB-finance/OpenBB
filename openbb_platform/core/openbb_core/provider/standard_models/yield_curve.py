@@ -52,11 +52,11 @@ class YieldCurveData(Data):
     )
     maturity: str = Field(description="Maturity length of the security.")
 
+    @property
     @computed_field(
         description="Maturity length as a decimal.",
         return_type=Optional[float],
     )
-    @property
     def maturity_years(self) -> Optional[float]:
         """Get the maturity in years as a decimal."""
         if self.maturity is None or "_" not in self.maturity:
