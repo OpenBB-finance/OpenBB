@@ -28,7 +28,7 @@ class FixedIncomeViews:
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
 
-        data = kwargs.get("data", None)
+        data = kwargs.get("data")
         df: DataFrame = DataFrame()
         if data:
             if isinstance(data, DataFrame) and not data.empty:  # noqa: SIM108
@@ -55,6 +55,9 @@ class FixedIncomeViews:
         provider = kwargs.get("provider")
         df["date"] = df["date"].astype(str)
         maturities = duration_sorter(df["maturity"].unique().tolist())
+        countries: list = (
+            df["country"].unique().tolist() if "country" in df.columns else []
+        )
 
         # Use the supplied colors, if any.
         colors = kwargs.get("colors", [])
@@ -66,11 +69,13 @@ class FixedIncomeViews:
         figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
         text_color = "white" if ChartStyle().plt_style == "dark" else "black"
 
-        def create_fig(figure, df, dates, color_count, country: Optional[str] = None):
+        def create_fig(
+            figure, dataframe, dates, color_count, country: Optional[str] = None
+        ):
             """Create a scatter for each date in the data."""
             for date in dates:
                 color = colors[color_count % len(colors)]
-                plot_df = df[df["date"] == date].copy()
+                plot_df = dataframe[dataframe["date"] == date].copy()
                 plot_df["rate"] = plot_df["rate"].apply(lambda x: x * 100)
                 plot_df = plot_df.rename(columns={"rate": "Yield"})
                 plot_df = (
@@ -81,31 +86,41 @@ class FixedIncomeViews:
                 )
                 plot_df = plot_df.rename(columns={"index": "Maturity"})
                 plot_df["Maturity"] = [
-                    (
-                        d.split("_")[1] + " " + d.split("_")[0].title()
-                        if d != "long_term"
-                        else "Long Term"
-                    )
+                    (d.split("_")[1] + " " + d.split("_")[0].title())
                     for d in plot_df["Maturity"]
                 ]
                 figure.add_scatter(
                     x=plot_df["Maturity"],
                     y=plot_df["Yield"],
                     mode="lines+markers",
-                    name=f"{country} - {date}" if country else date,
+                    name=(
+                        f"{country.replace('_', ' ').title().replace('Ecb', 'ECB')} {date}"
+                        if country
+                        else date
+                    ),
                     line=dict(width=3, color=color),
                     marker=dict(size=10, color=color),
                     hovertemplate=(
                         "Maturity: %{x}<br>Yield: %{y}%<extra></extra>"
-                        if len(dates) == 1
+                        if len(dates) == 1 and not countries
                         else "%{fullData.name}<br>Maturity: %{x}<br>Yield: %{y}%<extra></extra>"
                     ),
                 )
                 color_count += 1
             return figure, color_count
 
-        dates = df.date.unique().tolist()
-        figure, color_count = create_fig(figure, df, dates, color_count)
+        if countries:
+            for _country in countries:
+                _df = df[df["country"] == _country]
+                dates = _df.date.unique().tolist()
+                figure, color_count = create_fig(
+                    figure, _df, dates, color_count, _country
+                )
+
+        else:
+            dates = df.date.unique().tolist()
+            figure, color_count = create_fig(figure, df, dates, color_count)
+
         extra_params = kwargs.get("extra_params", {})
         extra_params = (
             extra_params if isinstance(extra_params, dict) else extra_params.__dict__
@@ -130,14 +145,26 @@ class FixedIncomeViews:
             )
             country = f"United States {curve_type}"
         elif provider == "econdb":
-            country = extra_params.get("country", "")
-            country = country.replace("_", " ").title() if country else "United States"
+            country = (
+                ""
+                if countries
+                else (
+                    extra_params.get("country", "")
+                    .replace("_", " ")
+                    .title()
+                    .replace("Ecb", "ECB")
+                    or "United States"
+                )
+            )
+
         country = country + " " if country else ""
         title = kwargs.get("title", "")
         if not title:
             title = f"{country}Yield Curve"
-            if len(dates) == 1:
+            if len(dates) == 1 and len(countries) == 1:
                 title = f"{country} Yield Curve - {dates[0]}"
+            elif countries:
+                title = f"Yield Curve - {', '.join(countries).replace('_', ' ').title().replace('Ecb', 'ECB')}"
 
         # Update the layout of the figure.
         figure.update_layout(
@@ -156,11 +183,7 @@ class FixedIncomeViews:
                 categoryorder="array",
                 categoryarray=(
                     [
-                        (
-                            d.split("_")[1] + " " + d.split("_")[0].title()
-                            if d != "long_term"
-                            else "Long Term"
-                        )
+                        (d.split("_")[1] + " " + d.split("_")[0].title())
                         for d in maturities
                     ]
                 ),
@@ -186,6 +209,7 @@ class FixedIncomeViews:
             margin=dict(
                 b=25,
                 t=10,
+                l=20,
             ),
         )
 
