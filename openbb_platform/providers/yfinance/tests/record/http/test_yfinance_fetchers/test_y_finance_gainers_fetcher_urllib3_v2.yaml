@@ -598,7 +598,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 14 Nov 2024 02:20:17 GMT
+      - Thu, 14 Nov 2024 03:33:14 GMT
       server:
       - ATS
       vary:
@@ -606,9 +606,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-screeners--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '114'
+      - '113'
       y-rid:
-      - 0jipksljjanj1
+      - 4ofk3f1jjarrq
     status:
       code: 200
       message: OK

@@ -136,7 +136,7 @@ interactions:
         - Hold\",\"shortName\":\"Harmony Gold Mining Company Lim\",\"esgPopulated\":false,\"tradeable\":false,\"cryptoTradeable\":false,\"hasPrePostMarketData\":true,\"firstTradeDateMilliseconds\":769181400000,\"priceHint\":2,\"postMarketChangePercent\":-0.32557997,\"postMarketTime\":1731545513,\"postMarketPrice\":9.0006,\"postMarketChange\":-0.029399872,\"regularMarketChange\":-0.190001,\"regularMarketTime\":1731531602,\"regularMarketPrice\":9.03,\"regularMarketDayHigh\":9.565,\"regularMarketDayRange\":\"8.99
         - 9.565\",\"regularMarketDayLow\":8.99,\"regularMarketVolume\":4876709,\"regularMarketPreviousClose\":9.22,\"bid\":9.01,\"ask\":9.05,\"bidSize\":40,\"askSize\":18,\"market\":\"us_market\",\"messageBoardId\":\"finmb_410154\",\"fullExchangeName\":\"NYSE\",\"longName\":\"Harmony
         Gold Mining Company Limited\",\"financialCurrency\":\"ZAR\",\"regularMarketOpen\":9.5,\"averageDailyVolume3Month\":4041467,\"averageDailyVolume10Day\":3627800,\"fiftyTwoWeekLowChange\":3.7099996,\"fiftyTwoWeekLowChangePercent\":0.6973683,\"fiftyTwoWeekRange\":\"5.32
-        - 12.29\",\"fiftyTwoWeekHighChange\":-3.2600002,\"fiftyTwoWeekHighChangePercent\":-0.26525632,\"fiftyTwoWeekChangePercent\":65.68807,\"dividendDate\":1729468800,\"earningsTimestamp\":1725533940,\"earningsTimestampStart\":1725533940,\"earningsTimestampEnd\":1725533940,\"earningsCallTimestampStart\":1725533940,\"earningsCallTimestampEnd\":1725533940,\"isEarningsDateEstimate\":false,\"trailingAnnualDividendRate\":2.41,\"trailingPE\":11.881578,\"dividendRate\":0.17,\"trailingAnnualDividendYield\":0.2613883,\"dividendYield\":1.85,\"marketState\":\"POSTPOST\",\"epsTrailingTwelveMonths\":0.76,\"epsForward\":1.43,\"epsCurrentYear\":1.27,\"priceEpsCurrentYear\":7.110236,\"sharesOutstanding\":622068992,\"bookValue\":65.771,\"fiftyDayAverage\":10.2814,\"fiftyDayAverageChange\":-1.2514,\"fiftyDayAverageChangePercent\":-0.12171494,\"twoHundredDayAverage\":8.98835,\"twoHundredDayAverageChange\":0.04164982,\"twoHundredDayAverageChangePercent\":0.004633756,\"marketCap\":5704494592,\"forwardPE\":6.3146853,\"priceToBook\":0.13729455,\"sourceInterval\":15,\"exchangeDataDelayedBy\":0,\"exchangeTimezoneName\":\"America/New_York\",\"exchangeTimezoneShortName\":\"EST\",\"gmtOffSetMilliseconds\":-18000000,\"regularMarketChangePercent\":-2.06074,\"displayName\":\"Harmony
+        - 12.29\",\"fiftyTwoWeekHighChange\":-3.2600002,\"fiftyTwoWeekHighChangePercent\":-0.26525632,\"fiftyTwoWeekChangePercent\":65.68807,\"dividendDate\":1729468800,\"earningsTimestamp\":1725533940,\"earningsTimestampStart\":1725533940,\"earningsTimestampEnd\":1725533940,\"earningsCallTimestampStart\":1725533940,\"earningsCallTimestampEnd\":1725533940,\"isEarningsDateEstimate\":false,\"trailingAnnualDividendRate\":2.41,\"trailingPE\":12.04,\"dividendRate\":0.17,\"trailingAnnualDividendYield\":0.2613883,\"dividendYield\":1.88,\"marketState\":\"POSTPOST\",\"epsTrailingTwelveMonths\":0.75,\"epsForward\":1.43,\"epsCurrentYear\":1.27,\"priceEpsCurrentYear\":7.110236,\"sharesOutstanding\":622068992,\"bookValue\":65.771,\"fiftyDayAverage\":10.2814,\"fiftyDayAverageChange\":-1.2514,\"fiftyDayAverageChangePercent\":-0.12171494,\"twoHundredDayAverage\":8.98835,\"twoHundredDayAverageChange\":0.04164982,\"twoHundredDayAverageChangePercent\":0.004633756,\"marketCap\":5835357696,\"forwardPE\":6.3146853,\"priceToBook\":0.13729455,\"sourceInterval\":15,\"exchangeDataDelayedBy\":0,\"exchangeTimezoneName\":\"America/New_York\",\"exchangeTimezoneShortName\":\"EST\",\"gmtOffSetMilliseconds\":-18000000,\"regularMarketChangePercent\":-2.06074,\"displayName\":\"Harmony
         Gold Mining Company\",\"symbol\":\"HMY\"},{\"language\":\"en-US\",\"region\":\"US\",\"quoteType\":\"EQUITY\",\"typeDisp\":\"Equity\",\"quoteSourceName\":\"Nasdaq
         Real Time Price\",\"triggerable\":false,\"customPriceAlertConfidence\":\"LOW\",\"currency\":\"USD\",\"exchange\":\"NYQ\",\"fiftyTwoWeekHigh\":607.15,\"fiftyTwoWeekLow\":334.55,\"averageAnalystRating\":\"2.1
         - Buy\",\"shortName\":\"Goldman Sachs Group, Inc. (The)\",\"esgPopulated\":false,\"tradeable\":false,\"cryptoTradeable\":false,\"hasPrePostMarketData\":true,\"firstTradeDateMilliseconds\":925824600000,\"priceHint\":2,\"postMarketChangePercent\":-0.328153,\"postMarketTime\":1731545494,\"postMarketPrice\":592.27,\"postMarketChange\":-1.94995,\"regularMarketChange\":1.62994,\"regularMarketTime\":1731531602,\"regularMarketPrice\":594.22,\"regularMarketDayHigh\":603.5499,\"regularMarketDayRange\":\"592.65
@@ -611,7 +611,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 14 Nov 2024 02:20:18 GMT
+      - Thu, 14 Nov 2024 03:33:15 GMT
       server:
       - ATS
       vary:
@@ -619,9 +619,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-screeners--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '127'
+      - '122'
       y-rid:
-      - 0v0rk6pjjanj2
+      - 2krua51jjarrr
     status:
       code: 200
       message: OK
