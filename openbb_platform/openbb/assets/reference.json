@@ -14365,7 +14365,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14449,9 +14458,65 @@
                 ],
                 "yfinance": [
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "open",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14465,9 +14530,73 @@
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Shares outstanding.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "book_value",
+                        "type": "float",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14494,7 +14623,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14578,25 +14716,145 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
-                        "default": "",
-                        "optional": false,
+                        "description": "Shares outstanding.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14623,7 +14881,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14707,25 +14974,145 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
-                        "description": "Market Cap displayed in billions.",
-                        "default": "",
-                        "optional": false,
+                        "description": "Market Cap.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
-                        "default": "",
-                        "optional": false,
+                        "description": "Shares outstanding.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14752,7 +15139,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14836,6 +15232,70 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
@@ -14844,17 +15304,73 @@
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Shares outstanding.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -14881,7 +15397,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -14965,6 +15490,70 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
@@ -14973,17 +15562,73 @@
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Shares outstanding.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -15010,7 +15655,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results. Default is all.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -15094,6 +15748,70 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
@@ -15102,17 +15820,73 @@
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Shares outstanding.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -15139,7 +15913,16 @@
                         "choices": null
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results.",
+                        "default": 200,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -15223,6 +16006,70 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "open",
+                        "type": "float",
+                        "description": "Open price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "High price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "Low price for the day.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "previous_close",
+                        "type": "float",
+                        "description": "Previous close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma50",
+                        "type": "float",
+                        "description": "50-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ma200",
+                        "type": "float",
+                        "description": "200-day moving average.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_high",
+                        "type": "float",
+                        "description": "52-week high.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "year_low",
+                        "type": "float",
+                        "description": "52-week low.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "market_cap",
                         "type": "float",
                         "description": "Market Cap.",
@@ -15231,17 +16078,73 @@
                         "choices": null
                     },
                     {
-                        "name": "avg_volume_3_months",
+                        "name": "shares_outstanding",
                         "type": "float",
-                        "description": "Average volume over the last 3 months in millions.",
+                        "description": "Shares outstanding.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "pe_ratio_ttm",
+                        "name": "book_value",
                         "type": "float",
-                        "description": "PE Ratio (TTM).",
+                        "description": "Book value per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "price_to_book",
+                        "type": "float",
+                        "description": "Price to book ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "Earnings per share over the trailing twelve months.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "eps_forward",
+                        "type": "float",
+                        "description": "Forward earnings per share.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pe_forward",
+                        "type": "float",
+                        "description": "Forward price-to-earnings ratio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Trailing twelve month dividend yield.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "earnings_date",
+                        "type": "datetime",
+                        "description": "Most recent earnings date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the price data.",
                         "default": null,
                         "optional": true,
                         "choices": null
