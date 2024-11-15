@@ -41,7 +41,7 @@ def get_logger(name, level=logging.INFO):
 
 def handle_validation_error(logger: logging.Logger, error: ValidationError):
     """Log and raise a Pydantic ValidationError from a provider connection."""
-    err = f"{error.__class__.__name__} -> {error.title}: {str(error.json())}"
+    err = f"{error.__class__.__name__} -> {error.title}: {error.json()}"
     logger.error(err)
     raise error from error
 

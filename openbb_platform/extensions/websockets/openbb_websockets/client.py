@@ -3,7 +3,7 @@
 # pylint: disable=too-many-statements
 # flake8: noqa: PLR0915
 import logging
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 if TYPE_CHECKING:
     from openbb_core.provider.abstract.data import Data
@@ -17,13 +17,13 @@ class WebSocketClient:
     name : str
         Name to assign the WebSocket connection. Used to identify and manage multiple instances.
     module : str
-        The Python module for the provider server connection. Runs in a separate thread.
-        Example: 'openbb_fmp.websockets.server'. Pass additional keyword arguments by including kwargs.
+        The Python module for the provider websocket_client module. Runs in a separate thread.
+        Example: 'openbb_fmp.utils.websocket_client'. Pass additional keyword arguments by including kwargs.
     symbol : Optional[str]
         The symbol(s) requested to subscribe. Enter multiple symbols separated by commas without spaces.
     limit : Optional[int]
         The limit of records to hold in memory. Once the limit is reached, the oldest records are removed.
-        Default is 300. Set to None to keep all records.
+        Default is 1000. Set to None to keep all records.
     results_file : Optional[str]
         Absolute path to the file for continuous writing. By default, a temporary file is created.
     table_name : Optional[str]
@@ -55,12 +55,10 @@ class WebSocketClient:
         Check if the broadcast server process is running.
     broadcast_address : str
         URI address for the results broadcast server.
-    results : list
-        All stored results from the provider's WebSocket stream. The results are stored in a SQLite database.
-        Set the 'limit' property to cap the number of stored records.
+    results : list[Data]
+        All stored results from the provider's WebSocket stream.
+        Results are stored in a SQLite database as a serialized JSON string, this property deserializes the results.
         Clear the results by deleting the property. e.g., del client.results
-    transformed_results : list
-        Deserialize the records from the results file using the provided data model, if available.
 
     Methods
     -------
@@ -75,9 +73,9 @@ class WebSocketClient:
     start_broadcasting
         Start the broadcast server to stream results over a network connection.
     stop_broadcasting
-        Stop the broadcast server and disconnect all reading clients.
+        Stop the broadcast server and disconnect all listening clients.
     send_message
-        Send a message to the WebSocket process.
+        Send a message to the WebSocket process. Messages can be sent to "provider" or "broadcast" targets.
     """
 
     def __init__(  # noqa: PLR0913
@@ -85,7 +83,7 @@ class WebSocketClient:
         name: str,
         module: str,
         symbol: Optional[str] = None,
-        limit: Optional[int] = 300,
+        limit: Optional[int] = 1000,
         results_file: Optional[str] = None,
         table_name: Optional[str] = None,
         save_results: bool = False,
@@ -103,6 +101,7 @@ class WebSocketClient:
         from aiosqlite import DatabaseError
         from queue import Queue
         from pathlib import Path
+        from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_websockets.helpers import get_logger
 
         self.name = name
@@ -119,20 +118,20 @@ class WebSocketClient:
             else None
         )
 
-        self._process = None
-        self._psutil_process = None
-        self._thread = None
-        self._log_thread = None
-        self._provider_message_queue = Queue()
-        self._stop_log_thread_event = threading.Event()
-        self._stop_broadcasting_event = threading.Event()
-        self._broadcast_address = None
-        self._broadcast_process = None
-        self._psutil_broadcast_process = None
-        self._broadcast_thread = None
-        self._broadcast_log_thread = None
-        self._broadcast_message_queue = Queue()
-        self._exception = None
+        self._process: Any = None
+        self._psutil_process: Any = None
+        self._thread: Any = None
+        self._log_thread: Any = None
+        self._provider_message_queue: Queue = Queue()
+        self._stop_log_thread_event: threading.Event = threading.Event()
+        self._stop_broadcasting_event: threading.Event = threading.Event()
+        self._broadcast_address: Any = None
+        self._broadcast_process: Any = None
+        self._psutil_broadcast_process: Any = None
+        self._broadcast_thread: Any = None
+        self._broadcast_log_thread: Any = None
+        self._broadcast_message_queue: Queue = Queue()
+        self._exception: Any = None
 
         if not results_file:
             with tempfile.NamedTemporaryFile(delete=False) as temp_file:
@@ -150,7 +149,9 @@ class WebSocketClient:
         try:
             self._setup_database()
         except DatabaseError as e:
-            self.logger.error("Error setting up the SQLite database and table: %s", e)
+            msg = f"Unexpected error setting up the SQLite database and table -> {e.__class___.__name__}: {e.__str__()}"
+            self.logger.error(msg)
+            self._exception = OpenBBError(msg)
 
     def _atexit(self) -> None:
         """Clean up the WebSocket client processes at exit."""
@@ -164,8 +165,8 @@ class WebSocketClient:
         if self.is_broadcasting:
             self.stop_broadcasting()
         if self.save_results:
-            self.logger.info("Websocket results saved to, %s\n", self.results_file)
-        if os.path.exists(self.results_file):
+            self.logger.info("Websocket results saved to, %s\n", str(self.results_path))
+        if os.path.exists(self.results_file) and not self.save_results:
             os.remove(self.results_file)
 
     def _setup_database(self) -> None:
@@ -476,7 +477,7 @@ class WebSocketClient:
         return False
 
     @property
-    def results(self) -> Union[list[dict], None]:
+    def results(self) -> Union[list[dict], list["Data"], None]:
         """Retrieve the deserialized results from the results file."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
@@ -489,7 +490,12 @@ class WebSocketClient:
                 cursor = conn.execute(f"SELECT * FROM {self.table_name}")  # noqa
                 for row in cursor:
                     index, message = row
-                    output.append(json.loads(json.loads(message)))
+                    if self.data_model:
+                        output.append(
+                            self.data_model.model_validate_json(json.loads(message))
+                        )
+                    else:
+                        output.append(json.loads(json.loads(message)))
 
         if output:
             return output
@@ -664,13 +670,6 @@ class WebSocketClient:
         self._broadcast_address = None
         self._stop_broadcasting_event.clear()
         return
-
-    @property
-    def transformed_results(self) -> list["Data"]:
-        """Model validated records from the results file."""
-        if not self.data_model:
-            raise NotImplementedError("No model provided to transform the results.")
-        return [self.data_model.model_validate(d) for d in self.results]
 
     def __repr__(self):
         """Return the WebSocketClient representation."""

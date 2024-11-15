@@ -454,12 +454,11 @@ PROVIDER INFO:      unsubscribed to: C.XAU/USD
 
 ## Development
 
-
 ### Provider Interface
 
 Providers can be added to the `create_connection` endpoint by following a slightly modified pattern.
 This section outlines the adaptations, but does not contain any code for actually connecting to the provider's websocket.
-For details on that part, go to [websocket_client](README.md###websocket_client) section below.
+For details on that part, go to [websocket_client](README.md#websocket_client) section below.
 
 
 Here, the Fetcher is used to start the provider client module (in a separate file) and return the client to the router, where it is intercepted and kept alive.
@@ -619,6 +618,83 @@ The model will not accept additional fields.
 ```python
 class FmpWebSocketConnection(WebSocketConnection):
     """FMP WebSocket connection model."""
+```
+
+#### WebSocketClient
+
+The `WebSocketClient` is the main class responsible for bidrectional communication between the provider, broadcast, and user. It handles the child processes and can be used as a standalone class. Pasted below is the docstring for the class.
+
+It can be imported to use as a standalone class, and this instance is the 'client' field in  `WebSocketConnection`
+
+```python
+from openbb_websockets.client import WebSocketClient
+```
+
+```console
+    Parameters
+    ----------
+    name : str
+        Name to assign the WebSocket connection. Used to identify and manage multiple instances.
+    module : str
+        The Python module for the provider websocket_client module. Runs in a separate thread.
+        Example: 'openbb_fmp.utils.websocket_client'. Pass additional keyword arguments by including kwargs.
+    symbol : Optional[str]
+        The symbol(s) requested to subscribe. Enter multiple symbols separated by commas without spaces.
+    limit : Optional[int]
+        The limit of records to hold in memory. Once the limit is reached, the oldest records are removed.
+        Default is 1000. Set to None to keep all records.
+    results_file : Optional[str]
+        Absolute path to the file for continuous writing. By default, a temporary file is created.
+    table_name : Optional[str]
+        SQL table name to store serialized data messages. By default, 'records'.
+    save_results : bool
+        Whether to persist the results after the main Python session ends. Default is False.
+    data_model : Optional[Data]
+        Pydantic data model to validate the results before storing them in the database.
+        Also used to deserialize the results from the database.
+    auth_token : Optional[str]
+        The authentication token to use for the WebSocket connection. Default is None.
+        Only used for API and Python application endpoints.
+    logger : Optional[logging.Logger]
+        The pre-configured logger instance to use for this connection. By default, a new logger is created.
+    kwargs : Optional[dict]
+        Additional keyword arguments to pass to the target provider module. Keywords and values must not contain spaces.
+        To pass items to 'websocket.connect()', include them in the 'kwargs' dictionary as,
+        {'connect_kwargs': {'key': 'value'}}.
+
+    Properties
+    ----------
+    symbol : str
+        Symbol(s) requested to subscribe.
+    module : str
+        Path to the provider connection script.
+    is_running : bool
+        Check if the provider connection process is running.
+    is_broadcasting : bool
+        Check if the broadcast server process is running.
+    broadcast_address : str
+        URI address for the results broadcast server.
+    results : list[Data]
+        All stored results from the provider's WebSocket stream.
+        Results are stored in a SQLite database as a serialized JSON string, this property deserializes the results.
+        Clear the results by deleting the property. e.g., del client.results
+
+    Methods
+    -------
+    connect
+        Connect to the provider WebSocket stream.
+    disconnect
+        Disconnect from the provider WebSocket.
+    subscribe
+        Subscribe to a new symbol or list of symbols.
+    unsubscribe
+        Unsubscribe from a symbol or list of symbols.
+    start_broadcasting
+        Start the broadcast server to stream results over a network connection.
+    stop_broadcasting
+        Stop the broadcast server and disconnect all listening clients.
+    send_message
+        Send a message to the WebSocket process. Messages can be sent to "provider" or "broadcast" targets.
 ```
 
 #### WebSocketFetcher

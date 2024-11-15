@@ -18,6 +18,7 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
+from pydantic import ValidationError
 
 from openbb_websockets.helpers import (
     StdOutSink,
@@ -101,9 +102,9 @@ async def get_results(name: str, auth_token: Optional[str] = None) -> OBBject:
     if not client.results:
         raise EmptyDataError(f"No results recorded for client {name}.")
     try:
-        return OBBject(results=client.transformed_results)
-    except NotImplementedError:
         return OBBject(results=client.results)
+    except ValidationError as e:
+        raise OpenBBError(e) from e
 
 
 @router.command(
