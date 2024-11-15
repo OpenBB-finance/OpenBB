@@ -37,7 +37,7 @@ def headers():
                 "table_name": "records",
                 "limit": 10,
                 "sleep_time": 0.25,
-                "broadcast_host": "localhost",
+                "broadcast_host": "0.0.0.0",  # noqa: S104
                 "broadcast_port": 6666,
                 "start_broadcast": False,
                 "connect_kwargs": None,
@@ -56,7 +56,7 @@ def headers():
                 "table_name": "records",
                 "limit": 10,
                 "sleep_time": 0.25,
-                "broadcast_host": "localhost",
+                "broadcast_host": "0.0.0.0",  # noqa: S104
                 "broadcast_port": 6666,
                 "start_broadcast": False,
                 "connect_kwargs": None,
@@ -75,7 +75,7 @@ def headers():
                 "table_name": "records",
                 "limit": 10,
                 "sleep_time": 0.25,
-                "broadcast_host": "localhost",
+                "broadcast_host": "0.0.0.0",  # noqa: S104
                 "broadcast_port": 6666,
                 "start_broadcast": False,
                 "connect_kwargs": None,
@@ -196,22 +196,22 @@ def test_websockets_subscribe(params, headers):
         {
             "name": "test_fmp",
             "auth_token": None,
-            "host": None,
-            "port": None,
+            "host": "0.0.0.0",  # noqa: S104
+            "port": 6666,
             "uvicorn_kwargs": None,
         },
         {
             "name": "test_tiingo",
             "auth_token": None,
-            "host": None,
-            "port": None,
+            "host": "0.0.0.0",  # noqa: S104
+            "port": 6667,
             "uvicorn_kwargs": None,
         },
         {
             "name": "test_polygon",
             "auth_token": None,
-            "host": None,
-            "port": None,
+            "host": "0.0.0.0",  # noqa: S104
+            "port": 6668,
             "uvicorn_kwargs": None,
         },
     ],
