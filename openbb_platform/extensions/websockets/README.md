@@ -607,8 +607,14 @@ class FmpWebSocketData(WebSocketData):
 
 #### WebSocketConnection
 
-This model is what we return from the `FmpWebSocketFetcher`.
+This model is what we return from the `FmpWebSocketFetcher`. The provider will inherit two fields, only the `client` needs to be included on output. No additional fields should be defined.
 
+- client
+  - Instance of WebSocketClient, not returned to from the Router.
+- status
+  - Leave empty, the Router fills this and returns it.
+
+The model will not accept additional fields.
 
 ```python
 class FmpWebSocketConnection(WebSocketConnection):
