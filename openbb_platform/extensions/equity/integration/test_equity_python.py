@@ -468,6 +468,16 @@ def test_equity_fundamental_income_growth(params, obb):
                 "sort_by": "updated_on",
             }
         ),
+        (
+            {
+                "provider": "sec",
+                "symbol": "AAPL",
+                "limit": 10,
+                "start_date": "2024-06-30",
+                "end_date": "2024-09-30",
+                "use_cache": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
