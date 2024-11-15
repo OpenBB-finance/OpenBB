@@ -314,7 +314,7 @@ class SecCompanyFilingsFetcher(
             filings = filings[filings["reportDate"] >= query.start_date]
         if query.end_date:
             filings = filings[filings["reportDate"] <= query.end_date]
-        base_url = f"https://www.sec.gov/Archives/edgar/data/{str(int(query.cik))}/"
+        base_url = f"https://www.sec.gov/Archives/edgar/data/{str(int(query.cik))}/"  # type: ignore
         filings["primaryDocumentUrl"] = (
             base_url
             + filings["accessionNumber"].str.replace("-", "")

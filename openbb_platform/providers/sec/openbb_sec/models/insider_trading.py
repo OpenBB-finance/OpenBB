@@ -77,8 +77,10 @@ class SecInsiderTradingData(InsiderTradingData):
     __alias_dict__ = {
         "filing_date": "date",
         "company_cik": "issuer_cik",
+        "company_name": "issuer",
         "owner_name": "owner",
         "owner_title": "officer_title",
+        "security_type": "security_title",
         "transaction_type": "transaction_acquired_disposed_code",
         "securities_owned": "shares_owned_following_transaction",
         "transaction_price": "transaction_price_per_share",
