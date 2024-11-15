@@ -3,7 +3,7 @@
 import logging
 import re
 import sys
-from typing import Optional
+from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import UnauthorizedError
@@ -46,11 +46,13 @@ def handle_validation_error(logger: logging.Logger, error: ValidationError):
     raise error from error
 
 
-async def get_status(name: str) -> dict:
+async def get_status(name: Optional[str] = None, client: Optional[Any] = None) -> dict:
     """Get the status of a client."""
-    if name not in connected_clients:
+    if name and name not in connected_clients:
         raise OpenBBError(f"Client {name} not connected.")
-    client = connected_clients[name]
+    if not name and not client:
+        raise OpenBBError("Either name or client must be provided.")
+    client = client if client else connected_clients[name]
     provider_pid = client._psutil_process.pid if client.is_running else None
     broadcast_pid = (
         client._psutil_broadcast_process.pid if client.is_broadcasting else None

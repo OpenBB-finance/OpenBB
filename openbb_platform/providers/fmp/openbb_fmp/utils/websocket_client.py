@@ -155,8 +155,15 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
                     message = task.result()
                     await asyncio.shield(queue.enqueue(json.loads(message)))
 
-    except websockets.ConnectionClosed:
-        logger.info("PROVIDER INFO:      The WebSocket connection was closed.")
+    except websockets.ConnectionClosed as e:
+        msg = (
+            f"PROVIDER INFO:      The WebSocket connection was closed -> {e.__str__()}"
+        )
+        logger.info(msg)
+        # Attempt to reopen the connection
+        logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds.")
+        await asyncio.sleep(5)
+        await connect_and_stream(url, symbol, api_key, results_path, table_name, limit)
 
     except websockets.WebSocketException as e:
         logger.error(e)

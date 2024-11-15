@@ -137,7 +137,7 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
     }
 
     symbol: str = Field(
-        description="Polygon symbol to get data for."
+        description="\n    Polygon symbol to get data for."
         + " All feeds, except Options, support the wildcard symbol, '*', for all symbols."
         + "\n    Options symbols are the OCC contract symbol and support up to 1000 individual contracts"
         + " per connection. Crypto and FX symbols should be entered as a pair, i.e., 'BTCUSD', 'JPYUSD'."

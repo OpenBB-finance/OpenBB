@@ -8,9 +8,8 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
-    QUERY_DESCRIPTIONS,
 )
-from pydantic import ConfigDict, Field, field_validator
+from pydantic import ConfigDict, Field, field_validator, model_validator
 
 from openbb_websockets.client import WebSocketClient
 
@@ -89,39 +88,6 @@ class WebSocketQueryParams(QueryParams):
         return json.dumps(v, separators=(",", ":"))
 
 
-class WebSocketData(Data):
-    """WebSocket data model."""
-
-    date: datetime = Field(
-        description=DATA_DESCRIPTIONS.get("date", ""),
-    )
-    symbol: str = Field(
-        description=DATA_DESCRIPTIONS.get("symbol", ""),
-    )
-
-
-class WebSocketConnection(Data):
-    """Data model for returning WebSocketClient from the Provider Interface."""
-
-    __model_config__ = ConfigDict(
-        extra="forbid",
-    )
-
-    client: Any = Field(
-        description="Instance of WebSocketClient class initialized by a provider Fetcher."
-        + " The client is used to communicate with the provider's data stream."
-        + " It is not returned to the user, but is handled by the router for API access.",
-        exclude=True,
-    )
-
-    @field_validator("client", mode="before", check_fields=False)
-    def _validate_client(cls, v):
-        """Validate the client."""
-        if not isinstance(v, WebSocketClient):
-            raise ValueError("Client must be an instance of WebSocketClient.")
-        return v
-
-
 class WebSocketConnectionStatus(Data):
     """Data model for WebSocketConnection status information."""
 
@@ -164,3 +130,50 @@ class WebSocketConnectionStatus(Data):
     save_results: bool = Field(
         description="Whether to save the results after the session ends.",
     )
+
+
+class WebSocketData(Data):
+    """WebSocket data model."""
+
+    date: datetime = Field(
+        description=DATA_DESCRIPTIONS.get("date", ""),
+    )
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+    )
+
+
+class WebSocketConnection(Data):
+    """Data model for returning WebSocketClient from the Provider Interface."""
+
+    __model_config__ = ConfigDict(
+        extra="forbid",
+    )
+
+    client: Optional[Any] = Field(
+        default=None,
+        description="Instance of WebSocketClient class initialized by a provider Fetcher."
+        + " The client is used to communicate with the provider's data stream."
+        + " It is not returned to the user, but is handled by the router for API access.",
+        exclude=True,
+    )
+    status: Optional[WebSocketConnectionStatus] = Field(
+        default=None,
+        description="Status information for the WebSocket connection.",
+    )
+
+    @field_validator("client", mode="before", check_fields=False)
+    @classmethod
+    def _validate_client(cls, v):
+        """Validate the client."""
+        if v and not isinstance(v, WebSocketClient):
+            raise ValueError("Client must be an instance of WebSocketClient.")
+        return v
+
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_inputs(cls, vaules):
+        """Validate the status."""
+        if not vaules.get("status") and not vaules.get("client"):
+            raise ValueError("Cannot initialize empty.")
+        return vaules

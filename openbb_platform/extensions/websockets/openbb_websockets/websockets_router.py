@@ -39,8 +39,9 @@ async def create_connection(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[WebSocketConnectionStatus]:
+) -> OBBject:
     """Create a new provider websocket connection."""
+
     name = extra_params.name
     if name in connected_clients:
         broadcast_address = connected_clients[name].broadcast_address
@@ -70,10 +71,8 @@ async def create_connection(
 
     client_name = client.name
     connected_clients[client_name] = client
-    results = await get_status(client_name)
-
-    obbject.results = WebSocketConnectionStatus(**results)
-
+    status = await get_status(client_name)
+    obbject.results.status = WebSocketConnectionStatus(**status)
     return obbject
 
 
