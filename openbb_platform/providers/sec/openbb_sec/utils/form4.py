@@ -221,7 +221,7 @@ async def get_form_4_urls(
         start_date
         if isinstance(start_date, dateType)
         else (
-            dateType.fromisoformat(start_date)
+            dateType.fromisoformat(start_date)  # type: ignore
             if start_date and isinstance(start_date, str)
             else None
         )
@@ -230,7 +230,7 @@ async def get_form_4_urls(
         end_date
         if isinstance(end_date, dateType)
         else (
-            dateType.fromisoformat(end_date)
+            dateType.fromisoformat(end_date)  # type: ignore
             if end_date and isinstance(end_date, str)
             else None
         )
@@ -370,7 +370,10 @@ async def parse_form_4_data(data):  # noqa: PLR0915, PLR0912
                             ids = [item["@id"] for item in value["footnoteId"]]
                             footnotes = (
                                 "; ".join(
-                                    [footnotes.get(footnote_id) for footnote_id in ids]
+                                    [
+                                        footnotes.get(footnote_id, "")
+                                        for footnote_id in ids
+                                    ]
                                 )
                                 if isinstance(footnotes, dict)
                                 else footnotes
