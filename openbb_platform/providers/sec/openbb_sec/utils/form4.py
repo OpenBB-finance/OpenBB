@@ -98,7 +98,7 @@ logger = get_logger()
 
 
 def setup_database(conn):
-    """Setup the caching database for Form 4 data."""
+    """Create a caching database for Form 4 data."""
     create_table_query = """
     CREATE TABLE IF NOT EXISTS form4_data (
         date DATE,
@@ -268,7 +268,7 @@ async def get_form_4_data(url) -> dict:
     from openbb_core.provider.utils.helpers import amake_request
 
     async def response_callback(response, _):
-        """Callback for the response."""
+        """Response callback function."""
         return await response.read()
 
     response = await amake_request(
