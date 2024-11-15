@@ -26390,6 +26390,32 @@
                         "optional": true,
                         "choices": null
                     }
+                ],
+                "sec": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format. Wide date ranges can result in long download times. Recommended to use a smaller date range, default is 120 days ago.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format. Default is today.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Persist the data locally for future use. Default is True. Each form submission is an individual download and the SEC limits the number of concurrent downloads. This prevents the same file from being downloaded multiple times.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
                 ]
             },
             "returns": {
@@ -26401,7 +26427,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fmp', 'intrinio']]",
+                        "type": "Optional[Literal['fmp', 'intrinio', 'sec']]",
                         "description": "Provider name."
                     },
                     {
@@ -26663,6 +26689,168 @@
                         "name": "report_line_number",
                         "type": "int",
                         "description": "Report line number of the insider trading.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "company_name",
+                        "type": "str",
+                        "description": "Name of the company.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "form",
+                        "type": "Union[int, str]",
+                        "description": "Form type.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "director",
+                        "type": "bool",
+                        "description": "Whether the owner is a director.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "officer",
+                        "type": "bool",
+                        "description": "Whether the owner is an officer.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ten_percent_owner",
+                        "type": "bool",
+                        "description": "Whether the owner is a 10% owner.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "other",
+                        "type": "bool",
+                        "description": "Whether the owner is classified as other.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "other_text",
+                        "type": "str",
+                        "description": "Text for other classification.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transaction_timeliness",
+                        "type": "str",
+                        "description": "Timeliness of the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ownership_type",
+                        "type": "str",
+                        "description": "Type of ownership, direct or indirect.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "nature_of_ownership",
+                        "type": "str",
+                        "description": "Nature of the ownership.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "exercise_date",
+                        "type": "date",
+                        "description": "Date of exercise.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "expiration_date",
+                        "type": "date",
+                        "description": "Date of expiration for the derivative.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "deemed_execution_date",
+                        "type": "date",
+                        "description": "Deemed execution date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "underlying_security_title",
+                        "type": "str",
+                        "description": "Title of the underlying security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "underlying_security_shares",
+                        "type": "float",
+                        "description": "Number of underlying shares associated with the derivative.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "underlying_security_value",
+                        "type": "float",
+                        "description": "Value of the underlying security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "conversion_exercise_price",
+                        "type": "float",
+                        "description": "Price of conversion or exercise of the securities.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transaction_value",
+                        "type": "float",
+                        "description": "Total value of the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value_owned",
+                        "type": "float",
+                        "description": "Value of the securities owned after the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "footnote",
+                        "type": "str",
+                        "description": "Footnote for the transaction.",
                         "default": null,
                         "optional": true,
                         "choices": null
