@@ -606,7 +606,7 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
         if use_cache is True:
             close_db(conn, db_path)
         raise OpenBBError(
-            f"Unexpected error while downloading and processing data -> {e.__class__.__name__}: {e.__str__()}"
+            f"Unexpected error while downloading and processing data -> {e.__class__.__name__}: {e}"
         ) from e
 
 
