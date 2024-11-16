@@ -53,7 +53,7 @@ class YieldCurveData(Data):
     )
     maturity: str = Field(description="Maturity length of the security.")
 
-    @computed_field(
+    @computed_field(  # type: ignore
         description="Maturity length, in years, as a decimal.",
         return_type=Optional[float],
     )
