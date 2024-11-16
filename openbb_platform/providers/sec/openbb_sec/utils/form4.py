@@ -83,15 +83,15 @@ transaction_code_map = {
 
 def get_logger():
     """Get the logger."""
-    logger = logging.getLogger("openbb.sec")
+    logger_instance = logging.getLogger("openbb.sec")
     handler = logging.StreamHandler()
     handler.setLevel(logging.INFO)
     formatter = logging.Formatter("\n%(message)s\n")
     handler.setFormatter(formatter)
-    logger.addHandler(handler)
-    logger.setLevel(logging.INFO)
+    logger_instance.addHandler(handler)
+    logger_instance.setLevel(logging.INFO)
 
-    return logger
+    return logger_instance
 
 
 logger = get_logger()
@@ -298,7 +298,9 @@ async def get_form_4_data(url) -> dict:
     )
 
 
-async def parse_form_4_data(data):  # noqa: PLR0915, PLR0912
+async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-many-branches
+    data,
+):
     """Parse the Form 4 data."""
 
     owner = data.get("reportingOwner", {})
@@ -498,7 +500,7 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
                     if url not in cached_urls:
                         non_cached_urls.append(url)
             except sqlite3.DatabaseError as e:
-                raise logger.info("Error connecting to the database.")
+                logger.info("Error connecting to the database.")
                 retry_input = input(
                     "Would you like to retry with a new database? (y/n): "
                 )
@@ -609,17 +611,17 @@ async def get_form_4(
 ) -> list[dict]:
     """Get the Form 4 data by ticker symbol or CIK number."""
     # pylint: disable=import-outside-toplevel
-    from asyncio import TimeoutError
+    import asyncio
 
     try:
         urls = await get_form_4_urls(symbol, start_date, end_date, use_cache)
         if limit is not None:
             urls = urls[:limit]
         data = await download_data(urls, use_cache)
-    except TimeoutError:
+    except asyncio.TimeoutError as e:
         raise OpenBBError(
             "A timeout error occurred while downloading the data. Please try again."
-        )
+        ) from e
 
     if not data:
         raise OpenBBError(f"No Form 4 data was returned for {symbol}.")
