@@ -13,7 +13,7 @@ SEC_HEADERS: dict[str, str] = {
 }
 
 field_map = {
-    "date": "date",
+    "filing_date": "filing_date",
     "symbol": "symbol",
     "form": "form",
     "owner": "owner_name",
@@ -32,7 +32,8 @@ field_map = {
     "transactionShares": "securities_transacted",
     "transactionPricePerShare": "transaction_price",
     "transactionTotalValue": "transaction_value",
-    "transactionAcquiredDisposedCode": "transaction_type",
+    "transactionCode": "transaction_type",
+    "transactionAcquiredDisposedCode": "acquisition_or_disposition",
     "sharesOwnedFollowingTransaction": "securities_owned",
     "valueOwnedFollowingTransaction": "value_owned",
     "transactionTimeliness": "transaction_timeliness",
@@ -101,7 +102,7 @@ def setup_database(conn):
     """Create a caching database for Form 4 data."""
     create_table_query = """
     CREATE TABLE IF NOT EXISTS form4_data (
-        date DATE,
+        filing_date DATE,
         symbol TEXT,
         form TEXT,
         owner_name TEXT,
@@ -116,11 +117,12 @@ def setup_database(conn):
         owner_title TEXT,
         security_type TEXT,
         transaction_date DATE,
+        transaction_type TEXT,
+        acquisition_or_disposition TEXT,
         footnote TEXT,
         securities_transacted REAL,
         transaction_price MONEY,
         transaction_value MONEY,
-        transaction_type TEXT,
         securities_owned REAL,
         value_owned MONEY,
         transaction_timeliness TEXT,
@@ -133,7 +135,7 @@ def setup_database(conn):
         underlying_security_title TEXT,
         underlying_security_shares REAL,
         underlying_security_value MONEY,
-        url TEXT NOT NULL
+        filing_url TEXT NOT NULL
     );
     """
     conn.execute(create_table_query)
@@ -186,7 +188,7 @@ def close_db(conn, db_path):
     import os
 
     conn.execute(
-        "CREATE TABLE IF NOT EXISTS form4_data_sorted AS SELECT * FROM form4_data ORDER BY date"
+        "CREATE TABLE IF NOT EXISTS form4_data_sorted AS SELECT * FROM form4_data ORDER BY filing_date"
     )
     conn.execute("DROP TABLE form4_data")
     conn.execute("ALTER TABLE form4_data_sorted RENAME TO form4_data")
@@ -307,10 +309,10 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-ma
     owners = ""
     ciks = ""
     if isinstance(owner, list):
-        owners = ", ".join(
+        owners = ";".join(
             [d.get("reportingOwnerId", {}).get("rptOwnerName") for d in owner]
         )
-        ciks = ", ".join(
+        ciks = ";".join(
             [d.get("reportingOwnerId", {}).get("rptOwnerCik") for d in owner]
         )
 
@@ -324,7 +326,15 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-ma
             else {}
         )
     )
-    signature_date = data.get("ownerSignature", {}).get("signatureDate")
+    signature_data = data.get("ownerSignature")
+
+    if signature_data and isinstance(signature_data, dict):
+        signature_date = signature_data.get("signatureDate")
+    elif signature_data and isinstance(signature_data, list):
+        signature_date = signature_data[0].get("signatureDate")
+    else:
+        signature_date = None
+
     footnotes = data.get("footnotes", {})
     if footnotes:
         footnote_items = footnotes.get("footnote")
@@ -333,7 +343,7 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-ma
         footnotes = {item["@id"]: item["#text"] for item in footnote_items}
 
     metadata = {
-        "date": signature_date or data.get("periodOfReport"),
+        "filing_date": signature_date or data.get("periodOfReport"),
         "symbol": issuer.get("issuerTradingSymbol", "").upper(),
         "form": data.get("documentType"),
         "owner": (
@@ -366,7 +376,12 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-ma
                 continue
             new_row = {**metadata}
             for key, value in table.items():
-                if isinstance(value, dict):
+                if key == "transactionCoding":
+                    new_row["transaction_type"] = value.get("transactionCode")
+                    new_row["form"] = (
+                        value.get("transactionFormType") or metadata["form"]
+                    )
+                elif isinstance(value, dict):
                     if "footnoteId" in value:
                         if isinstance(value["footnoteId"], list):
                             ids = [item["@id"] for item in value["footnoteId"]]
@@ -450,7 +465,12 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-ma
                 continue
             new_row = {**metadata}
             for key, value in table.items():
-                if isinstance(value, dict):
+                if key == "transactionCoding":
+                    new_row["transaction_type"] = value.get("transactionCode")
+                    new_row["form"] = (
+                        value.get("transactionFormType") or metadata["form"]
+                    )
+                elif isinstance(value, dict):
                     for k, v in value.items():
                         if k == "value":
                             new_row[key] = v
@@ -495,7 +515,7 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
                 conn = sqlite3.connect(db_path)
                 setup_database(conn)
                 cached_data = get_cached_data(urls, conn)
-                cached_urls = {entry["url"] for entry in cached_data}
+                cached_urls = {entry["filing_url"] for entry in cached_data}
                 for url in urls:
                     if url not in cached_urls:
                         non_cached_urls.append(url)
@@ -512,7 +532,7 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
                     conn = sqlite3.connect(db_path)
                     setup_database(conn)
                     cached_data = get_cached_data(urls, conn)
-                    cached_urls = {entry["url"] for entry in cached_data}
+                    cached_urls = {entry["filing_url"] for entry in cached_data}
                     for url in urls:
                         if url not in cached_urls:
                             non_cached_urls.append(url)
@@ -528,12 +548,12 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
             data = await get_form_4_data(url)
             result = await parse_form_4_data(data)
             if not result and use_cache is True:
-                df = DataFrame([{"url": url}])
+                df = DataFrame([{"filing_url": url}])
                 df.to_sql("form4_data", conn, if_exists="append", index=False)
 
             if result:
                 df = DataFrame(result)
-                df.loc[:, "url"] = url
+                df.loc[:, "filing_url"] = url
                 df = df.replace({nan: None}).rename(columns=field_map)
                 try:
                     if use_cache is True:
@@ -558,7 +578,7 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
             len(non_cached_urls),
             round(time_estimate),
         )
-        min_warn_time = 5
+        min_warn_time = 10
         if time_estimate > min_warn_time:
             logger.info(
                 "Warning: This function is not intended for mass data collection."
@@ -578,15 +598,15 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
         if use_cache is True:
             close_db(conn, db_path)
 
-        results = [entry for entry in results if entry.get("date")]
+        results = [entry for entry in results if entry.get("filing_date")]
 
-        return sorted(results, key=lambda x: x["date"], reverse=True)
+        return sorted(results, key=lambda x: x["filing_date"], reverse=True)
 
     except Exception as e:  # pylint: disable=broad-except
         if use_cache is True:
             close_db(conn, db_path)
         raise OpenBBError(
-            "Error while downloading and processing data, please try again."
+            f"Unexpected error while downloading and processing data -> {e.__class__.__name__}: {e.__str__()}"
         ) from e
 
 
@@ -597,7 +617,7 @@ def get_cached_data(urls, conn):
     from pandas import read_sql
 
     placeholders = ", ".join("?" for _ in urls)
-    query = f"SELECT * FROM form4_data WHERE url IN ({placeholders})"  # noqa
+    query = f"SELECT * FROM form4_data WHERE filing_url IN ({placeholders})"  # noqa
     df = read_sql(query, conn, params=urls)
     return df.replace({nan: None}).to_dict(orient="records") if not df.empty else []
 

@@ -74,10 +74,6 @@ class SecInsiderTradingQueryParams(InsiderTradingQueryParams):
 class SecInsiderTradingData(InsiderTradingData):
     """SEC Insider Trading Data."""
 
-    __alias_dict__ = {
-        "filing_url": "url",
-    }
-
     company_name: Optional[str] = Field(
         default=None, description="Name of the company."
     )
@@ -151,6 +147,18 @@ class SecInsiderTradingData(InsiderTradingData):
         if not v:
             return None
         return "Direct" if v.strip() == "D" else "Indirect" if v.strip() == "I" else v
+
+    @field_validator("acquisition_or_disposition", mode="before", check_fields=False)
+    @classmethod
+    def _map_acquisition_disposition(cls, v):
+        """Map acquisition or disposition to description."""
+        if not v:
+            return None
+        return (
+            "Acquisition"
+            if v.strip() == "A"
+            else "Disposition" if v.strip() == "D" else v
+        )
 
     @field_validator("transaction_type", mode="before", check_fields=False)
     @classmethod
