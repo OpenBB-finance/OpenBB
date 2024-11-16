@@ -235,7 +235,7 @@ def test_y_finance_available_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_active_fetcher(credentials=test_credentials):
     """Test YFActiveFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFActiveFetcher()
     result = fetcher.test(params, credentials)
@@ -245,7 +245,7 @@ def test_y_finance_active_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_gainers_fetcher(credentials=test_credentials):
     """Test YFGainersFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFGainersFetcher()
     result = fetcher.test(params, credentials)
@@ -255,7 +255,7 @@ def test_y_finance_gainers_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_losers_fetcher(credentials=test_credentials):
     """Test YFLosersFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFLosersFetcher()
     result = fetcher.test(params, credentials)
@@ -265,7 +265,7 @@ def test_y_finance_losers_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_undervalued_large_caps_fetcher(credentials=test_credentials):
     """Test YFUndervaluedLargeCapsFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFUndervaluedLargeCapsFetcher()
     result = fetcher.test(params, credentials)
@@ -275,7 +275,7 @@ def test_y_finance_undervalued_large_caps_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_undervalued_growth_equities_fetcher(credentials=test_credentials):
     """Test YFUndervaluedGrowthEquitiesFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFUndervaluedGrowthEquitiesFetcher()
     result = fetcher.test(params, credentials)
@@ -285,7 +285,7 @@ def test_y_finance_undervalued_growth_equities_fetcher(credentials=test_credenti
 @pytest.mark.record_http
 def test_y_finance_aggressive_small_caps_fetcher(credentials=test_credentials):
     """Test YFAggressiveSmallCapsFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFAggressiveSmallCapsFetcher()
     result = fetcher.test(params, credentials)
@@ -295,7 +295,7 @@ def test_y_finance_aggressive_small_caps_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_growth_tech_equities_fetcher(credentials=test_credentials):
     """Test YFGrowthTechEquitiesFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFGrowthTechEquitiesFetcher()
     result = fetcher.test(params, credentials)

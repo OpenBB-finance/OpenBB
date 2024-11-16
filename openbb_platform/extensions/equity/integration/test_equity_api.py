@@ -1537,7 +1537,7 @@ def test_equity_profile(params, headers):
 @parametrize(
     "params",
     [
-        ({"sort": "desc", "provider": "yfinance"}),
+        ({"sort": "desc", "provider": "yfinance", "limit": 10}),
         ({"provider": "tmx", "category": "52w_high"}),
     ],
 )
@@ -1555,7 +1555,7 @@ def test_equity_discovery_gainers(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_losers(params, headers):
@@ -1571,7 +1571,7 @@ def test_equity_discovery_losers(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_active(params, headers):
@@ -1606,7 +1606,7 @@ def test_equity_price_performance(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_undervalued_large_caps(params, headers):
@@ -1622,7 +1622,7 @@ def test_equity_discovery_undervalued_large_caps(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_undervalued_growth(params, headers):
@@ -1638,7 +1638,7 @@ def test_equity_discovery_undervalued_growth(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_aggressive_small_caps(params, headers):
@@ -1656,7 +1656,7 @@ def test_equity_discovery_aggressive_small_caps(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_growth_tech(params, headers):

@@ -1,6 +1,12 @@
 """Yahoo Finance types helpers."""
 
-from typing import Literal
+from datetime import datetime
+from typing import Literal, Optional
+
+from openbb_core.provider.standard_models.equity_performance import (
+    EquityPerformanceData,
+)
+from pydantic import Field, field_validator
 
 INTERVALS = Literal[
     "1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1W", "1M", "1Q"
@@ -626,3 +632,126 @@ INDICES = {
     "dxy": {"name": "US Dollar Index", "ticker": "DX-Y.NYB"},
     "crypto200": {"name": "CMC Crypto 200 Index by Solacti", "ticker": "^CMC200"},
 }
+
+
+class YFPredefinedScreenerData(EquityPerformanceData):
+    """Yahoo Finance Predefined Screener Data."""
+
+    __alias_dict__ = {
+        "name": "shortName",
+        "price": "regularMarketPrice",
+        "change": "regularMarketChange",
+        "percent_change": "regularMarketChangePercent",
+        "volume": "regularMarketVolume",
+        "open": "regularMarketOpen",
+        "high": "regularMarketDayHigh",
+        "low": "regularMarketDayLow",
+        "previous_close": "regularMarketPreviousClose",
+        "ma50": "fiftyDayAverage",
+        "ma200": "twoHundredDayAverage",
+        "year_high": "fiftyTwoWeekHigh",
+        "year_low": "fiftyTwoWeekLow",
+        "market_cap": "marketCap",
+        "shares_outstanding": "sharesOutstanding",
+        "book_value": "bookValue",
+        "price_to_book": "priceToBook",
+        "eps_ttm": "epsTrailingTwelveMonths",
+        "pe_forward": "forwardPE",
+        "dividend_yield": "trailingAnnualDividendYield",
+        "earnings_date": "earnings_date",
+        "currency": "currency",
+    }
+
+    open: Optional[float] = Field(
+        default=None,
+        description="Open price for the day.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    high: Optional[float] = Field(
+        default=None,
+        description="High price for the day.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    low: Optional[float] = Field(
+        default=None,
+        description="Low price for the day.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    previous_close: Optional[float] = Field(
+        default=None,
+        description="Previous close price.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    ma50: Optional[float] = Field(
+        default=None,
+        description="50-day moving average.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    ma200: Optional[float] = Field(
+        default=None,
+        description="200-day moving average.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    year_high: Optional[float] = Field(
+        default=None,
+        description="52-week high.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    year_low: Optional[float] = Field(
+        default=None,
+        description="52-week low.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    market_cap: Optional[float] = Field(
+        default=None,
+        description="Market Cap.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    shares_outstanding: Optional[float] = Field(
+        default=None,
+        description="Shares outstanding.",
+    )
+    book_value: Optional[float] = Field(
+        default=None,
+        description="Book value per share.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    price_to_book: Optional[float] = Field(
+        default=None,
+        description="Price to book ratio.",
+    )
+    eps_ttm: Optional[float] = Field(
+        default=None,
+        description="Earnings per share over the trailing twelve months.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    eps_forward: Optional[float] = Field(
+        default=None,
+        description="Forward earnings per share.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    pe_forward: Optional[float] = Field(
+        default=None,
+        description="Forward price-to-earnings ratio.",
+    )
+    dividend_yield: Optional[float] = Field(
+        default=None,
+        description="Trailing twelve month dividend yield.",
+        json_schema_extra={"x-unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    earnings_date: Optional[datetime] = Field(
+        default=None,
+        description="Most recent earnings date.",
+    )
+    currency: Optional[str] = Field(
+        default=None,
+        description="Currency of the price data.",
+    )
+
+    @field_validator("percent_change", mode="before", check_fields=False)
+    @classmethod
+    def _validate_percent_change(cls, v):
+        """Normalize percent change."""
+        if v is not None:
+            return v / 100
+        return v
