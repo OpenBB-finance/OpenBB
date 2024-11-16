@@ -33,9 +33,10 @@ class YieldCurveQueryParams(QueryParams):
         if isinstance(v, dateType):
             return v.strftime("%Y-%m-%d")
         new_dates: list = []
+        dates: list = []
         if isinstance(v, str):
             dates = v.split(",")
-        if isinstance(v, list):
+        elif isinstance(v, list):
             dates = v
         for date in dates:
             new_dates.append(to_datetime(date).date().strftime("%Y-%m-%d"))
@@ -52,22 +53,20 @@ class YieldCurveData(Data):
     )
     maturity: str = Field(description="Maturity length of the security.")
 
-    @property
     @computed_field(
-        description="Maturity length as a decimal.",
+        description="Maturity length, in years, as a decimal.",
         return_type=Optional[float],
     )
+    @property
     def maturity_years(self) -> Optional[float]:
         """Get the maturity in years as a decimal."""
-        if self.maturity is None or "_" not in self.maturity:
+        if "_" not in self.maturity:  # pylint: disable=E1135
             return None
 
-        parts = self.maturity.split("_")
-        months = 0
-        for i in range(0, len(parts), 2):
-            number = int(parts[i + 1])
-            if parts[i] == "year":
-                number *= 12
-            months += number
+        parts = self.maturity.split("_")  # pylint: disable=E1101
+        months = sum(
+            int(parts[i + 1]) * (12 if parts[i] == "year" else 1)
+            for i in range(0, len(parts), 2)
+        )
 
         return months / 12
