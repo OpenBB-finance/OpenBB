@@ -75,26 +75,7 @@ class SecInsiderTradingData(InsiderTradingData):
     """SEC Insider Trading Data."""
 
     __alias_dict__ = {
-        "filing_date": "date",
-        "company_cik": "issuer_cik",
-        "company_name": "issuer",
-        "owner_name": "owner",
-        "owner_title": "officer_title",
-        "security_type": "security_title",
-        "transaction_type": "transaction_acquired_disposed_code",
-        "securities_owned": "shares_owned_following_transaction",
-        "transaction_price": "transaction_price_per_share",
-        "transaction_value": "transaction_total_value",
-        "value_owned": "value_owned_following_transaction",
-        "securities_transacted": "transaction_shares",
-        "ownership_type": "direct_or_indirect_ownership",
-        "transaction_timeliness": "transaction_code",
         "filing_url": "url",
-        "director": "is_director",
-        "officer": "is_officer",
-        "ten_percent_owner": "is_ten_percent_owner",
-        "other": "is_other",
-        "conversion_exercise_price": "conversion_or_exercise_price",
     }
 
     company_name: Optional[str] = Field(
