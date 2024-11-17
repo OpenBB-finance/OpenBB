@@ -53,6 +53,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -82,12 +84,42 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : Union[int, float]
             The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
-            Market Cap displayed in billions. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+            Market Cap. (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -139,6 +171,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. Default is all. (provider: yfinance)
 
         Returns
         -------
@@ -168,12 +202,42 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : Union[int, float]
             The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -334,6 +398,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -363,12 +429,42 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : Union[int, float]
             The trading volume.
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -420,6 +516,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -449,12 +547,42 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : Union[int, float]
             The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -617,6 +745,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -646,12 +776,42 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : Union[int, float]
             The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -703,6 +863,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -732,12 +894,42 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : Union[int, float]
             The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -789,6 +981,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -818,12 +1012,42 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : Union[int, float]
             The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
