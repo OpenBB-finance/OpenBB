@@ -160,7 +160,7 @@ class YFinanceEquityScreenerFetcher(
             query.country = "all"
 
         if query.country and query.country != "all":
-            operands.append({"operator": "EQ", "operands": ["region", query.country]}),
+            operands.append({"operator": "EQ", "operands": ["region", query.country]})
 
         if query.sector is not None:
             sector = SECTOR_MAP[query.sector]
