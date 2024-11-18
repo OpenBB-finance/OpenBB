@@ -15,6 +15,7 @@ from openbb_yfinance.models.currency_historical import YFinanceCurrencyHistorica
 from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFetcher
 from openbb_yfinance.models.equity_profile import YFinanceEquityProfileFetcher
 from openbb_yfinance.models.equity_quote import YFinanceEquityQuoteFetcher
+from openbb_yfinance.models.equity_screener import YFinanceEquityScreenerFetcher
 from openbb_yfinance.models.etf_info import YFinanceEtfInfoFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
@@ -368,5 +369,22 @@ def test_y_finance_etf_info_fetcher(credentials=test_credentials):
     params = {"symbol": "QQQ"}
 
     fetcher = YFinanceEtfInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_equity_screener_fetcher(credentials=test_credentials):
+    """Test YFinanceEquityScreener."""
+    params = {
+        "country": "us",
+        "sector": "consumer_cyclical",
+        "industry": "auto_manufacturers",
+        "mktcap_min": 60000000000,
+        "volume_min": 5000000,
+        "price_min": 10,
+    }
+
+    fetcher = YFinanceEquityScreenerFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
