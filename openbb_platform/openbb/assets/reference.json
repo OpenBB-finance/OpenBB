@@ -30276,8 +30276,8 @@
                     {
                         "name": "mktcap_min",
                         "type": "int",
-                        "description": "Filter by market cap greater than this value.",
-                        "default": null,
+                        "description": "Filter by market cap greater than this value. Default is 500M.",
+                        "default": 500000000,
                         "optional": true,
                         "choices": null
                     },
@@ -30292,8 +30292,8 @@
                     {
                         "name": "price_min",
                         "type": "float",
-                        "description": "Filter by price greater than this value.",
-                        "default": null,
+                        "description": "Filter by price greater than this value. Default is, 5",
+                        "default": 5,
                         "optional": true,
                         "choices": null
                     },
@@ -30308,8 +30308,8 @@
                     {
                         "name": "volume_min",
                         "type": "int",
-                        "description": "Filter by volume greater than this value.",
-                        "default": null,
+                        "description": "Filter by volume greater than this value. Default is, 10K",
+                        "default": 10000,
                         "optional": true,
                         "choices": null
                     },
@@ -30334,6 +30334,14 @@
                         "type": "float",
                         "description": "Filter by a beta less than this value.",
                         "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "Limit the number of results returned. Default is, 200. Set to, 0, for all results.",
+                        "default": 200,
                         "optional": true,
                         "choices": null
                     }

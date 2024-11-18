@@ -1489,6 +1489,7 @@ def test_equity_search(params, headers):
                 "beta_min": None,
                 "beta_max": None,
                 "provider": "yfinance",
+                "limit": 200,
             }
         ),
     ],

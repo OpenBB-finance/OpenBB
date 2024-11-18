@@ -598,7 +598,8 @@ class ROUTER_equity(Container):
         exchange : Optional[Union[Literal['amex', 'ams', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'mutual_fund', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra'], Literal['ams', 'aqs', 'ase', 'asx', 'ath', 'ber', 'bru', 'bse', 'bts', 'bud', 'bue', 'bvb', 'bvc', 'ccs', 'cnq', 'cph', 'cxe', 'dfm', 'doh', 'dus', 'ebs', 'fka', 'fra', 'ger', 'ham', 'han', 'hel', 'hkg', 'ice', 'iob', 'ise', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'kuw', 'lis', 'lit', 'lse', 'mce', 'mex', 'mil', 'mun', 'ncm', 'neo', 'ngm', 'nms', 'nsi', 'nyq', 'nze', 'oem', 'oqb', 'oqx', 'osl', 'par', 'pnk', 'pra', 'ris', 'sau', 'ses', 'set', 'sgo', 'shh', 'shz', 'sto', 'stu', 'tai', 'tal', 'tlv', 'tor', 'two', 'van', 'vie', 'vse', 'wse']]]
             Filter by exchange. (provider: fmp, yfinance)
         limit : Optional[int]
-            Limit the number of results to return. (provider: fmp)
+            Limit the number of results to return. (provider: fmp);
+            Limit the number of results returned. Default is, 200. Set to, 0, for all results. (provider: yfinance)
 
         Returns
         -------

@@ -62,23 +62,24 @@ class YFinanceEquityScreenerQueryParams(EquityScreenerQueryParams):
         description="Filter by industry.",
     )
     mktcap_min: Optional[int] = Field(
-        default=None, description="Filter by market cap greater than this value."
+        default=500000000,
+        description="Filter by market cap greater than this value. Default is 500M.",
     )
     mktcap_max: Optional[int] = Field(
         default=None,
         description="Filter by market cap less than this value.",
     )
     price_min: Optional[float] = Field(
-        default=None,
-        description="Filter by price greater than this value.",
+        default=5,
+        description="Filter by price greater than this value. Default is, 5",
     )
     price_max: Optional[float] = Field(
         default=None,
         description="Filter by price less than this value.",
     )
     volume_min: Optional[int] = Field(
-        default=None,
-        description="Filter by volume greater than this value.",
+        default=10000,
+        description="Filter by volume greater than this value. Default is, 10K",
     )
     volume_max: Optional[int] = Field(
         default=None,
@@ -91,6 +92,10 @@ class YFinanceEquityScreenerQueryParams(EquityScreenerQueryParams):
     beta_max: Optional[float] = Field(
         default=None,
         description="Filter by a beta less than this value.",
+    )
+    limit: Optional[int] = Field(
+        default=200,
+        description="Limit the number of results returned. Default is, 200. Set to, 0, for all results.",
     )
 
 
@@ -225,7 +230,10 @@ class YFinanceEquityScreenerFetcher(
             "userIdType": "guid",
         }
 
-        response = await get_defined_screener(body=payload)
+        response = await get_defined_screener(
+            body=payload,
+            limit=query.limit if query.limit and query.limit not in (0, None) else None,
+        )
 
         if not response:
             raise EmptyDataError("No results found for the combination of filters.")
