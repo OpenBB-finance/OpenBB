@@ -65,10 +65,13 @@ from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
-from openbb_fmp.models.senate_trading_rss_feed import FMPSenateTradingRSSFeedFetcher
-from openbb_fmp.models.senate_trading import FMPSenateTradingFetcher
-from openbb_fmp.models.house_disclosure_rss_feed import FMPHouseDisclosureRSSFeedFetcher
-from openbb_fmp.models.house_disclosure import FMPHouseDisclosureFetcher
+from openbb_fmp.models.dcf import FMPDcfFetcher
+from openbb_fmp.models.advanced_dcf import FMPAdvancedDcfFetcher
+from openbb_fmp.models.form_13f import FMPForm13FHRFetcher
+from openbb_fmp.models.government_trades import FMPGovernmentTradesFetcher
+from openbb_fmp.models.rating import FMPRatingFetcher
+from openbb_fmp.models.historical_rating import FMPHistoricalRatingFetcher
+
 
 fmp_provider = Provider(
     name="fmp",
@@ -113,7 +116,6 @@ stock market information (news, currencies, and stock prices).""",
         "EtfSearch": FMPEtfSearchFetcher,
         "EtfSectors": FMPEtfSectorsFetcher,
         "ExecutiveCompensation": FMPExecutiveCompensationFetcher,
-        "EtfHistorical": FMPEquityHistoricalFetcher,
         "FinancialRatios": FMPFinancialRatiosFetcher,
         "ForwardEbitdaEstimates": FMPForwardEbitdaEstimatesFetcher,
         "ForwardEpsEstimates": FMPForwardEpsEstimatesFetcher,
@@ -122,8 +124,6 @@ stock market information (news, currencies, and stock prices).""",
         "HistoricalEps": FMPHistoricalEpsFetcher,
         "HistoricalMarketCap": FmpHistoricalMarketCapFetcher,
         "HistoricalSplits": FMPHistoricalSplitsFetcher,
-        "HouseDisclosureRSSFeed": FMPHouseDisclosureRSSFeedFetcher,
-        "HouseDisclosure": FMPHouseDisclosureFetcher,
         "IncomeStatement": FMPIncomeStatementFetcher,
         "IncomeStatementGrowth": FMPIncomeStatementGrowthFetcher,
         "IndexConstituents": FMPIndexConstituentsFetcher,
@@ -141,11 +141,16 @@ stock market information (news, currencies, and stock prices).""",
         "RevenueGeographic": FMPRevenueGeographicFetcher,
         "RiskPremium": FMPRiskPremiumFetcher,
         "ShareStatistics": FMPShareStatisticsFetcher,
-        "SenateTradingRSSFeed": FMPSenateTradingRSSFeedFetcher,
-        "SenateTrading": FMPSenateTradingFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "WorldNews": FMPWorldNewsFetcher,
+        "EtfHistorical": FMPEquityHistoricalFetcher,
         "YieldCurve": FMPYieldCurveFetcher,
+        "Form13FHR": FMPForm13FHRFetcher,
+        "GovernmentTrades": FMPGovernmentTradesFetcher,
+        "Dcf": FMPDcfFetcher,
+        "AdvancedDcf": FMPAdvancedDcfFetcher,
+        "Rating": FMPRatingFetcher,
+        "HistoricalRating": FMPHistoricalRatingFetcher,
     },
     repr_name="Financial Modeling Prep (FMP)",
     deprecated_credentials={"API_KEY_FINANCIALMODELINGPREP": "fmp_api_key"},

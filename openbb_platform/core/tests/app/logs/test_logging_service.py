@@ -13,6 +13,15 @@ from pydantic import BaseModel
 # pylint: disable=redefined-outer-name, protected-access
 
 
+class MockSystemSettings:
+    """Mock system settings."""
+
+    def __init__(self):
+        """Initialize the mock system settings."""
+        self.logging_suppress = False
+        self.log_collect = True
+
+
 class MockLoggingSettings:
     """Mock logging settings."""
 
@@ -20,6 +29,8 @@ class MockLoggingSettings:
         """Initialize the mock logging settings."""
         self.system_settings = system_settings
         self.user_settings = user_settings
+        self.logging_suppress = False
+        self.log_collect = True
 
 
 class MockOBBject(BaseModel):
@@ -32,7 +43,7 @@ class MockOBBject(BaseModel):
 @pytest.fixture(scope="function")
 def logging_service():
     """Return a LoggingService instance."""
-    mock_system_settings = Mock()
+    mock_system_settings = MockSystemSettings()
     mock_user_settings = Mock()
     mock_setup_handlers = Mock()
     mock_log_startup = Mock()
@@ -112,6 +123,7 @@ def test_log_startup(logging_service):
         credentials=MockCredentials(username="username", password="password"),
     )
     logging_service._system_settings = "your_system_settings"
+    logging_service._system_settings
 
     logging_service._log_startup(
         route="test_route", custom_headers={"X-OpenBB-Test": "test"}
@@ -138,7 +150,7 @@ def test_log_startup(logging_service):
     [
         (
             "mock_settings",
-            "mock_system",
+            MockSystemSettings(),
             "mock_route",
             "mock_func",
             {},
@@ -149,7 +161,7 @@ def test_log_startup(logging_service):
         ),
         (
             "mock_settings",
-            "mock_system",
+            MockSystemSettings(),
             "mock_route",
             "mock_func",
             {},
@@ -163,7 +175,7 @@ def test_log_startup(logging_service):
         ),
         (
             "mock_settings",
-            "mock_system",
+            MockSystemSettings(),
             "login",
             "mock_func",
             {},

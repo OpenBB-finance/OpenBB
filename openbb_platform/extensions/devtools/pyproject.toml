@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-devtools"
-version = "1.3.1"
+version = "1.3.2"
 description = "Tools for OpenBB Platform Developers"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,11 +9,11 @@ packages = [{ include = "openbb_devtools" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"              # scipy forces <4.0 explicitly
-ruff = "^0.4.4"
-pylint = "^3.0.2"
-mypy = "^1.6.1"
+ruff = "^0.7"
+pylint = "^3.3"
+mypy = "^1.12.1"
 pydocstyle = "^6.3.0"
-black = "^24.4.2"
+black = "^24"
 bandit = "^1.7.5"
 codespell = "^2.2.5"
 pre-commit = "^3.5.0"
