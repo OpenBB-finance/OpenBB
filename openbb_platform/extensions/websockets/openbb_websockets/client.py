@@ -2,6 +2,7 @@
 
 # pylint: disable=too-many-statements
 # flake8: noqa: PLR0915
+
 import logging
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
@@ -96,6 +97,7 @@ class WebSocketClient:
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         import atexit
+        import os
         import tempfile
         import threading
         from aiosqlite import DatabaseError
@@ -110,13 +112,20 @@ class WebSocketClient:
         self.table_name = table_name if table_name else "records"
         self._limit = limit
         self.data_model = data_model
-        self._auth_token = auth_token
         self._symbol = symbol
-        self._kwargs = (
-            [f"{k}={str(v).strip().replace(' ', '_')}" for k, v in kwargs.items()]
-            if kwargs
-            else None
-        )
+        self._key = os.urandom(32)
+        self._iv = os.urandom(16)
+        self._auth_token = self._encrypt_value(auth_token) if auth_token else None
+        # strings in kwargs are encrypted before storing in the class but unencrypted when passed to the provider module.
+        if kwargs:
+            for k, v in kwargs.items():
+                if isinstance(v, str):
+                    encrypted_value = self._encrypt_value(v)
+                    kwargs[k] = encrypted_value
+                else:
+                    kwargs[k] = v
+
+        self._kwargs = kwargs if kwargs else {}
 
         self._process: Any = None
         self._psutil_process: Any = None
@@ -152,6 +161,20 @@ class WebSocketClient:
             msg = f"Unexpected error setting up the SQLite database and table -> {e.__class___.__name__}: {e.__str__()}"
             self.logger.error(msg)
             self._exception = OpenBBError(msg)
+
+    def _encrypt_value(self, value):
+        """Encrypt a value before storing."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_websockets.helpers import encrypt_value
+
+        return encrypt_value(self._key, self._iv, value)
+
+    def _decrypt_value(self, encrypted_value):
+        """Decrypt the value for use."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_websockets.helpers import decrypt_value
+
+        return decrypt_value(self._key, self._iv, encrypted_value)
 
     def _atexit(self) -> None:
         """Clean up the WebSocket client processes at exit."""
@@ -349,8 +372,23 @@ class WebSocketClient:
         if self.limit:
             command.extend([f"limit={self.limit}"])
 
-        if self._kwargs:
-            for kwarg in self._kwargs:
+        kwargs = self._kwargs.copy()
+
+        if kwargs:
+            for k, v in kwargs.items():
+                if isinstance(v, str):
+                    unencrypted_value = self._decrypt_value(v)
+                    kwargs[k] = unencrypted_value
+                else:
+                    kwargs[k] = v
+
+            _kwargs = (
+                [f"{k}={str(v).strip().replace(' ', '_')}" for k, v in kwargs.items()]
+                if kwargs
+                else None
+            )
+
+            for kwarg in _kwargs:
                 if kwarg not in command:
                     command.extend([kwarg])
 
@@ -566,6 +604,10 @@ class WebSocketClient:
             else None
         )
 
+    def _get_auth_token(self):
+        """Get the authentication token."""
+        return self._decrypt_value(self._auth_token) if self._auth_token else None
+
     def start_broadcasting(
         self,
         host: str = "127.0.0.1",
@@ -605,7 +647,7 @@ class WebSocketClient:
             f"port={open_port}",
             f"results_file={self.results_file}",
             f"table_name={self.table_name}",
-            f"auth_token={self._auth_token}",
+            f"auth_token={self._get_auth_token()}",
         ]
         if kwargs:
             for kwarg in kwargs:

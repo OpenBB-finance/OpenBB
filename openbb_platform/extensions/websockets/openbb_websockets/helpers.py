@@ -73,6 +73,36 @@ async def get_status(name: Optional[str] = None, client: Optional[Any] = None) -
     return status
 
 
+def encrypt_value(key, iv, value):
+    """Encrypt a value before storing."""
+    # pylint: disable=import-outside-toplevel
+    import base64  # noqa
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
+    backend = default_backend()
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=backend)
+    encryptor = cipher.encryptor()
+    encrypted_value = encryptor.update(value.encode()) + encryptor.finalize()
+    return base64.b64encode(encrypted_value).decode()
+
+
+def decrypt_value(key, iv, encrypted_value):
+    """Decrypt the value for use."""
+    # pylint: disable=import-outside-toplevel
+    import base64  # noqa
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
+    backend = default_backend()
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=backend)
+    decryptor = cipher.decryptor()
+    decrypted_value = (
+        decryptor.update(base64.b64decode(encrypted_value)) + decryptor.finalize()
+    )
+    return decrypted_value.decode()
+
+
 async def check_auth(name: str, auth_token: Optional[str] = None) -> bool:
     """Check the auth token."""
     if name not in connected_clients:
@@ -82,7 +112,7 @@ async def check_auth(name: str, auth_token: Optional[str] = None) -> bool:
         return True
     if auth_token is None:
         raise UnauthorizedError(f"Client authorization token is required for {name}.")
-    if auth_token != client._auth_token:
+    if auth_token != client._get_auth_token():
         raise UnauthorizedError(f"Invalid client authorization token for {name}.")
     return True
 

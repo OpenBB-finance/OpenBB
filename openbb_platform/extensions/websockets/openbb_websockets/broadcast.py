@@ -65,7 +65,7 @@ async def websocket_endpoint(  # noqa: PLR0915
 
     if (
         broadcast_server.auth_token is not None
-        and auth_token != broadcast_server.auth_token
+        and auth_token != broadcast_server._decrypt_value(broadcast_server.auth_token)
     ):
         await websocket.accept()
         await websocket.send_text(
@@ -131,14 +131,32 @@ class BroadcastServer:
         sleep_time: float = 0.25,
         auth_token: Optional[str] = None,
     ):
+        # pylint: disable=import-outside-toplevel
+        import os
 
         self.results_file = results_file
         self.table_name = table_name
         self.logger = get_logger("openbb.websocket.broadcast_server")
         self.sleep_time = sleep_time
-        self.auth_token = auth_token
         self._app = app
+        self._key = os.urandom(32)
+        self._iv = os.urandom(16)
+        self.auth_token = self._encrypt_value(auth_token) if auth_token else None
         self.websocket = None
+
+    def _encrypt_value(self, value: str) -> str:
+        """Encrypt the value for storage."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_websockets.helpers import encrypt_value
+
+        return encrypt_value(self._key, self._iv, value)
+
+    def _decrypt_value(self, value: str) -> str:
+        """Decrypt the value for use."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_websockets.helpers import decrypt_value
+
+        return decrypt_value(self._key, self._iv, value)
 
     async def stream_results(self):  # noqa: PLR0915
         """Continuously read the database and send new messages as JSON via WebSocket."""
