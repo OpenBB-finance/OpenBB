@@ -16,6 +16,7 @@ class IndexConstituentsQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
+    @classmethod
     @field_validator("symbol")
     def _to_upper(cls, v):
         """Convert the symbol to uppercase."""
