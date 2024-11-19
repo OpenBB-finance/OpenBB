@@ -130,7 +130,7 @@ Usage of these models will unlock a set of perks that are only available to stan
 - Can expect consistent data types and validation.
 - Will work seamlessly with other providers that use the same standard model.
 
-The standard models are defined under the `/OpenBBTerminal/openbb_platform/core/openbb_core/provider/standard_models` directory.
+The standard models are defined under the `/OpenBB/openbb_platform/core/openbb_core/provider/standard_models` directory.
 
 They define the [`QueryParams`](core/openbb_core/provider/abstract/query_params.py) and [`Data`](core/openbb_core/provider/abstract/data.py) models, which are used to query and output data. They are pydantic and you can leverage all the pydantic features such as validators.
 
@@ -206,8 +206,8 @@ We encourage independent extensions to be shared with the community by publishin
 
 #### Installation
 
-- **pip**: `pip install -e OpenBBTerminal/openbb_platform/platform/core`
-- **poetry**: `poetry install OpenBBTerminal/openbb_platform/platform/core`
+- **pip**: `pip install -e OpenBB/openbb_platform/platform/core`
+- **poetry**: `poetry install OpenBB/openbb_platform/platform/core`
 
 #### Using Poetry
 
@@ -301,7 +301,7 @@ Each router is categorized under different extensions (equity, currency, crypto,
 
 Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
 
-In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/core/openbb_core/provider/standard_models/equity_historical`.
+In this case, it's `EquityHistorical` which can be found in `/OpenBB/openbb_platform/core/openbb_core/provider/standard_models/equity_historical`.
 
 If the standard model doesn't exist:
 
