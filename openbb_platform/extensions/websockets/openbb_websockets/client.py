@@ -604,10 +604,6 @@ class WebSocketClient:
             else None
         )
 
-    def _get_auth_token(self):
-        """Get the authentication token."""
-        return self._decrypt_value(self._auth_token) if self._auth_token else None
-
     def start_broadcasting(
         self,
         host: str = "127.0.0.1",
@@ -647,7 +643,7 @@ class WebSocketClient:
             f"port={open_port}",
             f"results_file={self.results_file}",
             f"table_name={self.table_name}",
-            f"auth_token={self._get_auth_token()}",
+            f"auth_token={self._decrypt_value(self._auth_token)}",
         ]
         if kwargs:
             for kwarg in kwargs:

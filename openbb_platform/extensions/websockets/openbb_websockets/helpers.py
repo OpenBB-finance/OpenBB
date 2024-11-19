@@ -2,7 +2,6 @@
 
 import logging
 import re
-import sys
 from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -112,7 +111,7 @@ async def check_auth(name: str, auth_token: Optional[str] = None) -> bool:
         return True
     if auth_token is None:
         raise UnauthorizedError(f"Client authorization token is required for {name}.")
-    if auth_token != client._get_auth_token():
+    if auth_token != client._decrypt_value(client._auth_token):
         raise UnauthorizedError(f"Invalid client authorization token for {name}.")
     return True
 
@@ -225,6 +224,9 @@ class StdOutSink:
 
     def write(self, message):
         """Write to stdout."""
+        # pylint: disable=import-outside-toplevel
+        import sys
+
         cleaned_message = AUTH_TOKEN_FILTER.sub(r"\1********", message)
         if cleaned_message != message:
             cleaned_message = f"{cleaned_message}\n"
@@ -232,6 +234,9 @@ class StdOutSink:
 
     def flush(self):
         """Flush stdout."""
+        # pylint: disable=import-outside-toplevel
+        import sys
+
         sys.__stdout__.flush()
 
 
