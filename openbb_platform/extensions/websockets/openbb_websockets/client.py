@@ -158,7 +158,7 @@ class WebSocketClient:
         try:
             self._setup_database()
         except DatabaseError as e:
-            msg = f"Unexpected error setting up the SQLite database and table -> {e.__class___.__name__}: {e.__str__()}"
+            msg = f"Unexpected error setting up the SQLite database and table -> {e.__class___.__name__}: {e}"
             self.logger.error(msg)
             self._exception = OpenBBError(msg)
 
@@ -765,7 +765,9 @@ def send_message(
             else:
                 client.logger.error("Broadcast process is not running.")
     except Exception as e:
-        msg = f"Error sending message to WebSocket process: {e.__class__.__name__} -> {e.__str__()}"
+        msg = (
+            f"Error sending message to WebSocket process: {e.__class__.__name__} -> {e}"
+        )
         client.logger.error(msg)
 
 
