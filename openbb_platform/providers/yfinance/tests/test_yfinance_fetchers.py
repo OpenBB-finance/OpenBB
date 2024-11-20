@@ -30,9 +30,6 @@ from openbb_yfinance.models.index_historical import (
 from openbb_yfinance.models.key_executives import YFinanceKeyExecutivesFetcher
 from openbb_yfinance.models.key_metrics import YFinanceKeyMetricsFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
-from openbb_yfinance.models.market_indices import (
-    YFinanceMarketIndicesFetcher,
-)
 from openbb_yfinance.models.options_chains import YFinanceOptionsChainsFetcher
 from openbb_yfinance.models.price_target_consensus import (
     YFinancePriceTargetConsensusFetcher,
@@ -129,20 +126,6 @@ def test_y_finance_historical_dividends_fetcher(credentials=test_credentials):
     params = {"symbol": "IBM"}
 
     fetcher = YFinanceHistoricalDividendsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_y_finance_market_indices_fetcher(credentials=test_credentials):
-    """Test YFinanceMarketIndicesFetcher."""
-    params = {
-        "symbol": "^GSPC",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 1, 10),
-    }
-
-    fetcher = YFinanceMarketIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
