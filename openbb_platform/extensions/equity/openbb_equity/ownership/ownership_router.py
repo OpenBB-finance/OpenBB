@@ -112,3 +112,21 @@ async def form_13f(
     their investment strategy from competitors and the public.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="GovernmentTrades",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "chamber": "all", "provider": "fmp"}),
+        APIEx(parameters={"limit": 500, "chamber": "all", "provider": "fmp"}),
+    ],
+)
+async def government_trades(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Obtain government transaction data, including data from the Senate
+    and the House of Representatives."""
+    return await OBBject.from_query(Query(**locals()))
