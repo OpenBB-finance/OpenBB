@@ -233,7 +233,7 @@ class TiingoWebSocketFetcher(
         query: TiingoWebSocketQueryParams,
         credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> WebSocketClient:
+    ) -> dict:
         """Initiailze the WebSocketClient and connect."""
         # pylint: disable=import-outside-toplevel
         from asyncio import sleep
@@ -291,16 +291,16 @@ class TiingoWebSocketFetcher(
             raise OpenBBError(exc)
 
         if client.is_running:
-            return client
+            return {"client": client}
 
         client.disconnect()
         raise OpenBBError("Failed to connect to the WebSocket.")
 
     @staticmethod
     def transform_data(
-        data: WebSocketClient,
+        data: dict,
         query: TiingoWebSocketQueryParams,
         **kwargs: Any,
     ) -> TiingoWebSocketConnection:
         """Return the client as an instance of Data."""
-        return TiingoWebSocketConnection(client=data)
+        return TiingoWebSocketConnection(client=data["client"])

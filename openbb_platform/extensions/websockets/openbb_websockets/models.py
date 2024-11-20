@@ -172,8 +172,8 @@ class WebSocketConnection(Data):
 
     @model_validator(mode="before")
     @classmethod
-    def _validate_inputs(cls, vaules):
+    def _validate_inputs(cls, values):
         """Validate the status."""
-        if not vaules.get("status") and not vaules.get("client"):
+        if not values.get("status") and not values.get("client"):
             raise ValueError("Cannot initialize empty.")
-        return vaules
+        return values

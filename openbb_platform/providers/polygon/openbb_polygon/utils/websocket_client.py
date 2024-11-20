@@ -233,27 +233,23 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
 
         except websockets.InvalidStatusCode as e:
             if e.status_code == 404:
-                msg = f"PROVIDER ERROR:     {e.__str__()}"
+                msg = f"PROVIDER ERROR:     {e}"
                 logger.error(msg)
                 sys.exit(1)
             else:
                 raise
         except websockets.InvalidURI as e:
-            msg = f"PROVIDER ERROR:     {e.__str__()}"
+            msg = f"PROVIDER ERROR:     {e}"
             logger.error(msg)
             sys.exit(1)
 
     except websockets.ConnectionClosedOK as e:
-        msg = (
-            f"PROVIDER INFO:      The WebSocket connection was closed -> {e.__str__()}"
-        )
+        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
         logger.info(msg)
         sys.exit(0)
 
     except websockets.ConnectionClosed as e:
-        msg = (
-            f"PROVIDER INFO:      The WebSocket connection was closed -> {e.__str__()}"
-        )
+        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
         logger.info(msg)
         # Attempt to reopen the connection
         logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds.")
@@ -261,12 +257,12 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
         await connect_and_stream(url, symbol, api_key, results_path, table_name, limit)
 
     except websockets.WebSocketException as e:
-        msg = f"PROVIDER ERROR:     WebSocketException -> {e.__str__()}"
+        msg = f"PROVIDER ERROR:     WebSocketException -> {e}"
         logger.error(msg)
         sys.exit(1)
 
     except Exception as e:
-        msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
+        msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e}"
         logger.error(msg)
         sys.exit(1)
 

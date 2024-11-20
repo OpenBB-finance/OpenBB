@@ -140,7 +140,7 @@ class FmpWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnectio
         query: FmpWebSocketQueryParams,
         credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> WebSocketClient:
+    ) -> dict:
         """Extract data from the WebSocket."""
         # pylint: disable=import-outside-toplevel
         import asyncio
@@ -183,15 +183,15 @@ class FmpWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnectio
             raise e from e
 
         if client.is_running:
-            return client
+            return {"client": client}
 
         raise OpenBBError("Failed to connect to the WebSocket.")
 
     @staticmethod
     def transform_data(
-        data: WebSocketClient,
+        data: dict,
         query: FmpWebSocketQueryParams,
         **kwargs: Any,
     ) -> FmpWebSocketConnection:
         """Return the client as an instance of Data."""
-        return FmpWebSocketConnection(client=data)
+        return FmpWebSocketConnection(client=data["client"])

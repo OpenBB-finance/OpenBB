@@ -1219,7 +1219,7 @@ class PolygonWebSocketFetcher(
         query: PolygonWebSocketQueryParams,
         credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> WebSocketClient:
+    ) -> dict:
         """Extract data from the WebSocket."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
         url = URL_MAP[query.asset_type]
@@ -1261,15 +1261,15 @@ class PolygonWebSocketFetcher(
             raise client._exception from client._exception
 
         if client.is_running:
-            return client
+            return {"client": client}
 
         raise OpenBBError("Failed to connect to the WebSocket.")
 
     @staticmethod
     def transform_data(
-        data: WebSocketClient,
+        data: dict,
         query: PolygonWebSocketQueryParams,
         **kwargs: Any,
     ) -> PolygonWebSocketConnection:
         """Return the client as an instance of Data."""
-        return PolygonWebSocketConnection(client=data)
+        return PolygonWebSocketConnection(client=data["client"])

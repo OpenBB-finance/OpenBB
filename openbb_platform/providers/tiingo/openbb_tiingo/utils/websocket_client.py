@@ -236,9 +236,7 @@ async def connect_and_stream(
             sys.exit(1)
 
     except websockets.ConnectionClosed as e:
-        msg = (
-            f"PROVIDER INFO:      The WebSocket connection was closed -> {e.__str__()}"
-        )
+        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
         logger.info(msg)
         # Attempt to reopen the connection
         logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds...")
@@ -248,11 +246,11 @@ async def connect_and_stream(
         )
 
     except websockets.WebSocketException as e:
-        logger.error(str(e))
-        sys.exit(1)
+        logger.info(str(e))
+        sys.exit(0)
 
     except Exception as e:
-        msg = f"Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
+        msg = f"Unexpected error -> {e.__class__.__name__}: {e}"
         logger.error(msg)
         sys.exit(1)
 
@@ -286,7 +284,7 @@ if __name__ == "__main__":
         loop.run_forever()
 
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
+        msg = f"Unexpected error -> {e.__class__.__name__}: {e}"
         logger.error(msg)
 
     finally:

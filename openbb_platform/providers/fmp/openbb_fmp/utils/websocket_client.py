@@ -48,7 +48,7 @@ async def login(websocket, api_key):
             msg = message.get("message")
             logger.info("PROVIDER INFO:      %s", msg)
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:     {e.__class__.__name__}: {e.__str__()}"
+        msg = f"PROVIDER ERROR:     {e.__class__.__name__}: {e}"
         logger.error(msg)
         sys.exit(1)
 
@@ -66,7 +66,7 @@ async def subscribe(websocket, symbol, event):
         await websocket.send(json.dumps(subscribe_event))
         await asyncio.sleep(1)
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:     {e.__class__.__name__}: {e.__str__()}"
+        msg = f"PROVIDER ERROR:     {e.__class__.__name__}: {e}"
         logger.error(msg)
 
 
@@ -105,6 +105,10 @@ async def process_message(message, results_path, table_name, limit):
             if "you are not authorized" in message.get("message", "").lower():
                 msg = f"UnauthorizedError -> FMP Message: {message['message']}"
                 logger.error(msg)
+            elif "Connected from another location" in message.get("message", ""):
+                msg = f"UnauthorizedError -> FMP Message: {message.get('message')}"
+                logger.info(msg)
+                sys.exit(0)
             else:
                 msg = f"PROVIDER INFO:      {message.get('message')}"
                 logger.info(msg)
@@ -156,9 +160,7 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
                     await asyncio.shield(queue.enqueue(json.loads(message)))
 
     except websockets.ConnectionClosed as e:
-        msg = (
-            f"PROVIDER INFO:      The WebSocket connection was closed -> {e.__str__()}"
-        )
+        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
         logger.info(msg)
         # Attempt to reopen the connection
         logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds.")
@@ -170,7 +172,7 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
         sys.exit(1)
 
     except Exception as e:
-        msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e.__str__()}"
+        msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e}"
         logger.error(msg)
         sys.exit(1)
 
@@ -207,7 +209,7 @@ if __name__ == "__main__":
         logger.error("PROVIDER ERROR:    WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:    {e.__class__.__name__}: {e.__str__()}"
+        msg = f"PROVIDER ERROR:    {e.__class__.__name__}: {e}"
         logger.error(msg)
 
     finally:

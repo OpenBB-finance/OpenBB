@@ -33,7 +33,7 @@ obb.websockets
 ```
 
 > Except for, `get_results`, functions do not return the data or stream. Outputs will be a WebSocketConnectionStatus instance, or a string message.
-> All functions, except `create_connection`, assume that a connection has already been establiehd and are referenced by parameters:
+> All functions, except `create_connection`, assume that a connection has already been established and are referenced by parameters:
 >
 > |Parameter|Type | Required| Description |
 > |:-------|:-----|:--------:|------------:|
@@ -52,7 +52,7 @@ All other endpoints require this to be used first. It is the only function mappi
 |:-------|:-----|:--------:|------------:|
 |provider |String |Yes |Name of the provider - i.e, `"polygon"`, `"fmp"`, `"tiingo"` |
 |name |String |Yes |Name to assign the connection. This is the 'name' parameter in the other endpoints.|
-|auth_token |String |No |When supplied, the same token must be passed for all future interactions with the connection, or to read from the broadcast server. |
+|auth_token |String |No |When supplied, the same token must be passed as a URL parameter to the broadcast server, and to interact with the client from the API. |
 |results_file |String |No |Absolute path to the file for continuous writing. Temp file is created by default. Unless 'save_results' is True, discarded on exit. |
 |save_results |Boolean |No |Whether to persist the file after the session ends, default is `False` |
 |table_name |String |No |Name of the SQL table to write the results to, consisting of an auto-increment ID and a serialized JSON string of the data. Default is `"records"`|
@@ -107,7 +107,7 @@ conn.results.model_dump()
 ```
 
 ```sh
-{'name': 'crypto_tiingo',
+{'status': {'name': 'crypto_tiingo',
  'auth_required': False,
  'subscribed_symbols': '*',
  'is_running': True,
@@ -117,8 +117,10 @@ conn.results.model_dump()
  'broadcast_pid': 5813,
  'results_file': '/var/folders/kc/j2lm7bkd5dsfqqnvz259gm6c0000gn/T/tmpwb4jslbg',
  'table_name': 'records',
- 'save_results': False}
+ 'save_results': False}}
 ```
+
+> From the Python interface, the client is also included in the results. Access it from `results.client`
 
 All of the currently captured data can be dumped with the `get_results` endpoint. The return will be the typical data response object.
 
@@ -450,8 +452,6 @@ PROVIDER INFO:      unsubscribed to: C.XAU/USD
  'save_results': False}
 ```
 
-
-
 ## Development
 
 ### Provider Interface
@@ -609,7 +609,7 @@ class FmpWebSocketData(WebSocketData):
 This model is what we return from the `FmpWebSocketFetcher`. The provider will inherit two fields, only the `client` needs to be included on output. No additional fields should be defined.
 
 - client
-  - Instance of WebSocketClient, not returned to from the Router.
+  - Instance of WebSocketClient, not returned to the API.
 - status
   - Leave empty, the Router fills this and returns it.
 
@@ -701,6 +701,8 @@ from openbb_websockets.client import WebSocketClient
 
 This is where things diverge slightly. Instead of returning `FmpWebSocketData`, it gets passed to the client connection for validating records as they are received. What gets returned by the Fetcher is the `WebSocketConnection`.
 
+>
+
 ```python
 class FmpWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnection]):
     """FMP WebSocket model."""
@@ -715,7 +717,7 @@ class FmpWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnectio
         query: FmpWebSocketQueryParams,
         credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> WebSocketClient:
+    ) -> dict:
         """Extract data from the WebSocket."""
         # pylint: disable=import-outside-toplevel
         import asyncio
@@ -766,19 +768,19 @@ class FmpWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnectio
             raise e from e
         # Check if the process is still running before returning.
         if client.is_running:
-            return client
+            return {"client": client}
 
         raise OpenBBError("Failed to connect to the WebSocket.")
 
     @staticmethod
     def transform_data(
-        data: WebSocketClient,
+        data: dict,
         query: FmpWebSocketQueryParams,
         **kwargs: Any,
     ) -> FmpWebSocketConnection:
         """Return the client as an instance of Data."""
         # All we need to do here is return our client wrapped in the WebSocketConnection class.
-        return FmpWebSocketConnection(client=data)
+        return FmpWebSocketConnection(client=data["client"])
 ```
 
 #### Map To Router
@@ -846,7 +848,7 @@ logger = get_logger("openbb.websocket.fmp") # A UUID gets attached to the name s
 
 #### `MessageQueue`
 
-This is an async Queue with an input for the message handler. Create a second instance if a separate queue is required for the subscibe events.
+This is an async Queue with an input for the message handler. Create a second instance if a separate queue is required for the subscribe events.
 
 Define your async message handler function, and create a task to run in the main event loop.
 
@@ -875,7 +877,7 @@ message = await queue.dequeue()
 Before submitting the record to `write_to_db`, validate and transform the data with the WebSocketData that was created and imported. Use this function right before transmission, a failure will trigger a termination signal from the main application.
 
 ```python
-# code above confirms that the message being processed is a data message and not an info message or error.
+# code above confirms that the message being processed is a data message and not an info or error message.
 
   try:
       result = FmpWebSocketData.model_validate(message).model_dump_json(
@@ -920,8 +922,8 @@ if __name__ == "__main__":
         for sig in (signal.SIGINT, signal.SIGTERM):
             loop.add_signal_handler(sig, handle_termination_signal, logger)
 
-      # asyncio.run_coroutine_threadsafe(some_connect_and_stream_function, loop)
-      # loop.run_forever()
+        asyncio.run_coroutine_threadsafe(some_connect_and_stream_function, loop)
+        loop.run_forever()
 ...
 ```
 
@@ -930,7 +932,7 @@ if __name__ == "__main__":
 The missing pieces that get created locally include:
 
 - Read `stdin` function for receiving subscribe/unsubscribe events while the connection is running.
-  - Messages to handle will always have the same format: `'{"event": "subscribe", "symbol": ticker}'`
+  - Messages to handle will always have the same format: `'{"event": "(un)subscribe", "symbol": ticker}'`
   - Converting for the symbology used by the provider needs to happen here.
   - Implementation depends on the requirements of the provider - i.e, how to structure send events.
   - Create the task before the initial `websockets.connect` block.
