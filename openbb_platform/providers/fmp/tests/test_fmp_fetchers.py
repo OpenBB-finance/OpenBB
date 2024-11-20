@@ -5,6 +5,8 @@ from datetime import date
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_fmp.models.rating import FMPRatingFetcher
+from openbb_fmp.models.historical_rating import FMPHistoricalRatingFetcher
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
@@ -760,5 +762,29 @@ def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
     }
 
     fetcher = FmpHistoricalMarketCapFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_rating_fetcher(credentials=test_credentials):
+    """Test FMP Rating fetcher.
+    """
+    params = {
+        "symbol": "AAPL,600519.SS",
+    }
+    fetcher = FMPRatingFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_historical_rating_fetcher(credentials=test_credentials):
+    """Test FMP Historical Rating fetcher.
+    """
+    params = {
+        "symbol": "AAPL",
+    }
+    fetcher = FMPHistoricalRatingFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

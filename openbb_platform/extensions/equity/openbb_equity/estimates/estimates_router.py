@@ -189,3 +189,35 @@ async def forward_pe(
 ) -> OBBject:
     """Get forward PE estimates."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="Rating",
+    examples=[
+        APIEx(parameters={"symbol": "600519.SS","provider": "fmp"}),
+    ],
+)
+async def rating(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Rating Data"""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="HistoricalRating",
+    examples=[
+        APIEx(parameters={"symbol": "600519.SS","provider": "fmp"}),
+    ],
+)
+async def historical_rating(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Historical Rating Data"""
+    return await OBBject.from_query(Query(**locals()))
