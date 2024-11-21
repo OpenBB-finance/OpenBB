@@ -58,7 +58,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                 while tb.tb_next is not None:
                     tb = tb.tb_next
 
-            if isinstance(e, ValidationError) and "Data" not in e.title:
+            if isinstance(e, ValidationError):
                 error_list = []
                 validation_error = f"{e.error_count()} validations error(s)"
                 for err in e.errors(include_url=False):
@@ -87,18 +87,16 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                     tb
                 ) from None
             if isinstance(e, UnauthorizedError):
-                raise UnauthorizedError(f"\n[Error] -> {str(e)}").with_traceback(
+                raise UnauthorizedError(f"\n[Error] -> {e}").with_traceback(
                     tb
                 ) from None
             if isinstance(e, EmptyDataError):
-                raise EmptyDataError(f"\n[Empty] -> {str(e)}").with_traceback(
-                    tb
-                ) from None
+                raise EmptyDataError(f"\n[Empty] -> {e}").with_traceback(tb) from None
             if isinstance(e, OpenBBError):
-                raise OpenBBError(f"\n[Error] -> {str(e)}").with_traceback(tb) from None
+                raise OpenBBError(f"\n[Error] -> {e}").with_traceback(tb) from None
             if isinstance(e, Exception):
                 raise OpenBBError(
-                    f"\n[Unexpected Error] -> {e.__class__.__name__} -> {str(e.args[0] or e.args)}"
+                    f"\n[Unexpected Error] -> {e.__class__.__name__} -> {e}"
                 ).with_traceback(tb) from None
 
         return None
