@@ -67,8 +67,16 @@ async def create_connection(
         raise OpenBBError("Client failed to connect.")
 
     if hasattr(extra_params, "start_broadcast") and extra_params.start_broadcast:
-        client.start_broadcasting()
-        await asyncio.sleep(1)
+        try:
+            client.start_broadcasting()
+            await asyncio.sleep(1)
+            if client._exception is not None:
+                exc = getattr(client, "_exception", None)
+                client._exception = None
+                raise OpenBBError(exc)
+        except Exception as e:  # pylint: disable=broad-except
+            client._atexit()
+            raise e from e
 
     client_name = client.name
     connected_clients[client_name] = client

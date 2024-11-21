@@ -643,7 +643,7 @@ class WebSocketClient:
             f"port={open_port}",
             f"results_file={self.results_file}",
             f"table_name={self.table_name}",
-            f"auth_token={self._decrypt_value(self._auth_token)}",
+            f"auth_token={self._decrypt_value(self._auth_token) if self._auth_token else None}",
         ]
         if kwargs:
             for kwarg in kwargs:
