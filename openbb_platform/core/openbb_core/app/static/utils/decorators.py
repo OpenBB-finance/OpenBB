@@ -59,7 +59,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                     tb = tb.tb_next
 
             if isinstance(e, ValidationError):
-                error_list = []
+                error_list: list = []
                 validation_error = f"{e.error_count()} validations error(s)"
                 for err in e.errors(include_url=False):
                     loc = ".".join(
@@ -80,7 +80,10 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                         if msg == "Missing required argument"
                         else err.get("input", "")
                     )
-                    error_list.append(f"[Arg] {loc} -> input: {_input} -> {msg}")
+                    prefix = f"[Data Model] {e.title}\n" if "Data" in e.title else ""
+                    error_list.append(
+                        f"{prefix}[Arg] {loc} -> input: {_input} -> {msg}"
+                    )
                 error_list.insert(0, validation_error)
                 error_str = "\n".join(error_list)
                 raise OpenBBError(f"\n[Error] -> {error_str}").with_traceback(
