@@ -338,7 +338,7 @@ class ROUTER_fixedincome_government(Container):
     def yield_curve(
         self,
         date: Annotated[
-            Union[str, datetime.date, None, List[Union[str, datetime.date, None]]],
+            Union[datetime.date, str, None, List[Union[datetime.date, str, None]]],
             OpenBBField(
                 description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred."
             ),
@@ -355,12 +355,12 @@ class ROUTER_fixedincome_government(Container):
 
         Parameters
         ----------
-        date : Union[str, date, None, List[Union[str, date, None]]]
+        date : Union[date, str, None, List[Union[date, str, None]]]
             A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.
         provider : Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.
-        country : Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'mexico', 'new_zealand', 'russia', 'saudi_arabia', 'singapore', 'south_africa', 'south_korea', 'taiwan', 'thailand', 'united_kingdom', 'united_states']
-            The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. (provider: econdb)
+        country : str
+            The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. Multiple comma separated items allowed. (provider: econdb)
         use_cache : bool
             If true, cache the request for four hours. (provider: econdb)
         yield_curve_type : Literal['nominal', 'real', 'breakeven', 'treasury_minus_fed_funds', 'corporate_spot', 'corporate_par']
@@ -386,8 +386,6 @@ class ROUTER_fixedincome_government(Container):
             The date of the data.
         maturity : str
             Maturity length of the security.
-        rate : float
-            The yield as a normalized percent (0.05 is 5%)
 
         Examples
         --------
@@ -421,7 +419,34 @@ class ROUTER_fixedincome_government(Container):
                         },
                         "fmp": {"multiple_items_allowed": True, "choices": None},
                         "fred": {"multiple_items_allowed": True, "choices": None},
-                    }
+                    },
+                    "country": {
+                        "econdb": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "australia",
+                                "canada",
+                                "china",
+                                "ecb_instantaneous_forward",
+                                "ecb_par_yield",
+                                "ecb_spot_rate",
+                                "hong_kong",
+                                "india",
+                                "japan",
+                                "mexico",
+                                "new_zealand",
+                                "russia",
+                                "saudi_arabia",
+                                "singapore",
+                                "south_africa",
+                                "south_korea",
+                                "taiwan",
+                                "thailand",
+                                "united_kingdom",
+                                "united_states",
+                            ],
+                        }
+                    },
                 },
             )
         )
