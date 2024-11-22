@@ -88,10 +88,15 @@ class ImfAvailableIndicatorsFetcher(
 
         terms = [term.strip() for term in query.query.split(";")] if query.query else []
 
-        df = DataFrame(all_symbols).T.reset_index().rename(columns={"index": "symbol"})
+        df = (
+            DataFrame(all_symbols)
+            .T.reset_index()
+            .rename(columns={"index": "symbol"})
+            .replace({nan: None})
+        )
 
         if not terms:
-            records = df.to_dict(orient="records").replace({nan: None})
+            records = df.to_dict(orient="records")
         else:
             combined_mask = Series([True] * len(df))
             for term in terms:
@@ -107,7 +112,7 @@ class ImfAvailableIndicatorsFetcher(
             if matches.empty:
                 raise EmptyDataError("No results found for the provided query.")
 
-            records = matches.replace({nan: None}).to_dict(orient="records")
+            records = matches.to_dict(orient="records")
 
         return records
 
