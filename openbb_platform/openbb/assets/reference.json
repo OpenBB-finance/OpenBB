@@ -3020,7 +3020,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], List[Union[str, date]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): yfinance.",
                         "default": null,
                         "optional": true,
@@ -4671,7 +4671,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], List[Union[str, date]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. Default is the latest report. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -9657,7 +9657,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], List[Union[str, date]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. Default is the latest report. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -34467,7 +34467,7 @@
                 "fmp": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], str]",
+                        "type": "Union[Union[date, str], str]",
                         "description": "A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF.",
                         "default": null,
                         "optional": true,
@@ -34495,7 +34495,7 @@
                 "sec": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], str]",
+                        "type": "Union[Union[date, str], str]",
                         "description": "A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing.",
                         "default": null,
                         "optional": true,
@@ -37346,7 +37346,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[None, date, str], List[Union[None, date, str]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. By default is the current data. Multiple items allowed for provider(s): econdb, federal_reserve, fmp, fred.",
                         "default": null,
                         "optional": true,
@@ -37356,14 +37356,17 @@
                 "econdb": [
                     {
                         "name": "country",
-                        "type": "Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'mexico', 'new_zealand', 'russia', 'saudi_arabia', 'singapore', 'south_africa', 'south_korea', 'taiwan', 'thailand', 'united_kingdom', 'united_states']",
-                        "description": "The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. Multiple items allowed for provider(s): econdb.",
                         "default": "united_states",
                         "optional": true,
                         "choices": [
                             "australia",
                             "canada",
                             "china",
+                            "ecb_instantaneous_forward",
+                            "ecb_par_yield",
+                            "ecb_spot_rate",
                             "hong_kong",
                             "india",
                             "japan",
@@ -37452,14 +37455,6 @@
                         "name": "maturity",
                         "type": "str",
                         "description": "Maturity length of the security.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "rate",
-                        "type": "float",
-                        "description": "The yield as a normalized percent (0.05 is 5%)",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -38128,7 +38123,7 @@
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], List[Union[str, date]]]",
+                        "type": "Union[Union[date, str], List[Union[date, str]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): fred.",
                         "default": null,
                         "optional": true,
@@ -39439,7 +39434,7 @@
                     },
                     {
                         "name": "date_first_added",
-                        "type": "Union[str, date]",
+                        "type": "Union[date, str]",
                         "description": "Date the constituent company was added to the index.",
                         "default": null,
                         "optional": true,
@@ -39455,7 +39450,7 @@
                     },
                     {
                         "name": "founded",
-                        "type": "Union[str, date]",
+                        "type": "Union[date, str]",
                         "description": "Founding year of the constituent company in the index.",
                         "default": null,
                         "optional": true,
