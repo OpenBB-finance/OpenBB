@@ -2,103 +2,64 @@
 
 # pylint: disable=unused-argument
 
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
-    EquityPerformanceData,
     EquityPerformanceQueryParams,
 )
+from openbb_yfinance.utils.references import YFPredefinedScreenerData
 from pydantic import Field
-
-if TYPE_CHECKING:
-    from pandas import DataFrame
 
 
 class YFActiveQueryParams(EquityPerformanceQueryParams):
-    """Yahoo Finance Asset Performance Active Query.
+    """Yahoo Finance Most Active Query.
 
     Source: https://finance.yahoo.com/screener/predefined/most_actives
     """
 
-
-class YFActiveData(EquityPerformanceData):
-    """Yahoo Finance Asset Performance Active Data."""
-
-    __alias_dict__ = {
-        "symbol": "Symbol",
-        "name": "Name",
-        "volume": "Volume",
-        "change": "Change",
-        "price": "Price (Intraday)",
-        "percent_change": "% Change",
-        "market_cap": "Market Cap",
-        "avg_volume_3_months": "Avg Vol (3 month)",
-        "pe_ratio_ttm": "PE Ratio (TTM)",
-    }
-
-    market_cap: Optional[float] = Field(
-        description="Market Cap displayed in billions.",
-    )
-    avg_volume_3_months: Optional[float] = Field(
-        description="Average volume over the last 3 months in millions.",
-    )
-    pe_ratio_ttm: Optional[float] = Field(
-        description="PE Ratio (TTM).",
-        default=None,
+    limit: Optional[int] = Field(
+        default=200,
+        description="Limit the number of results.",
     )
 
 
-class YFActiveFetcher(Fetcher[YFActiveQueryParams, List[YFActiveData]]):
+class YFActiveData(YFPredefinedScreenerData):
+    """Yahoo Finance Most Active Data."""
+
+
+class YFActiveFetcher(Fetcher[YFActiveQueryParams, list[YFActiveData]]):
     """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFActiveQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFActiveQueryParams:
         """Transform query params."""
         return YFActiveQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: YFActiveQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> "DataFrame":
+    ) -> list[dict]:
         """Get data from YF."""
         # pylint: disable=import-outside-toplevel
-        import io  # noqa
-        import re  # noqa
-        from openbb_core.provider.utils.helpers import make_request  # noqa
-        from pandas import read_html  # noqa
+        from openbb_yfinance.utils.helpers import get_defined_screener
 
-        headers = {"user_agent": "Mozilla/5.0"}
-        html = make_request(
-            "https://finance.yahoo.com/screener/predefined/most_actives",
-            headers=headers,
-        ).text
-        html_clean = re.sub(r"(<span class=\"Fz\(0\)\">).*?(</span>)", "", html)
-        df = read_html(io.StringIO(html_clean), header=None)[0].dropna(
-            how="all", axis=1
-        )
-        return df
+        return await get_defined_screener(name="most_actives", limit=query.limit)
 
     @staticmethod
     def transform_data(
         query: EquityPerformanceQueryParams,
-        data: "DataFrame",
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFActiveData]:
+    ) -> list[YFActiveData]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_yfinance.utils.helpers import df_transform_numbers
-
-        columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
-        data = df_transform_numbers(data, columns)
-        data = data.fillna("N/A").replace("N/A", None)
-        data["Name"] = data["Name"].fillna(data["Symbol"])
-        # parse "Volume" column to float do avoid sorting issues
-        data["Volume"] = data["Volume"].astype(float)
-
         return [
             YFActiveData.model_validate(d)
-            for d in data.sort_values(by="Volume", ascending=False).to_dict("records")
+            for d in sorted(
+                data,
+                key=lambda x: x["regularMarketVolume"],
+                reverse=query.sort == "desc",
+            )
         ]

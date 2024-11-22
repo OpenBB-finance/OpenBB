@@ -100,7 +100,6 @@ historical financial market data to businesses and developers through an API."""
         # "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher, # Disabled due to unreliable Intrinio endpoint
         "KeyMetrics": IntrinioKeyMetricsFetcher,
         "LatestAttributes": IntrinioLatestAttributesFetcher,
-        "MarketIndices": IntrinioIndexHistoricalFetcher,
         "MarketSnapshots": IntrinioMarketSnapshotsFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsSnapshots": IntrinioOptionsSnapshotsFetcher,
