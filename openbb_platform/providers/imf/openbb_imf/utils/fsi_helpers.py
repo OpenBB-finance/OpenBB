@@ -16,7 +16,7 @@ def validate_symbols(symbols) -> str:
     # pylint: disable=import-outside-toplevel
     from warnings import warn  # noqa
     from openbb_core.app.model.abstract.error import OpenBBError
-    from openbb_imf.utils.constants import FSI_PRESET
+    from openbb_imf.utils.constants import FSI_PRESETS
 
     fsi_symbols = load_fsi_symbols()
 
@@ -28,7 +28,7 @@ def validate_symbols(symbols) -> str:
     new_symbols: list = []
 
     for symbol in symbols:
-        if symbol in FSI_PRESET:
+        if symbol in FSI_PRESETS:
             return symbol
         elif symbol.upper() not in fsi_symbols:
             warn(f"Unsupported IMF FSI symbol: {symbol}")
