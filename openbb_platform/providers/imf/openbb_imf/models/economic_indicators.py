@@ -202,9 +202,9 @@ class ImfEconomicIndicatorsFetcher(
             elif symbol in FSI_PRESETS:
                 new_symbols_fsi = symbol
             elif symbol.upper() in fsi_symbols:
-                new_symbols_fsi.append(symbol.upper())
+                new_symbols_fsi.append(symbol.upper())  # type: ignore
             elif symbol.upper() in irfcl_symbols:
-                new_symbols_irfcl.append(symbol.upper())
+                new_symbols_irfcl.append(symbol.upper())  # type: ignore
 
         if not new_symbols_irfcl and not new_symbols_fsi:
             raise OpenBBError(
