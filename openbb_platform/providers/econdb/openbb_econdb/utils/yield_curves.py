@@ -1,7 +1,5 @@
 """EconDB Yield Curve Utilities"""
 
-from typing import Literal
-
 DAILY = {
     "australia": {
         "RBA_F02D.FCMYGBAG2D.D.AU": "year_2",
@@ -20,7 +18,7 @@ DAILY = {
         "BOC_BOND_YIELDS_ALL.BD_CDN_5YR_DQ_YLD.D.CA": "year_5",
         "BOC_BOND_YIELDS_ALL.BD_CDN_7YR_DQ_YLD.D.CA": "year_7",
         "BOC_BOND_YIELDS_ALL.BD_CDN_10YR_DQ_YLD.D.CA": "year_10",
-        "BOC_BOND_YIELDS_ALL.BD_CDN_LONG_DQ_YLD.D.CA": "long_term",
+        "BOC_BOND_YIELDS_ALL.BD_CDN_LONG_DQ_YLD.D.CA": "year_30",
     },
     "china": {
         "CCDC_CGB.CHB_3M.D.CN": "month_3",
@@ -134,7 +132,56 @@ DAILY = {
         "FRB_H15.C279E.D.US": "year_20",
         "FRB_H15.F5280.D.US": "year_30",
     },
+    "ecb_spot_rate": {
+        "ECBYC.035E9053E2.B.EA": "month_3",
+        "ECBYC.03610053E2.B.EA": "month_6",
+        "ECBYC.0354C053E2.B.EA": "year_1",
+        "ECBYC.035D1053E2.B.EA": "year_2",
+        "ECBYC.035EA053E2.B.EA": "year_3",
+        "ECBYC.035F7053E2.B.EA": "year_4",
+        "ECBYC.03604053E2.B.EA": "year_5",
+        "ECBYC.03611053E2.B.EA": "year_6",
+        "ECBYC.0361E053E2.B.EA": "year_7",
+        "ECBYC.0362B053E2.B.EA": "year_8",
+        "ECBYC.03638053E2.B.EA": "year_9",
+        "ECBYC.03558053E2.B.EA": "year_10",
+        "ECBYC.034D2053E2.B.EA": "year_20",
+        "ECBYC.035DD053E2.B.EA": "year_30",
+    },
+    "ecb_par_yield": {
+        "ECBYC.0317C053E2.B.EA": "month_3",
+        "ECBYC.031A3053E2.B.EA": "month_6",
+        "ECBYC.030DF053E2.B.EA": "year_1",
+        "ECBYC.03164053E2.B.EA": "year_2",
+        "ECBYC.0317D053E2.B.EA": "year_3",
+        "ECBYC.0318A053E2.B.EA": "year_4",
+        "ECBYC.03197053E2.B.EA": "year_5",
+        "ECBYC.031A4053E2.B.EA": "year_6",
+        "ECBYC.031B1053E2.B.EA": "year_7",
+        "ECBYC.031BE053E2.B.EA": "year_8",
+        "ECBYC.031CB053E2.B.EA": "year_9",
+        "ECBYC.03065053E2.B.EA": "year_10",
+        "ECBYC.030EB053E2.B.EA": "year_20",
+        "ECBYC.03170053E2.B.EA": "year_30",
+    },
+    "ecb_instantaneous_forward": {
+        "ECBYC.02C71053E2.B.EA": "month_3",
+        "ECBYC.02C98053E2.B.EA": "month_6",
+        "ECBYC.02BD4053E2.B.EA": "year_1",
+        "ECBYC.02C59053E2.B.EA": "year_2",
+        "ECBYC.02C72053E2.B.EA": "year_3",
+        "ECBYC.02C7F053E2.B.EA": "year_4",
+        "ECBYC.02C8C053E2.B.EA": "year_5",
+        "ECBYC.02C99053E2.B.EA": "year_6",
+        "ECBYC.02CA6053E2.B.EA": "year_7",
+        "ECBYC.02CB3053E2.B.EA": "year_8",
+        "ECBYC.02CC0053E2.B.EA": "year_9",
+        "ECBYC.02B5A053E2.B.EA": "year_10",
+        "ECBYC.02BE0053E2.B.EA": "year_20",
+        "ECBYC.02C65053E2.B.EA": "year_30",
+    },
 }
+
 MONTHLY = {
     "thailand": {
         "BOTFM_RT_001_S2.36.M.TH": "month_1",
@@ -198,22 +245,3 @@ COUNTRIES_DICT = {
     **DAILY,
     **MONTHLY,
 }
-COUNTRIES = Literal[
-    "australia",
-    "canada",
-    "china",
-    "hong_kong",
-    "india",
-    "japan",
-    "mexico",
-    "new_zealand",
-    "russia",
-    "saudi_arabia",
-    "singapore",
-    "south_africa",
-    "south_korea",
-    "taiwan",
-    "thailand",
-    "united_kingdom",
-    "united_states",
-]
