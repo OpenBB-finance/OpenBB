@@ -134,8 +134,12 @@ def parse_kwargs():
     import sys
 
     args = sys.argv[1:].copy()
+    sys.stdout.write(f"ARGS: {args}\n")
     _kwargs: dict = {}
     for i, arg in enumerate(args):
+        if arg.startswith("url"):
+            _kwargs["url"] = arg[4:]
+            continue
         if "=" in arg:
             key, value = arg.split("=")
 
