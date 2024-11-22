@@ -2980,7 +2980,7 @@ class ROUTER_economy(Container):
                     'gold_reserves': Gold reserves as value in USD and Fine Troy Ounces. Compatible with multiple countries.
                     'derivative_assets': Net derivative assets as value in USD. Compatible with multipile countries.
                     'fsi_core': The core Financial Soundness Indicators. Compatible with multiple countries.
-                    'core_fsi_underlying': The core FSIs underlying series data. Not compatible with country='all'.
+                    'fsi_core_underlying': The core FSIs underlying series data. Not compatible with country='all'.
                     'fsi_encouraged_set': The encouraged set of Financial Soundness Indicators. Not compatible with country='all'.
                     'fsi_other': The other Financial Soundness Indicators. Not compatible with country='all'.
                     'fsi_balance_sheets': Data categorized as Balance Sheets and Income Statements. Not compatible with country='all'.
@@ -2999,7 +2999,7 @@ class ROUTER_economy(Container):
                 `tusd` should only be used where values are currencies. (provider: econdb)
             frequency : Literal['annual', 'quarter', 'month']
                 The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'. (provider: econdb);
-                Frequency of the data. (provider: imf)
+                Frequency of the data, default is 'quarter'. (provider: imf)
             use_cache : bool
                 If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
 
