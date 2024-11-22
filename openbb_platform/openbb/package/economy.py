@@ -3064,7 +3064,7 @@ class ROUTER_economy(Container):
         'fsi_core_underlying' - Underlying data for the Core FSIs.
         'fsi_other' - Additional/Other FSIs that are not in the Core or Encouraged Set.
         'fsi_all' - all FSI data for a single country.
-            >>> obb.economy.indicators(provider='imf', symbol='RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO', country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency='annual')
+            >>> obb.economy.indicators(provider='imf', symbol='fsi_encouraged_set', country='us,fr,gb', start_date='2022-01-01', end_date='2023-12-31', frequency='annual')
         """  # noqa: E501
 
         return self._run(
