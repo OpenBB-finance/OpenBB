@@ -638,6 +638,7 @@ def test_economy_indicators(params, headers):
     "params",
     [
         ({"provider": "econdb", "use_cache": False}),
+        ({"provider": "imf", "query": "balance sheet;households;debt"}),
     ],
 )
 @pytest.mark.integration
