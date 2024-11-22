@@ -177,8 +177,8 @@ async def _get_fsi_data(**kwargs) -> list[dict]:  # noqa:PLR0912
             continue
 
         _table = all_symbols.get(_symbol, {}).get("table", "")
-        if indicator == "fsi_core_underlying":
-            _table = _table.replace("fsi_other", "fsi_core_underlying")
+        if _table and indicator == "fsi_core_underlying":
+            _table = _table.replace("fsi_other", "fsi_core_underlying")  # type: ignore
         _parent = all_symbols.get(_symbol, {}).get("parent", "")
         _order = all_symbols.get(_symbol, {}).get("order", "")
         _level = all_symbols.get(_symbol, {}).get("level", "")

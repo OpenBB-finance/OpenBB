@@ -194,8 +194,8 @@ class ImfEconomicIndicatorsFetcher(
         fsi_symbols = load_symbols("FSI")
         irfcl_symbols = load_symbols("IRFCL")
         symbols = query.symbol.split(",")
-        new_symbols_irfcl: list = []
-        new_symbols_fsi: list = []
+        new_symbols_irfcl: Union[list, str] = []
+        new_symbols_fsi: Union[list, str] = []
         for symbol in symbols:
             if symbol in list(IRFCL_PRESET) + ["all", "IRFCL"]:
                 new_symbols_irfcl = symbol
