@@ -141,16 +141,18 @@ class ImfEconomicIndicatorsFetcher(
             if (("all" in symbols or "IRFCL" in symbols) and "fsi_all" not in symbols)
             else symbols if symbols else "irfcl_top_lines"
         )
-        if (
-            symbols == "IRFCL"
-            or "fsi_other" in symbols
+        incompatible = (
+            "fsi_other" in symbols
             or "fsi_encouraged_set" in symbols
             or "fsi_all" in symbols
             or "fsi_core_underlying" in symbols
             or "fsi_balance_sheets" in symbols
-        ) and not (countries or countries == "all"):
+        )
+        if (symbols == "IRFCL" or incompatible) and not (
+            countries or countries == "all"
+        ):
             raise OpenBBError(
-                f"The selected symbol(s), {params.get('symbol')}, is not compatible with 'all countries'."
+                f"The selected symbol(s), {params.get('symbol')}, is not compatible with the all-countries group."
                 " Please provide country names or two-letter ISO country codes."
             )
 
@@ -225,7 +227,6 @@ class ImfEconomicIndicatorsFetcher(
                     exceptions.append(
                         f"IRFCL dataset error -> {e.__class__.__name__}: {e}"
                     )
-                    pass
                 else:
                     raise
             if new_symbols_fsi:
@@ -238,7 +239,6 @@ class ImfEconomicIndicatorsFetcher(
                         exceptions.append(
                             f"FSI dataset error -> {e.__class__.__name__}: {e}"
                         )
-                        pass
                     elif not new_symbols_irfcl:
                         raise
         except OpenBBError as exc:
