@@ -57,7 +57,7 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData
         from openbb_sec.utils import parse_13f
 
         symbol = query.symbol
-        urls = []
+        urls: list = []
         cik = symbol.isnumeric()
         try:
             filings = (

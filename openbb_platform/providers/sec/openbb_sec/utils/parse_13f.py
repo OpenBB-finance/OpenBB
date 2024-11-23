@@ -134,10 +134,6 @@ async def parse_13f_hr(filing: str):
     if filing.startswith("https://"):
         filing = await get_complete_submission(filing)  # type: ignore
 
-    # Validate the submission so we know that we can parse it.
-    # if get_submission_type(filing) not in ("13F-HR", "13F-HR/A"):
-    #    raise OpenBBError("Submission type is not 13F-HR.")
-
     soup = BeautifulSoup(filing, "xml")
 
     info_table = soup.find_all("informationTable")
