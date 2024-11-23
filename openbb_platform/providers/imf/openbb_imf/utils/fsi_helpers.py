@@ -30,7 +30,7 @@ def validate_symbols(symbols) -> str:
     for symbol in symbols:
         if symbol in FSI_PRESETS:
             return symbol
-        elif symbol.upper() not in fsi_symbols:
+        if symbol.upper() not in fsi_symbols:
             warn(f"Unsupported IMF FSI symbol: {symbol}")
         new_symbols.append(symbol.upper())
 
