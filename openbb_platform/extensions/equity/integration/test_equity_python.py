@@ -65,7 +65,7 @@ def obb(pytestconfig):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 5,
                 "provider": "yfinance",
             }
         ),
@@ -196,7 +196,7 @@ def test_equity_calendar_earnings(params, obb):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 5,
                 "provider": "yfinance",
             }
         ),
@@ -411,7 +411,7 @@ def test_equity_estimates_historical(params, obb):
             {
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "limit": 12,
+                "limit": 5,
                 "period": "annual",
             }
         ),
