@@ -912,7 +912,19 @@ def panel_fmac(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    include_in_schema=False,
+    examples=[
+        PythonEx(
+            description="Calculate the variance inflation factor.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='yfinance').to_df()",  # noqa: E501
+                'obb.econometrics.variance_inflation_factor(data=stock_data, column="close")',
+            ],
+        ),
+    ],
+)
 def variance_inflation_factor(
     data: List[Data], columns: Optional[list] = None
 ) -> OBBject[List[Data]]:
