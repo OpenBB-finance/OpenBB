@@ -128,5 +128,6 @@ async def government_trades(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Obtain government transaction data, including data from the Senate
-    and the House of Representatives."""
+    and the House of Representatives.
+    """
     return await OBBject.from_query(Query(**locals()))

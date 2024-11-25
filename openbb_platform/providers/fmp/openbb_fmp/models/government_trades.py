@@ -12,7 +12,7 @@ from openbb_core.provider.standard_models.government_trades import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import create_url
+from openbb_fmp.utils.helpers import create_url, response_callback
 from pydantic import Field
 
 
@@ -101,7 +101,7 @@ class FMPGovernmentTradesFetcher(
             keys_to_rename = {"dateRecieved": "date", "disclosureDate": "date"}
             """Get data for the given symbol."""
 
-            result = await amake_request(url, **kwargs)
+            result = await amake_request(url, response_callback=response_callback, **kwargs)
             # 处理数据
             processed_list = []
             for entry in result:
@@ -150,7 +150,6 @@ class FMPGovernmentTradesFetcher(
                 ]
                 urls_list.extend(url)
             await asyncio.gather(*[get_one(url) for url in urls_list])
-        results = [i for i in results if isinstance(i, dict)]
         if not results:
             raise EmptyDataError("No data returned for the given symbol.")
 

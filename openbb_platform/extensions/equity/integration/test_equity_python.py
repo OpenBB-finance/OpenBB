@@ -1989,3 +1989,33 @@ def test_equity_discovery_latest_financial_reports(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "chamber": "all",
+                "symbol": "AAPL",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "chamber": "all",
+                "limit": 300,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_ownership_government_trades(params, obb):
+    """Test the equity ownership government trades endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.ownership.government_trades(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

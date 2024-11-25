@@ -37,7 +37,9 @@ class GovernmentTradesData(Data):
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    transaction_date: dateType = Field(default=None, description="Date of Transaction.")
+    transaction_date: Optional[dateType] = Field(
+        default=None, description="Date of Transaction."
+    )
     representative: Optional[str] = Field(
         default=None, description="Name of Representative."
     )
