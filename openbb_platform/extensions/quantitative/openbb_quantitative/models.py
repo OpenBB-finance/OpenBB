@@ -1,4 +1,5 @@
 """Pydantic models for Quantitative Analysis."""
+
 from pydantic import BaseModel
 
 

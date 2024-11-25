@@ -1,8 +1,0 @@
-parent_command:economy/qa
-usage: cdf
-
-Cumulative distribution function
-
-cdf
-Examples:
-- To display the cumulative distribution function for the economy: economy/qa/cdf

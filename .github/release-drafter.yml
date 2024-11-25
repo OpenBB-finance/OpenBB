@@ -1,5 +1,21 @@
-name-template: 'OpenBB Terminal v$NEXT_MINOR_VERSION'
+name-template: 'OpenBB Platform v$NEXT_MINOR_VERSION'
 tag-template: 'v$NEXT_MINOR_VERSION'
+categories:
+  - title: 🚨 OpenBB Platform Breaking Changes
+    labels:
+      - 'breaking_change'
+  - title: 🦋 OpenBB Platform Enhancements
+    labels:
+      - 'platform'
+      - 'v4'
+  - title: 🐛 OpenBB Platform Bug Fixes
+    labels:
+      - 'bug'
+  - title: 📚 OpenBB Documentation Changes
+    labels:
+      - 'docs'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&'
 exclude-contributors:
   - 'jmaslek'
   - 'DidierRLopes'
@@ -19,13 +35,13 @@ template: |
   ## Thank you and welcome to our new contributors 🔥
   $CONTRIBUTORS
 
-  ## What's new 🎉
+  ## Summary 🎉
 
   ## What's changed 🚀
   $CHANGES
 
   We are proud of our community contributors and staunch supporters of open-source ecosystems.
-  Help us promote our community by tagging `@openbb_finance` on Twitter with a link to your pull request,
+  Help us promote our community by tagging `@openbb_finance` on X with a link to your pull request,
   and join our Discord server to chat about your contribution! We want to hear about your experience!
 
   ### Links 🦋

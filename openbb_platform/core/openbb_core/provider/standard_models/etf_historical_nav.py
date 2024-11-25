@@ -1,7 +1,6 @@
 """ETF Historical NAV model."""
 
 from datetime import date as dateType
-from typing import List, Set, Union
 
 from pydantic import Field, field_validator
 
@@ -20,11 +19,9 @@ class EtfHistoricalNavQueryParams(QueryParams):
 
     @field_validator("symbol")
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class EtfHistoricalNavData(Data):

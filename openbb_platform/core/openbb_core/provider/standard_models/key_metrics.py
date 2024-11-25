@@ -1,6 +1,6 @@
 """Key Metrics Standard Model."""
 
-from typing import List, Literal, Optional, Set, Union
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -16,20 +16,15 @@ class KeyMetricsQueryParams(QueryParams):
     """Key Metrics Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Optional[Literal["annual", "quarter"]] = Field(
-        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
-    )
     limit: Optional[int] = Field(
         default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class KeyMetricsData(Data):
@@ -44,11 +39,3 @@ class KeyMetricsData(Data):
     pe_ratio: Optional[float] = Field(
         default=None, description="Price-to-earnings ratio (P/E ratio)"
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)]) if v else None

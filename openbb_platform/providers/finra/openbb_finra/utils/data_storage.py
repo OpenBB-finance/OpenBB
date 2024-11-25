@@ -3,23 +3,30 @@
 This was created as a way to handle short interest data from the FINRA.
 The files do not change, so there is no need to download them every time.
 """
-import random
-import sqlite3
-from io import StringIO
-from pathlib import Path
+
 from typing import List
 
-import requests
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_finra.utils.helpers import get_short_interest_dates
-from pandas import read_csv
 
-DB_PATH = Path(get_user_cache_directory()) / "caches/finra_short_volume.db"
-DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+def get_db_path():
+    """Return the path to the database."""
+    # pylint: disable=import-outside-toplevel
+    from pathlib import Path
+
+    DB_PATH = Path(get_user_cache_directory()) / "caches/finra_short_volume.db"
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    return DB_PATH
 
 
 def get_cached_dates() -> List:
     """Return the dates that are cached in the DB file."""
+    # pylint: disable=import-outside-toplevel
+    import sqlite3  # noqa
+
+    DB_PATH = get_db_path()
     cnx = sqlite3.connect(DB_PATH)
     cursor = cnx.cursor()
 
@@ -39,13 +46,21 @@ def get_cached_dates() -> List:
 
 def get_data_from_date_and_store(date):
     """Get data from a specific date and place it in the cache."""
+    # pylint: disable=import-outside-toplevel
+    import random  # noqa
+    import sqlite3  # noqa
+    from io import StringIO  # noqa
+    from openbb_core.provider.utils.helpers import make_request  # noqa
+    from pandas import read_csv  # noqa
+
+    DB_PATH = get_db_path()
     url = f"https://cdn.finra.org/equity/otcmarket/biweekly/shrt{date}.csv"
     # add a random string to user agent to avoid getting blocked
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         + str(random.randint(0, 9))  # noqa: S311
     }
-    req = requests.get(url, headers=headers, timeout=1)
+    req = make_request(url, headers=headers, timeout=1)
     if req.status_code != 200:
         return
     data = read_csv(StringIO(req.text), delimiter="|")

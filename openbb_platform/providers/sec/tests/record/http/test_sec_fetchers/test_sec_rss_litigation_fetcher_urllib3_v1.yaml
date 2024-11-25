@@ -1,0 +1,109 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.sec.gov/enforcement-litigation/litigation-releases/rss
+  response:
+    body:
+      string: !!binary |
+        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
+        uuNnfwAPkC2jUiUAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - public, max-age=60
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Length:
+      - '2179'
+      Content-Security-Policy:
+      - frame-ancestors 'self'
+      Content-Type:
+      - application/rss+xml; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 21:21:14 GMT
+      ETag:
+      - '"1719868873"'
+      Expires:
+      - Mon, 01 Jul 2024 21:22:14 GMT
+      Last-Modified:
+      - Mon, 01 Jul 2024 21:21:13 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains ; preload
+      Vary:
+      - Accept-Encoding
+      X-AH-Environment:
+      - prod
+      X-Age:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - MISS
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-ID:
+      - v-d8557ad0-37ef-11ef-ade7-df725f5228a9
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,4 +1,5 @@
 """Test linters.py file."""
+
 # pylint: disable=redefined-outer-name
 
 import pytest
@@ -9,6 +10,7 @@ from openbb_core.app.static.package_builder import (
 
 @pytest.fixture(scope="module")
 def tmp_package_dir(tmp_path_factory):
+    """Return a temporary package directory."""
     return tmp_path_factory.mktemp("package")
 
 

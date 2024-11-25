@@ -6,27 +6,28 @@
     "dev": "vite",
     "build": "vite build",
     "build_tsc": "tsc && vite build",
-    "deploy": "npm run build && mv dist/index.html ../../openbb_terminal/core/plots/plotly.html",
+    "deploy": "npm run build && mv dist/index.html ../../openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly.html",
     "preview": "vite preview"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.3",
     "dom-to-image": "^2.6.0",
     "lodash": "^4.17.21",
-    "plotly.js-dist-min": "^2.21.0",
+    "plotly.js-dist-min": "^2.32.0",
     "posthog-js": "^1.55.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-plotly.js": "^2.6.0"
+    "react-plotly.js": "^2.6.0",
+    "rollup": ">=4.22.4"
   },
   "devDependencies": {
     "@types/dom-to-image": "^2.6.4",
     "@types/lodash": "^4.14.195",
     "@types/node": "^18.16.3",
-    "@types/plotly.js-dist-min": "^2.3.1",
+    "@types/plotly.js-dist-min": "^2.3.4",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "@types/react-plotly.js": "^2.6.0",
+    "@types/react-plotly.js": "^2.6.3",
     "@types/wicg-file-system-access": "^2020.9.6",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.13",
@@ -36,7 +37,7 @@
     "react-hotkeys-hook": "^4.4.0",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.9.3",
-    "vite": "^4.1.0",
+    "vite": ">=4.5.4",
     "vite-plugin-singlefile": "^0.13.3"
   }
 }

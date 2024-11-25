@@ -1,13 +1,12 @@
 """SEC Standard Industrial Classification Code (SIC) Model."""
 
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
 
-import pandas as pd
-import requests
+from typing import Any, Dict, List, Optional, Union
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cot_search import CotSearchQueryParams
-from openbb_sec.utils.helpers import SEC_HEADERS, sec_session_companies
 from pydantic import Field
 
 
@@ -17,20 +16,25 @@ class SecSicSearchQueryParams(CotSearchQueryParams):
     Source: https://sec.gov/
     """
 
-    use_cache: bool = Field(
+    use_cache: Optional[bool] = Field(
         default=True,
-        description="Whether to use the cache or not. The full list will be cached for seven days if True.",
+        description="Whether or not to use cache.",
     )
 
 
 class SecSicSearchData(Data):
     """SEC Standard Industrial Classification Code (SIC) Data."""
 
-    sic: int = Field(description="Sector Industrial Code (SIC)", alias="SIC Code")
-    industry: str = Field(description="Industry title.", alias="Industry Title")
+    __alias_dict__ = {
+        "sic": "SIC Code",
+        "industry": "Industry Title",
+        "office": "Office",
+    }
+
+    sic: int = Field(description="Sector Industrial Code (SIC)")
+    industry: str = Field(description="Industry title.")
     office: str = Field(
-        description="Reporting office within the Corporate Finance Office",
-        alias="Office",
+        description="Reporting office within the Corporate Finance Office"
     )
 
 
@@ -40,7 +44,7 @@ class SecSicSearchFetcher(
         List[SecSicSearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the SEC endpoints."""
+    """SEC SIC Search Fetcher."""
 
     @staticmethod
     def transform_query(
@@ -50,40 +54,58 @@ class SecSicSearchFetcher(
         return SecSicSearchQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: SecSicSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data from the SEC website table."""
-        data = pd.DataFrame()
+        # pylint: disable=import-outside-toplevel
+        from aiohttp_client_cache import SQLiteBackend
+        from aiohttp_client_cache.session import CachedSession
+        from openbb_core.app.utils import get_user_cache_directory
+        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_sec.utils.helpers import SEC_HEADERS, sec_callback
+        from pandas import DataFrame, read_html
+
+        data = DataFrame()
         results: List[Dict] = []
         url = (
             "https://www.sec.gov/corpfin/"
             "division-of-corporation-finance-standard-industrial-classification-sic-code-list"
         )
-        r = (
-            sec_session_companies.get(url, timeout=5, headers=SEC_HEADERS)
-            if query.use_cache is True
-            else requests.get(url, timeout=5, headers=SEC_HEADERS)
-        )
+        response: Union[dict, List[dict], str] = {}
+        if query.use_cache is True:
+            cache_dir = f"{get_user_cache_directory()}/http/sec_sic"
+            async with CachedSession(
+                cache=SQLiteBackend(cache_dir, expire_after=3600 * 24 * 30)
+            ) as session:
+                try:
+                    response = await amake_request(
+                        url, headers=SEC_HEADERS, session=session, response_callback=sec_callback  # type: ignore
+                    )
+                finally:
+                    await session.close()
+        else:
+            response = await amake_request(url, headers=SEC_HEADERS, response_callback=sec_callback)  # type: ignore
 
-        if r.status_code == 200:
-            data = pd.read_html(r.content.decode())[0].astype(str)
-            if len(data) == 0:
-                return results
-            if query:
-                data = data[
-                    data["SIC Code"].str.contains(query.query, case=False)
-                    | data["Office"].str.contains(query.query, case=False)
-                    | data["Industry Title"].str.contains(query.query, case=False)
-                ]
-            data["SIC Code"] = data["SIC Code"].astype(int)
+        data = read_html(response)[0].astype(str)
+        if len(data) == 0:
+            return results
+        if query:
+            data = data[
+                data["SIC Code"].str.contains(query.query, case=False)
+                | data["Office"].str.contains(query.query, case=False)
+                | data["Industry Title"].str.contains(query.query, case=False)
+            ]
+        data["SIC Code"] = data["SIC Code"].astype(int)
         results = data.to_dict("records")
 
         return results
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[SecSicSearchData]:
+    def transform_data(
+        query: SecSicSearchQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[SecSicSearchData]:
         """Transform the data."""
         return [SecSicSearchData.model_validate(d) for d in data]

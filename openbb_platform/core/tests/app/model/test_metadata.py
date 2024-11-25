@@ -1,3 +1,5 @@
+"""Test the Metadata model."""
+
 from datetime import datetime
 
 import numpy as np
@@ -8,9 +10,13 @@ from openbb_core.provider.abstract.data import Data
 
 
 def test_Metadata():
-    "Smoke test"
+    """Run Smoke test."""
     m = Metadata(
-        arguments={"test": "test"},
+        arguments={
+            "provider_choices": {},
+            "standard_params": {},
+            "extra_params": {},
+        },
         route="test",
         timestamp=datetime.now(),
         duration=0,
@@ -20,8 +26,8 @@ def test_Metadata():
 
 
 def test_fields():
-    "Smoke test"
-    fields = Metadata.__fields__.keys()
+    """Run Smoke test."""
+    fields = Metadata.model_fields.keys()
     assert "arguments" in fields
     assert "duration" in fields
     assert "route" in fields
@@ -42,7 +48,7 @@ def test_fields():
             {
                 "data_list": {
                     "type": "List[Data]",
-                    "columns": ["open", "close", "volume"],
+                    "columns": ["open", "volume", "close"],
                 }
             },
         ),
@@ -98,20 +104,41 @@ def test_fields():
     ],
 )
 def test_scale_arguments(input_data, expected_output):
+    """Test the scale_arguments method."""
+    kwargs = {
+        "provider_choices": {},
+        "standard_params": {},
+        "extra_params": input_data,
+    }
     m = Metadata(
-        arguments=input_data,
+        arguments=kwargs,
         route="test",
         timestamp=datetime.now(),
         duration=0,
     )
     arguments = m.arguments
 
-    for arg in arguments:
+    for arg in arguments:  # pylint: disable=E1133
         if "columns" in arguments[arg]:
             # compare the column names disregarding the order with the expected output
-            assert sorted(arguments[arg]["columns"]) == sorted(
+            assert sorted(arguments["extra_params"][arg]["columns"]) == sorted(
                 expected_output[arg]["columns"]
             )
             assert arguments[arg]["type"] == expected_output[arg]["type"]
         else:
-            assert m.arguments == expected_output
+            # assert m.arguments["extra_params"] == expected_output
+            keys = list(arguments["extra_params"].keys())
+            expected_keys = list(expected_output.keys())
+            assert sorted(keys) == sorted(expected_keys)
+
+            for key in keys:
+                if "type" in arguments["extra_params"][key]:
+                    assert (
+                        arguments["extra_params"][key]["type"]
+                        == expected_output[key]["type"]
+                    )
+                    assert sorted(arguments["extra_params"][key]["columns"]) == sorted(
+                        expected_output[key]["columns"]
+                    )
+                else:
+                    assert arguments["extra_params"][key] == expected_output[key]

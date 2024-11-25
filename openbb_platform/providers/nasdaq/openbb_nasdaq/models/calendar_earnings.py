@@ -1,20 +1,19 @@
 """Nasdaq Earnings Calendar Model."""
 
-from concurrent.futures import ThreadPoolExecutor
+# pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
     datetime,
-    timedelta,
 )
 from typing import Any, Dict, List, Optional
 
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_earnings import (
     CalendarEarningsData,
     CalendarEarningsQueryParams,
 )
-from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
 
@@ -32,41 +31,42 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         "report_date": "date",
         "eps_previous": "lastYearEPS",
         "eps_consensus": "epsForecast",
+        "eps_actual": "eps",
+        "surprise_percent": "surprise",
+        "num_estimates": "noOfEsts",
+        "period_ending": "fiscalQuarterEnding",
+        "previous_report_date": "lastYearRptDt",
+        "reporting_time": "time",
+        "market_cap": "marketCap",
     }
+
     eps_actual: Optional[float] = Field(
         default=None,
         description="The actual earnings per share (USD) announced.",
-        alias="eps",
     )
     surprise_percent: Optional[float] = Field(
         default=None,
         description="The earnings surprise as normalized percentage points.",
-        alias="surprise",
     )
     num_estimates: Optional[int] = Field(
         default=None,
         description="The number of analysts providing estimates for the consensus.",
-        alias="noOfEsts",
     )
     period_ending: Optional[str] = Field(
         default=None,
         description="The fiscal period end date.",
-        alias="fiscalQuarterEnding",
     )
     previous_report_date: Optional[dateType] = Field(
         default=None,
         description="The previous report date for the same period last year.",
-        alias="lastYearRptDt",
     )
     reporting_time: Optional[str] = Field(
         default=None,
         description="The reporting time - e.g. after market close.",
-        alias="time",
     )
     market_cap: Optional[int] = Field(
         default=None,
         description="The market cap (USD) of the reporting entity.",
-        alias="marketCap",
     )
 
     @field_validator(
@@ -138,9 +138,14 @@ class NasdaqCalendarEarningsFetcher(
 ):
     """Transform the query, extract and transform the data from the Nasdaq endpoints."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqCalendarEarningsQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         now = datetime.today().date()
         transformed_params = params
 
@@ -153,41 +158,51 @@ class NasdaqCalendarEarningsFetcher(
         return NasdaqCalendarEarningsQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
-        query: NasdaqCalendarEarningsQueryParams,  # pylint: disable=unused-argument
+    async def aextract_data(
+        query: NasdaqCalendarEarningsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Nasdaq endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+
+        IPO_HEADERS = get_headers(accept_type="json")
         data: List[Dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
             for date in date_range(query.start_date, query.end_date)
         ]
 
-        def get_calendar_data(date: str) -> None:
-            response = []
+        async def get_calendar_data(date: str) -> None:
+            """Get the calendar data for the given date."""
+            response: List = []
             url = f"https://api.nasdaq.com/api/calendar/earnings?date={date}"
-            r = requests.get(url, headers=IPO_HEADERS, timeout=5)
-            r_json = r.json()
-            if "data" in r_json and "rows" in r_json["data"]:
-                response = r_json["data"]["rows"]
+            r_json = await amake_request(url=url, headers=IPO_HEADERS, timeout=5)
+            if r_json.get("data", {}).get("rows", []):  # type: ignore
+                response = r_json["data"]["rows"]  # type: ignore
                 _as_of_date = datetime.strptime(
-                    r_json["data"]["asOf"], "%a, %b %d, %Y"
+                    r_json["data"]["asOf"], "%a, %b %d, %Y"  # type: ignore
                 ).date()
-                if len(response) > 0:
+                if response:
                     data.extend([{**d, "date": _as_of_date} for d in response])
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(get_calendar_data, dates)
+        await asyncio.gather(*[get_calendar_data(date) for date in dates])
 
-        return sorted(data, key=lambda x: x["date"], reverse=True)
+        return data
 
     @staticmethod
     def transform_data(
-        query: NasdaqCalendarEarningsQueryParams,  # pylint: disable=unused-argument
+        query: NasdaqCalendarEarningsQueryParams,
         data: List[Dict],
-        **kwargs: Any,  # pylint: disable=unused-argument
+        **kwargs: Any,
     ) -> List[NasdaqCalendarEarningsData]:
         """Return the transformed data."""
-        return [NasdaqCalendarEarningsData.model_validate(d) for d in data]
+        if not data:
+            raise EmptyDataError("The request was returned empty.")
+        return [
+            NasdaqCalendarEarningsData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["date"], reverse=True)
+        ]

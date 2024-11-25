@@ -1,0 +1,1436 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?displayOutput=full&page=0&pageSize=20&sort=created%3Adesc&tickers=AAPL%2CMSFT&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":37267436,\"author\":\"The Arora Report\",\"created\":\"Thu,
+        22 Feb 2024 13:42:04 -0400\",\"updated\":\"Thu, 22 Feb 2024 13:43:04 -0400\",\"title\":\"Great
+        AI Inference Suprise, NVIDIA Declares AI Tipping Point, Japan's Nikkei Crosses
+        34 Year High\",\"teaser\":\"To gain an edge, this is what you need to know
+        today.\\n\\n\",\"body\":\"<p><em>To gain an edge, this is what you need to
+        know today.</em></p>\\r\\n\\r\\n<p><img alt=\\\"\\\" src=\\\"https://thearorareport.com/wp-content/uploads/2024/02/2024-02-22_08h37_09.png\\\"
+        style=\\\"height:360px; width:624px\\\" /></p>\\r\\n\\r\\n<h3><strong>Artificial
+        Intelligence Tipping Point</strong></h3>\\r\\n\\r\\n<p>Please <a href=\\\"https://thearorareport.com/stock-market-chart-analysis-nvidia-earnings-ai-tipping-point-nvda-mc-02222024\\\">click
+        here</a> for an enlarged version of the chart of&nbsp;<strong>NVIDIA Corp</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>).</p>\\r\\n\\r\\n<p>Note
+        the following:</p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>This article is about the big
+        picture, not an individual stock.&nbsp;The chart of NVDA stock is being used
+        to illustrate the point.</li>\\r\\n\\t<li>The chart shows when NVDA pulled
+        back on extreme positioning prior to the earnings release.&nbsp;Please read
+        yesterday&rsquo;s Morning Capsule for details.</li>\\r\\n\\t<li>The chart
+        shows NVDA fell below the trendline prior to the release of earnings, triggering
+        many sell signals in traditional technical analysis.&nbsp;This is a perfect
+        illustration as to why it is important to not depend only on traditional technical
+        analysis.&nbsp;Investors should use a sophisticated system such as <a href=\\\"https://thearorareport.com/zyxmethod\\\">ZYX
+        Change Method</a> with six comprehensive screens.</li>\\r\\n\\t<li>The chart
+        shows the jump up after the earnings release after hours yesterday.</li>\\r\\n\\t<li>Nvidia
+        beat earnings. Here are the details:\\r\\n\\t<ul>\\r\\n\\t\\t<li>NVDA beat
+        whisper numbers.&nbsp;Revenue came at $22.1B vs. $22B whisper number.&nbsp;Earnings
+        are at $5.16 vs. $5 whisper number. As we have written before, whisper numbers
+        were much higher than consensus.</li>\\r\\n\\t\\t<li>For the current quarter,
+        NVDA is forecasting $24B at the midpoint vs. $22.2B consensus.</li>\\r\\n\\t\\t<li>Data
+        center results were higher due to demand for Nvidia GPUs for generative AI.</li>\\r\\n\\t\\t<li>Hyperscalers
+        accounted for more than half the data center revenue.</li>\\r\\n\\t</ul>\\r\\n\\t</li>\\r\\n\\t<li><strong>In
+        The Arora Report analysis, there is a great surprise in NVDA earnings that
+        demands investors&rsquo; attention.&nbsp;&nbsp;</strong>\\r\\n\\t<ul>\\r\\n\\t\\t<li><strong>AI
+        inference shipments were about 40% of AI related shipments.&nbsp;&nbsp;</strong></li>\\r\\n\\t\\t<li><strong>The
+        consensus for AI inference shipments was 5%.&nbsp;&nbsp;</strong></li>\\r\\n\\t\\t<li><strong>In
+        plain English, AI inference means AI trained models are actually being used.</strong></li>\\r\\n\\t\\t<li><strong>AI
+        inference correlates with revenue generation.&nbsp;In contrast, AI training
+        correlates to capital spend. </strong></li>\\r\\n\\t</ul>\\r\\n\\t</li>\\r\\n\\t<li><strong>In
+        The Arora Report analysis, the inference shipment data indicates that AI is
+        being adopted much faster than anybody anticipated before yesterday evening.
+        </strong></li>\\r\\n\\t<li><strong>In The Arora Report analysis, if the competition
+        does not heat up, NVDA is on track to achieve $45 - $50 in earnings in 2027.&nbsp;If
+        this comes true, on this basis, NVDA is the cheapest tech stock.&nbsp;Of course
+        the reality is that competition will heat up.&nbsp; Nonetheless, investors
+        need to be aware that based on the current trajectory, NVDA is not an expensive
+        stock. </strong></li>\\r\\n\\t<li>Nvidia earnings are overshadowing everything
+        else.</li>\\r\\n\\t<li>As an actionable item, the sum total of the foregoing
+        is in the protection band, which strikes the optimum balance between various
+        crosscurrents. Please scroll down to see the protection band.</li>\\r\\n</ul>\\r\\n\\r\\n<h3><strong>FOMC
+        Minutes</strong></h3>\\r\\n\\r\\n<p>The FOMC minutes were hawkish and do not
+        support momo gurus&#39; narrative of near term rate cuts.&nbsp;Expect momo
+        gurus to come up with a new narrative to run up the stock market.&nbsp;Keep
+        in mind that momo gurus&rsquo; real job is to persuade their followers to
+        buy stocks under the disguise of analysis.</p>\\r\\n\\r\\n<h3><strong>Jobless
+        Claims</strong></h3>\\r\\n\\r\\n<p>Initial claims is a leading indicator and
+        carries heavy weight in the adaptive <a href=\\\"https://thearorareport.com/ALLOCATION%2BMODELS.htm\\\">ZYX
+        Asset Allocation Model</a> with inputs in <a href=\\\"https://thearorareport.com/unique-zyx-asset-allocation-4/\\\">ten
+        categories</a>.&nbsp;In plain English, adaptiveness means that the model changes
+        itself with market conditions.&nbsp; Most models on Wall Street are static.&nbsp;
+        They work for a while and then stop working when market conditions change.</p>\\r\\n\\r\\n<p>Initial
+        claims came at 201K vs. 216K consensus. This indicates that the jobs picture
+        is very strong, especially at the low end.</p>\\r\\n\\r\\n<h3><strong>Japan</strong></h3>\\r\\n\\r\\n<p><strong>Japan&rsquo;s
+        Nikkei 225 crossed its high from 1989 for the first time in 34 years.&nbsp;There
+        is an important lesson for investors here.&nbsp;Investors have come to believe
+        that bear markets are short, but that is looking backwards through recent
+        U.S. history.&nbsp;Looking forward, given rising national debt and reckless
+        government spending, there is a fair probability of a long bear market in
+        the U.S. Therefore, it is imperative that investors increase their knowledge
+        and access to a resource such as The Arora Report that has a long track record
+        of making money in both bull and bear markets.&nbsp;&nbsp;</strong></p>\\r\\n\\r\\n<h3><strong>Magnificent
+        Seven Money Flows</strong></h3>\\r\\n\\r\\n<p>In the early trade, money flows
+        are positive in <strong>Apple Inc</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>), <strong>Amazon.com,
+        Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>),
+        <strong>Alphabet Inc Class C</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>),
+        <strong>Meta Platforms Inc </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>),
+        <strong>Microsoft Corp</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>),
+        NVIDIA Corp, and <strong>Tesla Inc</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>).</p>\\r\\n\\r\\n<p>In
+        the early trade, money flows are positive in <strong>SPDR S&amp;P 500 ETF
+        Trust</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPY#NYSE\\\">SPY</a>)
+        and <strong>Invesco QQQ Trust Series 1</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/QQQ#NASDAQ\\\">QQQ</a>).</p>\\r\\n\\r\\n<h3><strong>Momo
+        Crowd And Smart Money In Stocks</strong></h3>\\r\\n\\r\\n<p>The momo crowd
+        is aggressively buying stocks in the early trade.&nbsp;Smart money is buying
+        stocks in the early trade.</p>\\r\\n\\r\\n<h3><strong>Gold</strong></h3>\\r\\n\\r\\n<p>The
+        momo crowd is like a yoyo in gold in the early trade.&nbsp;Smart money is
+        inactive in the early trade.</p>\\r\\n\\r\\n<p>For longer-term, please see
+        gold and silver ratings.</p>\\r\\n\\r\\n<p>The most popular ETF for gold is
+        <strong>SPDR Gold Trust</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GLD#NYSE\\\">GLD</a>).
+        The most popular ETF for silver is <strong>iShares Silver Trust </strong>(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SLV#NYSE\\\">SLV</a>).&nbsp;</p>\\r\\n\\r\\n<h3><strong>Oil</strong></h3>\\r\\n\\r\\n<p>The
+        momo crowd is selling oil in the early trade.&nbsp; Smart money is inactive
+        in the early trade.</p>\\r\\n\\r\\n<p>For longer-term, please see oil ratings.</p>\\r\\n\\r\\n<p>The
+        most popular ETF for oil is <strong>United States Oil ETF</strong> (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/USO#NYSE\\\">USO</a>).</p>\\r\\n\\r\\n<h3><strong>Bitcoin</strong></h3>\\r\\n\\r\\n<p><strong>Bitcoin</strong>
+        (CRYPTO: <a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/quote/btc/usd\\\">BTC</a>)
+        is range bound and seeing buying based on positive sentiment emanating from
+        NVDA earnings.</p>\\r\\n\\r\\n<p><strong>There is speculation that bitcoin
+        may see some selling as investors sell bitcoin to buy NVDA.&nbsp;&nbsp;&nbsp;</strong></p>\\r\\n\\r\\n<h3><strong>Protection
+        Band And What To Do Now</strong></h3>\\r\\n\\r\\n<p>It is important for investors
+        to look ahead and not in the rearview mirror.</p>\\r\\n\\r\\n<p>Consider continuing
+        to hold good, very long term, existing positions. Based on individual risk
+        preference, consider a protection band consisting of cash or Treasury bills
+        or short-term tactical trades as well as short to medium term hedges and short
+        term hedges. This is a good way to protect yourself and participate in the
+        upside at the same time.</p>\\r\\n\\r\\n<p>You can determine your protection
+        bands by adding cash to hedges.&nbsp; The high band of the protection is appropriate
+        for those who are older or conservative. The low band of the protection is
+        appropriate for those who are younger or aggressive.&nbsp; If you do not hedge,
+        the total cash level should be more than stated above but significantly less
+        than cash plus hedges.</p>\\r\\n\\r\\n<p><strong>It is worth reminding that
+        you cannot take advantage of new upcoming opportunities if you are not holding
+        enough cash.&nbsp; </strong>When adjusting hedge levels, consider adjusting
+        partial stop quantities for stock positions (non ETF); consider using wider
+        stops on remaining quantities and also allowing more room for high beta stocks.&nbsp;
+        High beta stocks are the ones that move more than the market.</p>\\r\\n\\r\\n<h3><strong>Traditional
+        60/40 Portfolio</strong></h3>\\r\\n\\r\\n<p>Probability based risk reward
+        adjusted for inflation does not favor long duration strategic bond allocation
+        at this time.</p>\\r\\n\\r\\n<p>Those who want to stick to traditional 60%
+        allocation to stocks and 40% to bonds may consider focusing on only high quality
+        bonds and bonds of seven year duration or less.&nbsp;Those willing to bring
+        sophistication to their investing may consider using bond ETFs as tactical
+        positions and not strategic positions at this time.</p>\\r\\n\\r\\n<p><strong>The
+        Arora Report is known for its accurate calls.&nbsp; The Arora Report correctly
+        called the 2008 financial crash, the start of a mega bull market in 2009,
+        the COVID crash, the post-COVID bull market, and the 2022 bear market.&nbsp;
+        Please click here to sign up for a free forever <a href=\\\"https://thearorareport.com/generate-wealth-newsletter\\\">Generate
+        Wealth Newsletter</a>. </strong></p>\\r\\n<p class=\\\"contributor-disclaimer\\\"><em>This
+        article is from an unpaid external contributor. It does not represent Benzinga's
+        reporting and has not been edited for content or accuracy.</em></p>     \",\"url\":\"https://www.benzinga.com/24/02/37267436/great-ai-inference-suprise-nvidia-declares-ai-tipping-point-japans-nikkei-crosses-34-year-high\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/blur-gc3490d1b7_1280_13.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/blur-gc3490d1b7_1280_13.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/blur-gc3490d1b7_1280_13.jpg\"}],\"channels\":[{\"name\":\"Asia\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"$BTC\"},{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"GLD\"},{\"name\":\"GOOG\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"QQQ\"},{\"name\":\"SLV\"},{\"name\":\"SPY\"},{\"name\":\"TSLA\"},{\"name\":\"USO\"}],\"tags\":[{\"name\":\"AI\"},{\"name\":\"artificial
+        intelligence\"},{\"name\":\"contributors\"},{\"name\":\"Expert Ideas\"},{\"name\":\"Gold\"},{\"name\":\"Japan\"},{\"name\":\"Magnificent
+        Seven\"},{\"name\":\"Oil\"}]},{\"id\":37266611,\"author\":\"Anusuya Lahiri\",\"created\":\"Thu,
+        22 Feb 2024 13:03:27 -0400\",\"updated\":\"Thu, 22 Feb 2024 13:03:28 -0400\",\"title\":\"What's
+        Going On With Key Nvidia Supplier Taiwan Semi Stock Thursday?\",\"teaser\":\"TSM
+        stock rises with Nvidia&#39;s strong results and ADI partnership for long-term
+        wafer capacity, highlighting the semiconductor industry&#39;s growth.\",\"body\":\"<p><strong>Taiwan
+        Semiconductor Manufacturing Co</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/TSM#NYSE\\\">TSM</a>) stock traded
+        higher Thursday in sympathy with&nbsp;<strong>Nvidia Corp&#8217;s&nbsp;</strong>(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>)
+        upbeat quarterly results and guidance, implying that the artificial intelligence
+        frenzy is here to stay. TSMC is a&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/24/02/37181045/whats-going-on-with-taiwan-semiconductor-manufacturing-stock-friday\\\"
+        rel=\\\"noreferrer noopener\\\">key Nvidia supplier</a>.</p>\\n\\n\\n\\n<p>On
+        Wednesday, Nvidia reported fourth-quarter revenue of $22.10 billion, up 265%
+        year-over-year, surpassing the Street estimate of $20.62 billion.&nbsp;</p>\\n\\n\\n\\n<p>The
+        adjusted EPS of $5.16 beat the Street&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/earnings/24/02/37247922/nvidia-q4-earnings-highlights-revenue-beat-eps-beat-q1-guidance-and-more\\\"
+        rel=\\\"noreferrer noopener\\\">consensus estimate of $4.64</a>.</p>\\n\\n\\n\\n<p>Nvidia
+        projected a first-quarter revenue of $24.0 billion, plus or minus 2%, above
+        the Street consensus estimate of $22.16 billion.</p>\\n\\n\\n\\n<p>Also on
+        Thursday,&nbsp;<strong>Analog Devices, Inc</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/ADI#NASDAQ\\\">ADI</a>) announced
+        a significant partnership with TSMC to secure&nbsp;<a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/pressreleases/24/02/n37258787/analog-devices-strengthens-capacity-and-resiliency-through-expanded-partnership-with-tsmc\\\"
+        rel=\\\"noreferrer noopener\\\">long-term wafer capacity</a>. This agreement
+        involves TSMC&#8217;s majority-owned subsidiary, Japan Advanced Semiconductor
+        Manufacturing, Inc. (JASM), located in Kumamoto Prefecture, Japan, and focuses
+        on providing ADI with 40nm and finer process technology nodes.&nbsp;</p>\\n\\n\\n\\n<p>This
+        collaboration will likely enhance ADI&#8217;s ability to supply critical technology
+        for various platforms, such as wireless BMS and GMSL applications, by leveraging
+        JASM&#8217;s manufacturing capabilities.&nbsp;</p>\\n\\n\\n\\n<p>The partnership,
+        extending a 30-year relationship between ADI and TSMC, aims to bolster ADI&#8217;s
+        hybrid manufacturing network, offering more resilient supply chains, faster
+        response to market shifts, and increased capacity for rapid scaling.&nbsp;</p>\\n\\n\\n\\n<p>A
+        lot is brewing in the semiconductor space.&nbsp;<strong>Microsoft Corp&nbsp;</strong>(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        shared plans to leverage&nbsp;<strong>Intel Corp&#8217;s</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/INTC#NASDAQ\\\">INTC</a>)
+        18A process to manufacture&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/24/02/37242631/intel-to-manufacture-microsoft-chips-ceo-satya-nadella-says\\\"
+        rel=\\\"noreferrer noopener\\\">its chip design</a>.&nbsp;</p>\\n\\n\\n\\n<p>TSMC
+        has been the key contract chip maker to Big Tech companies. However, companies
+        also extend to&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/24/02/37038779/whats-going-on-with-nvidia-stock-friday\\\"
+        rel=\\\"noreferrer noopener\\\">in-house chip making</a>&nbsp;and partnerships
+        with multiple chip designers.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-image
+        size-full\\\"><img loading=\\\"lazy\\\" decoding=\\\"async\\\" width=\\\"750\\\"
+        height=\\\"650\\\" src=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22102411/newplot-32.png\\\"
+        alt=\\\"\\\" class=\\\"wp-image-225588\\\" srcset=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22102411/newplot-32.png
+        750w,https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22102411/newplot-32-300x260.png
+        300w\\\" sizes=\\\"(max-width: 750px) 100vw, 750px\\\" /></figure>\\n\\n\\n\\n<p>TSM
+        stock gained 23.5% year-to-date versus Nvidia at 40%.</p>\\n\\n\\n\\n<p><strong>Price
+        Action:</strong>\_TSM shares traded higher by 4.33% at $130.77 on the last
+        check Thursday.</p>\\n\\n\\n\\n<p><strong><em>Also Read:</em></strong><em>&nbsp;</em><a
+        target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/m-a/24/02/37236499/samsung-divests-asml-stake-to-bolster-chipmaking-capabilities-amid-global-tech-race\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Samsung Divests ASML Stake to Bolster
+        Chipmaking Capabilities Amid Global Tech Race</em></a></p>\\n\\n\\n\\n<p><strong><em>Disclaimer:</em></strong><em>\_This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\n\\n\\n\\n<p><em>Photo via Wikimedia
+        Commons</em></p>\",\"url\":\"https://www.benzinga.com/news/earnings/24/02/37266611/whats-going-on-with-key-nvidia-supplier-taiwan-semi-stock-thursday\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/SONY-DSC_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/SONY-DSC_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/SONY-DSC_1.jpeg\"}],\"channels\":[{\"name\":\"Earnings\"},{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"ADI\"},{\"name\":\"INTC\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"TSM\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"},{\"name\":\"BZ Data Project\"},{\"name\":\"Stock
+        Battles\"},{\"name\":\"Stories That Matter\"},{\"name\":\"why it's moving\"}]},{\"id\":37262169,\"author\":\"Rounak
+        Jain\",\"created\":\"Thu, 22 Feb 2024 10:33:17 -0400\",\"updated\":\"Thu,
+        22 Feb 2024 10:33:18 -0400\",\"title\":\"Is Apple Pencil Set To Get Its Biggest
+        Upgrade Ever? New Patent Reveals Interchangeable Sleeves\",\"teaser\":\"Apple&#39;s
+        new application with the US Patent and Trademark Office shows that it is contemplating
+        a significant upgrade to the Apple Pencil.\",\"body\":\"<p>In a recent development,
+        <strong>Apple Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        is reportedly considering the introduction of interchangeable sleeves for
+        its <strong><a href=\\\"https://www.benzinga.com/topic/apple-pencil\\\">Apple
+        Pencil</a></strong>. These sleeves could potentially provide users with enhanced
+        controls, sensors, and extended battery life.</p>\\n\\n\\n\\n<p><strong>What
+        Happened</strong>: Apple <a href=\\\"https://ppubs.uspto.gov/dirsearch-public/print/downloadPdf/20240061520\\\">filed</a>
+        new patent application titled &#8220;Handheld Input Devices With Sleeves&#8221;
+        with the U.S. Patent and Trademark Office (USPTO.)</p>\\n\\n\\n\\n<p>This
+        application suggests that the tech giant is contemplating a significant upgrade
+        to its Apple Pencil lineup.</p>\\n\\n\\n\\n<p>The patent application details
+        a handheld input device that comprises a stylus and a removable sleeve.</p>\\n\\n\\n\\n<p>The
+        input-output capabilities of the device could be shared between the stylus
+        and the removable sleeve, which could include haptic output devices and a
+        battery. The sleeve could also be attached to an item without electronics.</p>\\n\\n\\n\\n<p><em>See
+        Also: <a href=\\\"https://www.benzinga.com/news/24/02/37234514/famous-iphone-hacker-says-he-is-not-switching-back-to-apples-device-over-its-app-store-tantrum\\\">Famous
+        iPhone Hacker Says He Is Not Switching Back To Apple&#8217;s Device Over Its
+        App Store &#8216;Tantrum&#8217;</a></em></p>\\n\\n\\n\\n<p>The application
+        further explains that the sleeve could include conductors for translating
+        touch input on the sleeve to the touch sensor circuitry on the stylus.</p>\\n\\n\\n\\n<p>It
+        could also have a deformable member for translating forces on the sleeve to
+        the force-sensitive tip of the stylus and visual markers that can be detected
+        by an external camera and used with motion sensor data from the stylus to
+        track the handheld input device.</p>\\n\\n\\n\\n<p>While the patent largely
+        discusses the future of the Apple Pencil, it also hints at the potential for
+        using this technology with everyday items.</p>\\n\\n\\n\\n<p>For instance,
+        a sensor-filled sleeve could be wrapped around a utensil, allowing its movements
+        to be tracked with a mixed-reality headset such as Apple Vision Pro.</p>\\n\\n\\n\\n<p><strong>Why
+        It Matters</strong>: This development comes after Apple launched a more economical
+        variant of the Apple Pencil with a USB-C port in Oct. 2023.</p>\\n\\n\\n\\n<p>The
+        <a href=\\\"https://www.benzinga.com/news/23/10/35289802/apple-pencil-with-usb-c-port-is-the-most-affordable-yet-but-misses-out-on-some-key-features\\\">third-generation
+        Apple Pencil</a>, priced at $79, offers high precision, low latency, and tilt
+        sensitivity.</p>\\n\\n\\n\\n<p>The introduction of interchangeable sleeves
+        could further enhance the functionality and versatility of the Apple Pencil,
+        potentially attracting more users and boosting sales.</p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga's Consumer Tech coverage by&nbsp;</em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next: <a href=\\\"https://www.benzinga.com/news/24/02/37213677/apples-hardware-reliability-tops-the-charts-while-ipad-flounders-in-cupertinos-2023-in-review-survey\\\">Apple&#8217;s
+        &#8216;Hardware Reliability&#8217; Tops The Charts While iPad Flounders In
+        Cupertino&#8217;s 2023 In Review: Survey</a></em></p>\\n\\n\\n\\n<p><strong><em>Disclaimer</em></strong><em>:
+        This content was partially produced with the help of&nbsp;<a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Benzinga Neuro</a>&nbsp;and
+        was reviewed and published by Benzinga editors.</em></p>\\n\\n\\n\\n<p><em>Photo
+        courtesy: Apple via USPTO</em></p>\",\"url\":\"https://www.benzinga.com/news/24/02/37262169/is-apple-pencil-set-to-get-its-biggest-upgrade-ever-new-patent-reveals-interchangeable-sleeves\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/Apple-Pencil-patent.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/Apple-Pencil-patent.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/Apple-Pencil-patent.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Apple
+        Pencil\"},{\"name\":\"Appleverse\"},{\"name\":\"benzinga neuro\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"USPTO\"}]},{\"id\":37261939,\"author\":\"Neil
+        Dennis\",\"created\":\"Thu, 22 Feb 2024 10:28:38 -0400\",\"updated\":\"Thu,
+        22 Feb 2024 10:28:39 -0400\",\"title\":\"Nvidia Market Cap Nears $2 Trillion:
+        Why 'Tech Giant' Has Become An Understatement\",\"teaser\":\"Massive buying
+        of Nvidia stock takes its market cap from $1.67 trillion to $1.91 trillion
+        overnight, making it just 20% smaller than Germany&#39;s entire stock market.\",\"body\":\"<p>Nvidia
+        Day has come and gone in a massive flourish of apprehension, excitement, relief
+        and, ultimately fresh buying of the stock that takes the chipmaker&#8217;s
+        <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/02/37255783/can-nvidia-join-apple-microsoft-in-2-trillion-club-today-heres-how-much-the-stock-n\\\">market
+        cap from $1.67 trillion to $1.91 trillion overnight</a>.</p>\\n\\n\\n\\n<p>The
+        superlatives to describe this stock&#8217;s performance in the past couple
+        of years are becoming jaded. So let&#8217;s do a quick recap of what&#8217;s
+        been happening to <strong>Nvidia Corporation</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>) in just
+        the past two days.</p>\\n\\n\\n\\n<p>This week the stock fell 7% as investors&#8217;
+        apprehension ahead of Wednesday&#8217;s post-market results prompted some
+        profit taking. Could Nvidia continue to surpass market expectations with its
+        quarterly earnings, or would this be the one that failed them?</p>\\n\\n\\n\\n<p>This
+        was a sell-the-rumor, buy-the-fact moment as the <a href=\\\"https://www.benzinga.com/news/earnings/24/02/37247922/nvidia-q4-earnings-highlights-revenue-beat-eps-beat-q1-guidance-and-more\\\">scores
+        came in above market forecasts</a>. Having ended Wednesday&#8217;s session
+        2.9% lower at $674.72, after-hours trading on Wednesday, and pre-market trading
+        on Thursday saw a 14% rally that took the shares above $700.</p>\\n\\n\\n\\n<figure
+        class=\\\"wp-block-image\\\"><img loading=\\\"lazy\\\" decoding=\\\"async\\\"
+        width=\\\"300\\\" height=\\\"260\\\" src=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22090129/newplot-98-300x260.png\\\"
+        alt=\\\"\\\" class=\\\"wp-image-225448\\\" srcset=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22090129/newplot-98-300x260.png
+        300w,https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22090129/newplot-98.png
+        750w\\\" sizes=\\\"(max-width: 300px) 100vw, 300px\\\" /></figure>\\n\\n\\n\\n<p><em>Also
+        Read: <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/02/37255783/can-nvidia-join-apple-microsoft-in-2-trillion-club-today-heres-how-much-the-stock-n\\\">Can
+        Nvidia Join Apple, Microsoft In $2-Trillion Club Today? Here&#8217;s How Much
+        The Stock Needs To Gain To Hit The Mark</a></em></p>\\n\\n\\n\\n<h2 class=\\\"wp-block-heading\\\">Big
+        Tech, Big Moves</h2>\\n\\n\\n\\n<p>Let&#8217;s put some context behind these
+        moves, <a href=\\\"https://twitter.com/KobeissiLetter/status/1760503556635840587\\\">courtesy</a>
+        of the <strong>Kobeissi Letter</strong> on <strong>X</strong> on Thursday.<br>\u2022
+        S&amp;P 500 futures staged a 1.5% reversal after the market&#8217;s reaction
+        to Nvidia earnings.<br>\u2022 Since 3pm ET on Wednesday, the S&amp;P 500 added
+        $600 billion of value.<br>\u2022 Nvidia itself was responsible for around
+        $220 billion of that value being added.</p>\\n\\n\\n\\n<p>&#8220;In other
+        words, more than one-third of the S&amp;P 500&#8217;s value added since 3pm
+        came from Nvidia,&#8221; the analyst said.</p>\\n\\n\\n\\n<p>He added: &#8220;Nvidia
+        is now just 20% smaller than the entire combined value of Germany&#8217;s
+        stock market. Tech giant is an understatement.&#8221;</p>\\n\\n\\n\\n<p>Some
+        of the other post- and pre-market moves added to the weight. Having fallen
+        0.6% on Wednesday, shares in $3 trillion market cap <strong>Microsoft Corporation</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        are up 1.7% on Thursday, while $2.8 trillion market cap <strong>Apple Inc</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        gained 0.4% on Wednesday and 0.6% on Thursday.</p>\\n\\n\\n\\n<h2 class=\\\"wp-block-heading\\\">Big
+        Tech, Big Influence</h2>\\n\\n\\n\\n<p>Given the above, what investors have
+        to ask next is, can this market continue to rally without the tech stocks?</p>\\n\\n\\n\\n<p>Such
+        are their weightings and influence on the overall market \u2014 if they go
+        down, the S&amp;P 500 goes down, and investors lose confidence. This is where
+        market correction possibilities lie.</p>\\n\\n\\n\\n<p>If investors lose confidence
+        in the market, they can quite easily become sellers of everything, and the
+        influence is spread wider than just the U.S. markets.</p>\\n\\n\\n\\n<p>&#8220;The
+        post-close rally in U.S. tech stocks after <span class=\\\"il\\\">Nvidia</span>&#8216;s
+        earnings has fueled risk-on activity today. Japan&#8217;s Nikkei 225 index
+        closed at record highs on Thursday with a 2.2% rally,&#8221; said Marc Chandler
+        at Bannockburn Global Forex.</p>\\n\\n\\n\\n<p>So, what could it take? A set
+        of weak report from one of the Mega-techs? Perhaps Nvidia itself? Don&#8217;t
+        count on it. The company has beaten the market in 12 out the last 13 quarters,
+        according to Zacks.</p>\\n\\n\\n\\n<p>Meanwhile, investors still love the
+        stock. Only last week it was reported that hedge fund Tudor Investment increased
+        its stake in Nvidia from 14,000 to 132,000 shares \u2014 giving it a total
+        holding worth $100.6 million.</p>\\n\\n\\n\\n<p><em>Now Read: <a href=\\\"https://www.benzinga.com/markets/equities/24/02/37241485/broadcom-the-magnificent-7-stock-in-waiting-can-the-chipmaker-replace-ev-carmaker-tesla\\\">Broadcom,
+        The Magnificent 7 Stock In Waiting: Can The Chipmaker Replace EV Carmaker
+        Tesla?</a></em></p>\\n\\n\\n\\n<p><em>Photo: Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/news/earnings/24/02/37261939/nvidia-market-cap-nears-2-trillion-why-tech-giant-has-become-an-understatement\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/Nvidia-revenue_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/Nvidia-revenue_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/Nvidia-revenue_0.jpeg\"}],\"channels\":[{\"name\":\"Earnings\"},{\"name\":\"Earnings
+        Beats\"},{\"name\":\"Equities\"},{\"name\":\"Large Cap\"},{\"name\":\"News\"},{\"name\":\"Hedge
+        Funds\"},{\"name\":\"Top Stories\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"}],\"tags\":[{\"name\":\"$2
+        trillion market cap\"},{\"name\":\"artificial intelligence\"},{\"name\":\"magnificent
+        7\"},{\"name\":\"Stories That Matter\"}]},{\"id\":37260313,\"author\":\"Vandana
+        Singh\",\"created\":\"Thu, 22 Feb 2024 09:45:17 -0400\",\"updated\":\"Thu,
+        22 Feb 2024 09:45:18 -0400\",\"title\":\"Do Not Use Smartwatches, Rings That
+        Claim To Measure Blood Sugar Without Needles, FDA Says\",\"teaser\":\"FDA
+        warns against unapproved smartwatches and rings claiming non-invasive blood
+        glucose monitoring. Avoid risks; report issues. Apple and Samsung are developing
+        tech, but challenges remain for market integration.\",\"body\":\"<p>The FDA
+        is&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.fda.gov/medical-devices/safety-communications/do-not-use-smartwatches-or-smart-rings-measure-blood-glucose-levels-fda-safety-communication\\\"
+        rel=\\\"noreferrer noopener\\\">cautioning</a>&nbsp;consumers and healthcare
+        providers about the risks associated with smartwatches or smart rings claiming
+        to measure blood glucose levels without skin penetration.&nbsp;</p>\\n\\n\\n\\n<p>These
+        devices differ from FDA-authorized applications that display data from a skin-piercing
+        blood glucose measuring devices, such as continuous glucose monitoring devices
+        (CGMs).&nbsp;</p>\\n\\n\\n\\n<p>The FDA has not approved any smartwatch or
+        smart ring independently intended for measuring blood glucose.&nbsp;</p>\\n\\n\\n\\n<p>Despite
+        various manufacturers and brand names, the FDA warns against any such device
+        claiming non-invasive blood glucose measurement.&nbsp;</p>\\n\\n\\n\\n<p>&#8220;The
+        agency is working to ensure that manufacturers, distributors, and sellers
+        do not illegally market unauthorized smartwatches or smart rings that claim
+        to measure blood glucose levels,&#8221; the FDA said in the statement.</p>\\n\\n\\n\\n<p>The
+        public is advised against using smartwatches or smart rings for blood glucose
+        measurement, and the FDA encourages reporting any issues or adverse events
+        through the MedWatch Voluntary Reporting Form.&nbsp;</p>\\n\\n\\n\\n<p><strong>Apple
+        Inc</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        and&nbsp;<strong>Samsung Electronics Ltd</strong>&nbsp;(OTC:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/SSNLF#OTC\\\">SSNLF</a>) (OTC:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/SSNHZ#OTC\\\">SSNHZ</a>) have reportedly
+        been working on developing non-invasive blood glucose monitoring technology
+        for several years.&nbsp;</p>\\n\\n\\n\\n<p>A Bloomberg&nbsp;<a target=\\\"_blank\\\"
+        href=\\\"https://www.bloomberg.com/news/articles/2023-02-22/apple-watch-blood-glucose-monitor-could-revolutionize-diabetes-care-aapl?sref=TBDibEcD\\\"
+        rel=\\\"noreferrer noopener\\\">report</a>&nbsp;from last year revealed that
+        Apple&#8217;s no-prick monitoring was in the &#8220;proof-of-concept stage,&#8221;
+        and its introduction to the market was dependent on overcoming size constraints.
+        Apple initiated the project in 2010, but it is expected to take additional
+        years before the technology becomes compact enough for integration into the
+        Apple Watch.&nbsp;</p>\\n\\n\\n\\n<p>Similarly, Samsung is also\_<a href=\\\"https://www.forbes.com/sites/jaymcgregor/2024/02/20/samsung-galaxy-ring-features-release-date-leak-news/?sh=6916de651713\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">working</a>\_on incorporating
+        this technology into its recently announced product, the Galaxy Ring.</p>\\n\\n\\n\\n<p><em>Photo
+        via Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/news/large-cap/24/02/37260313/do-not-use-smartwatches-rings-that-claim-to-measure-blood-sugar-without-needles-fda-says\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/Top-5-Smartwatches-For-Women-Under-5000.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/Top-5-Smartwatches-For-Women-Under-5000.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/Top-5-Smartwatches-For-Women-Under-5000.jpeg\"}],\"channels\":[{\"name\":\"Large
+        Cap\"},{\"name\":\"News\"},{\"name\":\"Health Care\"},{\"name\":\"FDA\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"SSNHZ\"},{\"name\":\"SSNLF\"}],\"tags\":[{\"name\":\"Briefs\"},{\"name\":\"Stories
+        That Matter\"}]},{\"id\":37260097,\"author\":\"Upwallstreet\",\"created\":\"Thu,
+        22 Feb 2024 09:39:52 -0400\",\"updated\":\"Thu, 22 Feb 2024 09:40:46 -0400\",\"title\":\"Nvidia's
+        Latest Results Are Proof Of AI's Turbocharging Potential For Business\",\"teaser\":\"On
+        Wednesday, Nvidia Corporation (NASDAQ: NVDA) delivered its fourth quarter
+        results and they smashed Wall Street\u2019s expectations across the board
+        as generative AI demand is surging across the globe.\",\"body\":\"<p>On Wednesday,
+        Nvidia Corporation (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>)
+        delivered its fourth quarter results and they smashed Wall Street&rsquo;s
+        expectations across the board as generative AI demand is surging across the
+        globe. While the Data Center business is running the show, Nvidia&rsquo;s
+        gaming business also has an important role in its success. Over the last 12
+        months, Nvidia&rsquo;s stock price easily surpassed those of its rivals, Advanced
+        Micro Devices (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMD#NASDAQ\\\">AMD</a>)
+        and Intel (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/INTC#NASDAQ\\\">INTC</a>).</p>\\r\\n\\r\\n<h3>Fourth
+        Quarter Highlights</h3>\\r\\n\\r\\n<p>For the quarter ended on January 29th,
+        Nvidia reported total revenue grew&nbsp;265%&nbsp;to&nbsp;$22.10 billion,
+        topping LSEG&rsquo;s estimate of $20.62 billion.&nbsp;&nbsp;Data Center business,
+        which includes sales of its high-powered GPUs for AI applications, saw revenue
+        skyrocket 217%&nbsp;to $18.4 billion, also beating analysts&#39; expectations
+        of $17.2 billion. However, data center revenue was harmed by recent U.S. restrictions
+        on exporting advanced AI chips to China.</p>\\r\\n\\r\\n<p>The gaming segment
+        brought in 2.9 billion, topping analyst estimates of $2.7 billion as it rose&nbsp;56%&nbsp;YoY.
+        Impressively, net income rose&nbsp;769%&nbsp;YoY&nbsp;to&nbsp;$12.29 billion&nbsp;with
+        adjusted earnings of $5.16 also topping LSEG&#39;s estimate of&nbsp;$4.64.</p>\\r\\n\\r\\n<h3>Competitive
+        Threat Is Rising</h3>\\r\\n\\r\\n<p>Nvidia is undoubtedly at the top of its
+        game, but its rivals are not standing still. Its main rival, AMD, is investing
+        heavily in its own AI chips. Moreover, AMD is claiming its new MI300X&nbsp;surpasses
+        Nvidia&rsquo;s H100 in certain workloads. AMD rolled out the MI300X before
+        2023 came to an end, placing it as the industry&rsquo;s most advanced AI accelerator.&nbsp;</p>\\r\\n\\r\\n<p>Intel
+        also has its own server chips while it continues to work on expanding its
+        own capabilities on the AI front.Interestingly, Microsoft Corporation (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        turned to Intel and not Nvidia to make its future in-house chips. Microsoft
+        plans to use 18A manufacturing technology that Intel developed. With this
+        move, Microsoft will undoubtedly boost Intel and its made-to-order chip business.&nbsp;</p>\\r\\n\\r\\n<p>Perhaps
+        an even bigger threat to Nvidia doesn&rsquo;t come from its direct rivals
+        but from its customers like Microsoft that are racing to develop their own
+        specialized AI chips to lower their reliance on Nvidia&rsquo;s offerings.
+        Moreover, such customers brought in more than half of its Data Center revenue
+        during the latest reported quarter, as Nvidia attributed more than half of
+        quarterly revenue to large cloud providers for conducting internal workloads
+        and external customers.&nbsp;Besides Microsoft, those that are either already
+        offering or are actively developing their own in-house AI chips are Amazon.com
+        Inc (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>),
+        Alphabet (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)-owned
+        Google, Meta Platforms (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>)
+        and even the EV leader, Tesla Inc (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>).&nbsp;However,&nbsp;Reuters
+        reported that Nvidia has met with Alphabet, Amazon, Meta, Microsoft, and OpenAI
+        in an effort to get them on board to&nbsp;make&nbsp;custom chips for them.</p>\\r\\n\\r\\n<p>During
+        the current quarter, Nvidia guided for revenue of&nbsp;$24 billion while CEO
+        Jensen Huang&nbsp;assured investors that the AI chip leader is all set for
+        continued growth.&nbsp;</p>\\r\\n\\r\\n<p><em>DISCLAIMER: This content is
+        for informational purposes only. It is not intended as investing advice.</em></p>\\r\\n\\r\\n<p
+        class=\\\"contributor-disclaimer\\\"><em>This article is from an unpaid external
+        contributor. It does not represent Benzinga&#39;s reporting and has not been
+        edited for content or accuracy.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/news/24/02/37260097/nvidias-latest-results-are-proof-of-ais-turbocharging-potential-for-business\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/ai-technology-microchip-background-digital-transformation-concept_0.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/ai-technology-microchip-background-digital-transformation-concept_0.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/ai-technology-microchip-background-digital-transformation-concept_0.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AMD\"},{\"name\":\"AMZN\"},{\"name\":\"GOOG\"},{\"name\":\"INTC\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"TSLA\"}],\"tags\":[{\"name\":\"AI\"},{\"name\":\"artificial
+        intelligence\"},{\"name\":\"contributors\"}]},{\"id\":37259342,\"author\":\"RIPS\",\"created\":\"Thu,
+        22 Feb 2024 09:15:55 -0400\",\"updated\":\"Thu, 22 Feb 2024 09:15:55 -0400\",\"title\":\"Market
+        Clubhouse Morning Memo - February 22nd, 2024 (Trade Strategy For SPY, QQQ,
+        AAPL, MSFT, NVDA, GOOGL, META, and TSLA)\",\"teaser\":\"Good Morning Traders!
+        In today&#39;s Market Clubhouse Morning Memo, we will discuss SPY, QQQ, AAPL,
+        MSFT, NVDA, GOOGL, META, and TSLA.\",\"body\":\"<p>Good Morning Traders! In
+        today&#39;s Market Clubhouse Morning Memo, we will discuss SPY, QQQ, AAPL,
+        MSFT, NVDA, GOOGL, META, and TSLA.</p>\\r\\n\\r\\n<p>Our proprietary formula,
+        exclusive to Market Clubhouse, dictates these price levels. This dynamic equation
+        takes into account price, volume, and options flow. These levels are updated
+        every day and shared with all Clubhouse Members, prior to the opening of the
+        market.</p>\\r\\n\\r\\n<p>We recommend closely monitoring these stocks, and
+        be prepared to leverage potential breakouts or reversals. As always, stay
+        alert and ready to adjust your tactics based on the market&#39;s pulse to
+        optimize your trading gains. Now, let&#39;s dive into the stock analysis:</p>\\r\\n\\r\\n<p><strong>SPDR
+        S&amp;P 500 ETF Trust (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPY#NYSE\\\">SPY</a>)</strong>
+        The SPY is currently being traded around the level of 502.85. For those optimistic
+        about the market, the initial goal is to surpass the 503.95 mark. A sustained
+        move above this level could attract more buyers, aiming to reach 505.32. Holding
+        above 505.32 during the trading day could lead to a further climb towards
+        506.06. The ambitious target for bullish traders today is set at 506.71 for
+        the SPY.</p>\\r\\n\\r\\n<p>On the flip side, if the SPY fails to maintain
+        the 502.85 level as support, a downward movement is anticipated. The first
+        checkpoint for the bears is 501.74, followed by a potential dip to 500.91
+        if selling intensifies. A significant breach below this level could see the
+        SPY reaching a more substantial support at 500.17. In the event of an extensive
+        sell-off, the bearish goal for the day is pegged at 498.93.</p>\\r\\n\\r\\n<p><strong>Invesco
+        QQQ Trust Series 1 (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/QQQ#NASDAQ\\\">QQQ</a>)</strong>
+        The Q&#39;s are trading around a pivotal point at 433.64. Bulls in the market
+        are eyeing a move above 434.76, hoping to establish it as a firm support level.
+        If they succeed, the next target would be 435.88, with the potential to extend
+        gains to 436.58. A robust trading session could propel the Q&#39;s to test
+        the 437.47 level, with the ultimate bullish aim for today being 438.89.</p>\\r\\n\\r\\n<p>Should
+        the Q&#39;s struggle to stay above 433.64, bears might take the reins, pushing
+        the price down to 432.84. A continuation of this bearish momentum could lead
+        to tests of 431.82 and 431.18. If these supports falter, the bearish objective
+        for the day is set at a lower target of 430.16.</p>\\r\\n\\r\\n<p><strong>Apple
+        Inc. (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)</strong>
+        Apple&#39;s stock is hovering around the 182.96 mark. Bullish traders are
+        looking for this level to act as a solid foundation, setting the stage for
+        a push towards 183.38. If the momentum remains positive, we could see a move
+        towards 184.09. The highest target for Apple&#39;s bulls today is aiming for
+        a peak at 184.59.</p>\\r\\n\\r\\n<p>Conversely, if Apple fails to hold 182.96
+        as a support level, the price might be pushed down to 182.27. Further selling
+        pressure could lead to a descent towards 181.25, and if the selling doesn&#39;t
+        abate, 180.60 could be the next stop. The bearish scenario envisions a potential
+        drop to the day&#39;s low target at 180.10.</p>\\r\\n\\r\\n<p><strong>Microsoft
+        Corp. (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)</strong>
+        Microsoft is currently trading near 408.46. Bulls are hopeful that the stock
+        will sustain above this level, aiming for a rally to 409.69, which they hope
+        to establish as a key support. If this level is maintained, the next bullish
+        target is 410.64, with an ultimate high for the day at 411.72.</p>\\r\\n\\r\\n<p>If
+        Microsoft cannot maintain 408.46 as a support level, bears might look to push
+        the price down to 407.11. A break below this could lead to further declines
+        towards 406.01. Persistent bearish pressure could see the stock moving down
+        to 404.92, with the lowest bear target set at 402.74.</p>\\r\\n\\r\\n<p><strong>NVIDIA
+        Corporation (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>)</strong>
+        NVIDIA is currently trading around 765.63. Bulls are aiming for an upward
+        push to 768.67, seeking to establish it as a solid support level. The next
+        bullish milestone is 771.72, with a potential rally extending to 775.50. The
+        most optimistic target for NVIDIA&#39;s bulls today is 778.91.</p>\\r\\n\\r\\n<p>If
+        NVIDIA fails to keep 765.63 as a reliable support, bears might look to drive
+        the price down to 761.29. A breakdown below this level could lead to a further
+        decline to 755.75. If bearish momentum continues, a test at 752.32 could be
+        on the horizon, with the ultimate bearish target for the day being 749.56.</p>\\r\\n\\r\\n<p><strong>Alphabet
+        Inc Class A (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>)</strong>
+        Alphabet is trading around the 144.72 level. Bulls are looking to hold this
+        as a support base, aiming for an upward move to 145.94. With sustained bullish
+        pressure, the price could climb to the day&#39;s high target of 146.89.</p>\\r\\n\\r\\n<p>Should
+        Alphabet&#39;s stock fail to maintain 144.72 as a support, bears might push
+        it down to 143.77. A further decline could lead to a test of 143.17, with
+        heavy selling potentially dragging the price down to the day&#39;s lowest
+        target of 142.53.</p>\\r\\n\\r\\n<p><strong>Meta Platforms Inc (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>)</strong>
+        Meta is being traded around 479.47. The bulls are hopeful for the stock to
+        remain strong above this level, with an initial target set at 480.96. A successful
+        bullish push could lead to further gains, with a high target for the day set
+        at 485.96.</p>\\r\\n\\r\\n<p>If Meta cannot sustain 479.47 as a support level,
+        a downward trend might be initiated, with the first lower target at 477.50.
+        Continued bearish pressure could drive the price down to 475.19, with the
+        lowest bear target for the day being 473.93.</p>\\r\\n\\r\\n<p><strong>Tesla
+        Inc. (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>)</strong>
+        Tesla&#39;s current trading point is at 195.91. Bulls are looking to drive
+        the price upwards to 197.50, with further gains potentially leading to 200.43.
+        In a strong market rally, Tesla might test even higher levels, with an optimistic
+        target for the day set at 206.71.</p>\\r\\n\\r\\n<p>If Tesla cannot hold 195.91
+        as a firm support, bears may target a lower level at 193.81, with continued
+        selling potentially bringing the price down to 191.52. In a scenario of intensified
+        selling, the bearish aim for the day would be set at 189.22.</p>\\r\\n\\r\\n<p>Final
+        Word: Today&#39;s trading session is poised to revolve around the release
+        of employment data at 8:30AM ET, followed by PMI data at 9:45AM ET. Additional
+        market volatility is expected around 1PM due to the Treasury&#39;s 30 Year
+        TIPS Auction. Market participants will also be closely analyzing NVIDIA&#39;s
+        earnings, which exceeded expectations, potentially influencing market dynamics.
+        Please stay alert and trade cautiously in what promises to be an eventful
+        day. Good luck!</p>\\r\\n\\r\\n<p>The Morning Memo is curated by RIPS, a pro
+        trader with years of experience in equities, options, and futures trading.
+        RIPS is at the heart of the exclusive Market Clubhouse community, offering
+        his insights, expertise, and real-time mentorship.</p>\\r\\n\\r\\n<p>Start
+        your day with a live daily market analysis, a carefully selected watch list,
+        early access to the Morning Memo, and exclusive Market Clubhouse price levels,
+        providing precise support and resistance indicators. When you become a member
+        of Market Clubhouse, you will gain early access to the Morning Memo, just
+        like this one, every single day&mdash;hours before it&#39;s published. You
+        will also have access to a live stream with zero latency and screen sharing,
+        enabling you to witness Rips executing his trades in real-time and sharing
+        his exclusive trading plans, strategies, and live decision-making.</p>\\r\\n\\r\\n<p>For
+        a limited time during our special promotion, you can join RIPS and get a full
+        access pass to Market Clubhouse for 7 full days for just $7. Check it out
+        at <a href=\\\"https://marketclubhouse.club/7Days/\\\" title=\\\"https://marketclubhouse.club/7Days/\\\">https://marketclubhouse.club/7Days/</a>
+        where you can trade live with him and tap into his wealth of knowledge and
+        experience. You can also catch Rips on his live day trading streams every
+        Monday-Friday at 8 am EST on the Market Clubhouse YouTube channel: <a href=\\\"https://www.youtube.com/@MarketClubhouse\\\"
+        title=\\\"https://www.youtube.com/@MarketClubhouse\\\">https://www.youtube.com/@MarketClubhouse</a>.</p>\\r\\n<p
+        class=\\\"contributor-disclaimer\\\"><em>This article is from an unpaid external
+        contributor. It does not represent Benzinga's reporting and has not been edited
+        for content or accuracy.</em></p> \",\"url\":\"https://www.benzinga.com/24/02/37259342/market-clubhouse-morning-memo-february-22nd-2024-trade-strategy-for-spy-qqq-aapl-msft-nvda-googl-met\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/market-clubhouse-morning-memo_167.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/market-clubhouse-morning-memo_167.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/market-clubhouse-morning-memo_167.png\"}],\"channels\":[],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"GOOGL\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"QQQ\"},{\"name\":\"TSLA\"},{\"name\":\"SPY\"}],\"tags\":[{\"name\":\"contributors\"}]},{\"id\":37256429,\"author\":\"Rounak
+        Jain\",\"created\":\"Thu, 22 Feb 2024 07:33:06 -0400\",\"updated\":\"Thu,
+        22 Feb 2024 07:33:07 -0400\",\"title\":\"Gemini AI Takes A Timeout: Google
+        Halts Image Generation After Historical Figure Controversy\",\"teaser\":\"Google
+        has temporarily halted Gemini AI&#39;s ability to generate images of people
+        over inaccuracies in the representation of historical figures.\",\"body\":\"<p><strong>Alphabet
+        Inc.'s</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>)
+        Google has put a temporary halt on its <strong><a href=\\\"https://www.benzinga.com/topic/gemini\\\">Gemini
+        AI&#8217;s</a></strong> ability to generate images of people after inaccuracies
+        in the representation of historical figures were discovered.</p>\\n\\n\\n\\n<p><strong>What
+        Happened</strong>: Gemini AI was found to be generating incorrect images of
+        historical figures, prompting the tech company to suspend the feature.</p>\\n\\n\\n\\n<p>The
+        AI tool had been creating diverse images of US Founding Fathers and Nazi-era
+        German soldiers, seemingly challenging racial and gender stereotypes.</p>\\n\\n\\n\\n<p>\\\"We&#8217;re
+        already working to address recent issues with Gemini&#8217;s image generation
+        feature. While we do this, we&#8217;re going to pause the image generation
+        of people and will re-release an improved version soon.\\\"</p>\\n\\n\\n\\n<figure
+        class=\\\"wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div
+        class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote class=\\\"twitter-tweet\\\"
+        data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p lang=\\\"en\\\" dir=\\\"ltr\\\">We&#39;re
+        already working to address recent issues with Gemini&#39;s image generation
+        feature. While we do this, we&#39;re going to pause the image generation of
+        people and will re-release an improved version soon. <a href=\\\"https://t.co/SLxYPGoqOZ\\\">https://t.co/SLxYPGoqOZ</a></p>&mdash;
+        Google Communications (@Google_Comms) <a href=\\\"https://twitter.com/Google_Comms/status/1760603321944121506?ref_src=twsrc%5Etfw\\\">February
+        22, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>We used Google
+        Gemini to generate an AI image of a man riding a bike but received the following
+        response.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-image size-full\\\"><img
+        loading=\\\"lazy\\\" decoding=\\\"async\\\" width=\\\"837\\\" height=\\\"288\\\"
+        src=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22071202/Gemini-1.jpg\\\"
+        alt=\\\"\\\" class=\\\"wp-image-225323\\\" srcset=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22071202/Gemini-1.jpg
+        837w,https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22071202/Gemini-1-300x103.jpg
+        300w,https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/22071202/Gemini-1-768x264.jpg
+        768w\\\" sizes=\\\"(max-width: 837px) 100vw, 837px\\\" /></figure>\\n\\n\\n\\n<p>The
+        decision was made less than a day after Google apologized for inaccuracies
+        in some historical images generated by Gemini. Some users had been requesting
+        images of historical groups or figures and found non-white AI-generated people
+        in the results, sparking online conspiracy theories.</p>\\n\\n\\n\\n<p>Google
+        initially launched image generation through Gemini earlier this month, aiming
+        to compete with <strong>OpenAI's ChatGPT</strong> and <strong>Microsoft&#8217;s
+        Copilot</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>).
+        The tool produces a collection of images based on text input.</p>\\n\\n\\n\\n<p><strong>Why
+        It Matters</strong>: The suspension of Gemini&#8217;s image generation feature
+        comes on the heels of recent criticisms of the AI tool. <a href=\\\"https://www.benzinga.com/news/24/02/37254041/google-admits-gemini-is-missing-the-mark-after-internet-flooded-with-ai-generated-images-riddled-wit\\\">Google
+        admitted</a> that Gemini had been &#8220;missing the mark&#8221; after the
+        internet was flooded with AI-generated images riddled with basic errors.</p>\\n\\n\\n\\n<p>Gemini
+        had been <a href=\\\"https://www.benzinga.com/news/24/02/37233234/gemini-is-a-joke-googles-ai-chatbot-doesnt-even-know-how-its-own-founders-larry-page-and-sergey-brin\\\">criticized
+        for generating irrelevant images</a> or refusing to generate images at all.
+        Gemini failed to generate accurate images of Google co-founders Larry Page
+        and Sergey Brin in one instance.</p>\\n\\n\\n\\n<p><em>Check out more of Benzinga's
+        Consumer Tech coverage by&nbsp;</em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next: <a href=\\\"https://www.benzinga.com/news/24/02/37236628/chatgpt-goes-off-the-rails-openais-chatbot-spews-nonsensical-walls-of-gibberish-text\\\">ChatGPT
+        Goes Off The Rails: OpenAI&#8217;s Chatbot Spews Nonsensical Walls Of Gibberish
+        Text</a></em></p>\\n\\n\\n\\n<p><strong><em>Disclaimer</em></strong><em>:
+        This content was partially produced with the help of&nbsp;<a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Benzinga Neuro</a>&nbsp;and
+        was reviewed and published by Benzinga editors.</em></p>\\n\\n\\n\\n<p><em>Photo
+        courtesy: Google</em></p>\",\"url\":\"https://www.benzinga.com/news/24/02/37256429/gemini-ai-takes-a-timeout-google-halts-image-generation-after-historical-figure-controversy\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/Google-Gemini_3.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/Google-Gemini_3.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/Google-Gemini_3.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"benzinga neuro\"},{\"name\":\"Consumer Tech\"},{\"name\":\"Gemini
+        AI\"},{\"name\":\"Generative AI\"},{\"name\":\"Google Gemini\"},{\"name\":\"Software
+        &amp; Apps\"}]},{\"id\":37252391,\"author\":\"Benzinga Neuro\",\"created\":\"Wed,
+        21 Feb 2024 22:30:12 -0400\",\"updated\":\"Wed, 21 Feb 2024 22:30:13 -0400\",\"title\":\"Jim
+        Cramer Evaluates Nvidia, Amazon And Other Magnificent 7 Earnings: 'The Seven
+        Truly Did Acquit Themselves Well'\",\"teaser\":\"Cramer shared his thoughts
+        on the recent earnings of the Magnificent Seven companies, a term he coined
+        to describe the most influential mega-cap tech stocks.\",\"body\":\"<p>As
+        the first earnings season of 2024 comes to a close, <strong>Jim Cramer</strong>
+        has given his assessment of the latest financial reports from the Magnificent
+        Seven mega-cap companies, with <strong>NVIDIA Corp</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>) and <strong>Amazon.com
+        Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>)
+        receiving special recognition.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>:
+        On Wednesday, Cramer commended Nvidia for its record revenue, which saw a
+        265% increase due to high demand for its AI products. He also lauded Amazon
+        for its growing advertising and web services sector, <a href=\\\"https://www.cnbc.com/2024/02/21/cramer-ranks-each-of-the-magnificent-sevens-latest-quarters.html\\\">reported</a>
+        CNBC.</p>\\n\\n\\n\\n<p>\\\"To me, a longer-term vision is what's required,\\\"
+        Cramer said. </p>\\n\\n\\n\\n<p>\\\"Too bad make or break is all that we ever
+        heard during earnings season.\\\"</p>\\n\\n\\n\\n<p>Nvidia was the first to
+        receive praise from Cramer for its record revenue, which soared by 265% due
+        to sustained high demand for its artificial intelligence products. Cramer
+        then lauded Amazon as the &#8220;most definitive summa of all,&#8221; highlighting
+        its thriving advertising business and expanding web services sector.</p>\\n\\n\\n\\n<p>The
+        CNBC host also praised&nbsp;<strong>Meta Platforms Inc.</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>)
+        for its robust advertising and WhatsApp business, and&nbsp;<strong>Microsoft
+        Corporation</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        for its strong cloud business. However, he remarked that Microsoft&#8217;s
+        AI product, Co-Pilot, had received mixed reviews.</p>\\n\\n\\n\\n<p><em>See
+        Also: <a href=\\\"https://www.benzinga.com/markets/cryptocurrency/24/02/37196816/bitcoin-ethereum-dogecoin-gains-remain-intact-going-into-fresh-trading-week-analyst-says-k?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Bitcoin, Ethereum, Dogecoin
+        Gains Remain Intact Going Into Fresh Trading Week \u2014 Analyst Says King
+        Crypto</a></em></p>\\n\\n\\n\\n<p>While&nbsp;<strong>Apple Inc.</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        did not receive &#8220;high honors&#8221; according to Cramer, he argued that
+        Wall Street was overly harsh. He also had mixed views on&nbsp;<strong>Alphabet
+        Inc.</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>),
+        praising its cloud business but critiquing its advertising sector. He gave&nbsp;<strong>Tesla
+        Inc.</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>)
+        a &#8220;gentleman&#8217;s C,&#8221; expressing uncertainty about the company&#8217;s
+        outlook for the year.</p>\\n\\n\\n\\n<p>&#8220;Overall, the seven truly did
+        acquit themselves well,&#8221; he said.</p>\\n\\n\\n\\n<p> &#8220;Some of
+        these mega-cap companies aced their report cards, getting what I can only
+        describe as &#8216;summas,&#8217; at least in their orals, meaning the conference
+        call.&#8221;</p>\\n\\n\\n\\n<p><strong>Why It Matters</strong>: Cramer&#8217;s
+        assessment of the Magnificent Seven&#8217;s earnings comes after he suggested
+        that investors should look beyond these tech stocks for potential high-yield
+        investments. In a previous article, Cramer acknowledged the significant influence
+        of mega-cap<a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/02/37024300/jim-cramer-says-investors-should-look-beyond-apple-meta-and-other-magnificent-7-sto\\\">
+        tech companies</a> on the market but also pointed out other stocks that could
+        offer substantial returns.</p>\\n\\n\\n\\n<p>Earlier in the year, Cramer also
+        made a bold prediction about one of the <a href=\\\"https://www.benzinga.com/markets/equities/24/01/36729974/jim-cramer-says-eli-lilly-could-replace-tesla-in-magnificent-seven-list-to-ignore-is-to-reject-t\\\">Magnificent
+        Seven stocks</a>, suggesting that Tesla might be the first to fall. He proposed
+        that if Tesla <a href=\\\"https://www.benzinga.com/markets/equities/24/01/36676833/jim-cramer-predicts-tesla-would-be-first-to-fall-from-magnificent-7-stock-group-we-have-a-ceo-ge\\\">loses
+        its position</a>, <strong>Eli Lilly</strong> could be a strong contender to
+        take its place.</p>\\n\\n\\n\\n<p><em>Read Next: <a href=\\\"https://www.benzinga.com/news/earnings/24/02/37237145/nvidia-earnings-are-imminent-these-most-accurate-analysts-revise-forecasts-ahead-of-earnings-call?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">NVIDIA Earnings Are
+        Imminent; These Most Accurate Analysts Revise Forecasts Ahead Of Earnings
+        Call</a></em></p>\\n\\n\\n\\n<p>Image Via Shutterstock</p>\\n\\n\\n\\n<div
+        style=\\\"font-family: 'Lato', sans-serif\\\">\\n    <div>\\n        <hr style=\\\"border:
+        0;height: 5px;background: #225aa9\\\">\\n        <div style=\\\"background-color:
+        #f5f5f5;background-position: center;background-size: cover;justify-content:
+        center\\\"></div>\\n        <p style=\\\"font-family: sans-serif;padding-top:
+        20px\\\">\\n            Engineered by <span style=\\\"font-weight: bold;text-decoration:
+        none;color: #225aa9;font-size: 1rem\\\">Benzinga Neuro</span>, Edited by <span
+        style=\\\"font-weight: bold;text-decoration: none;color: #225aa9;font-size:
+        1rem\\\">\\n                <u><a href=\\\"https://www.benzinga.com/topic/kaustubh-bagalkote\\\"
+        target=\\\"_blank\\\" rel=\\\"noopener\\\" style=\\\"color: #225aa9;text-decoration:
+        none\\\">Kaustubh Bagalkote</a></u>\\n            </span>\\n        </p>\\n
+        \       <hr style=\\\"border: 0;height: 1px;background: #225aa9\\\">\\n        <p
+        style=\\\"font-family: sans-serif;padding-top: 20px\\\">\\n            The
+        GPT-4-based Benzinga Neuro content generation system exploits the extensive
+        Benzinga Ecosystem, including native data, APIs, and more to create comprehensive
+        and timely stories for you.\\n            <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noopener\\\" style=\\\"color: #225aa9;text-decoration:
+        none\\\">Learn more.</a>\\n        </p>\\n        <hr style=\\\"border: 0;height:
+        5px;background: #225aa9\\\">\\n    </div>\\n</div>\",\"url\":\"https://www.benzinga.com/analyst-ratings/analyst-color/24/02/37252391/jim-cramer-evaluates-nvidia-amazon-and-other-magnificent-7-earnings-the-seven-truly\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/jim-cramer-shutterstock_16.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/jim-cramer-shutterstock_16.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/jim-cramer-shutterstock_16.png\"}],\"channels\":[{\"name\":\"Analyst
+        Color\"},{\"name\":\"Earnings\"},{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"GOOGL\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"TSLA\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"Earnings\"},{\"name\":\"Kaustubh Bagalkote\"},{\"name\":\"Magnificent
+        Seven\"},{\"name\":\"mega-cap companies\"},{\"name\":\"Jim Cramer\"}]},{\"id\":37252075,\"author\":\"Ananya
+        Gairola\",\"created\":\"Wed, 21 Feb 2024 21:35:21 -0400\",\"updated\":\"Wed,
+        21 Feb 2024 21:35:21 -0400\",\"title\":\"Apple Says It Has Rebuilt The iMessage
+        Cryptographic Protocol From 'Ground Up' To Thwart Quantum Computing Threat\",\"teaser\":\"Apple
+        has introduced PQ3, a new security upgrade for iMessage, to protect against
+        potential decryption by quantum computing, reflecting the tech industry&#39;s
+        efforts to prepare for the impacts of quantum computing on encryption.\",\"body\":\"<p>In
+        a bid to fortify its messaging platform against <a href=\\\"https://www.benzinga.com/markets/cryptocurrency/23/04/32008736/beyond-encryption-how-qrls-quantum-safe-blockchain-technology-offers-a-long-term-solution-\\\">potential
+        quantum computing decryption</a>,&nbsp;<strong>Apple Inc.</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        has introduced a new security upgrade for <strong>iMessage</strong>.</p>\\n\\n\\n\\n<p><strong>What
+        Happened</strong>: The new security protocol, dubbed <strong>PQ3</strong>,
+        is a significant overhaul of the iMessage cryptographic protocol. This move
+        is indicative of U.S. tech companies preparing for the potential impact of
+        quantum computing on current encryption methods,&nbsp;reported&nbsp;Reuters.</p>\\n\\n\\n\\n<p>The
+        Cupertino, California-based tech giant asserts that its encryption algorithms
+        are cutting-edge and have not been successfully breached. However, the emergence
+        of quantum computers, which leverage&nbsp;the properties of subatomic particles,&nbsp;have
+        become a subject of concern for government officials and scientists. </p>\\n\\n\\n\\n<p><em>See
+        Also:&nbsp;<a href=\\\"https://www.benzinga.com/news/24/02/37194774/elon-musk-taunts-openai-apples-animation-nvidias-triumph-arks-strategy-revamp-and-more-this-week-in?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Elon Musk Taunts OpenAI,
+        Apple&#8217;s Animation, Nvidia&#8217;s Triumph, Ark&#8217;s Strategy Revamp
+        And More: This Week In AI</a></em></p>\\n\\n\\n\\n<p>\\\"More than simply
+        replacing an existing algorithm with a new one, we rebuilt the iMessage cryptographic
+        protocol from the ground up,\\\"  Apple stated in a blog post on Wednesday.
+        \\\"It will fully replace the existing protocol within all supported conversations
+        this year.\\\"</p>\\n\\n\\n\\n<p><strong>Why It Matters</strong>: The development
+        of quantum-resistant encryption is a crucial step for tech companies, as quantum
+        computers could potentially render current encryption methods obsolete. This
+        upgrade by Apple is a proactive measure to address the potential threat posed
+        by quantum computing, the report noted. </p>\\n\\n\\n\\n<p>Meanwhile, earlier
+        this month, the <a href=\\\"https://www.benzinga.com/news/24/02/37092751/apples-imessage-escapes-antitrust-threat-eu-says-it-does-not-qualify-as-a-gatekeeper-service\\\">EU&#8217;s
+        antitrust threat over Apple&#8217;s iMessage</a> was&nbsp;dismissed, with
+        the commission ruling that it does not qualify as a &#8220;gatekeeper service&#8221;
+        under the Digital Markets Act or DMA.</p>\\n\\n\\n\\n<p>On the other hand,
+        a recent report suggested that the Chinese government may have\_<a href=\\\"https://www.benzinga.com/news/24/02/37199996/xi-jinping-government-has-more-control-on-apple-than-earlier-thought-report-suggests\\\">influenced
+        Apple&#8217;s decision</a>\_to introduce RCS support to iMessage in 2024.
+        This move challenges previous assumptions that European pressure was the primary
+        driver behind this decision.</p>\\n\\n\\n\\n<p><em>Image Credits &#8211; Shutterstock</em></p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga&#8217;s Consumer Tech coverage by&nbsp;</em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next:&nbsp;<a href=\\\"https://www.benzinga.com/markets/equities/24/02/37230422/us-supreme-court-just-saved-apple-503m-after-putting-an-end-to-a-14-year-long-legal-battle?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">US Supreme Court Just
+        Saved Apple $503M After Putting An End To A 14-Year-Long Legal Battle</a></em></p>\\n\\n\\n\\n<p><em>Disclaimer:
+        This content was partially produced with the help of&nbsp;</em><a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\"><em>Benzinga Neuro</em></a><em>&nbsp;and
+        was reviewed and published by Benzinga editors.</em></p>\",\"url\":\"https://www.benzinga.com/news/24/02/37252075/apple-says-it-has-rebuilt-the-imessage-cryptographic-protocol-from-ground-up-to-thwart-quantum-compu\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/Apple-iPhone-iMessage.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/Apple-iPhone-iMessage.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/Apple-iPhone-iMessage.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Appleverse\"},{\"name\":\"benzinga
+        neuro\"},{\"name\":\"Consumer Tech\"},{\"name\":\"iMessage\"},{\"name\":\"Software
+        &amp; Apps\"}]},{\"id\":37248807,\"author\":\"Franca Quarneti\",\"created\":\"Wed,
+        21 Feb 2024 18:38:56 -0400\",\"updated\":\"Wed, 21 Feb 2024 18:38:57 -0400\",\"title\":\"Xbox's
+        Phil Spencer Announces Day-One Release Of All Activision Games On Xbox Game
+        Pass: Is Call Of Duty Included?\",\"teaser\":\"Xbox boss Phil Spencer has
+        revealed that Microsoft Corp.\",\"body\":\"<p>Xbox boss <strong>Phil Spencer</strong>
+        has revealed that <strong>Microsoft Corp. </strong>(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>) plans to
+        release all games from Activision Blizzard, ZeniMax (which includes Bethesda,
+        MachineGames, and iD Software), and Xbox Game Studios on<a href=\\\"https://www.benzinga.com/general/gaming/24/02/37148651/microsoft-reportedly-mulling-launch-of-xbox-games-hi-fi-rush-and-pentiment-on-playstation-nintendo\\\">
+        Game Pass on launch day.</a></p>\\r\\n\\r\\n<p>&quot;Our intent is the full
+        portfolio of games from ZeniMax, Activision Blizzard and XGS &mdash; Xbox
+        Game Studios &mdash; will be on Game Pass, day one,&quot; Spencer said in
+        an <a href=\\\"https://www.gamefile.news/p/microsoft-phil-spencer-xbox-cloud-interview\\\">interview</a>
+        with Game File.</p>\\r\\n\\r\\n<p><em>See Also:&nbsp;<a href=\\\"https://www.benzinga.com/general/gaming/24/02/37168873/xbox-promises-largest-technical-leap-yet-in-gaming-hardware-plus-4-titles-launching-on-other-conso\\\">Xbox
+        Promises &#39;Largest Technical Leap&#39; Yet In Gaming Hardware, Plus: 4
+        Titles Launching On Other Consoles</a></em></p>\\r\\n\\r\\n<p>Spencer&#39;s
+        statement suggests a significant shift in strategy, particularly for titles
+        like Call of Duty, which has historically resisted such subscription models.</p>\\r\\n\\r\\n<p>While
+        some games like Diablo 4 have been confirmed for Game Pass, the prospect of
+        launching new Call of Duty titles directly onto the platform raises questions
+        about the traditional sales model and potential impact on subscriber numbers.</p>\\r\\n\\r\\n<p>Spencer&#39;s
+        approach contrasts with previous resistance from former Activision Blizzard
+        CEO <strong>Bobby Kotick</strong>, who opposed the idea of multi-game subscription
+        services. Spencer responded to this by&nbsp;<a href=\\\"https://www.ign.com/articles/phil-spencer-on-potentially-bringing-call-of-duty-and-other-activision-blizzard-games-to-game-pass\\\">telling</a>&nbsp;IGN,
+        &quot;Well, there&#39;s a different person making the decisions.&quot;</p>\\r\\n\\r\\n<p>Despite
+        Spencer&#39;s intentions, concerns remain among AAA publishers like Sony and
+        Take-Two regarding the impact of subscription services on game sales. Take-Two
+        CEO<strong> <a href=\\\"https://www.benzinga.com/general/gaming/23/11/35814665/take-two-ceo-proposes-algorithm-to-revise-video-game-prices-could-gta-6-be-1\\\">Strauss
+        Zelnick</a></strong><a href=\\\"https://www.benzinga.com/general/gaming/23/11/35814665/take-two-ceo-proposes-algorithm-to-revise-video-game-prices-could-gta-6-be-1\\\">
+        </a>has expressed skepticism about releasing big titles on subscription platforms,
+        suggesting it may be a lost opportunity for publishers.</p>\\r\\n\\r\\n<p>The
+        next Call of Duty installment, rumored to be part of the <a href=\\\"https://www.benzinga.com/general/gaming/24/02/36940239/call-of-dutys-open-world-transition-starts-with-2024s-black-ops-gulf-war-report\\\">Black
+        Ops series set in the Gulf War</a> and developed by Treyarch, is expected
+        to launch in October or November. Spencer has stated that efforts are underway
+        to bring existing Activision Blizzard games to Game Pass simultaneously on
+        PC and console.</p>\\r\\n\\r\\n<p><em>Read Next:&nbsp;<a href=\\\"https://www.benzinga.com/general/gaming/24/02/37217786/microsofts-xbox-game-pass-surges-to-34-million-subscribers-whats-new-in-february-march-2024\\\">Microsoft&#39;s
+        Xbox Game Pass Surges To 34 Million Subscribers: What&#39;s New In February,
+        March 2024?</a></em></p>\\r\\n\\r\\n<p><em>Image credits: Shutterstock.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/general/gaming/24/02/37248807/xboxs-phil-spencer-announces-day-one-release-of-all-activision-games-on-xbox-game-pass-is-call-of-\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/02/21/shutterstock_2269755947.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/02/21/shutterstock_2269755947.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/02/21/shutterstock_2269755947.jpg\"}],\"channels\":[{\"name\":\"Gaming\"},{\"name\":\"News\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"Activision
+        Blizzard\"},{\"name\":\"Call of Duty\"},{\"name\":\"Consumer Tech\"},{\"name\":\"Phil
+        Spencer\"},{\"name\":\"xbox\"},{\"name\":\"Xbox Game Pass\"},{\"name\":\"ZeniMax\"}]},{\"id\":37245799,\"author\":\"Chris
+        Katje\",\"created\":\"Wed, 21 Feb 2024 17:14:24 -0400\",\"updated\":\"Wed,
+        21 Feb 2024 17:14:25 -0400\",\"title\":\"Apple Dominates 2023 Smartphone List
+        With 7 Of Top 10 Models: Why It's Important For iPhone Growth\",\"teaser\":\"The
+        Apple iPhone 14 and iPhone 15 models made up six spots on the list; here&#39;s
+        a look at why it&#39;s important for the future of the smartphone.\",\"body\":\"<p><strong>Apple
+        Inc </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        has seven of the top 10 selling smartphone <a href=\\\"https://www.benzinga.com/topic/iphone\\\">models
+        by units shipped</a>.</p>\\n\\n\\n\\n<p>Here were the top 10 smartphone models
+        by market share in 2023, according <a href=\\\"https://www.counterpointresearch.com/insights/apple-captures-top-7-spots-in-global-top-10-best-selling-smartphones/\\\">to</a>
+        Counterpoint Research.</p>\\n\\n\\n\\n<ol>\\n<li>iPhone 14: 3.9%</li>\\n\\n\\n\\n<li>iPhone
+        14 Pro Max: 2.8%</li>\\n\\n\\n\\n<li>iPhone 14 Pro: 2.4%</li>\\n\\n\\n\\n<li>iPhone
+        13: 2.2%</li>\\n\\n\\n\\n<li>iPhone 15 Pro Max: 1.7%</li>\\n\\n\\n\\n<li>iPhone
+        15 Pro: 1.4%</li>\\n\\n\\n\\n<li>iPhone 15: 1.4%</li>\\n\\n\\n\\n<li>Galaxy
+        A14 5G: 1.4%</li>\\n\\n\\n\\n<li>Galaxy A04e: 1.3%</li>\\n\\n\\n\\n<li>Galaxy
+        A14 4G: 1.3%</li>\\n</ol>\\n\\n\\n\\n<p>The findings are in line with a previous
+        report <a href=\\\"https://www.benzinga.com/news/24/02/37034260/apple-iphones-models-total-7-out-of-10-most-shipped-smartphones-worldwide-in-2023-report\\\">from
+        analytics firm Canalys</a>.</p>\\n\\n\\n\\n<p>The list includes three different
+        models, or versions, of the iPhone. According to both firms \u2014 Canalys
+        and Counterpoint \u2014 Apple dominates the list with the top seven smartphone
+        models. </p>\\n\\n\\n\\n<p><strong>Samsung </strong>(OTC:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/SSNLF#OTC\\\">SSNLF</a>), which Apple
+        passed as the top <a href=\\\"https://www.benzinga.com/news/24/01/36636022/bite-of-the-big-apple-iphone-secures-top-spot-in-2023-global-smartphone-shipments-beats-samsung-afte\\\">smartphone
+        shipper globally</a>, had three smartphones on the Counterpoint list. The
+        models ranked eighth, ninth, and 10th.</p>\\n\\n\\n\\n<p>Apple <a href=\\\"https://www.benzinga.com/general/education/23/09/34704049/if-you-invested-in-apple-stock-instead-of-buying-iphones-each-year-heres-how-much-youd-have-tod\\\">unveiled
+        and released its first iPhone</a> in 2017. Since then, the Cupertino, California-based
+        company has become one of the leading smartphone makers globally.</p>\\n\\n\\n\\n<p>Newly
+        released iPhone models see old iPhone users switch to the newest model. Or,
+        in some cases, customers <a href=\\\"https://www.benzinga.com/news/24/02/37151313/americans-love-affair-with-iphone-grows-stronger-1-in-8-android-users-switched-to-apple-in-2023\\\">from
+        other brands </a>making the switch to Apple.</p>\\n\\n\\n\\n<p>In 2023, Apple
+        passed Samsung and ended the company's 13-year streak atop the smartphone
+        global units list. </p>\\n\\n\\n\\n<p><em>Related Link: <a href=\\\"https://www.benzinga.com/news/24/02/36988960/foldable-apple-iphone-could-be-coming-what-investors-should-know\\\">Foldable
+        Apple iPhone Could Be Coming: What Investors Should Know</a></em> </p>\\n\\n\\n\\n<p>The
+        iPhone 13 ranked fourth on the list, despite being released in September 2021.
+        The pone was popular in India and Japan according to the report. India passed
+        the 10 million smartphone milestone for the first time in 2023, one of five
+        countries to hit the mark.</p>\\n\\n\\n\\n<p>The iPhone 14 and iPhone 15 made
+        up six spots on the list with the Pro and Pro Max more expensive models ranking
+        well, which could highlight the average sale price potential Apple has as
+        users look for premium smartphone models with more capabilities and functions.</p>\\n\\n\\n\\n<p>Released
+        in September 2023, the iPhone 15 having several models on the list with only
+        around three months of time on the market shows the strength of the newest
+        model. The iPhone 15 Pro Max was the top selling smartphone globally in the
+        fourth quarter according to the report.</p>\\n\\n\\n\\n<p>The list illustrates
+        that Apple can continue to release a new model annually with demand from users
+        and older models will also continue to sell well with lower prices. </p>\\n\\n\\n\\n<p>Together,
+        the top 10 smartphones sold in 2023 made up 20% market share globally, which
+        set a new record. Apple and Samsung dominated the list and have been the only
+        two companies on the annual list from Counterpoint since 2021.</p>\\n\\n\\n\\n<p><strong>AAPL
+        Price Action:</strong> Apple shares trade at $181.14 versus a 52-week trading
+        range of $143.90 to $199.62 and are up 22% over the last year.</p>\\n\\n\\n\\n<p><em>Read
+        Next: <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/02/36912911/6-apple-analysts-size-up-q1-results-iphone-sales-major-step-in-the-right-direction-\\\">6
+        Apple Analysts Size Up Q1 Results, iPhone Sales: &#8216;Major Step In The
+        Right Direction,&#8217; &#8216;Some Good And Bad News&#8217;</a></em></p>\\n\\n\\n\\n<p><em>Image:
+        Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/news/24/02/37245799/apple-dominates-2023-smartphone-list-with-7-of-top-10-models-why-its-important-for-iphone-growth\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/Apple-iPhone-GoldDigger-iOS-trojan_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/Apple-iPhone-GoldDigger-iOS-trojan_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/Apple-iPhone-GoldDigger-iOS-trojan_0.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"SSNLF\"}],\"tags\":[{\"name\":\"Consumer
+        Tech\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone 13\"},{\"name\":\"iPhone
+        14\"},{\"name\":\"iPhone 15\"},{\"name\":\"Samsung Galaxy\"},{\"name\":\"smartphones\"},{\"name\":\"Stories
+        That Matter\"},{\"name\":\"Technology Stocks\"}]},{\"id\":37243741,\"author\":\"The
+        Arora Report\",\"created\":\"Wed, 21 Feb 2024 15:20:28 -0400\",\"updated\":\"Wed,
+        21 Feb 2024 15:22:47 -0400\",\"title\":\"Extreme Positioning In NVIDIA Takes
+        A Hit, Fed Minutes Ahead\",\"teaser\":\"To gain an edge, this is what you
+        need to know today.\\n\\n\",\"body\":\"<p><em>To gain an edge, this is what
+        you need to know today.</em></p>\\r\\n\\r\\n<p><img alt=\\\"\\\" src=\\\"https://thearorareport.com/wp-content/uploads/2024/02/Screenshot-2024-02-21-082957.png\\\"
+        style=\\\"height:357px; width:624px\\\" /></p>\\r\\n\\r\\n<h3><strong>Nvidia
+        Positioning</strong></h3>\\r\\n\\r\\n<p>Please <a href=\\\"https://thearorareport.com/stock-market-chart-analysis-extreme-positioning-nvidia-earnings-nvda-mc-02212024\\\">click
+        here</a> for an enlarged version of the chart of&nbsp;<strong>NVIDIA Corp
+        </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>).</p>\\r\\n\\r\\n<p>Note
+        the following:</p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>This article is about the big
+        picture, not an individual stock.&nbsp;The chart of NVDA stock is being used
+        to illustrate the point.</li>\\r\\n\\t<li>Nvidia is at the center of the artificial
+        intelligence revolution.&nbsp;It is the best performing stock in the S&amp;P
+        500 this year.</li>\\r\\n\\t<li>The chart shows a pullback yesterday.</li>\\r\\n\\t<li>The
+        chart shows the volume yesterday was high when the stock dropped.&nbsp;This
+        is a negative.</li>\\r\\n\\t<li>RSI on the chart shows that NVDA is no longer
+        overbought after the pullback.&nbsp;RSI shows that the stock can go either
+        way after earnings.</li>\\r\\n\\t<li><strong>The chart shows extreme positive
+        positioning in NVDA prior to the drop. The best way to understand extreme
+        positive positioning is to think of a boat where everyone is on the same side.&nbsp;
+        It does not cause any problems as long as the waters are calm.&nbsp;However,
+        if a storm comes and everyone is on the same side, the boat sinks.&nbsp;&nbsp;</strong></li>\\r\\n\\t<li><strong>The
+        chart shows that yesterday, extreme positive positioning took a hit, resulting
+        in a large drop in the stock.&nbsp;The positioning took a hit, not because
+        a storm came, but because investors started jumping off the boat in anticipation
+        of a storm from the earnings that are ahead.</strong></li>\\r\\n\\t<li>The
+        options market is predicting an 11% move in NVDA stock in either direction
+        after earnings.&nbsp;Pause for a second and think about it &ndash; this is
+        the gain or loss of $200B in market value.</li>\\r\\n\\t<li>We previously
+        shared with you:</li>\\r\\n</ul>\\r\\n\\r\\n<blockquote>\\r\\n<p>Less informed
+        investors do not understand that stocks do not move based on published consensus
+        earnings and revenue estimates.&nbsp;Stocks move based on whisper numbers.&nbsp;Whisper
+        numbers are the numbers that analysts share privately, only with their best
+        clients.&nbsp;The whisper numbers for NVDA are at $5 for earnings and $22B
+        for revenue.</p>\\r\\n</blockquote>\\r\\n\\r\\n<ul>\\r\\n\\t<li>After hours
+        yesterday, sentiment took a hit when momo crowd favorite cybersecurity stock&nbsp;<strong>Palo
+        Alto Networks Inc</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/PANW#NASDAQ\\\">PANW</a>)
+        reported earnings.&nbsp;The stock has fallen 24.6% as of this writing in the
+        premarket.&nbsp;PANW was priced for perfection, and so is NVDA.</li>\\r\\n\\t<li>FOMC
+        minutes will be released at 2pm ET.&nbsp;Normally, FOMC minutes are market
+        moving. However, today market movements are likely to be governed by position
+        squaring by institutional investors ahead of NVDA earnings.</li>\\r\\n\\t<li><strong>In
+        The Arora Report analysis, what happens to NVDA will impact the entire stock
+        market.&nbsp;</strong></li>\\r\\n\\t<li>As an actionable item, the sum total
+        of the foregoing is in the protection band, which strikes the optimum balance
+        between various crosscurrents.&nbsp;Please scroll down to see the protection
+        band.</li>\\r\\n</ul>\\r\\n\\r\\n<h3><strong>Magnificent Seven Money Flows</strong></h3>\\r\\n\\r\\n<p>In
+        the early trade, money flows are positive in <strong>Amazon.com, Inc. </strong>(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>).</p>\\r\\n\\r\\n<p>In
+        the early trade, money flows are neutral in<strong> Apple Inc</strong> (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>).</p>\\r\\n\\r\\n<p>In
+        the early trade, money flows are negative in NVDA, <strong>Microsoft Corp</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>),
+        <strong>Alphabet Inc Class C</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>),
+        <strong>Meta Platforms Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>),
+        and <strong>Tesla Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>).</p>\\r\\n\\r\\n<p>In
+        the early trade, money flows are negative in&nbsp;<strong>SPDR S&amp;P 500
+        ETF Trust </strong>(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPY#NYSE\\\">SPY</a>)
+        and <strong>Invesco QQQ Trust Series 1 </strong>(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/QQQ#NASDAQ\\\">QQQ</a>).</p>\\r\\n\\r\\n<h3><strong>Momo
+        Crowd And Smart Money In Stocks</strong></h3>\\r\\n\\r\\n<p>The momo crowd
+        is buying stocks in the early trade.&nbsp;Smart money is inactive in the early
+        trade.</p>\\r\\n\\r\\n<h3><strong>Gold</strong></h3>\\r\\n\\r\\n<p>The momo
+        crowd is buying gold in the early trade.&nbsp;Smart money is inactive in the
+        early trade.</p>\\r\\n\\r\\n<p>For longer-term, please see gold and silver
+        ratings.</p>\\r\\n\\r\\n<p>The most popular ETF for gold is <strong>SPDR Gold
+        Trust</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GLD#NYSE\\\">GLD</a>).
+        The most popular ETF for silver is <strong>iShares Silver Trust</strong> (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SLV#NYSE\\\">SLV</a>).&nbsp;</p>\\r\\n\\r\\n<h3><strong>Oil</strong></h3>\\r\\n\\r\\n<p>API
+        crude inventories came at a build of 8.52M vs. consensus of a build of 2.6M.</p>\\r\\n\\r\\n<p>The
+        momo crowd is like a yoyo in oil in the early trade.&nbsp;Smart money is inactive
+        in the early trade.</p>\\r\\n\\r\\n<p>For longer-term, please see oil ratings.</p>\\r\\n\\r\\n<p>The
+        most popular ETF for oil is <strong>United States Oil ETF</strong> (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/USO#NYSE\\\">USO</a>).</p>\\r\\n\\r\\n<h3><strong>Bitcoin</strong></h3>\\r\\n\\r\\n<p><strong>Bitcoin
+        </strong>(CRYPTO: <a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/quote/btc/usd\\\">BTC</a>)
+        is seeing some selling in the early trade on nervousness about NVDA earnings.</p>\\r\\n\\r\\n<h3><strong>Protection
+        Band And What To Do Now</strong></h3>\\r\\n\\r\\n<p>It is important for investors
+        to look ahead and not in the rearview mirror.</p>\\r\\n\\r\\n<p>Consider continuing
+        to hold good, very long term, existing positions. Based on individual risk
+        preference, consider a protection band consisting of cash or Treasury bills
+        or short-term tactical trades as well as short to medium term hedges and short
+        term hedges. This is a good way to protect yourself and participate in the
+        upside at the same time.</p>\\r\\n\\r\\n<p>You can determine your protection
+        bands by adding cash to hedges.&nbsp; The high band of the protection is appropriate
+        for those who are older or conservative. The low band of the protection is
+        appropriate for those who are younger or aggressive.&nbsp; If you do not hedge,
+        the total cash level should be more than stated above but significantly less
+        than cash plus hedges.</p>\\r\\n\\r\\n<p><strong>It is worth reminding that
+        you cannot take advantage of new upcoming opportunities if you are not holding
+        enough cash.&nbsp;</strong>When adjusting hedge levels, consider adjusting
+        partial stop quantities for stock positions (non ETF); consider using wider
+        stops on remaining quantities and also allowing more room for high beta stocks.&nbsp;
+        High beta stocks are the ones that move more than the market.</p>\\r\\n\\r\\n<h3><strong>Traditional
+        60/40 Portfolio</strong></h3>\\r\\n\\r\\n<p>Probability based risk reward
+        adjusted for inflation does not favor long duration strategic bond allocation
+        at this time.</p>\\r\\n\\r\\n<p>Those who want to stick to traditional 60%
+        allocation to stocks and 40% to bonds may consider focusing on only high quality
+        bonds and bonds of seven year duration or less.&nbsp;Those willing to bring
+        sophistication to their investing may consider using bond ETFs as tactical
+        positions and not strategic positions at this time.</p>\\r\\n\\r\\n<p><strong>The
+        Arora Report is known for its accurate calls.&nbsp;The Arora Report correctly
+        called the 2008 financial crash, the start of a mega bull market in 2009,
+        the COVID crash, the post-COVID bull market, and the 2022 bear market.&nbsp;
+        Please click here to sign up for a free forever <a href=\\\"https://thearorareport.com/generate-wealth-newsletter\\\">Generate
+        Wealth Newsletter</a>. </strong></p>\\r\\n\\r\\n<p class=\\\"contributor-disclaimer\\\"><em>This
+        article is from an unpaid external contributor. It does not represent Benzinga&#39;s
+        reporting and has not been edited for content or accuracy.</em></p>\\r\\n
+        \",\"url\":\"https://www.benzinga.com/markets/24/02/37243741/extreme-positioning-in-nvidia-takes-a-hit-fed-minutes-ahead\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/chris-liverani-dbi_my696rk-unsplash_3_1.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/chris-liverani-dbi_my696rk-unsplash_3_1.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/chris-liverani-dbi_my696rk-unsplash_3_1.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"$BTC\"},{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"GLD\"},{\"name\":\"GOOG\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"PANW\"},{\"name\":\"QQQ\"},{\"name\":\"SLV\"},{\"name\":\"SPY\"},{\"name\":\"TSLA\"},{\"name\":\"USO\"}],\"tags\":[{\"name\":\"contributors\"},{\"name\":\"Expert
+        Ideas\"},{\"name\":\"Gold\"},{\"name\":\"Magnificent Seven\"},{\"name\":\"Oil\"}]},{\"id\":37241732,\"author\":\"Benzinga
+        Insights\",\"created\":\"Wed, 21 Feb 2024 13:35:15 -0400\",\"updated\":\"Wed,
+        21 Feb 2024 13:35:16 -0400\",\"title\":\"10 Information Technology Stocks
+        With Whale Alerts In Today's Session\",\"teaser\":\" \",\"body\":\"<p>This
+        whale alert can help traders discover the next big trading opportunities.</p>\\n<p>Whales
+        are entities with large sums of money and we track their transactions here
+        at Benzinga on our options activity scanner.</p>\\n<p>Traders will search
+        for circumstances when the market estimation of an option diverges heavily
+        from its normal worth. High amounts of trading activity could push option
+        prices to exaggerated or underestimated levels. </p>\\n<p>Here's the list
+        of options activity happening in today's session:  <table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>NVDA</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>02/23/24</td>\\n<td>$700.00</td>\\n<td>$35.3K</td>\\n<td>9.1K</td>\\n<td>18.7K</td>\\n</tr>\\n<tr>\\n<td>AMD</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>02/23/24</td>\\n<td>$162.50</td>\\n<td>$34.4K</td>\\n<td>3.9K</td>\\n<td>9.8K</td>\\n</tr>\\n<tr>\\n<td>MARA</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>02/23/24</td>\\n<td>$25.00</td>\\n<td>$32.7K</td>\\n<td>9.9K</td>\\n<td>8.3K</td>\\n</tr>\\n<tr>\\n<td>ARM</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>02/23/24</td>\\n<td>$140.00</td>\\n<td>$36.2K</td>\\n<td>2.6K</td>\\n<td>7.7K</td>\\n</tr>\\n<tr>\\n<td>ON</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>04/19/24</td>\\n<td>$65.00</td>\\n<td>$63.6K</td>\\n<td>2.1K</td>\\n<td>7.4K</td>\\n</tr>\\n<tr>\\n<td>MU</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>05/17/24</td>\\n<td>$82.50</td>\\n<td>$54.4K</td>\\n<td>366</td>\\n<td>5.4K</td>\\n</tr>\\n<tr>\\n<td>SMCI</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>02/23/24</td>\\n<td>$600.00</td>\\n<td>$27.1K</td>\\n<td>4.7K</td>\\n<td>5.3K</td>\\n</tr>\\n<tr>\\n<td>AAPL</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>02/23/24</td>\\n<td>$175.00</td>\\n<td>$33.7K</td>\\n<td>2.1K</td>\\n<td>2.3K</td>\\n</tr>\\n<tr>\\n<td>MSFT</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>03/15/24</td>\\n<td>$410.00</td>\\n<td>$429.6K</td>\\n<td>33.9K</td>\\n<td>2.3K</td>\\n</tr>\\n<tr>\\n<td>ZS</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>02/23/24</td>\\n<td>$210.00</td>\\n<td>$28.2K</td>\\n<td>9</td>\\n<td>509</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h2>Explanation</h2>\\n<p>These
+        itemized elaborations have been created using the accompanying table.  </p>\\n<p>\u2022
+        \ For <strong>NVDA</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>),
+        we notice a <strong>call</strong> option <strong>sweep</strong> that happens
+        to be <strong>bullish</strong>, expiring in 2 day(s) on <strong>February 23,
+        2024</strong>. This event was a transfer of <strong>15</strong> contract(s)
+        at a <strong>$700.00</strong> strike. This particular call needed to be split
+        into 6 different trades to become filled. The total cost received by the writing
+        party (or parties) was <strong>$35.3K</strong>, with a price of <strong>$2358.0</strong>
+        per contract. There were <strong>9178</strong> open contracts at this strike
+        prior to today, and today <strong>18720</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  Regarding <strong>AMD</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AMD#NASDAQ\\\">AMD</a>), we observe
+        a <strong>put</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 2 day(s) on <strong>February 23, 2024</strong>. Parties
+        traded <strong>80</strong> contract(s) at a <strong>$162.50</strong> strike.
+        This particular put needed to be split into 9 different trades to become filled.
+        The total cost received by the writing party (or parties) was <strong>$34.4K</strong>,
+        with a price of <strong>$430.0</strong> per contract. There were <strong>3929</strong>
+        open contracts at this strike prior to today, and today <strong>9814</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>MARA</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MARA#NASDAQ\\\">MARA</a>),
+        we observe a <strong>call</strong> option <strong>sweep</strong> with <strong>bearish</strong>
+        sentiment. It expires in 2 day(s) on <strong>February 23, 2024</strong>. Parties
+        traded <strong>696</strong> contract(s) at a <strong>$25.00</strong> strike.
+        This particular call needed to be split into 56 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$32.7K</strong>,
+        with a price of <strong>$47.0</strong> per contract. There were <strong>9972</strong>
+        open contracts at this strike prior to today, and today <strong>8356</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  For <strong>ARM</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ARM#NASDAQ\\\">ARM</a>),
+        we notice a <strong>call</strong> option <strong>sweep</strong> that happens
+        to be <strong>bearish</strong>, expiring in 2 day(s) on <strong>February 23,
+        2024</strong>. This event was a transfer of <strong>200</strong> contract(s)
+        at a <strong>$140.00</strong> strike. This particular call needed to be split
+        into 3 different trades to become filled. The total cost received by the writing
+        party (or parties) was <strong>$36.2K</strong>, with a price of <strong>$181.0</strong>
+        per contract. There were <strong>2642</strong> open contracts at this strike
+        prior to today, and today <strong>7783</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  Regarding <strong>ON</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/ON#NASDAQ\\\">ON</a>), we observe
+        a <strong>put</strong> option <strong>sweep</strong> with <strong>bearish</strong>
+        sentiment. It expires in 58 day(s) on <strong>April 19, 2024</strong>. Parties
+        traded <strong>677</strong> contract(s) at a <strong>$65.00</strong> strike.
+        This particular put needed to be split into 17 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$63.6K</strong>,
+        with a price of <strong>$94.0</strong> per contract. There were <strong>2175</strong>
+        open contracts at this strike prior to today, and today <strong>7419</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>MU</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MU#NASDAQ\\\">MU</a>),
+        we observe a <strong>call</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 86 day(s) on <strong>May 17, 2024</strong>. Parties
+        traded <strong>99</strong> contract(s) at a <strong>$82.50</strong> strike.
+        This particular call needed to be split into 7 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$54.4K</strong>,
+        with a price of <strong>$550.0</strong> per contract. There were <strong>366</strong>
+        open contracts at this strike prior to today, and today <strong>5412</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>SMCI</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SMCI#NASDAQ\\\">SMCI</a>),
+        we observe a <strong>put</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 2 day(s) on <strong>February 23, 2024</strong>. Parties
+        traded <strong>41</strong> contract(s) at a <strong>$600.00</strong> strike.
+        This particular put needed to be split into 9 different trades to become filled.
+        The total cost received by the writing party (or parties) was <strong>$27.1K</strong>,
+        with a price of <strong>$660.0</strong> per contract. There were <strong>4750</strong>
+        open contracts at this strike prior to today, and today <strong>5393</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  For <strong>AAPL</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>),
+        we notice a <strong>call</strong> option <strong>sweep</strong> that happens
+        to be <strong>bearish</strong>, expiring in 2 day(s) on <strong>February 23,
+        2024</strong>. This event was a transfer of <strong>50</strong> contract(s)
+        at a <strong>$175.00</strong> strike. This particular call needed to be split
+        into 4 different trades to become filled. The total cost received by the writing
+        party (or parties) was <strong>$33.7K</strong>, with a price of <strong>$675.0</strong>
+        per contract. There were <strong>2137</strong> open contracts at this strike
+        prior to today, and today <strong>2327</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  For <strong>MSFT</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>), we notice
+        a <strong>call</strong> option <strong>trade</strong> that happens to be <strong>bearish</strong>,
+        expiring in 23 day(s) on <strong>March 15, 2024</strong>. This event was a
+        transfer of <strong>924</strong> contract(s) at a <strong>$410.00</strong>
+        strike. The total cost received by the writing party (or parties) was <strong>$429.6K</strong>,
+        with a price of <strong>$465.0</strong> per contract. There were <strong>33948</strong>
+        open contracts at this strike prior to today, and today <strong>2312</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  For <strong>ZS</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ZS#NASDAQ\\\">ZS</a>),
+        we notice a <strong>call</strong> option <strong>sweep</strong> that happens
+        to be <strong>bearish</strong>, expiring in 2 day(s) on <strong>February 23,
+        2024</strong>. This event was a transfer of <strong>41</strong> contract(s)
+        at a <strong>$210.00</strong> strike. This particular call needed to be split
+        into 5 different trades to become filled. The total cost received by the writing
+        party (or parties) was <strong>$28.2K</strong>, with a price of <strong>$690.0</strong>
+        per contract. There were <strong>9</strong> open contracts at this strike
+        prior to today, and today <strong>509</strong> contract(s) were bought and
+        sold. </p>\\n<p><strong>Options Alert Terminology</strong><br />\\n - <strong>Call
+        Contracts:</strong> The right to buy shares as indicated in the contract.<br
+        />\\n - <strong>Put Contracts:</strong> The right to sell shares as indicated
+        in the contract.<br />\\n - <strong>Expiration Date:</strong> When the contract
+        expires. One must act on the contract by this date if one wants to use it.<br
+        />\\n - <strong>Premium/Option Price:</strong> The price of the contract.
+        \ </p>\\n<p>For more information, visit our <em><a href=\\\"https://pro.benzinga.com/blog/how-to-understand-option-alerts/\\\">Guide
+        to Understanding Options Alerts</a></em> or read <a href=\\\"https://www.benzinga.com/markets/options\\\">more
+        news on unusual options activity</a>.  </p>\\n<p>This article was generated
+        by Benzinga's automated content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/insights/options/24/02/37241732/10-information-technology-stocks-with-whale-alerts-in-todays-session\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/options_image_0.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/options_image_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/options_image_0.jpeg\"}],\"channels\":[{\"name\":\"Options\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMD\"},{\"name\":\"ARM\"},{\"name\":\"MARA\"},{\"name\":\"MSFT\"},{\"name\":\"MU\"},{\"name\":\"NVDA\"},{\"name\":\"ON\"},{\"name\":\"SMCI\"},{\"name\":\"ZS\"}],\"tags\":[{\"name\":\"BZI-AUOA\"}]},{\"id\":37241019,\"author\":\"Piero
+        Cingari\",\"created\":\"Wed, 21 Feb 2024 13:02:56 -0400\",\"updated\":\"Wed,
+        21 Feb 2024 13:02:57 -0400\",\"title\":\"Health Care Becomes Most Overweighted
+        Sector As Hedge Funds Crowd Into Magnificent 7\",\"teaser\":\"Goldman Sachs&#39;
+        Hedge Fund Trend Monitor highlights concentration in mega-caps, with optimism
+        in AI and health care.\",\"body\":\"<p>Six out of the 10 largest holdings
+        in over 700 aggregated hedge fund portfolios are increasingly concentrated
+        towards the \u2018Magnificent Seven' stocks, with <strong>Tesla</strong> <a
+        href=\\\"https://www.benzinga.com/topic/magnificent-seven\\\">being the sole
+        exception</a>, according to the latest report by Goldman Sachs.</p>\\n\\n\\n\\n<p><strong>What
+        Happened</strong>: Insights from Goldman Sachs&#8217; Hedge Fund Trend Monitor,
+        an analysis led by <strong>Ben Snider</strong>, show an overzealous preference
+        for just several mega-caps. This enthusiasm does not mirror their market weight.
+        </p>\\n\\n\\n\\n<p>The Magnificent Seven accounts for a record 13% of the
+        aggregate hedge fund long portfolios. Yet, it remains significantly underweighted
+        compared to a 26% collective stake in the Russell 3000 \u2014 underscoring
+        a cautious approach towards mega-cap equities.</p>\\n\\n\\n\\n<p><em>See Also:
+        <a href=\\\"https://www.benzinga.com/markets/equities/24/02/37237785/amazon-to-join-dow-jones-industrial-average-does-venerable-index-membership-still-matter\\\">Amazon
+        To Join Dow Jones Industrial Average: Does Venerable Index Membership Still
+        Matter?</a></em></p>\\n\\n\\n\\n<p>The concentration within hedge fund portfolios
+        rose further, with 70% of their long positions allocated to their top 10 holdings.
+        According to analysts, this rising concentration is partly driven by confidence
+        in specific industries, such as artificial intelligence and healthcare. </p>\\n\\n\\n\\n<p>The
+        latter experienced notable enthusiasm for innovations such as GLP-1 therapies.
+        As a result, <strong>Eli Lilly and Company</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/LLY#NYSE\\\">LLY</a>) entered the
+        top 20 holdings favored by hedge funds.</p>\\n\\n\\n\\n<p>The analysis also
+        reveals a record tilt towards the momentum factor within hedge fund long portfolios,
+        marking the most substantial growth orientation since 2016.</p>\\n\\n\\n\\n<p>&#8220;While
+        trimming exposure to mega-cap tech, hedge funds looked for new alpha in cyclicals
+        and other pockets of growth. Alongside strong U.S. economic data and hints
+        of improvement in the global manufacturing cycle, funds lifted their tilt
+        to cyclical industries versus defensives to the highest since 2016,&#8221;
+        Goldman Sachs wrote. </p>\\n\\n\\n\\n<p>Information Technology remained the
+        largest hedge fund net sector weight at the start of Q1 2024, representing
+        21% of total net exposure but nonetheless registered the largest \\\"underweight\\\"
+        relative to the Russell 3000 (-587 basis points). Health Care remained the
+        largest overweight (+693 basis points).</p>\\n\\n\\n\\n<p><strong>VIP Positions,
+        Falling And Rising Stars</strong>: <strong>APi Group Corporation</strong>
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/APG#NYSE\\\">APG</a>),
+        <strong>General Electric Co.</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GE#NYSE\\\">GE</a>),
+        and <strong>Union Pacific Corporation</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/UNP#NYSE\\\">UNP</a>) joined the so-called
+        Goldman Sachs&#8217; &#8216;VIP list&#8217; of the most popular hedge fund
+        positions for the quarter. </p>\\n\\n\\n\\n<p><strong>Microsoft Corp.</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>),
+        <strong>Apple Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>),
+        and <strong>NVIDIA Corporation </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>)
+        ranked among the Information Technology stocks with the largest net decreases
+        in hedge fund popularity, also known as &#8216;Falling Stars&#8217;. </p>\\n\\n\\n\\n<p>In
+        contrast, hedge funds added exposure to Communication Services across most
+        subsectors, led by <strong>The Walt Disney Compan</strong>y (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/DIS#NYSE\\\">DIS</a>), <strong>Snap
+        Inc.</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SNAP#NYSE\\\">SNAP</a>),
+        and <strong>Roblox Corporation</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/RBLX#NYSE\\\">RBLX</a>).
+        </p>\\n\\n\\n\\n<p>Hedge funds also increased length in cyclical industries,
+        including Financials; <strong>Progressive Corporation </strong>(NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/PGR#NYSE\\\">PGR</a>), <strong>Arch
+        Capital Group Ltd.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ACGL#NASDAQ\\\">ACGL</a>),
+        <strong>Kemper Corporation</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/KMPR#NYSE\\\">KMPR</a>),
+        <strong>Oyster Point Pharma, Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/OYST#NASDAQ\\\">OYST</a>), and <strong>Morningstar,
+        Inc. </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MORN#NASDAQ\\\">MORN</a>)
+        screened among this quarter's Rising Stars.</p>\\n\\n\\n\\n<p>Other cyclical
+        &#8216;Rising Stars&#8217; were  <strong>Arrow Electronics Inc</strong>. (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ARW#NYSE\\\">ARW</a>),
+        <strong>The Mosaic Company</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MOS#NYSE\\\">MOS</a>),
+        <strong>Packaging</strong> <strong>Corporation of America </strong>(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/PKG#NYSE\\\">PKG</a>),
+        <strong>Sealed Air Corporation</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SEE#NYSE\\\">SEE</a>),
+        <strong>Synopsys Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SNPS#NASDAQ\\\">SNPS</a>),
+        and <strong>Veralto Corporation</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/VLTO#NYSE\\\">VLTO</a>).
+        </p>\\n\\n\\n\\n<p><em>Read Now:</em> <em><a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/02/37181987/magnificent-7-stocks-trigger-concerns-of-market-overheat-bubble-trouble\\\">Magnificent
+        7 Stocks Trigger Concerns Of Market Overheat: Bubble Trouble?</a></em></p>\\n\\n\\n\\n<p><em>Image:
+        Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/analyst-color/24/02/37241019/health-care-becomes-most-overweighted-sector-as-hedge-funds-crowd-into-magnificent-\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/Graph-Showing-The-High-Cost-Of-Health-Ca.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/Graph-Showing-The-High-Cost-Of-Health-Ca.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/Graph-Showing-The-High-Cost-Of-Health-Ca.jpeg\"}],\"channels\":[{\"name\":\"Analyst
+        Color\"},{\"name\":\"Equities\"},{\"name\":\"Large Cap\"},{\"name\":\"Mid
+        Cap\"},{\"name\":\"Short Sellers\"},{\"name\":\"Social Media\"},{\"name\":\"Health
+        Care\"},{\"name\":\"Hedge Funds\"},{\"name\":\"Top Stories\"},{\"name\":\"Analyst
+        Ratings\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"ACGL\"},{\"name\":\"APG\"},{\"name\":\"ARW\"},{\"name\":\"DIS\"},{\"name\":\"GE\"},{\"name\":\"KMPR\"},{\"name\":\"LLY\"},{\"name\":\"MORN\"},{\"name\":\"MOS\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"PGR\"},{\"name\":\"PKG\"},{\"name\":\"RBLX\"},{\"name\":\"SEE\"},{\"name\":\"SNAP\"},{\"name\":\"SNPS\"},{\"name\":\"UNP\"},{\"name\":\"VLTO\"},{\"name\":\"OYST\"}],\"tags\":[{\"name\":\"Expert
+        Ideas\"},{\"name\":\"Magnificent Seven\"},{\"name\":\"Stories That Matter\"}]},{\"id\":37239259,\"author\":\"Anusuya
+        Lahiri\",\"created\":\"Wed, 21 Feb 2024 11:57:39 -0400\",\"updated\":\"Wed,
+        21 Feb 2024 11:57:40 -0400\",\"title\":\"Nokia and Nvidia Join Forces to Transform
+        Telecom with AI-Driven RAN Technology\",\"teaser\":\"Nokia partners with Nvidia
+        to revolutionize AI-ready RAN solutions, utilizing Nvidia Grace CPU Superchip
+        and Nokia&#39;s L1 accelerator technology for enhanced telco services. End-to-end
+        5G data calls already achieved.\",\"body\":\"<p><strong>Nokia Corp&nbsp;</strong>(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NOK#NYSE\\\">NOK</a>)
+        revealed a partnership with&nbsp;<strong>Nvidia Corp</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>)
+        aimed at revolutionizing AI-ready radio access network (RAN) solutions, marking
+        a significant step forward in their anyRAN strategy.&nbsp;</p>\\n\\n\\n\\n<p>This
+        collaboration seeks to embed AI at the core of transforming telecommunications
+        networks, focusing on delivering enhanced value through new AI services in
+        the telco&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.nokia.com/about-us/news/releases/2024/02/21/nokia-to-revolutionize-mobile-networks-with-cloud-ran-and-ai-powered-by-nvidia/\\\"
+        rel=\\\"noreferrer noopener\\\">sector</a>.</p>\\n\\n\\n\\n<p><strong><em>Also
+        Read:</em></strong><em>&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/02/37227169/nvidias-upcoming-earnings-to-set-tone-for-ai-investment-rush-wall-street-analysts-s\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Nvidia's Upcoming Earnings to Set Tone
+        for AI Investment Rush, Wall Street Analysts Say</em></a></p>\\n\\n\\n\\n<p>Nokia
+        will work alongside Nvidia to develop Cloud RAN solutions that utilize the
+        Nvidia Grace CPU Superchip for advanced Layer 2+ processing.&nbsp;</p>\\n\\n\\n\\n<p>This
+        effort will also incorporate Nokia's efficient In-Line Layer 1 (L1) accelerator
+        technology, Cloud RAN software, Nvidia GPUs for AI applications, and vRAN
+        acceleration, heralding the advent of AI-RAN.</p>\\n\\n\\n\\n<p>Based on the
+        cutting-edge Arm Neoverse V2 CPU architecture, the Nvidia Grace CPU CPU offers
+        exceptional performance, energy efficiency, and broad connectivity to meet
+        comprehensive data center needs.&nbsp;</p>\\n\\n\\n\\n<p>This collaboration
+        promises Nokia's customers a range of CPU choices for their Cloud RAN networks,
+        ensuring diversity and flexibility.</p>\\n\\n\\n\\n<p>Furthermore, Nokia has
+        successfully conducted end-to-end 5G data calls in multi-vendor configurations,
+        highlighting the practical achievements of their collaborative efforts with
+        several partners.</p>\\n\\n\\n\\n<p>In January, Nokia reported a&nbsp;<a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/news/earnings/24/01/36775961/nokias-sales-slide-despite-big-deals-with-apple-and-samsung-whats-next-for-this-tech-giant\\\"
+        rel=\\\"noreferrer noopener\\\">fiscal fourth-quarter</a>&nbsp;2023 net sales
+        decline of 23% year-on-year to $6.14 billion, missing the consensus of $7.05
+        billion. The company disclosed significant long-term deals with&nbsp;<strong>Apple
+        Inc</strong>&nbsp;</p>\\n\\n\\n\\n<p>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>),&nbsp;<strong>Samsung
+        Electronics Co, Ltd</strong>&nbsp;(OTC:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SSNLF#OTC\\\">SSNLF</a>)
+        and OPPO.&nbsp;</p>\\n\\n\\n\\n<p><strong>Price Action:</strong>&nbsp;NOK
+        shares traded higher by 0.57% at $3.51 on the last check Wednesday.</p>\\n\\n\\n\\n<p><strong><em>Also
+        Read:</em></strong><em>&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/m-a/24/02/37236499/samsung-divests-asml-stake-to-bolster-chipmaking-capabilities-amid-global-tech-race\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Samsung Divests ASML Stake to Bolster
+        Chipmaking Capabilities Amid Global Tech Race</em></a></p>\\n\\n\\n\\n<p><em>Disclaimer:
+        This content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\n\\n\\n\\n<p><em>Photo via Wikimedia
+        Commons</em></p>\",\"url\":\"https://www.benzinga.com/news/24/02/37239259/nokia-and-nvidia-join-forces-to-transform-telecom-with-ai-driven-ran-technology\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/NVDA-Chip_3.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/NVDA-Chip_3.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/NVDA-Chip_3.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"NOK\"},{\"name\":\"NVDA\"},{\"name\":\"SSNLF\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"}]},{\"id\":37237785,\"author\":\"Neil Dennis\",\"created\":\"Wed,
+        21 Feb 2024 11:08:13 -0400\",\"updated\":\"Wed, 21 Feb 2024 11:09:34 -0400\",\"title\":\"Amazon
+        To Join Dow Jones Industrial Average: Does Venerable Index Membership Still
+        Matter?\",\"teaser\":\"Including Amazon in the &#34;venerable index&#34; would
+        have meant something years ago, according to investor Scott Nations. Not anymore.\",\"body\":\"<p><strong>Amazon
+        Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>)
+        is set to join the Dow Jones Industrial Average (DJIA) on Monday, Feb. 26.</p>\\n\\n\\n\\n<p>The
+        Seattle-based e-commerce giant is replacing pharmacy company <strong>Walgreens
+        Boots Alliance Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/WBA#NASDAQ\\\">WBA</a>).
+        In recent years, Walgreens has seen its shares <a href=\\\"https://www.thestreet.com/retail/amazon-and-jeff-bezos-are-joining-one-of-the-most-exclusive-clubs\\\">plummet</a>
+        28.4% in 2022; 30.1% in 2023; and 14.6% in 2024.</p>\\n\\n\\n\\n<p>Amazon
+        stock tumbled 51% in 2022 but came <a href=\\\"https://www.trefis.com/stock/amzn/articles/553936/up-more-than-100-since-the-start-of-2023-where-is-amazon-stock-headed/2024-02-20\\\">roaring</a>
+        back more than 100% since the beginning of 2023. Now it&#8217;s on deck to
+        join DJIA \u2014 the so-called &#8220;venerable index.&#8221;</p>\\n\\n\\n\\n<p>As
+        one of Wall Street&#8217;s oldest stock indicators, the DJIA doesn&#8217;t
+        get shaken up often. The last member to join was Walgreens in 2018 when it
+        replaced  <strong>General Electric</strong>, which enjoyed a 111-year tenure.
+        Still, membership carries a certain prestige. Or does it?</p>\\n\\n\\n\\n<p>&#8220;I
+        remember when this would have mattered,&#8221; <strong>Scott Nations</strong>,
+        founder of Nations Indexes, <a href=\\\"https://twitter.com/ScottNations/status/1760085244659585317\\\">said</a>
+        on social media following the announcement.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">I remember when this would have mattered.
+        <br><br>Amazon Is Joining the Dow Jones Industrial Average <a href=\\\"https://t.co/5aZkfbCCDI\\\">https://t.co/5aZkfbCCDI</a></p>&mdash;
+        Scott Nations (@ScottNations) <a href=\\\"https://twitter.com/ScottNations/status/1760085244659585317?ref_src=twsrc%5Etfw\\\">February
+        20, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>So, does membership
+        of this elite club still matter?</p>\\n\\n\\n\\n<p><em>Also Read: <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/24/02/37230758/amazon-replacing-walgreens-in-dow-jones-industrial-might-not-be-a-great-thing-will-\\\">Amazon
+        Replacing Walgreens In Dow Jones Industrial Might Not Be A Great Thing &#8211;
+        &#8216;Will History Repeat Itself?&#8217;</a></em></p>\\n\\n\\n\\n<p>To be
+        selected, companies have to meet certain criteria in terms of financial health
+        and stability, liquidity, industry leadership and relevance to the economy,
+        among others.</p>\\n\\n\\n\\n<p>It&#8217;s fair to say, then, that even though
+        companies are not included purely on market cap \u2014 as are indexes such
+        as the S&amp;P 500 \u2014 there must be a nod toward size and scale of operations.</p>\\n\\n\\n\\n<p>Another
+        is its visibility. The Dow is usually listed first among the U.S. stock indexes
+        in financial media, and it is followed by a broad range of investors and included
+        in index-tracking funds such as the <strong>SPDR Dow Jones Industrial Average
+        ETF Trust</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/DIA#NYSE\\\">DIA</a>).</p>\\n\\n\\n\\n<p>If
+        the index components are not selected on market cap, why Amazon? See the chart
+        below.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-image size-full\\\"><img
+        loading=\\\"lazy\\\" decoding=\\\"async\\\" width=\\\"750\\\" height=\\\"650\\\"
+        src=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/21091301/newplot-94.png\\\"
+        alt=\\\"\\\" class=\\\"wp-image-223634\\\" srcset=\\\"https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/21091301/newplot-94.png
+        750w,https://editorial-assets.benzinga.com/wp-content/uploads/2024/02/21091301/newplot-94-300x260.png
+        300w\\\" sizes=\\\"(max-width: 750px) 100vw, 750px\\\" /></figure>\\n\\n\\n\\n<h2
+        class=\\\"wp-block-heading\\\">Consumer Retail Or Big Tech?</h2>\\n\\n\\n\\n<p>&#8220;Reflecting
+        the evolving nature of the American economy, this change will increase consumer
+        retail exposure as well as other business areas in the DJIA,&#8221; the S&amp;P
+        Dow Jones Indices said in the announcement. </p>\\n\\n\\n\\n<p>The move was
+        prompted by retailer <strong>Walmart</strong>&#8216;s (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/WMT#NYSE\\\">WMT</a>) decision to
+        conduct a 3:1 stock split. This reduced the retailer&#8217;s share price and
+        weighting on the index, but Walmart remains a member.</p>\\n\\n\\n\\n<p>But
+        Amazon&#8217;s entry brings new opportunity \u2014 or risk \u2014 depending
+        on how stocks perform in the coming months.</p>\\n\\n\\n\\n<p>It now joins
+        <strong>Apple Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        and <strong>Microsoft Corporation</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>) \u2014 fellow
+        members of the prestigious Magnificent 7 technology giants \u2014 along with
+        other tech heavyweights <strong>IBM </strong>(NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/IBM#NYSE\\\">IBM</a>), <strong>Cisco
+        Systems Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/CSCO#NASDAQ\\\">CSCO</a>)
+        and <strong>Intel Corporation</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/INTC#NASDAQ\\\">INTC</a>).</p>\\n\\n\\n\\n<p>Just
+        look what the <a href=\\\"https://www.benzinga.com/markets/equities/23/12/36325391/magnificent-7-widens-gap-with-rest-of-s-p-500-but-that-may-change-in-2024\\\">Magnificent
+        7 did for the S&amp;P 500 last year</a>. The Mag7 stocks were responsible
+        for more than half of the S&amp;P 500&#8217;s 24% gain over 2023. Taken together,
+        they climbed 75% while the other 493 stocks managed just a 12% rally.</p>\\n\\n\\n\\n<p>Plus,
+        the Dow doesn&#8217;t hold <strong>Tesla Inc</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>) which has
+        fallen 22% in 2024, subtracting from the Mag7&#8217;s gains this year. </p>\\n\\n\\n\\n<p>It&#8217;s
+        arguable, then, whether Amazon should be a member of the Dow Industrials or
+        better for the Dow Industrials to have Amazon, alongside its tech-heavyweight
+        peers, as a member.</p>\\n\\n\\n\\n<h2 class=\\\"wp-block-heading\\\">History
+        Repeating Itself?</h2>\\n\\n\\n\\n<p>On more point to make following comments
+        on CNBC&#8217;s last call on Tuesday night by host Brian Sullivan, who suggested
+        the performances by Apple and Microsoft were not that impressive when they
+        first joined the DJIA.</p>\\n\\n\\n\\n<p>For Apple, the first two years after
+        joining DJIA was \\\"dead money\\\" while Microsoft saw a flat stock for almost
+        15 years on the index. He added: &#8220;Will history repeat itself?&#8221;</p>\\n\\n\\n\\n<p>It&#8217;s
+        impossible to predict, but two points need to be made here. First both Apple
+        and Microsoft, as per the selection criteria, gained their places exactly
+        because their share prices were stable and they were leaders in their industry.
+        Second, share price performance is a factor of earnings growth, not the membership
+        of a particular club \u2014 however influential it may be.</p>\\n\\n\\n\\n<p><strong>Price
+        Action</strong>: Walgreens&#8217; stock fell 64% since it was included in
+        the DJIA. At market close on Tuesday, ahead of the announcement, shares in
+        the healthcare retailer closed up 1.5%. It&#8217;s currently trading at $21.44
+        \u2014 down 3.9%. </p>\\n\\n\\n\\n<p>On the last check, Amazon was trading
+        at $169.69 per share \u2014 up 1.56%.</p>\\n\\n\\n\\n<p><em>Now Read: <a href=\\\"https://www.benzinga.com/markets/equities/23/12/36325391/magnificent-7-widens-gap-with-rest-of-s-p-500-but-that-may-change-in-2024\\\">&#8216;Magnificent
+        7&#8217; Widens Gap With Rest Of S&amp;P 500, But That May Change In 2024</a></em></p>\\n\\n\\n\\n<p><em>Image:
+        Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/markets/equities/24/02/37237785/amazon-to-join-dow-jones-industrial-average-does-venerable-index-membership-still-matter\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/Amazon-Photo-by-Sundry-Photography-on-Sh_6.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/Amazon-Photo-by-Sundry-Photography-on-Sh_6.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/Amazon-Photo-by-Sundry-Photography-on-Sh_6.jpeg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"Large
+        Cap\"},{\"name\":\"News\"},{\"name\":\"Broad U.S. Equity ETFs\"},{\"name\":\"Events\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"},{\"name\":\"ETFs\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"CSCO\"},{\"name\":\"DIA\"},{\"name\":\"IBM\"},{\"name\":\"INTC\"},{\"name\":\"MSFT\"},{\"name\":\"TSLA\"},{\"name\":\"WBA\"},{\"name\":\"WMT\"}],\"tags\":[{\"name\":\"Consumer
+        Tech\"},{\"name\":\"e-commerce\"},{\"name\":\"Expert Ideas\"},{\"name\":\"magnificent
+        7\"},{\"name\":\"Magnificent Seven\"},{\"name\":\"Stories That Matter\"}]},{\"id\":37236628,\"author\":\"Rounak
+        Jain\",\"created\":\"Wed, 21 Feb 2024 10:23:05 -0400\",\"updated\":\"Wed,
+        21 Feb 2024 10:23:06 -0400\",\"title\":\"ChatGPT Goes Off The Rails: OpenAI's
+        Chatbot Spews Nonsensical Walls Of Gibberish Text\",\"teaser\":\"OpenAI&#39;s
+        ChatGPT has gone off the rails once again, and this time, it is posting walls
+        of gibberish that has left users confused.\",\"body\":\"<p><strong>OpenAI's
+        <a href=\\\"https://www.benzinga.com/topic/chatgpt\\\">ChatGPT</a></strong>
+        has gone off the rails once again, and this time, posting walls of gibberish
+        have left users confused. Some have taken to social media to explain their
+        struggles with the chatbot, while others are left scratching their heads.</p>\\n\\n\\n\\n<p><strong>What
+        Happened:</strong> ChatGPT experienced a period of \\\"unexpected responses,\\\"
+        like <strong>Microsoft Corp.-backed</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>) OpenAI terms
+        it. The result was a seemingly unending series of posts on social media with
+        confused users asking if this is where AI chatbots stop making sense.</p>\\n\\n\\n\\n<p>One
+        user <a href=\\\"https://www.reddit.com/r/ChatGPT/comments/1avv8w7/yo_gpt4_just_went_full_hallucination_mode_on_me/\\\">asked</a>
+        ChatGPT for a recipe for a certain dish, but the chatbot went on what reads
+        like a long rant.</p>\\n\\n\\n\\n<p>\\\"Forsake the new fruition morsel in
+        your beloved cookery, from steeps to barbicans, maffling, or reciprocally
+        as a fender or rumpus.\\\"</p>\\n\\n\\n\\n<p><em>See Also: <a href=\\\"https://www.benzinga.com/news/24/02/37233234/gemini-is-a-joke-googles-ai-chatbot-doesnt-even-know-how-its-own-founders-larry-page-and-sergey-brin\\\">&#8216;Gemini
+        Is A Joke:&#8217; Google&#8217;s AI Chatbot Doesn&#8217;t Even Know How Its
+        Own Founders Larry Page And Sergey Brin Look Like</a></em></p>\\n\\n\\n\\n<p>Some
+        users joked that this is a result of Reddit Inc. licensing its user data to
+        an unnamed AI company for $60 million, although it is worth noting that this
+        is a tongue-in-cheek remark.</p>\\n\\n\\n\\n<p>When asked to do the math,
+        ChatGPT returned with another long speech.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">\\\"I just asked it to assist with some math
+        and\u2026\\\" <a href=\\\"https://t.co/7ow78OdqFa\\\">pic.twitter.com/7ow78OdqFa</a></p>&mdash;
+        sean mcguire (@seanw_m) <a href=\\\"https://twitter.com/seanw_m/status/1760133466375536895?ref_src=twsrc%5Etfw\\\">February
+        21, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>In another
+        funny instance, ChatGPT used \\\"Spanglish\\\" \u2013 a mix of Spanish and
+        English. By the end of it, ChatGPT kept repeating, \\\"It is \u2013 and it
+        is.\\\"</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed is-type-rich is-provider-twitter
+        wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">\\\"I just asked it to assist with some math
+        and\u2026\\\" <a href=\\\"https://t.co/7ow78OdqFa\\\">pic.twitter.com/7ow78OdqFa</a></p>&mdash;
+        sean mcguire (@seanw_m) <a href=\\\"https://twitter.com/seanw_m/status/1760133466375536895?ref_src=twsrc%5Etfw\\\">February
+        21, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>At one point,
+        ChatGPT <a href=\\\"https://www.reddit.com/r/ChatGPT/comments/1avyr09/comment/kre50ku/\\\">wanted</a>
+        to play football with one of its users.</p>\\n\\n\\n\\n<p>Another user <a
+        href=\\\"https://www.reddit.com/r/ChatGPT/comments/1avyr09/comment/krdsyzu/\\\">reported</a>
+        that ChatGPT started talking in German and another \\\"fantasy language.\\\"</p>\\n\\n\\n\\n<p>OpenAI
+        acknowledged the problem. \\\"We are investigating reports of unexpected responses
+        from ChatGPT.\\\"</p>\\n\\n\\n\\n<p>Although it notes that the problem has
+        been fixed, the company continues monitoring the situation.</p>\\n\\n\\n\\n<p><strong>Why
+        It Matters:</strong> Hallucinations \u2013 like the one above \u2013 have
+        been a problem with AI chatbots. However, ChatGPT hasn't had these issues
+        in quite a while. The most recent episode of this hallucination was during
+        the early days of ChatGPT 3.</p>\\n\\n\\n\\n<p>For now, though, OpenAI has
+        fixed the problem.</p>\\n\\n\\n\\n<p><em>Check out more of Benzinga&#8217;s
+        Consumer Tech coverage by&nbsp;<a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">following this link</a>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next: <a href=\\\"https://www.benzinga.com/news/24/02/37231141/marc-andreessen-warns-of-draconian-censorship-and-bias-in-ai-chatbots-elon-musk-vows-grok-will-hew-t\\\">Marc
+        Andreessen Warns Of &#8216;Draconian Censorship&#8217; And &#8216;Bias&#8217;
+        In AI Chatbots: Elon Musk Vows Grok Will &#8216;Hew To the Truth&#8217;</a></em></p>\\n\\n\\n\\n<p><em>Photo
+        courtesy: Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/news/24/02/37236628/chatgpt-goes-off-the-rails-openais-chatbot-spews-nonsensical-walls-of-gibberish-text\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/OpenAI--ChatGPT-logos-_5.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/OpenAI--ChatGPT-logos-_5.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/OpenAI--ChatGPT-logos-_5.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Social
+        Media\"},{\"name\":\"Top Stories\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"ChatGPT\"},{\"name\":\"Consumer Tech\"},{\"name\":\"OpenAi\"},{\"name\":\"Software
+        &amp; Apps\"}]},{\"id\":37235901,\"author\":\"Benzinga Newsdesk\",\"created\":\"Wed,
+        21 Feb 2024 10:01:00 -0400\",\"updated\":\"Wed, 21 Feb 2024 10:01:01 -0400\",\"title\":\"Apple
+        Introduces Apple Sports\",\"teaser\":\"The free app for iPhone delivers real-time
+        scores, stats, and more, all designed for speed and simplicity\",\"body\":\"<p><i>The
+        free app for iPhone delivers real-time scores, stats, and more, all designed
+        for speed and simplicity</i></p>\",\"url\":\"https://www.benzinga.com/news/24/02/37235901/apple-introduces-apple-sports\",\"image\":[],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[]},{\"id\":37234514,\"author\":\"Rounak
+        Jain\",\"created\":\"Wed, 21 Feb 2024 09:17:07 -0400\",\"updated\":\"Wed,
+        21 Feb 2024 09:17:08 -0400\",\"title\":\"Famous iPhone Hacker Says He Is Not
+        Switching Back To Apple's Device Over Its App Store 'Tantrum'\",\"teaser\":\"Famous
+        iPhone hacker George Hotz has sworn off Apple&#39;s smartphone following its
+        recent App Store changes in the EU.\",\"body\":\"<p>Famous iPhone hacker <strong>George
+        Hotz</strong> has sworn off <strong>Apple Inc.'s</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>) smartphone
+        following the <strong>Tim Cook-led</strong> company's recent changes in its
+        <a href=\\\"https://www.benzinga.com/top-stories/24/01/36733341/critics-slam-apple-as-enemy-number-1-for-alienating-developers-with-steep-27-app-store-commission\\\">App
+        Store policies</a> in the European Union.</p>\\n\\n\\n\\n<p><strong>What Happened:</strong>
+        Hotz, also known as \\\"geohot\\\" has announced that he has switched to rival
+        <strong>Samsung Electronics Co Ltd.'s</strong> (OTCPK: SSNLF) <strong>Galaxy
+        Z Fold 5</strong>, and that he doesn't think he will switch back to Apple's
+        iPhones.</p>\\n\\n\\n\\n<p>\\\"I&#8217;ve been using a Z Fold 5 for 3 months
+        now. Apps from websites, ad block, background YouTube, WebGPU, termux&#8230;it&#8217;s
+        way better. A phone that doesn&#8217;t feel rented. Doubt I&#8217;ll switch
+        back.\\\"</p>\\n\\n\\n\\n<p>Hotz is known for his \\\"blackra1n\\\" iPhone
+        jailbreak and also for his famous <strong>PlayStation 3</strong> hack that
+        resulted in a lawsuit from <strong>Sony</strong>.</p>\\n\\n\\n\\n<p><em>See
+        Also: <a href=\\\"https://www.benzinga.com/markets/equities/24/02/37230422/us-supreme-court-just-saved-apple-503m-after-putting-an-end-to-a-14-year-long-legal-battle\\\">US
+        Supreme Court Just Saved Apple $503M After Putting An End To A 14-Year-Long
+        Legal Battle</a></em></p>\\n\\n\\n\\n<p>Hotz called Apple a \\\"bunch of clowns
+        with their App Store, and now with the PWA tantrum.\\\"</p>\\n\\n\\n\\n<figure
+        class=\\\"wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div
+        class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote class=\\\"twitter-tweet\\\"
+        data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p lang=\\\"en\\\" dir=\\\"ltr\\\">Apple
+        are a bunch of &#x1f921; with their App Store, and now with the PWA tantrum.<br><br>I&#39;ve
+        been using a Z Fold 5 for 3 months now. Apps from websites, ad block, background
+        YouTube, WebGPU, termux&#8230;it&#39;s way better. A phone that doesn&#39;t
+        feel rented.<br><br>Doubt I&#39;ll switch back.</p>&mdash; George Hotz &#x1f311;
+        (@realGeorgeHotz) <a href=\\\"https://twitter.com/realGeorgeHotz/status/1760260871224250864?ref_src=twsrc%5Etfw\\\">February
+        21, 2024</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>Hotz is referring
+        to Apple's recent decisions for EU users. More specifically, even though Apple
+        complied with the EU's demands to allow sideloading of apps via third-party
+        app stores and also allow alternative payment methods, <a href=\\\"https://www.benzinga.com/news/24/01/36805331/apples-alternative-app-store-model-in-the-eu-could-potentially-cost-meta-others-millions-of-dollars\\\">developers
+        could end up paying millions of dollars to Apple</a>.</p>\\n\\n\\n\\n<p>Apple
+        has purposefully changed how progressive web apps (PWA) work for EU users.
+        Citing security concerns, Apple <a href=\\\"https://www.benzinga.com/news/24/02/37175665/apple-latest-ios-17-4-update-limits-progressive-web-apps-in-eu-citing-user-security\\\">hindered
+        their functionality</a>.</p>\\n\\n\\n\\n<p><strong>Why It Matters:</strong>
+        Apple has been <a href=\\\"https://www.benzinga.com/news/24/02/36905935/apple-faces-backlash-as-zuckerberg-microsoft-spotify-and-epic-games-unite-against-eu-app-store-propo\\\">criticized
+        by several leading tech personalities</a>, including <strong>Spotify Technology
+        SA</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPOT#NYSE\\\">SPOT</a>)
+        CEO <strong>Daniel Ek</strong> as well as Epic Games CEO <strong>Tim Sweeney</strong>,
+        apart from <strong>Meta Platforms Inc.'s</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>) <strong>Mark
+        Zuckerberg</strong> as well as <strong>Microsoft Corp.'s</strong> (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        <strong>Xbox</strong> President <strong>Sarah Bond</strong>.</p>\\n\\n\\n\\n<p>Apple
+        has also been at the center of another controversy \u2013&nbsp;<strong>Epic
+        Games</strong>&nbsp;CEO&nbsp;<strong>Tim Sweeney</strong>&nbsp;<a href=\\\"https://www.benzinga.com/news/24/01/36867320/epic-games-accuses-apple-of-non-compliance-of-court-order-on-alternative-payment-options\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">accused</a>&nbsp;the
+        iPhone maker of non-compliance with court orders related to&nbsp;<a href=\\\"https://www.benzinga.com/top-stories/24/01/36733341/critics-slam-apple-as-enemy-number-1-for-alienating-developers-with-steep-27-app-store-commission\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">alternative payment
+        options</a>&nbsp;for apps and games on iOS.</p>\\n\\n\\n\\n<p>Critics have
+        also called it the\_<a href=\\\"https://www.benzinga.com/top-stories/24/01/36733341/critics-slam-apple-as-enemy-number-1-for-alienating-developers-with-steep-27-app-store-commission\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">&#8220;enemy #1&#8221;</a>\_for
+        its App Store-related decisions.</p>\\n\\n\\n\\n<p><em>Check out more of Benzinga's
+        Consumer Tech coverage by&nbsp;<a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">following this link</a>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next: <a href=\\\"https://www.benzinga.com/news/24/02/37213677/apples-hardware-reliability-tops-the-charts-while-ipad-flounders-in-cupertinos-2023-in-review-survey\\\">Apple&#8217;s
+        &#8216;Hardware Reliability&#8217; Tops The Charts While iPad Flounders In
+        Cupertino&#8217;s 2023 In Review: Survey</a></em></p>\\n\\n\\n\\n<p><em>Photo
+        by James Yarema on Unsplash</em></p>\",\"url\":\"https://www.benzinga.com/news/24/02/37234514/famous-iphone-hacker-says-he-is-not-switching-back-to-apples-device-over-its-app-store-tantrum\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2024/Apple-App-Store_4.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2024/Apple-App-Store_4.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2024/Apple-App-Store_4.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Social
+        Media\"},{\"name\":\"Top Stories\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"SPOT\"},{\"name\":\"SSNLF\"}],\"tags\":[{\"name\":\"App
+        Store\"},{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Digital markets Act\"},{\"name\":\"Geohot\"},{\"name\":\"George
+        Hotz\"},{\"name\":\"People In Tech\"}]}]\n"
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 22 Feb 2024 20:00:45 GMT
+      Etag:
+      - ToTAH6HiGMQwxlCZSrFpgdFIXSghpfObRSYXQWBj3O0=
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/2.8.3, 1.1 58b8655e3ea662bad02cac6b9d4c88ba.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - vMqiJAFSSVXshV5XUlIO_lSB8VXMuF4k8Lz6gEqlALQZupPEvY2N-g==
+      X-Amz-Cf-Pop:
+      - SEA19-C3
+      X-Bz-Request-Id:
+      - 192.168.224.127-8000-39-319396222-32-1708632045.687
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '0'
+      X-Kong-Upstream-Latency:
+      - '57'
+      X-Powered-By:
+      - Pentium
+    status:
+      code: 200
+      message: OK
+version: 1

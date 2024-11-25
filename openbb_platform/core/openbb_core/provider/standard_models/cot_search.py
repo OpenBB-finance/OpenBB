@@ -18,7 +18,7 @@ class CotSearchQueryParams(QueryParams):
 class CotSearchData(Data):
     """Commitment of Traders Reports Search Data."""
 
-    code: str = Field(description="CFTC Code of the report.")
+    code: str = Field(description="CFTC market contract code of the report.")
     name: str = Field(description="Name of the underlying asset.")
     category: Optional[str] = Field(
         default=None, description="Category of the underlying asset."

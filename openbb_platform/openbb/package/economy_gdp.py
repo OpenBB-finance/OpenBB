@@ -3,10 +3,10 @@
 import datetime
 from typing import Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -21,54 +21,43 @@ class ROUTER_economy_gdp(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def forecast(
         self,
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(
-                description="Time period of the data to return. Units for nominal GDP period. Either quarter or annual."
-            ),
-        ] = "annual",
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
             ),
         ] = None,
-        type: Annotated[
-            Literal["nominal", "real"],
-            OpenBBCustomParameter(
-                description="Type of GDP to get forecast of. Either nominal or real."
-            ),
-        ] = "real",
-        provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
-        """Forecasted GDP Data.
+        """Get Forecasted GDP Data.
 
         Parameters
         ----------
-        period : Literal['quarter', 'annual']
-            Time period of the data to return. Units for nominal GDP period. Either quarter or annual.
-        start_date : Optional[datetime.date]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        type : Literal['nominal', 'real']
-            Type of GDP to get forecast of. Either nominal or real.
         provider : Optional[Literal['oecd']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'oecd' if there is
-            no default.
-        country : Literal['argentina', 'asia', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_17', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'non-oecd', 'norway', 'oecd_total', 'peru', 'poland', 'portugal', 'romania', 'russia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'world']
-            Country to get GDP for. (provider: oecd)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+        country : str
+            Country, or countries, to get forward GDP projections for. Default is all. Multiple comma separated items allowed. (provider: oecd)
+        frequency : Literal['annual', 'quarter']
+            Frequency of the data, default is annual. (provider: oecd)
+        units : Literal['current_prices', 'volume', 'capita', 'growth', 'deflator']
+            Units of the data, default is volume (chain linked volume, 2015).
+        'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent; 'deflator' as an index. (provider: oecd)
 
         Returns
         -------
@@ -81,200 +70,420 @@ class ROUTER_economy_gdp(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         GdpForecast
         -----------
-        date : Optional[date]
+        date : date
             The date of the data.
-        value : Optional[float]
-            Nominal GDP value on the date.
+        country : str
+            None
+        value : Union[int, float]
+            Forecasted GDP value for the country and date.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.economy.gdp.forecast(period="annual", type="real")
+        >>> obb.economy.gdp.forecast(provider='oecd')
+        >>> obb.economy.gdp.forecast(country='united_states,germany,france', frequency='annual', units='capita', provider='oecd')
         """  # noqa: E501
 
         return self._run(
             "/economy/gdp/forecast",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.gdp.forecast",
+                        ("oecd",),
+                    )
                 },
                 standard_params={
-                    "period": period,
                     "start_date": start_date,
                     "end_date": end_date,
-                    "type": type,
                 },
                 extra_params=kwargs,
+                info={
+                    "country": {
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "argentina",
+                                "asia",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "brazil",
+                                "bulgaria",
+                                "canada",
+                                "chile",
+                                "china",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "peru",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "other_major_oil_producers",
+                                "rest_of_the_world",
+                                "world",
+                                "all",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
+    @exception_handler
     @validate
     def nominal(
         self,
-        units: Annotated[
-            Literal["usd", "usd_cap"],
-            OpenBBCustomParameter(
-                description="The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita."
-            ),
-        ] = "usd",
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["econdb", "oecd"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd."
             ),
         ] = None,
-        provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
-        """Nominal GDP Data.
+        """Get Nominal GDP Data.
 
         Parameters
         ----------
-        units : Literal['usd', 'usd_cap']
-            The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.
-        start_date : Optional[datetime.date]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['oecd']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'oecd' if there is
-            no default.
-        country : Literal['australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'colombia', 'costa_rica', 'czech_republic', 'denmark', 'estonia', 'euro_area', 'european_union', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'russia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states']
-            Country to get GDP for. (provider: oecd)
+        provider : Optional[Literal['econdb', 'oecd']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
+        country : str
+            The country to get data.Use 'all' to get data for all available countries. Multiple comma separated items allowed. (provider: econdb, oecd)
+        use_cache : bool
+            If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
+        frequency : Literal['quarter', 'annual']
+            Frequency of the data. (provider: oecd)
+        units : Literal['level', 'index', 'capita']
+            The unit of measurement for the data.Both 'level' and 'capita' (per) are measured in USD. (provider: oecd)
+        price_base : Literal['current_prices', 'volume']
+            Price base for the data, volume is chain linked volume. (provider: oecd)
 
         Returns
         -------
         OBBject
             results : List[GdpNominal]
                 Serializable results.
-            provider : Optional[Literal['oecd']]
+            provider : Optional[Literal['econdb', 'oecd']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         GdpNominal
         ----------
-        date : Optional[date]
+        date : date
             The date of the data.
-        value : Optional[float]
-            Nominal GDP value on the date.
+        country : Optional[str]
+            The country represented by the GDP value.
+        value : Union[int, float]
+            GDP value for the country and date.
+        nominal_growth_qoq : Optional[float]
+            Nominal GDP growth rate quarter over quarter. (provider: econdb)
+        nominal_growth_yoy : Optional[float]
+            Nominal GDP growth rate year over year. (provider: econdb)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.economy.gdp.nominal(units="usd")
+        >>> obb.economy.gdp.nominal(provider='oecd')
+        >>> obb.economy.gdp.nominal(units='capita', country='all', frequency='annual', provider='oecd')
         """  # noqa: E501
 
         return self._run(
             "/economy/gdp/nominal",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.gdp.nominal",
+                        ("econdb", "oecd"),
+                    )
                 },
                 standard_params={
-                    "units": units,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={
+                    "country": {
+                        "econdb": {"multiple_items_allowed": True, "choices": None},
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "oecd",
+                                "oecd_26",
+                                "oecd_europe",
+                                "g7",
+                                "g20",
+                                "euro_area",
+                                "european_union_27",
+                                "european_union_15",
+                                "nafta",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "bulgaria",
+                                "brazil",
+                                "canada",
+                                "chile",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "all",
+                            ],
+                        },
+                    }
+                },
             )
         )
 
+    @exception_handler
     @validate
     def real(
         self,
-        units: Annotated[
-            Literal["idx", "qoq", "yoy"],
-            OpenBBCustomParameter(
-                description="The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)"
-            ),
-        ] = "yoy",
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["econdb", "oecd"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd."
             ),
         ] = None,
-        provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
-        """Real GDP Data.
+        """Get Real GDP Data.
 
         Parameters
         ----------
-        units : Literal['idx', 'qoq', 'yoy']
-            The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)
-        start_date : Optional[datetime.date]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['oecd']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'oecd' if there is
-            no default.
-        country : Literal['G20', 'G7', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_19', 'europe', 'european_union_27', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'oecd_total', 'poland', 'portugal', 'romania', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states']
-            Country to get GDP for. (provider: oecd)
+        provider : Optional[Literal['econdb', 'oecd']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
+        country : str
+            The country to get data.Use 'all' to get data for all available countries. Multiple comma separated items allowed. (provider: econdb, oecd)
+        use_cache : bool
+            If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
+        frequency : Literal['quarter', 'annual']
+            Frequency of the data. (provider: oecd)
 
         Returns
         -------
         OBBject
             results : List[GdpReal]
                 Serializable results.
-            provider : Optional[Literal['oecd']]
+            provider : Optional[Literal['econdb', 'oecd']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         GdpReal
         -------
-        date : Optional[date]
+        date : date
             The date of the data.
-        value : Optional[float]
-            Nominal GDP value on the date.
+        country : Optional[str]
+            The country represented by the GDP value.
+        value : Union[int, float]
+            GDP value for the country and date.
+        real_growth_qoq : Optional[float]
+            Real GDP growth rate quarter over quarter. (provider: econdb)
+        real_growth_yoy : Optional[float]
+            Real GDP growth rate year over year. (provider: econdb)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.economy.gdp.real(units="yoy")
+        >>> obb.economy.gdp.real(provider='oecd')
+        >>> obb.economy.gdp.real(country='united_states,germany,japan', provider='econdb')
         """  # noqa: E501
 
         return self._run(
             "/economy/gdp/real",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.gdp.real",
+                        ("econdb", "oecd"),
+                    )
                 },
                 standard_params={
-                    "units": units,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={
+                    "country": {
+                        "econdb": {"multiple_items_allowed": True, "choices": None},
+                        "oecd": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "oecd",
+                                "oecd_26",
+                                "oecd_europe",
+                                "g7",
+                                "g20",
+                                "euro_area",
+                                "european_union_27",
+                                "european_union_15",
+                                "nafta",
+                                "argentina",
+                                "australia",
+                                "austria",
+                                "belgium",
+                                "bulgaria",
+                                "brazil",
+                                "canada",
+                                "chile",
+                                "colombia",
+                                "costa_rica",
+                                "croatia",
+                                "czech_republic",
+                                "denmark",
+                                "estonia",
+                                "finland",
+                                "france",
+                                "germany",
+                                "greece",
+                                "hungary",
+                                "iceland",
+                                "india",
+                                "indonesia",
+                                "ireland",
+                                "israel",
+                                "italy",
+                                "japan",
+                                "korea",
+                                "latvia",
+                                "lithuania",
+                                "luxembourg",
+                                "mexico",
+                                "netherlands",
+                                "new_zealand",
+                                "norway",
+                                "poland",
+                                "portugal",
+                                "romania",
+                                "russia",
+                                "saudi_arabia",
+                                "slovak_republic",
+                                "slovenia",
+                                "south_africa",
+                                "spain",
+                                "sweden",
+                                "switzerland",
+                                "turkey",
+                                "united_kingdom",
+                                "united_states",
+                                "all",
+                            ],
+                        },
+                    }
+                },
             )
         )

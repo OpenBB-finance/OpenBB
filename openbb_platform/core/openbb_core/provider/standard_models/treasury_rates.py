@@ -1,6 +1,5 @@
 """Treasury Rates Standard Model."""
 
-
 from datetime import date as dateType
 from typing import Optional
 
@@ -28,18 +27,71 @@ class TreasuryRatesQueryParams(QueryParams):
 
 
 class TreasuryRatesData(Data):
-    """Treasury Rates Data."""
+    """Treasury Rates Data. All fields are expressed as a normalized percent - 1% = 0.01."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    month_1: Optional[float] = Field(description="1 month treasury rate.", default=None)
-    month_2: Optional[float] = Field(description="2 month treasury rate.", default=None)
-    month_3: Optional[float] = Field(description="3 month treasury rate.", default=None)
-    month_6: Optional[float] = Field(description="6 month treasury rate.", default=None)
-    year_1: Optional[float] = Field(description="1 year treasury rate.", default=None)
-    year_2: Optional[float] = Field(description="2 year treasury rate.", default=None)
-    year_3: Optional[float] = Field(description="3 year treasury rate.", default=None)
-    year_5: Optional[float] = Field(description="5 year treasury rate.", default=None)
-    year_7: Optional[float] = Field(description="7 year treasury rate.", default=None)
-    year_10: Optional[float] = Field(description="10 year treasury rate.", default=None)
-    year_20: Optional[float] = Field(description="20 year treasury rate.", default=None)
-    year_30: Optional[float] = Field(description="30 year treasury rate.", default=None)
+    week_4: Optional[float] = Field(
+        default=None,
+        description="4 week Treasury bills rate (secondary market).",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    month_1: Optional[float] = Field(
+        description="1 month Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    month_2: Optional[float] = Field(
+        description="2 month Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    month_3: Optional[float] = Field(
+        description="3 month Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    month_6: Optional[float] = Field(
+        description="6 month Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    year_1: Optional[float] = Field(
+        description="1 year Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    year_2: Optional[float] = Field(
+        description="2 year Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    year_3: Optional[float] = Field(
+        description="3 year Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    year_5: Optional[float] = Field(
+        description="5 year Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    year_7: Optional[float] = Field(
+        description="7 year Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    year_10: Optional[float] = Field(
+        description="10 year Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    year_20: Optional[float] = Field(
+        description="20 year Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    year_30: Optional[float] = Field(
+        description="30 year Treasury rate.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )

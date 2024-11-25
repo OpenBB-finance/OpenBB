@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/DJIA:US/holdings?api_key=MOCK_API_KEY&page_size=10000
+  response:
+    body:
+      string: !!binary |
+        H4sIAE5J8mUAA8ybW1fi2BLHv0oWL+elTe/7xbcQIqAhiUlEdGYWi6NpmzUoHsCZ7tWrv/upQLgI
+        hsskKz0+mezaYbt/VNW/ascftedkOh08JdPa+W+1Wyv02l7z3HgYP7+Op8NZ0v8yfBoaw6nxmLxO
+        kofBLHk0jZtpYky/DiZJ/2E0mE4zm5fpLBk8mrU/PtW+jkePw5en9Jk/aoNpf/yl/whTa+c1ggg7
+        Q/QMqdqn2svgOb1347Vjp9FyLDduGc3QvwmMtmfD+Gz48GcymVu00svvr6m5c33Thqv3S4T79XoT
+        IRyJW/sSw/j2AncthtPhS/rwSGNKWIARSe9Ohg+185e30QgekTyOR+miNZZSCBgcjWELhuPFNLj+
+        MniAJSETpet5e00H5hfPg8mfyaz/12D0lvS/JqPH2rmQSkmqTcHhDx+nDxmMFgarObO3yXD2ffnp
+        /3sbvMzgOpuPGWE8tfs7GT59ncH2zucpJDdM316Gs+nOA16TSX++Haulvswmg4dZP/n2Opx8z9ik
+        k35+OoJXp22HfuRfxIbth8Emp050ER8NiscNxPeCWlqsQHHNNFYYMZ4DiiuFJS0GikslBKKmLpWT
+        UKpqTk3fbXQsz4gsuxV97FjN6GhcNpL3Yi+upcUKF1WY4SbgQjm4GJK6qF9xjomQxOTl+pVIn1ct
+        r5bfcYyGE/jxNqZW43ivCuNbud+rMosVJkYlkgLCn87DRBlBuiAmihV8jilLxkRJ1ZhsK3bCoO26
+        VrjNCYaOBxVcov3+tLRYgcIQ/QjFCOeFP6wQQbgYKKYohm9D2f7EJasaVGS5TnThh7azwynsHM2p
+        4Qbz734+p6XFipPUTAiXwpJyOAFDTnhBTpQpiakpysWEq5cTdsP3LLfxn2hXT9gnBL4YY3RATiws
+        1nJCIUw5+JPMkxMcQWgsyAkLSSUrO/AxXXl+6rYjK/WkM9u1osiwjKhlhU60Cax7NK7Qvrije3Et
+        LdYynSgibEV1jlvVSXDvIVYMF9VKY6FNVS6t6qOf1Wk63nbgg5ve8R7lee6BDJVZrBAhirEgGKE8
+        KYEIFUU9iiqtuVCle5T4BYycsG2DRHd6AXhSGgDf0eoFJ8gJRNkBObGwWMOCcgmD7tMkF5ZAihSE
+        BfWaRrzsspfKysupOLS6juuEKaUodazPccvZxBWHx4c/HmK0P/wtLVa4lGZYOoArr0shheaoYPEL
+        /osVQSYpG1f1xZTn3N06rgukYvddMeWfEAJ72NvfTFpabFRTiqdeNa9rP/YqxHjBaoooroWiZYdA
+        WnkErPtO22uCR207U906JfR1D/hSZrEOfVqiuQpXeZUUUqJoJQVyRTKdiupyIVFRNaV2vbPJJrs8
+        Dk5E9f7yaWmx9iCuCQwgnFc+IcR10S4fkRpTJEv3oOr7EZdBxw+bICLslhU5xu9vCPL2lpIAm6OJ
+        KTu097vT0mJNTAjCWyD7chsTGkFYLEhMKIx12X1ZinX1qs+69z3T9ju78vz+hNwUXLsHOn2ZxYbi
+        o/OCV+QVvAh+cNHcxLSE4Fm2ZxFduYawgsDd6R1ZVuCeUEKprjpQQi0sNkooqSjd40tQqBBeNDUx
+        Cs9RpiqZkarcmYLQt2MnXIa9ptWpA7NdPRE0j4fWZe6BlJVZrDt+jMj0YCpfmyPGita9hCiGFS/d
+        sWT1KctveZHvLaFll+8Slnd5gsRoXR+SGAuLdcKSUPmCxGB5Ip1JDl5YlJckVBCTlYyr8gOPltMN
+        gdZ2d9bu9o5mJOS9vf+wd2mxPu0QQgq2JxAqkBS8qKiAfIgYKrmLTnjlhVTHCe2rtfgz07Rlvuul
+        h1cn9NJtTg700hcWG710TekdVFR5tKRUihVszmIJpQGXZskBEFWetW4tNzYa7chz7j7IVTBwPKrr
+        1sWB4jezWKGCb6dQElRg3rE8ZCtJCh7LYy4xR6rk4IdV5dHPa1/NNaBxZrtGfROTd+UcH/+8+Gq/
+        Ry0tVpgEh+AnMFQoOZgEgxK5oKbADBNOmUnKxSQq787SzlbJ2+mc0KSIZe9QvFtYrLuxiksN8Q7n
+        ORHXXM4XWIQOpVIgXnK8w/xXxLuOFe6813LbOeF9iV5LH2CUWawPDCmGLQAPyjuN0lRoUrCUUlxA
+        2WPiAgqCfsAIVf9ei29bZ7bvWh9kpCv/BDXeuT5Q8mYWa6WnMUlb5iivLUGQELxgpFOg+UsX4+D/
+        VWNq+LfbbgS3jsRT97TQdN+JxtpirRcgBEE2z01E9VbPvlAFpZ1CkM60ycoNdUhX3iu325HtG9Fd
+        FDudaOfFo8g+3pNEyxYHNENmsfYkSWR6cEhobiMWCt+Cda1EHJOyRThSlZdMbS923J2qFu7aJwS7
+        C3HgHebMYuN0Q2EQbgjlyTomKCkq6wQRUs0Hy0Qkq3/lyAnb9/PWQ6dz47Xf+VL3/oTuw/Xdgf8J
+        yCw2XjaijHYxYrmHUBpBUCyGKZUOWJu6ZFcSlRdJPuiF0AisOyvtvmZdiNCxnXY3vbP5jthiIRk3
+        mBd+wC3b6h1ai/sLRovfd8ksLtZQFtentIQoIoqY9B8qhY3pW1h+QefOilp5W5+N/au2/oxhRcQ/
+        zSzr2Rsbf5buPKo8cDUue8ZNZCD6GfPPhBk21SjXCYLY+9eRIAJrIT/KIBtDh4AQLNlWfJrzoGWp
+        5tXeY177+cenWjL7Ujv/URvCh6e/9591PRj4ayzN0fi/g5HRMxrjvw2KDHv8VzJJHg17MBoZTnzx
+        TlVfttN3UNJN77+7eT4P8/NNn1+bwWbioFILZCko/2tbOJJvD18HL09J/3k+1QrtXu0nLC35Nuu/
+        Dp6WX6//AwAA//8DAMc4QPyTNwAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 14 Mar 2024 00:48:14 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

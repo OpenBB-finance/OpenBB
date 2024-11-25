@@ -1,3 +1,0 @@
-[info]email:[/info] test@email.com
-[info]uuid:[/info] test_uuid
-[info]sync:[/info] OFF

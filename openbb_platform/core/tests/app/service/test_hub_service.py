@@ -1,12 +1,16 @@
 """Test the hub_service.py module."""
+
 # pylint: disable=W0212
 # ruff: noqa: S105 S106
 
 
+from pathlib import Path
+from time import time
 from unittest.mock import MagicMock, patch
 
 import pytest
-from openbb_core.app.model.hub.features_keys import FeaturesKeys
+from jwt import encode
+from openbb_core.app.model.defaults import Defaults
 from openbb_core.app.service.hub_service import (
     Credentials,
     HubService,
@@ -22,6 +26,65 @@ def mocker():
     """Fixture for mocker."""
     with patch("openbb_core.app.service.hub_service.HubService") as mock:
         yield mock
+
+
+def test_v3tov4_map():
+    """Test v3 to v4 map."""
+
+    v3_keys = {
+        "databento": "API_DATABENTO_KEY",
+        "alpha_vantage": "API_KEY_ALPHAVANTAGE",
+        "fmp": "API_KEY_FINANCIALMODELINGPREP",
+        "nasdaq": "API_KEY_QUANDL",
+        "polygon": "API_POLYGON_KEY",
+        "fred": "API_FRED_KEY",
+        "news_api": "API_NEWS_TOKEN",
+        "biztoc": "API_BIZTOC_TOKEN",
+        "cmc": "API_CMC_KEY",
+        "finnhub": "API_FINNHUB_KEY",
+        "whale_alert": "API_WHALE_ALERT_KEY",
+        "glassnode": "API_GLASSNODE_KEY",
+        "coinglass": "API_COINGLASS_KEY",
+        "ethplorer": "API_ETHPLORER_KEY",
+        "cryptopanic": "API_CRYPTO_PANIC_KEY",
+        "crypto_panic": "API_CRYPTO_PANIC_KEY",  # If dev choses to use this name
+        "bitquery": "API_BITQUERY_KEY",
+        "smartstake": ["API_SMARTSTAKE_KEY", "API_SMARTSTAKE_TOKEN"],
+        "messari": "API_MESSARI_KEY",
+        "shroom": "API_SHROOM_KEY",
+        "santiment": "API_SANTIMENT_KEY",
+        "eodhd": "API_EODHD_KEY",
+        "tokenterminal": "API_TOKEN_TERMINAL_KEY",
+        "token_terminal": "API_TOKEN_TERMINAL_KEY",  # If dev choses to use this name
+        "intrinio": "API_INTRINIO_KEY",
+        "github": "API_GITHUB_KEY",
+        "reddit": [
+            "API_REDDIT_CLIENT_ID",
+            "API_REDDIT_CLIENT_SECRET",
+            "API_REDDIT_USERNAME",
+            "API_REDDIT_USER_AGENT",
+            "API_REDDIT_PASSWORD",
+        ],
+        "companies_house": "API_COMPANIESHOUSE_KEY",
+        "companieshouse": "API_COMPANIESHOUSE_KEY",  # If dev choses to use this name
+        "dappradar": "API_DAPPRADAR_KEY",
+        "nixtla": "API_KEY_NIXTLA",
+    }
+
+    providers = sorted(
+        [
+            p.stem
+            for p in Path("openbb_platform", "providers").glob("*")
+            if p.is_dir() and p.name not in ("__pycache__", "tests")
+        ]
+    )
+
+    for provider in providers:
+        if provider in v3_keys:
+            keys = v3_keys[provider]
+            keys_list = keys if isinstance(keys, list) else [keys]
+            for k in keys_list:
+                assert k.lower() in HubService.V3TOV4
 
 
 def test_connect_with_email_password():
@@ -172,31 +235,121 @@ def test_put_user_settings():
         )
 
 
-def test_hub2platform():
+def test_hub2platform_v4_only():
     """Test hub2platform."""
     mock_user_settings = MagicMock(spec=HubUserSettings)
-    mock_user_settings.features_keys = FeaturesKeys(
-        API_KEY_FINANCIALMODELINGPREP="fmp",
-        API_POLYGON_KEY="polygon",
-        API_FRED_KEY="fred",
-    )
+    mock_user_settings.features_keys = {
+        "fmp_api_key": "abc",
+        "polygon_api_key": "def",
+        "fred_api_key": "ghi",
+    }
+    mock_user_settings.features_settings = {}
 
-    credentials = HubService.hub2platform(mock_user_settings)
+    credentials, _ = HubService().hub2platform(mock_user_settings)
     assert isinstance(credentials, Credentials)
-    assert credentials.fmp_api_key.get_secret_value() == "fmp"
-    assert credentials.polygon_api_key.get_secret_value() == "polygon"
-    assert credentials.fred_api_key.get_secret_value() == "fred"
+    assert credentials.fmp_api_key.get_secret_value() == "abc"
+    assert credentials.polygon_api_key.get_secret_value() == "def"
+    assert credentials.fred_api_key.get_secret_value() == "ghi"
+
+
+def test_hub2platform_v3_only():
+    """Test hub2platform."""
+    mock_user_settings = MagicMock(spec=HubUserSettings)
+    mock_user_settings.features_keys = {
+        "api_key_financialmodelingprep": "abc",
+        "api_polygon_key": "def",
+        "api_fred_key": "ghi",
+    }
+    mock_user_settings.features_settings = {}
+
+    credentials, _ = HubService().hub2platform(mock_user_settings)
+    assert isinstance(credentials, Credentials)
+    assert credentials.fmp_api_key.get_secret_value() == "abc"
+    assert credentials.polygon_api_key.get_secret_value() == "def"
+    assert credentials.fred_api_key.get_secret_value() == "ghi"
+
+
+def test_hub2platform_v3v4():
+    """Test hub2platform."""
+    mock_user_settings = MagicMock(spec=HubUserSettings)
+    mock_user_settings.features_keys = {
+        "api_key_financialmodelingprep": "abc",
+        "fmp_api_key": "other_key",
+        "api_polygon_key": "def",
+        "api_fred_key": "ghi",
+    }
+    mock_user_settings.features_settings = {}
+
+    credentials, _ = HubService().hub2platform(mock_user_settings)
+    assert isinstance(credentials, Credentials)
+    assert credentials.fmp_api_key.get_secret_value() == "other_key"
+    assert credentials.polygon_api_key.get_secret_value() == "def"
+    assert credentials.fred_api_key.get_secret_value() == "ghi"
 
 
 def test_platform2hub():
     """Test platform2hub."""
-    mock_credentials = MagicMock(spec=Credentials)
-    mock_credentials.fmp_api_key = SecretStr("fmp")
-    mock_credentials.polygon_api_key = SecretStr("polygon")
-    mock_credentials.fred_api_key = SecretStr("fred")
+    mock_user_settings = MagicMock(spec=HubUserSettings)
+    mock_user_settings.features_keys = {  # Received from Hub
+        "api_key_financialmodelingprep": "abc",
+        "fmp_api_key": "other_key",
+        "api_fred_key": "ghi",
+    }
+    mock_user_settings.features_settings = {}
+    mock_hub_service = HubService()
+    mock_hub_service._hub_user_settings = mock_user_settings
+    mock_credentials = Credentials(  # Current credentials
+        fmp_api_key=SecretStr("fmp"),
+        polygon_api_key=SecretStr("polygon"),
+        fred_api_key=SecretStr("fred"),
+        benzinga_api_key=SecretStr("benzinga"),
+        some_api_key=SecretStr("some"),
+    )
+    mock_defaults = Defaults()
+    user_settings = mock_hub_service.platform2hub(mock_credentials, mock_defaults)
 
-    user_settings = HubService.platform2hub(mock_credentials)
     assert isinstance(user_settings, HubUserSettings)
-    assert user_settings.features_keys.API_KEY_FINANCIALMODELINGPREP == "fmp"
-    assert user_settings.features_keys.API_POLYGON_KEY == "polygon"
-    assert user_settings.features_keys.API_FRED_KEY == "fred"
+    assert user_settings.features_keys["api_key_financialmodelingprep"] == "fmp"
+    assert user_settings.features_keys["fmp_api_key"] == "other_key"
+    assert user_settings.features_keys["polygon_api_key"] == "polygon"
+    assert user_settings.features_keys["api_fred_key"] == "fred"
+    assert user_settings.features_keys["benzinga_api_key"] == "benzinga"
+    assert "some_api_key" not in user_settings.features_keys
+    assert "defaults" in user_settings.features_settings
+
+
+@pytest.mark.parametrize(
+    "offset, message",
+    [
+        # valid
+        (
+            100,
+            None,
+        ),
+        # expired
+        (
+            0,
+            "Platform personal access token expired.",
+        ),
+        # invalid
+        (None, "Failed to decode Platform token."),
+    ],
+)
+def test__check_token_expiration(offset, message):
+    """Test check token expiration function."""
+
+    token = (
+        encode(
+            {"some": "payload", "exp": int(time()) + offset},
+            "secret",
+            algorithm="HS256",
+        )
+        if offset is not None
+        else "invalid_token"
+    )
+
+    if message:
+        with pytest.raises(OpenBBError, match=message):
+            HubService._check_token_expiration(token)
+    else:
+        HubService._check_token_expiration(token)

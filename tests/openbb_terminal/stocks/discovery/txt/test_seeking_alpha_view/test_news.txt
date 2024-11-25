@@ -1,3 +1,0 @@
-      publishedAtDate                                                                           title                                                                                                                 url
-0 2023-03-23 13:31:59                        Microsoft-backed OpenAI adds support for ChatGPT plugins                      https://seekingalpha.com/news/3950553-microsoft-backed-openai-adds-support-for-chatgpt-plugins
-1 2023-03-23 13:26:05  EU regulators to focus on liquidity rules after Credit Suisse debacle - report  https://seekingalpha.com/news/3950552-eu-regulators-to-focus-on-liquidity-rules-after-credit-suisse-debacle-report

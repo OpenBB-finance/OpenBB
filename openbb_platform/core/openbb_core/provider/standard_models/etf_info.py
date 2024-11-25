@@ -1,6 +1,6 @@
 """ETF Info Standard Model."""
 
-from typing import List, Optional, Set, Union
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -19,11 +19,9 @@ class EtfInfoQueryParams(QueryParams):
 
     @field_validator("symbol")
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class EtfInfoData(Data):
@@ -31,4 +29,7 @@ class EtfInfoData(Data):
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", "") + " (ETF)")
     name: Optional[str] = Field(description="Name of the ETF.")
+    description: Optional[str] = Field(
+        default=None, description="Description of the fund."
+    )
     inception_date: Optional[str] = Field(description="Inception date of the ETF.")

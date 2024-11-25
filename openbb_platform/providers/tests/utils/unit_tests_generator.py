@@ -1,4 +1,5 @@
 """The unit test generator for the fetchers."""
+
 from datetime import date
 from pathlib import Path
 from typing import Any, Dict, Tuple

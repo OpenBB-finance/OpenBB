@@ -1,25 +1,18 @@
 """FRED Series Model."""
 
-import json
-import warnings
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional
 
-import pandas as pd
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_series import (
     SeriesData,
     SeriesQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    ClientSession,
-    amake_requests,
-    get_querystring,
-)
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class FredSeriesQueryParams(SeriesQueryParams):
@@ -31,68 +24,106 @@ class FredSeriesQueryParams(SeriesQueryParams):
         "end_date": "observation_end",
         "transform": "units",
     }
-    frequency: Literal[
-        None,
-        "a",
-        "q",
-        "m",
-        "w",
-        "d",
-        "wef",
-        "weth",
-        "wew",
-        "wetu",
-        "wem",
-        "wesu",
-        "wesa",
-        "bwew",
-        "bwem",
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "frequency": {
+            "multiple_items_allowed": False,
+            "choices": [
+                "a",
+                "q",
+                "m",
+                "w",
+                "d",
+                "wef",
+                "weth",
+                "wew",
+                "wetu",
+                "wem",
+                "wesu",
+                "wesa",
+                "bwew",
+                "bwem",
+            ],
+        },
+        "aggregation_method": {
+            "multiple_items_allowed": False,
+            "choices": ["avg", "sum", "eop"],
+        },
+        "transform": {
+            "multiple_items_allowed": False,
+            "choices": [
+                "chg",
+                "ch1",
+                "pch",
+                "pc1",
+                "pca",
+                "cch",
+                "cca",
+                "log",
+            ],
+        },
+    }
+
+    frequency: Optional[
+        Literal[
+            "a",
+            "q",
+            "m",
+            "w",
+            "d",
+            "wef",
+            "weth",
+            "wew",
+            "wetu",
+            "wem",
+            "wesu",
+            "wesa",
+            "bwew",
+            "bwem",
+        ]
     ] = Field(
         default=None,
-        description="""
-        Frequency aggregation to convert high frequency data to lower frequency.
-            None = No change
-            a = Annual
-            q = Quarterly
-            m = Monthly
-            w = Weekly
-            d = Daily
-            wef = Weekly, Ending Friday
-            weth = Weekly, Ending Thursday
-            wew = Weekly, Ending Wednesday
-            wetu = Weekly, Ending Tuesday
-            wem = Weekly, Ending Monday
-            wesu = Weekly, Ending Sunday
-            wesa = Weekly, Ending Saturday
-            bwew = Biweekly, Ending Wednesday
-            bwem = Biweekly, Ending Monday
+        description="""Frequency aggregation to convert high frequency data to lower frequency.
+        None = No change
+        a = Annual
+        q = Quarterly
+        m = Monthly
+        w = Weekly
+        d = Daily
+        wef = Weekly, Ending Friday
+        weth = Weekly, Ending Thursday
+        wew = Weekly, Ending Wednesday
+        wetu = Weekly, Ending Tuesday
+        wem = Weekly, Ending Monday
+        wesu = Weekly, Ending Sunday
+        wesa = Weekly, Ending Saturday
+        bwew = Biweekly, Ending Wednesday
+        bwem = Biweekly, Ending Monday
         """,
     )
-    aggregation_method: Literal[None, "avg", "sum", "eop"] = Field(
+    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
         default="eop",
-        description="""
-        A key that indicates the aggregation method used for frequency aggregation.
+        description="""A key that indicates the aggregation method used for frequency aggregation.
         This parameter has no affect if the frequency parameter is not set.
-            avg = Average
-            sum = Sum
-            eop = End of Period
+        avg = Average
+        sum = Sum
+        eop = End of Period
         """,
     )
-    transform: Literal[
-        None, "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"
+    transform: Optional[
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
     ] = Field(
         default=None,
-        description="""
-        Transformation type
-            None = No transformation
-            chg = Change
-            ch1 = Change from Year Ago
-            pch = Percent Change
-            pc1 = Percent Change from Year Ago
-            pca = Compounded Annual Rate of Change
-            cch = Continuously Compounded Rate of Change
-            cca = Continuously Compounded Annual Rate of Change
-            log = Natural Log
+        description="""Transformation type
+        None = No transformation
+        chg = Change
+        ch1 = Change from Year Ago
+        pch = Percent Change
+        pc1 = Percent Change from Year Ago
+        pca = Compounded Annual Rate of Change
+        cch = Continuously Compounded Rate of Change
+        cca = Continuously Compounded Annual Rate of Change
+        log = Natural Log
         """,
     )
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
@@ -120,8 +151,16 @@ class FredSeriesFetcher(
         query: FredSeriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (
+            ClientResponse,
+            ClientSession,
+            amake_requests,
+            get_querystring,
+        )
+        from pandas import DataFrame
 
         api_key = credentials.get("fred_api_key") if credentials else ""
 
@@ -144,16 +183,25 @@ class FredSeriesFetcher(
                 f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}",
                 timeout=5,
             )
-            _metadata = metadata_response.get("seriess", [{}])[0]
 
-            observations = observations_response.get("observations")
+            # seriess is not a typo, it's the actual key in the response
+            _metadata = (
+                metadata_response.get("seriess", [{}])[0]
+                if isinstance(metadata_response, dict)
+                else {}
+            ) or {}
+            observations = (
+                observations_response.get("observations")
+                if isinstance(observations_response, dict)
+                else []
+            ) or []
             try:
                 for d in observations:
                     d.pop("realtime_start")
                     d.pop("realtime_end")
 
                 data = (
-                    pd.DataFrame(observations)
+                    DataFrame(observations)
                     .replace(".", None)
                     .set_index("date")["value"]
                     .astype(float)
@@ -174,29 +222,30 @@ class FredSeriesFetcher(
                 }
             }
 
-        results = await amake_requests(urls, callback, timeout=5, **kwargs)
-
-        metadata, data = {}, {}
-        for item in results:
-            for series_id, result in item.items():
-                data[series_id] = result.pop("data")
-                metadata[series_id] = result
-
-        _warn(json.dumps(metadata))
-
-        return data
+        try:
+            results = await amake_requests(urls, callback, timeout=5, **kwargs)
+            return results
+        except Exception as e:
+            raise OpenBBError(e) from e
 
     @staticmethod
     def transform_data(
-        query: FredSeriesQueryParams, data: Dict, **kwargs: Any
-    ) -> List[FredSeriesData]:
+        query: FredSeriesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> AnnotatedResult[List[FredSeriesData]]:
         """Transform data."""
-        results = (
-            pd.DataFrame(data)
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
+        series = {_id: s.pop("data", {}) for d in data for _id, s in d.items()}
+        metadata = {_id: m for d in data for _id, m in d.items()}
+        records = (
+            DataFrame(series)
+            .filter(items=query.symbol.split(","), axis=1)
             .reset_index()
             .rename(columns={"index": "date"})
             .fillna("N/A")
             .replace("N/A", None)
             .to_dict("records")
         )
-        return [FredSeriesData.model_validate(d) for d in results]
+        validated = [FredSeriesData.model_validate(r) for r in records]
+        return AnnotatedResult(result=validated, metadata=metadata)

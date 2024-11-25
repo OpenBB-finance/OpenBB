@@ -5,7 +5,7 @@ from datetime import (
 )
 from typing import List, Optional, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -16,7 +16,7 @@ class BondPricesQueryParams(QueryParams):
 
     country: Optional[str] = Field(
         default=None,
-        description="Country of the bond issuer. Matches partial name.",
+        description="The country to get data. Matches partial name.",
     )
     issuer_name: Optional[str] = Field(
         default=None,
@@ -67,15 +67,6 @@ class BondPricesQueryParams(QueryParams):
         description="Minimum yield to maturity of the bond.",
     )
 
-    @field_validator("isin", "currency", "lei", mode="before", check_fields=False)
-    @classmethod
-    def validate_upper_case(cls, v):
-        """Convert the field to uppercase and convert a list to a query string."""
-        if isinstance(v, str):
-            return v.upper()
-        v = ",".join([symbol.upper() for symbol in list(v)])
-        return v if v else None
-
 
 class BondPricesData(Data):
     """Bond Prices Data."""
@@ -96,22 +87,27 @@ class BondPricesData(Data):
     coupon_rate: Optional[float] = Field(
         default=None,
         description="Coupon rate of the bond.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     price: Optional[float] = Field(
         default=None,
         description="Price of the bond.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     current_yield: Optional[float] = Field(
         default=None,
         description="Current yield of the bond.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ytm: Optional[float] = Field(
         default=None,
         description="Yield to maturity of the bond.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ytw: Optional[float] = Field(
         default=None,
         description="Yield to worst of the bond.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     duration: Optional[float] = Field(
         default=None,

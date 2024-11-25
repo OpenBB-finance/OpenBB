@@ -1,4 +1,5 @@
 """Linters for the package."""
+
 import shutil
 import subprocess
 from pathlib import Path
@@ -35,10 +36,12 @@ class Linters:
             self.console.log(f"\n* {linter}")
             self.print_separator("^")
 
-            command = [linter] + list(self.directory.glob("*.py"))
+            command = [linter]
             if flags:
                 command.extend(flags)  # type: ignore
-            subprocess.run(command, check=False)  # noqa: S603
+            subprocess.run(
+                command + list(self.directory.glob("*.py")), check=False  # noqa: S603
+            )
 
             self.print_separator("-")
         else:
@@ -53,7 +56,7 @@ class Linters:
 
     def ruff(self):
         """Run ruff."""
-        flags = ["--fix"]
+        flags = ["check", "--fix"]
         if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--silent")
         self.run(linter="ruff", flags=flags)

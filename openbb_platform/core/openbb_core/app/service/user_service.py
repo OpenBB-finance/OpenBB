@@ -1,4 +1,5 @@
 """User service."""
+
 import json
 from functools import reduce
 from pathlib import Path
@@ -19,13 +20,12 @@ class UserService(metaclass=SingletonMeta):
         self,
         default_user_settings: Optional[UserSettings] = None,
     ):
-        self._default_user_settings = (
-            default_user_settings or self.read_default_user_settings()
-        )
+        """Initialize user service."""
+        self._default_user_settings = default_user_settings or self.read_from_file()
 
     @classmethod
-    def read_default_user_settings(cls, path: Optional[Path] = None) -> UserSettings:
-        """Read default user settings."""
+    def read_from_file(cls, path: Optional[Path] = None) -> UserSettings:
+        """Read user settings from json into UserSettings."""
         path = path or cls.USER_SETTINGS_PATH
 
         return (
@@ -35,27 +35,17 @@ class UserService(metaclass=SingletonMeta):
         )
 
     @classmethod
-    def write_default_user_settings(
+    def write_to_file(
         cls,
         user_settings: UserSettings,
         path: Optional[Path] = None,
     ) -> None:
-        """Write default user settings."""
+        """Write user settings to json."""
         path = path or cls.USER_SETTINGS_PATH
-
         user_settings_json = user_settings.model_dump_json(
-            include=cls.USER_SETTINGS_ALLOWED_FIELD_SET, indent=4
+            indent=4, include=cls.USER_SETTINGS_ALLOWED_FIELD_SET, exclude_defaults=True
         )
         path.write_text(user_settings_json, encoding="utf-8")
-
-    @classmethod
-    def update_default(cls, user_settings: UserSettings) -> UserSettings:
-        """Update default user settings."""
-        d1 = cls.read_default_user_settings().model_dump()
-        d2 = user_settings.model_dump() if user_settings else {}
-        updated = cls._merge_dicts([d1, d2])
-
-        return UserSettings.model_validate(updated)
 
     @staticmethod
     def _merge_dicts(list_of_dicts: List[Dict[str, Any]]) -> Dict[str, Any]:

@@ -1,0 +1,1274 @@
+interactions:
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-13"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WTX0/CMBTF3/0UTZ9hDkfU7E3GnArDBRZjND5cugpNunbpnwdC+O52ExKW+SDw
+        1px7c++v57RbXIABHG7xippYrEEQWsSgBBMr/SjVGAzF4ecW6025lByHOHqZeyPcw0SWFYjNDEpa
+        q1JZjWJhqDLAREmFQc+CeCjioDUaoZkU/Tdp3Fi0WIOi2o0AIaR1C3PWzBjlr06k2rDSbS3iSuPQ
+        924C10iMBb4XBreuqdILqyrFNM2oIm4bDvuB7w2D4X2rOpacg3JF3/Pvdr2jeyRx1LlFwuUSOIoL
+        S8AwKVAky9IKZhjV7qwqr0s9u37oUO/FI+xD2x/c3dIBuqm0oNOsC51CwbRjzYCwb0ZQpmTlUqiR
+        6wTOJXZGDy4HzvK0A5xxZ66wJUqUtBVKqQGu0dQUZ7PW6QaXw+bz9w6s01AiedHEL1XzLP6H6bft
+        PBXPb6F9TKbeU/fXrZkANKGcoZhTYpSLP/rtuMjPk2F/vfza7a5+AKZ+Y59RBAAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"451-uynOKCbOCeJfq6ye+Hj66Uurn7E"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-24"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"getEnhancedEarningsForDate":[{"symbol":"BLN","companyName":"Blackline
+        Safety Corp.","announceTime":"BTO","estimatedEps":-0.14,"actualEps":-0.14,"epsSurprisePercent":0,"epsSurpriseDollar":0},{"symbol":"CNR","companyName":"Canadian
+        National Railway Company","announceTime":"AMC","estimatedEps":2.1,"actualEps":2.1,"epsSurprisePercent":0,"epsSurpriseDollar":0},{"symbol":"MRU","companyName":"Metro
+        Inc.","announceTime":"BTO","estimatedEps":0.97,"actualEps":1,"epsSurprisePercent":3.0928,"epsSurpriseDollar":0.03},{"symbol":"LA","companyName":"Los
+        Andes Copper Ltd.","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"MDM","companyName":"Madoro
+        Metals Corp.","announceTime":"N/A","estimatedEps":"N/A","actualEps":0,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"}]}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '852'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"354-pBr+kThlljeS79y7sDBu2/fXre8"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-11"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-27"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8XTzU/CMBQA8Lt/RdMz4ES57DbZTAgbGpwHMR5q9zKa9CttlzAJ/7tlQQMpJAYT
+        ub69vv3yPta4Io7geI1rcJlcEkmhyoiRTNb2QZmUOMDx2xrbVnwojmM8z5Ic9zBVQhPZzoiAbRAI
+        RwVxDoxFE0kHPoNIqRpfrmRdyn356INgHRO+ZpVpi+N+NIhGPpO6hvCfyJ1P0/a5MdowC09gKEiH
+        42F0EE8V58Tg2D+42fT2gMmiCHzJJxONQ9lKc2WIY0qeUM6uk0C5C+4po+PC79chsvtyoBzPs0A5
+        Nswx6juZcRC+okU5c0vWCDRWRu/gFzSnRWhOwYJxqPAgR5hEmQRTtx347PaGprO40/lrwJ0q0668
+        Tmswl16BfBLuqQDjN0AeDP6Xxu3pDINjuj3u7I+OX1M/OKe8DIfudYASSsFaVAJdSsVVzeDU6f+u
+        o92v/97VxUt4/gulfGMLqBjxnRVeX/3z3N83m6svGXqagGwFAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"56c-TEVSTf49ZO1QTfxuYEHhpu73tyc"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-25"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA63UwW6jMBAG4Ps+heVzy0LatBE3QgKtUsgqSXvYqoepsYi1xka2qZSN8u510q60
+        yEFKQ68DjD9+ZtjiAgzgcItLaqZiDYLQYgpKMFHqRKoJGIrD5y3Wm+pVchziKE28Mb7ARFY1iE0O
+        Ff2oogwElLSiwqAHVjFDCxRz0BqNUS7F5ZM0tilarkFRbRuAELKxx63YocN4NbdFqg2r7JnFtNY4
+        9L3Brb2RmAb4Z+FqYG+q9bJRtWKa/qKK2ANxGIy8YTAati5OJOeg9k/5w93Ff++QPi4enVfYF9Fc
+        lSAYQVNBVblBsVS1d5r10mKvWlhbCTq017feaHATdGiDoKW9i+4d7B2wN6aZFGi50YZWGt0LckSa
+        /4wc6WexLfWvj0v/dXCdhystaJ46zly+QSp5gRZUy8b27IJGWXwidNgfGo3dRKNXYoEGZUx0Ik9L
+        0/8G4GTmACcMSiG/QvOd7IKv0g4PtWm/F252f8HuDcqoAa67lua08FzKWQHG8ydHGdtZ5HZjVpSs
+        heSyZPZDP5iiz9oEN/2tSZY51qTh/CPPw0Cqfa59qN8wk0m2dJmSNBqlCuq1/d/325ozptNFzo4s
+        zkwWDP7YsaxrqvpN55kxvux2P94BFyJbdmoHAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"76a-V1QUK8yHAA2TL0S8sdjQbY1Dzko"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-03"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"getEnhancedEarningsForDate":[{"symbol":"CRRX","companyName":"CareRx
+        Corporation","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"CRWN","companyName":"Crown
+        Capital Partners Inc.","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"MIN","companyName":"Excelsior
+        Mining Corp.","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"PRU","companyName":"Perseus
+        Mining Limited Ordinary Shares","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"UGE","companyName":"UGE
+        International Ltd.","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"}]}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '906'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"38a-zwIXhrjTmiadJ3Amz6Nk5VrmeDA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-30"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-18"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-19"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"getEnhancedEarningsForDate":[{"symbol":"RCH","companyName":"Richelieu
+        Hardware Ltd.","announceTime":"N/A","estimatedEps":0.72,"actualEps":0.8,"epsSurprisePercent":11.1111,"epsSurpriseDollar":0.08},{"symbol":"BTI","companyName":"Bioasis
+        Technologies Inc.","announceTime":"N/A","estimatedEps":-0.01,"actualEps":-0.01,"epsSurprisePercent":0,"epsSurpriseDollar":0},{"symbol":"OEE","companyName":"Memex
+        Inc.","announceTime":"N/A","estimatedEps":"N/A","actualEps":0,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"ONE","companyName":"01
+        Communique Laboratory Inc.","announceTime":"N/A","estimatedEps":"N/A","actualEps":0,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"SGZ","companyName":"Sego
+        Resources Inc.","announceTime":"N/A","estimatedEps":"N/A","actualEps":0,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"}]}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '861'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"35d-1T5C0ZDhe+ViUqt/spqH/sXXs5M"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-17"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"getEnhancedEarningsForDate":[{"symbol":"FOOD","companyName":"Goodfood
+        Market Corp.","announceTime":"N/A","estimatedEps":-0.08,"actualEps":-0.13,"epsSurprisePercent":-62.5,"epsSurpriseDollar":-0.05},{"symbol":"DSY","companyName":"Destiny
+        Media Technologies Inc.","announceTime":"BTO","estimatedEps":"N/A","actualEps":0.04,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"EVMT","companyName":"Evome
+        Medical Technologies Inc.","announceTime":"N/A","estimatedEps":"N/A","actualEps":-0.03,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"}]}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '567'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"237-WkIfr3fVBCq0iW5cPxay9dfYwCc"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-09"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-05"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-20"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-04"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-10"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-02"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"getEnhancedEarningsForDate":[{"symbol":"XAM","companyName":"Xanadu
+        Mines Ltd.","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"CAV.H","companyName":"Camrova
+        Resources Inc.","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"CLAS.H","companyName":"Claritas
+        Pharmaceuticals Inc.","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"CVR.H","companyName":"Canadian
+        Oil Recovery & Remediation Ente","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"SOP.H","companyName":"SOPerior
+        Fertilizer Corp.","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"}]}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '919'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"397-Q+CULp9vAiPUqtJT2JyXlGZlkSI"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-06"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-23"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"getEnhancedEarningsForDate":[{"symbol":"CXI","companyName":"Currency
+        Exchange International Corp.","announceTime":"N/A","estimatedEps":"N/A","actualEps":0.88,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"AUAU","companyName":"Allegiant
+        Gold Ltd.","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"EDW.H","companyName":"Edgewater
+        Exploration Ltd.","announceTime":"N/A","estimatedEps":"N/A","actualEps":0,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"}]}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '563'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"233-4pcArdEnP7cDdw0aKoobsbTDX5I"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-26"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8WWwY6bMBCG730Ky+fdFLbtodxCQrdRSFgllF2p6mEWRolVYyPbRIqivHsNSiV2
+        nUrdQgUHDmPP+NNv/x6faAEGaHCiOzSR2IPIsYhACSZ2+otUczBIg+8nqo/ls+Q0oLPFlN7QXJYV
+        iOMaSmxieygrJgVZKPuLWckMFiRRBROgjmS7B4XaZoEQsrYrpKxNC9PEBlEbVtpliqjSNPAm3mc7
+        MTc18EvAt3Mqva1VpZjGB1Q5CkMD35/49nsxOJecg2qr+OebDvXm24NDvakrVIZsUMva1tQkNsXE
+        pVy/nzqUl2AH87ZZ8jro7wouZjvygnObuepuUQl5ADKTqvpLvgvNK74P1/lu7zzvKl6Tc/cKL3Tx
+        GD+gImHNeUfLhcjH1nIarhzY6TMKsmICFfB+G+4NAJg+uYBp9DSQjAMQhrErYcjrFRrFchKJA7OG
+        L21Z4P1QB9nw+SxxXT5nuoE11j6V9ftbXPTfTma0ShzOqETFDHT2vjfpH/z+FtLlfTz56rDa6IDX
+        5qf+mHGSOpCpLOFe8qLVUSowtkGNaKX18vGKkkmOIKyVHpkorJ9Q7Y5jez5dulIy8bN7Mi8dfkTI
+        LF44lBnTrH1+mD2ry7FlzFyLZ8ClQmJvz6b59Lb3x3+D/HE+v/sFCViGxvcJAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"9f7-QLAwYtoPfCBw71vrH/H+v+gQ4Lk"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-16"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"errors":[{"message":"Cannot read properties of undefined (reading
+        ''map'')","locations":[{"line":4,"column":3}],"path":["getEnhancedEarningsForDate"]}],"data":{"getEnhancedEarningsForDate":null}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"c4-6VWBlRpl4ANZvoPIylBFF3EdgPA"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-31"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8XTUUvDMBAA4Hd/RcjzjG0nVfo2u4pjcyuzA0V8ONM4A2lSklQcY//dmyhYu4rg
+        g33r5e7ycb1uaQkeaLKla+Ez/QyaizIDq6Veu0tjx+AFTe631G2qR6NoQkc5W83pgHJT1aA3c6jE
+        PqqUFCXJramF9VI4shSgSOY8NiAT/SKcr4T2pLCN81gOWpsGLyvke/38ZIRBTJIVFpRZ7WgSsBjz
+        uG9Afb5HmFO7m8bWVjqRC8uxJ02GbIhP62xslAK7Lwqi3eCLP807+BQ0lBI0yYHLJ8nJFLQDR1Lp
+        N2QmK4miLnl0nXbIIQva5pCFfeSzs2HcRz5tkSfXi455UuGgJY54IVW/8aJYdIwRO20bI3YeH0aG
+        MYviIOpRtpG3RdpBZq/ckELwZ22UWe+3old6eAHC828bEPZswPHwhx04xonGLex0tWRXHe60saLN
+        nWjOfmf9CH7B7m/t+fifHbrU95MWdbZMD1Bn5kV6jz+ZMw02/Zs0+Ltyebc6oMQoGdU1WKH+A/iw
+        2x29AVwFxgHhBAAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"4e1-hBkjSi2a+l5kqXp2xDfdCnpmkn4"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-01-12"},
+      "query": "query getEnhancedEarningsForDate(\n  $date: String!\n  ) {\n  getEnhancedEarningsForDate(\n    date:
+      $date\n) {\n      symbol\n      companyName\n      announceTime\n      estimatedEps\n      actualEps\n      epsSurprisePercent\n      epsSurpriseDollar\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8WUS28TMRSF9/wKyyuQipmkoa2yG9yQVm0eIqFdIBa346uJhX09sj2Nqij/HSdF
+        tJEbgSCC7X1I3zk+viuuIALvr3iNcUALoArVADxpqsNH588hIu9/WfHwYO+c4X1e3lzzI1452wA9
+        jMHipnYPxhEr1f12n43SltdgArukSqRxIHJtas31dn78rkxFDFHbNKkGTfhZhCq2YLaVIo00Ydb6
+        xuuAU/QVUnzafmqdO2PA/+isj57BSllmsNLVWDkmnbUt6QqidvQIymbtnfNKU4JiNy4mD9hsAR5D
+        LqEcyUxCVxwf7yjoil7vZRE9cdrtvCiiEJ3OrobhZJ+GQ0DnvnfFyekBrL/NcyLBqCUaw6bgI6Hf
+        2J6SQts3APOo5/V8gW/+NDNvC1EcAH4yvMzgJ74G0rUHyy6cUZsPsifeH+aTDHUDdpah7knH+2JP
+        NIreDuZ0LEUe8KkL0aLSwMYYl85/YxIIFKTI+0YwaSAEJn+Vld/2u3Py935fff4kLjIhV61HNsdq
+        Qc64WuN/Pyej8jaDHMEypNs3TJFg19rqBPCPCb+u16++A0I8+DDIBQAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:35 GMT
+      Etag:
+      - W/"5c8-yl3WSMGwXaDIX+zoDropkRHctNs"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

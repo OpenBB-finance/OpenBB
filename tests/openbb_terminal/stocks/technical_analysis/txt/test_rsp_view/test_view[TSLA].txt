@@ -1,6 +1,0 @@
-     Rank Ticker             Sector            Industry Exchange  Relative Strength  Percentile  1 Month Ago  3 Months Ago  6 Months Ago
-765   766   TSLA  Consumer Cyclical  Auto Manufacturers   NASDAQ             116.55          87           43            59            71
-     Rank            Industry             Sector  Relative Strength  Percentile  1 Month Ago  3 Months Ago  6 Months Ago
-133   134  Auto Manufacturers  Consumer Cyclical              86.83          17           11             6            11
-                                                                                                          Tickers
-133  LI,TSLA,TTM,F,WKHS,RACE,HMC,NIO,VLCN,TM,PTRA,STLA,NKLA,RIDE,GM,SOLO,GOEV,AYRO,BLBD,XPEV,FSR,NIU,GP,HYZN,ARVL

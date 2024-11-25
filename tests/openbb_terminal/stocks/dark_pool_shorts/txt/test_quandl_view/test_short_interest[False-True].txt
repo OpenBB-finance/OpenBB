@@ -1,4 +1,0 @@
-            Short Volume  Short Exempt Volume  Total Volume  % of Volume Shorted
-Date                                                                            
-2021-12-15      303636.0               4163.0      797638.0                38.07
-2021-12-16      332436.0               1825.0     1259072.0                26.40

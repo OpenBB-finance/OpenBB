@@ -1,0 +1,113 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json
+  response:
+    body:
+      string: !!binary |
+        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
+        k0OntwoS++33PwAAAP//AwBrQV8/unUAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 837871401bbb8435-YVR
+      Cache-Control:
+      - no-cache,no-store,max-age=0,must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 18 Dec 2023 15:29:37 GMT
+      Etag:
+      - W/"2c0ddb5d09f055d6c8b616aa80e20998"
+      Last-Modified:
+      - Mon, 18 Dec 2023 15:29:37 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 1ba6aff812e7fb724bcf5efa0e7c3dec.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - uVRfyDFDrT4Y9g03dmwjgGm9k9Z44A8SHEOkX9ZXNJ9CCch_kfmSBQ==
+      X-Amz-Cf-Pop:
+      - SEA900-P3
+      X-Cache:
+      - Miss from cloudfront
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 200
+      message: OK
+version: 1

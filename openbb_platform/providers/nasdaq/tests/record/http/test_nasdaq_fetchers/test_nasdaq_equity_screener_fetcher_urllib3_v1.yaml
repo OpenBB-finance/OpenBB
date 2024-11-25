@@ -1,0 +1,100 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+    method: GET
+    uri: https://api.nasdaq.com/api/screener/stocks?limit=10000&marketcap=large&sector=consumer_staples&tableonly=true
+  response:
+    body:
+      string: !!binary |
+        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
+        IdhbddeL4ZMpxCY3la4H679+/RfCjypsJBkAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1909'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 19:00:13 GMT
+      Expires:
+      - Mon, 01 Jul 2024 19:00:13 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=76~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=04768c1a48a638c99c749c58ad1b0c2a;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=BBF55E9D2674CA0D8D637715682E2A55~000000000000000000000000000000~YAAQ25UeuCM+lUuQAQAASEOrbxhEDwlgRRD8+KyL3cu3fQcxyo/aiYO/E839XbAhXDAu2GMbNY/zGfEo9Q37TNBPq0j4O6hSRDTCguDv/Z5dfHK/sAhtv0HdjdagFQY2u0ibpy0J852Dk3BFvV0al359g3VYXTcUgAnqIP7c1jrkXH/AWVw6KKKrgtoyFQk2nZmvKIpYlvUKIVS0UxNboKaTHqzYJXZYTwwy5HGedmvH1guhhK2rkhYsSA62TMdqKlE1CXEAmULv8FJv7iKAYTaZuZu82br4L4BZ1EmfBlrW4ayIqgKzVkBhAY/TdaroQT/5tq8ikxC5lDP1R1lSBbG5SQDuwcIqOLHt9W042J5+DE3Hf15UI7JDbieWcm7IEOQJO6jn+Vh04zqBWkn3O5WmKdabGQ==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 21:00:13 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '46'
+      - '46'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '145'
+      - '145'
+      gid:
+      - '104'
+      lang:
+      - en
+      rid:
+      - 3937178e-9429-4f74-a2d4-f4b01d08a01c
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

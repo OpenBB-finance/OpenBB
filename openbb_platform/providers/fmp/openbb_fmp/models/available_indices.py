@@ -1,6 +1,5 @@
 """FMP Available Indices Model."""
 
-
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -22,12 +21,16 @@ class FMPAvailableIndicesQueryParams(AvailableIndicesQueryParams):
 class FMPAvailableIndicesData(AvailableIndicesData):
     """FMP Available Indices Data."""
 
+    __alias_dict__ = {
+        "stock_exchange": "stockExchange",
+        "exchange_short_name": "exchangeShortName",
+    }
+
     stock_exchange: str = Field(
-        description="Stock exchange where the index is listed.", alias="stockExchange"
+        description="Stock exchange where the index is listed.",
     )
     exchange_short_name: str = Field(
         description="Short name of the stock exchange where the index is listed.",
-        alias="exchangeShortName",
     )
 
 

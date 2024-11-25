@@ -7,7 +7,6 @@ from openbb_core.provider.standard_models.otc_aggregate import (
     OTCAggregateData,
     OTCAggregateQueryParams,
 )
-from openbb_finra.utils.helpers import get_full_data
 from pydantic import Field
 
 
@@ -44,6 +43,7 @@ class FinraOTCAggregateFetcher(
         """Transform query params."""
         return FinraOTCAggregateQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: FinraOTCAggregateQueryParams,
@@ -51,6 +51,9 @@ class FinraOTCAggregateFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the FINRA endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_finra.utils.helpers import get_full_data
+
         return get_full_data(query.symbol, query.tier, query.is_ats)
 
     @staticmethod

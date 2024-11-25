@@ -1,97 +1,65 @@
-"""Yahoo Finance Asset Performance Gainers Model."""
+"""Yahoo Finance Top Gainers Model."""
 
-import re
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
 
-import pandas as pd
-import requests
+from typing import Any, Optional
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
-    EquityPerformanceData,
     EquityPerformanceQueryParams,
 )
+from openbb_yfinance.utils.references import YFPredefinedScreenerData
 from pydantic import Field
 
 
 class YFGainersQueryParams(EquityPerformanceQueryParams):
-    """Yahoo Finance Asset Performance Gainers Query.
+    """Yahoo Finance Gainers Query.
 
     Source: https://finance.yahoo.com/screener/predefined/day_gainers
     """
 
-
-class YFGainersData(EquityPerformanceData):
-    """Yahoo Finance Asset Performance Gainers Data."""
-
-    __alias_dict__ = {
-        "symbol": "Symbol",
-        "name": "Name",
-        "volume": "Volume",
-        "change": "Change",
-        "price": "Price (Intraday)",
-        "percent_change": "% Change",
-        "market_cap": "Market Cap",
-        "avg_volume_3_months": "Avg Vol (3 month)",
-        "pe_ratio_ttm": "PE Ratio (TTM)",
-    }
-
-    market_cap: str = Field(
-        description="Market Cap.",
-    )
-    avg_volume_3_months: float = Field(
-        description="Average volume over the last 3 months in millions.",
-    )
-    pe_ratio_ttm: Optional[float] = Field(
-        description="PE Ratio (TTM).",
-        default=None,
+    limit: Optional[int] = Field(
+        default=200,
+        description="Limit the number of results.",
     )
 
 
-class YFGainersFetcher(Fetcher[YFGainersQueryParams, List[YFGainersData]]):
-    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
+class YFGainersData(YFPredefinedScreenerData):
+    """Yahoo Finance Gainers Data."""
+
+
+class YFGainersFetcher(Fetcher[YFGainersQueryParams, list[YFGainersData]]):
+    """Yahoo Finance Gainers Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFGainersQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFGainersQueryParams:
         """Transform query params."""
         return YFGainersQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: YFGainersQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> pd.DataFrame:
+    ) -> list[dict]:
         """Get data from YF."""
-        headers = {"user_agent": "Mozilla/5.0"}
-        html = requests.get(
-            "https://finance.yahoo.com/screener/predefined/day_gainers",
-            headers=headers,
-            timeout=10,
-        ).text
-        html_clean = re.sub(r"(<span class=\"Fz\(0\)\">).*?(</span>)", "", html)
-        df = (
-            pd.read_html(html_clean, header=None)[0]
-            .dropna(how="all", axis=1)
-            .fillna("-")
-            .replace("-", None)
-        )
-        return df
+        # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import get_defined_screener
+
+        return await get_defined_screener(name="day_gainers", limit=query.limit)
 
     @staticmethod
     def transform_data(
         query: EquityPerformanceQueryParams,
-        data: pd.DataFrame,
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFGainersData]:
+    ) -> list[YFGainersData]:
         """Transform data."""
-        data["% Change"] = data["% Change"].str.replace("%", "").astype(float)
-        data["Volume"] = data["Volume"].str.replace("M", "").astype(float) * 1000000
-        data["Avg Vol (3 month)"] = (
-            data["Avg Vol (3 month)"].str.replace("M", "").astype(float) * 1000000
-        )
         return [
             YFGainersData.model_validate(d)
-            for d in data.sort_values("% Change", ascending=False).to_dict(
-                orient="records"
+            for d in sorted(
+                data,
+                key=lambda x: x["regularMarketChangePercent"],
+                reverse=query.sort == "desc",
             )
         ]

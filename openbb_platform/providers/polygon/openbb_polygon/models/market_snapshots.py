@@ -1,15 +1,15 @@
 """Polygon Market Snapshots Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
-from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
 
@@ -23,23 +23,23 @@ class PolygonMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
 class PolygonMarketSnapshotsData(MarketSnapshotsData):
     """Polygon Market Snapshots Data."""
 
-    vwap: float = Field(
+    vwap: Optional[float] = Field(
         description="The volume weighted average price of the stock on the current trading day.",
         default=None,
     )
-    prev_open: float = Field(
+    prev_open: Optional[float] = Field(
         description="The previous trading session opening price.", default=None
     )
-    prev_high: float = Field(
+    prev_high: Optional[float] = Field(
         description="The previous trading session high price.", default=None
     )
-    prev_low: float = Field(
+    prev_low: Optional[float] = Field(
         description="The previous trading session low price.", default=None
     )
-    prev_volume: float = Field(
+    prev_volume: Optional[float] = Field(
         description="The previous trading session volume.", default=None
     )
-    prev_vwap: float = Field(
+    prev_vwap: Optional[float] = Field(
         description="The previous trading session VWAP.", default=None
     )
     last_updated: Optional[datetime] = Field(
@@ -78,10 +78,11 @@ class PolygonMarketSnapshotsData(MarketSnapshotsData):
     @classmethod
     def date_validate(cls, v):
         """Return formatted datetime."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         return (
-            pd.to_datetime(v, unit="ns", origin="unix", utc=True).tz_convert(
-                "US/Eastern"
-            )
+            to_datetime(v, unit="ns", origin="unix", utc=True).tz_convert("US/Eastern")
             if v
             else None
         )
@@ -93,7 +94,7 @@ class PolygonMarketSnapshotsFetcher(
         List[PolygonMarketSnapshotsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Market Snapshots Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonMarketSnapshotsQueryParams:
@@ -107,6 +108,9 @@ class PolygonMarketSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data from the Polygon endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_polygon.utils.helpers import get_data_many
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         url = f"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers?apiKey={api_key}"
@@ -120,7 +124,7 @@ class PolygonMarketSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[PolygonMarketSnapshotsData]:
         """Return the transformed data."""
-        processed_data = []
+        processed_data: List[PolygonMarketSnapshotsData] = []
 
         # Process and flatten the response from a nested dictionary
         for item in data:
@@ -129,7 +133,7 @@ class PolygonMarketSnapshotsFetcher(
             day_data = item.get("day", {})
             prev_day = item.get("prevDay", {})
 
-            market_data: Dict[str, List[Any]] = {
+            market_data: Dict = {
                 "symbol": item["ticker"],
                 "bid": last_quote.get("p"),
                 "ask": last_quote.get("P"),
@@ -158,6 +162,8 @@ class PolygonMarketSnapshotsFetcher(
                 "last_trade_timestamp": last_trade.get("t"),
             }
 
-            processed_data.append(market_data)
+            processed_data.append(
+                PolygonMarketSnapshotsData.model_validate(market_data)
+            )
 
-        return [PolygonMarketSnapshotsData.model_validate(d) for d in processed_data]
+        return processed_data

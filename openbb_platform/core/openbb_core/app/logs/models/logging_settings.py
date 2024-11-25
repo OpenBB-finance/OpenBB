@@ -1,3 +1,5 @@
+"""Logging settings."""
+
 from pathlib import Path
 from typing import List, Optional
 
@@ -8,14 +10,18 @@ from openbb_core.app.model.user_settings import UserSettings
 
 # pylint: disable=too-many-instance-attributes
 class LoggingSettings:
+    """Logging settings."""
+
     def __init__(
         self,
         user_settings: Optional[UserSettings] = None,
         system_settings: Optional[SystemSettings] = None,
     ):
-        user_settings = user_settings or UserSettings()
-        system_settings = system_settings or SystemSettings()
-
+        """Initialize the logging settings."""
+        user_settings = user_settings if user_settings is not None else UserSettings()
+        system_settings = (
+            system_settings if system_settings is not None else SystemSettings()
+        )
         user_data_directory = (
             str(Path.home() / "OpenBBUserData")
             if not user_settings.preferences
@@ -43,6 +49,8 @@ class LoggingSettings:
         self.platform: str = system_settings.platform
         self.python_version: str = system_settings.python_version
         self.platform_version: str = system_settings.version
+        self.logging_suppress: bool = system_settings.logging_suppress
+        self.log_collect: bool = system_settings.log_collect
         # User
         self.user_id: Optional[str] = user_id
         self.user_logs_directory: Path = get_log_dir(user_data_directory)

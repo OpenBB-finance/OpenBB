@@ -1,12 +1,12 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -22,36 +22,36 @@ class ROUTER_equity_calendar(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def dividend(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Upcoming and Historical Dividend Calendar.
+        """Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates.
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -64,17 +64,17 @@ class ROUTER_equity_calendar(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CalendarDividend
         ----------------
-        date : date
-            The date of the data. (Ex-Dividend)
+        ex_dividend_date : date
+            The ex-dividend date - the date on which the stock begins trading without rights to the dividend.
         symbol : str
             Symbol representing the entity requested in the data.
         amount : Optional[float]
-            Dividend amount, per-share.
+            The dividend amount per share.
         name : Optional[str]
             Name of the entity.
         record_date : Optional[date]
@@ -88,17 +88,21 @@ class ROUTER_equity_calendar(Container):
         label : Optional[str]
             Ex-dividend date formatted for display. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.calendar.dividend()
+        >>> obb.equity.calendar.dividend(provider='fmp')
         """  # noqa: E501
 
         return self._run(
             "/equity/calendar/dividend",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.calendar.dividend",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -108,36 +112,36 @@ class ROUTER_equity_calendar(Container):
             )
         )
 
+    @exception_handler
     @validate
     def earnings(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Upcoming and Historical earnings calendar.
+        """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data.
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -150,7 +154,7 @@ class ROUTER_equity_calendar(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CalendarEarnings
@@ -178,17 +182,23 @@ class ROUTER_equity_calendar(Container):
         updated_date : Optional[date]
             The date the data was updated last. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.calendar.earnings()
+        >>> obb.equity.calendar.earnings(provider='fmp')
+        >>> # Get earnings calendar for specific dates.
+        >>> obb.equity.calendar.earnings(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')
         """  # noqa: E501
 
         return self._run(
             "/equity/calendar/earnings",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.calendar.earnings",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -198,48 +208,47 @@ class ROUTER_equity_calendar(Container):
             )
         )
 
+    @exception_handler
     @validate
     def ipo(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            Optional[str], OpenBBField(description="Symbol to get data for.")
         ] = None,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
-        """Upcoming and Historical IPO Calendar.
+        """Get historical and upcoming initial public offerings (IPOs).
 
         Parameters
         ----------
         symbol : Optional[str]
             Symbol to get data for.
-        start_date : Optional[datetime.date]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         status : Optional[Literal['upcoming', 'priced', 'withdrawn']]
             Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio)
         min_value : Optional[int]
@@ -258,7 +267,7 @@ class ROUTER_equity_calendar(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CalendarIpo
@@ -268,53 +277,27 @@ class ROUTER_equity_calendar(Container):
         ipo_date : Optional[date]
             The date of the IPO, when the stock first trades on a major exchange.
         status : Optional[Literal['upcoming', 'priced', 'withdrawn']]
-
-                    The status of the IPO. Upcoming IPOs have not taken place yet but are expected to.
-                    Priced IPOs have taken place.
-                    Withdrawn IPOs were expected to take place, but were subsequently withdrawn and did not take place
-                 (provider: intrinio)
+            The status of the IPO. Upcoming IPOs have not taken place yet but are expected to. Priced IPOs have taken place. Withdrawn IPOs were expected to take place, but were subsequently withdrawn. (provider: intrinio)
         exchange : Optional[str]
-
-                    The acronym of the stock exchange that the company is going to trade publicly on.
-                    Typically NYSE or NASDAQ.
-                 (provider: intrinio)
+            The acronym of the stock exchange that the company is going to trade publicly on. Typically NYSE or NASDAQ. (provider: intrinio)
         offer_amount : Optional[float]
             The total dollar amount of shares offered in the IPO. Typically this is share price * share count (provider: intrinio)
         share_price : Optional[float]
             The price per share at which the IPO was offered. (provider: intrinio)
         share_price_lowest : Optional[float]
-
-                    The expected lowest price per share at which the IPO will be offered.
-                    Before an IPO is priced, companies typically provide a range of prices per share at which
-                    they expect to offer the IPO (typically available for upcoming IPOs).
-                 (provider: intrinio)
+            The expected lowest price per share at which the IPO will be offered. Before an IPO is priced, companies typically provide a range of prices per share at which they expect to offer the IPO (typically available for upcoming IPOs). (provider: intrinio)
         share_price_highest : Optional[float]
-
-                    The expected highest price per share at which the IPO will be offered.
-                    Before an IPO is priced, companies typically provide a range of prices per share at which
-                    they expect to offer the IPO (typically available for upcoming IPOs).
-                 (provider: intrinio)
+            The expected highest price per share at which the IPO will be offered. Before an IPO is priced, companies typically provide a range of prices per share at which they expect to offer the IPO (typically available for upcoming IPOs). (provider: intrinio)
         share_count : Optional[int]
             The number of shares offered in the IPO. (provider: intrinio)
         share_count_lowest : Optional[int]
-
-                    The expected lowest number of shares that will be offered in the IPO. Before an IPO is priced,
-                    companies typically provide a range of shares that they expect to offer in the IPO
-                    (typically available for upcoming IPOs).
-                 (provider: intrinio)
+            The expected lowest number of shares that will be offered in the IPO. Before an IPO is priced, companies typically provide a range of shares that they expect to offer in the IPO (typically available for upcoming IPOs). (provider: intrinio)
         share_count_highest : Optional[int]
-
-                    The expected highest number of shares that will be offered in the IPO. Before an IPO is priced,
-                    companies typically provide a range of shares that they expect to offer in the IPO
-                    (typically available for upcoming IPOs).
-                 (provider: intrinio)
+            The expected highest number of shares that will be offered in the IPO. Before an IPO is priced, companies typically provide a range of shares that they expect to offer in the IPO (typically available for upcoming IPOs). (provider: intrinio)
         announcement_url : Optional[str]
             The URL to the company's announcement of the IPO (provider: intrinio)
         sec_report_url : Optional[str]
-
-                    The URL to the company's S-1, S-1/A, F-1, or F-1/A SEC filing,
-                    which is required to be filed before an IPO takes place.
-                 (provider: intrinio)
+            The URL to the company's S-1, S-1/A, F-1, or F-1/A SEC filing, which is required to be filed before an IPO takes place. (provider: intrinio)
         open_price : Optional[float]
             The opening price at the beginning of the first trading day (only available for priced IPOs). (provider: intrinio)
         close_price : Optional[float]
@@ -322,41 +305,38 @@ class ROUTER_equity_calendar(Container):
         volume : Optional[int]
             The volume at the end of the first trading day (only available for priced IPOs). (provider: intrinio)
         day_change : Optional[float]
-
-                    The percentage change between the open price and the close price on the first trading day
-                    (only available for priced IPOs).
-                 (provider: intrinio)
+            The percentage change between the open price and the close price on the first trading day (only available for priced IPOs). (provider: intrinio)
         week_change : Optional[float]
-
-                    The percentage change between the open price on the first trading day and the close price approximately
-                    a week after the first trading day (only available for priced IPOs).
-                 (provider: intrinio)
+            The percentage change between the open price on the first trading day and the close price approximately a week after the first trading day (only available for priced IPOs). (provider: intrinio)
         month_change : Optional[float]
-
-                    The percentage change between the open price on the first trading day and the close price approximately
-                    a month after the first trading day (only available for priced IPOs).
-                 (provider: intrinio)
+            The percentage change between the open price on the first trading day and the close price approximately a month after the first trading day (only available for priced IPOs). (provider: intrinio)
         id : Optional[str]
             The Intrinio ID of the IPO. (provider: intrinio)
-        company : Optional[openbb_intrinio.utils.references.IntrinioCompany]
+        company : Optional[IntrinioCompany]
             The company that is going public via the IPO. (provider: intrinio)
-        security : Optional[openbb_intrinio.utils.references.IntrinioSecurity]
+        security : Optional[IntrinioSecurity]
             The primary Security for the Company that is going public via the IPO (provider: intrinio)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.calendar.ipo(limit=100)
+        >>> obb.equity.calendar.ipo(provider='intrinio')
+        >>> # Get all IPOs available.
+        >>> obb.equity.calendar.ipo(provider='intrinio')
         """  # noqa: E501
 
         return self._run(
             "/equity/calendar/ipo",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.calendar.ipo",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                     "limit": limit,
@@ -365,36 +345,36 @@ class ROUTER_equity_calendar(Container):
             )
         )
 
+    @exception_handler
     @validate
     def splits(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Calendar Splits. Show Stock Split Calendar.
+        """Get historical and upcoming stock split operations.
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -407,7 +387,7 @@ class ROUTER_equity_calendar(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CalendarSplits
@@ -423,17 +403,23 @@ class ROUTER_equity_calendar(Container):
         denominator : float
             Denominator of the stock splits.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.calendar.splits()
+        >>> obb.equity.calendar.splits(provider='fmp')
+        >>> # Get stock splits calendar for specific dates.
+        >>> obb.equity.calendar.splits(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')
         """  # noqa: E501
 
         return self._run(
             "/equity/calendar/splits",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.calendar.splits",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,

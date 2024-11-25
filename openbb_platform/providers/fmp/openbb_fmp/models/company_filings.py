@@ -1,5 +1,6 @@
 """FMP Company Filings Model."""
 
+import asyncio
 import math
 from typing import Any, Dict, List, Optional
 
@@ -8,7 +9,9 @@ from openbb_core.provider.standard_models.company_filings import (
     CompanyFilingsData,
     CompanyFilingsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_requests, get_querystring
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request, get_querystring
+from openbb_fmp.utils.helpers import response_callback
 
 
 class FMPCompanyFilingsQueryParams(CompanyFilingsQueryParams):
@@ -24,7 +27,7 @@ class FMPCompanyFilingsData(CompanyFilingsData):
     """FMP Company Filings Data."""
 
     __alias_dict__ = {
-        "filing_date": "fillingDate",
+        "filing_date": "fillingDate",  # FMP spells 'filing' wrong everywhere.
         "accepted_date": "acceptedDate",
         "report_type": "type",
         "filing_url": "link",
@@ -65,9 +68,24 @@ class FMPCompanyFilingsFetcher(
             for page in range(pages)
         ]
 
-        data = await amake_requests(urls, **kwargs)
+        results = []
 
-        return data[: query.limit]
+        async def get_one(url):
+            """Get the data from one URL."""
+            result = await amake_request(
+                url, response_callback=response_callback, **kwargs
+            )
+            if result:
+                results.extend(result)
+
+        await asyncio.gather(*[get_one(url) for url in urls])
+
+        if not results:
+            raise EmptyDataError("No data was returned for the symbol provided.")
+
+        return sorted(results, key=lambda x: x["fillingDate"], reverse=True)[
+            : query.limit
+        ]
 
     @staticmethod
     def transform_data(

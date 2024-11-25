@@ -1,5 +1,8 @@
 """Fixed Income Corporate Router."""
+
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -8,20 +11,31 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/corporate")
 
 # pylint: disable=unused-argument
 
 
-@router.command(model="ICEBofA")
+@router.command(
+    model="ICEBofA",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"index_type": "yield_to_worst", "provider": "fred"}),
+    ],
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; use `/fixedincome/bond_indices` instead.",
+        since=(4, 2),
+        expected_removal=(4, 5),
+    ),
+)
 async def ice_bofa(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """ICE BofA US Corporate Bond Indices.
 
     The ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt
@@ -33,13 +47,26 @@ async def ice_bofa(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="MoodyCorporateBondIndex")
+@router.command(
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; use `/fixedincome/bond_indices` instead."
+        + " Set `category` to `us` and `index` to `seasoned_corporate`.",
+        since=(4, 2),
+        expected_removal=(4, 5),
+    ),
+    model="MoodyCorporateBondIndex",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"index_type": "baa", "provider": "fred"}),
+    ],
+)
 async def moody(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Moody Corporate Bond Index.
 
     Moody's Aaa and Baa are investment bonds that acts as an index of
@@ -50,13 +77,19 @@ async def moody(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="HighQualityMarketCorporateBond")
+@router.command(
+    model="HighQualityMarketCorporateBond",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"yield_curve": "par", "provider": "fred"}),
+    ],
+)
 async def hqm(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """High Quality Market Corporate Bond.
 
     The HQM yield curve represents the high quality corporate bond market, i.e.,
@@ -67,13 +100,19 @@ async def hqm(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SpotRate")
+@router.command(
+    model="SpotRate",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"maturity": "10,20,30,50", "provider": "fred"}),
+    ],
+)
 async def spot_rates(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Spot Rates.
 
     The spot rates for any maturity is the yield on a bond that provides a single payment at that maturity.
@@ -84,13 +123,19 @@ async def spot_rates(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CommercialPaper")
+@router.command(
+    model="CommercialPaper",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"category": "all", "maturity": "15d", "provider": "fred"}),
+    ],
+)
 async def commercial_paper(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Commercial Paper.
 
     Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.
@@ -98,4 +143,15 @@ async def commercial_paper(
     Many companies use CP to raise cash needed for current transactions,
     and many find it to be a lower-cost alternative to bank loans.
     """
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="BondPrices", examples=[APIEx(parameters={"provider": "tmx"})])
+async def bond_prices(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Corporate Bond Prices."""
     return await OBBject.from_query(Query(**locals()))

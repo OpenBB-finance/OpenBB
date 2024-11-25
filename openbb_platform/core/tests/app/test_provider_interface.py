@@ -1,4 +1,5 @@
 """Test provider interface."""
+
 # pylint: disable=redefined-outer-name
 
 import pytest
@@ -30,7 +31,7 @@ def test_map(provider_interface):
 def test_credentials(provider_interface):
     """Test required credentials."""
     credentials = provider_interface.credentials
-    assert isinstance(credentials, list)
+    assert isinstance(credentials, dict)
     assert len(credentials) > 0
 
 

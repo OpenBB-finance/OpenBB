@@ -11,8 +11,8 @@ from openbb_core.provider.standard_models.cash_flow import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import Field, field_validator
-from yfinance import Ticker
 
 
 class YFinanceCashFlowStatementQueryParams(CashFlowStatementQueryParams):
@@ -21,8 +21,14 @@ class YFinanceCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    period: Optional[Literal["annual", "quarter"]] = Field(
-        default="quarter",
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter"],
+        }
+    }
+
+    period: Literal["annual", "quarter"] = Field(
+        default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
 
@@ -30,9 +36,15 @@ class YFinanceCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 class YFinanceCashFlowStatementData(CashFlowStatementData):
     """Yahoo Finance Cash Flow Statement Data."""
 
-    # TODO: Standardize the fields
+    __alias_dict__ = {
+        "investments_in_property_plant_and_equipment": "purchase_of_ppe",
+        "issuance_of_common_equity": "common_stock_issuance",
+        "repurchase_of_common_equity": "common_stock_payments",
+        "cash_dividends_paid": "payment_of_dividends",
+        "net_change_in_cash_and_equivalents": "changes_in_cash",
+    }
 
-    @field_validator("date", mode="before", check_fields=False)
+    @field_validator("period_ending", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
@@ -51,14 +63,19 @@ class YFinanceCashFlowStatementFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceCashFlowStatementQueryParams:
+        """Transform the query parameters."""
         return YFinanceCashFlowStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
+        # pylint: disable=unused-argument
         query: YFinanceCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceCashFlowStatementData]:
+        """Extract the data from the Yahoo Finance endpoints."""
+        from yfinance import Ticker  # pylint: disable=import-outside-toplevel
+
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_cash_flow(
             as_dict=False, pretty=False, freq=period
@@ -67,20 +84,21 @@ class YFinanceCashFlowStatementFetcher(
         if data is None:
             raise EmptyDataError()
 
-        data = data.fillna(0).to_dict()
+        data.index = [to_snake_case(i) for i in data.index]
+        data = data.reset_index().sort_index(ascending=False).set_index("index")
+        data = data.fillna("N/A").replace("N/A", None).to_dict()
+        data = [{"period_ending": str(key), **value} for key, value in data.items()]
 
-        data = [{"date": str(key), **value} for key, value in data.items()]
-        # To match standardization
-        for d in data:
-            d["Symbol"] = query.symbol
         data = json.loads(json.dumps(data))
 
         return data
 
     @staticmethod
     def transform_data(
+        # pylint: disable=unused-argument
         query: YFinanceCashFlowStatementQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[YFinanceCashFlowStatementData]:
+        """Transform the data."""
         return [YFinanceCashFlowStatementData.model_validate(d) for d in data]

@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/C:EURUSD/range/1/day/2023-01-01/2023-01-10?apiKey=MOCK_API_KEY&limit=49999&sort=asc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/2SUTWvcMBCG/8ucRdHHfEi+pj31UGjJqZSS7mpJ2pCQtZ1Swv73Ins1I8iehDHP
+        43fe0b7B8nD4U88wwc306fbr7beP4OBlred/N8/r0wJT8A7OdV4fl3l4cnf8vc5LPcK0nNeqb8D0
+        /Q1eYQrRwetfmMIHzyU4eN6PGYuDw3aWkhzc2/Fxf0NydtAcLJFSiL79HDw15MVtbMGAYnjhjhcf
+        peNZGJUfFI+kdA7CRt+gV0FMzMkMlEkDCFM3UGPdX3OpgYJ9v3j0ZtipXRELFjRFyV1BSElDeFMk
+        0iERojnKVbI7Nmx3BE+YzCGoMTyxxoghmCRajmRBsnAeJBu3S7zk9rxLSMum6LVsZnOwOjDHoo7C
+        aSh7x3aHld2GcM3QhnAw5Ds625SSxzJ03RcJJYUBbWSfBzQPbFF48qL0kHjouVF1OBTFFkm8ripz
+        1M+XFLVmYdtVXdUUYxxL3qiqiNsidkXSkndsV2S7bWTXrd2MqyP5PHa8YS8/HMzL3bLOMMGXz9Cu
+        +cta5+XnwxEmOFXkEE4VfcZUciU+0qn4UH7VUy6M4ODQ/zEu/wMAAP//aa3BEGkEAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '449'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Feb 2024 04:34:31 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Request-Id:
+      - fe4611fe4084398e56d5f9019bef8964
+    status:
+      code: 200
+      message: OK
+version: 1

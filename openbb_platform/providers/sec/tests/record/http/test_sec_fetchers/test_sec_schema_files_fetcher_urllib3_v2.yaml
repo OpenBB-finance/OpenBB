@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://xbrl.fasb.org/us-gaap/2022/
+  response:
+    body:
+      string: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n<html>\n
+        <head>\n  <title>Index of /us-gaap/2022</title>\n </head>\n <body>\n<h1>Index
+        of /us-gaap/2022</h1>\n  <table>\n   <tr><th valign=\"top\"><img src=\"/icons/blank.gif\"
+        alt=\"[ICO]\"></th><th><a href=\"?C=N;O=D\">Name</a></th><th><a href=\"?C=M;O=A\">Last
+        modified</a></th><th><a href=\"?C=S;O=A\">Size</a></th><th><a href=\"?C=D;O=A\">Description</a></th></tr>\n
+        \  <tr><th colspan=\"5\"><hr></th></tr>\n<tr><td valign=\"top\"><img src=\"/icons/back.gif\"
+        alt=\"[PARENTDIR]\"></td><td><a href=\"/us-gaap/\">Parent Directory</a></td><td>&nbsp;</td><td
+        align=\"right\">  - </td><td>&nbsp;</td></tr>\n<tr><td valign=\"top\"><img
+        src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"USGAAP2022FileList.xml\">USGAAP2022FileList.xml</a></td><td
+        align=\"right\">2021-12-13 22:10  </td><td align=\"right\"> 38K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/folder.gif\" alt=\"[DIR]\"></td><td><a href=\"dis/\">dis/</a></td><td
+        align=\"right\">2021-12-10 00:58  </td><td align=\"right\">  - </td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/folder.gif\" alt=\"[DIR]\"></td><td><a href=\"dqcrules/\">dqcrules/</a></td><td
+        align=\"right\">2021-12-10 15:47  </td><td align=\"right\">  - </td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/folder.gif\" alt=\"[DIR]\"></td><td><a href=\"elts/\">elts/</a></td><td
+        align=\"right\">2021-12-10 00:58  </td><td align=\"right\">  - </td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/folder.gif\" alt=\"[DIR]\"></td><td><a href=\"entire/\">entire/</a></td><td
+        align=\"right\">2021-12-10 00:58  </td><td align=\"right\">  - </td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/folder.gif\" alt=\"[DIR]\"></td><td><a href=\"stm/\">stm/</a></td><td
+        align=\"right\">2021-12-10 00:58  </td><td align=\"right\">  - </td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/compressed.gif\" alt=\"[   ]\"></td><td><a
+        href=\"us-gaap-2022.zip\">us-gaap-2022.zip</a></td><td align=\"right\">2021-12-14
+        21:45  </td><td align=\"right\">6.2M</td><td>&nbsp;</td></tr>\n   <tr><th
+        colspan=\"5\"><hr></th></tr>\n</table>\n</body></html>\n"
+    headers:
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '543'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Thu, 27 Jun 2024 10:14:59 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - CFLWWW
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,5 +1,6 @@
 ./tests
 .git
+*.bat
 *.css
 *.csv
 *.html
@@ -8,9 +9,12 @@
 *.js
 *.json
 *.lock
+*.nsi
 *.scss
 *.txt
 *.yaml
 ./build/pyinstaller
 ./website/config.toml
 ./**/node_modules
+./frontend-components/**
+./website/content/terminal/reference/crypto/onchain/**

@@ -1,4 +1,5 @@
 """Test the Query Executor."""
+
 # pylint: disable=W0621
 
 from unittest.mock import MagicMock, patch

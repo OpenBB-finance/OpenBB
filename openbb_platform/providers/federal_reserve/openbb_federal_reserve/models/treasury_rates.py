@@ -1,17 +1,19 @@
 """FederalReserve Treasury Rates Model."""
 
-from datetime import datetime, timedelta
-from io import BytesIO
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
 
-import pandas as pd
+from datetime import datetime
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_rates import (
     TreasuryRatesData,
     TreasuryRatesQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
 from pydantic import field_validator
+
+if TYPE_CHECKING:
+    from pandas import DataFrame  # pylint: disable=import-outside-toplevel
 
 maturities = [
     "month_1",
@@ -55,6 +57,9 @@ class FederalReserveTreasuryRatesFetcher(
         params: Dict[str, Any]
     ) -> FederalReserveTreasuryRatesQueryParams:
         """Transform the query params. Start and end dates are set to a 90 day interval."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         transformed_params = params
 
         now = datetime.now().date()
@@ -71,36 +76,45 @@ class FederalReserveTreasuryRatesFetcher(
         query: FederalReserveTreasuryRatesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> "DataFrame":
         """Return the raw data from the FederalReserve endpoint."""
-        url = (
-            "https://www.federalreserve.gov/datadownload/Output.aspx?rel=H15&series=bf17364827e38702b42a58cf8eaa3f78"
-            "&lastobs=&from=&to=&filetype=csv&label=include&layout=seriescolumn"
-        )
-        r = make_request(url, **kwargs)
-        df = pd.read_csv(BytesIO(r.content), header=5, index_col=None, parse_dates=True)
-        df.columns = ["date"] + maturities
-        df = df.replace("ND", None)
-        df = df[
-            (pd.to_datetime(df.date) >= pd.to_datetime(query.start_date))
-            & (pd.to_datetime(df.date) <= pd.to_datetime(query.end_date))
-        ]
-        df[maturities] = df[maturities].applymap(
-            lambda x: float(x) if x != "-" and x is not None else x
-        )
-        df = df.reset_index(drop=True)
+        # pylint: disable=import-outside-toplevel
+        from io import BytesIO  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
+        from numpy import nan  # noqa
+        from pandas import DataFrame, read_csv  # noqa
 
-        return df.to_dict(orient="records")
+        url = (
+            "https://www.federalreserve.gov/datadownload/Output.aspx?"
+            + "rel=H15&series=bf17364827e38702b42a58cf8eaa3f78&lastobs=&"
+            + "from=&to=&filetype=csv&label=include&layout=seriescolumn&type=package"
+        )
+
+        r = make_request(url, **kwargs)
+
+        df = read_csv(BytesIO(r.content), header=5, index_col=None, parse_dates=True)
+        df.columns = ["date"] + maturities
+        df = df.set_index("date").replace("ND", nan)
+
+        return df.dropna(axis=0, how="all").reset_index()
 
     @staticmethod
     def transform_data(
-        query: FederalReserveTreasuryRatesQueryParams, data: List[Dict], **kwargs: Any
+        query: FederalReserveTreasuryRatesQueryParams, data: "DataFrame", **kwargs: Any
     ) -> List[FederalReserveTreasuryRatesData]:
         """Return the transformed data."""
-        treasury_data = []
-        for d in data:
-            for k, v in d.items():
-                if pd.isna(v) and not isinstance(v, str):
-                    d[k] = None
-            treasury_data.append(FederalReserveTreasuryRatesData.model_validate(d))
-        return treasury_data
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
+        df = data.copy()
+        df = df[
+            (to_datetime(df.date) >= to_datetime(query.start_date))  # type: ignore
+            & (to_datetime(df.date) <= to_datetime(query.end_date))  # type: ignore
+        ]
+        for col in maturities:
+            df[col] = df[col].astype(float) / 100
+        df = df.fillna("N/A").replace("N/A", None)
+        return [
+            FederalReserveTreasuryRatesData.model_validate(d)
+            for d in df.to_dict("records")
+        ]

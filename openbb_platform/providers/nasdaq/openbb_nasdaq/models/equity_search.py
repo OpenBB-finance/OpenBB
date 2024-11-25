@@ -1,26 +1,16 @@
 """Nasdaq Equity Search Model."""
 
-import asyncio
-from datetime import timedelta
-from io import StringIO
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
 
-import requests
-import requests_cache
-from openbb_core.app.utils import get_user_cache_directory
+from typing import Any, Dict, List, Optional, Union
+
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
     EquitySearchData,
     EquitySearchQueryParams,
 )
-from pandas import read_csv
 from pydantic import Field
-
-cache_dir = get_user_cache_directory()
-
-nasdaq_session_companies = requests_cache.CachedSession(
-    f"{cache_dir}/http/nasdaq_companies", expire_after=timedelta(days=1)
-)
 
 
 class NasdaqEquitySearchQueryParams(EquitySearchQueryParams):
@@ -29,13 +19,9 @@ class NasdaqEquitySearchQueryParams(EquitySearchQueryParams):
     Source: https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt
     """
 
-    is_etf: Optional[bool] = Field(
+    is_etf: Union[bool, None] = Field(
         default=None,
         description="If True, returns ETFs.",
-    )
-    use_cache: Optional[bool] = Field(
-        default=True,
-        description="If True, caches the symbol directory for one day.",
     )
 
 
@@ -102,36 +88,32 @@ class NasdaqEquitySearchData(EquitySearchData):
 class NasdaqEquitySearchFetcher(
     Fetcher[NasdaqEquitySearchQueryParams, List[NasdaqEquitySearchData]]
 ):
-    """Transform the query, extract and transform the data from the Nasdaq endpoints."""
+    """Nasdaq Equity Search Fetcher."""
 
     require_credentials = False
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqEquitySearchQueryParams:
+        """Transform the query parameters."""
         return NasdaqEquitySearchQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    def extract_data(
         query: NasdaqEquitySearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> str:
         """Extract data from Nasdaq."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import make_request
 
         url = "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt"
-
-        def fetch_data():
-            r = (
-                nasdaq_session_companies.get(url, timeout=5)
-                if query.use_cache is True
-                else requests.get(url, timeout=5)
+        response = make_request(url)
+        if response.status_code != 200:
+            raise OpenBBError(
+                f"Failed to fetch data from Nasdaq: {response.status_code}"
             )
-            if r.status_code != 200:
-                raise RuntimeError(f"Error with the request: {r.status_code}")
-            return r.text
-
-        loop = asyncio.get_running_loop()
-        return await loop.run_in_executor(None, fetch_data)
+        return response.text
 
     @staticmethod
     def transform_data(
@@ -140,6 +122,9 @@ class NasdaqEquitySearchFetcher(
         **kwargs: Any,
     ) -> List[NasdaqEquitySearchData]:
         """Transform the data and filter the results."""
+        # pylint: disable=import-outside-toplevel
+        from io import StringIO  # noqa
+        from pandas import read_csv  # noqa
 
         directory = read_csv(StringIO(data), sep="|").iloc[:-1]
 
@@ -156,7 +141,6 @@ class NasdaqEquitySearchFetcher(
                 | directory["NASDAQ Symbol"].str.contains(query.query, case=False)
             ]
         directory["Market Category"] = directory["Market Category"].replace(" ", None)
-
         results = (
             directory.astype(object)
             .fillna("N/A")

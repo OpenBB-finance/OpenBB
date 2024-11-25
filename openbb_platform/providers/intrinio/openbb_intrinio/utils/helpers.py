@@ -9,7 +9,8 @@ from datetime import (
 from io import StringIO
 from typing import Any, Dict, List, Optional, TypeVar, Union
 
-from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -39,8 +40,8 @@ def request(url: str) -> BasicResponse:
     """
     Request function for PyScript. Pass in Method and make sure to await.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     url: str
         URL to make request to
 
@@ -59,15 +60,17 @@ def request(url: str) -> BasicResponse:
 async def response_callback(
     response: ClientResponse, _: ClientSession
 ) -> Union[dict, List[dict]]:
-    """Callback for async_request."""
+    """Use callback for async_request."""
     data = await response.json()
 
-    if isinstance(data, dict) and response.status != 200:
+    if isinstance(data, dict) and (response.status != 200 or data.get("error")):
         if message := data.get("error", None) or data.get("message", None):
-            raise RuntimeError(f"Error in Intrinio request -> {message}")
+            if "api key" in message.lower():
+                raise UnauthorizedError(f"Unauthorized Intrinio request -> {message}")
+            raise OpenBBError(f"Error in Intrinio request -> {message}")
 
         if error := data.get("Error Message", None):
-            raise RuntimeError(f"Intrinio Error Message -> {error}")
+            raise OpenBBError(f"Intrinio Error Message -> {error}")
 
     if isinstance(data, (str, float)):
         data = {"value": data}
@@ -79,7 +82,7 @@ async def response_callback(
 
 
 async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
-    """Get data from FMP endpoint."""
+    """Get data from Intrinio endpoint."""
     return await amake_request(url, response_callback=response_callback, **kwargs)
 
 
@@ -88,15 +91,15 @@ async def get_data_many(
 ) -> List[dict]:
     """Get data from Intrinio endpoint and convert to list of schemas.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     url: str
         The URL to get the data from.
     sub_dict: Optional[str]
         The sub-dictionary to use.
 
-    Returns:
-    --------
+    Returns
+    -------
     List[dict]
         Dictionary of data.
     """
@@ -123,16 +126,17 @@ async def get_data_one(url: str, **kwargs: Any) -> Dict[str, Any]:
     return data
 
 
-def get_weekday(date: dateType) -> str:
+def get_weekday(date: dateType) -> dateType:
     """Return the weekday date."""
     if date.weekday() in [5, 6]:
-        return (date - timedelta(days=date.weekday() - 4)).strftime("%Y-%m-%d")
-    return date.strftime("%Y-%m-%d")
+        return date - timedelta(days=date.weekday() - 4)
+    return date
 
 
 async def async_get_data_one(
     url: str, limit: int = 1, sleep: float = 1, **kwargs: Any
 ) -> Union[list, dict]:
+    """Get data from Intrinio endpoint and convert to schema."""
     if limit > 100:
         await asyncio.sleep(sleep)
 

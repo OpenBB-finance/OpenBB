@@ -1,8 +1,7 @@
 """Futures Curve Standard Model."""
 
-
 from datetime import date as dateType
-from typing import List, Optional, Set, Union
+from typing import Optional, Union
 
 from pydantic import Field, field_validator
 
@@ -18,23 +17,48 @@ class FuturesCurveQueryParams(QueryParams):
     """Futures Curve Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    date: Optional[dateType] = Field(
+    date: Optional[Union[dateType, str]] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", ""),
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
+    @classmethod
+    def to_upper(cls, v):
+        """Convert field to uppercase."""
+        return v.upper()
+
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def _validate_date(cls, v):
+        """Validate the date."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
+        if v is None:
+            return None
+        if isinstance(v, dateType):
+            return v.strftime("%Y-%m-%d")
+        new_dates: list = []
         if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+            dates = v.split(",")
+        if isinstance(v, list):
+            dates = v
+        for date in dates:
+            new_dates.append(to_datetime(date).date().strftime("%Y-%m-%d"))
+
+        return ",".join(new_dates) if new_dates else None
 
 
 class FuturesCurveData(Data):
     """Futures Curve Data."""
 
+    date: Optional[dateType] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("date", "")
+    )
     expiration: str = Field(description="Futures expiration month.")
-    price: Optional[float] = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("close", "")
+    price: float = Field(
+        default=None,
+        description="The price of the futures contract.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )

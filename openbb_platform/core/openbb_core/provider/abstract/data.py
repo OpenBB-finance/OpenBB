@@ -3,6 +3,7 @@
 from typing import Dict
 
 from pydantic import (
+    AliasGenerator,
     BaseModel,
     BeforeValidator,
     ConfigDict,
@@ -77,8 +78,11 @@ class Data(BaseModel):
     model_config = ConfigDict(
         extra="allow",
         populate_by_name=True,
-        alias_generator=alias_generators.to_camel,
         strict=False,
+        alias_generator=AliasGenerator(
+            validation_alias=alias_generators.to_camel,
+            serialization_alias=alias_generators.to_snake,
+        ),
     )
 
     @model_validator(mode="before")
@@ -87,7 +91,7 @@ class Data(BaseModel):
         """Use alias for error locs."""
         # set the alias dict values keys
         aliases = {orig: alias for alias, orig in cls.__alias_dict__.items()}
-        if aliases:
+        if aliases and isinstance(values, dict):
             return {aliases.get(k, k): v for k, v in values.items()}
 
         return values

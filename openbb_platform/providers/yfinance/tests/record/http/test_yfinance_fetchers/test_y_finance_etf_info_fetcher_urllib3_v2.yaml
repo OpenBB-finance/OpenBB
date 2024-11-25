@@ -1,0 +1,117 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/QQQ?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=QQQ
+  response:
+    body:
+      string: "{\"quoteSummary\":{\"result\":[{\"assetProfile\":{\"longBusinessSummary\":\"To
+        maintain the correspondence between the composition and weights of the securities
+        in the trust (the \\\"securities\\\") and the stocks in the NASDAQ-100 Index\xAE,
+        the adviser adjusts the securities from time to time to conform to periodic
+        changes in the identity and/or relative weights of index securities. The composition
+        and weighting of the securities portion of a portfolio deposit are also adjusted
+        to conform to changes in the index.\",\"companyOfficers\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":512.91,\"open\":512.46,\"dayLow\":509.9664,\"dayHigh\":514.98,\"regularMarketPreviousClose\":512.91,\"regularMarketOpen\":512.46,\"regularMarketDayLow\":509.9664,\"regularMarketDayHigh\":514.98,\"trailingPE\":41.770668,\"volume\":23777821,\"regularMarketVolume\":23777821,\"averageVolume\":30855096,\"averageVolume10days\":29589990,\"averageDailyVolume10Day\":29589990,\"bid\":512.25,\"ask\":512.73,\"bidSize\":900,\"askSize\":4100,\"yield\":0.0063,\"totalAssets\":291865886720,\"fiftyTwoWeekLow\":382.66,\"fiftyTwoWeekHigh\":515.58,\"fiftyDayAverage\":487.4242,\"twoHundredDayAverage\":462.00006,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.003450898,\"navPrice\":505.74,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
+        Growth\",\"ytdReturn\":0.2594782,\"beta3Year\":1.18,\"totalAssets\":291865886720,\"yield\":0.0063,\"fundFamily\":\"Invesco\",\"fundInceptionDate\":921024000,\"legalType\":\"Exchange
+        Traded Fund\",\"threeYearAverageReturn\":0.0953423,\"fiveYearAverageReturn\":0.2149422,\"lastSplitFactor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
+        QQQ Trust, Series 1\",\"longName\":\"Invesco QQQ Trust\",\"firstTradeDateEpochUtc\":921076200,\"timeZoneFullName\":\"America/New_York\",\"timeZoneShortName\":\"EST\",\"uuid\":\"714d32d4-5f6c-33bc-b36a-765119cb3c4c\",\"messageBoardId\":\"finmb_8108558\",\"gmtOffSetMilliseconds\":-18000000,\"maxAge\":1}}],\"error\":null}}"
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=1, stale-while-revalidate=9
+      content-encoding:
+      - gzip
+      content-length:
+      - '1076'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 14 Nov 2024 03:49:58 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '6'
+      y-rid:
+      - 01j3j3ljjasr6
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/QQQ?crumb=MOCK_CRUMB&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&symbol=QQQ&type=trailingPegRatio
+  response:
+    body:
+      string: '{"timeseries":{"result":[{"meta":{"symbol":["QQQ"],"type":["trailingPegRatio"]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=60, stale-while-revalidate=30
+      content-length:
+      - '96'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 14 Nov 2024 03:49:58 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '1'
+      y-rid:
+      - 488psq5jjasr6
+    status:
+      code: 200
+      message: OK
+version: 1

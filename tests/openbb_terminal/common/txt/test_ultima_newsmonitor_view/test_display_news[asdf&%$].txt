@@ -1,2 +1,0 @@
-
-[red]Unsupported ticker: asdf&%$[/red]

@@ -1,11 +1,13 @@
 """The OBBject."""
-from re import sub
+
 from typing import (
     TYPE_CHECKING,
     Any,
+    Callable,
     ClassVar,
     Dict,
     Generic,
+    Hashable,
     List,
     Literal,
     Optional,
@@ -14,19 +16,20 @@ from typing import (
     Union,
 )
 
-import pandas as pd
-from numpy import ndarray
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, PrivateAttr
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
-from openbb_core.app.query import Query
-from openbb_core.app.utils import basemodel_to_df
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
+    from numpy import ndarray  # noqa
+    from pandas import DataFrame  # noqa
+    from openbb_core.app.query import Query  # noqa
+
     try:
         from polars import DataFrame as PolarsDataFrame  # type: ignore
     except ImportError:
@@ -37,6 +40,10 @@ T = TypeVar("T")
 
 class OBBject(Tagged, Generic[T]):
     """OpenBB object."""
+
+    accessors: ClassVar[Set[str]] = set()
+    _user_settings: ClassVar[Optional[BaseModel]] = None
+    _system_settings: ClassVar[Optional[BaseModel]] = None
 
     results: Optional[T] = Field(
         default=None,
@@ -58,8 +65,15 @@ class OBBject(Tagged, Generic[T]):
         default_factory=dict,
         description="Extra info.",
     )
-    _credentials: ClassVar[Optional[BaseModel]] = None
-    _accessors: ClassVar[Set[str]] = set()
+    _route: str = PrivateAttr(
+        default=None,
+    )
+    _standard_params: Optional[Dict[str, Any]] = PrivateAttr(
+        default_factory=dict,
+    )
+    _extra_params: Optional[Dict[str, Any]] = PrivateAttr(
+        default_factory=dict,
+    )
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
@@ -69,38 +83,15 @@ class OBBject(Tagged, Generic[T]):
         ]
         return f"{self.__class__.__name__}\n\n" + "\n".join(items)
 
-    @classmethod
-    def results_type_repr(cls, params: Optional[Any] = None) -> str:
-        """Return the results type name."""
-        type_ = params[0] if params else cls.model_fields["results"].annotation
-        name = type_.__name__ if hasattr(type_, "__name__") else str(type_)
-        if "typing." in str(type_):
-            unpack_optional = sub(r"Optional\[(.*)\]", r"\1", str(type_))
-            name = sub(
-                r"(\w+\.)*(\w+)?(\, NoneType)?",
-                r"\2",
-                unpack_optional,
-            )
-
-        return name
-
-    @classmethod
-    def model_parametrized_name(cls, params: Any) -> str:
-        """Return the model name with the parameters."""
-        return f"OBBject[{cls.results_type_repr(params)}]"
-
     def to_df(
-        self, index: Optional[str] = None, sort_by: Optional[str] = None
-    ) -> pd.DataFrame:
-        """Alias for `to_dataframe`."""
-        return self.to_dataframe(index=index, sort_by=sort_by)
+        self,
+        index: Optional[Union[str, None]] = "date",
+        sort_by: Optional[str] = None,
+        ascending: Optional[bool] = None,
+    ) -> "DataFrame":
+        """Alias for `to_dataframe`.
 
-    def to_dataframe(
-        self, index: Optional[str] = None, sort_by: Optional[str] = None
-    ) -> pd.DataFrame:
-        """Convert results field to pandas dataframe.
-
-        Supports converting creating pandas DataFrames from the following
+        Supports converting creating Pandas DataFrames from the following
         serializable data formats:
 
         - List[BaseModel]
@@ -113,18 +104,66 @@ class OBBject(Tagged, Generic[T]):
         - Dict[str, List]
         - Dict[str, BaseModel]
 
+        Other supported formats:
+        - str
+
         Parameters
         ----------
         index : Optional[str]
             Column name to use as index.
         sort_by : Optional[str]
             Column name to sort by.
+        ascending: Optional[bool]
+            Sort by ascending for each column specified in `sort_by`.
 
         Returns
         -------
-        pd.DataFrame
-            Pandas dataframe.
+        DataFrame
+            Pandas DataFrame.
         """
+        return self.to_dataframe(index=index, sort_by=sort_by, ascending=ascending)
+
+    def to_dataframe(
+        self,
+        index: Optional[Union[str, None]] = "date",
+        sort_by: Optional[str] = None,
+        ascending: Optional[bool] = None,
+    ) -> "DataFrame":
+        """Convert results field to Pandas DataFrame.
+
+        Supports converting creating Pandas DataFrames from the following
+        serializable data formats:
+
+        - List[BaseModel]
+        - List[Dict]
+        - List[List]
+        - List[str]
+        - List[int]
+        - List[float]
+        - Dict[str, Dict]
+        - Dict[str, List]
+        - Dict[str, BaseModel]
+
+        Other supported formats:
+        - str
+
+        Parameters
+        ----------
+        index : Optional[str]
+            Column name to use as index.
+        sort_by : Optional[str]
+            Column name to sort by.
+        ascending: Optional[bool]
+            Sort by ascending for each column specified in `sort_by`.
+
+        Returns
+        -------
+        DataFrame
+            Pandas DataFrame.
+        """
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, concat  # noqa
+        from openbb_core.app.utils import basemodel_to_df  # noqa
 
         def is_list_of_basemodel(items: Union[List[T], T]) -> bool:
             return isinstance(items, list) and all(
@@ -134,7 +173,7 @@ class OBBject(Tagged, Generic[T]):
         if self.results is None or not self.results:
             raise OpenBBError("Results not found.")
 
-        if isinstance(self.results, pd.DataFrame):
+        if isinstance(self.results, DataFrame):
             return self.results
 
         try:
@@ -142,41 +181,57 @@ class OBBject(Tagged, Generic[T]):
             df = None
             sort_columns = True
 
+            # BaseModel
+            if isinstance(res, BaseModel):
+                df = DataFrame(res.model_dump(exclude_unset=True, exclude_none=True))
+                sort_columns = False
+
             # List[Dict]
-            if isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
+            elif isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
                 r = res[0]
                 dict_of_df = {}
 
                 for k, v in r.items():
                     # Dict[str, List[BaseModel]]
                     if is_list_of_basemodel(v):
-                        dict_of_df[k] = basemodel_to_df(v, index or "date")
+                        dict_of_df[k] = basemodel_to_df(v, index)
                         sort_columns = False
                     # Dict[str, Any]
                     else:
-                        dict_of_df[k] = pd.DataFrame(v)
+                        dict_of_df[k] = DataFrame(v)
 
-                df = pd.concat(dict_of_df, axis=1)
+                df = concat(dict_of_df, axis=1)
 
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: Union[List[Data], Data] = res  # type: ignore
-                df = basemodel_to_df(dt, index or "date")
-                sort_columns = False
+                r = dt[0] if isinstance(dt, list) and len(dt) == 1 else None  # type: ignore
+                if r and all(
+                    prop.get("type") == "array"
+                    for prop in r.model_json_schema()["properties"].values()  # type: ignore
+                ):
+                    sort_columns = False
+                    df = DataFrame(r.model_dump(exclude_unset=True, exclude_none=True))  # type: ignore
+                else:
+                    df = basemodel_to_df(dt, index)
+                    sort_columns = False
+            # str
+            elif isinstance(res, str):
+                df = DataFrame([res])
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:
-                    df = pd.DataFrame(res)
-                    # Set index, if any
-                    if index and index in df.columns:
-                        df.set_index(index, inplace=True)
-
+                    df = DataFrame(res)  # type: ignore[call-overload]
                 except ValueError:
                     if isinstance(res, dict):
-                        df = pd.DataFrame([res])
+                        df = DataFrame([res])
 
             if df is None:
                 raise OpenBBError("Unsupported data format.")
+
+            # Set index, if any
+            if index is not None and index in df.columns:
+                df.set_index(index, inplace=True)
 
             # Drop columns that are all NaN, but don't rearrange columns
             if sort_columns:
@@ -185,7 +240,11 @@ class OBBject(Tagged, Generic[T]):
 
             # Sort by specified column
             if sort_by:
-                df.sort_values(by=sort_by, inplace=True)
+                df.sort_values(
+                    by=sort_by,
+                    ascending=ascending if ascending is not None else True,
+                    inplace=True,
+                )
 
         except OpenBBError as e:
             raise e
@@ -202,7 +261,7 @@ class OBBject(Tagged, Generic[T]):
 
         return df
 
-    def to_polars(self) -> "PolarsDataFrame":
+    def to_polars(self) -> "PolarsDataFrame":  # type: ignore
         """Convert results field to polars dataframe."""
         try:
             from polars import from_pandas  # type: ignore # pylint: disable=import-outside-toplevel
@@ -211,92 +270,73 @@ class OBBject(Tagged, Generic[T]):
                 "Please install polars: `pip install polars pyarrow`  to use this method."
             ) from exc
 
-        return from_pandas(self.to_dataframe().reset_index())
+        return from_pandas(self.to_dataframe(index=None))
 
-    def to_numpy(self) -> ndarray:
+    def to_numpy(self) -> "ndarray":
         """Convert results field to numpy array."""
-        return self.to_dataframe().reset_index().to_numpy()
+        return self.to_dataframe(index=None).to_numpy()
 
     def to_dict(
         self,
         orient: Literal[
             "dict", "list", "series", "split", "tight", "records", "index"
         ] = "list",
-    ) -> Dict[str, List]:
-        """Convert results field to a dictionary using any of pandas to_dict options.
+    ) -> Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]:
+        """Convert results field to a dictionary using any of Pandas `to_dict` options.
 
         Parameters
         ----------
         orient : Literal["dict", "list", "series", "split", "tight", "records", "index"]
             Value to pass to `.to_dict()` method
 
-
         Returns
         -------
-        Dict[str, List]
-            Dictionary of lists.
+        Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]
+            Dictionary of lists or list of dictionaries if orient is "records".
         """
-        df = self.to_dataframe()  # type: ignore
-        transpose = False
-        if orient == "list":
-            transpose = True
-            if not isinstance(self.results, dict):
-                transpose = False
-            else:  # Only enter the loop if self.results is a dictionary
-                self.results: Dict[str, Any] = self.results  # type: ignore
-                for _, value in self.results.items():
-                    if not isinstance(value, dict):
-                        transpose = False
-                        break
-        if transpose:
+        df = self.to_dataframe(index=None)
+        if (
+            orient == "list"
+            and isinstance(self.results, dict)
+            and all(
+                isinstance(value, dict)
+                for value in self.results.values()  # pylint: disable=no-member
+            )
+        ):
             df = df.T
         results = df.to_dict(orient=orient)
-        if orient == "list" and "index" in results:
+        if isinstance(results, dict) and orient == "list" and "index" in results:
             del results["index"]
         return results
 
-    def to_chart(self, **kwargs):
-        """
-        Create or update the `Chart`.
-
-        This function assumes that the provided data is a time series, if it's not, it will
-        most likely result in an Exception.
-
-        Note that the `chart` attribute is composed by: `content`, `format` and `fig`.
-
-        Parameters
-        ----------
-        **kwargs
-            Keyword arguments to be passed to the charting extension.
-            This implies that the user has some knowledge on the charting extension API.
-            This is the case because the charting extension may vary on user preferences.
+    def to_llm(self) -> Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]:
+        """Convert results field to an LLM compatible output.
 
         Returns
         -------
-        chart.fig
-            The chart figure.
+        Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]
+            Dictionary of lists or list of dictionaries if orient is "records".
         """
-        #  pylint: disable=import-outside-toplevel
-        # Avoids circular import
-        from openbb_core.app.charting_service import ChartingService
+        df = self.to_dataframe(index=None)
 
-        cs = ChartingService()
-        kwargs["data"] = self.to_dataframe()
+        results = df.to_json(
+            orient="records",
+            date_format="iso",
+            date_unit="s",
+        )
 
-        self.chart = cs.to_chart(**kwargs)
-        return self.chart.fig
+        return results  # type: ignore
 
-    def show(self):
+    def show(self, **kwargs: Any) -> None:
         """Display chart."""
+        # pylint: disable=no-member
         if not self.chart or not self.chart.fig:
-            raise OpenBBError(
-                "Chart not found. "
-                "Please compute the chart first by using the `chart=True` argument."
-            )
-        self.chart.fig.show()
+            raise OpenBBError("Chart not found.")
+        show_function: Callable = getattr(self.chart.fig, "show")
+        show_function(**kwargs)
 
     @classmethod
-    async def from_query(cls, query: Query) -> "OBBject":
+    async def from_query(cls, query: "Query") -> "OBBject":
         """Create OBBject from query.
 
         Parameters
@@ -309,4 +349,9 @@ class OBBject(Tagged, Generic[T]):
         OBBject[ResultsType]
             OBBject with results.
         """
-        return cls(results=await query.execute())
+        results = await query.execute()
+        if isinstance(results, AnnotatedResult):
+            return cls(
+                results=results.result, extra={"results_metadata": results.metadata}
+            )
+        return cls(results=results)

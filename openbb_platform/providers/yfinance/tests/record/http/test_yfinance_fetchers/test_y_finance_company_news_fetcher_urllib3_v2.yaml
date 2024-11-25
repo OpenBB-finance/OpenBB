@@ -1,0 +1,168 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=AAPL
+  response:
+    body:
+      string: "{\"explains\":[],\"count\":15,\"quotes\":[{\"exchange\":\"NMS\",\"shortname\":\"Apple
+        Inc.\",\"quoteType\":\"EQUITY\",\"symbol\":\"AAPL\",\"index\":\"quotes\",\"score\":5175000.0,\"typeDisp\":\"Equity\",\"longname\":\"Apple
+        Inc.\",\"exchDisp\":\"NASDAQ\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Consumer
+        Electronics\",\"industryDisp\":\"Consumer Electronics\",\"dispSecIndFlag\":true,\"isYahooFinance\":true},{\"exchange\":\"PCX\",\"shortname\":\"Tidal
+        ETF Trust II YieldMax AAP\",\"quoteType\":\"ETF\",\"symbol\":\"APLY\",\"index\":\"quotes\",\"score\":20010.0,\"typeDisp\":\"ETF\",\"longname\":\"YieldMax
+        AAPL Option Income Strategy ETF\",\"exchDisp\":\"NYSEArca\",\"isYahooFinance\":true},{\"exchange\":\"NGM\",\"shortname\":\"Direxion
+        Daily AAPL Bull 2X Sha\",\"quoteType\":\"ETF\",\"symbol\":\"AAPU\",\"index\":\"quotes\",\"score\":20008.0,\"typeDisp\":\"ETF\",\"longname\":\"Direxion
+        Daily AAPL Bull 2X Shares\",\"exchDisp\":\"NASDAQ\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Dec 2024 190.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL241220P00190000\",\"index\":\"quotes\",\"score\":20005.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Dec 2024 190.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Dec 2025 70.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL251219C00070000\",\"index\":\"quotes\",\"score\":20005.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Dec 2025 70.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Jan 2025 75.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL250117P00075000\",\"index\":\"quotes\",\"score\":20005.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Jan 2025 75.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"AAPL
+        Dec 2025 120.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"AAPL251219C00120000\",\"index\":\"quotes\",\"score\":20005.0,\"typeDisp\":\"Option\",\"longname\":\"AAPL
+        Dec 2025 120.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"04bb52a7-97e8-3440-bef4-3aec2d573832\",\"title\":\"Apple
+        Inc. (AAPL): Set to Enter Smart Home Market with AI-Powered Wall Tablet, Competing
+        with Amazon and Google\",\"publisher\":\"Insider Monkey\",\"link\":\"https://finance.yahoo.com/news/apple-inc-aapl-set-enter-014706707.html\",\"providerPublishTime\":1731548826,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/fTPNobtT0bdcSxj2xXAamw--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/bd47dc2e86b4a3086f845d200d9daf1f\",\"width\":1456,\"height\":816,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/nIyTyNRglKMNfFFMGli.7A--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/bd47dc2e86b4a3086f845d200d9daf1f\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AAPL\",\"GOOG\"]},{\"uuid\":\"b94878f0-2ddb-328d-9a02-4089a15f2993\",\"title\":\"Apple\u2019s
+        AI-powered Final Cut Pro 11 is now available\",\"publisher\":\"TechCrunch\",\"link\":\"https://finance.yahoo.com/m/b94878f0-2ddb-328d-9a02-4089a15f2993/apple%E2%80%99s-ai-powered-final-cut.html\",\"providerPublishTime\":1731546924,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/lPyAZq14wNTzBsqP9fCXsw--~B/aD00NTM7dz02ODA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/techcrunch_for_finance_733/9f9bb2a973f7c2aebb585eed36986289\",\"width\":680,\"height\":453,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/uwfv8AcXVn4iWewEWJNtXA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/techcrunch_for_finance_733/9f9bb2a973f7c2aebb585eed36986289\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AAPL\"]},{\"uuid\":\"e684fc35-8f81-333b-b359-dab6b9885676\",\"title\":\"Final
+        Cut Pro 11 begins a new chapter for video editing on Mac\",\"publisher\":\"Business
+        Wire\",\"link\":\"https://finance.yahoo.com/news/final-cut-pro-11-begins-230000686.html\",\"providerPublishTime\":1731538800,\"type\":\"STORY\",\"relatedTickers\":[\"AAPL\"]},{\"uuid\":\"49f6c872-6ba0-3fc3-863b-222784120003\",\"title\":\"Renaissance
+        Technologies Amplifies Stake in Microsoft Corp, Impacting Portfolio by 0.81%\",\"publisher\":\"GuruFocus.com\",\"link\":\"https://finance.yahoo.com/news/renaissance-technologies-amplifies-stake-microsoft-220324078.html\",\"providerPublishTime\":1731535404,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/jZbKPRmb7lG.P4WFEoHkEQ--~B/aD05MDI7dz0xMjQyO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/us.finance.gurufocus/619ee89ea8c6eafc86820cae60383d93\",\"width\":1242,\"height\":902,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/KxWRkagXrqfg1StDNZgX2w--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/us.finance.gurufocus/619ee89ea8c6eafc86820cae60383d93\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\",\"AAPL\"]},{\"uuid\":\"f7ab1b51-29ed-3330-9577-f27e554859f0\",\"title\":\"Smart
+        Home Devices Could Boost Apple Stock, Analyst Says\",\"publisher\":\"Investor's
+        Business Daily\",\"link\":\"https://finance.yahoo.com/m/f7ab1b51-29ed-3330-9577-f27e554859f0/smart-home-devices-could.html\",\"providerPublishTime\":1731532474,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/aKpwLEMQDxec5Hd0ZqvLJw--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/2faedde23bd4d942b57c086f56ed195c\",\"width\":1000,\"height\":563,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/Thgz3bkibI0kNmCIy6Lf.g--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/2faedde23bd4d942b57c086f56ed195c\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AAPL\"]},{\"uuid\":\"ce2ffe06-f882-3e0d-8b97-fa77d137e8bb\",\"title\":\"Warren
+        Buffett Stocks: What's Inside Berkshire Hathaway's Portfolio?\",\"publisher\":\"Investor's
+        Business Daily\",\"link\":\"https://finance.yahoo.com/m/ce2ffe06-f882-3e0d-8b97-fa77d137e8bb/warren-buffett-stocks%3A-what%27s.html\",\"providerPublishTime\":1731531915,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/Ljfj8FLRVF.jJ7RMNOlcHA--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/f4b076819c9c7a1027a39afb4f9b21fc\",\"width\":1000,\"height\":563,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/6T.beZbYcDzvbZYOtxOBIg--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/f4b076819c9c7a1027a39afb4f9b21fc\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"BRK-A\",\"AAPL\"]},{\"uuid\":\"c3e1fcba-f959-4108-a7c9-3e7fa24390bb\",\"title\":\"Trump\u2019s
+        second term will have enormous implications for Big Tech. Here's why.\",\"publisher\":\"Yahoo
+        Finance\",\"link\":\"https://finance.yahoo.com/news/trumps-second-term-will-have-enormous-implications-for-big-tech-heres-why-200000413.html\",\"providerPublishTime\":1731528000,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/lAiiCu9FwCrVEv4zlBw1Cg--~B/aD0zMzMzO3c9NTAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-11/c01028b0-a11e-11ef-bdaf-98df54fe4ba4\",\"width\":5000,\"height\":3333,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/sV2KPTmOu_cd5Cv9Jvj.Sw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-11/c01028b0-a11e-11ef-bdaf-98df54fe4ba4\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"META\",\"AAPL\",\"TSLA\",\"AMZN\",\"GOOG\",\"MSFT\"]},{\"uuid\":\"932497a0-94d1-3689-aa1c-37e5cc01ad68\",\"title\":\"'Stupid
+        Risks That Worked' \u2013 Investor Whose Portfolio Went From $25k to $438K
+        in 6 Years Shares Holdings: Top 10 Stocks, ETFs\",\"publisher\":\"Benzinga\",\"link\":\"https://finance.yahoo.com/news/stupid-risks-worked-investor-whose-150522387.html\",\"providerPublishTime\":1731527366,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/lDTtaV5oUnnksB0yAWjAXA--~B/aD00ODA7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/benzinga_79/5f32718e74c3da76dc0d805fb703658b\",\"width\":720,\"height\":480,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/qFUuQspa6Jn0DsXPBP7oqA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/benzinga_79/5f32718e74c3da76dc0d805fb703658b\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"AAPL\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":55,\"timeTakenForQuotes\":437,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0,\"timeTakenForSearchLists\":0}"
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=600, stale-while-revalidate=180
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 14 Nov 2024 03:49:54 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-search--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '60'
+      y-rid:
+      - 3jik9h1jjasr3
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=MSFT
+  response:
+    body:
+      string: "{\"explains\":[],\"count\":15,\"quotes\":[{\"exchange\":\"NMS\",\"shortname\":\"Microsoft
+        Corporation\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT\",\"index\":\"quotes\",\"score\":3437400.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
+        Corporation\",\"exchDisp\":\"NASDAQ\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"dispSecIndFlag\":true,\"isYahooFinance\":true},{\"exchange\":\"NGM\",\"shortname\":\"Direxion
+        Daily MSFT Bull 2X Sha\",\"quoteType\":\"ETF\",\"symbol\":\"MSFU\",\"index\":\"quotes\",\"score\":20012.0,\"typeDisp\":\"ETF\",\"longname\":\"Direxion
+        Daily MSFT Bull 2X Shares\",\"exchDisp\":\"NASDAQ\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Jan 2026 190.000 put\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116P00190000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Jan 2026 190.000 put\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Dec 2026 600.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT261218C00600000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Dec 2026 600.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Jan 2026 450.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT260116C00450000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Jan 2026 450.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"OPR\",\"shortname\":\"MSFT
+        Jun 2025 250.000 call\",\"quoteType\":\"OPTION\",\"symbol\":\"MSFT250620C00250000\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Option\",\"longname\":\"MSFT
+        Jun 2025 250.000 call\",\"exchDisp\":\"OPR\",\"isYahooFinance\":true},{\"exchange\":\"MEX\",\"shortname\":\"MICROSOFT
+        CORP\",\"quoteType\":\"EQUITY\",\"symbol\":\"MSFT.MX\",\"index\":\"quotes\",\"score\":20006.0,\"typeDisp\":\"Equity\",\"longname\":\"Microsoft
+        Corporation\",\"exchDisp\":\"Mexico\",\"sector\":\"Technology\",\"sectorDisp\":\"Technology\",\"industry\":\"Software\u2014Infrastructure\",\"industryDisp\":\"Software\u2014Infrastructure\",\"isYahooFinance\":true}],\"news\":[{\"uuid\":\"49f6c872-6ba0-3fc3-863b-222784120003\",\"title\":\"Renaissance
+        Technologies Amplifies Stake in Microsoft Corp, Impacting Portfolio by 0.81%\",\"publisher\":\"GuruFocus.com\",\"link\":\"https://finance.yahoo.com/news/renaissance-technologies-amplifies-stake-microsoft-220324078.html\",\"providerPublishTime\":1731535404,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/jZbKPRmb7lG.P4WFEoHkEQ--~B/aD05MDI7dz0xMjQyO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/us.finance.gurufocus/619ee89ea8c6eafc86820cae60383d93\",\"width\":1242,\"height\":902,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/KxWRkagXrqfg1StDNZgX2w--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/us.finance.gurufocus/619ee89ea8c6eafc86820cae60383d93\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\",\"AAPL\"]},{\"uuid\":\"4acff37a-d2ee-3f85-b659-3d6c42b127c9\",\"title\":\"Market
+        Chatter: OpenAI Preparing to Introduce AI Agent Tool in January\",\"publisher\":\"MT
+        Newswires\",\"link\":\"https://finance.yahoo.com/news/market-chatter-openai-preparing-introduce-211436528.html\",\"providerPublishTime\":1731532476,\"type\":\"STORY\",\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"c3e1fcba-f959-4108-a7c9-3e7fa24390bb\",\"title\":\"Trump\u2019s
+        second term will have enormous implications for Big Tech. Here's why.\",\"publisher\":\"Yahoo
+        Finance\",\"link\":\"https://finance.yahoo.com/news/trumps-second-term-will-have-enormous-implications-for-big-tech-heres-why-200000413.html\",\"providerPublishTime\":1731528000,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/lAiiCu9FwCrVEv4zlBw1Cg--~B/aD0zMzMzO3c9NTAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2024-11/c01028b0-a11e-11ef-bdaf-98df54fe4ba4\",\"width\":5000,\"height\":3333,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/sV2KPTmOu_cd5Cv9Jvj.Sw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://s.yimg.com/os/creatr-uploaded-images/2024-11/c01028b0-a11e-11ef-bdaf-98df54fe4ba4\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"META\",\"AAPL\",\"TSLA\",\"AMZN\",\"GOOG\",\"MSFT\"]},{\"uuid\":\"63892aea-2f09-362f-b083-2e413f5c3487\",\"title\":\"Microsoft
+        Gaming Chief Reportedly Pursues New Acquisitions, Focuses on Asia and Mobile
+        Expansion\",\"publisher\":\"GuruFocus.com\",\"link\":\"https://finance.yahoo.com/news/microsoft-gaming-chief-reportedly-pursues-174825756.html\",\"providerPublishTime\":1731520105,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/uQZ8RpcnV6J8t4NnAVvzzg--~B/aD0zNjY7dz01NTA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/us.finance.gurufocus/10a2c805766adf82de2d7cc2e32af21b\",\"width\":550,\"height\":366,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/JKmTX6kayXX_1FbrdeOeqA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/us.finance.gurufocus/10a2c805766adf82de2d7cc2e32af21b\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"f64f92ee-04f5-36b3-934d-7483425d6bc1\",\"title\":\"Microsoft
+        Stock Nicely Holds This Important Moving Average; Why It's A Buy Again\",\"publisher\":\"Investor's
+        Business Daily\",\"link\":\"https://finance.yahoo.com/m/f64f92ee-04f5-36b3-934d-7483425d6bc1/microsoft-stock-nicely-holds.html\",\"providerPublishTime\":1731517807,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/fFdr7sA_0z59s4QUuSDJiQ--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/73719136c2db3f3489f33f9770838b7a\",\"width\":1000,\"height\":563,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/g.inkEAzPjgufV3h4P.5Mw--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/73719136c2db3f3489f33f9770838b7a\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"eef4dfd0-df7a-319f-b9ec-14bfec695089\",\"title\":\"GE
+        Aerospace Collaborates With Microsoft, Accenture on Gen-AI Aviation Solutions\",\"publisher\":\"MT
+        Newswires\",\"link\":\"https://finance.yahoo.com/news/ge-aerospace-collaborates-microsoft-accenture-165116411.html\",\"providerPublishTime\":1731516676,\"type\":\"STORY\",\"relatedTickers\":[\"ACN\",\"MSFT\"]},{\"uuid\":\"964e17e4-5846-3a06-8f04-02d44acad593\",\"title\":\"Microsoft
+        Copilot Sees Solid Market Share Gain: How to Play the Stock\",\"publisher\":\"Zacks\",\"link\":\"https://finance.yahoo.com/news/microsoft-copilot-sees-solid-market-153600429.html\",\"providerPublishTime\":1731512160,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/YARxA.GWVScxLEnuTSCWVw--~B/aD03MTE7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/dc9e0d9bf105e65b8acc4fc723834bee\",\"width\":900,\"height\":711,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/G9u3dfQQYcMgY_xn13LasQ--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/zacks.com/dc9e0d9bf105e65b8acc4fc723834bee\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]},{\"uuid\":\"3183a763-6213-3bc0-b21d-be006460f5f4\",\"title\":\"Microsoft
+        Corporation (MSFT) AI Executive Highlights Success in Supply Chain Optimization
+        and M&A Risk Management, Emphasizes Focused AI Agent Use Cases\",\"publisher\":\"Insider
+        Monkey\",\"link\":\"https://finance.yahoo.com/news/microsoft-corporation-msft-ai-executive-153418662.html\",\"providerPublishTime\":1731512058,\"type\":\"STORY\",\"thumbnail\":{\"resolutions\":[{\"url\":\"https://s.yimg.com/uu/api/res/1.2/FPV7LMJx9t7xViBmxMrZWw--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/ae3cb2a93ad8e5ddf6f94148e71f74b9\",\"width\":1456,\"height\":816,\"tag\":\"original\"},{\"url\":\"https://s.yimg.com/uu/api/res/1.2/snE9DwM_Mhbq41k5r0NVHA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/ae3cb2a93ad8e5ddf6f94148e71f74b9\",\"width\":140,\"height\":140,\"tag\":\"140x140\"}]},\"relatedTickers\":[\"MSFT\"]}],\"nav\":[],\"lists\":[],\"researchReports\":[],\"screenerFieldResults\":[],\"totalTime\":64,\"timeTakenForQuotes\":444,\"timeTakenForNews\":600,\"timeTakenForAlgowatchlist\":400,\"timeTakenForPredefinedScreener\":400,\"timeTakenForCrunchbase\":0,\"timeTakenForNav\":400,\"timeTakenForResearchReports\":0,\"timeTakenForScreenerField\":0,\"timeTakenForCulturalAssets\":0,\"timeTakenForSearchLists\":0}"
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=600, stale-while-revalidate=180
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 14 Nov 2024 03:49:54 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-search--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '67'
+      y-rid:
+      - 3vtfl0pjjasr3
+    status:
+      code: 200
+      message: OK
+version: 1

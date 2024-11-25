@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_end=2023-06-06&observation_start=2023-01-01&series_id=DAAA
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5uchazbWNTCEaEZWANdvrGtgpmtgpqSjVJqXWVKsZKWUk5mnpKOUX1pSUFoSX1JZkKpkZaijlJaZ
+        kwrlKWUV54OVFKWkFsUnVSpZKSEbnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVoaKSj
+        lJ+WVpxaomRloKOUk5mbCRI2AAEdZLOKlayiKQkSsFPAQQgJBSMlHaWyxJzSVCUrJT2lWh1qmm2M
+        ZLaJnpkllY03QTHelNrGm6Iab0Zl14PSFyzgTfRMqG28JYrrTYyo63pDAxTjTQ2pbDwoYyMFDpVN
+        R07zJnpGVE44hqjJ3tiEyq5HTjhUzrGG5ijRamxMZadboBhvRG3jUdO8kTl1XW+EmuaNqZxjjdCS
+        DZVTpRFqaUntqDVCLS2NTakc9siJ3kSP2nnKCC3dUznLGqOlHAvqBo4xWmlJ1cLYCNJQQhTG1C0u
+        jXQN0EpjqgaOka4BWraiasI0gjQTEYFjQu2wR02Y1G0lGOkaoBbIVDcetUCmctCjtUGoWhwb6aLV
+        4qbUdjxqcUx141GLY+q2jY10DVGLYzOqlpdGumjNEDMqhz1KRU7VFpSRrhFqWWxO5VRphFpYmlO5
+        uEFrg5hRuSxGa4OYUzteUQtLc6o2L410jVALS+pGLagzjtI4Nqdq2BujV7MWVA0cY/RqlropBzQg
+        gxo41GxAGesaoCUcKpuOlm6o2hU31jVArWSpm+qNddFqWVMqJ0u0ataMqgWasa4hajVL7WRpiFrN
+        UrWwN0avZalbiRuj17ImVO0uG+ui1LImeqZUTvZoFS21AwetojWlcnGJVtFS3XjUZG9C1faZsS5a
+        d9mU2sajFpjUHVw01jVCLTCpnTDROvsmVC4w0Tr7xlQ13gS9HqfuOI6JrgFawqRqcW+ia4BaHlM9
+        cFC7PdQdAQTNaCE1cqjaLzFBr8ZNqNr0NtE1RO32mFC1uDTRNUTt9lDd9ahjRNTNsibojRDqFjgm
+        6PW4KVVbISa6hmilMVXrcRNdQ7TSmMoph6atEBP07j51a0ITXbQOM7UTJtqgPXUnCU10jVCLS+qO
+        LppgtEKonXJQ0z11yxxT9FF16nZ8TNG7+9RtYJqiNxOoW6SZojcTqDs6aoreTKBuiWmKPqpO3dFR
+        U/QOvxlVy3tT9JYCtU1HbShQt8A0RW8oUDvhoPf3qR04qAUmdYdyTNEbClQ3HrXApLrxqA0F6g6/
+        muqidfipO/xqqovW4Ten6mCLKXpDgaqdQlNdtHaCBVV7babo7QSqhw1ywqFqt8pUF62zT935GFNd
+        tM6+GVVTjRlGG4Sq4zhm6G0Q6g6+mqHX4tRdXghdAIqY2QeFPWCxtQAns8PXjSoAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1075'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 01 Jul 2024 21:12:28 GMT
+      Expires:
+      - Mon, 01 Jul 2024 21:12:28 GMT
+      Last-Modified:
+      - Mon, 01 Jul 2024 15:16:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

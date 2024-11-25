@@ -1,6 +1,5 @@
 """Dividend Calendar Standard Model."""
 
-
 from datetime import date as dateType
 from typing import Optional
 
@@ -28,12 +27,12 @@ class CalendarDividendQueryParams(QueryParams):
 class CalendarDividendData(Data):
     """Dividend Calendar Data."""
 
-    date: dateType = Field(
-        description=DATA_DESCRIPTIONS.get("date", "") + " (Ex-Dividend)"
+    ex_dividend_date: dateType = Field(
+        description="The ex-dividend date - the date on which the stock begins trading without rights to the dividend."
     )
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     amount: Optional[float] = Field(
-        default=None, description="Dividend amount, per-share."
+        default=None, description="The dividend amount per share."
     )
     name: Optional[str] = Field(default=None, description="Name of the entity.")
     record_date: Optional[dateType] = Field(

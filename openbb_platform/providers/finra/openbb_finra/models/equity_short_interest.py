@@ -1,6 +1,7 @@
 """FINRA Equity Short Interest Model."""
 
-import sqlite3
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -8,7 +9,6 @@ from openbb_core.provider.standard_models.equity_short_interest import (
     ShortInterestData,
     ShortInterestQueryParams,
 )
-from openbb_finra.utils.data_storage import DB_PATH, prepare_data
 
 
 class FinraShortInterestQueryParams(ShortInterestQueryParams):
@@ -49,17 +49,21 @@ class FinraShortInterestFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the Finra endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import sqlite3  # noqa
+        from openbb_finra.utils.data_storage import get_db_path, prepare_data  # noqa
+
+        DB_PATH = get_db_path()
         # Put the data in the cache
         prepare_data()
         # Get the data from the cache
         cnx = sqlite3.connect(DB_PATH)
         cursor = cnx.cursor()
-        if query.symbol:
-            cursor.execute(
-                "SELECT * FROM short_interest where symbolCode = ?", (query.symbol,)
-            )
-        else:
-            cursor.execute("SELECT * FROM short_interest")
+        cursor.execute(
+            "SELECT * FROM short_interest where symbolCode = ?", (query.symbol,)
+        )
+        # TODO: Check if we should allow general queries, it's more than 500k rows
+        # cursor.execute("SELECT * FROM short_interest")
         result = cursor.fetchall()
 
         titles = [
@@ -74,10 +78,7 @@ class FinraShortInterestFetcher(
             "changePreviousNumber",
             "settlementDate",
         ]
-        return [
-            {title: value for title, value in zip(titles, list(row)[1:])}
-            for row in result
-        ]
+        return [dict(zip(titles, list(row)[1:])) for row in result]
 
     @staticmethod
     def transform_data(

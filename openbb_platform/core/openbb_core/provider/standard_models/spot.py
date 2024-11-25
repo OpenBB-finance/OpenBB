@@ -1,8 +1,9 @@
 """Spot Rate Standard Model."""
+
 from datetime import (
     date as dateType,
 )
-from typing import List, Literal, Optional
+from typing import Optional, Union
 
 from pydantic import Field, field_validator
 
@@ -25,24 +26,19 @@ class SpotRateQueryParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    maturity: List[float] = Field(
-        default=[10.0], description="The maturities in years."
+    maturity: Union[float, str] = Field(
+        default=10.0, description="Maturities in years."
     )
-    category: List[Literal["par_yield", "spot_rate"]] = Field(
-        default=["spot_rate"],
-        description="The category.",
+    category: str = Field(
+        default="spot_rate",
+        description="Rate category. Options: spot_rate, par_yield.",
     )
 
-    @field_validator("maturity")
+    @field_validator("category", mode="before", check_fields=False)
     @classmethod
-    def maturity_validate(cls, v):
-        """Validate maturity."""
-        for i in v:
-            if not isinstance(i, float):
-                raise ValueError("`maturity` must be a float")
-            if not 1 <= i <= 100:
-                raise ValueError("`maturity` must be between 1 and 100")
-        return v
+    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+        """Convert field to lowercase."""
+        return v.lower() if v else v
 
 
 class SpotRateData(Data):

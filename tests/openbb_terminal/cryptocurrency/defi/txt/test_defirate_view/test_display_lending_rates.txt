@@ -1,6 +1,0 @@
-  Symbol Compound     v2   Aave Fulcrum BlockFi   Nexo Celsius Gemini Bitfinex Poloniex Coinbase
-0    DAI    1.87%  2.22%  5.04%    8.5%     10%   4.6%   6.43%  9.13%        –       2%     USDC
-1  1.66%    1.79%  2.83%  7.25%     10%    7.1%  7.99%       –  0.04%    0.15%      ETH    0.05%
-2     0%    1.49%     4%     6%      6%   1.26%  5.57%   0.04%      –      BTC        –        –
-3      –       4%     6%   6.5%   1.01%   0.02%  0.04%       –   WBTC        –    0.02%    1.66%
-4      –        –  3.05%      –       –       –      –    USDT  1.46%    2.21%    5.72%    9.25%

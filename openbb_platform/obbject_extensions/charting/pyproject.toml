@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "openbb-charting"
+version = "2.2.4"
+description = "Charting extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_charting" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"  # scipy forces python <4.0 explicitly
+scipy = "^1.10.0"
+plotly = "^5.17.0"
+statsmodels = "^0.14.0"
+pywry = { version = "^0.6.1", optional = true }
+nbformat = "^5.9.2"
+pandas-ta = "^0.3.14b"
+openbb-core = "^1.3.5"
+numpy = "^1"
+
+[tool.poetry.extras]
+pywry = ["pywry"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_obbject_extension"]
+openbb_charting = "openbb_charting:ext"

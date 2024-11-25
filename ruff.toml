@@ -1,0 +1,56 @@
+# This is an introductory addition of ruff. We should look to adding:
+# PD: pandas-vet
+# All options here: https://github.com/charliermarsh/ruff#supported-rules
+
+exclude = [
+    "^openbb_platform/platform/core/openbb_core/app/static/package/.*",
+    "^openbb_platform/openbb/package/.*",
+]
+
+line-length = 122
+target-version = "py39"
+fix = true
+
+[lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "Q",
+    "S",
+    "UP",
+    "I",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "SIM",
+    "T20",
+]
+# These ignores should be seen as temporary solutions to problems that will NEED fixed
+ignore = ["PLR2004", "PLR0913", "PLR0915", "UP035", "UP006"]
+
+[lint.per-file-ignores]
+"**/tests/*" = ["S101"]
+"*init*.py" = ["F401"]
+"website/*" = ["T201", "PLR0915"]
+"*integration/*" = ["S101"]
+
+[lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[lint.pylint]
+max-args = 8
+max-branches = 26
+max-returns = 9
+max-statements = 30
+
+[lint.pydocstyle]
+convention = "numpy"
+
+[lint.flake8-import-conventions.aliases]
+"matplotlib.pyplot" = "plt"
+numpy = "np"
+pandas = "pd"
+seaborn = "sns"

@@ -1,25 +1,24 @@
 """Benzinga Helpers."""
 
-
-from typing import Any, Dict
-
-from openbb_core.provider import helpers
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 
 
-def get_data(url: str, **kwargs: Any) -> Dict:
-    """Do an API request to Benzinga and return the data."""
-    result = helpers.make_request(
-        url, timeout=10, headers={"accept": "application/json"}, **kwargs
-    )
-    if result.status_code != 200:
-        data = result.json()
-        if data == ['Access denied for user 0 "anonymous"']:
-            raise RuntimeError("API Key is invalid")
-        if len(data) == 0:
-            raise RuntimeError("No news found!")
-        message = data.get("message")
-        error = data.get("error")
-        value = message or error
-        raise RuntimeError(f"Error in Benzinga request -> {value}")
+async def response_callback(response, _):
+    """Response callback."""
+    # pylint: disable=import-outside-toplevel
+    results = await response.json()
+    if (
+        results
+        and isinstance(results, list)
+        and len(results) == 1
+        and isinstance(results[0], str)
+    ):
+        if "access denied" in results[0].lower():
+            raise UnauthorizedError(f"Unauthorized Benzinga request -> {results[0]}")
+        raise OpenBBError(results[0])
 
-    return result.json()
+    if isinstance(results, list) and not results:
+        raise EmptyDataError("The request was returned empty.")
+
+    return results

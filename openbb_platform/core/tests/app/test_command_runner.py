@@ -1,18 +1,29 @@
+"""Test command runner."""
+
+from dataclasses import dataclass
 from inspect import Parameter
 from typing import Dict, List
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
+from fastapi import Query
+from fastapi.params import Query as QueryParam
 from openbb_core.app.command_runner import (
     CommandRunner,
     ExecutionContext,
     ParametersBuilder,
     StaticCommandRunner,
 )
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.app.router import CommandMap
+from pydantic import BaseModel, ConfigDict
+
+# pylint: disable=W0613, W0621, W0102, W0212
 
 
 @pytest.fixture()
@@ -31,7 +42,7 @@ def mock_func():
     def mock_func(
         a: int, b: int, c: float = 10.0, d: int = 5, provider_choices: Dict = {}
     ) -> None:
-        pass
+        """Mock function."""
 
     return mock_func
 
@@ -84,7 +95,7 @@ def test_parameters_builder_get_polished_func(input_func, expected_annotations):
     polished_func = ParametersBuilder.get_polished_func(input_func)
 
     assert polished_func.__annotations__ == expected_annotations
-    assert polished_func.__signature__ == input_func.__signature__
+    assert polished_func.__signature__ == input_func.__signature__  # type: ignore[attr-defined]
 
 
 @pytest.mark.parametrize(
@@ -149,12 +160,14 @@ def test_parameters_builder_merge_args_and_kwargs(
 def test_parameters_builder_update_command_context(
     kwargs, system_settings, user_settings, expected_result
 ):
+    """Test update_command_context."""
+
     def other_mock_func(
         cc: CommandContext,
         a: int,
         b: int,
     ) -> None:
-        pass
+        """Mock function."""
 
     result = ParametersBuilder.update_command_context(
         other_mock_func, kwargs, system_settings, user_settings
@@ -165,56 +178,8 @@ def test_parameters_builder_update_command_context(
     assert result["cc"].user_settings == user_settings
 
 
-@pytest.mark.parametrize(
-    "command_coverage, route, kwargs, route_default, expected_result",
-    [
-        (
-            {"route1": ["choice1", "choice2"]},
-            "route1",
-            {"provider_choices": {"provider": None}},
-            None,
-            {"provider_choices": {"provider": None}},
-        ),
-        (
-            {"route1": ["choice1", "choice2"]},
-            "route1",
-            {"provider_choices": {"provider": ["choice1", "choice2"]}},
-            {"provider": "choice1"},
-            {"provider_choices": {"provider": ["choice1", "choice2"]}},
-        ),
-        (
-            {},
-            "route2",
-            {},
-            {"provider": "default_provider"},
-            {},
-        ),
-        (
-            {},
-            "route3",
-            {"provider_choices": {"provider": "existing_provider"}},
-            None,
-            {"provider_choices": {"provider": "existing_provider"}},
-        ),
-    ],
-)
-def test_parameters_builder_update_provider_choices(
-    command_coverage, route, kwargs, route_default, expected_result
-):
-    with patch(
-        "openbb_core.app.command_runner.ProviderInterface",
-        **{"return_value.available_providers": ["provider1", "provider2"]},
-    ):
-        result = ParametersBuilder.update_provider_choices(
-            mock_func, command_coverage, route, kwargs, route_default
-        )
-
-        assert result == expected_result
-
-
 def test_parameters_builder_validate_kwargs(mock_func):
     """Test validate_kwargs."""
-
     # TODO: add more test cases with @pytest.mark.parametrize
 
     result = ParametersBuilder.validate_kwargs(
@@ -224,25 +189,60 @@ def test_parameters_builder_validate_kwargs(mock_func):
     assert result == {"a": 1, "b": 2, "c": 3.0, "d": 4, "provider_choices": {}}
 
 
+@pytest.mark.parametrize(
+    "extra_params, base, expect",
+    [
+        (
+            {"exists": ...},
+            ExtraParams,
+            None,
+        ),
+        (
+            {"inexistent_field": ...},
+            ExtraParams,
+            OpenBBWarning,
+        ),
+    ],
+)
+def test_parameters_builder__warn_kwargs(extra_params, base, expect):
+    """Test _warn_kwargs."""
+
+    @dataclass
+    class SomeModel(base):  # type: ignore[misc,valid-type]
+        """SomeModel"""
+
+        exists: QueryParam = Query(...)
+
+    class Model(BaseModel):
+        """Model"""
+
+        model_config = ConfigDict(arbitrary_types_allowed=True)
+        extra_params: SomeModel
+
+    with pytest.warns(expect) as warning_info:
+        # pylint: disable=protected-access
+        ParametersBuilder._warn_kwargs(extra_params, Model)
+
+        if not expect:
+            assert len(warning_info) == 0
+
+
 def test_parameters_builder_build(mock_func, execution_context):
     """Test build."""
-
     # TODO: add more test cases with @pytest.mark.parametrize
 
-    with patch(
-        "openbb_core.app.command_runner.ProviderInterface",
-        **{"return_value.available_providers": ["provider1", "provider2"]},
-    ):
+    with patch("openbb_core.app.provider_interface.ProviderInterface") as mock_pi:
+        mock_pi.available_providers = ["provider1", "provider2"]
+
         result = ParametersBuilder.build(
-            args=[1, 2],
+            args=(1, 2),
             kwargs={
                 "c": 3,
                 "d": "4",
-                "provider_choices": {"provider": ["provider1", "provider2"]},
+                "provider_choices": {"provider": "provider1"},
             },
             func=mock_func,
             execution_context=execution_context,
-            route="mock/route",
         )
 
         assert result == {
@@ -250,21 +250,17 @@ def test_parameters_builder_build(mock_func, execution_context):
             "b": 2,
             "c": 3.0,
             "d": 4,
-            "provider_choices": {"provider": ["provider1", "provider2"]},
+            "provider_choices": {"provider": "provider1"},
         }
 
 
-@patch("openbb_core.app.command_runner.LoggingService")
-def test_command_runner(_):
+def test_command_runner():
     """Test command runner."""
-
     assert CommandRunner()
 
 
-@patch("openbb_core.app.command_runner.LoggingService")
-def test_command_runner_properties(mock_logging_service):
+def test_command_runner_properties():
     """Test properties."""
-
     sys = SystemSettings()
     user = UserSettings()
     cmd_map = CommandMap()
@@ -274,11 +270,11 @@ def test_command_runner_properties(mock_logging_service):
     assert runner.system_settings == sys
     assert runner.user_settings == user
     assert runner.command_map == cmd_map
-    assert mock_logging_service.called_once()
 
 
-@patch("openbb_core.app.command_runner.LoggingService")
+@patch("openbb_core.app.command_runner.CommandRunner")
 def test_command_runner_run(_):
+    """Test run."""
     runner = CommandRunner()
 
     with patch(
@@ -289,7 +285,7 @@ def test_command_runner_run(_):
 
 
 @pytest.mark.asyncio
-@patch("openbb_core.app.command_runner.CommandMap.get_command")
+@patch("openbb_core.app.router.CommandMap.get_command")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._execute_func")
 async def test_static_command_runner_run(
     mock_execute_func, mock_get_command, execution_context
@@ -297,14 +293,17 @@ async def test_static_command_runner_run(
     """Test static command runner run."""
 
     def other_mock_func(a: int, b: int, c: int, d: int) -> List[int]:
+        """Mock function."""
         return [a, b, c, d]
 
     class MockOBBject:
         """Mock OBBject"""
 
         def __init__(self, results):
+            """Initialize the mock object."""
             self.results = results
             self.extra = {}
+            self.extra["metadata"] = {"test": "test"}
 
     mock_get_command.return_value = other_mock_func
     mock_execute_func.return_value = MockOBBject(results=[1, 2, 3, 4])
@@ -317,7 +316,7 @@ async def test_static_command_runner_run(
 
 
 @pytest.mark.asyncio
-@patch("openbb_core.app.command_runner.LoggingService")
+@patch("openbb_core.app.logs.logging_service.LoggingService")
 @patch("openbb_core.app.command_runner.ParametersBuilder.build")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._command")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._chart")
@@ -351,40 +350,32 @@ async def test_static_command_runner_execute_func(
     mock_chart.return_value = None
 
     result = await StaticCommandRunner._execute_func(
-        "mock/route", (1, 2, 3, 4), execution_context, mock_func, {}
+        "mock/route", (1, 2, 3, 4), execution_context, mock_func, {"chart": True}
     )
 
     assert result.results == [1, 2, 3, 4]
-    assert mock_logging_service.called_once()
-    assert mock_parameters_builder_build.called_once()
-    assert mock_command.called_once()
-    assert mock_chart.called_once()
+    mock_logging_service.assert_called_once()
+    mock_parameters_builder_build.assert_called_once()
+    mock_command.assert_called_once()
+    mock_chart.assert_called_once()
 
 
-@patch("openbb_core.app.command_runner.ChartingService.chart")
-def test_static_command_runner_chart(mock_charting_service_chart, execution_context):
-    """Test chart."""
+def test_static_command_runner_chart():
+    """Test _chart method when charting is in obbject.accessors."""
 
-    class MockOBBject:
-        """Mock OBBject"""
-
-        def __init__(self, results):
-            self.results = results
-            self.chart = {}
-
-    mock_charting_service_chart.return_value = {"mock": "chart"}
-    mock_obbject = MockOBBject(results=[1, 2, 3, 4])
-
-    StaticCommandRunner._chart(
-        obbject=mock_obbject,
-        user_settings=execution_context.user_settings,
-        system_settings=execution_context.system_settings,
-        route="mock/route",
+    mock_obbject = OBBject(
+        results=[
+            {"date": "1990", "value": 100},
+            {"date": "1991", "value": 200},
+            {"date": "1992", "value": 300},
+        ],
+        accessors={"charting": Mock()},
     )
+    mock_obbject.charting.show = Mock()
 
-    assert mock_charting_service_chart.called_once()
-    assert mock_obbject.results == [1, 2, 3, 4]
-    assert mock_obbject.chart == {"mock": "chart"}
+    StaticCommandRunner._chart(mock_obbject)  # pylint: disable=protected-access
+
+    mock_obbject.charting.show.assert_called_once()
 
 
 @pytest.mark.asyncio

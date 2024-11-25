@@ -30,6 +30,12 @@ class FMPInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
 class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
     """FMP Institutional Ownership Data."""
 
+    __alias_dict__ = {
+        "number_of_13f_shares": "numberOf13Fshares",
+        "last_number_of_13f_shares": "lastNumberOf13Fshares",
+        "number_of_13f_shares_change": "numberOf13FsharesChange",
+    }
+
     investors_holding: int = Field(description="Number of investors holding the stock.")
     last_investors_holding: int = Field(
         description="Number of investors holding the stock in the last quarter."
@@ -40,17 +46,14 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
     number_of_13f_shares: int = Field(
         default=None,
         description="Number of 13F shares.",
-        alias="numberOf13Fshares",
     )
     last_number_of_13f_shares: int = Field(
         default=None,
         description="Number of 13F shares in the last quarter.",
-        alias="lastNumberOf13Fshares",
     )
     number_of_13f_shares_change: int = Field(
         default=None,
         description="Change in the number of 13F shares.",
-        alias="numberOf13FsharesChange",
     )
     total_invested: float = Field(description="Total amount invested.")
     last_total_invested: float = Field(

@@ -1,15 +1,16 @@
 """FMP Equity Screener Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerData,
     EquityScreenerQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fmp.utils.definitions import EXCHANGES, SECTORS
-from openbb_fmp.utils.helpers import create_url, get_data
 from pydantic import Field
 
 
@@ -96,10 +97,16 @@ class FMPEquityScreenerData(EquityScreenerData):
 
     __alias_dict__ = {
         "name": "companyName",
+        "market_cap": "marketCap",
+        "last_annual_dividend": "lastAnnualDividend",
+        "exchange": "exchangeShortName",
+        "exchange_name": "exchange",
+        "is_etf": "isEtf",
+        "actively_trading": "isActivelyTrading",
     }
 
     market_cap: Optional[int] = Field(
-        description="The market cap of ticker.", alias="marketCap", default=None
+        description="The market cap of ticker.", default=None
     )
     sector: Optional[str] = Field(
         description="The sector the ticker belongs to.", default=None
@@ -111,7 +118,6 @@ class FMPEquityScreenerData(EquityScreenerData):
     price: Optional[float] = Field(description="The current price.", default=None)
     last_annual_dividend: Optional[float] = Field(
         description="The last annual amount dividend paid.",
-        alias="lastAnnualDividend",
         default=None,
     )
     volume: Optional[int] = Field(
@@ -119,12 +125,10 @@ class FMPEquityScreenerData(EquityScreenerData):
     )
     exchange: Optional[str] = Field(
         description="The exchange code the asset trades on.",
-        alias="exchangeShortName",
         default=None,
     )
     exchange_name: Optional[str] = Field(
         description="The full name of the primary exchange.",
-        alias="exchange",
         default=None,
     )
     country: Optional[str] = Field(
@@ -132,11 +136,10 @@ class FMPEquityScreenerData(EquityScreenerData):
         default=None,
     )
     is_etf: Optional[Literal[True, False]] = Field(
-        description="Whether the ticker is an ETF.", alias="isEtf", default=None
+        description="Whether the ticker is an ETF.", default=None
     )
     actively_trading: Optional[Literal[True, False]] = Field(
         description="Whether the ETF is actively trading.",
-        alias="isActivelyTrading",
         default=None,
     )
 
@@ -161,24 +164,34 @@ class FMPEquityScreenerFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from copy import deepcopy  # noqa
+        from openbb_fmp.utils.helpers import create_url, get_data  # noqa
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        _query = deepcopy(query)
+        if _query.sector is not None:
+            _query.sector = _query.sector.replace("_", " ").title()
         url = create_url(
             version=3,
             endpoint="stock-screener",
             api_key=api_key,
-            query=query,
+            query=_query,
             exclude=["query", "is_symbol", "industry"],
         ).replace(" ", "%20")
-        return await get_data(url, **kwargs)
+        return await get_data(url, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
         query: FMPEquityScreenerQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEquityScreenerData]:
         """Return the transformed data."""
-        results = pd.DataFrame(data)
-        if len(results) == 0:
-            return []
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
+        if not data:
+            raise EmptyDataError("The request was returned empty.")
+        results = DataFrame(data)
         if query.industry:
             results = results[
                 results["sector"].str.contains(query.industry, case=False)

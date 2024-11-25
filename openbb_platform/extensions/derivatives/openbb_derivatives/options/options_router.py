@@ -1,6 +1,7 @@
 """Options Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -9,30 +10,65 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/options")
 
 # pylint: disable=unused-argument
 
 
-@router.command(model="OptionsChains")
+@router.command(
+    model="OptionsChains",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
+        APIEx(
+            description='Use the "date" parameter to get the end-of-day-data for a specific date, where supported.',
+            parameters={"symbol": "AAPL", "date": "2023-01-25", "provider": "intrinio"},
+        ),
+    ],
+)
 async def chains(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the complete options chain for a ticker."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="OptionsUnusual")
+@router.command(
+    model="OptionsUnusual",
+    examples=[
+        APIEx(parameters={"symbol": "TSLA", "provider": "intrinio"}),
+        APIEx(
+            description="Use the 'symbol' parameter to get the most recent activity for a specific symbol.",
+            parameters={"symbol": "TSLA", "provider": "intrinio"},
+        ),
+    ],
+)
 async def unusual(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the complete options chain for a ticker."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="OptionsSnapshots",
+    examples=[
+        APIEx(
+            parameters={"provider": "intrinio"},
+        ),
+    ],
+)
+async def snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get a snapshot of the options market universe."""
     return await OBBject.from_query(Query(**locals()))

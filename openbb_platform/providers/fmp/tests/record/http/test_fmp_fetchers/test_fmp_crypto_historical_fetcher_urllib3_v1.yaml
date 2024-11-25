@@ -1,0 +1,67 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/BTCUSD?apikey=MOCK_API_KEY&from=2023-01-01&interval=1d&to=2023-01-10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42WS2/bMAzH7/sUQc6NQOpBSTuuO+2yAet2GXZwU6PJkCZFHi2Kot99tNuIiq04
+        vvhA0bT145+P10+TyXT38nC7WU0/T6Zfbq5//fw6vWqsi+Vuv9ku51Vz8octk8lr++Szu2pfN/4a
+        tJkBzhDad9qzzWO95jP06L2KNtkXy/tFa3dAybjaPL/7WqcwWeerza5u7dYaZcW9uvt3nZ2R0lFH
+        n46fNqvDQ3voAgRjQrQxHR7W/PZht6/vfg+5zRfV+r451OSU0x37j3o7r9f75l3lnHz4uXps/8mg
+        UU5+aFXd1i3Yb9X6UG1fJghXE22mnajfn+rtzbL9JVCAzrXHb1fD0CGWoFvBmIhbgD5x0CpDJ8jb
+        tIUycozE17YkuAR5IG29oUCSrhLygltCbij/cpc4KI3Oi6ASdG2t8pKMHnSIl6FDG3sc99DnTvFE
+        wIk8BjF+kKeIoGxJ7Kg5xhnyEFGhtc70yUdPIWgfUdAUwBe8EncMTOA8eFRZxR6pU/SofHa7HvVw
+        mToCjUPuS8gdFpBTjD2xUwQuy+yCR6ycNq2MVEGOnOM7BT5gAbnnOvPEpTKIvOCVkM+C8qZjFuIz
+        ZuPQMR/5aQFvnLJDcvcXwDfR4Rh/HH8q8A8sV0GXJK/7zYbIgwpZL834h1xcHf6oIoWssqXZWIuG
+        SMcsOaVmU3AT0WtOfbcJ5d3Ga6/lnxP+YJvkDOCny7qHNvY49K6E3kYlV0rSD0HkckTP45ZVXEDf
+        pC9r5CfoA3dibtKmIH0GGrV3wV3o8wU3Eb82irBjP1E/WsASe92M/AH2boz02+Dj4NsCfKJY0j1A
+        Hz7xVAhF+DyyrFzwFD4ZpU3QWenL9LSa24kxmTCLQ7bvJrr3PC2H9hro7zUsCKfiEHh7WfQII/ca
+        U4QeiorHfrNxMapMdIlrkzd7pteTjyrwApBpTpTM0wN81FkVFQXfdxPmCrvWvNNwPwCMRioicadm
+        Msv46HM3l7nDMfw4+rpEH0UTwh4kIYk9z9N8ac7g824nQU7hh8CJybgJew3Re++0HmZfcEvsmyni
+        OuYcvkFN2acT+cg3GVpv9Ajybexx2LGA3RlBmbCTzfTwgd1mO0/GHDHfek6Zc/eHkPcs2Sd5nzbU
+        NLQh5gWvhJyLyZ1fJ3n75aWqgNzxVHNDkxVHIG9jvyPn599Pb/8BRZNLHuMOAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 09 May 2024 15:33:03 GMT
+      Etag:
+      - W/"ee3-iGBRI0WlQUT/ED3Q3GcS73lQbMw"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

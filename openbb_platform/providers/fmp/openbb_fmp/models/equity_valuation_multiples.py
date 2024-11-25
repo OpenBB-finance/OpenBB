@@ -1,14 +1,19 @@
 """FMP Equity Valuation Multiples Model."""
 
+# pylint: disable=unused-argument
+
+import asyncio
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_valuation_multiples import (
     EquityValuationMultiplesData,
     EquityValuationMultiplesQueryParams,
 )
-from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
-from openbb_fmp.utils.helpers import create_url
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from openbb_fmp.utils.helpers import create_url, response_callback
 
 
 class FMPEquityValuationMultiplesQueryParams(EquityValuationMultiplesQueryParams):
@@ -16,6 +21,8 @@ class FMPEquityValuationMultiplesQueryParams(EquityValuationMultiplesQueryParams
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Company-Key-Metrics
     """
+
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPEquityValuationMultiplesData(EquityValuationMultiplesData):
@@ -109,24 +116,37 @@ class FMPEquityValuationMultiplesFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        urls = [
-            create_url(
+
+        symbols = query.symbol.split(",")
+
+        results = []
+
+        async def get_one(symbol):
+            """Get data for one symbol."""
+            url = create_url(
                 3, f"key-metrics-ttm/{symbol}", api_key, query, exclude=["symbol"]
             )
-            for symbol in query.symbol.split(",")
-        ]
+            result = await amake_request(
+                url, response_callback=response_callback, **kwargs
+            )
+            if not result:
+                warn(f"Symbol Error: No data found for {symbol}.")
+            if result:
+                data = [{**d, "symbol": symbol} for d in result]
+                results.extend(data)
 
-        async def callback(response: ClientResponse, _: Any) -> List[Dict]:
-            data = await response.json()
-            symbol = response.url.parts[-1]
+        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
 
-            return [{**d, "symbol": symbol} for d in data]
+        if not results:
+            raise EmptyDataError("No data found for given symbols.")
 
-        return await amake_requests(urls, callback, **kwargs)
+        return results
 
     @staticmethod
     def transform_data(
-        query: FMPEquityValuationMultiplesQueryParams, data: List[Dict], **kwargs: Any
+        query: FMPEquityValuationMultiplesQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[FMPEquityValuationMultiplesData]:
         """Return the transformed data."""
         return [FMPEquityValuationMultiplesData.model_validate(d) for d in data]

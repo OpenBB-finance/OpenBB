@@ -1,11 +1,10 @@
 """Economic Calendar Standard Model."""
 
-
 from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Literal, Optional, Union
+from typing import Optional, Union
 
 from pydantic import Field
 
@@ -37,30 +36,26 @@ class EconomicCalendarData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
     country: Optional[str] = Field(default=None, description="Country of event.")
+    category: Optional[str] = Field(default=None, description="Category of event.")
     event: Optional[str] = Field(default=None, description="Event name.")
-    reference: Optional[str] = Field(
-        default=None,
-        description="Abbreviated period for which released data refers to.",
+    importance: Optional[str] = Field(
+        default=None, description="The importance level for the event."
     )
     source: Optional[str] = Field(default=None, description="Source of the data.")
-    sourceurl: Optional[str] = Field(default=None, description="Source URL.")
-    actual: Optional[Union[str, float]] = Field(
-        default=None, description="Latest released value."
+    currency: Optional[str] = Field(default=None, description="Currency of the data.")
+    unit: Optional[str] = Field(default=None, description="Unit of the data.")
+    consensus: Optional[Union[str, float]] = Field(
+        default=None,
+        description="Average forecast among a representative group of economists.",
     )
     previous: Optional[Union[str, float]] = Field(
         default=None,
         description="Value for the previous period after the revision (if revision is applicable).",
     )
-    consensus: Optional[Union[str, float]] = Field(
+    revised: Optional[Union[str, float]] = Field(
         default=None,
-        description="Average forecast among a representative group of economists.",
+        description="Revised previous value, if applicable.",
     )
-    forecast: Optional[Union[str, float]] = Field(
-        default=None, description="Trading Economics projections"
+    actual: Optional[Union[str, float]] = Field(
+        default=None, description="Latest released value."
     )
-    url: Optional[str] = Field(default=None, description="Trading Economics URL")
-    importance: Optional[Union[Literal[0, 1, 2, 3], str]] = Field(
-        default=None, description="Importance of the event. 1-Low, 2-Medium, 3-High"
-    )
-    currency: Optional[str] = Field(default=None, description="Currency of the data.")
-    unit: Optional[str] = Field(default=None, description="Unit of the data.")

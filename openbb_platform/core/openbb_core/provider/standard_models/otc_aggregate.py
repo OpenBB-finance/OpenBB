@@ -1,7 +1,7 @@
 """OTC Aggregate Standard Model."""
 
-
 from datetime import date as dateType
+from typing import Optional
 
 from pydantic import Field
 
@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 class OTCAggregateQueryParams(QueryParams):
     """OTC Aggregate Query."""
 
-    symbol: str = Field(
+    symbol: Optional[str] = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
         default=None,
     )

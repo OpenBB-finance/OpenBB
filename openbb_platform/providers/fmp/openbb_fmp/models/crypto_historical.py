@@ -1,8 +1,11 @@
 """FMP Cryptos Historical Price Model."""
 
+# pylint: disable=unused-argument
 
+import asyncio
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,53 +13,56 @@ from openbb_core.provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
     CryptoHistoricalQueryParams,
 )
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field, NonNegativeInt
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import (
+    amake_request,
+    get_querystring,
+)
+from openbb_fmp.utils.helpers import get_interval
+from pydantic import Field
 
 
 class FMPCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
-    # noqa: E501
-    """FMP Crypto Historical Price Query.
+    """
+    FMP Crypto Historical Price Query.
 
     Source:
     https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
     """
 
     __alias_dict__ = {"start_date": "from", "end_date": "to"}
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "interval": {"choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]},
+    }
 
-    timeseries: Optional[NonNegativeInt] = Field(
-        default=None, description="Number of days to look back."
+    interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
-    interval: Literal[
-        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Data granularity.")
 
 
 class FMPCryptoHistoricalData(CryptoHistoricalData):
     """FMP Crypto Historical Price Data."""
 
+    __alias_dict__ = {
+        "change_percent": "changeOverTime",
+    }
+
     adj_close: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
-    unadjusted_volume: Optional[float] = Field(
-        default=None, description="Unadjusted volume of the symbol."
-    )
     change: Optional[float] = Field(
         default=None,
-        description="Change in the price of the symbol from the previous day.",
+        description="Change in the price from the previous close.",
     )
     change_percent: Optional[float] = Field(
-        default=None, description="Change % in the price of the symbol."
-    )
-
-    label: Optional[str] = Field(
-        default=None, description="Human readable format of the date."
-    )
-    change_over_time: Optional[float] = Field(
         default=None,
-        description="Change % in the price of the symbol over a period of time.",
+        description="Change in the price from the previous close, as a normalized percent.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
 
@@ -91,20 +97,90 @@ class FMPCryptoHistoricalFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
+        interval = get_interval(query.interval)
+
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.model_dump(), ["symbol"])
 
-        url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
-        url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
+        def get_url_params(symbol: str) -> str:
+            url_params = f"{symbol}?{query_str}&apikey={api_key}"
+            url = f"{base_url}/historical-chart/{interval}/{url_params}"
+            if interval == "1day":
+                url = f"{base_url}/historical-price-full/{url_params}"
+            return url
 
-        if query.interval == "1day":
-            url = f"{base_url}/historical-price-full/crypto/{url_params}"
+        symbols = query.symbol.split(",")
 
-        return await get_data_many(url, "historical", **kwargs)
+        results = []
+        messages = []
+
+        async def get_one(symbol):
+            """Get data for one symbol."""
+
+            url = get_url_params(symbol)
+
+            data = []
+
+            response = await amake_request(url, **kwargs)
+
+            if isinstance(response, dict) and response.get("Error Message"):
+                message = f"Error fetching data for {symbol}: {response.get('Error Message', '')}"
+                warn(message)
+                messages.append(message)
+
+            if not response:
+                message = f"No data found for {symbol}."
+                warn(message)
+                messages.append(message)
+
+            if isinstance(response, list) and len(response) > 0:
+                data = response
+                if len(symbols) > 1:
+                    for d in data:
+                        d["symbol"] = symbol
+
+            if isinstance(response, dict) and response.get("historical"):
+                data = response["historical"]
+                if len(symbols) > 1:
+                    for d in data:
+                        d["symbol"] = symbol
+
+            if data:
+                results.extend(data)
+
+        tasks = [get_one(symbol) for symbol in symbols]
+
+        await asyncio.gather(*tasks)
+
+        if not results:
+            raise EmptyDataError(
+                f"{str(','.join(messages)).replace(',',' ') if messages else 'No data found'}"
+            )
+
+        return results
 
     @staticmethod
     def transform_data(
         query: FMPCryptoHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCryptoHistoricalData]:
         """Return the transformed data."""
-        return [FMPCryptoHistoricalData.model_validate(d) for d in data]
+
+        # Get rid of duplicate fields.
+        to_pop = ["label", "changePercent", "unadjustedVolume"]
+        results: List[FMPCryptoHistoricalData] = []
+
+        for d in sorted(
+            data,
+            key=lambda x: (
+                (x["date"], x["symbol"])
+                if len(query.symbol.split(",")) > 1
+                else x["date"]
+            ),
+            reverse=False,
+        ):
+            _ = [d.pop(pop) for pop in to_pop if pop in d]
+            if d.get("unadjusted_volume") == d.get("volume"):
+                _ = d.pop("unadjusted_volume")
+            results.append(FMPCryptoHistoricalData.model_validate(d))
+
+        return results

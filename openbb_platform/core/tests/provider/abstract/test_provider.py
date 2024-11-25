@@ -1,5 +1,6 @@
 """Test the Provider."""
 
+from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.provider import Provider
 
 
@@ -21,14 +22,14 @@ def test_provider_with_optional_parameters():
         description="A simple test provider.",
         website="https://testprovider.example.com",
         credentials=["api_key"],
-        fetcher_dict={"fetcher1": None},
+        fetcher_dict={"fetcher1": Fetcher},
     )
 
     assert provider.name == "TestProvider"
     assert provider.description == "A simple test provider."
     assert provider.website == "https://testprovider.example.com"
     assert provider.credentials == ["testprovider_api_key"]
-    assert provider.fetcher_dict == {"fetcher1": None}
+    assert provider.fetcher_dict == {"fetcher1": Fetcher}
 
 
 def test_provider_credentials_formatting():

@@ -1,2 +1,0 @@
-  symbol                   name        country                  sector       industry group  industry exchange          isin      cusip          figi composite figi shareclass figi
-0   MSFT  Microsoft Corporation  United States  Information Technology  Software & Services  Software      NMS  US5949181045  594918104  BBG000BPHFS9   BBG000BPH459    BBG001S5TD05

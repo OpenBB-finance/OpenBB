@@ -1,5 +1,7 @@
 """FRED Discount Window Primary Credit Rate Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -7,7 +9,6 @@ from openbb_core.provider.standard_models.dwpcr_rates import (
     DiscountWindowPrimaryCreditRateData,
     DiscountWindowPrimaryCreditRateParams,
 )
-from openbb_fred.utils.fred_base import Fred
 from pydantic import Field, field_validator
 
 DWPCR_PARAMETER_TO_FRED_ID = {
@@ -22,9 +23,9 @@ DWPCR_PARAMETER_TO_FRED_ID = {
 class FREDDiscountWindowPrimaryCreditRateParams(DiscountWindowPrimaryCreditRateParams):
     """FRED Discount Window Primary Credit Rate Query."""
 
-    parameter: Literal[
-        "daily_excl_weekend", "monthly", "weekly", "daily", "annual"
-    ] = Field(default="daily_excl_weekend", description="FRED series ID of DWPCR data.")
+    parameter: Literal["daily_excl_weekend", "monthly", "weekly", "daily", "annual"] = (
+        Field(default="daily_excl_weekend", description="FRED series ID of DWPCR data.")
+    )
 
 
 class FREDDiscountWindowPrimaryCreditRateData(DiscountWindowPrimaryCreditRateData):
@@ -48,9 +49,7 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
         List[FREDDiscountWindowPrimaryCreditRateData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FRED endpoints."""
-
-    data_type = FREDDiscountWindowPrimaryCreditRateData
+    """FRED Discount Window Primary Credit Rate Fetcher."""
 
     @staticmethod
     def transform_query(
@@ -64,8 +63,11 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
         query: FREDDiscountWindowPrimaryCreditRateParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
-    ) -> list:
+    ) -> List:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fred.utils.fred_base import Fred
+
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -80,7 +82,7 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDDiscountWindowPrimaryCreditRateParams, data: list, **kwargs: Any
+        query: FREDDiscountWindowPrimaryCreditRateParams, data: List, **kwargs: Any
     ) -> List[FREDDiscountWindowPrimaryCreditRateData]:
-        """Transform data"""
+        """Transform data."""
         return [FREDDiscountWindowPrimaryCreditRateData.model_validate(d) for d in data]

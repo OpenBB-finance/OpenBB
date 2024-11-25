@@ -1,6 +1,7 @@
 """Real GDP Standard Model."""
+
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Optional, Union
 
 from pydantic import Field
 
@@ -15,13 +16,6 @@ from openbb_core.provider.utils.descriptions import (
 class GdpRealQueryParams(QueryParams):
     """Real GDP Query."""
 
-    units: Literal["idx", "qoq", "yoy"] = Field(
-        default="yoy",
-        description=QUERY_DESCRIPTIONS.get("units", "")
-        + " Either idx (indicating 2015=100), "
-        + "qoq (previous period) "
-        + "or yoy (same period, previous year).)",
-    )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
     )
@@ -33,9 +27,10 @@ class GdpRealQueryParams(QueryParams):
 class GdpRealData(Data):
     """Real GDP Data."""
 
-    date: Optional[dateType] = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("date")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
+    country: str = Field(
+        default=None, description="The country represented by the Real GDP value."
     )
-    value: Optional[float] = Field(
-        default=None, description="Nominal GDP value on the date."
+    value: Union[int, float] = Field(
+        description="Real GDP value for the country and date.",
     )

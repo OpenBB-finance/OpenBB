@@ -1,3 +1,5 @@
+"""Countries list for Trading Economics API."""
+
 country_dict = {
     "G20": [
         "United States",
@@ -16,6 +18,7 @@ country_dict = {
         "Spain",
     ],
     "Australia": [
+        "Australia",
         "Fiji",
         "Kiribati",
         "New Caledonia",
@@ -223,6 +226,10 @@ country_dict = {
     ],
 }
 
-country_list = list(
-    set([item.lower() for sublist in country_dict.values() for item in sublist])
+COUNTRIES = list(
+    {
+        item.lower().replace(" ", "_")
+        for sublist in country_dict.values()
+        for item in sublist
+    }
 )

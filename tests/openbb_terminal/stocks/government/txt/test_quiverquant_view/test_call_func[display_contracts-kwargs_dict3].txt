@@ -1,4 +1,0 @@
-         Date                                                        Description                            Agency      Amount
-0  2022-07-12                    SOLAR PANELS   FY22 REQ# 14453  BPA 140G0120A00  DEPARTMENT OF THE INTERIOR (DOI)     49600.0
-1  2022-05-24                 FULL FACILITY REVITALIZATION B200, FORT TOTTEN, NY       DEPARTMENT OF DEFENSE (DOD)  29056747.0
-2  2022-05-24  AWARD OF AN ENERGY SAVINGS PERFORMANCE CONTRACT (CANNON AFB ESPC)       DEPARTMENT OF DEFENSE (DOD)         0.0

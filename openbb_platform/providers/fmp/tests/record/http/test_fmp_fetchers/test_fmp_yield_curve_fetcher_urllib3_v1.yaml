@@ -1,0 +1,276 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/treasury?apikey=MOCK_API_KEY&from=2020-05-11&to=2020-05-17
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62UywrCMBBF9/2K0HUrmTz68FfERcGCGxWkGxH/3ZpM4IbGNoiLbk7Sm+Z0Zg6F
+        EM/5EaI8DdNY7kWppJK1tDV1ZeVXLrfrdKZ5Te4IkfIoYtozjazxzDJ7jMOd01pAnNYB8mHKALIO
+        adzVOmQxi6Rjrcb8D6P4TO2ZMTN6VSsubMKF7JcyYsYyVJ4MRCyjWcigHhDLIEBehsFdLKNBjSxD
+        4pksQ6stGSZTRqow/ulCAfmuAkslqEjUhUQWVGyZ0JktkhCR2SH/ExGFr5REoj+03RKhMkXkmsA7
+        0hJxWvSp3kRCBV6SVeC/Di6wZcKsQIvBRbflgnLbI7c/fpaRGJz4IsuI4lcGZ1R3PDhdhxTHN0O6
+        YwdHBgAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 15 May 2024 04:17:01 GMT
+      Etag:
+      - W/"647-LydzNMvIZhxt85QadA8Kg/rKyC0"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/treasury?apikey=MOCK_API_KEY&from=2023-05-11&to=2023-05-17
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4WUu27DMAxF93yF4Tkx9KbUXyk6BGiALm2BIktR9N9jiwx6WRHx4OXIpsjjKz0f
+        pulnfaZpfj1fL/PTNAcX4snlk6/zkVfePz+ub35dy0tuyEJnISCLnUWPrDCrwr4v5y8u5wKgrVpa
+        QgK0FYtLQ5Q7Kg0QMSIs75hlrO/6BmrPyO81v6Lf4wMZZMkYXbgyugiKiYt/KtLSRhVeddobRYVs
+        IiOiEYmJjHaCTF2wPrNa90wUy0RFxt03xURFRFa0nj8XFQfgak712lulMRYZjYkMpVpk4JePZNCe
+        jGzIKAmZyCBkIsM4Iyr9LINwgMC9YvpZhko/y0g4EctIVjIMF8YRqWnPRTBc0HBfrH/XcqHOErvw
+        YzBINcu94kjiAt8SF4hoROJCKQv3EIwyaPeUeENGVT9cZBiXp0LiwsjFoKKOscg4EKuIYyyicXVG
+        LHZXYeSC4qbi8HIDJk0/oEoGAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 15 May 2024 04:17:01 GMT
+      Etag:
+      - W/"64a-qQ86HxIoIDU3JJj3ypPqfnNTl40"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/treasury?apikey=MOCK_API_KEY&from=2022-05-11&to=2022-05-17
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42UzWrDMBAG73kK4XNi9GNprb5K6SHQQC9toeRSSt89tnZVvq0UO4dcJpFgJ7N6
+        Phjzs3yMGV7P18vwZAZvvT/ZeHLzcORv3j8/rm9u+c6OMSHzhc0RWViYG21Algr7O/t9OX+t1/nR
+        IfIFpRlQKGieAEVGGRAVlB1eb9uf+ZWF0eNtgZmlBf0eN2RQR0ZyyDZkKGkigx6RQThTaEdiGRkP
+        rjIC3s0mMmoVEwHPiQm3ayL1TEzINkwQMjGB/websCiHTcQ2C4qAJAucnFpfNYuejE4Vec9F6LlQ
+        M7ILysjur8jUVmFRj6xIWwW1VfRWBI3VMHDw6sJ3wthz4R/cEFJ+QmG5syHT/y6cDl26UA2zC5xI
+        XKAx6UK9RtKFci3PRetiz4TrPZyqgA0TypiYUPvMJtTDxlW0JtTY96tQoqUKPFlNYD11ReIq4/By
+        AxjfFZ5IBgAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 15 May 2024 04:17:01 GMT
+      Etag:
+      - W/"648-twHy7YLcgra10np90L3C4D2swpw"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/treasury?apikey=MOCK_API_KEY&from=2021-05-11&to=2021-05-17
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62Uyw6CMBBF935FwxpIZ8rTXzEuSCRxoyaGjTH+u0CH5FYaHsKCzSkztKd3OB2U
+        erePUsGlaurgqALWTJFOIyqC0K7cHvfmSu2aRsAdiDUhM5YxsswyI+xVV0+yKANkuxEi28wkgNIe
+        FdgrbxHFXGJ73bMMK7ljHHOOH7DM5C36hBMm8l1N4La2mkBkTTieV4rI5kQkYxE/555w4bCtqcBC
+        ccGAJlKBlYOM1CMjnZNhdk2FxwTuapUJTyoI24sJx7SYKDwmyjkTvDQWzsHXjcgyGfiWyMCgiwyn
+        vcjAqAwykImMZM4FLXWxdET+doFXLi5GKpz7HlT4fheYMmdCDucv9UoTokQGAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 15 May 2024 04:17:01 GMT
+      Etag:
+      - W/"644-FBvvp3deUZ1C1r7lKBqDjdjmSI4"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/treasury?apikey=MOCK_API_KEY&from=2024-05-11&to=2024-05-17
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6XQTQrCMBCG4X1PEbJuS35mJq1XERcFC25UkG5EvLtpJsInBUFcdPNkOk3ffWPM
+        Iz/G2OO0zHZnbHCBOsedJ9vqyfl6WU4+n3HPSKEQJbSoRmiiFqvd5+mm27wArduoHzxQLCQBiAsR
+        vpiUGNe7rQU1GfEDajxmerZfWsQ/WnzM/dQCr19b4JS2wKGaAn/xnWLYpkgYtqaQuKZoDi/SxMk5
+        GQIAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 15 May 2024 04:17:01 GMT
+      Etag:
+      - W/"219-AzGShdXa56qJWPx5KMZ5NeNIBjI"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

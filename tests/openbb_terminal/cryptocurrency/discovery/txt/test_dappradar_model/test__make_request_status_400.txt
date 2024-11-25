@@ -1,1 +1,0 @@
-[red]dappradar api exception: MOCK_TEXT[/red]

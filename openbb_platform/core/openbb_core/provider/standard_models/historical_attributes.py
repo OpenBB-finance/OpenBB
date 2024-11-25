@@ -1,9 +1,9 @@
 """Historical Attributes Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -30,16 +30,40 @@ class HistoricalAttributesQueryParams(QueryParams):
     limit: Optional[int] = Field(
         default=1000, description=QUERY_DESCRIPTIONS.get("limit")
     )
-    type: Optional[str] = Field(
+    tag_type: Optional[str] = Field(
         default=None, description="Filter by type, when applicable."
     )
     sort: Optional[Literal["asc", "desc"]] = Field(
         default="desc", description="Sort order."
     )
 
+    @field_validator("tag", mode="before", check_fields=False)
+    @classmethod
+    def multiple_tags(cls, v: Union[str, List[str], Set[str]]):
+        """Accept a comma-separated string or list of tags."""
+        if isinstance(v, str):
+            return v.lower()
+        return ",".join([tag.lower() for tag in list(v)])
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
+
+    @field_validator("frequency", "sort", mode="before", check_fields=False)
+    @classmethod
+    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+        """Convert field to lowercase."""
+        return v.lower() if v else v
+
 
 class HistoricalAttributesData(Data):
     """Historical Attributes Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol"))
+    tag: Optional[str] = Field(
+        default=None, description="Tag name for the fetched data."
+    )
     value: Optional[float] = Field(default=None, description="The value of the data.")

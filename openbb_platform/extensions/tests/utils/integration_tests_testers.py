@@ -1,4 +1,5 @@
 """Test if there are any missing providers for python interface integration tests."""
+
 import importlib.util
 import inspect
 import os
@@ -33,6 +34,8 @@ def get_integration_tests(
         file_end = "_python.py"
     elif test_type == "api":
         file_end = "_api.py"
+    else:
+        raise ValueError(f"test_type '{test_type}' not valid")
 
     for extension in find_extensions(filter_charting_ext):
         integration_folder = os.path.join(extension, "integration")
@@ -200,7 +203,10 @@ def check_missing_params(
                         used_params = test_params[0].keys()
                     except KeyError:
                         used_params = test_params.keys()
-                    if expected_param not in used_params and expected_param != "return":
+                    if expected_param not in used_params and expected_param not in (
+                        "return",
+                        "chart",
+                    ):
                         missing_params.append(
                             f"Missing param {expected_param} in function {function}"
                         )
@@ -234,8 +240,11 @@ def check_integration_tests(
                 command_params: Dict[str, Dict[str, dict]] = provider_interface_map[
                     model
                 ]
-                function_params = functions[function].pytestmark[1].args[1]
-
+                try:
+                    function_params = functions[function].pytestmark[1].args[1]
+                except IndexError:
+                    # Another decorator is below the parametrize decorator
+                    function_params = functions[function].pytestmark[2].args[1]
                 missing_items = check_function(
                     command_params, function_params, function, False
                 )
@@ -254,11 +263,19 @@ def check_integration_tests(
                 processing_command_params = [
                     {k: "" for k in get_test_params_data_processing(hints)}
                 ]
-                function_params = functions[function].pytestmark[1].args[1]
+                try:
+                    function_params = functions[function].pytestmark[1].args[1]
+                except IndexError:
+                    # Another decorator is below the parametrize decorator
+                    function_params = functions[function].pytestmark[2].args[1]
 
                 missing_items = check_function(
                     processing_command_params, function_params, function, True  # type: ignore
                 )
+
+                # if "chart" is in missing_items, remove it
+                if "chart" in missing_items:
+                    missing_items.remove("chart")
 
                 all_missing_items.extend(missing_items)
 
@@ -293,6 +310,36 @@ def check_missing_integration_tests(test_type: Literal["api", "python"]) -> List
             )
 
     return missing_integration_tests
+
+
+def check_outdated_integration_tests(test_type: Literal["api", "python"]) -> List[str]:
+    """Check if there are any outdated integration tests."""
+    cm = CommandMap(coverage_sep=".")
+    routes = [route[1:].replace("/", "_") for route in cm.map]
+    outdated_integration_tests: List[str] = []
+
+    if test_type == "api":
+        functions = get_module_functions(get_integration_tests(test_type="api"))
+    else:
+        functions = get_module_functions(get_integration_tests(test_type="python"))
+
+    for function, f_callable in functions.items():
+        if function.startswith("test_"):
+            route = function.replace("test_", "", 1)
+            try:
+                if f_callable.pytestmark[1].name != "skip":
+                    args = f_callable.pytestmark[1].args[1]
+                else:
+                    continue
+            except IndexError:
+                continue
+            if route not in routes and len(args) > 0:
+                # If it doesn't have any args it is because it is not installed.
+                outdated_integration_tests.append(
+                    f"Outdated {test_type} integration test for route {route}"
+                )
+
+    return outdated_integration_tests
 
 
 def check_missing_integration_test_providers(functions: Dict[str, Any]) -> List[str]:

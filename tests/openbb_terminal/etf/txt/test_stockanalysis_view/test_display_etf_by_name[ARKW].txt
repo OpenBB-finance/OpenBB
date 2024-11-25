@@ -1,3 +1,0 @@
-Empty DataFrame
-Columns: [Symbol, Name]
-Index: []

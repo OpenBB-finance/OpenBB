@@ -16,7 +16,7 @@ class BondReferenceQueryParams(QueryParams):
 
     country: Optional[str] = Field(
         default=None,
-        description="Country of the bond issuer. Matches partial name.",
+        description="The country to get data. Matches partial name.",
     )
     issuer_name: Optional[str] = Field(
         default=None,
@@ -65,8 +65,7 @@ class BondReferenceQueryParams(QueryParams):
         """Convert the field to uppercase and convert a list to a query string."""
         if isinstance(v, str):
             return v.upper()
-        v = ",".join([symbol.upper() for symbol in list(v)])
-        return v if v else None
+        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
 
 
 class BondReferenceData(Data):
@@ -88,4 +87,5 @@ class BondReferenceData(Data):
     coupon_rate: Optional[float] = Field(
         default=None,
         description="Coupon rate of the bond.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

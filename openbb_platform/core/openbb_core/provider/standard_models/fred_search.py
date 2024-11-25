@@ -4,10 +4,9 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional, Union
+from typing import Optional
 
-from dateutil import parser
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -22,13 +21,21 @@ class SearchQueryParams(QueryParams):
 class SearchData(Data):
     """FRED Search Data."""
 
-    release_id: Optional[Union[str, int]] = Field(
+    release_id: Optional[str] = Field(
         default=None,
         description="The release ID for queries.",
     )
     series_id: Optional[str] = Field(
         default=None,
         description="The series ID for the item in the release.",
+    )
+    series_group: Optional[str] = Field(
+        default=None,
+        description="The series group ID of the series. This value is used to query for regional data.",
+    )
+    region_type: Optional[str] = Field(
+        default=None,
+        description="The region type of the series.",
     )
     name: Optional[str] = Field(
         default=None,
@@ -72,6 +79,22 @@ class SearchData(Data):
         default=None,
         description="The datetime of the last update to the data.",
     )
+    popularity: Optional[int] = Field(
+        default=None,
+        description="Popularity of the series",
+    )
+    group_popularity: Optional[int] = Field(
+        default=None,
+        description="Group popularity of the release",
+    )
+    realtime_start: Optional[dateType] = Field(
+        default=None,
+        description="The realtime start date of the series.",
+    )
+    realtime_end: Optional[dateType] = Field(
+        default=None,
+        description="The realtime end date of the series.",
+    )
     notes: Optional[str] = Field(
         default=None, description="Description of the release."
     )
@@ -80,9 +103,3 @@ class SearchData(Data):
         default=None,
     )
     url: Optional[str] = Field(default=None, description="URL to the release.")
-
-    @field_validator("last_updated", mode="before", check_fields=False)
-    @classmethod
-    def date_validate(cls, v):
-        """Validate datetime format."""
-        return parser.isoparse(v) if v else None

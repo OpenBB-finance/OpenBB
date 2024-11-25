@@ -1,24 +1,39 @@
 """Provider Interface."""
+
 from dataclasses import dataclass, make_dataclass
 from difflib import SequenceMatcher
-from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
+from typing import (
+    Annotated,
+    Any,
+    Callable,
+    Dict,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    Type,
+    Union,
+)
 
-from fastapi import Query
+from fastapi import Body, Query
 from pydantic import (
-    AliasChoices,
     BaseModel,
     ConfigDict,
+    Discriminator,
     Field,
+    SerializeAsAny,
+    Tag,
     create_model,
 )
 from pydantic.fields import FieldInfo
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.provider.query_executor import QueryExecutor
 from openbb_core.provider.registry_map import MapType, RegistryMap
 from openbb_core.provider.utils.helpers import to_snake_case
 
-TupleFieldType = Tuple[str, type, Any]
+TupleFieldType = Tuple[str, Optional[Type], Optional[Any]]
 
 
 @dataclass
@@ -26,8 +41,8 @@ class DataclassField:
     """Dataclass field."""
 
     name: str
-    type_: type
-    default: Any
+    annotation: Optional[Type]
+    default: Optional[Any]
 
 
 @dataclass
@@ -92,12 +107,15 @@ class ProviderInterface(metaclass=SingletonMeta):
         self._registry_map = registry_map or RegistryMap()
         self._query_executor = query_executor or QueryExecutor
 
-        self._map = self._registry_map.map
+        self._map = self._registry_map.standard_extra
         # TODO: Try these 4 methods in a single iteration
         self._model_providers_map = self._generate_model_providers_dc(self._map)
         self._params = self._generate_params_dc(self._map)
         self._data = self._generate_data_dc(self._map)
         self._return_schema = self._generate_return_schema(self._data)
+        self._return_annotations = self._generate_return_annotations(
+            self._registry_map.original_models
+        )
 
         self._available_providers = self._registry_map.available_providers
         self._provider_choices = self._get_provider_choices(self._available_providers)
@@ -108,8 +126,8 @@ class ProviderInterface(metaclass=SingletonMeta):
         return self._map
 
     @property
-    def credentials(self) -> List[str]:
-        """Dictionary of required credentials by provider."""
+    def credentials(self) -> Dict[str, List[str]]:
+        """Map providers to credentials."""
         return self._registry_map.credentials
 
     @property
@@ -148,26 +166,27 @@ class ProviderInterface(metaclass=SingletonMeta):
         return self._registry_map.models
 
     @property
-    def return_map(self) -> Dict[str, Dict[str, Any]]:
+    def return_annotations(self) -> Dict[str, Type[OBBject]]:
         """Return map."""
-        return self._registry_map.return_map
+        return self._return_annotations
 
     def create_executor(self) -> QueryExecutor:
         """Get query executor."""
-        return self._query_executor(self._registry_map.registry)  # type: ignore
+        return self._query_executor(self._registry_map.registry)  # type: ignore[operator]
 
     @staticmethod
     def _merge_fields(
         current: DataclassField, incoming: DataclassField, query: bool = False
     ) -> DataclassField:
-        current_name = current.name
-        current_type = current.type_
-        current_desc = getattr(current.default, "description", "")
+        """Merge 2 dataclass fields."""
+        curr_name = current.name
+        curr_type: Optional[Type] = current.annotation
+        curr_desc = getattr(current.default, "description", "")
+        curr_json_schema_extra = getattr(current.default, "json_schema_extra", {})
 
-        incoming_type = incoming.type_
-        incoming_desc = getattr(incoming.default, "description", "")
-
-        F: Union[Callable, object] = Query if query else FieldInfo
+        inc_type: Optional[Type] = incoming.annotation
+        inc_desc = getattr(incoming.default, "description", "")
+        inc_json_schema_extra = getattr(incoming.default, "json_schema_extra", {})
 
         def split_desc(desc: str) -> str:
             """Split field description."""
@@ -175,34 +194,52 @@ class ProviderInterface(metaclass=SingletonMeta):
             detail = item[0] if item else ""
             return detail
 
-        curr_detail = split_desc(current_desc)
-        inc_detail = split_desc(incoming_desc)
+        def merge_json_schema_extra(curr: dict, inc: dict) -> dict:
+            """Merge json schema extra."""
+            for key in curr.keys() & inc.keys():
+                # Merge keys that are in both dictionaries if both are lists
+                curr_value = curr[key]
+                inc_value = inc[key]
+                if isinstance(curr_value, list) and isinstance(inc_value, list):
+                    curr[key] = list(set(curr.get(key, []) + inc.get(key, [])))
+                    inc.pop(key)
 
-        providers = f"{current.default.title},{incoming.default.title}"
+            # Add any remaining keys from inc to curr
+            curr.update(inc)
+            return curr
+
+        json_schema_extra: dict = merge_json_schema_extra(
+            curr=curr_json_schema_extra or {}, inc=inc_json_schema_extra or {}
+        )
+
+        curr_detail = split_desc(curr_desc)
+        inc_detail = split_desc(inc_desc)
+
+        curr_title = getattr(current.default, "title", "")
+        inc_title = getattr(incoming.default, "title", "")
+        providers = ",".join([curr_title, inc_title])
         formatted_prov = providers.replace(",", ", ")
 
         if SequenceMatcher(None, curr_detail, inc_detail).ratio() > 0.8:
             new_desc = f"{curr_detail} (provider: {formatted_prov})"
         else:
-            new_desc = f"{current_desc};\n    {incoming_desc}"
+            new_desc = f"{curr_desc};\n    {inc_desc}"
 
-        merged_default = F(  # type: ignore
-            default=current.default.default,
+        QF: Callable = Query if query else FieldInfo  # type: ignore[assignment]
+        merged_default = QF(
+            default=getattr(current.default, "default", None),
             title=providers,
             description=new_desc,
+            json_schema_extra=json_schema_extra,
         )
 
-        merged_type = (
-            Union[current_type, incoming_type]
-            if current_type != incoming_type
-            else current_type
+        merged_type: Optional[Type] = (
+            Union[curr_type, inc_type]  # type: ignore[assignment]
+            if curr_type != inc_type
+            else curr_type
         )
 
-        return DataclassField(
-            name=current_name,
-            type_=merged_type,  # type: ignore
-            default=merged_default,
-        )
+        return DataclassField(curr_name, merged_type, merged_default)
 
     @staticmethod
     def _create_field(
@@ -211,55 +248,99 @@ class ProviderInterface(metaclass=SingletonMeta):
         provider_name: Optional[str] = None,
         query: bool = False,
         force_optional: bool = False,
-        alias_dict: Optional[Dict[str, List[str]]] = None,
     ) -> DataclassField:
-        alias_dict = alias_dict or {}
         new_name = name.replace(".", "_")
-        # field.type_ don't work for nested types
-        # field.outer_type_ don't work for Optional nested types
-        type_ = field.annotation
+        annotation = field.annotation
 
+        additional_description = ""
+        choices: Dict = {}
+        if extra := field.json_schema_extra:
+            providers: List = []
+            for p, v in extra.items():  # type: ignore
+                if isinstance(v, dict) and v.get("multiple_items_allowed"):
+                    providers.append(p)
+                    choices[p] = {"multiple_items_allowed": True, "choices": v.get("choices")}  # type: ignore
+                elif isinstance(v, list) and "multiple_items_allowed" in v:
+                    # For backwards compatibility, before this was a list
+                    providers.append(p)
+                    choices[p] = {"multiple_items_allowed": True, "choices": None}  # type: ignore
+                elif isinstance(v, dict) and v.get("choices"):
+                    choices[p] = {
+                        "multiple_items_allowed": False,
+                        "choices": v.get("choices"),
+                    }
+
+            if providers:
+                if provider_name:
+                    additional_description += " Multiple comma separated items allowed."
+                else:
+                    additional_description += (
+                        " Multiple comma separated items allowed for provider(s): "
+                        + ", ".join(providers)  # type: ignore[arg-type]
+                        + "."
+                    )
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""
         )
         description = (
-            f"{field.description} {provider_field}"
+            f"{field.description}{additional_description} {provider_field}"
             if provider_name and field.description
-            else f"{field.description}"
+            else f"{field.description}{additional_description}"
         )
 
         if field.is_required():
             if force_optional:
-                type_ = Optional[type_]  # type: ignore
+                annotation = Optional[annotation]  # type: ignore
                 default = None
             else:
                 default = ...
         else:
             default = field.default
 
-        if query:
-            # We need to use query if we want the field description to show up in the
-            # swagger, it's a fastapi limitation
-            default = Query(
-                default=default,
-                title=provider_name,
-                description=description,
-                alias=field.alias or None,
-            )
-        elif provider_name:
-            default: FieldInfo = Field(
-                default=default or None,
-                title=provider_name,
-                description=description,
-                validation_alias=AliasChoices(
-                    field.alias,
-                    *list(set(alias_dict.get(name, []))),
-                )
-                if alias_dict.get(name, [])
-                else None,
+        if (
+            hasattr(annotation, "__name__")
+            and annotation.__name__ in ["Dict", "dict", "Data"]  # type: ignore
+            or field.kw_only is True
+        ):
+            return DataclassField(
+                new_name,
+                annotation,
+                Body(
+                    default=default,
+                    title=provider_name,
+                    description=description,
+                    alias=field.alias or None,
+                    json_schema_extra=choices,
+                ),
             )
 
-        return DataclassField(new_name, type_, default)
+        if query:
+            # We need to use query if we want the field description to show
+            # up in the swagger, it's a fastapi limitation
+            return DataclassField(
+                new_name,
+                annotation,
+                Query(
+                    default=default,
+                    title=provider_name,
+                    description=description,
+                    alias=field.alias or None,
+                    json_schema_extra=choices,
+                ),
+            )
+        if provider_name:
+            return DataclassField(
+                new_name,
+                annotation,
+                Field(
+                    default=default or None,
+                    title=provider_name,
+                    description=description,
+                    json_schema_extra=choices,
+                ),
+            )
+
+        return DataclassField(new_name, annotation, default)
 
     @classmethod
     def _extract_params(
@@ -277,7 +358,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
                     standard[incoming.name] = (
                         incoming.name,
-                        incoming.type_,
+                        incoming.annotation,
                         incoming.default,
                     )
             else:
@@ -300,7 +381,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
                         extra[updated.name] = (
                             updated.name,
-                            updated.type_,
+                            updated.annotation,
                             updated.default,
                         )
 
@@ -317,23 +398,31 @@ class ProviderInterface(metaclass=SingletonMeta):
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
                 for name, field in model_details["Data"]["fields"].items():
+                    if (
+                        name == "provider"
+                        and field.description == "The data provider for the data."
+                    ):  # noqa
+                        continue
                     incoming = cls._create_field(name, field, "openbb")
 
                     standard[incoming.name] = (
                         incoming.name,
-                        incoming.type_,
+                        incoming.annotation,
                         incoming.default,
                     )
             else:
-                alias_dict = model_details.get("Data", {}).get("alias_dict", {})
                 for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
+                        if (
+                            name == "provider"
+                            and field.description == "The data provider for the data."
+                        ):  # noqa
+                            continue
                         incoming = cls._create_field(
                             to_snake_case(name),
                             field,
                             provider_name,
                             force_optional=True,
-                            alias_dict=alias_dict,
                         )
 
                         if incoming.name in extra:
@@ -344,7 +433,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
                         extra[updated.name] = (
                             updated.name,
-                            updated.type_,
+                            updated.annotation,
                             updated.default,
                         )
 
@@ -358,7 +447,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         This creates a dictionary of dataclasses that can be injected as a FastAPI
         dependency.
 
-        Example:
+        Example
         -------
         @dataclass
         class CompanyNews(StandardParams):
@@ -380,14 +469,14 @@ class ProviderInterface(metaclass=SingletonMeta):
             standard, extra = self._extract_params(providers)
 
             result[model_name] = {
-                "standard": make_dataclass(  # type: ignore
+                "standard": make_dataclass(
                     cls_name=model_name,
-                    fields=list(standard.values()),
+                    fields=list(standard.values()),  # type: ignore[arg-type]
                     bases=(StandardParams,),
                 ),
-                "extra": make_dataclass(  # type: ignore
+                "extra": make_dataclass(
                     cls_name=model_name,
-                    fields=list(extra.values()),
+                    fields=list(extra.values()),  # type: ignore[arg-type]
                     bases=(ExtraParams,),
                 ),
             }
@@ -399,7 +488,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         This creates a dictionary that maps model names to dataclasses that can be
         injected as a FastAPI dependency.
 
-        Example:
+        Example
         -------
         @dataclass
         class CompanyNews(ProviderChoices):
@@ -433,7 +522,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
         This creates a dictionary of dataclasses.
 
-        Example:
+        Example
         -------
         class EquityHistoricalData(StandardData):
             date: date
@@ -451,14 +540,14 @@ class ProviderInterface(metaclass=SingletonMeta):
             extra: dict
             standard, extra = self._extract_data(providers)
             result[model_name] = {
-                "standard": make_dataclass(  # type: ignore
+                "standard": make_dataclass(
                     cls_name=model_name,
-                    fields=list(standard.values()),
+                    fields=list(standard.values()),  # type: ignore[arg-type]
                     bases=(StandardData,),
                 ),
-                "extra": make_dataclass(  # type: ignore
+                "extra": make_dataclass(
                     cls_name=model_name,
-                    fields=list(extra.values()),
+                    fields=list(extra.values()),  # type: ignore[arg-type]
                     bases=(ExtraData,),
                 ),
             }
@@ -479,6 +568,7 @@ class ProviderInterface(metaclass=SingletonMeta):
             fields.update(extra.model_fields)
 
             fields_dict: Dict[str, Tuple[Any, Any]] = {}
+
             for name, field in fields.items():
                 fields_dict[name] = (
                     field.annotation,
@@ -487,7 +577,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                         title=field.title,
                         description=field.description,
                         alias=field.alias,
-                        validation_alias=field.validation_alias,
+                        json_schema_extra=field.json_schema_extra,
                     ),
                 )
 
@@ -507,3 +597,60 @@ class ProviderInterface(metaclass=SingletonMeta):
             fields=[("provider", Literal[tuple(available_providers)])],  # type: ignore
             bases=(ProviderChoices,),
         )
+
+    def _generate_return_annotations(
+        self, original_models: Dict[str, Dict[str, Any]]
+    ) -> Dict[str, Type[OBBject]]:
+        """Generate return annotations for FastAPI.
+
+        Example
+        -------
+        class Data(BaseModel):
+            ...
+
+        class EquityData(Data):
+            price: float
+
+        class YFEquityData(EquityData):
+            yf_field: str
+
+        class AVEquityData(EquityData):
+            av_field: str
+
+        class OBBject(BaseModel):
+            results: List[
+                SerializeAsAny[
+                    Annotated[
+                        Union[
+                            Annotated[YFEquityData, Tag("yf")],
+                            Annotated[AVEquityData, Tag("av")],
+                        ],
+                        Discriminator(get_provider),
+                    ]
+                ]
+            ]
+        """
+
+        def get_provider(v: Type[BaseModel]):
+            """Callable to discriminate which BaseModel to use."""
+            return getattr(v, "_provider", None)
+
+        annotations = {}
+        for name, models in original_models.items():
+            outer = set()
+            args = set()
+            for provider, model in models.items():
+                data = model["data"]
+                outer.add(model["results_type"])
+                args.add(Annotated[data, Tag(provider)])
+                # We set the provider to use it in discriminator function
+                setattr(data, "_provider", provider)
+            meta = Discriminator(get_provider) if len(args) > 1 else None
+            inner = SerializeAsAny[Annotated[Union[tuple(args)], meta]]  # type: ignore[misc,valid-type]
+            full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type,misc]
+            annotations[name] = create_model(
+                f"OBBject_{name}",
+                __base__=OBBject[full],  # type: ignore[valid-type]
+                __doc__=f"OBBject with results of type {name}",
+            )
+        return annotations

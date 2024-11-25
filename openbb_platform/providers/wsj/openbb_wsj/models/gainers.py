@@ -1,9 +1,10 @@
 """WSJ Asset Performance Gainers Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_performance import (
     ETFPerformanceData,
@@ -67,6 +68,7 @@ class WSJGainersData(ETFPerformanceData):
 class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):
     """Transform the query, extract and transform the data from the WSJ endpoints."""
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> WSJGainersQueryParams:
         """Transform query params."""
@@ -79,14 +81,16 @@ class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):
         **kwargs: Any,
     ) -> List[Dict]:
         """Get data from WSJ."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import make_request
+
         url = (
             "https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers?id=%7B%22application"
             "%22%3A%22WSJ%22%2C%22etfMover%22%3A%22leaders%22%2C%22count%22%3A25%7D&type="
             "mdc_etfmovers"
         )
-        data = requests.get(
-            url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10
-        ).json()
+        data = make_request(url).json()
+
         return data["data"]["instruments"]
 
     @staticmethod
@@ -99,8 +103,8 @@ class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):
         data = data[: query.limit]
         data = sorted(
             data,
-            key=lambda x: x["percentChange"]
-            if query.sort == "asc"
-            else -x["percentChange"],
+            key=lambda x: (
+                x["percentChange"] if query.sort == "asc" else -x["percentChange"]
+            ),
         )
         return [WSJGainersData.model_validate(d) for d in data]

@@ -1,0 +1,104 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/release/series?api_key=MOCK_API_KEY&file_type=json&offset=0&order_by=observation_end&release_id=483&search_type=release&sort_order=desc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TU00DU0U9JByKbmpaDL5RelpBbFJ1Uq
+        WSnlJxWnFpUllmTm58WDVOooFecXlcSDVShZKaWkFicr6Sgl55fmlShZmego5aelFaeWKFkZ6Cjl
+        ZOZmlihZGRoYGOgoFacWZaYWFytZRVcrZYIsDPZ3CzK0MHBxjHQMc0d2D8muLcksyUlVslIytDDQ
+        dUmsVHAsSy1KTE9VANmgpIPiA4TZhha6hga6BoZoCkBeRAuotKLUwtLUvGRQaLgkZuZUKukowcXi
+        izPywWHroqSjVJqXWVKsZKUUkFqUnJpXAhOBq1FVAoVDYnF+XmJOfGJKVmlxSS5InZWSX36JQnAq
+        RCanUsERLJeagl093Dy/YEclHaWcxOKS+NKClMSSVFC4IiJZwcDcysDQysBM18BUSUepIL+gNCex
+        KLOkUsnK1ExHKb0ov7QgHl00L78kFeQHx2KFxDyF1IqS1LzizPw8hfw0hZKMVIXElJRMUFpIzFFI
+        yU8uBTkfnDYUEpPyS0vASkKKUhOLS4sqFYJSC/IVglLTUotS85JTFYISS1KL9RQ0MkpKCoqtYvRj
+        9MvLy/XyUssr84uy01JT9PKL0mP0cxOLslNLimP0S6DG6BalFuTrFsGM0S0CGaObmZeWX5QLtlpT
+        qVYHKU0ZUzNJGZOWogxMdQ2MRkCKMsdMUeZYUxRIdMinKEtqpihLElOU+YhNUWZYUxRIdMinKE8/
+        F9cIqtR5oDpOwTMvJbUCrdhBqekMTGiUisA2KzgWFCkY6SgYGRhaKNgqgKpUcE0Ir6dwqSqG1nh0
+        rAstMEsuMyNsdSFIdEimM8BiawHt+Pwz+gkAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '655'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 16 Oct 2024 18:17:31 GMT
+      Expires:
+      - Wed, 16 Oct 2024 18:17:31 GMT
+      Last-Modified:
+      - Wed, 16 Oct 2024 18:07:56 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/release/tables?api_key=MOCK_API_KEY&element_id=1217633&file_type=json&include_observation_values=true&observation_date=2024-07-14&release_id=483
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWykvMTVWyUgr2dwtScCxLLUpMTy1W0lFKzUnNTc0ric9MUbIyNDI0NzM21lEq
+        Ss1JTSxOBQsqmVgYI9QVK1lVK0HUmYKYmNpNUbWbWBjrKBWnFmWmFkOMAznA2MDFMdIxzF1JR6kg
+        sQjD+pzMvFQlq7zSnBwdpZLKApCzISYo6cC8YWyg65JYCfOIAshQJR2lnNSy1BwlKyVDJR2l/KTi
+        1KKyxJLM/Lz4ssScUpAppnrGxhYGFmiyKYklIEkjAyMTXQNzXUMjJR2l5IzMnJSi1Dwlq+jYWh2o
+        j82w+9iMCB9bUuxjS3J9bGpqDIpA5PAg2sfm2H1sToSPDS0o9rKhBbl+tjA3RU8DBP0MWG0tAAqS
+        49clAwAA
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '291'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 16 Oct 2024 18:17:32 GMT
+      Expires:
+      - Wed, 16 Oct 2024 18:17:32 GMT
+      Last-Modified:
+      - Wed, 16 Oct 2024 18:07:56 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

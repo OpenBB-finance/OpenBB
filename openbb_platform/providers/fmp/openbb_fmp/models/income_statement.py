@@ -1,5 +1,6 @@
 """FMP Income Statement Model."""
 
+# pylint: disable=unused-argument
 from datetime import (
     date as dateType,
     datetime,
@@ -11,10 +12,9 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, model_validator
-
-PeriodType = Literal["annual", "quarter"]
 
 
 class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
@@ -23,110 +23,207 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Income-Statement
     """
 
-    cik: Optional[str] = Field(
-        default=None, description="The CIK of the company if no symbol is provided."
-    )
+    __json_schema_extra__ = {
+        "period": {
+            "choices": ["annual", "quarter"],
+        }
+    }
 
-    @model_validator(mode="before")
-    @classmethod
-    def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
-        """Validate that either a symbol or CIK is provided."""
-        if values.get("symbol") is None and values.get("cik") is None:
-            raise ValueError("symbol or cik must be provided")
-        return values
+    period: Literal["annual", "quarter"] = Field(
+        default="annual",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
+    )
 
 
 class FMPIncomeStatementData(IncomeStatementData):
     """FMP Income Statement Data."""
 
     __alias_dict__ = {
+        "period_ending": "date",
+        "fiscal_period": "period",
+        "fiscal_year": "calendarYear",
+        "filing_date": "fillingDate",
+        "accepted_date": "acceptedDate",
         "reported_currency": "reportedCurrency",
-        "ebitda_ratio": "ebitdaratio",
-        "eps_diluted": "epsdiluted",
-        "weighted_average_shares_outstanding": "weightedAverageShsOut",
-        "weighted_average_shares_outstanding_dil": "weightedAverageShsOutDil",
-        "filling_date": "fillingDate",
+        "revenue": "revenue",
+        "cost_of_revenue": "costOfRevenue",
+        "gross_profit": "grossProfit",
+        "gross_profit_margin": "grossProfitRatio",
+        "general_and_admin_expense": "generalAndAdministrativeExpenses",
+        "research_and_development_expense": "researchAndDevelopmentExpenses",
+        "selling_and_marketing_expense": "sellingAndMarketingExpenses",
+        "selling_general_and_admin_expense": "sellingGeneralAndAdministrativeExpenses",
+        "other_expenses": "otherExpenses",
+        "total_operating_expenses": "operatingExpenses",
+        "cost_and_expenses": "costAndExpenses",
+        "interest_income": "interestIncome",
+        "total_interest_expense": "interestExpense",
+        "depreciation_and_amortization": "depreciationAndAmortization",
+        "ebitda": "ebitda",
+        "ebitda_margin": "ebitdaratio",
+        "total_operating_income": "operatingIncome",
+        "operating_income_margin": "operatingIncomeRatio",
+        "total_other_income_expenses": "totalOtherIncomeExpensesNet",
+        "total_pre_tax_income": "incomeBeforeTax",
+        "pre_tax_income_margin": "incomeBeforeTaxRatio",
+        "income_tax_expense": "incomeTaxExpense",
+        "consolidated_net_income": "netIncome",
+        "net_income_margin": "netIncomeRatio",
+        "basic_earnings_per_share": "eps",
+        "diluted_earnings_per_share": "epsdiluted",
+        "weighted_average_basic_shares_outstanding": "weightedAverageShsOut",
+        "weighted_average_diluted_shares_outstanding": "weightedAverageShsOutDil",
+        "link": "link",
+        "final_link": "finalLink",
     }
 
-    reported_currency: Optional[str] = Field(
-        default=None, description="Reporting currency."
+    filing_date: Optional[dateType] = Field(
+        default=None,
+        description="The date when the filing was made.",
     )
-    filling_date: Optional[dateType] = Field(default=None, description="Filling date.")
     accepted_date: Optional[datetime] = Field(
-        default=None, description="Accepted date."
+        default=None,
+        description="The date and time when the filing was accepted.",
     )
-    calendar_year: Optional[int] = Field(default=None, description="Calendar year.")
-
+    reported_currency: Optional[str] = Field(
+        default=None,
+        description="The currency in which the balance sheet was reported.",
+    )
+    revenue: Optional[float] = Field(
+        default=None,
+        description="Total revenue.",
+    )
     cost_of_revenue: Optional[float] = Field(
-        default=None, description="Cost of revenue."
+        default=None,
+        description="Cost of revenue.",
     )
-    gross_profit: Optional[float] = Field(default=None, description="Gross profit.")
-    gross_profit_ratio: Optional[float] = Field(
-        default=None, description="Gross profit ratio."
+    gross_profit: Optional[float] = Field(
+        default=None,
+        description="Gross profit.",
     )
-    research_and_development_expenses: Optional[float] = Field(
-        default=None, description="Research and development expenses."
+    gross_profit_margin: Optional[float] = Field(
+        default=None,
+        description="Gross profit margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    general_and_administrative_expenses: Optional[float] = Field(
-        default=None, description="General and administrative expenses."
+    general_and_admin_expense: Optional[float] = Field(
+        default=None,
+        description="General and administrative expenses.",
     )
-    selling_and_marketing_expenses: Optional[float] = Field(
-        default=None, description="Selling and marketing expenses."
+    research_and_development_expense: Optional[float] = Field(
+        default=None,
+        description="Research and development expenses.",
     )
-    selling_general_and_administrative_expenses: Optional[float] = Field(
-        default=None, description="Selling, general and administrative expenses."
+    selling_and_marketing_expense: Optional[float] = Field(
+        default=None,
+        description="Selling and marketing expenses.",
     )
-    other_expenses: Optional[float] = Field(default=None, description="Other expenses.")
-
-    operating_expenses: Optional[float] = Field(
-        default=None, description="Operating expenses."
+    selling_general_and_admin_expense: Optional[float] = Field(
+        default=None,
+        description="Selling, general and administrative expenses.",
     )
-    depreciation_and_amortization: Optional[float] = Field(
-        default=None, description="Depreciation and amortization."
+    other_expenses: Optional[float] = Field(
+        default=None,
+        description="Other expenses.",
     )
-    ebitda_ratio: Optional[float] = Field(default=None, description="EBIDTA ratio.")
-    operating_income: Optional[float] = Field(
-        default=None, description="Operating income."
+    total_operating_expenses: Optional[float] = Field(
+        default=None,
+        description="Total operating expenses.",
     )
-    operating_income_ratio: Optional[float] = Field(
-        default=None, description="Operating income ratio."
+    cost_and_expenses: Optional[float] = Field(
+        default=None,
+        description="Cost and expenses.",
     )
     interest_income: Optional[float] = Field(
-        default=None, description="Interest income."
+        default=None,
+        description="Interest income.",
     )
-    interest_expense: Optional[float] = Field(
-        default=None, description="Interest expense."
+    total_interest_expense: Optional[float] = Field(
+        default=None,
+        description="Total interest expenses.",
     )
-
-    total_other_income_expenses_net: Optional[float] = Field(
-        default=None, description="Total other income expenses net."
+    depreciation_and_amortization: Optional[float] = Field(
+        default=None,
+        description="Depreciation and amortization.",
     )
-    income_before_tax: Optional[float] = Field(
-        default=None, description="Income before tax."
+    ebitda: Optional[float] = Field(
+        default=None,
+        description="EBITDA.",
     )
-    income_before_tax_ratio: Optional[float] = Field(
-        default=None, description="Income before tax ratio."
+    ebitda_margin: Optional[float] = Field(
+        default=None,
+        description="EBITDA margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    total_operating_income: Optional[float] = Field(
+        default=None,
+        description="Total operating income.",
+    )
+    operating_income_margin: Optional[float] = Field(
+        default=None,
+        description="Operating income margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    total_other_income_expenses: Optional[float] = Field(
+        default=None,
+        description="Total other income and expenses.",
+    )
+    total_pre_tax_income: Optional[float] = Field(
+        default=None,
+        description="Total pre-tax income.",
+    )
+    pre_tax_income_margin: Optional[float] = Field(
+        default=None,
+        description="Pre-tax income margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     income_tax_expense: Optional[float] = Field(
-        default=None, description="Income tax expense."
+        default=None,
+        description="Income tax expense.",
     )
-    net_income: Optional[float] = Field(default=None, description="Net income.")
-    net_income_ratio: Optional[float] = Field(
-        default=None, description="Net income ratio."
+    consolidated_net_income: Optional[float] = Field(
+        default=None,
+        description="Consolidated net income.",
     )
-
+    net_income_margin: Optional[float] = Field(
+        default=None,
+        description="Net income margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    basic_earnings_per_share: Optional[float] = Field(
+        default=None,
+        description="Basic earnings per share.",
+    )
+    diluted_earnings_per_share: Optional[float] = Field(
+        default=None,
+        description="Diluted earnings per share.",
+    )
+    weighted_average_basic_shares_outstanding: Optional[float] = Field(
+        default=None,
+        description="Weighted average basic shares outstanding.",
+    )
+    weighted_average_diluted_shares_outstanding: Optional[float] = Field(
+        default=None,
+        description="Weighted average diluted shares outstanding.",
+    )
     link: Optional[str] = Field(
-        default=None, description="Link to the income statement."
+        default=None,
+        description="Link to the filing.",
     )
     final_link: Optional[str] = Field(
-        default=None, description="Final link to the income statement."
+        default=None,
+        description="Link to the filing document.",
     )
 
     @model_validator(mode="before")
     @classmethod
     def replace_zero(cls, values):  # pylint: disable=no-self-argument
         """Check for zero values and replace with None."""
-        return {k: None if v == 0 else v for k, v in values.items()}
+        return (
+            {k: None if v == 0 else v for k, v in values.items()}
+            if isinstance(values, dict)
+            else values
+        )
 
 
 class FMPIncomeStatementFetcher(
@@ -166,4 +263,7 @@ class FMPIncomeStatementFetcher(
         query: FMPIncomeStatementQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPIncomeStatementData]:
         """Return the transformed data."""
+        for result in data:
+            result.pop("symbol", None)
+            result.pop("cik", None)
         return [FMPIncomeStatementData.model_validate(d) for d in data]

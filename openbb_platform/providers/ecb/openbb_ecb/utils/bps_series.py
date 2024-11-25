@@ -27,7 +27,6 @@ BPS_COUNTRIES = Literal[
     "united_kingdom",
     "united_states",
     "total",
-    None,
 ]
 
 BPS_COUNTRIES_DICT = {
@@ -46,6 +45,7 @@ BPS_COUNTRIES_DICT = {
 }
 
 
+# pylint: disable=inconsistent-return-statements
 def generate_bps_series_ids(
     frequency: BPS_FREQUENCIES = "monthly",
     report_type: BPS_REPORT_TYPES = "main",
@@ -73,11 +73,11 @@ def generate_bps_series_ids(
             primary_income_balance=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.B.IN1._Z._Z._Z.EUR._T._X.N.ALL",
             primary_income_credit=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.C.IN1._Z._Z._Z.EUR._T._X.N.ALL",
             primary_income_debit=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.D.IN1._Z._Z._Z.EUR._T._X.N.ALL",
-            investment_income_balance=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.B.D4P._T.F._Z.EUR._T._X.N.ALL",  # noqa: E501
-            investment_income_credit=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.C.D4P._T.F._Z.EUR._T._X.N.ALL",  # noqa: E501
+            investment_income_balance=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.B.D4P._T.F._Z.EUR._T._X.N.ALL",  # noqa
+            investment_income_credit=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.C.D4P._T.F._Z.EUR._T._X.N.ALL",  # noqa
             investment_income_debit=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.D.D4P._T.F._Z.EUR._T._X.N.ALL",
-            secondary_income_balance=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.B.IN2._Z._Z._Z.EUR._T._X.N.ALL",  # noqa: E501
-            secondary_income_credit=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.C.IN2._Z._Z._Z.EUR._T._X.N.ALL",  # noqa: E501
+            secondary_income_balance=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.B.IN2._Z._Z._Z.EUR._T._X.N.ALL",  # noqa
+            secondary_income_credit=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.C.IN2._Z._Z._Z.EUR._T._X.N.ALL",  # noqa
             secondary_income_debit=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.D.IN2._Z._Z._Z.EUR._T._X.N.ALL",
             capital_account_balance=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.B.KA._Z._Z._Z.EUR._T._X.N.ALL",
             capital_account_credit=f"BPS.{freq}.N.I9.{BPS_COUNTRIES_DICT[country]}.S1.S1.T.C.KA._Z._Z._Z.EUR._T._X.N.ALL",
@@ -132,14 +132,36 @@ def generate_bps_series_ids(
             transport_debit=f"BPS.{freq}.N.I9.W1.S1.S1.T.D.SC._Z._Z._Z.EUR._T._X.N.ALL",
             travel_credit=f"BPS.{freq}.N.I9.W1.S1.S1.T.C.SD._Z._Z._Z.EUR._T._X.N.ALL",
             travel_debit=f"BPS.{freq}.N.I9.W1.S1.S1.T.D.SD._Z._Z._Z.EUR._T._X.N.ALL",
-            financial_services_credit=f"BPS.{freq}.N.I9.W1.S1.S1.T.C.SF._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.C.SG._Z._Z._Z.EUR._T._X.N.ALL",  # noqa E501
-            financial_services_debit=f"BPS.{freq}.N.I9.W1.S1.S1.T.D.SF._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.D.SG._Z._Z._Z.EUR._T._X.N.ALL",  # noqa E501
+            financial_services_credit=(
+                f"BPS.{freq}.N.I9.W1.S1.S1.T.C.SF._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.C.SG._Z._Z._Z.EUR._T._X.N.ALL"
+            ),
+            financial_services_debit=(
+                f"BPS.{freq}.N.I9.W1.S1.S1.T.D.SF._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.D.SG._Z._Z._Z.EUR._T._X.N.ALL"
+            ),
             communications_credit=f"BPS.{freq}.N.I9.W1.S1.S1.T.C.SI._Z._Z._Z.EUR._T._X.N.ALL",
             communications_debit=f"BPS.{freq}.N.I9.W1.S1.S1.T.D.SI._Z._Z._Z.EUR._T._X.N.ALL",
             other_business_services_credit=f"BPS.{freq}.N.I9.W1.S1.S1.T.C.SJ._Z._Z._Z.EUR._T._X.N.ALL",
             other_business_services_debit=f"BPS.{freq}.N.I9.W1.S1.S1.T.D.SJ._Z._Z._Z.EUR._T._X.N.ALL",
-            other_services_credit=f"BPS.{freq}.N.I9.W1.S1.S1.T.C.SA._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.C.SB._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.C.SE._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.C.SH._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.C.SK._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.C.SL._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.C.SN._Z._Z._Z.EUR._T._X.N.ALL",  # noqa E501
-            other_services_debit=f"BPS.{freq}.N.I9.W1.S1.S1.T.D.SA._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.D.SB._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.D.SE._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.D.SH._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.D.SK._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.D.SL._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.{freq}.N.I9.W1.S1.S1.T.D.SN._Z._Z._Z.EUR._T._X.N.ALL",  # noqa E501
+            other_services_credit=(
+                f"BPS.{freq}.N.I9.W1.S1.S1.T.C.SA._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.C.SB._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.C.SE._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.C.SH._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.C.SK._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.C.SL._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.C.SN._Z._Z._Z.EUR._T._X.N.ALL"
+            ),
+            other_services_debit=(
+                f"BPS.{freq}.N.I9.W1.S1.S1.T.D.SA._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.D.SB._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.D.SE._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.D.SH._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.D.SK._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.D.SL._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS."
+                + f"{freq}.N.I9.W1.S1.S1.T.D.SN._Z._Z._Z.EUR._T._X.N.ALL"
+            ),
         )
         return services_items
 

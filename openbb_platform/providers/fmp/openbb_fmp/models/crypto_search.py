@@ -1,35 +1,48 @@
 """FMP Crypto Search Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.crypto_search import (
     CryptoSearchData,
     CryptoSearchQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FMPCryptoSearchQueryParams(CryptoSearchQueryParams):
-    """FMP Crypto Search Query."""
+    """FMP Crypto Search Query.
+
+    Source: https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api
+    """
+
+    @field_validator("query", mode="after", check_fields=False)
+    def validate_query(cls, v: str) -> str:  # pylint: disable=no-self-argument
+        """Return the query."""
+        if isinstance(v, str):
+            return v.replace("-", "") if "-" in v else v
+        return None
 
 
 class FMPCryptoSearchData(CryptoSearchData):
     """FMP Crypto Search Data."""
+
+    __alias_dict__ = {
+        "exchange": "stockExchange",
+        "exchange_name": "exchangeShortName",
+    }
 
     currency: Optional[str] = Field(
         description="The currency the crypto trades for.", default=None
     )
     exchange: Optional[str] = Field(
         description="The exchange code the crypto trades on.",
-        alias="stockExchange",
         default=None,
     )
     exchange_name: Optional[str] = Field(
         description="The short name of the exchange the crypto trades on.",
-        alias="exchangeShortName",
         default=None,
     )
 
@@ -49,11 +62,14 @@ class FMPCryptoSearchFetcher(
 
     @staticmethod
     async def aextract_data(
-        query: FMPCryptoSearchQueryParams,
+        query: FMPCryptoSearchQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import create_url, get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -66,10 +82,15 @@ class FMPCryptoSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPCryptoSearchQueryParams, data: List[Dict], **kwargs: Any
+        query: FMPCryptoSearchQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[FMPCryptoSearchData]:
         """Return the transformed data."""
-        cryptos = pd.DataFrame(data)
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
+        cryptos = DataFrame(data)
         if query.query:
             cryptos = cryptos[
                 cryptos["symbol"].str.contains(query.query, case=False)

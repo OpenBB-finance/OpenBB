@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: '{"operationName": "getCompanyInsidersActivities", "variables": {"symbol":
+      "SHOP"}, "query": "query getCompanyInsidersActivities(\n    $symbol: String\n)
+      {\n    getCompanyInsidersActivities(\n      symbol: $symbol\n  ) {\n    insiderActivities
+      {\n      periodkey\n      buy {\n        name\n        trades\n        shares\n        sharesHeld\n        tradeValue\n    }\n      sell
+      {\n        name\n        trades\n        shares\n        sharesHeld\n        tradeValue\n    }\n  }\n    activitySummary
+      {\n      periodkey\n      buyShares\n      soldShares\n      netActivity\n      totalShares\n    }\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8WVy27bMBBF9/0KQWtB4PvhnZs4dQMEBewgm8ALxqIrNnoEEu1WNfzvpRKnolQD
+        cpui1cqkRvd65syQ+zBRVoWTffhZ24syf1JF87GoTaKrerq2Zmes0XX73rzs+pv3+/BJV6ZMHnUT
+        TkKbVlrflIVN6zAKH7Zu734VhbXOsufYQuXahc3LzSbXpra6ioJrvdm4YFuppFWELjxVVfsTcwhe
+        V3OdJeEEQQboMfZOZVsnhjggVB6iTlxX9nsrW9dmrTxl1CkLiERfGVICRF+ZCiYAj6mnfWWKR525
+        /22KKJirKtNNcGPWqdKZZ0Q7I8kpHRgBTCTrO3GAMccx89NYpqoolLO5LR+aIrhUO5N4HqzzQJRA
+        ifouGFFGSd8FcgYxcLVatTY+ttp8exs0r7QcSzoKjQIMAYkFlseHnwOQdC6QIQBHCUIgAKYyJuS3
+        GUKvD6Gkw0Y8RdEVF3AOYsFes/pPOO1Xne3eOIbcSx/JM+aQS4oAiOFZowixN+WICD6OUgLJMYwZ
+        PtEx5yFFvinDmIwjdXlKLHmHlP0bpJ3JdZkWtS2dy0WZZVoXp49K7r4bpAMhAn15QiB0B1pvGqbL
+        +SwKFp/ezxa3wYfZYrq4PO1AsBwUDEMi0LBgHAoC4h6dpcnLKLgyyRdzWprJIX/UsurpClfDGCHX
+        7K6R1csN1Cy3ea6qZvwaWh6d2hqVWeItC22P91nzvLalVdnP9yMH5d+S/XVg/1h5dTgc3v0A+pNt
+        u9MHAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 03 Jan 2024 20:08:44 GMT
+      Etag:
+      - W/"7d3-DY9oT4dVvL8jzGyeL78a7Ws2Ogo"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

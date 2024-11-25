@@ -1,0 +1,109 @@
+interactions:
+- request:
+    body: '{"operationName": "getStockListSymbolsWithQuote", "variables": {"locale":
+      "en", "stockListId": "TOP_PRICE_PERFORMER"}, "query": "query getStockListSymbolsWithQuote(\n  $stockListId:
+      String!\n  $locale: String,\n) {\n  stockList: getStockListSymbolsWithQuote(\n    stockListId:
+      $stockListId,\n    locale: $locale\n  ) {\n    stockListId\n    name\n    description\n    longDescription\n    metricTitle\n    listItems\n      {\n        symbol\n        longName\n        rank\n        metric\n        price\n        priceChange\n        percentChange\n        volume\n    }\n    totalPriceChange\n    totalPercentChange\n    createdAt\n    updatedAt\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        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
+        zgpHzz4B7u529fbLvn379o+/AIiEcMhoIgAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:31 GMT
+      Etag:
+      - W/"2268-e3rt4kQv8I6aOB/LKVc+TM3z6Dk"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-WebKit-CSP:
+      - frame-ancestors 'none'; default-src 'self'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,88 +1,55 @@
 """FMP Helpers Module."""
 
-import json
-from datetime import date as dateType
-from io import StringIO
-from typing import Any, Dict, List, Optional, TypeVar, Union
+from datetime import date
+from typing import Any, List, Optional, Union
 
-from openbb_core.provider.utils.client import ClientSession
-from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    amake_request,
-    get_querystring,
-)
-from pydantic import BaseModel
-
-T = TypeVar("T", bound=BaseModel)
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
+from openbb_core.provider.utils.helpers import get_querystring
 
 
-class BasicResponse:
-    """Basic Response class."""
-
-    def __init__(self, response: StringIO):
-        """Initialize the BasicResponse class."""
-        # Find a way to get the status code
-        self.status_code = 200
-        response.seek(0)
-        self.text = response.read()
-
-    def json(self) -> dict:
-        """Return the response as a dictionary."""
-        return json.loads(self.text)
-
-
-def request(url: str) -> BasicResponse:
-    """Request function for PyScript.
-
-    Pass in Method and make sure to await!
-
-    Parameters
-    ----------
-    url: str
-        URL to make request to
-
-    Return
-    ------
-    response: BasicRequest
-        BasicRequest object with status_code and text attributes
-    """
-    # pylint: disable=import-outside-toplevel
-    from pyodide.http import open_url  # type: ignore
-
-    response = open_url(url)
-    return BasicResponse(response)
-
-
-async def response_callback(
-    response: ClientResponse, _: ClientSession
-) -> Union[dict, List[dict]]:
-    """Callback for make_request."""
-
+async def response_callback(response, _):
+    """Use callback for make_request."""
     data = await response.json()
-    if response.status != 200:
-        message = data.get("message", None) or data.get("error", "unknown error")
-        raise RuntimeError(f"Error in FMP request -> {message}")
-
-    if "Error Message" in data:
-        raise RuntimeError(f"FMP Error Message -> {data['Error Message']}")
-
-    if len(data) == 0:
-        raise EmptyDataError()
+    if isinstance(data, dict):
+        error_message = data.get("Error Message", data.get("error"))
+        if error_message is not None:
+            conditions = (
+                "upgrade" in error_message.lower()
+                or "exclusive endpoint" in error_message.lower()
+                or "subscription" in error_message.lower()
+                or "unauthorized" in error_message.lower()
+            )
+            if conditions:
+                raise UnauthorizedError(f"Unauthorized FMP request -> {error_message}")
+            raise OpenBBError(
+                f"FMP Error Message -> Status code: {response.status} -> {error_message}"
+            )
 
     return data
 
 
 async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP endpoint."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_request
+
     return await amake_request(url, response_callback=response_callback, **kwargs)
+
+
+async def get_data_urls(urls: str, **kwargs: Any) -> Union[list, dict]:
+    """Get data from FMP for several urls."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_requests
+
+    return await amake_requests(urls, response_callback=response_callback, **kwargs)
 
 
 def create_url(
     version: int,
     endpoint: str,
     api_key: Optional[str],
-    query: Optional[Union[BaseModel, Dict]] = None,
+    query: Optional[Any] = None,
     exclude: Optional[List[str]] = None,
 ) -> str:
     """Return a URL for the FMP API.
@@ -105,6 +72,9 @@ def create_url(
     str
         The querystring.
     """
+    # pylint: disable=import-outside-toplevel
+    from pydantic import BaseModel
+
     the_dict = {}
     if query:
         the_dict = query.model_dump() if isinstance(query, BaseModel) else query
@@ -157,20 +127,22 @@ async def get_data_one(url: str, **kwargs: Any) -> dict:
     return data
 
 
-def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
+def most_recent_quarter(base: Optional[date] = None) -> date:
     """Get the most recent quarter date."""
-    base = min(base, dateType.today())  # This prevents dates from being in the future
+    if base is None:
+        base = date.today()
+    base = min(base, date.today())  # This prevents dates from being in the future
     exacts = [(3, 31), (6, 30), (9, 30), (12, 31)]
     for exact in exacts:
         if base.month == exact[0] and base.day == exact[1]:
             return base
     if base.month < 4:
-        return dateType(base.year - 1, 12, 31)
+        return date(base.year - 1, 12, 31)
     if base.month < 7:
-        return dateType(base.year, 3, 31)
+        return date(base.year, 3, 31)
     if base.month < 10:
-        return dateType(base.year, 6, 30)
-    return dateType(base.year, 9, 30)
+        return date(base.year, 6, 30)
+    return date(base.year, 9, 30)
 
 
 def get_interval(value: str) -> str:

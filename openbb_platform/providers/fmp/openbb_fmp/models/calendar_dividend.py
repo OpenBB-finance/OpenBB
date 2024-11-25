@@ -30,22 +30,23 @@ class FMPCalendarDividendData(CalendarDividendData):
 
     __alias_dict__ = {
         "amount": "dividend",
+        "ex_dividend_date": "date",
         "record_date": "recordDate",
         "payment_date": "paymentDate",
         "declaration_date": "declarationDate",
+        "adjusted_amount": "adjDividend",
     }
 
     adjusted_amount: Optional[float] = Field(
         default=None,
         description="The adjusted-dividend amount.",
-        alias="adjDividend",
     )
     label: Optional[str] = Field(
         default=None, description="Ex-dividend date formatted for display."
     )
 
     @field_validator(
-        "date",
+        "ex_dividend_date",
         "record_date",
         "payment_date",
         "declaration_date",

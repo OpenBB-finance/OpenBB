@@ -1,0 +1,41 @@
+name: Deploy to PyPI - Nightly
+
+on: workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-nightly-pypi:
+    name: Build and publish nightly distributions 📦 to PyPI
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install pypa/build
+        run: >-
+          python -m
+          pip install
+          build
+
+      - name: OpenBB Platform - Update version in pyproject.toml and Edit docs
+        run: |
+          sed -i 's/name = ".*"/name = "openbb-nightly"/' openbb_platform/pyproject.toml
+          sed -i "3s/version = \"\(.*\)\"/version = \"\1.dev$(date +%Y%m%d%H%M)\"/" openbb_platform/pyproject.toml
+
+      - name: OpenBB Platform - Create the dynamically generated wheel
+        run: |
+          python -m pip install poetry toml
+          python build/pypi/openbb_platform/nightly.py
+
+      - name: OpenBB Platform - Publish distribution 📦 to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: openbb_platform/dist/
+          password: ${{ secrets.NIGHTLY_PYPI_API_TOKEN }}

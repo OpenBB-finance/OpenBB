@@ -1,20 +1,32 @@
 """Technical Analysis Helpers."""
-import warnings
-from typing import Any, Literal, Optional, Tuple
 
-import numpy as np
-import pandas as pd
+# pylint: disable=too-many-arguments, too-many-locals
 
-_warn = warnings.warn
+from typing import TYPE_CHECKING, Any, List, Literal, Optional, Tuple, Union
+from warnings import warn
+
+if TYPE_CHECKING:
+    from pandas import DataFrame, Series, Timestamp
+
+
+def validate_data(data: list, length: Union[int, List[int]]) -> None:
+    """Validate data."""
+    if isinstance(length, int):
+        length = [length]
+    for item in length:
+        if item > len(data):
+            raise ValueError(
+                f"Data length is less than required by parameters: {max(length)}"
+            )
 
 
 def parkinson(
-    data: pd.DataFrame,
+    data: "DataFrame",
     window: int = 30,
     trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean=True,
-) -> pd.DataFrame:
+) -> "DataFrame":
     """Parkinson volatility.
 
     Uses the high and low price of the day rather than just close to close prices.
@@ -22,7 +34,7 @@ def parkinson(
 
     Parameters
     ----------
-    data : pd.DataFrame
+    data : DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
         Length of window to calculate over.
@@ -35,22 +47,23 @@ def parkinson(
 
     Returns
     -------
-    pd.DataFrame : results
+    DataFrame : results
         Dataframe with results.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import log
+
     if window < 1:
-        _warn("Error: Window must be at least 1, defaulting to 30.")
+        warn("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
 
-    rs = (1.0 / (4.0 * np.log(2.0))) * (
-        (data["high"] / data["low"]).apply(np.log)
-    ) ** 2.0
+    rs = (1.0 / (4.0 * log(2.0))) * ((data["high"] / data["low"]).apply(log)) ** 2.0
 
     def f(v):
         return (trading_periods * v.mean()) ** 0.5
@@ -64,20 +77,20 @@ def parkinson(
 
 
 def standard_deviation(
-    data: pd.DataFrame,
+    data: "DataFrame",
     window: int = 30,
     trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean: bool = True,
-) -> pd.DataFrame:
-    """Standard deviation.
+) -> "DataFrame":
+    """Calculate the Standard deviation.
 
     Measures how widely returns are dispersed from the average return.
     It is the most common (and biased) estimator of volatility.
 
     Parameters
     ----------
-    data : pd.DataFrame
+    data : DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
         Length of window to calculate over.
@@ -90,22 +103,25 @@ def standard_deviation(
 
     Returns
     -------
-    pd.DataFrame : results
+    DataFrame : results
         Dataframe with results.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import log, sqrt
+
     if window < 2:
-        _warn("Error: Window must be at least 2, defaulting to 30.")
+        warn("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
 
-    log_return = (data["close"] / data["close"].shift(1)).apply(np.log)
+    log_return = (data["close"] / data["close"].shift(1)).apply(log)
 
-    result = log_return.rolling(window=window, center=False).std() * np.sqrt(
+    result = log_return.rolling(window=window, center=False).std() * sqrt(
         trading_periods
     )
 
@@ -116,12 +132,12 @@ def standard_deviation(
 
 
 def garman_klass(
-    data: pd.DataFrame,
+    data: "DataFrame",
     window: int = 30,
     trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean=True,
-) -> pd.DataFrame:
+) -> "DataFrame":
     """Garman-Klass volatility.
 
     Extends Parkinson volatility by taking into account the opening and closing price.
@@ -130,7 +146,7 @@ def garman_klass(
 
     Parameters
     ----------
-    data : pd.DataFrame
+    data : DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
         Length of window to calculate over.
@@ -143,23 +159,26 @@ def garman_klass(
 
     Returns
     -------
-    pd.DataFrame : results
+    DataFrame : results
         Dataframe with results.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import log
+
     if window < 1:
-        _warn("Error: Window must be at least 1, defaulting to 30.")
+        warn("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
 
-    log_hl = (data["high"] / data["low"]).apply(np.log)
-    log_co = (data["close"] / data["open"]).apply(np.log)
+    log_hl = (data["high"] / data["low"]).apply(log)
+    log_co = (data["close"] / data["open"]).apply(log)
 
-    rs = 0.5 * log_hl**2 - (2 * np.log(2) - 1) * log_co**2
+    rs = 0.5 * log_hl**2 - (2 * log(2) - 1) * log_co**2
 
     def f(v):
         return (trading_periods * v.mean()) ** 0.5
@@ -173,12 +192,12 @@ def garman_klass(
 
 
 def hodges_tompkins(
-    data: pd.DataFrame,
+    data: "DataFrame",
     window: int = 30,
     trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean=True,
-) -> pd.DataFrame:
+) -> "DataFrame":
     """Hodges-Tompkins volatility.
 
     Is a bias correction for estimation using an overlapping data sample.
@@ -186,7 +205,7 @@ def hodges_tompkins(
 
     Parameters
     ----------
-    data : pd.DataFrame
+    data : DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
         Length of window to calculate over.
@@ -199,7 +218,7 @@ def hodges_tompkins(
 
     Returns
     -------
-    pd.DataFrame : results
+    DataFrame : results
         Dataframe with results.
 
     Example
@@ -207,21 +226,22 @@ def hodges_tompkins(
     >>> data = obb.equity.price.historical('BTC-USD')
     >>> df = obb.technical.hodges_tompkins(data, is_crypto = True)
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import log, sqrt
+
     if window < 2:
-        _warn("Error: Window must be at least 2, defaulting to 30.")
+        warn("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
 
-    log_return = (data["close"] / data["close"].shift(1)).apply(np.log)
+    log_return = (data["close"] / data["close"].shift(1)).apply(log)
 
-    vol = log_return.rolling(window=window, center=False).std() * np.sqrt(
-        trading_periods
-    )
+    vol = log_return.rolling(window=window, center=False).std() * sqrt(trading_periods)
 
     h = window
     n = (log_return.count() - h) + 1
@@ -237,12 +257,12 @@ def hodges_tompkins(
 
 
 def rogers_satchell(
-    data: pd.DataFrame,
+    data: "DataFrame",
     window: int = 30,
     trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean=True,
-) -> pd.Series:
+) -> "Series":
     """Rogers-Satchell Estimator.
 
     Is an estimator for measuring the volatility with an average return not equal to zero.
@@ -251,7 +271,7 @@ def rogers_satchell(
 
     Parameters
     ----------
-    data : pd.DataFrame
+    data : DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
         Length of window to calculate over.
@@ -264,22 +284,25 @@ def rogers_satchell(
 
     Returns
     -------
-    pd.Series : results
+    Series : results
         Pandas Series with results.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import log
+
     if window < 1:
-        _warn("Error: Window must be at least 1, defaulting to 30.")
+        warn("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
 
-    log_ho = (data["high"] / data["open"]).apply(np.log)
-    log_lo = (data["low"] / data["open"]).apply(np.log)
-    log_co = (data["close"] / data["open"]).apply(np.log)
+    log_ho = (data["high"] / data["open"]).apply(log)
+    log_lo = (data["low"] / data["open"]).apply(log)
+    log_co = (data["close"] / data["open"]).apply(log)
 
     rs = log_ho * (log_ho - log_co) + log_lo * (log_lo - log_co)
 
@@ -295,12 +318,12 @@ def rogers_satchell(
 
 
 def yang_zhang(
-    data: pd.DataFrame,
+    data: "DataFrame",
     window: int = 30,
     trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean=True,
-) -> pd.DataFrame:
+) -> "DataFrame":
     """Yang-Zhang Volatility.
 
     Is the combination of the overnight (close-to-open volatility).
@@ -308,7 +331,7 @@ def yang_zhang(
 
     Parameters
     ----------
-    data : pd.DataFrame
+    data : DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
         Length of window to calculate standard deviation.
@@ -321,27 +344,30 @@ def yang_zhang(
 
     Returns
     -------
-    pd.DataFrame : results
+    DataFrame : results
         Dataframe with results.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import log, sqrt
+
     if window < 2:
-        _warn("Error: Window must be at least 2, defaulting to 30.")
+        warn("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
 
-    log_ho = (data["high"] / data["open"]).apply(np.log)
-    log_lo = (data["low"] / data["open"]).apply(np.log)
-    log_co = (data["close"] / data["open"]).apply(np.log)
+    log_ho = (data["high"] / data["open"]).apply(log)
+    log_lo = (data["low"] / data["open"]).apply(log)
+    log_co = (data["close"] / data["open"]).apply(log)
 
-    log_oc = (data["open"] / data["close"].shift(1)).apply(np.log)
+    log_oc = (data["open"] / data["close"].shift(1)).apply(log)
     log_oc_sq = log_oc**2
 
-    log_cc = (data["close"] / data["close"].shift(1)).apply(np.log)
+    log_cc = (data["close"] / data["close"].shift(1)).apply(log)
     log_cc_sq = log_cc**2
 
     rs = log_ho * (log_ho - log_co) + log_lo * (log_lo - log_co)
@@ -355,7 +381,7 @@ def yang_zhang(
     window_rs = rs.rolling(window=window, center=False).sum() * (1.0 / (window - 1.0))
 
     k = 0.34 / (1.34 + (window + 1) / (window - 1))
-    result = (open_vol + k * close_vol + (1 - k) * window_rs).apply(np.sqrt) * np.sqrt(
+    result = (open_vol + k * close_vol + (1 - k) * window_rs).apply(sqrt) * sqrt(
         trading_periods
     )
 
@@ -366,22 +392,25 @@ def yang_zhang(
 
 
 def calculate_cones(
-    data: pd.DataFrame,
+    data: "DataFrame",
     lower_q: float,
     upper_q: float,
     is_crypto: bool,
     model: Literal[
-        "STD",
-        "Parkinson",
-        "Garman-Klass",
-        "Hodges-Tompkins",
-        "Rogers-Satchell",
-        "Yang-Zhang",
+        "std",
+        "parkinson",
+        "garman_klass",
+        "hodges_tompkins",
+        "rogers_satchell",
+        "yang_zhang",
     ],
     trading_periods: Optional[int] = None,
-) -> pd.DataFrame:
+) -> "DataFrame":
     """Calculate Cones."""
-    estimator = pd.DataFrame()
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
+
+    estimator = DataFrame()
 
     if lower_q > upper_q:
         lower_q, upper_q = upper_q, lower_q
@@ -403,12 +432,12 @@ def calculate_cones(
     data = data.sort_index(ascending=True)
 
     model_functions = {
-        "STD": standard_deviation,
-        "Parkinson": parkinson,
-        "Garman-Klass": garman_klass,
-        "Hodges-Tompkins": hodges_tompkins,
-        "Rogers-Satchell": rogers_satchell,
-        "Yang-Zhang": yang_zhang,
+        "std": standard_deviation,
+        "parkinson": parkinson,
+        "garman_klass": garman_klass,
+        "hodges_tompkins": hodges_tompkins,
+        "rogers_satchell": rogers_satchell,
+        "yang_zhang": yang_zhang,
     }
 
     for window in windows:
@@ -433,7 +462,7 @@ def calculate_cones(
 
     df_ = [realized, min_, bottom_q, median, top_q, max_]
     df_windows = allowed_windows
-    df = pd.DataFrame(df_, columns=df_windows)
+    df = DataFrame(df_, columns=df_windows)
     df = df.rename(
         index={
             0: "realized",
@@ -449,8 +478,8 @@ def calculate_cones(
 
 
 def clenow_momentum(
-    values: pd.Series, window: int = 90
-) -> Tuple[float, float, pd.Series]:
+    values: "Series", window: int = 90
+) -> Tuple[float, float, "Series"]:
     """Clenow Volatility Adjusted Momentum.
 
     This is defined as the regression coefficient on log prices multiplied by the R^2
@@ -458,7 +487,7 @@ def clenow_momentum(
 
     Parameters
     ----------
-    values: pd.Series
+    values: Series
         Values to perform regression for
     window: int
         Length of look back period
@@ -469,43 +498,44 @@ def clenow_momentum(
         R2 of fit to log data
     float:
         Coefficient of linear regression
-    pd.Series:
+    Series:
         Values for best fit line
     """
-    from sklearn.linear_model import (  # pylint: disable=import-outside-toplevel  # type: ignore
-        LinearRegression,
-    )
+    # pylint: disable=import-outside-toplevel
+    from numpy import arange, exp, log
+    from pandas import Series
+    from sklearn.linear_model import LinearRegression
 
     if len(values) < window:
         raise ValueError(f"Calculation asks for at least last {window} days of data")
 
     values = values[-window:]
 
-    y = np.log(values)
-    X = np.arange(len(y)).reshape(-1, 1)
+    y = log(values)
+    X = arange(len(y)).reshape(-1, 1)  # pylint: disable=invalid-name
 
     lr = LinearRegression()
     lr.fit(X, y)
 
     r2 = lr.score(X, y)
     coef = lr.coef_[0]
-    annualized_coef = (np.exp(coef) ** 252) - 1
+    annualized_coef = (exp(coef) ** 252) - 1
 
-    return r2, annualized_coef, pd.Series(lr.predict(X))
+    return r2, annualized_coef, Series(lr.predict(X))
 
 
 def calculate_fib_levels(
-    data: pd.DataFrame,
+    data: "DataFrame",
     close_col: str,
     limit: int = 120,
     start_date: Optional[Any] = None,
     end_date: Optional[Any] = None,
-) -> Tuple[pd.DataFrame, pd.Timestamp, pd.Timestamp, float, float, str]:
+) -> Tuple["DataFrame", "Timestamp", "Timestamp", float, float, str]:
     """Calculate Fibonacci levels.
 
     Parameters
     ----------
-    data : pd.DataFrame
+    data : DataFrame
         Dataframe of prices
     close_col : str
         Column name of close prices
@@ -518,29 +548,32 @@ def calculate_fib_levels(
 
     Returns
     -------
-    df : pd.DataFrame
+    df : DataFrame
         Dataframe of fib levels
-    min_date: pd.Timestamp
+    min_date: Timestamp
         Date of min point
-    max_date: pd.Timestamp:
+    max_date: Timestamp:
         Date of max point
     min_pr: float
         Price at min point
     max_pr: float
         Price at max point
     """
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
+
     if close_col not in data.columns:
         raise ValueError(f"Column {close_col} not in data")
 
     if start_date and end_date:
         if start_date not in data.index:
             date0 = data.index[data.index.get_indexer([end_date], method="nearest")[0]]
-            _warn(f"Start date not in data.  Using nearest: {date0}")
+            warn(f"Start date not in data.  Using nearest: {date0}")
         else:
             date0 = start_date
         if end_date not in data.index:
             date1 = data.index[data.index.get_indexer([end_date], method="nearest")[0]]
-            _warn(f"End date not in data.  Using nearest: {date1}")
+            warn(f"End date not in data.  Using nearest: {date1}")
         else:
             date1 = end_date
 
@@ -578,7 +611,7 @@ def calculate_fib_levels(
         for f_lev in fib_levels
     ]
 
-    df = pd.DataFrame()
+    df = DataFrame()
     df["Level"] = fib_levels
     df["Level"] = df["Level"].apply(lambda x: str(x * 100) + "%")
     df["Price"] = levels

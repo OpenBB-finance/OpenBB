@@ -37,6 +37,7 @@
       - [Important classes](#important-classes)
       - [Import statements](#import-statements)
       - [The TET pattern](#the-tet-pattern)
+      - [Error](#errors)
       - [Data processing commands](#data-processing-commands)
         - [Python Interface](#python-interface)
         - [API Interface](#api-interface)
@@ -63,7 +64,7 @@ This document provides guidelines for contributing to the OpenBB Platform.
 Throughout this document, we will be differentiating between two types of contributors: Developers and Contributors.
 
 1. **Developers**: Those who are building new features or extensions for the OpenBB Platform or leveraging the OpenBB Platform.
-2. **Contributors**: Those who contribute to the existing codebase, by opening a [Pull Request](#how-to-create-a-pr) thus giving back to the community.
+2. **Contributors**: Those who contribute to the existing codebase, by opening a [Pull Request](#getting_started-create-a-pr) thus giving back to the community.
 
 **Why is this distinction important?**
 
@@ -80,7 +81,7 @@ The OpenBB Platform is built by the Open-Source community and is characterized b
 The REST API is built on top of FastAPI and can be started by running the following command from the root:
 
 ```bash
-uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+uvicorn openbb_platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 The Python interfaces we provide to users is the `openbb` python package.
@@ -111,15 +112,15 @@ This document will take you through two types of contributions:
 Before moving forward, please take a look at the high-level view of the OpenBB Platform architecture. We will go over each bit in this document.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/OpenBB-finance/OpenBBTerminal/assets/74266147/c9a5a92a-28b6-4257-aefc-deaebe635c6a">
-  <img alt="OpenBB Platform High-Level Architecture" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/74266147/c9a5a92a-28b6-4257-aefc-deaebe635c6a">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/OpenBB-finance/OpenBB/assets/74266147/c9a5a92a-28b6-4257-aefc-deaebe635c6a">
+  <img alt="OpenBB Platform High-Level Architecture" src="https://github.com/OpenBB-finance/OpenBB/assets/74266147/c9a5a92a-28b6-4257-aefc-deaebe635c6a">
 </picture>
 
 #### What is the Standardization Framework?
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
-Each data model should inherit from a [standard data](platform/provider/openbb_core/provider/standard_models) model that is already defined inside the OpenBB Platform. All standard models are created and maintained by the OpenBB team.
+Each data model should inherit from a [standard data](core/openbb_core/provider/standard_models) model that is already defined inside the OpenBB Platform. All standard models are created and maintained by the OpenBB team.
 
 Usage of these models will unlock a set of perks that are only available to standardized data, namely:
 
@@ -129,9 +130,9 @@ Usage of these models will unlock a set of perks that are only available to stan
 - Can expect consistent data types and validation.
 - Will work seamlessly with other providers that use the same standard model.
 
-The standard models are defined under the `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_core/provider/standard_models/` directory.
+The standard models are defined under the `/OpenBB/openbb_platform/core/openbb_core/provider/standard_models` directory.
 
-They define the [`QueryParams`](platform/provider/openbb_core/provider/abstract/query_params.py) and [`Data`](platform/provider/openbb_core/provider/abstract/data.py) models, which are used to query and output data. They are pydantic and you can leverage all the pydantic features such as validators.
+They define the [`QueryParams`](core/openbb_core/provider/abstract/query_params.py) and [`Data`](core/openbb_core/provider/abstract/data.py) models, which are used to query and output data. They are pydantic and you can leverage all the pydantic features such as validators.
 
 ##### Standardization Caveats
 
@@ -201,16 +202,12 @@ We encourage independent extensions to be shared with the community by publishin
 - **Extensions**: Utility packages that leverage Core's infrastructure. Each extension is its own package.
 - **Providers**: Utility packages extending functionality to different providers, where each provider is its own package.
 
-### Core Dependency Management
-
-#### Installation
-
-- **pip**: `pip install -e OpenBBTerminal/openbb_platform/platform/core`
-- **poetry**: `poetry install OpenBBTerminal/openbb_platform/platform/core`
+### Dependency Management
 
 #### Using Poetry
 
 Ensure you're in a fresh conda environment before adjusting dependencies.
+Dependencies are manages with `poetry`. Install poetry with `pip install poetry`
 
 - **Add a Dependency**: `poetry add <my-dependency>`
 - **Update Dependencies**:
@@ -224,15 +221,15 @@ Ensure you're in a fresh conda environment before adjusting dependencies.
 
 For development setup, use the provided script to install all extensions and their dependencies:
 
-- `python dev_install.py [-e|--extras]`
+- From the root of the repo call `python dev_install.py --extras`
 
-> **Note**: If developing an extension, avoid installing all extensions to prevent unnecessary overhead.
+> **Note**: If developing an extension, you can avoid installing all extensions to prevent unnecessary overhead.
 
 #### Dependency Management with Poetry
 
 - **Add Platform Extension**: `poetry add openbb-extension-name [--dev]`
 - **Resolve Conflicts**: Adjust versions in `pyproject.toml` if notified by Poetry.
-- **Lock Dependencies**: `poetry lock`
+- **Update Dependencies Lock File**: `poetry lock`
 - **Update Platform**: `poetry update openbb-platform`
 - **Documentation**: Maintain `pyproject.toml` and `poetry.lock` for a clear record of dependencies.
 
@@ -287,7 +284,7 @@ The high level steps are:
 
 ### How to add a new data point?
 
-In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](platform/provider/openbb_core/provider/standard_models) model.
+In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](core/openbb_core/provider/standard_models) model.
 
 #### Identify which type of data you want to add
 
@@ -300,7 +297,7 @@ Each router is categorized under different extensions (equity, currency, crypto,
 
 Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
 
-In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_core/provider/standard_models/equity_historical`.
+In this case, it's `EquityHistorical` which can be found in `/OpenBB/openbb_platform/core/openbb_core/provider/standard_models/equity_historical`.
 
 If the standard model doesn't exist:
 
@@ -444,8 +441,8 @@ Saying that, we highly recommend following the standardization framework, as it 
 
 When standardizing, all data is defined using two different pydantic models:
 
-1. Define the [query parameters](platform/provider/openbb_core/provider/abstract/query_params.py) model.
-2. Define the resulting [data schema](platform/provider/openbb_core/provider/abstract/data.py) model.
+1. Define the [query parameters](core/openbb_core/provider/abstract/query_params.py) model.
+2. Define the resulting [data schema](core/openbb_core/provider/abstract/data.py) model.
 
 > The models can be entirely custom, or inherit from the OpenBB standardized models.
 > They enforce a safe and consistent data structure, validation and type checking.
@@ -458,9 +455,9 @@ After you've defined both models, you'll need to define a `Fetcher` class which 
 2. `extract_data` - makes the request to the API endpoint and returns the raw data.
 3. `transform_data` - transforms the raw data into the defined data model.
 
-> Note that the `Fetcher` should inherit from the [`Fetcher`](platform/provider/openbb_core/provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
+> Note that the `Fetcher` should inherit from the [`Fetcher`](core/openbb_core/provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
 
-After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](platform/provider/openbb_core/provider/abstract/provider.py).
+After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](core/openbb_core/provider/abstract/provider.py).
 
 Any command, that uses the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
 
@@ -488,7 +485,7 @@ async def model_example(    # create an async endpoint
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Example Data."""
     return await OBBject.from_query(Query(**locals()))
 ```
@@ -534,14 +531,24 @@ from openbb_core.app.router import Router
 The TET pattern is a pattern that we use to build the `Fetcher` classes. It stands for **Transform, Extract, Transform**.
 As the OpenBB Platform has its own standardization framework and the data fetcher are a very important part of it, we need to ensure that the data is transformed and extracted in a consistent way, to help us do that, we came up with the **TET** pattern, which helps us build and ship faster as we have a clear structure on how to build the `Fetcher` classes.
 
-1. Transform - `transform_query(params: Dict[str, Any])`: transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](openbb_platform/platform/provider/openbb_core/provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
+1. Transform - `transform_query(params: Dict[str, Any])`: transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](core/openbb_core/provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
 2. Extract - `extract_data(query: ExampleQueryParams,credentials: Optional[Dict[str, str]],**kwargs: Any,) -> Dict`: makes the request to the API endpoint and returns the raw data. Given the transformed query parameters, the credentials and any other extra arguments, this method should return the raw data as a dictionary.
-3. Transform - `transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]`: transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](openbb_platform/platform/provider/openbb_core/provider/abstract/data.py) children.
+3. Transform - `transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]`: transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](core/openbb_core/provider/abstract/data.py) children.
+
+#### Errors
+
+To ensure a consistent error handling behavior our API relies on the convention below.
+
+| Status code | Exception | Detail | Description |
+| -------- | ------- | ------- | ------- |
+| 400 | `OpenBBError` or child of `OpenBBError` | Custom message. | Use this to explicitly raise custom exceptions, like `EmptyDataError`. |
+| 422 | `ValidationError` | `Pydantic` errors dict message. | Automatically raised to inform the user about query validation errors. ValidationErrors outside of the query are treated with status code 500 by default. |
+| 500 | Any exception not covered above, eg `ValueError`, `ZeroDivisionError` | Unexpected error. | Unexpected exceptions, most likely a bug. |
 
 #### Data processing commands
 
 The data processing commands are commands that are used to process the data that may or may not come from the OpenBB Platform.
-In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called [`Data`](/openbb_platform/platform/provider/openbb_core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
+In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called [`Data`](core/openbb_core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
 
 Why is this important?
 So that we can ensure that all `OBBject.results` will share a common ground on which we can apply out-of-the-box data processing commands, such as the `ta`, `qa` or the `econometrics` menus.
@@ -597,7 +604,7 @@ Data(open=1, high=2, low=3, close=4, volume=5, date=2020-01-01)
 
 ```
 
-This means that the `Data` class is cleaver enough to understand that you are passing a dictionary and it will try to validate it for you.
+This means that the `Data` class is clever enough to understand that you are passing a dictionary and it will try to validate it for you.
 In other words, if you're using data that doesn't come from the OpenBBPlatform, you only need to ensure it's parsable by the `Data` class and you'll be able to use the data processing commands.
 In other words, imagine you have a dataframe that you want to use with the `ta` menu. You can do the following:
 
@@ -619,7 +626,7 @@ results: [{'close': 77.62, 'close_EMA_50': None}, {'close': 80.25, 'close_EMA_50
 
 ##### Python Interface
 
-When using the OpenBB Platform on a Python Interface, docstrings and type hints are your best friends as it provides plenty of context on how to use the commands.
+When using the OpenBB Platform on a Python Interface, docstrings and type hints are your best friends as they provides plenty of context on how to use the commands.
 Looking at an example on the `ta` menu:
 
 ```python
@@ -665,7 +672,7 @@ When using the OpenBB Platform on a API Interface, the types are a bit more limi
 
 The Contributor Guidelines are intended to be a continuation of the [Developer Guidelines](#developer-guidelines). They are not a replacement, but rather an expansion, focusing specifically on those who seek to directly enhance the OpenBB Platform's codebase. It's crucial for Contributors to be familiar with both sets of guidelines to ensure a harmonious and productive engagement with the OpenBB Platform.
 
-There are many ways to contribute to the OpenBB Platform. You can add a [new data point](#how-to-add-a-new-data-point), add a [new command](#openbb-platform-commands), add a [new visualization](/openbb_platform/extensions/charting/README.md), add a [new extension](#how-to-build-openbb-extensions), fix a bug, improve or create documentation, etc.
+There are many ways to contribute to the OpenBB Platform. You can add a [new data point](#getting_started-add-a-new-data-point), add a [new command](#openbb-platform-commands), add a [new visualization](/openbb_platform/extensions/charting/README.md), add a [new extension](#getting_started-build-openbb-extensions), fix a bug, improve or create documentation, etc.
 
 ### Expectations for Contributors
 
@@ -742,7 +749,7 @@ python openbb_platform/extensions/tests/utils/integration_tests_api_generator.py
 When testing the API interface, you'll need to run the OpenBB Platform locally before running the tests. To do so, you can run the following command:
 
 ```bash
-uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+uvicorn openbb_platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 These automated tests are a great way to reduce the amount of code you need to write, but they are not a replacement for manual testing and might require tweaking. That's why we have unit tests that test the generated integration tests to ensure they cover all providers and parameters.

@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: '{"operationName": "getCompanyAnalysts", "variables": {"symbol": "SHOP",
+      "datatype": "equity"}, "query": "query getCompanyAnalysts(\n  $symbol: String!\n  $dataType:
+      String,\n) {\n  analysts: getCompanyAnalysts(\n    datatype: $dataType,\n    symbol:
+      $symbol\n  ) {\n    totalAnalysts\n    priceTarget\n      {\n        highPriceTarget\n        lowPriceTarget\n        priceTarget\n        priceTargetUpside\n    }\n    consensusAnalysts\n      {\n      consensus\n      buy\n      sell\n      hold\n    }\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"analysts":{"totalAnalysts":31,"priceTarget":{"highPriceTarget":131.9915,"lowPriceTarget":72.595325,"priceTarget":97.8320998,"priceTargetUpside":-3.96},"consensusAnalysts":{"consensus":"Buy","buy":10,"sell":2,"hold":19}}}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '232'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:36 GMT
+      Etag:
+      - W/"e8-4l0k1dc8UP8MlOmcXd52N+O9B90"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,22 +1,21 @@
 """SEC ETF Holings Model."""
 
-import warnings
+# pylint: disable =[unused-argument,too-many-locals,too-many-branches]
+
 from datetime import date as dateType
 from typing import Any, Dict, List, Optional, Union
+from warnings import warn
 
-import pandas as pd
-import requests
-import xmltodict
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_holdings import (
     EtfHoldingsData,
     EtfHoldingsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_sec.utils.helpers import HEADERS, get_nport_candidates, sec_session_etf
-from pydantic import Field, model_validator
-
-_warn = warnings.warn
+from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field, field_validator, model_validator
 
 
 class SecEtfHoldingsQueryParams(EtfHoldingsQueryParams):
@@ -27,7 +26,8 @@ class SecEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 
     date: Optional[Union[str, dateType]] = Field(
         description=QUERY_DESCRIPTIONS.get("date", "")
-        + "  The date represents the period ending.  The date entered will return the closest filing.",
+        + "  The date represents the period ending."
+        + " The date entered will return the closest filing.",
         default=None,
     )
     use_cache: bool = Field(
@@ -39,7 +39,22 @@ class SecEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 class SecEtfHoldingsData(EtfHoldingsData):
     """SEC ETF Holdings Data."""
 
-    __alias_dict__ = {"name": "title"}
+    __alias_dict__ = {
+        "name": "title",
+        "weight": "pctVal",
+        "value": "valUSD",
+        "payoff_profile": "payoffProfile",
+        "currency": "curCd",
+        "asset_category": "assetCat",
+        "issuer_category": "issuerCat",
+        "country": "invCountry",
+        "is_restricted": "isRestrictedSec",
+        "fair_value_level": "fairValLevel",
+        "is_cash_collateral": "isCashCollateral",
+        "is_non_cash_collateral": "isNonCashCollateral",
+        "is_loan_by_fund": "isLoanByFund",
+        "loan_value": "loanVal",
+    }
 
     lei: Optional[str] = Field(description="The LEI of the holding.", default=None)
     cusip: Optional[str] = Field(description="The CUSIP of the holding.", default=None)
@@ -52,62 +67,54 @@ class SecEtfHoldingsData(EtfHoldingsData):
     )
     weight: Optional[float] = Field(
         description="The weight of the holding in ETF in %.",
-        alias="pctVal",
         default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     value: Optional[float] = Field(
-        description="The value of the holding in USD.", alias="valUSD", default=None
+        description="The value of the holding in USD.", default=None
     )
     payoff_profile: Optional[str] = Field(
         description="The payoff profile of the holding.",
-        alias="payoffProfile",
         default=None,
     )
     units: Optional[Union[float, str]] = Field(
         description="The units of the holding.", default=None
     )
     currency: Optional[str] = Field(
-        description="The currency of the holding.", alias="curCd", default=None
+        description="The currency of the holding.", default=None
     )
     asset_category: Optional[str] = Field(
-        description="The asset category of the holding.", alias="assetCat", default=None
+        description="The asset category of the holding.", default=None
     )
     issuer_category: Optional[str] = Field(
         description="The issuer category of the holding.",
-        alias="issuerCat",
         default=None,
     )
     country: Optional[str] = Field(
-        description="The country of the holding.", alias="invCountry", default=None
+        description="The country of the holding.", default=None
     )
     is_restricted: Optional[str] = Field(
         description="Whether the holding is restricted.",
-        alias="isRestrictedSec",
         default=None,
     )
     fair_value_level: Optional[int] = Field(
         description="The fair value level of the holding.",
-        alias="fairValLevel",
         default=None,
     )
     is_cash_collateral: Optional[str] = Field(
         description="Whether the holding is cash collateral.",
-        alias="isCashCollateral",
         default=None,
     )
     is_non_cash_collateral: Optional[str] = Field(
         description="Whether the holding is non-cash collateral.",
-        alias="isNonCashCollateral",
         default=None,
     )
     is_loan_by_fund: Optional[str] = Field(
         description="Whether the holding is loan by fund.",
-        alias="isLoanByFund",
         default=None,
     )
     loan_value: Optional[float] = Field(
         description="The loan value of the holding.",
-        alias="loanVal",
         default=None,
     )
     issuer_conditional: Optional[str] = Field(
@@ -127,7 +134,9 @@ class SecEtfHoldingsData(EtfHoldingsData):
         default=None,
     )
     annualized_return: Optional[float] = Field(
-        description="The annualized return on the debt security.", default=None
+        description="The annualized return on the debt security.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     is_default: Optional[str] = Field(
         description="If the debt security is defaulted.", default=None
@@ -136,7 +145,7 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="If the debt security is in arrears.", default=None
     )
     is_paid_kind: Optional[str] = Field(
-        description="If the debt security payments are are paid in kind.", default=None
+        description="If the debt security payments are paid in kind.", default=None
     )
     derivative_category: Optional[str] = Field(
         description="The derivative category of the holding.", default=None
@@ -168,7 +177,7 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="The delta of the option.", default=None
     )
     rate_type_rec: Optional[str] = Field(
-        description="The type of rate for reveivable portion of the swap.", default=None
+        description="The type of rate for receivable portion of the swap.", default=None
     )
     receive_currency: Optional[str] = Field(
         description="The receive currency of the swap.", default=None
@@ -177,7 +186,7 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="The upfront amount received of the swap.", default=None
     )
     floating_rate_index_rec: Optional[str] = Field(
-        description="The floating rate index for reveivable portion of the swap.",
+        description="The floating rate index for receivable portion of the swap.",
         default=None,
     )
     floating_rate_spread_rec: Optional[float] = Field(
@@ -185,17 +194,17 @@ class SecEtfHoldingsData(EtfHoldingsData):
         default=None,
     )
     rate_tenor_rec: Optional[str] = Field(
-        description="The rate tenor for reveivable portion of the swap.", default=None
+        description="The rate tenor for receivable portion of the swap.", default=None
     )
     rate_tenor_unit_rec: Optional[Union[str, int]] = Field(
-        description="The rate tenor unit for reveivable portion of the swap.",
+        description="The rate tenor unit for receivable portion of the swap.",
         default=None,
     )
     reset_date_rec: Optional[str] = Field(
-        description="The reset date for reveivable portion of the swap.", default=None
+        description="The reset date for receivable portion of the swap.", default=None
     )
     reset_date_unit_rec: Optional[Union[str, int]] = Field(
-        description="The reset date unit for reveivable portion of the swap.",
+        description="The reset date unit for receivable portion of the swap.",
         default=None,
     )
     rate_type_pmnt: Optional[str] = Field(
@@ -281,11 +290,21 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="The unrealized gain or loss on the derivative.", default=None
     )
 
+    @field_validator("weight", "annualized_return", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize the percent values."""
+        return float(v) / 100 if v else None
+
     @model_validator(mode="before")
     @classmethod
-    def replace_zero(cls, values):  # pylint: disable=no-self-argument
+    def replace_zero(cls, values):
         """Check for zero values and replace with None."""
-        return {k: None if v == 0 else v for k, v in values.items()}
+        return (
+            {k: None if v == 0 else v for k, v in values.items()}
+            if isinstance(values, dict)
+            else values
+        )
 
 
 class SecEtfHoldingsFetcher(
@@ -294,7 +313,7 @@ class SecEtfHoldingsFetcher(
         List[SecEtfHoldingsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the SEC endpoints."""
+    """SEC ETF Holdings."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecEtfHoldingsQueryParams:
@@ -303,59 +322,99 @@ class SecEtfHoldingsFetcher(
         return SecEtfHoldingsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: SecEtfHoldingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import xmltodict  # noqa
+        from aiohttp_client_cache import SQLiteBackend  # noqa
+        from aiohttp_client_cache.session import CachedSession  # noqa
+        from openbb_core.app.utils import get_user_cache_directory  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_sec.utils.helpers import HEADERS, get_nport_candidates  # noqa
+        from pandas import DataFrame, Series, to_datetime  # noqa
 
-        filing_candidates = pd.DataFrame.from_records(
-            get_nport_candidates(symbol=query.symbol, use_cache=query.use_cache)
-        )
+        # Implement a retry mechanism in case of RemoteDisconnected Error.
+        retries = 3
+        for i in range(retries):
+            filings = []
+            try:
+                filings = await get_nport_candidates(
+                    symbol=query.symbol, use_cache=query.use_cache
+                )
+                if filings:
+                    break
+            except Exception as e:
+                if i < retries - 1:
+                    warn(f"Error: {e}. Retrying...")
+                    await asyncio.sleep(1)
+                    continue
+                raise e
+        filing_candidates = DataFrame.from_records(filings)
         if filing_candidates.empty:
-            raise ValueError(f"No N-Port records found for {query.symbol}.")
-        dates = filing_candidates["period_ending"].to_list()
+            raise OpenBBError(f"No N-Port records found for {query.symbol}.")
+        dates = filing_candidates.period_ending.to_list()
         new_date: str = ""
         if query.date is not None:
             date = query.date
             # Gets the URL for the nearest date to the requested date.
-            __dates = pd.Series(pd.to_datetime(dates))
-            __date = pd.to_datetime(date)
-            __nearest = pd.DataFrame(__dates - __date)
+            __dates = Series(to_datetime(dates))
+            __date = to_datetime(date)
+            __nearest = DataFrame(__dates - __date)
             __nearest_date = abs(__nearest[0].astype("int64")).idxmin()
             new_date = __dates[__nearest_date].strftime("%Y-%m-%d")
             date = new_date if new_date else date
-            _warn(f"Closest filing date to, {query.date}, is the period ending: {date}")
+            warn(f"Closest filing date to, {query.date}, is the period ending: {date}")
             filing_url = filing_candidates[filing_candidates["period_ending"] == date][
                 "primary_doc"
             ].values[0]
         else:
             filing_url = filing_candidates["primary_doc"].values[0]
-            period_ending = filing_candidates["period_ending"].values[0]
-            _warn(f"The latest filing is for the period ending: {period_ending}")
-        _warn(f"Source Document: {filing_url}")
-        r = (
-            sec_session_etf.get(filing_url, headers=HEADERS, timeout=5)
-            if query.use_cache
-            else requests.get(filing_url, headers=HEADERS, timeout=5)
-        )
-        if r.status_code != 200:
-            raise RuntimeError(f"Request failed with status code {r.status_code}")
-        response = xmltodict.parse(r.content)
 
-        return response
+        async def callback(response, session):
+            """Response callback for the request."""
+            return await response.read()
 
+        response: Union[dict, List[dict]] = []
+        if query.use_cache is True:
+            cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
+            async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
+                try:
+                    response = await amake_request(
+                        filing_url, headers=HEADERS, session=session, response_callback=callback  # type: ignore
+                    )
+                finally:
+                    await session.close()
+        else:
+            response = await amake_request(
+                filing_url, headers=HEADERS, response_callback=callback  # type: ignore
+            )
+        results = xmltodict.parse(response)
+
+        return results
+
+    # pylint: disable=too-many-statements
     @staticmethod
-    def transform_data(
+    def transform_data(  # noqa: PLR0912
         query: SecEtfHoldingsQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> List[SecEtfHoldingsData]:
+    ) -> AnnotatedResult[List[SecEtfHoldingsData]]:
         """Transform the data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, to_datetime
+        from pandas.tseries.offsets import MonthEnd
+
+        if not data:
+            raise EmptyDataError(f"No data was returned for the symbol, {query.symbol}")
         results = []
 
         response = data
+
         # Parse the response if it is a NPORT-P filing.
         if (
             "edgarSubmission" in response
@@ -364,7 +423,7 @@ class SecEtfHoldingsFetcher(
             and "invstOrSecs" in response["edgarSubmission"]["formData"]
             and "invstOrSec" in response["edgarSubmission"]["formData"]["invstOrSecs"]
         ):
-            df = pd.DataFrame.from_records(
+            df = DataFrame.from_records(
                 response["edgarSubmission"]["formData"]["invstOrSecs"]["invstOrSec"]
             )
             # Conditionally flatten deeply nested values.
@@ -429,9 +488,9 @@ class SecEtfHoldingsFetcher(
                         option_swaption_warrant_deriv = derivative_info[
                             "optionSwaptionWarrantDeriv"
                         ]
-                        df.loc[
-                            i, "derivative_category"
-                        ] = option_swaption_warrant_deriv.get("@derivCat")
+                        df.loc[i, "derivative_category"] = (
+                            option_swaption_warrant_deriv.get("@derivCat")
+                        )
                         df.loc[i, "counterparty"] = option_swaption_warrant_deriv[
                             "counterparties"
                         ].get("counterpartyName")
@@ -459,21 +518,21 @@ class SecEtfHoldingsFetcher(
                         df.loc[i, "option_type"] = option_swaption_warrant_deriv.get(
                             "putOrCall"
                         )
-                        df.loc[
-                            i, "derivative_payoff"
-                        ] = option_swaption_warrant_deriv.get("writtenOrPur")
+                        df.loc[i, "derivative_payoff"] = (
+                            option_swaption_warrant_deriv.get("writtenOrPur")
+                        )
                         df.loc[i, "expiry_date"] = option_swaption_warrant_deriv.get(
                             "expDt"
                         )
                         df.loc[i, "exercise_price"] = option_swaption_warrant_deriv.get(
                             "exercisePrice"
                         )
-                        df.loc[
-                            i, "exercise_currency"
-                        ] = option_swaption_warrant_deriv.get("exercisePriceCurCd")
-                        df.loc[
-                            i, "shares_per_contract"
-                        ] = option_swaption_warrant_deriv.get("shareNo")
+                        df.loc[i, "exercise_currency"] = (
+                            option_swaption_warrant_deriv.get("exercisePriceCurCd")
+                        )
+                        df.loc[i, "shares_per_contract"] = (
+                            option_swaption_warrant_deriv.get("shareNo")
+                        )
                         if option_swaption_warrant_deriv.get("delta") != "XXXX":
                             df.loc[i, "delta"] = option_swaption_warrant_deriv.get(
                                 "delta"
@@ -485,12 +544,13 @@ class SecEtfHoldingsFetcher(
                     if "futrDeriv" in derivative_info:
                         futr_deriv = derivative_info["futrDeriv"]
                         df.loc[i, "derivative_category"] = futr_deriv.get("@derivCat")
-                        df.loc[i, "counterparty"] = futr_deriv["counterparties"].get(
-                            "counterpartyName"
-                        )
-                        df.loc[i, "lei"] = futr_deriv["counterparties"].get(
-                            "counterpartyLei"
-                        )
+                        if isinstance(futr_deriv.get("counterparties"), dict):
+                            df.loc[i, "counterparty"] = futr_deriv[
+                                "counterparties"
+                            ].get("counterpartyName")
+                            df.loc[i, "lei"] = futr_deriv["counterparties"].get(
+                                "counterpartyLei"
+                            )
                         df.loc[i, "underlying_name"] = (
                             futr_deriv["descRefInstrmnt"]
                             .get("indexBasketInfo", {})
@@ -557,54 +617,56 @@ class SecEtfHoldingsFetcher(
                             if "otherRecDesc" in swap_deriv["descRefInstrmnt"]
                             else None
                         )
-                        df.loc[i, "rate_type_rec"] = swap_deriv["floatingRecDesc"].get(
-                            "@fixedOrFloating"
-                        )
-                        df.loc[i, "floating_rate_index_rec"] = swap_deriv[
-                            "floatingRecDesc"
-                        ].get("@floatingRtIndex")
-                        df.loc[i, "floating_rate_spread_rec"] = float(
-                            swap_deriv["floatingRecDesc"].get("@floatingRtSpread")
-                        )
-                        df.loc[i, "payment_amount_rec"] = float(
-                            swap_deriv["floatingRecDesc"].get("@pmntAmt")
-                        )
-                        df.loc[i, "rate_tenor_rec"] = swap_deriv["floatingRecDesc"][
-                            "rtResetTenors"
-                        ]["rtResetTenor"].get("@rateTenor")
-                        df.loc[i, "rate_tenor_unit_rec"] = swap_deriv[
-                            "floatingRecDesc"
-                        ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
-                        df.loc[i, "reset_date_rec"] = swap_deriv["floatingRecDesc"][
-                            "rtResetTenors"
-                        ]["rtResetTenor"].get("@resetDt")
-                        df.loc[i, "reset_date_unit_rec"] = swap_deriv[
-                            "floatingRecDesc"
-                        ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
-                        df.loc[i, "rate_type_pmnt"] = swap_deriv[
-                            "floatingPmntDesc"
-                        ].get("@fixedOrFloating")
-                        df.loc[i, "floating_rate_index_pmnt"] = swap_deriv[
-                            "floatingPmntDesc"
-                        ].get("@floatingRtIndex")
-                        df.loc[i, "floating_rate_spread_pmnt"] = float(
-                            swap_deriv["floatingPmntDesc"].get("@floatingRtSpread")
-                        )
-                        df.loc[i, "payment_amount_pmnt"] = float(
-                            swap_deriv["floatingPmntDesc"].get("@pmntAmt")
-                        )
-                        df.loc[i, "rate_tenor_pmnt"] = swap_deriv["floatingPmntDesc"][
-                            "rtResetTenors"
-                        ]["rtResetTenor"].get("@rateTenor")
-                        df.loc[i, "rate_tenor_unit_pmnt"] = swap_deriv[
-                            "floatingPmntDesc"
-                        ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
-                        df.loc[i, "reset_date_pmnt"] = swap_deriv["floatingPmntDesc"][
-                            "rtResetTenors"
-                        ]["rtResetTenor"].get("@resetDt")
-                        df.loc[i, "reset_date_unit_rec"] = swap_deriv[
-                            "floatingPmntDesc"
-                        ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
+                        if "floatingRecDesc" in swap_deriv:
+                            df.loc[i, "rate_type_rec"] = swap_deriv[
+                                "floatingRecDesc"
+                            ].get("@fixedOrFloating")
+                            df.loc[i, "floating_rate_index_rec"] = swap_deriv[
+                                "floatingRecDesc"
+                            ].get("@floatingRtIndex")
+                            df.loc[i, "floating_rate_spread_rec"] = float(
+                                swap_deriv["floatingRecDesc"].get("@floatingRtSpread")
+                            )
+                            df.loc[i, "payment_amount_rec"] = float(
+                                swap_deriv["floatingRecDesc"].get("@pmntAmt")
+                            )
+                            df.loc[i, "rate_tenor_rec"] = swap_deriv["floatingRecDesc"][
+                                "rtResetTenors"
+                            ]["rtResetTenor"].get("@rateTenor")
+                            df.loc[i, "rate_tenor_unit_rec"] = swap_deriv[
+                                "floatingRecDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
+                            df.loc[i, "reset_date_rec"] = swap_deriv["floatingRecDesc"][
+                                "rtResetTenors"
+                            ]["rtResetTenor"].get("@resetDt")
+                            df.loc[i, "reset_date_unit_rec"] = swap_deriv[
+                                "floatingRecDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
+                        if "floatingPmntDesc" in swap_deriv:
+                            df.loc[i, "rate_type_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ].get("@fixedOrFloating")
+                            df.loc[i, "floating_rate_index_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ].get("@floatingRtIndex")
+                            df.loc[i, "floating_rate_spread_pmnt"] = float(
+                                swap_deriv["floatingPmntDesc"].get("@floatingRtSpread")
+                            )
+                            df.loc[i, "payment_amount_pmnt"] = float(
+                                swap_deriv["floatingPmntDesc"].get("@pmntAmt")
+                            )
+                            df.loc[i, "rate_tenor_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@rateTenor")
+                            df.loc[i, "rate_tenor_unit_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
+                            df.loc[i, "reset_date_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDt")
+                            df.loc[i, "reset_date_unit_rec"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
                         df.loc[i, "expiry_date"] = swap_deriv.get("terminationDt")
                         df.loc[i, "upfront_payment"] = float(
                             swap_deriv.get("upfrontPmnt")
@@ -695,5 +757,114 @@ class SecEtfHoldingsFetcher(
                 .sort_values(by="pctVal", ascending=False)
                 .to_dict(orient="records")
             )
-
-        return [SecEtfHoldingsData.model_validate(d) for d in results]
+        # Extract additional information from the form that doesn't belong in the holdings table.
+        metadata = {}
+        month_1: str = ""
+        month_2: str = ""
+        month_3: str = ""
+        try:
+            gen_info = response["edgarSubmission"]["formData"].get("genInfo", {})  # type: ignore
+            if gen_info:
+                metadata["fund_name"] = gen_info.get("seriesName")
+                metadata["series_id"] = gen_info.get("seriesId")
+                metadata["lei"] = gen_info.get("seriesLei")
+                metadata["period_ending"] = gen_info.get("repPdDate")
+                metadata["fiscal_year_end"] = gen_info.get("repPdEnd")
+                current_month = to_datetime(metadata["period_ending"])
+                month_1 = (current_month - MonthEnd(2)).date().strftime("%Y-%m-%d")
+                month_2 = (current_month - MonthEnd(1)).date().strftime("%Y-%m-%d")
+                month_3 = current_month.strftime("%Y-%m-%d")
+            fund_info = response["edgarSubmission"]["formData"].get("fundInfo", {})  # type: ignore
+            if fund_info:
+                metadata["total_assets"] = float(fund_info.pop("totAssets", None))
+                metadata["total_liabilities"] = float(fund_info.pop("totLiabs", None))
+                metadata["net_assets"] = float(fund_info.pop("netAssets", None))
+                metadata["cash_and_equivalents"] = fund_info.pop(
+                    "cshNotRptdInCorD", None
+                )
+                return_info = fund_info["returnInfo"]["monthlyTotReturns"].get(
+                    "monthlyTotReturn", {}
+                )
+                returns = {
+                    month_1: float(return_info.get("@rtn1")) / 100,
+                    month_2: float(return_info.get("@rtn2")) / 100,
+                    month_3: float(return_info.get("@rtn3")) / 100,
+                }
+                metadata["returns"] = returns
+                flow = {
+                    month_1: {
+                        "creation": float(fund_info["mon1Flow"].get("@sales", None)),
+                        "redemption": float(
+                            fund_info["mon1Flow"].get("@redemption", None)
+                        ),
+                    },
+                    month_2: {
+                        "creation": float(fund_info["mon2Flow"].get("@sales", None)),
+                        "redemption": float(
+                            fund_info["mon2Flow"].get("@redemption", None)
+                        ),
+                    },
+                    month_3: {
+                        "creation": float(fund_info["mon3Flow"].get("@sales")),
+                        "redemption": float(
+                            fund_info["mon3Flow"].get("@redemption", None)
+                        ),
+                    },
+                }
+                metadata["flow"] = flow
+                gains = {
+                    month_1: {
+                        "realized": float(
+                            fund_info["returnInfo"]["othMon1"].get(
+                                "@netRealizedGain", None
+                            )
+                        ),
+                        "unrealized": float(
+                            fund_info["returnInfo"]["othMon1"].get(
+                                "@netUnrealizedAppr", None
+                            )
+                        ),
+                    },
+                    month_2: {
+                        "realized": float(
+                            fund_info["returnInfo"]["othMon2"].get(
+                                "@netRealizedGain", None
+                            )
+                        ),
+                        "unrealized": float(
+                            fund_info["returnInfo"]["othMon2"].get(
+                                "@netUnrealizedAppr", None
+                            )
+                        ),
+                    },
+                    month_3: {
+                        "realized": float(
+                            fund_info["returnInfo"]["othMon3"].get(
+                                "@netRealizedGain", None
+                            )
+                        ),
+                        "unrealized": float(
+                            fund_info["returnInfo"]["othMon3"].get(
+                                "@netUnrealizedAppr", None
+                            )
+                        ),
+                    },
+                }
+                metadata["gains"] = gains
+                _borrowers = fund_info["borrowers"].get("borrower", [])
+                if _borrowers:
+                    borrowers = [
+                        {
+                            "name": d["@name"],
+                            "lei": d["@lei"],
+                            "value": float(d["@aggrVal"]),
+                        }
+                        for d in _borrowers
+                    ]
+                    metadata["borrowers"] = borrowers
+        except Exception as e:  # pylint: disable=W0718
+            warn(f"Error extracting metadata: {e}")
+        return AnnotatedResult(
+            result=[SecEtfHoldingsData.model_validate(d) for d in results],
+            metadata=metadata,
+        )

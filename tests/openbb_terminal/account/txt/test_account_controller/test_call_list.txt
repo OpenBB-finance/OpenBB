@@ -1,5 +1,0 @@
-      Name Description Version          Last Update
-1   scrip1         abc   0.0.0  2021-01-01 00:00:00
-2  script2         def   0.0.1  2022-01-01 00:00:00
-3  script3         ghi   0.0.2  2023-01-01 00:00:00
-

@@ -251,7 +251,7 @@ const openbb_watermark = {
   xref: "paper",
   x: 1,
   y: 0,
-  text: "OpenBB Terminal",
+  text: "OpenBB",
   font_size: 17,
   font_color: "gray",
   opacity: 0.5,
@@ -303,7 +303,7 @@ export async function saveImage(
 ) {
   const chart = document.getElementById(id) as HTMLElement;
 
-  if (["svg", "pdf"].includes(extension)) {
+  if (["svg"].includes(extension)) {
     const chart = document.getElementById("plotlyChart") as HTMLElement;
     const margin = chart.layout.margin;
     const old_index = chart.layout.annotations.length;
@@ -351,7 +351,7 @@ export async function downloadImage(
     }
     await loadingOverlay(`Saving ${extension.toUpperCase()}`).then(
       setTimeout(async function () {
-        if (["svg", "pdf"].includes(extension)) {
+        if (["svg"].includes(extension)) {
           await saveImage(id, filename, extension);
           hidemodebar(false);
           loading(false);

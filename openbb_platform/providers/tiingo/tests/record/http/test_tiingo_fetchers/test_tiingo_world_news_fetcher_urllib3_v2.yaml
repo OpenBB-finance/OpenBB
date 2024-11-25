@@ -1,0 +1,107 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.tiingo.com/tiingo/news?limit=20&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":66872921,\"publishedDate\":\"2024-06-27T10:13:28Z\",\"title\":\"Samsung
+        Galaxy Z Fold 6 and Z Flip 6 case designs just leaked \u2014 here\u2019s what
+        they show\",\"url\":\"https://www.tomsguide.com/phones/samsung-phones/samsung-galaxy-z-fold-6-and-z-flip-6-case-designs-just-leaked-heres-what-they-show\",\"description\":\"Here's
+        what cases Samsung may sell alongside its new foldables\",\"source\":\"tomsguide.com\",\"tags\":[],\"crawlDate\":\"2024-06-27T10:15:26.735007Z\",\"tickers\":[]},{\"id\":66872881,\"publishedDate\":\"2024-06-27T10:12:17Z\",\"title\":\"Gold
+        prices revised up at BMI, lithium expected to remain subdued due to oversupply\",\"url\":\"https://seekingalpha.com/news/4119923-gold-prices-revised-up-at-bmi-lithium-expected-to-remain-subdued-due-to-oversupply\",\"description\":\"BMI,
+        a unit of Fitch Solutions, Thursday upped its 2024 gold price forecast to
+        $2,250/oz from $2,100/oz, with a 'neutral' view towards gold in H2, as prices
+        rem\",\"source\":\"seekingalpha.com\",\"tags\":[\"ETF\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2024-06-27T10:13:41.740093Z\",\"tickers\":[\"lit\",\"pll\"]},{\"id\":66872902,\"publishedDate\":\"2024-06-27T10:12:00Z\",\"title\":\"Rvolutionner
+        les solutions de stockage d'nergie avec SAJ  Intersolar Europe 2024\",\"url\":\"https://www.prnewswire.com/news-releases/revolutionner-les-solutions-de-stockage-denergie-avec-saj-a-intersolar-europe-2024-302184378.html\",\"description\":\"/PRNewswire/
+        -- L'\xE9v\xE9nement Intersolar Europe qui vient de se terminer a \xE9t\xE9
+        une vitrine des innovations r\xE9volutionnaires de l'industrie solaire, avec
+        SAJ qui...\",\"source\":\"prnewswire.com\",\"tags\":[\"Alternative Energies\",\"Environmental
+        Products & Services\",\"Green Technology\",\"Stock\",\"Trade Show News\",\"Unknown
+        Sector\",\"Utilities\"],\"crawlDate\":\"2024-06-27T10:13:57.239989Z\",\"tickers\":[\"saj\"]},{\"id\":66872862,\"publishedDate\":\"2024-06-27T10:12:00Z\",\"title\":\"RWS
+        Launches Trados Studio 2024\",\"url\":\"https://www.businesswire.com/news/home/20240627619907/en/RWS-Launches-Trados-Studio-2024/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"RWS,
+        a unique, world-leading provider of technology-enabled language, content and
+        intellectual property solutions, today announces the launch of Trado\",\"source\":\"businesswire.com\",\"tags\":[],\"crawlDate\":\"2024-06-27T10:13:28.229668Z\",\"tickers\":[]},{\"id\":66872914,\"publishedDate\":\"2024-06-27T10:11:36Z\",\"title\":\"Victoria
+        Beckham first slept with David \u2018hours after meeting Prince Charles\u2019\",\"url\":\"https://www.independent.co.uk/news/uk/home-news/victoria-david-relationship-book-king-charles-b2569368.html\",\"description\":\"\u2018Thereafter,
+        she said, Beckham was \u2018a total animal\u2019 in bed,\u2019 the biography
+        claims \",\"source\":\"independent.co.uk\",\"tags\":[\"David Beckham\",\"King
+        Charles Iii\",\"Meghan Markle\",\"Victoria Beckham\"],\"crawlDate\":\"2024-06-27T10:14:31.601811Z\",\"tickers\":[]},{\"id\":66872850,\"publishedDate\":\"2024-06-27T10:11:22Z\",\"title\":\"NASA
+        Gives SpaceX $843 Million To Junk The International Space Station\",\"url\":\"https://www.forbes.com/sites/jamiecartereurope/2024/06/27/nasa-gives-spacex-843-million-to-junk-the-international-space-station/\",\"description\":\"NASA
+        has awarded SpaceX a contract to safely deorbit the International Space Station
+        around 2030 using a new \\\"U.S. Deorbit Vehicle.\\\"\",\"source\":\"forbes.com\",\"tags\":[\"Blue
+        Origin\",\"Boeing\",\"International Space Station\",\"Iss\",\"Nasa\",\"Space
+        Station\",\"Space Stations\",\"Spacex\",\"Spacex Iss\",\"Starliner\",\"Stock\",\"Tiingo
+        Top\",\"Unknown Sector\"],\"crawlDate\":\"2024-06-27T10:12:14.756410Z\",\"tickers\":[\"iss\"]},{\"id\":66872793,\"publishedDate\":\"2024-06-27T10:11:12Z\",\"title\":\"Meridian
+        Hedged Equity Fund\u2019s Q1 2024 Investor Letter\",\"url\":\"https://www.insidermonkey.com/blog/meridian-hedged-equity-funds-q1-2024-investor-letter-1318392/\",\"description\":\"Meridian
+        Funds, managed by ArrowMark Partners, released its \u201CMeridian Hedged Equity
+        Fund\u201D first quarter 2024 investor letter.\",\"source\":\"insidermonkey.com\",\"tags\":[\"Financial
+        Services\",\"Healthcare\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2024-06-27T10:11:24.075274Z\",\"tickers\":[\"ebsb\",\"mrdn\",\"vivo\"]},{\"id\":66872916,\"publishedDate\":\"2024-06-27T10:11:04Z\",\"title\":\"Form
+        8.3 - [MATTIOLI WOODS PLC] - 26 06 2024 - (CGWL)\",\"url\":\"https://www.globenewswire.com/news-release/2024/06/27/2905018/0/en/Form-8-3-MATTIOLI-WOODS-PLC-26-06-2024-CGWL.html?f=22&fvtc=1&fvtv=Mergers+And+Acquisitions\",\"description\":\"FORM
+        8.3  PUBLIC OPENING POSITION DISCLOSURE/DEALING DISCLOSURE BY A PERSON WITH
+        INTERESTS IN RELEVANT SECURITIES REPRESENTING 1% OR MORERule 8.3 of the...\",\"source\":\"globenewswire.com\",\"tags\":[\"Canaccord
+        Genuity Wealth Limited\",\"ETF\",\"Unknown Sector\"],\"crawlDate\":\"2024-06-27T10:14:32.031053Z\",\"tickers\":[\"plc\"]},{\"id\":66872851,\"publishedDate\":\"2024-06-27T10:10:46Z\",\"title\":\"Amazon
+        hits $2 trillion market valuation for the first time\",\"url\":\"https://www.techradar.com/pro/amazon-hits-dollar2-trillion-market-valuation-for-the-first-time\",\"description\":\"Amazon
+        valuation breaks $2 trillion landmark\",\"source\":\"techradar.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2024-06-27T10:12:27.118584Z\",\"tickers\":[\"goog\",\"googl\",\"msft\",\"nvda\"]},{\"id\":66872869,\"publishedDate\":\"2024-06-27T10:10:10Z\",\"title\":\"Spurs
+        transfer suggestions: Nico Williams, Scott McTominay, Arda Guler\",\"url\":\"https://www.bbc.co.uk/sport/football/articles/cg3jvl432y3o\",\"description\":\"Spurs
+        transfer suggestions: Nico Williams, Scott McTominay, Arda Guler\",\"source\":\"bbc.co.uk\",\"tags\":[],\"crawlDate\":\"2024-06-27T10:13:38.501080Z\",\"tickers\":[]},{\"id\":66872905,\"publishedDate\":\"2024-06-27T10:09:58Z\",\"title\":\"Radioactive
+        material inserted into Rhino horns in anti-poaching project\",\"url\":\"https://abcnews.go.com/International/radioactive-material-inserted-rhino-horns-anti-poaching-project/story?id=111467880\",\"description\":\"Scientists
+        in South Africa on Tuesday inserted radioisotopes into the horns of live Rhinoceros
+        in a groundbreaking anti-poaching project. \\n\",\"source\":\"abcnews.go.com\",\"tags\":[\"111467880\",\"Article\",\"South
+        Africa\"],\"crawlDate\":\"2024-06-27T10:14:21.652263Z\",\"tickers\":[]},{\"id\":66872786,\"publishedDate\":\"2024-06-27T10:09:56Z\",\"title\":\"Healthy
+        Cities Are Greener And More Desirable, Says Norman Foster\",\"url\":\"https://www.forbes.com/sites/jamiehailstone/2024/06/27/healthy-cities-are-greener-and-more-desirable-says-norman-foster/\",\"description\":\"Foster
+        said there is clear evidence the incorporation of more trees into a city will
+        help to absorb more carbon dioxide and can reduce the urban heat island effect.\",\"source\":\"forbes.com\",\"tags\":[\"Active
+        Travel\",\"Bupa\",\"Healthy Cities\",\"Norman Foster\",\"Urban Heat\"],\"crawlDate\":\"2024-06-27T10:10:38.503484Z\",\"tickers\":[]},{\"id\":66872860,\"publishedDate\":\"2024-06-27T10:09:46.796000Z\",\"title\":\"USA-Premier
+        dbat Biden-Trump, leurs capacits cognitives au centre de l'attention\",\"url\":\"https://www.reuters.com/fr/international/usa-premier-dbat-biden-trump-leurs-capacits-cognitives-au-centre-de-lattention-2024-06-27/\",\"description\":null,\"source\":\"reuters.com\",\"tags\":[\"2024:Ml_Kbn38J0Mk-Ofrwr\",\"2024:Ml_Kbn38J0Mk-Ofrwr:1\",\"2024:Ml_Kbn38J0Ml-Ofrwr\",\"2024:Ml_Kbn38J0Ml-Ofrwr:1\",\"2024:Ml_L8N3Io28D\",\"2024:Ml_L8N3Io28D:2016402517\",\"Guid:Tag:Reuters.Com\",\"Usn:Kbn38J0Mk-Ofrwr\",\"Usn:Kbn38J0Ml-Ofrwr\",\"Usn:L8N3Io28D\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2024-06-27T10:13:24.114269Z\",\"tickers\":[]},{\"id\":66872907,\"publishedDate\":\"2024-06-27T10:09:37Z\",\"title\":\"Storm
+        Closes Key West Hartford Roadway\",\"url\":\"https://patch.com/connecticut/westhartford/storm-closes-key-west-hartford-roadway\",\"description\":\"The
+        West Hartford Police Department is urging motorists to avoid the area and
+        seek alternate routes of travel.\",\"source\":\"patch.com\",\"tags\":[\"Closes\",\"Connecticut\",\"Hartford\",\"Roadway\",\"Traffic\",\"Transit\",\"West
+        Hartford\"],\"crawlDate\":\"2024-06-27T10:14:22.322705Z\",\"tickers\":[]},{\"id\":66872865,\"publishedDate\":\"2024-06-27T10:09:34.307000Z\",\"title\":\"US
+        July Fourth cookout costs up by 5% this year, survey shows\",\"url\":\"https://www.reuters.com/markets/us/us-july-fourth-cookout-costs-up-by-5-this-year-survey-shows-2024-06-27/\",\"description\":null,\"source\":\"reuters.com\",\"tags\":[\"2024:Ml_Kbn38J0Mx\",\"2024:Ml_Kbn38J0Mx:1\",\"2024:Ml_Kbn38J0My\",\"2024:Ml_Kbn38J0My:1\",\"2024:Ml_L1N3Io18Z\",\"2024:Ml_L1N3Io18Z:128866501\",\"Guid:Tag:Reuters.Com\",\"Usn:Kbn38J0Mx\",\"Usn:Kbn38J0My\",\"Usn:L1N3Io18Z\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2024-06-27T10:13:31.393325Z\",\"tickers\":[]},{\"id\":66872859,\"publishedDate\":\"2024-06-27T10:09:18Z\",\"title\":\"Fundstrat's
+        Tom Lee Predicts S&P 500 Will Hit 15,000 By 2030 Driven By Gen Z And AI Wave\",\"url\":\"https://www.benzinga.com/markets/equities/24/06/39519696/fundstrats-tom-lee-predicts-s-p-500-will-hit-15-000-by-2030-driven-by-gen-z-and-ai-wave\",\"description\":\"Tom
+        Lee, the managing partner and head of research at Fundstrat Global Advisors,
+        shared his bullish prediction for the S&P 500, foreseeing it reaching 15,000
+        by 2030.\",\"source\":\"benzinga.com\",\"tags\":[\"Analyst Ratings\",\"Benzinga\",\"ETF\",\"Economics\",\"Equities\",\"Financial
+        Services\",\"Fundstrat Global Advisors\",\"Guidance\",\"Ivv\",\"Kaustubh Bagalkote\",\"Markets\",\"News\",\"Schx\",\"Stock\",\"Tom
+        Lee\",\"Unknown Sector\",\"Voo\"],\"crawlDate\":\"2024-06-27T10:13:24.599388Z\",\"tickers\":[\"gs\",\"gsbd\",\"gsf\",\"gsj\",\"ivv\",\"ne-ws\",\"schx\",\"voo\"]},{\"id\":66872853,\"publishedDate\":\"2024-06-27T10:09:01Z\",\"title\":\"The
+        Boys viewers have a new season 4 fan theory after episode 5's release on Prime
+        Video, and I think they're right\",\"url\":\"https://www.techradar.com/streaming/amazon-prime-video/the-boys-viewers-have-a-new-season-4-fan-theory-after-episode-5s-release-on-prime-video-and-i-think-theyre-right\",\"description\":\"Full
+        spoilers follow\",\"source\":\"techradar.com\",\"tags\":[],\"crawlDate\":\"2024-06-27T10:12:30.029099Z\",\"tickers\":[]},{\"id\":66872803,\"publishedDate\":\"2024-06-27T10:09:00Z\",\"title\":\"Seven
+        day warning as new speed limit law \u2018for all cars\u2019 hits drivers across
+        UK\",\"url\":\"https://www.express.co.uk/life-style/cars/1916012/seven-day-warning-new-speed-limit-law-cars\",\"description\":\"A
+        new speed limit law is coming into force for all drivers across the UK\",\"source\":\"express.co.uk\",\"tags\":[\"Driving\",\"Motoring\",\"Speed
+        Limits\",\"Speeding\",\"Speeding Fines\"],\"crawlDate\":\"2024-06-27T10:11:36.576602Z\",\"tickers\":[]},{\"id\":66872852,\"publishedDate\":\"2024-06-27T10:08:59.375000Z\",\"title\":\"Taiwan
+        warns against travel to China after execution threat\",\"url\":\"https://www.nbcnews.com/news/world/taiwan-warns-travel-china-execution-threat-rcna159203\",\"description\":\"The
+        raised travel warning, which follows a threat from Beijing to execute \u201Cdiehard\u201D
+        Taiwan independence supporters, also applies to the Chinese-run cities of
+        Hong Kong and Macau.\",\"source\":\"nbcnews.com\",\"tags\":[\"China\",\"Hong
+        Kong\",\"Macau\",\"Taiwan\"],\"crawlDate\":\"2024-06-27T10:12:28.149715Z\",\"tickers\":[]},{\"id\":66872861,\"publishedDate\":\"2024-06-27T10:08:41.701000Z\",\"title\":\"Disputed
+        Sigma Lithium land has 'probable' reserves, study shows\",\"url\":\"https://www.reuters.com/markets/commodities/disputed-sigma-lithium-land-has-probable-reserves-study-shows-2024-06-27/\",\"description\":null,\"source\":\"reuters.com\",\"tags\":[\"2024:Ml_Kbn38J0Mv\",\"2024:Ml_Kbn38J0Mv:1\",\"2024:Ml_Kbn38J0Mw\",\"2024:Ml_Kbn38J0Mw:1\",\"2024:Ml_L5N3Go6Aw\",\"2024:Ml_L5N3Go6Aw:500966093\",\"Guid:Tag:Reuters.Com\",\"Stock\",\"Unknown
+        Sector\",\"Usn:Kbn38J0Mv\",\"Usn:Kbn38J0Mw\",\"Usn:L5N3Go6Aw\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2024-06-27T10:13:25.058143Z\",\"tickers\":[\"sgml\",\"sgml\"]}]"
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      Content-Length:
+      - '11436'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:15:28 GMT
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Vary:
+      - Cookie, Origin
+      x-frame-options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

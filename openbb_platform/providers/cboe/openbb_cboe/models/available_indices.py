@@ -1,9 +1,10 @@
-"""CBOE Available Indices Model."""
+"""Cboe Available Indices Model."""
+
+# pylint: disable=unused-argument
 
 from datetime import time
 from typing import Any, Dict, List, Optional
 
-from openbb_cboe.utils.helpers import Europe, get_cboe_index_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.available_indices import (
     AvailableIndicesData,
@@ -13,31 +14,30 @@ from pydantic import Field
 
 
 class CboeAvailableIndicesQueryParams(AvailableIndicesQueryParams):
-    """CBOE Available Indices Query.
+    """Cboe Available Indices Query.
 
-    Source: https://www.cboe.com/europe/indices/
+    Source: https://www.cboe.com/
     """
 
-    europe: bool = Field(
-        description="Filter for European indices. False for US indices.", default=False
+    use_cache: bool = Field(
+        default=True,
+        description="When True, the Cboe Index directory will be cached for 24 hours."
+        + " Set as False to bypass.",
     )
 
 
 class CboeAvailableIndicesData(AvailableIndicesData):
-    """CBOE Available Indices Data.
+    """Cboe Available Indices Data.
 
-    Source: https://www.cboe.com/europe/indices/
+    Source: https://www.cboe.com/
     """
 
-    isin: Optional[str] = Field(
-        default=None,
-        description="ISIN code for the index. Valid only for European indices.",
-    )
-
-    region: Optional[str] = Field(
-        default=None,
-        description="Region for the index. Valid only for European indices",
-    )
+    __alias_dict__ = {
+        "symbol": "index_symbol",
+        "data_delay": "mkt_data_delay",
+        "open_time": "calc_start_time",
+        "close_time": "calc_end_time",
+    }
 
     symbol: Optional[str] = Field(description="Symbol for the index.")
 
@@ -94,15 +94,17 @@ class CboeAvailableIndicesFetcher(
         return CboeAvailableIndicesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: CboeAvailableIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
-        if query.europe is True:
-            return Europe.list_indices()
-        return get_cboe_index_directory().sort_index().reset_index().to_dict("records")
+        # pylint: disable=import-outside-toplevel
+        from openbb_cboe.utils.helpers import get_index_directory
+
+        data = await get_index_directory(use_cache=query.use_cache, **kwargs)
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(

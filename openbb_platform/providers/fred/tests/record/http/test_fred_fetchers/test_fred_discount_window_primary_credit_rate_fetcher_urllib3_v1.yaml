@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_end=2023-06-06&observation_start=2023-01-01&series_id=DPCREDIT
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5uchazbWNTCEaEZWANdvrGtgpmtgpqSjVJqXWVKsZKWUk5mnpKOUX1pSUFoSX1JZkKpkZaijlJaZ
+        kwrlKWUV54OVFKWkFsUnVSpZKSEbnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVoaKSj
+        lJ+WVpxaomRloKOUk5mbCRI2AAEdZLOKlayiKQkSsFPAQQgJBSMlHaWyxJzSVCUrJRM9UwOlWh1q
+        Gm9MW+NNaGu8KW2NByUxGoa9JU1db2hAW+NBeZt2gWNI23RvSNt0b0jblGNoTtuotaCt8bRN90a0
+        TfdGtE05RrQtMY1oW2Ia0TbdG9E23RvTNuUY07LENIK0l2hVIBvpGqAWyOam1GyIGOkaoGYrqhuP
+        mjCpbjxqwqS68agFMtWNRy2QqW08WkOE6sbTNuUYohbIVHc9aoFMdeNpm+7RGiLUdj1aVU5141EL
+        ZKobT9sSE60hQnXX0zbdo1XlVHc9LUtMUMccpYVMXdcb07auNaZtXQsanKFt4NCyrjXWNaBxyqFl
+        XWusS9O61lgXrdtM7XRP07rWWNeQlnWtsS5ap5/qgUPbdE/TutZY14iWda2xrhEt61pjXZS61lTP
+        gKqjsMa6KJ1+GhiPnHJoYDxyiUkD45FLTOobj9Lpp4HxyOme2saboFblNDAeuRFIA+ORC2QaGI/c
+        +aGB8bTMViaoVTn1XW9I24SJMn5PA9cjd/ppYDxt0z1Kt5kGrqdlgWyia0jLAtlEF6UhQv3AQWmI
+        0MB42qYclPF7GrietiUmSqefBq6nZbo3RR1gp7brTVE7/TQwnpYlpqmuAWq6N6Lq9ICprgFqS4Hq
+        xqOmHKobj1piUtt4lE6/qR7VjUdtKVDdeOSuGw1cT9uUg9Lpp4HrUduYVA972qZ7tJYCtV2P0umn
+        ftijdfqp7nralphoLQWqux61pUB142lbYqJ1+qntepSZfmonTDP0hgh1XW+G3hChuvG0LJCh60Jh
+        yyAgYQ9YbC0APe0vyqQqAAA=
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '815'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 01 Jul 2024 21:12:27 GMT
+      Expires:
+      - Mon, 01 Jul 2024 21:12:27 GMT
+      Last-Modified:
+      - Mon, 01 Jul 2024 20:16:44 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

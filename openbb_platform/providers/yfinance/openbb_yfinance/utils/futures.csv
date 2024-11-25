@@ -183,6 +183,7 @@ SF,Sugar No. 16 Futures,NYB,agriculture
 SB,Sugar No. 11 Futures,NYB,agriculture
 OJ,Orange Juice Futures,NYB,agriculture
 NG,Natural Gas Futures,NYM,hydrocarbon
+HO,Heating Oil Futures,NYM,hydrocarbon
 RB,RBOB Gasoline Futures,NYM,hydrocarbon
 CL,WTI Crude Oil Futures,NYM,hydrocarbon
 TRM,ICE TRY/USD Futures,NYB,currency

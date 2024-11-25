@@ -1,35 +1,32 @@
 [tool.poetry]
 name = "openbb-core"
-version = "1.0.1"
-description = "OpenBB package with core functionality"
+version = "1.3.5"
+description = "OpenBB package with core functionality."
 authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
 readme = "README.md"
 packages = [{ include = "openbb_core" }]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-uvicorn = "^0.24"
-websockets = "^12.0"
+python = "^3.9"
+uvicorn = "^0.32.0"
+websockets = "^13.0"
 pandas = ">=1.5.3"
 html5lib = "^1.1"
-fastapi = "^0.104.1"
-python-jose = "^3.3.0"
+fastapi = "^0.115"
 uuid7 = "^0.1.0"
-posthog = "^3.0.1"
-python-multipart = "^0.0.6"
+posthog = "^3.3.1"
+python-multipart = "^0.0.7"
 pydantic = "^2.5.1"
-requests = "^2.31.0"
-importlib-metadata = "^6.8.0"
+requests = "^2.32.1"
+importlib-metadata = ">=6.8.0"
 python-dotenv = "^1.0.0"
-aiohttp = "^3.9.0"
-ruff = "^0.1.6"
+aiohttp = "^3.10.11"
+ruff = "^0.7"              # Needed here to lint generated code
+pyjwt = "^2.8.0"
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.0.0"
-pytest-subtests = "^0.11.0"
-pytest-recorder = "^0.2.4"
-pytest-asyncio = "^0.23.2"
-black = "^23.11.0"
+[tool.poetry.scripts]
+openbb-build = "openbb_core.build:main"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,3 +1,5 @@
+"""Test Tiingo fetchers."""
+
 from datetime import date
 
 import pytest
@@ -16,6 +18,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -26,6 +29,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_tiingo_equity_historical_fetcher(credentials=test_credentials):
+    """Test Tiingo equity historical fetcher."""
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -39,7 +43,8 @@ def test_tiingo_equity_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tiingo_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    """Test Tiingo company news fetcher."""
+    params = {"symbol": "AAPL,MSFT"}
 
     fetcher = TiingoCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -48,7 +53,8 @@ def test_tiingo_company_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tiingo_world_news_fetcher(credentials=test_credentials):
-    params = {}
+    """Test Tiingo world news fetcher."""
+    params = {"limit": 20}
 
     fetcher = TiingoWorldNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -57,6 +63,7 @@ def test_tiingo_world_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tiingo_crypto_historical_fetcher(credentials=test_credentials):
+    """Test Tiingo crypto historical fetcher."""
     params = {
         "symbol": "BTCUSD",
         "start_date": date(2023, 1, 1),
@@ -70,6 +77,7 @@ def test_tiingo_crypto_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tiingo_currency_historical_fetcher(credentials=test_credentials):
+    """Test Tiingo currency historical fetcher."""
     params = {
         "symbol": "EURUSD",
         "start_date": date(2023, 1, 1),
@@ -83,6 +91,7 @@ def test_tiingo_currency_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tiingo_trailing_div_yield_fetcher(credentials=test_credentials):
+    """Test Tiingo trailing dividend yield fetcher."""
     params = {"symbol": "SCHD"}
 
     fetcher = TiingoTrailingDivYieldFetcher()

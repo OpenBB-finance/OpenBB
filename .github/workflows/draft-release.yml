@@ -1,11 +1,51 @@
-name: Release Drafter
+name: 📝 Draft release changelog
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      release_pr_number:
+        description: "Previous Release PR Number"
+        required: true
+        default: ""
+      tag:
+        description: "Tag for release (manual input)"
+        required: true
+        default: ""
 
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
     steps:
-      - uses: release-drafter/release-drafter@v5.21.0
+      - name: 📟 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📝 Release Drafter
+        id: release-drafter
+        uses: release-drafter/release-drafter@v6.0.0
+        # with:
+        #   config-name: platform-drafter.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 💾 Save Changelog
+        run: |
+          cat << 'EOF' > CHANGELOG.md
+          ${{ steps.release-drafter.outputs.body }}
+          EOF
+
+      - name: 🧬 Process Changelog
+        run: |
+          pip install requests openai
+          python .github/scripts/process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
+          python .github/scripts/summarize_changelog.py ${{ secrets.GITHUB_TOKEN }} ${{ secrets.OPENAI_API_KEY }}
+          cat CHANGELOG.md
+
+      - name: 🛫 Create Release
+        uses: mikepenz/action-gh-release@v1
+        with:
+          body_path: "CHANGELOG.md"
+          tag_name: ${{ github.event.inputs.tag }}
+          prerelease: false
+          draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

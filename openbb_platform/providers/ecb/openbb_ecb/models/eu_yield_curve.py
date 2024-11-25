@@ -1,7 +1,8 @@
 """Euro Area Yield Curve Model."""
 
+# pylint: disable=unused-argument
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,34 +10,34 @@ from openbb_core.provider.standard_models.eu_yield_curve import (
     EUYieldCurveData,
     EUYieldCurveQueryParams,
 )
-from openbb_ecb.utils.ecb_helpers import get_series_data
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_ecb.utils.yield_curve_series import get_yield_curve_ids
 from pydantic import Field, field_validator
 
 
 class ECBEUYieldCurveQueryParams(EUYieldCurveQueryParams):
-    """Euro Area Yield Curve Query."""
+    """ECB Yield Curve Query Params."""
 
-    rating: Literal["A", "C"] = Field(
-        default="A",
-        description="The rating type.",
+    rating: Literal["aaa", "all_ratings"] = Field(
+        default="aaa",
+        description="The rating type, either 'aaa' or 'all_ratings'.",
+    )
+    yield_curve_type: Literal["spot_rate", "instantaneous_forward", "par_yield"] = (
+        Field(
+            default="spot_rate",
+            description="The yield curve type.",
+        )
     )
 
 
 class ECBEUYieldCurveData(EUYieldCurveData):
-    """Euro Area Yield Curve Data."""
+    """ECB Yield Curve Data."""
 
-    __alias_dict__ = {
-        "rate": "OBS",
-    }
-
-    @field_validator("OBS", mode="before", check_fields=False)
+    @field_validator("rate", mode="before", check_fields=False)
     @classmethod
-    def value_validate(cls, v):
-        """Validate rate."""
-        try:
-            return float(v)
-        except ValueError:
-            return None
+    def normalize_percent(cls, v):
+        """Normalize percent."""
+        return float(v) / 100 if v else None
 
 
 class ECBEUYieldCurveFetcher(
@@ -45,60 +46,91 @@ class ECBEUYieldCurveFetcher(
         List[ECBEUYieldCurveData],
     ]
 ):
-    """Transform the query, extract and transform the data from the ECB endpoints."""
-
-    data_type = ECBEUYieldCurveData
+    """ECB Yield Curve Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> ECBEUYieldCurveQueryParams:
         """Transform query."""
+        if params.get("date") is None:
+            params["date"] = datetime.now().date()
         return ECBEUYieldCurveQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: ECBEUYieldCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> list:
+    ) -> List[Dict]:
         """Extract data."""
-        # Check that the date is in the past
-        today = datetime.today().date()
-        if query.date and query.date >= today:
-            raise ValueError("Date must be in the past")
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
 
-        if not query.date:
-            date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
-        else:
-            date = query.date.strftime("%Y-%m-%d")
+        results: List = []
 
-        yield_suffixes = {
-            "spot_rate": "SR_",
-            "instantaneous_forward": "IF_",
-            "par_yield": "PY",
-        }
-        yield_type = f"YC.B.U2.EUR.4F.G_N_{query.rating}.SV_C_YM." + yield_suffixes.get(
-            query.yield_curve_type, ""
+        IDS = get_yield_curve_ids(
+            rating=query.rating,
+            yield_curve_type=query.yield_curve_type,
         )
-        # Add the maturities
-        series_id = [f"{yield_type}{m}M" for m in [3, 6]]
-        series_id += [f"{yield_type}{y}Y" for y in [1, 2, 3, 5, 7, 10, 20, 30]]
+        YIELD_CURVE = IDS["SERIES_IDS"]
+        MATURITIES = IDS["MATURITIES"]
 
-        data = []
+        maturities = list(MATURITIES.keys())
 
-        for id_ in series_id:
-            d = get_series_data(id_, date)
-            maturity = id_.split("_")[-1]
+        BASE_URL = "https://data.ecb.europa.eu/data-detail-api"
 
-            for item in d:
-                item["maturity"] = maturity
+        async def get_one(maturity):
+            """Each maturity is a separate download."""
+            url = f"{BASE_URL}/{YIELD_CURVE[maturity]}"
+            response = await amake_request(url=url, timeout=10)
+            if isinstance(response, list):
+                for item in response:
+                    d = {
+                        "date": item.get("PERIOD"),
+                        "maturity": MATURITIES[maturity],
+                        "rate": item.get("OBS_VALUE_AS_IS"),
+                    }
 
-            data.extend(d)
+                    results.append(d)
 
-        return data
+        await asyncio.gather(*[get_one(maturity) for maturity in maturities])
+
+        return results
 
     @staticmethod
     def transform_data(
-        query: ECBEUYieldCurveQueryParams, data: list, **kwargs: Any
+        query: ECBEUYieldCurveQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[ECBEUYieldCurveData]:
         """Transform data."""
-        return [ECBEUYieldCurveData.model_validate(d) for d in data]
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, to_datetime  # noqa
+        from warnings import warn  # noqa
+
+        if not data:
+            raise EmptyDataError()
+
+        # Find the nearest date to the requested one.
+        df = DataFrame(data).set_index("date").query("`rate`.notnull()")
+        df.index = to_datetime(df.index)
+        dates = df.index.unique().tolist()
+        date = to_datetime(query.date)
+        nearest_date = min(dates, key=lambda d: abs(d - date)).strftime("%Y-%m-%d")
+        df.index = df.index.astype(str)
+
+        if nearest_date != date.strftime("%Y-%m-%d"):
+            warn(f"Using nearest date: {nearest_date}")
+
+        df.index = df.index.astype(str)
+        results = (
+            df.filter(like=nearest_date, axis=0)
+            .sort_values("maturity")
+            .reset_index(drop=True)
+        )
+
+        return [
+            ECBEUYieldCurveData.model_validate(d)
+            for d in results.to_dict(orient="records")
+        ]

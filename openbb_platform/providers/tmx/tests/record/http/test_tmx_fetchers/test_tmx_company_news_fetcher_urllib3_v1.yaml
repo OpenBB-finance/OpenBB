@@ -1,0 +1,73 @@
+interactions:
+- request:
+    body: '{"operationName": "getNewsAndEvents", "variables": {"symbol": "SHOP", "page":
+      1, "limit": 5, "locale": "en"}, "query": "query getNewsAndEvents(\n  $symbol:
+      String!,\n  $page: Int!,\n  $limit: Int!,\n  $locale: String!\n) {\n  news:
+      getNewsForSymbol(\n    symbol: $symbol,\n    page: $page,\n    limit: $limit,\n    locale:
+      $locale\n  ) {\n    headline\n    datetime\n    source\n    newsid\n    summary\n  }\n  events:
+      getUpComingEventsForSymbol(symbol: $symbol, locale: $locale) {\n    title\n    date\n    status\n    type\n    }\n  }\n"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62VbU/iQBDH39+nmOs9RJO22bYUWnyFPCi5E5DiUy6+WOkiG8su2W7Bxvjdb1bE
+        06jcqZc0LW1m/vPf38wuN1ZKNbXqN5Zgy9yq/7qxpoymGRfMqlvJVM75pIQDpsZTKnQOLcUXDIZs
+        LFXq7PPLKXyN3QB2eZZxKYAL2M3o+Ao6iqe0dJrlBVNwIAW+QEIzllu2qcg0n5kCPvEDx/McPxqR
+        qE4IXg4J8Y5huSzU2AT10NmEZwwWnMJhITU7YCmnGGI889SqV2rEj0lEopAEYRBFmFzMZlSVmN0V
+        minBtA3tBVPlcsoUc5ytB9GmVHMXHOjJBZsZt35kg/G1jR/XALpi7MJW7yxp2zBKTuuQ7PcH2zZQ
+        mCvXda1b+wm30ZSV0OIpdDU0LikXn+E5yl3F6NUTXPdcYck1cq243mOum+iFhl4QvJNejdTimh95
+        Vc8L4ijyPkYv/EPvL/heo3fMlGbXMKBKC6byFY61lJaQaCQ3M8Gwl8kLmsGIXqOT2TzjVOCiX4RE
+        qhtGzOgws6glVxtIhaHnk2rskbDi4xU8JvWj29uDfgcGw6Mk6TZs9O/ahosLpLpiAlt7P/u7bei1
+        T5KT7rCNjBASrNZrrygBcmokrcZh/bg9PN2Gre9frn3iNXeOXyC1htIQQha48hxGU44b87BAdqYZ
+        pmiHC6TCEdOQ5UWmXxki4o9Ibc2n8uYhCgOv4tWq1TBAPb/2ZIiGbMFEweBojuPxDahIYU/JPIeB
+        khOuzfeg+g3OGFVOH8fMMb92EAXuC4YzRvMpdDK5hIHMuTYH0EQq6KA5HIymFPl/Q2PUJjjimIBl
+        swxaCOrO8NF8LGdcXGKXFizXWL9Fy5dIEsf7IMm4FnmkEofVgAReGL9nO/bHWprd6PlvO8vkHclz
+        2zId06v/A811Zpw/EMDmCHzmyGXFdoax9yisuiiyDC1rqot8/abLuVFYJ9716plsyhc8ZYh6TktZ
+        /JPgOuUVRWwTnq05HgsPQ79R7j7y9vz29tNvghRykxkHAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"719-/eLbzQXgYik/dQCOz8PB4QsD1w4"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

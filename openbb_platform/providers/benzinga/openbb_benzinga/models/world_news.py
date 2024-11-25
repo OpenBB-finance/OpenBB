@@ -1,16 +1,21 @@
 """Benzinga World News Model."""
 
+# pylint: disable=unused-argument
 
-import math
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_requests, get_querystring
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 from pydantic import Field, field_validator
 
 
@@ -28,19 +33,12 @@ class BenzingaWorldNewsQueryParams(WorldNewsQueryParams):
         "updated_since": "updatedSince",
         "published_since": "publishedSince",
     }
-
+    date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
+    )
     display: Literal["headline", "abstract", "full"] = Field(
         default="full",
         description="Specify headline only (headline), headline + teaser (abstract), or headline + full body (full).",
-    )
-    date: Optional[str] = Field(
-        default=None, description="Date of the news to retrieve."
-    )
-    start_date: Optional[str] = Field(
-        default=None, description="Start date of the news to retrieve."
-    )
-    end_date: Optional[str] = Field(
-        default=None, description="End date of the news to retrieve."
     )
     updated_since: Optional[int] = Field(
         default=None,
@@ -101,21 +99,31 @@ class BenzingaWorldNewsData(WorldNewsData):
     )
 
     @field_validator("date", "updated", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v):
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
 
     @field_validator("stocks", "channels", "tags", mode="before", check_fields=False)
-    def list_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def list_validate(cls, v):
         """Return the list as a string."""
-        return ",".join(
-            [item.get("name", None) for item in v if item.get("name", None)]
-        )
+        v = ",".join([item.get("name", None) for item in v if item.get("name", None)])
+        return v if v != "" else None
 
-    @field_validator("id", mode="before", check_fields=False)
-    def id_validate(cls, v):  # pylint: disable=E0213
-        """Return the id as a string."""
-        return str(v)
+    @field_validator(
+        "id", "text", "teaser", "title", "author", mode="before", check_fields=False
+    )
+    @classmethod
+    def id_validate(cls, v):
+        """Return the a string if the field is not empty."""
+        return str(v) if v else None
+
+    @field_validator("images", mode="before", check_fields=False)
+    @classmethod
+    def empty_list(cls, v):
+        """Return None instead of []"""
+        return None if v == [] else v
 
 
 class BenzingaWorldNewsFetcher(
@@ -136,8 +144,14 @@ class BenzingaWorldNewsFetcher(
         query: BenzingaWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
         """Extract the data."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import math
+        from openbb_core.provider.utils.helpers import amake_request, get_querystring
+        from openbb_benzinga.utils.helpers import response_callback
+
         token = credentials.get("benzinga_api_key") if credentials else ""
         base_url = "https://api.benzinga.com/api/v2/news"
 
@@ -151,14 +165,32 @@ class BenzingaWorldNewsFetcher(
             for page in range(pages)
         ]
 
-        data = await amake_requests(urls, **kwargs)
+        results: list = []
 
-        return data[: query.limit]
+        async def get_one(url):
+            """Get data for one url."""
+            try:
+                response = await amake_request(
+                    url, response_callback=response_callback, **kwargs
+                )
+                if response:
+                    results.extend(response)
+            except (OpenBBError, UnauthorizedError) as e:
+                raise e from e
+
+        await asyncio.gather(*[get_one(url) for url in urls])
+
+        if not results:
+            raise EmptyDataError("The request was returned empty.")
+
+        return sorted(
+            results, key=lambda x: x.get("created"), reverse=query.order == "desc"
+        )[: query.limit if query.limit else len(results)]
 
     @staticmethod
     def transform_data(
         query: BenzingaWorldNewsQueryParams,
-        data: List[dict],
+        data: List[Dict],
         **kwargs: Any,
     ) -> List[BenzingaWorldNewsData]:
         """Transform the data."""

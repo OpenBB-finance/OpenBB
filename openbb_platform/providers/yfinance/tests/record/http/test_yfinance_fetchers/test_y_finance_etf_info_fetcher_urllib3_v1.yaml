@@ -1,0 +1,127 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/QQQ?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=QQQ
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAH1V23LbNhD9FQ6e2hmJIQne5DfFsmNPHceOlHbcppOByCWFCiQUAJTMevxL/Yh+
+        WRekLpZq50EjYnexe/bsBU/keyMNTJuqYqolZ09EgW6EIWd/PBGmNZg7JQsuwKqErMv3jeY1aL2/
+        QWbSqRivDf4cswAnkwp9rGSdQ52BMwezAdipqpXU3HBZO6zOnQ3wcmG0I4tOrSFrFGpBO1tfRjXa
+        OD/Zz6/koP5Kfu7ud5eMzJb7C7fj6WR8P/Q9z7lGAI///jPo5Cxfcw0K//9Cj/o0XKFk5RheYUS5
+        /89kXUhV2c8VKC5znjnZgtXlAR/HHA03rUXzTipHgWCGr+FlZtzieBHMdWZvUsHr8hUyVlJ1dqhh
+        3aGQgksnh86DwxTmJ7TcJgf5CfhTzBaPSwbEQmB1+6koeAZKY8n/HJCKPY5LrHYah573PCC6r/ME
+        sL7CNsHOwB+QlcKLV1h6chbYE6y5bPS5kBr14ShyR/GAyBXU9kTdKB2QnLU3coPnNHK9qDtfYeLW
+        IHSDcIDtVzaCqY9MLW3vveryyObTkf8j1eQk2KnyOLJRmCEW4O6CnNGRmwZBNBqQtRRNhbFpEnlR
+        GPsnXn79n5qtQbES9oqIUo9a/0cK38PMkfIgGXleQr29eoIg2p0NYnxpMuc5OfNca6yX2y+UTfnf
+        GKiX7r9bDqK39mIsjpGGibGdZxt0FCap70cJTZDNghemnW3kbwDLji4aBi6NjhU9VZGHLAdbDYIb
+        95iRw2TkxpTaQBt51dS5gvxIH0VuGtIDyeO6bpiY8LWdoPwzM7aj3CR5y+LhkA6N4jSlMTqr2frO
+        tqCtYex6KMGRUbh17Fr6Mp1gj9vBPt8L60YIy8WpRDBt+nruJJnkdS85Z6sbXi93CiZKiWO5qPbe
+        FMuBze2GLHAKAWcmh4LhDv0F2qnBdaANz/QPRyfD/NGthX3DVAnOByU3ZoH4W5N/BtOo2uYe+DGN
+        gxC7Epcqow/AlGXNT39Y35NOKLA6l6zCLsNo1/UadCZJL77Gfb2ym2bS1WMU+F6AWwC7SUDJxKxd
+        oZRcPPYLxZnZzHPnEm+iA7NQABbStugH2L4XpTSKvK6l1q/bBH7i+37Ql2K6EtxcssxI1bOMnHbP
+        VI/gicAWAqK5/fCRHGnJxewSJbqt5hIXFrm/v8cjYgQlWuyr6bFCL3Cf3jI7qjs2HNRgcrhKB84U
+        Fz+uTh8t7ev3lqElkCttOkosexcrmS2+mKxnMYkDy6J9WH6XNVxiSltP4woDZOzdLWy+PUi1JAer
+        6QtkF5OZTaKxC4AkfpjTIA+HURFnQ0rn2XBOYzZM4sj3R9mcZmGG1hW+0sjxe8lUfm3vFbyu5t9S
+        30ujKEWDsjK4+6dgPnIh8HXEJyPH7hn6oS26Bbxv2OdnfBpAqX1Bnv8DhPyAVzkIAAA=
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=1, stale-while-revalidate=9
+      content-encoding:
+      - gzip
+      content-length:
+      - '1076'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 24 Oct 2024 05:33:07 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '6'
+      y-rid:
+      - 51423ltjhjn0k
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/QQQ?crumb=MOCK_CRUMB&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&symbol=QQQ&type=trailingPegRatio
+  response:
+    body:
+      string: '{"timeseries":{"result":[{"meta":{"symbol":["QQQ"],"type":["trailingPegRatio"]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=60, stale-while-revalidate=30
+      content-length:
+      - '96'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 24 Oct 2024 05:33:07 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '1'
+      y-rid:
+      - 4fj8s21jhjn0k
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,4 +1,5 @@
 """Coverage API router helper functions."""
+
 from inspect import _empty, signature
 from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, Tuple, Type
 

@@ -21,7 +21,7 @@ class BondTradesQueryParams(QueryParams):
 
     country: Optional[str] = Field(
         default=None,
-        description="Country of the bond issuer. Matches partial name.",
+        description="The country to get data. Matches partial name.",
     )
     isin: Optional[str] = Field(
         default=None,
@@ -79,14 +79,17 @@ class BondTradesData(Data):
     price: Optional[float] = Field(
         default=None,
         description="Price of the bond.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     current_yield: Optional[float] = Field(
         default=None,
         description="Current yield of the bond.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     coupon_rate: Optional[float] = Field(
         default=None,
         description="Coupon rate of the bond.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     volume: Optional[int] = Field(
         default=None,

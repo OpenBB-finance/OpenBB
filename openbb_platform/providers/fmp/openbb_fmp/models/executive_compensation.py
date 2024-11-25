@@ -1,15 +1,22 @@
 """FMP Executive Compensation Model."""
 
-from datetime import datetime
+import asyncio
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.executive_compensation import (
     ExecutiveCompensationData,
     ExecutiveCompensationQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import field_validator
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from openbb_fmp.utils.helpers import response_callback
+from pydantic import Field, field_validator
 
 
 class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
@@ -18,9 +25,26 @@ class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/executive-compensation-api/
     """
 
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+
+    year: Optional[int] = Field(default=None, description="Year of the compensation.")
+
 
 class FMPExecutiveCompensationData(ExecutiveCompensationData):
     """FMP Executive Compensation Data."""
+
+    __alias_dict__ = {
+        "company_name": "companyName",
+        "industry": "industryTitle",
+    }
+
+    filing_date: Optional[dateType] = Field(
+        default=None, description="Date of the filing."
+    )
+    accepted_date: Optional[datetime] = Field(
+        default=None, description="Date the filing was accepted."
+    )
+    url: Optional[str] = Field(default=None, description="URL to the filing data.")
 
     @field_validator("filingDate", mode="before", check_fields=False)
     @classmethod
@@ -36,7 +60,7 @@ class FMPExecutiveCompensationData(ExecutiveCompensationData):
 
 
 class FMPExecutiveCompensationFetcher(
-    Fetcher[  # type: ignore
+    Fetcher[
         FMPExecutiveCompensationQueryParams,
         List[FMPExecutiveCompensationData],
     ]
@@ -55,15 +79,47 @@ class FMPExecutiveCompensationFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = create_url(4, "governance/executive_compensation", api_key, query)
+        base_url = "https://financialmodelingprep.com/api/v4/"
 
-        return await get_data_many(url, **kwargs)
+        symbols = query.symbol.split(",")
+
+        results: List[dict] = []
+
+        async def get_one(symbol):
+            """Get data for one symbol."""
+
+            url = f"{base_url}/governance/executive_compensation?symbol={symbol}&apikey={api_key}"
+            result = await amake_request(
+                url, response_callback=response_callback, **kwargs
+            )
+            if not result:
+                warn(f"Symbol Error: No data found for {symbol}.")
+
+            if result:
+                results.extend(result)
+
+        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
+
+        if not results:
+            raise EmptyDataError("No data found for given symbols.")
+
+        return sorted(results, key=lambda x: (x["year"]), reverse=True)
 
     @staticmethod
     def transform_data(
-        query: FMPExecutiveCompensationQueryParams, data: List[Dict], **kwargs: Any
+        query: FMPExecutiveCompensationQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[FMPExecutiveCompensationData]:
         """Return the transformed data."""
-        return [FMPExecutiveCompensationData.model_validate(d) for d in data]
+        results: List[FMPExecutiveCompensationData] = []
+        for d in data:
+            if "year" in d and query.year is not None:
+                if d["year"] >= query.year and d["year"] <= query.year:
+                    results.append(FMPExecutiveCompensationData.model_validate(d))
+            else:
+                results.append(FMPExecutiveCompensationData.model_validate(d))
+        return results

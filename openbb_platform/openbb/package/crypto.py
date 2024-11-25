@@ -2,10 +2,10 @@
 
 from typing import Literal, Optional
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -26,25 +26,29 @@ class ROUTER_crypto(Container):
 
         return crypto_price.ROUTER_crypto_price(command_runner=self._command_runner)
 
+    @exception_handler
     @validate
     def search(
         self,
         query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="Search query.")
-        ] = "",
-        provider: Optional[Literal["fmp"]] = None,
+            Optional[str], OpenBBField(description="Search query.")
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
-        """Cryptocurrency Search. Search available cryptocurrency pairs.
+        """Search available cryptocurrency pairs within a provider.
 
         Parameters
         ----------
         query : Optional[str]
             Search query.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -57,7 +61,7 @@ class ROUTER_crypto(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CryptoSearch
@@ -73,17 +77,22 @@ class ROUTER_crypto(Container):
         exchange_name : Optional[str]
             The short name of the exchange the crypto trades on. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.crypto.search()
+        >>> obb.crypto.search(provider='fmp')
+        >>> obb.crypto.search(query='BTCUSD', provider='fmp')
         """  # noqa: E501
 
         return self._run(
             "/crypto/search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "crypto.search",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "query": query,

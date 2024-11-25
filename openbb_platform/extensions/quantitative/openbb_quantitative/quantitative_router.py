@@ -1,35 +1,46 @@
 """Quantitative Analysis Router."""
+
 from typing import List, Literal
 
-import numpy as np
-import pandas as pd
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
-from openbb_core.app.utils import (
-    basemodel_to_df,
-    df_to_basemodel,
-    get_target_column,
-    get_target_columns,
-)
 from openbb_core.provider.abstract.data import Data
-from pydantic import NonNegativeFloat, PositiveInt
 
-from .helpers import get_fama_raw
-from .models import (
+from openbb_quantitative.models import (
     ADFTestModel,
     CAPMModel,
     KPSSTestModel,
     NormalityModel,
-    OmegaModel,
     SummaryModel,
     TestModel,
     UnitRootModel,
 )
+from openbb_quantitative.performance.performance_router import (
+    router as performance_router,
+)
+from openbb_quantitative.rolling.rolling_router import router as rolling_router
+from openbb_quantitative.stats.stats_router import router as stats_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Quantitative analysis tools.")
+router.include_router(rolling_router)
+router.include_router(stats_router)
+router.include_router(performance_router)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get Normality Statistics.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                "obb.quantitative.normality(data=stock_data, target='close')",
+            ],
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 8)}),
+    ],
+)
 def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     """Get Normality Statistics.
 
@@ -51,7 +62,12 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     OBBject[NormalityModel]
         Normality tests summary. See qa_models.NormalityModel for details.
     """
-    from scipy import stats  # pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
+    from scipy import stats  # noqa
+    from openbb_core.app.utils import (  # noqa
+        basemodel_to_df,
+        get_target_column,
+    )
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -73,10 +89,48 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     return OBBject(results=norm_summary)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get Capital Asset Pricing Model (CAPM).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                "obb.quantitative.capm(data=stock_data, target='close')",
+            ],
+        ),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("timeseries", 31)}
+        ),
+    ],
+)
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
-    """Get Capital Asset Pricing Model."""
-    import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
+    """Get Capital Asset Pricing Model (CAPM).
+
+    CAPM offers a streamlined way to assess the expected return on an investment while accounting for its risk relative
+    to the market. It's a cornerstone of modern financial theory that helps investors understand the trade-off between
+    risk and return, guiding more informed investment choices.
+
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
+
+    Returns
+    -------
+    OBBject[CAPMModel]
+        CAPM model summary.
+    """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm  # noqa
+    from openbb_core.app.utils import (  # noqa``
+        basemodel_to_df,
+        get_target_columns,
+    )
+    from pandas import to_datetime  # noqa
+    from openbb_quantitative.helpers import get_fama_raw  # noqa
 
     df = basemodel_to_df(data)
 
@@ -84,7 +138,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     df_target = df_target.set_index("date")
     df_target.loc[:, "return"] = df_target.pct_change()
     df_target = df_target.dropna()
-    df_target.index = pd.to_datetime(df_target.index)
+    df_target.index = to_datetime(df_target.index)
     start_date = df_target.index.min().strftime("%Y-%m-%d")
     end_date = df_target.index.max().strftime("%Y-%m-%d")
     df_fama = get_fama_raw(start_date, end_date)
@@ -107,83 +161,19 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
-def omega_ratio(
-    data: List[Data],
-    target: str,
-    threshold_start: float = 0.0,
-    threshold_end: float = 1.5,
-) -> OBBject[List[OmegaModel]]:
-    """Calculate the Omega Ratio.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    threshold_start : float, optional
-        Start threshold, by default 0.0
-    threshold_end : float, optional
-        End threshold, by default 1.5
-
-    Returns
-    -------
-    OBBject[List[OmegaModel]]
-        Omega ratios.
-    """
-    df = basemodel_to_df(data)
-    series_target = get_target_column(df, target)
-
-    epsilon = 1e-6  # to avoid division by zero
-
-    def get_omega_ratio(df_target: pd.Series, threshold: float) -> float:
-        """Get omega ratio."""
-        daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
-        excess = df_target - daily_threshold
-        numerator = excess[excess > 0].sum()
-        denominator = -excess[excess < 0].sum() + epsilon
-
-        return numerator / denominator
-
-    threshold = np.linspace(threshold_start, threshold_end, 50)
-    results = []
-    for i in threshold:
-        omega_ = get_omega_ratio(series_target, i)
-        results.append(OmegaModel(threshold=i, omega=omega_))
-
-    return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Get the Kurtosis.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    window : PositiveInt
-        Window size.
-
-    Returns
-    -------
-    OBBject[List[Data]]
-        Kurtosis.
-    """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
-
-    df = basemodel_to_df(data)
-    series_target = get_target_column(df, target)
-    results = ta.kurtosis(close=series_target, length=window).dropna()
-    results = df_to_basemodel(results)
-
-    return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get Unit Root Test.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                "obb.quantitative.unitroot_test(data=stock_data, target='close')",
+            ],
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 5)}),
+    ],
+)
 def unitroot_test(
     data: List[Data],
     target: str,
@@ -192,8 +182,13 @@ def unitroot_test(
 ) -> OBBject[UnitRootModel]:
     """Get Unit Root Test.
 
-    Augmented Dickey-Fuller test for unit root.
-    Kwiatkowski-Phillips-Schmidt-Shin test for unit root.
+    This function applies two renowned tests to assess whether your data series is stationary or if it contains a unit
+    root, indicating it may be influenced by time-based trends or seasonality. The Augmented Dickey-Fuller (ADF) test
+    helps identify the presence of a unit root, suggesting that the series could be non-stationary and potentially
+    unpredictable over time. On the other hand, the Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test checks for the
+    stationarity of the series, where failing to reject the null hypothesis indicates a stable, stationary series.
+    Together, these tests provide a comprehensive view of your data's time series properties, essential for
+    accurate modeling and forecasting.
 
     Parameters
     ----------
@@ -212,7 +207,11 @@ def unitroot_test(
         Unit root tests summary.
     """
     # pylint: disable=import-outside-toplevel
-    from statsmodels.tsa import stattools  # type: ignore
+    from openbb_core.app.utils import (  # noqa
+        basemodel_to_df,
+        get_target_column,
+    )
+    from statsmodels.tsa import stattools  # noqa
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -237,157 +236,28 @@ def unitroot_test(
     return OBBject(results=unitroot_summary)
 
 
-@router.command(methods=["POST"])
-def sharpe_ratio(
-    data: List[Data], target: str, rfr: float = 0.0, window: PositiveInt = 252
-) -> OBBject[List[Data]]:
-    """Get Sharpe Ratio.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    rfr : float, optional
-        Risk-free rate, by default 0.0
-    window : PositiveInt, optional
-        Window size, by default 252
-
-    Returns
-    -------
-    OBBject[List[Data]]
-        Sharpe ratio.
-    """
-    df = basemodel_to_df(data)
-    series_target = get_target_column(df, target)
-
-    returns = series_target.pct_change().dropna().rolling(window).sum()
-    std = series_target.rolling(window).std() / np.sqrt(window)
-    results = ((returns - rfr) / std).dropna()
-
-    results = df_to_basemodel(results)
-
-    return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def sortino_ratio(
-    data: List[Data],
-    target: str,
-    target_return: float = 0.0,
-    window: PositiveInt = 252,
-    adjusted: bool = False,
-) -> OBBject[List[Data]]:
-    """Get Sortino Ratio.
-
-    For method & terminology see:
-    http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    target_return : float, optional
-        Target return, by default 0.0
-    window : PositiveInt, optional
-        Window size, by default 252
-    adjusted : bool, optional
-        Adjust sortino ratio to compare it to sharpe ratio, by default False
-
-    Returns
-    -------
-    OBBject[List[Data]]
-        Sortino ratio.
-    """
-    df = basemodel_to_df(data)
-    series_target = get_target_column(df, target)
-
-    returns = series_target.pct_change().dropna().rolling(window).sum()
-    downside_deviation = returns.rolling(window).apply(
-        lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
-    )
-    results = ((returns - target_return) / downside_deviation).dropna()
-
-    if adjusted:
-        results = results / np.sqrt(2)
-
-    results_ = df_to_basemodel(results)
-
-    return OBBject(results=results_)
-
-
-@router.command(methods=["POST"])
-def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Get Skewness.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    window : PositiveInt
-        Window size.
-
-    Returns
-    -------
-    OBBject[List[Data]]
-        Skewness.
-    """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
-
-    df = basemodel_to_df(data)
-    series_target = get_target_column(df, target)
-    results = ta.skew(close=series_target, length=window).dropna()
-    results = df_to_basemodel(results)
-
-    return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def quantile(
-    data: List[Data],
-    target: str,
-    window: PositiveInt,
-    quantile_pct: NonNegativeFloat = 0.5,
-) -> OBBject[List[Data]]:
-    """Get Quantile.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    window : PositiveInt
-        Window size.
-    quantile_pct : NonNegativeFloat, optional
-
-    Returns
-    -------
-    OBBject[List[Data]]
-        Quantile.
-    """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
-
-    df = basemodel_to_df(data)
-    series_target = get_target_column(df, target)
-
-    df_median = ta.median(close=series_target, length=window).to_frame()
-    df_quantile = ta.quantile(series_target, length=window, q=quantile_pct).to_frame()
-    results = pd.concat([df_median, df_quantile], axis=1).dropna()
-
-    results_ = df_to_basemodel(results)
-
-    return OBBject(results=results_)
-
-
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get Summary Statistics.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                "obb.quantitative.summary(data=stock_data, target='close')",
+            ],
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 5)}),
+    ],
+)
 def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     """Get Summary Statistics.
+
+    The summary that offers a snapshot of its central tendencies, variability, and distribution.
+    This command calculates essential statistics, including mean, standard deviation, variance,
+    and specific percentiles, to provide a detailed profile of your target column. B
+    y examining these metrics, you gain insights into the data's overall behavior, helping to identify patterns,
+    outliers, or anomalies. The summary table is an invaluable tool for initial data exploration,
+    ensuring you have a solid foundation for further analysis or reporting.
 
     Parameters
     ----------
@@ -401,6 +271,12 @@ def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     OBBject[SummaryModel]
         Summary table.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+    )
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 

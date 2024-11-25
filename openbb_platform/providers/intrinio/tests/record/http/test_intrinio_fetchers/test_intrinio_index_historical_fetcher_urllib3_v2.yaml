@@ -1,0 +1,41 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2024-02-05&page_size=10000&start_date=2024-01-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAFmCoWYAA3TUPW/bMBAG4L8iEB1t4vgteTOQJRmytF1aFAJjMY0AmUolyo1j5L/3lBQFmVw3
+        S3xA8l7d+cIe+jmNU3/wQ9v55Nnu+4Xhj8B2TILUW5BbMGzDTn5Y8KWqVQ1cyJfNRyZzZo3mmmQi
+        Z0Y0vNYfmNiqggkDXFEKcqWt40oQTDZFBUpxbShmizOh4Zo6VBZ5gG64IJnOmKvBctVQTOWsAfOf
+        uxXpAgheU5WKpjjUKl5Tqs6VtjW35GYuZ9Jabh3F8ticsoLqD2RZbHEZBorkRTrTSN6Q1897wzkh
+        OJAH5s3hbGO4o74TFJEZabiwFCsys7XiQGVWDAtGa7kgWdEcWmN7U1MARXNohaNH9VAxehiI4UDu
+        Jt59gR8b1scuPLHdhfUdSnxq5fPp9nmPcj4f78YB3366urnG5+iP625X4+/qZoxhrq5jt8xp6v1Q
+        7U9h8j8DqsMYUx9DTEhvxyk9VPtjWP9gXteWmKYzrnyNfQpd9TnhDedqvM/Q8rheu72fwq8lxMOq
+        O98PZ1wa/Jzat/XuX10OJ+0LwE4IHAwOAN9QjndzmE4+9WNs5+Sn9MrFX/4OhFjsptgLFhueUvu4
+        lvQW1R8AAAD//wMAP3H/JioFAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 24 Jul 2024 22:38:17 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,4 +1,5 @@
 """Constants for the OpenBB Platform."""
+
 from pathlib import Path
 
 HOME_DIRECTORY = Path.home()

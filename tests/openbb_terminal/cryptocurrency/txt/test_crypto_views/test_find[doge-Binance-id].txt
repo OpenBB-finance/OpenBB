@@ -1,2 +1,0 @@
-   index        id symbol      name
-0      0  dogecoin   DOGE  Dogecoin

@@ -1,2 +1,0 @@
-Please perform an OLS regression before estimating the Durbin-Watson statistic.
-

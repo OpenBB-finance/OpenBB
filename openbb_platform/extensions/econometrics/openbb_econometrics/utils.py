@@ -1,17 +1,18 @@
-import warnings
-from typing import Tuple
+"""Utility functions for the econometrics extension of the OpenBB platform."""
 
-import numpy as np
-import pandas as pd
-import statsmodels.api as sm
-from statsmodels.tsa.stattools import adfuller
+import warnings
+from typing import TYPE_CHECKING, Tuple
+
+if TYPE_CHECKING:
+    from pandas import Series
 
 
 def get_engle_granger_two_step_cointegration_test(
-    dependent_series: pd.Series, independent_series: pd.Series
-) -> Tuple[float, float, float, pd.Series, float, float]:
-    """Estimates long-run and short-run cointegration relationship for series y and x and apply
-    the two-step Engle & Granger test for cointegration.
+    dependent_series: "Series", independent_series: "Series"
+) -> Tuple[float, float, float, "Series", float, float]:
+    """Estimate long-run and short-run cointegration relationship for series y and x.
+
+    Then apply the two-step Engle & Granger test for cointegration.
 
     Uses a 2-step process to first estimate coefficients for the long-run relationship
         y_t = c + gamma * x_t + z_t
@@ -62,6 +63,10 @@ def get_engle_granger_two_step_cointegration_test(
             stronger rejection of no-cointegration, thus stronger evidence of cointegration.
 
     """
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm
+    from statsmodels.tsa.stattools import adfuller
+
     warnings.simplefilter(action="ignore", category=FutureWarning)
     long_run_ols = sm.OLS(dependent_series, sm.add_constant(independent_series))
     warnings.simplefilter(action="default", category=FutureWarning)
@@ -87,18 +92,22 @@ def get_engle_granger_two_step_cointegration_test(
 
 
 def mock_multi_index_data():
-    """Creates a mock multi-index dataframe for testing purposes."""
+    """Create a mock multi-index dataframe for testing purposes."""
+    # pylint: disable=import-outside-toplevel
+    from numpy import random
+    from pandas import DataFrame, MultiIndex
+
     arrays = [
         ["individual_" + str(i) for i in range(1, 11) for _ in range(5)],
         list(range(1, 6)) * 10,
     ]
-    index = pd.MultiIndex.from_arrays(arrays, names=("individual", "time"))
+    index = MultiIndex.from_arrays(arrays, names=("individual", "time"))
 
-    df = pd.DataFrame(
+    df = DataFrame(
         {
-            "income": np.random.randint(20000, 80000, size=50),
-            "age": np.random.randint(25, 60, size=50),
-            "education": np.random.randint(12, 21, size=50),
+            "income": random.randint(20000, 80000, size=50),
+            "age": random.randint(25, 60, size=50),
+            "education": random.randint(12, 21, size=50),
         },
         index=index,
     )

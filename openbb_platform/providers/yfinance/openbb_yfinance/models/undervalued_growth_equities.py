@@ -1,100 +1,73 @@
 """Yahoo Finance Asset Undervalued Growth Tech Equities Model."""
 
-import re
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
 
-import pandas as pd
-import requests
+from typing import Any, Optional
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
-    EquityPerformanceData,
     EquityPerformanceQueryParams,
 )
+from openbb_yfinance.utils.references import YFPredefinedScreenerData
 from pydantic import Field
 
 
 class YFUndervaluedGrowthEquitiesQueryParams(EquityPerformanceQueryParams):
-    """Yahoo Finance Asset Undervalued Growth Tech Equities Query.
+    """Yahoo Finance Undervalued Growth Stocks Query.
 
     Source: https://finance.yahoo.com/screener/predefined/undervalued_growth_stocks
     """
 
-
-class YFUndervaluedGrowthEquitiesData(EquityPerformanceData):
-    """Yahoo Finance Asset Undervalued Growth Tech Equities Data."""
-
-    __alias_dict__ = {
-        "symbol": "Symbol",
-        "name": "Name",
-        "volume": "Volume",
-        "change": "Change",
-        "price": "Price (Intraday)",
-        "percent_change": "% Change",
-        "market_cap": "Market Cap",
-        "avg_volume_3_months": "Avg Vol (3 month)",
-        "pe_ratio_ttm": "PE Ratio (TTM)",
-    }
-
-    market_cap: str = Field(
-        description="Market Cap.",
+    limit: Optional[int] = Field(
+        default=200,
+        description="Limit the number of results.",
     )
-    avg_volume_3_months: float = Field(
-        description="Average volume over the last 3 months in millions.",
-    )
-    pe_ratio_ttm: Optional[float] = Field(
-        description="PE Ratio (TTM).",
-        default=None,
-    )
+
+
+class YFUndervaluedGrowthEquitiesData(YFPredefinedScreenerData):
+    """Yahoo Finance Undervalued Growth Stocks Data."""
 
 
 class YFUndervaluedGrowthEquitiesFetcher(
     Fetcher[
-        YFUndervaluedGrowthEquitiesQueryParams, List[YFUndervaluedGrowthEquitiesData]
+        YFUndervaluedGrowthEquitiesQueryParams, list[YFUndervaluedGrowthEquitiesData]
     ]
 ):
-    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
+    """Yahoo Finance Undervalued Growth Stocks Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any]
     ) -> YFUndervaluedGrowthEquitiesQueryParams:
         """Transform query params."""
         return YFUndervaluedGrowthEquitiesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: YFUndervaluedGrowthEquitiesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> pd.DataFrame:
+    ) -> list[dict]:
         """Get data from YF."""
-        headers = {"user_agent": "Mozilla/5.0"}
-        html = requests.get(
-            "https://finance.yahoo.com/screener/predefined/undervalued_growth_stocks",
-            headers=headers,
-            timeout=10,
-        ).text
-        html_clean = re.sub(r"(<span class=\"Fz\(0\)\">).*?(</span>)", "", html)
-        df = (
-            pd.read_html(html_clean, header=None)[0]
-            .dropna(how="all", axis=1)
-            .fillna("-")
-            .replace("-", None)
+        # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import get_defined_screener
+
+        return await get_defined_screener(
+            name="undervalued_growth_stocks", limit=query.limit
         )
-        return df
 
     @staticmethod
     def transform_data(
         query: EquityPerformanceQueryParams,
-        data: pd.DataFrame,
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFUndervaluedGrowthEquitiesData]:
+    ) -> list[YFUndervaluedGrowthEquitiesData]:
         """Transform data."""
-        data["% Change"] = data["% Change"].str.replace("%", "")
-        data["Volume"] = data["Volume"].str.replace("M", "").astype(float) * 1000000
-        data["Avg Vol (3 month)"] = (
-            data["Avg Vol (3 month)"].str.replace("M", "").astype(float) * 1000000
-        )
-        data = data.to_dict(orient="records")
-        data = sorted(data, key=lambda d: d["Volume"], reverse=query.sort == "desc")
-        return [YFUndervaluedGrowthEquitiesData.model_validate(d) for d in data]
+        return [
+            YFUndervaluedGrowthEquitiesData.model_validate(d)
+            for d in sorted(
+                data,
+                key=lambda x: x["regularMarketChangePercent"],
+                reverse=query.sort == "desc",
+            )
+        ]

@@ -1,4 +1,5 @@
 """User settings model."""
+
 from pydantic import Field
 
 from openbb_core.app.model.abstract.tagged import Tagged
@@ -18,8 +19,6 @@ class UserSettings(Tagged):
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
-        # We use the __dict__ because Credentials.model_dump() will use the serializer
-        # and unmask the credentials
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )

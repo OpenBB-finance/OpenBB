@@ -1,14 +1,19 @@
 """FMP Analyst Estimates Model."""
 
-
-from typing import Any, Dict, List, Optional
+import asyncio
+from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.analyst_estimates import (
     AnalystEstimatesData,
     AnalystEstimatesQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from openbb_fmp.utils.helpers import create_url, response_callback
+from pydantic import Field
 
 
 class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
@@ -16,6 +21,15 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/
     """
+
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+
+    period: Literal["quarter", "annual"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    limit: Optional[int] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
+    )
 
 
 class FMPAnalystEstimatesData(AnalystEstimatesData):
@@ -44,11 +58,29 @@ class FMPAnalystEstimatesFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = create_url(
-            3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
-        )
+        symbols = query.symbol.split(",")  # type: ignore
 
-        return await get_data_many(url, **kwargs)
+        results: List[dict] = []
+
+        async def get_one(symbol):
+            """Get data for one symbol."""
+            url = create_url(
+                3, f"analyst-estimates/{symbol}", api_key, query, ["symbol"]
+            )
+            result = await amake_request(
+                url, response_callback=response_callback, **kwargs
+            )
+            if not result or len(result) == 0:
+                warn(f"Symbol Error: No data found for {symbol}")
+            if result:
+                results.extend(result)
+
+        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
+
+        if not results:
+            raise EmptyDataError("No data returned for the given symbols.")
+
+        return sorted(results, key=lambda x: (x["date"], x["symbol"]), reverse=False)
 
     @staticmethod
     def transform_data(

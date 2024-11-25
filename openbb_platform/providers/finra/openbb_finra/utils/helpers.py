@@ -1,12 +1,16 @@
-# Helper functions for FINRA API
+"""Helper functions for FINRA API."""
+
 import datetime
 from typing import List
 
-import requests
+# pylint: disable=W0621
 
 
 def get_finra_weeks(tier: str = "T1", is_ats: bool = True):
-    """Fetches the available weeks from FINRA that can be used."""
+    """Fetch the available weeks from FINRA that can be used."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import make_request
+
     request_header = {"Accept": "application/json", "Content-Type": "application/json"}
 
     request_data = {
@@ -29,8 +33,9 @@ def get_finra_weeks(tier: str = "T1", is_ats: bool = True):
         "sortFields": ["-weekStartDate"],
     }
 
-    response = requests.post(
-        "https://api.finra.org/data/group/otcMarket/name/weeklyDownloadDetails",
+    response = make_request(
+        method="POST",
+        url="https://api.finra.org/data/group/otcMarket/name/weeklyDownloadDetails",
         headers=request_header,
         json=request_data,
         timeout=3,
@@ -40,6 +45,10 @@ def get_finra_weeks(tier: str = "T1", is_ats: bool = True):
 
 
 def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True):
+    """Get the data for a symbol from FINRA."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import make_request
+
     req_hdr = {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -83,16 +92,18 @@ def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True):
         "quoteValues": False,
         "sortFields": ["totalWeeklyShareQuantity"],
     }
-    response = requests.post(
-        "https://api.finra.org/data/group/otcMarket/name/weeklySummary",
+    response = make_request(
+        url="https://api.finra.org/data/group/otcMarket/name/weeklySummary",
+        method="POST",
         headers=req_hdr,
         json=req_data,
-        timeout=2,
+        timeout=20,
     )
     return response
 
 
 def get_full_data(symbol, tier: str = "T1", is_ats: bool = True):
+    """Get the full data for a symbol from FINRA."""
     weeks = [week["weekStartDate"] for week in get_finra_weeks(tier, is_ats)]
 
     data = []
@@ -106,6 +117,7 @@ def get_full_data(symbol, tier: str = "T1", is_ats: bool = True):
 
 
 def get_adjusted_date(year, month, day):
+    """Find the closest date if the date falls on a weekend."""
     # Get the date
     date = datetime.date(year, month, day)
 
@@ -120,13 +132,14 @@ def get_adjusted_date(year, month, day):
 
 
 def get_short_interest_dates() -> List[str]:
-    """
-    Get a list of dates for which the short interest data is available.  It is reported on the 15th and the
-    last day of each month,but if the date falls on a weekend, the date is adjusted to the closest friday.
+    """Get a list of dates for which the short interest data is available.
+
+    It is reported on the 15th and the last day of each month,but if the date falls on a weekend,
+    the date is adjusted to the closest friday.
     """
 
     def get_adjusted_date(year, month, day):
-        """If the date falls on a weekend, find the closest date"""
+        """Find the closest date if the date falls on a weekend."""
         # Get the date
         date = datetime.date(year, month, day)
 

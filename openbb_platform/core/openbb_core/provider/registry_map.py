@@ -1,8 +1,9 @@
 """Provider registry map."""
 
+from copy import deepcopy
 from inspect import getfile, isclass
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union, get_origin
+from typing import Any, Dict, List, Literal, Optional, Tuple, get_origin
 
 from pydantic import BaseModel
 
@@ -25,8 +26,8 @@ class RegistryMap:
         self._registry = registry or RegistryLoader.from_extensions()
         self._credentials = self._get_credentials(self._registry)
         self._available_providers = self._get_available_providers(self._registry)
-        self._map, self._return_map = self._get_map(self._registry)
-        self._models = self._get_models(self._map)
+        self._standard_extra, self._original_models = self._get_maps(self._registry)
+        self._models = self._get_models(self._standard_extra)
 
     @property
     def registry(self) -> Registry:
@@ -39,120 +40,146 @@ class RegistryMap:
         return self._available_providers
 
     @property
-    def credentials(self) -> List[str]:
-        """Get list of required credentials."""
+    def credentials(self) -> Dict[str, List[str]]:
+        """Get map of providers to credentials."""
         return self._credentials
 
     @property
-    def map(self) -> MapType:
-        """Get provider registry map."""
-        return self._map
+    def standard_extra(self) -> MapType:
+        """Get standard extra map."""
+        return self._standard_extra
 
     @property
-    def return_map(self) -> MapType:
-        """Get provider registry return map."""
-        return self._return_map
+    def original_models(self) -> MapType:
+        """Get original models."""
+        return self._original_models
 
     @property
     def models(self) -> List[str]:
         """Get available models."""
         return self._models
 
-    def _get_credentials(self, registry: Registry) -> List[str]:
-        """Get list of required credentials."""
-        cred_list = []
-        for provider in registry.providers.values():
-            for c in provider.credentials:
-                cred_list.append(c)
-        return cred_list
+    def _get_credentials(self, registry: Registry) -> Dict[str, List[str]]:
+        """Get map of providers to credentials."""
+        return {
+            name: provider.credentials for name, provider in registry.providers.items()
+        }
 
     def _get_available_providers(self, registry: Registry) -> List[str]:
         """Get list of available providers."""
         return sorted(list(registry.providers.keys()))
 
-    def _get_map(self, registry: Registry) -> Tuple[MapType, MapType]:
+    def _get_maps(self, registry: Registry) -> Tuple[MapType, Dict[str, Dict]]:
         """Generate map for the provider package."""
-        map_: MapType = {}
-        return_map: MapType = {}
-        union_return_map: MapType = {}
+        standard_extra: MapType = {}
+        original_models: Dict[str, Dict] = {}
 
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
-                standard_query, extra_query = self.extract_info(fetcher, "query_params")
-                standard_data, extra_data = self.extract_info(fetcher, "data")
-                return_type = self.extract_return_type(fetcher)
-
-                if model_name not in map_:
-                    map_[model_name] = {}
-                    map_[model_name]["openbb"] = {
-                        "QueryParams": standard_query,
-                        "Data": standard_data,
+                standard_query, extra_query = self._extract_info(
+                    fetcher, "query_params"
+                )
+                standard_data, extra_data = self._extract_info(fetcher, "data")
+                if model_name not in standard_extra:
+                    standard_extra[model_name] = {}
+                    # The deepcopy avoids modifications from one model to affect another
+                    standard_extra[model_name]["openbb"] = {
+                        "QueryParams": deepcopy(standard_query),
+                        "Data": deepcopy(standard_data),
                     }
-
-                map_[model_name][p] = {
+                standard_extra[model_name][p] = {
                     "QueryParams": extra_query,
                     "Data": extra_data,
                 }
 
-                in_return_map = return_map.get(model_name, return_type)
-                if union_return_map.get(model_name, None) is None and get_origin(
-                    return_type
-                ) != get_origin(in_return_map):
-                    union_return_map[model_name] = Union[in_return_map, return_type]  # type: ignore
+                original_models.setdefault(model_name, {}).update(
+                    {
+                        p: {
+                            "query": self._get_model(fetcher, "query_params"),
+                            "data": self._get_model(fetcher, "data"),
+                            "results_type": self._get_results_type(fetcher),
+                        }
+                    }
+                )
 
-                return_map[model_name] = return_type
+                self._update_json_schema_extra(p, fetcher, standard_extra[model_name])
 
-        for model_name, return_type in union_return_map.items():
-            return_map[model_name] = return_type
+        return standard_extra, original_models
 
-        return map_, return_map
+    def _update_json_schema_extra(
+        self,
+        provider: str,
+        fetcher: Fetcher,
+        model_map: dict,
+    ):
+        """Merge json schema extra for different providers."""
+        model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
+        standard_fields = model_map["openbb"]["QueryParams"]["fields"]
+        extra_fields = model_map[provider]["QueryParams"]["fields"]
+
+        for field, properties in getattr(model, "__json_schema_extra__", {}).items():
+            if properties:
+                if field in standard_fields:
+                    model_field = standard_fields[field]
+                elif field in extra_fields:
+                    model_field = extra_fields[field]
+                else:
+                    continue
+
+                if model_field.json_schema_extra is None:
+                    model_field.json_schema_extra = {}
+
+                model_field.json_schema_extra[provider] = properties
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
         return list(map_.keys())
 
     @staticmethod
-    def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
-        """Extract info (fields and docstring) from fetcher query params or data."""
-        model: BaseModel = RegistryMap._get_model(fetcher, type_)
-        all_fields = {}
-        alias_dict: Dict[str, List[str]] = {}
-        standard_info: Dict[str, Any] = {"fields": {}, "docstring": None}
-        found_top_level = False
-
-        for c in RegistryMap._class_hierarchy(model):
-            if c.__name__ in SKIP:
-                continue
-            if (Path(getfile(c)).parent == STANDARD_MODELS_FOLDER) or found_top_level:
-                if not found_top_level:
-                    # We might update the standard_info more than once to account for
-                    # nested standard models, but we only want to update the docstring
-                    # once with the __doc__ of the top-level standard model.
-                    standard_info["docstring"] = c.__doc__
-                    found_top_level = True
-                standard_info["fields"].update(c.model_fields)
-            else:
-                all_fields.update(c.model_fields)
-                for name, alias in getattr(c, "__alias_dict__", {}).items():
-                    alias_dict.setdefault(name, []).append(alias)
-
-        extra_info: Dict[str, Any] = {
-            "fields": {},
-            "docstring": model.__doc__,
-            "alias_dict": alias_dict,
-        }
-
-        # We ignore fields that are already in the standard model
-        for name, field in all_fields.items():
-            if name not in standard_info["fields"]:
-                extra_info["fields"][name] = field
-
-        return standard_info, extra_info
+    def _get_results_type(fetcher: Fetcher) -> Any:
+        """Extract return info from fetcher."""
+        return get_origin(getattr(fetcher, "return_type", None))
 
     @staticmethod
-    def extract_return_type(fetcher: Fetcher):
-        """Extract return info from fetcher."""
-        return getattr(fetcher, "return_type", None)
+    def _extract_info(
+        fetcher: Fetcher, type_: Literal["query_params", "data"]
+    ) -> tuple:
+        """Extract info (fields and docstring) from fetcher query params or data."""
+        model: BaseModel = RegistryMap._get_model(fetcher, type_)
+        standard_info: Dict[str, Any] = {"fields": {}, "docstring": None}
+        extra_info: Dict[str, Any] = {"fields": {}, "docstring": model.__doc__}
+        found_first_standard = False
+
+        family = RegistryMap._get_class_family(model)
+        for i, child in enumerate(family):
+            if child.__name__ in SKIP:
+                continue
+
+            parent = family[i + 1] if family[i + 1] not in SKIP else BaseModel
+
+            fields = {
+                name: field
+                for name, field in child.model_fields.items()
+                # This ensures fields inherited by c are discarded.
+                # We need to compare child and parent __annotations__
+                # because this attribute is redirected to the parent class
+                # when the child simply inherits the parent and does not
+                # define any attributes.
+                # TLDR: Only fields defined in c are included
+                if name in child.__annotations__
+                and child.__annotations__ is not parent.__annotations__
+            }
+
+            if Path(getfile(child)).parent == STANDARD_MODELS_FOLDER:
+                if not found_first_standard:
+                    # If standard uses inheritance we just use the first docstring
+                    standard_info["docstring"] = child.__doc__
+                    found_first_standard = True
+                standard_info["fields"].update(fields)
+            else:
+                extra_info["fields"].update(fields)
+
+        return standard_info, extra_info
 
     @staticmethod
     def _get_model(
@@ -176,6 +203,6 @@ class RegistryMap:
             )
 
     @staticmethod
-    def _class_hierarchy(class_) -> tuple:
-        """Return the class hierarchy starting with the class itself until `object`."""
+    def _get_class_family(class_) -> tuple:
+        """Return the class family starting with the class itself until `object`."""
         return getattr(class_, "__mro__", ())

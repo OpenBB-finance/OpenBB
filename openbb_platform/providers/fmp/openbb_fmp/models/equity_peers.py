@@ -1,13 +1,14 @@
 """FMP Equity Peers Model."""
 
-from typing import Any, Dict, Optional
+# pylint: disable=unused-argument
+
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_peers import (
     EquityPeersData,
     EquityPeersQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_one
 
 
 class FMPEquityPeersQueryParams(EquityPeersQueryParams):
@@ -27,20 +28,23 @@ class FMPEquityPeersFetcher(
         FMPEquityPeersData,
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Equity Peers Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEquityPeersQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPEquityPeersQueryParams:
         """Transform the query params."""
         return FMPEquityPeersQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPEquityPeersQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import create_url, get_data_one
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         url = create_url(4, "stock_peers", api_key, query)
 
@@ -51,5 +55,8 @@ class FMPEquityPeersFetcher(
         query: FMPEquityPeersQueryParams, data: dict, **kwargs: Any
     ) -> FMPEquityPeersData:
         """Return the transformed data."""
-        data.pop("symbol")
+        _ = data.pop("symbol", None)
+        peers: list = [d for d in data.get("peersList", []) if d]
+        data["peersList"] = peers
+
         return FMPEquityPeersData.model_validate(data)

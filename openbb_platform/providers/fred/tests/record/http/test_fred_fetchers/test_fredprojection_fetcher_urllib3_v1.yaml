@@ -1,0 +1,338 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&series_id=FEDTARRH
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5ufBNRuaGRjoGhhCNCMrgOi3tLS01DU00jUGmV2al1lSrGSllJOZp6SjlF9aUlBaEl9SWZCqZGWo
+        o5SWmZMK5SllFeeDlRSlpBbFJ1UqWSkhG52SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRl
+        aKSjlJ+WVpxaomRloKOUk5mbCRI1AAEdZKOKlayiKQkRsEtAIWhoCg+EssSc0lQlKyU9pVod6pht
+        RkOzQdEOiTzqu9uChu62pJ3ZRogETfUwMQLlFBqFt5ERDcPEmIZmm2CYbapnQq3cY4SZM6lpOmbe
+        BMxEz1KpNrYWABUCAc5pBQAA
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '303'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 01 Jul 2024 21:12:25 GMT
+      Expires:
+      - Mon, 01 Jul 2024 21:12:25 GMT
+      Last-Modified:
+      - Wed, 20 Mar 2024 19:08:08 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&series_id=FEDTARCTH
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5ufBNRuaGRjoGhhCNCMrgOi3tLS01DU00jUGmV2al1lSrGSllJOZp6SjlF9aUlBaEl9SWZCqZGWo
+        o5SWmZMK5SllFeeDlRSlpBbFJ1UqWSkhG52SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRl
+        aKSjlJ+WVpxaomRloKOUk5mbCRI1AAEdZKOKlayiKQkRsEtAIWhoCg+EssSc0lQlKyU9pVod6pht
+        RkOzQdEOiTzqu9uChu62pJ3ZRogETfUwMQLlFBqFt5ERDcPEmIZmm2CYbapnQq3cY4SZM02oaDpm
+        3gTMWM9MqTa2FgB12z0HaQUAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '304'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 01 Jul 2024 21:12:25 GMT
+      Expires:
+      - Mon, 01 Jul 2024 21:12:25 GMT
+      Last-Modified:
+      - Wed, 12 Jun 2024 19:08:07 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&series_id=FEDTARMD
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5ufBNRuaGRjoGhhCNCMrgOi3tLS01DU00jUGmV2al1lSrGSllJOZp6SjlF9aUlBaEl9SWZCqZGWo
+        o5SWmZMK5SllFeeDlRSlpBbFJ1UqWSkhG52SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRl
+        aKSjlJ+WVpxaomRloKOUk5mbCRI1AAEdZKOKlayiKQkRsEtAIWhoCg+EssSc0lQlKyU9pVod6pht
+        RkOzQdEOiTzqu9uChu62pJ3ZRogETfUwMQLlFBqFt5ERDcPEmIZmm2CYbapnSK3cY4SZM02oaDpm
+        3jQGmQ5YbC0AOaTgv2kFAAA=
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '302'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 01 Jul 2024 21:12:25 GMT
+      Expires:
+      - Mon, 01 Jul 2024 21:12:25 GMT
+      Last-Modified:
+      - Wed, 12 Jun 2024 19:08:02 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&series_id=FEDTARRM
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5ufBNRuaGRjoGhhCNCMrgOi3tLS01DU00jUGmV2al1lSrGSllJOZp6SjlF9aUlBaEl9SWZCqZGWo
+        o5SWmZMK5SllFeeDlRSlpBbFJ1UqWSkhG52SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRl
+        aKSjlJ+WVpxaomRloKOUk5mbCRI1AAEdZKOKlayiKQkRsEtAIWhoCg+EssSc0lQlKyU9pVod6pht
+        RkOzQdEOiTzqu9uChu62pJ3ZRogETfUwMQLlFBqFt5ERDcPEmIZmm2CYbapnaEqt7GOEmTVNqGk8
+        Zu4EzFjPzFSpNrYWANRHrdFsBQAA
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '306'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 01 Jul 2024 21:12:26 GMT
+      Expires:
+      - Mon, 01 Jul 2024 21:12:26 GMT
+      Last-Modified:
+      - Wed, 12 Jun 2024 19:08:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&series_id=FEDTARCTM
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5ufBNRuaGRjoGhhCNCMrgOi3tLS01DU00jUGmV2al1lSrGSllJOZp6SjlF9aUlBaEl9SWZCqZGWo
+        o5SWmZMK5SllFeeDlRSlpBbFJ1UqWSkhG52SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRl
+        aKSjlJ+WVpxaomRloKOUk5mbCRI1AAEdZKOKlayiKQkRsEtAIWhoCg+EssSc0lQlKyU9pVod6pht
+        RkOzQdEOiTzqu9uChu62pJ3ZRogETfUwMQLlFBqFt5ERDcPEmIZmm2CYbapnaEqt7GOEmTVNqGk8
+        Zu4EzFjPyFSpNrYWAMIFPEpsBQAA
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '306'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 01 Jul 2024 21:12:26 GMT
+      Expires:
+      - Mon, 01 Jul 2024 21:12:26 GMT
+      Last-Modified:
+      - Wed, 12 Jun 2024 19:08:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&series_id=FEDTARRL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5ufBNRuaGRjoGhhCNCMrgOi3tLS01DU00jUGmV2al1lSrGSllJOZp6SjlF9aUlBaEl9SWZCqZGWo
+        o5SWmZMK5SllFeeDlRSlpBbFJ1UqWSkhG52SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRl
+        aKSjlJ+WVpxaomRloKOUk5mbCRI1AAEdZKOKlayiKQkRsEtAIWhoCg+EssSc0lQlKyU9pVod6pht
+        RkOzQdEOiTzqu9uChu62pJ3ZRogETfUwMQLlFBqFt5ERDcPEmIZmm2CYbaJnSa3cY4SZM42oaDpm
+        3gTMSM9EqTa2FgAsTQyhaQUAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '304'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 01 Jul 2024 21:12:26 GMT
+      Expires:
+      - Mon, 01 Jul 2024 21:12:26 GMT
+      Last-Modified:
+      - Wed, 12 Jun 2024 19:08:05 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&series_id=FEDTARCTL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1zUwVNJByKbmpaDL5ScVpxaVJZZk
+        5ufBNRuaGRjoGhhCNCMrgOi3tLS01DU00jUGmV2al1lSrGSllJOZp6SjlF9aUlBaEl9SWZCqZGWo
+        o5SWmZMK5SllFeeDlRSlpBbFJ1UqWSkhG52SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRl
+        aKSjlJ+WVpxaomRloKOUk5mbCRI1AAEdZKOKlayiKQkRsEtAIWhoCg+EssSc0lQlKyU9pVod6pht
+        RkOzQdEOiTzqu9uChu62pJ3ZRogETfUwMQLlFBqFt5ERDcPEmIZmm2CYbaJnSa3cY4SZM42paDpm
+        3jQCmQ5YbC0AovlX12kFAAA=
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '302'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 01 Jul 2024 21:12:27 GMT
+      Expires:
+      - Mon, 01 Jul 2024 21:12:27 GMT
+      Last-Modified:
+      - Wed, 12 Jun 2024 19:08:10 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

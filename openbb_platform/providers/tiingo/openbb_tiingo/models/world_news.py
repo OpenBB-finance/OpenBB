@@ -1,5 +1,7 @@
 """Tiingo World News Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -9,10 +11,8 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
-
-from ..utils.helpers import get_data_many
 
 
 class TiingoWorldNewsQueryParams(WorldNewsQueryParams):
@@ -21,6 +21,15 @@ class TiingoWorldNewsQueryParams(WorldNewsQueryParams):
     Source: https://www.tiingo.com/documentation/news
     """
 
+    __alias_dict__ = {
+        "start_date": "startDate",
+        "end_date": "endDate",
+    }
+    __json_schema_extra__ = {"source": {"multiple_items_allowed": True}}
+
+    offset: Optional[int] = Field(
+        default=0, description="Page offset, used in conjunction with limit."
+    )
     source: Optional[str] = Field(
         default=None, description="A comma-separated list of the domains requested."
     )
@@ -32,33 +41,34 @@ class TiingoWorldNewsData(WorldNewsData):
     __alias_dict__ = {
         "date": "publishedDate",
         "text": "description",
+        "symbols": "tickers",
+        "article_id": "id",
+        "site": "source",
     }
 
-    symbols: str = Field(
-        description="Ticker tagged in the fetched news.", alias="tickers"
+    symbols: Optional[str] = Field(
+        default=None,
+        description="Ticker tagged in the fetched news.",
     )
-    article_id: int = Field(description="Unique ID of the news article.", alias="id")
-    site: str = Field(description="News source.", alias="source")
-    tags: str = Field(description="Tags associated with the news article.")
+    article_id: int = Field(description="Unique ID of the news article.")
+    site: str = Field(description="News source.")
+    tags: Optional[str] = Field(
+        default=None,
+        description="Tags associated with the news article.",
+    )
     crawl_date: datetime = Field(description="Date the news article was crawled.")
 
     @field_validator("tags", "symbols", mode="before")
     @classmethod
     def list_to_string(cls, v):
         """Convert list to string."""
-        return ",".join(v)
+        return ",".join(v) if v else None
 
     @field_validator("crawl_date", mode="before")
     @classmethod
     def validate_date(cls, v):
         """Validate the date."""
         return parser.parse(v)
-
-    @field_validator("symbols", mode="after")
-    @classmethod
-    def symbols_validate(cls, v: str):
-        """Convert symbols to upper case."""
-        return v.upper()
 
 
 class TiingoWorldNewsFetcher(
@@ -75,23 +85,58 @@ class TiingoWorldNewsFetcher(
         return TiingoWorldNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
-        query: TiingoWorldNewsQueryParams,  # pylint: disable=unused-argument
+    async def aextract_data(
+        query: TiingoWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the tiingo endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import math
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_tiingo.utils.helpers import get_data
+
         api_key = credentials.get("tiingo_token") if credentials else ""
 
         base_url = "https://api.tiingo.com/tiingo/news"
-        query_str = get_querystring(query.model_dump(by_alias=True), [])
-        url = f"{base_url}?{query_str}&token={api_key}"
 
-        return get_data_many(url)
+        query_str = get_querystring(
+            query.model_dump(by_alias=False), ["limit", "offset"]
+        )
+
+        limit = query.limit if query.limit else 1000
+        pages = 0
+        if limit > 1000:
+            pages = math.ceil(limit / 1000)
+            limit = 1000
+            urls = [
+                f"{base_url}?{query_str}&token={api_key}&limit={limit}&offset={page * 1000 if page > 0 else 0}"
+                for page in range(0, pages)
+            ]
+        else:
+            urls = [f"{base_url}?{query_str}&token={api_key}&limit={limit}"]
+
+        results: list = []
+
+        async def get_one(url):
+            """Get data for one URL and append results to list."""
+            response = await get_data(url)
+            if isinstance(response, list):
+                results.extend(response)
+            elif isinstance(response, dict):
+                results.append(response)
+
+        await asyncio.gather(*[get_one(url) for url in urls])
+
+        if not results:
+            raise EmptyDataError()
+
+        return results
 
     @staticmethod
     def transform_data(
         query: TiingoWorldNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[TiingoWorldNewsData]:
         """Return the transformed data."""
-        return [TiingoWorldNewsData.model_validate(d) for d in data]
+        return [TiingoWorldNewsData.model_validate(d) for d in data[: query.limit]]

@@ -1,0 +1,92 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/quote/AAPL/dividends?assetclass=stocks
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1465'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 19:00:10 GMT
+      Expires:
+      - Mon, 01 Jul 2024 19:00:10 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=23~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=6291514a3ebd5a82ab608e10be8bfad6;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=2DAD3E4BD46D34A4DB372AFDF87D0A59~000000000000000000000000000000~YAAQ2pUeuPgBgkuQAQAAsDirbxgK2KAudQe8ad8eoDCrgwoXuopPkOQTPrv21+bmRfWW3O+UT6Ox+buJ7+oKMUL9d5W8w1uJ0FFECBicVouZ9Boc4QfH86DGf3ZAbk+e9cqIMr9JuqqHg7bf7N6f5xce4pvX39PUFr8KnARrRcW2Tkf4jbV+SW2WAiJ3+5YHVfwQdPHXtQON02AYOKMoFn+84fuyq5+TjWo0DKPgCevllBNWbfugCEWuiVPuywwqXpiHsUsT6CYQ0F1/ylBMBBGIf6onWTLUFO2aqUNrs4geTQ8dmXPFx17pM+CGkckQQcZfPgQNVrzk9ZYYQD5rr0VClPnE+EgrKNBg85Gu6oC9vUNg26O9uT7Z4rRi3LumkKGbQixnNwBrLL4TsZ0en/NhW+yA;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 21:00:10 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      gid:
+      - '201'
+      lang:
+      - en
+      rid:
+      - ba726297-e65c-420d-a264-e248ced2d1c7
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

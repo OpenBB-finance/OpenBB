@@ -1,0 +1,279 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/earnings?date=2024-07-02
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAM2YXXPiNhSG/4rGzUx3OwpI/sR7FyBk0xhCcNI07fRCMSJo1liuZSdDM/nvPXaS
+        YsBmvGTY6RVGVsR5dF695yjP2pSlTPvyrDF1OdO+aNcZx+jXLEQ6RjrRTQ1rc86mPFH5pFQseD4p
+        /8CaWi7uZQjf/dcHrEWseN+Ti5hFSzRixbwFS77xtMdieDUsnlH+BWszoQIWXmUsSXlyGk1F9ABT
+        BsUoehtGb+NY47EayIQHTKXFb0SKRypT6HTs/4L+ewNByMvZqUohYO0nJGeoeMZaCG/vOEsmcdrP
+        F/DgO8oHflZowmOZpKjPUl6aCQu/z1u+zst/SnvBWiKfYPk/n7cWHbVPthZ4HXvbuvzjOJLpscri
+        OBR8Wt7H276/2sRbKadKTDlsAE8elugskVmMPLEQafFX5V09MizsEgsbVgdT263dWtj99ltW13dz
+        fdvyiF/wNp3d1t38740txiPacswNyjjhx69BlhmH/nDFOPR76DyaZipNBKS8LyAgEMerfDC8Clqb
+        pCY2XB0TSrBtmztAl9WgEKhhrNN2Klk/lkm/69+uMH1xDzwc+akIwyeWq7ouj5hAKi0HCF3rgGl0
+        qtP46Yi0iPu5IeTwZHRTyiWLgjlXOdxNlLMhL51upU/HNnGxZRNsOPr3A+YB6ubndU5aSem0iV0j
+        VliDbDCyGfz+8VxmiVrLozcup3GRhSwV4DxoHGaqWqCuZeOO48I5tPeQJ2lRpwndx+TZP+2tsPri
+        EexdzGDOu9e8G3gcBpt4tm5iCxBN4hxKn1ab1NkMyLPTkHF8O/BWkGP5xJNByHlaYysdUCUFFzXJ
+        fqokzoYqje88e7CG7TSy0En/plQnJmwqsryEBcsghEBr+ODU2VAdOsautNWoMufrbPIdQpe9u36p
+        i5iLiKG7LJgzAUwQaVQcPigUde7pmFi3KXaNXUfvQNosRGA09U7vZnSyQvUyID2PIvn4Zi+QQplA
+        T8IqKCkFg6EOdvQ9KkQRJW0k1apU5v5kN0QcnIy+rhAHLJpnrFKbFM6dnRd1d4+z1yxtVSyfjvQW
+        7TRN2Oi8d7GiGYlgLmE5NACNRgE0L9XHrmNg03AxIT+UDLJkbnZjdVynZ5PfV1yn7CHkaDxnyYIF
+        PEsFBFxT52wLUxdqgburCztA0kjLoE2T5nvlU+bzMHeUr1LFImWhSJdo7PW2nJKCh5jYdA7GZbUN
+        Uu8hRuP+q3vdK/XS3fNrNBQRRFhrj9B8OQTr+sEuCB9zf+/8usTjR/IJeewbh9KmoC8LuKrsKKkJ
+        Rc3Cptv50Tqkjd3+YnIxWZEZ9kUCKgzz6FS1I8I9wLaxSw9mG1ab1nTHOZlpNb4D3I3+KN8BRPQP
+        6gq5gF5y1PptuznGHfAN3aD7VS5js3JVNyG74YjZFK53Wb6s9qRaSIW+cham8+rWH1NCsWnt4RyF
+        nppdbD52yIaX3VK+5L0IRSAXdZYBPmiAFv+vjtG9Kvmf/FuI92NVf7/O79auczCv2C09p3G7ceWd
+        jVZsEGQoHniEruc8YXFRmGvKMsVUN7Bh7nG5riD86wWW50qxBwgjysIQQkxZmhX/DUx6cgrDOiFY
+        u8+fh+szp/yRhzLmydr4y8u/yNA8F3UUAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1223'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 18:58:31 GMT
+      Expires:
+      - Mon, 01 Jul 2024 18:58:31 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=75~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=901f11c6d294abca4c90eaa80a059c27;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=27996AA06BA93AAD68C280A683A8FA11~000000000000000000000000000000~YAAQ25UeuD8tlUuQAQAAULapbxh2dgG8EUVv+TN2l4TkeCe+VDoqYKPQjH7QP/0R1Pd6Ebl4vL+E4i0M7EZzMUiWBx0pIokuLTbCMvJ1znQjpcotxdOUbBOcyfTsa1Cm3uE+VHgF6MRjja+P5tWm2WJCj4JoKO6OeDyT50z23caTxrxyGncaXSwQzeiMjgCPla/HSY29S07iQwLYrKB39UcHVXUj71bNO6xI94SoIFCSO4fMcz/Pj9kNubd1jBhUKS43PgNT+Ww9bV7zt7PsOy+7R1Ke7hbHF7kJwFCb2TazLNUXoBtlgksM24dH9dilgXNcDoF/TLC8K+s8QmTb6EjXlHQhHWNR8HrSncXbddSUCiEr+0N5DB2arN5TiM3mARxlXkc4yrapKHrGiS4B7JoOwRAbgg==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 20:58:31 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '3'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '30'
+      cache-hit:
+      - '3002'
+      gid:
+      - '103'
+      lang:
+      - en
+      rid:
+      - 04d23680-d23d-48fb-ac00-19eb486c2331
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/earnings?date=2024-07-01
+  response:
+    body:
+      string: !!binary |
+        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
+        JZTvPL+9/QeckiWdFCIAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1612'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 18:58:31 GMT
+      Expires:
+      - Mon, 01 Jul 2024 18:58:31 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=95~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=f1d5b07c8d2118a4edac89bfbd6432c4;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=52D1F60CA97AFC9D6BD3B43A558FE769~000000000000000000000000000000~YAAQ25UeuD4tlUuQAQAAULapbxja9ay6axo/uxoiP9xvCH1SZ/F5mUO/uTFxRJ/9Mkk0Xa/IphlYwnsb4PYzJKoZ3Cyy09pSa1HcnRELR4Ud6vvvLNkPbA/kzAlFZ0YA/Hws0NT6V4qdSbpsSjU5oDlx0DcA60sE4nTPJlnJUkberdkLGW8F1bZf7IBWySJyn6W7Ldl3EfUBTrnH/GZ0Bqq/68qp7OoGa6gZdQd+rmCYziwAoJC+gZ3DWnV3L/HsPmotoRgAXIKqep0DVwT91VP73IB68gwva1aUECo2P1sEPMYYEi3AFseWS7+CMs+PPm9fz3F1WNP6MKANIlhh8ZnVZX2JR+Cr0pgCq5BRQVsTPV5lgs/Y3Cf739xoO9F+lzpvBvqjcNboTonJ12XfgEp1u711MA==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 20:58:31 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '0'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '28'
+      gid:
+      - '203'
+      lang:
+      - en
+      rid:
+      - 1f5df4c9-642d-4650-bd5f-a3cadee9d0b5
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/earnings?date=2024-07-03
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAM2Y73OiOBjH/5UM15nb7qRKAvJj31m02o5aT1x77c29SCHW3CFhEnDX6fR/v0B7
+        K1bYZbvX3r4CQgz5PD++zxPvtZCkRPtwrxF5udQ+aFc0hOAii4ABAdaxqUFtRUlIhcwnpWxN1aR5
+        foGa3K5veaSe/ccbqMWkeO/xdULiLZiQYt6aiL9p6pFEvRoX9yB/gNqSyYBEv2VEpFT045DFd2rK
+        WTEKnobB0zjUaCLPuKABkWnxjVjSWGYS9Kf+e/DljdoEv1z2Zao2rP0C+BIU91CL1NtrSsQsSXv5
+        AiP1DPKBXyWY0YSLFPRISksz1cL/zts+zss/pT1ATfBPavk/7g8WtdqG3lZ2Mw6WOcItF6nRJxPm
+        l5NE0JNH4+xZc35TNmUsUxpFJGU8BqeCxKEE53HwzKxHpg1124KoY0Ad4Vrbjsm2/eTWfXMeGS3T
+        2jce0hXqIeKk3T2Aexwro8U8PZFZkkSMhmW4oTfewQ0/zr3huN8D77wVi8kxGLE1S4sf7MFh6DoG
+        RA6CpuV8hU1Us+1j5Xut4uq0daPade+O9BZCxw0J/enVbIfoZ/GUf1Jh7HGhYqxw43O8DnKhbjnQ
+        wfr3w+Wbw+7xM9ehSkSrjVE1YnMHer3x5Q6vu2EhOGVcUrFhAZUwj83WQXCqqMRmB9rYrQXsJjWA
+        ik83nuE1DszcOnpj1w3Gg/Md24BHIY3BmKSCfQYDwbOkGg+7BrRMAzpG5/vxmgVnHRvGjdlm55MS
+        m2BxKHgI/BVLErVFMFS06irBKA0PCW0ELQtBZH5NWn4w/ZBdn356Y86b/mSx47yh8YaRSq8h3YGm
+        o0Pbtl+Lqc5rSG9KczXrTnc0V4IkYE6DVcwjfsfq0s1RYNiBhvFqWlkNZrecxmD+5aRXUkkeqxZj
+        F4NVVB0EMXahbVj/RwVALbtxCPYX3R1aXwXgpjoCDQx1w4Ad9ALZf7mfimxqSHI9HFzsUK6zeMWV
+        VAwEVbrozc+rtaIDXcuELkZvSdW8gI1LEj85m9f1HKhTqINrvqlzmmPMZx8HO5C5yFS5Wn7JoGph
+        QCZ0ijJcX6deSfGw0TR5uqNpSfG6kSpOFJjfAss7RCsvwj+ns268bqknvOF8HRDxDSYldaqnsJH5
+        cyJ1x/685Kc1lSqLKkFsaGEbGi9pbn9A5Z6ftWol7tIfliSOyxVbEZGBQcRv1SnU44eFCFqq4TM7
+        r9YK1SWR27i6DqdeqUkfUnUcDwKew9R0sCp1dGjqb9wJoZZpNkWaLfxS/zojLAILJvNDcWURghg5
+        by10zZNnMev+voNZMEE+56eoiNzKx4NGbVWCjq4OGvqr5ZJqw2v+wFDuclu4cQieXvRKiKdRRv8i
+        W9Bj5C7mMmVBjeoZrqmk4k3j8MhoiDTye6XeYZQFW+AHjMYpW7JAocmAb6jYVnH9Jzx/PqhFqZTk
+        Tn0/zqJI7S0laVb8NSc8HqphrOtQu83vx/szQ7qhEU+o2Bt/ePgHh/hNFgIUAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1130'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 18:58:31 GMT
+      Expires:
+      - Mon, 01 Jul 2024 18:58:31 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=72~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=b5946850ca1bc55e57ef5ab8a5b7707a;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=6D0C0DA6652CC0678DF8831FD634ED78~000000000000000000000000000000~YAAQ25UeuEEtlUuQAQAAULapbxjfiAZIW7uLPoVU4Oxw+b8FpFCHbw/o3H/wC52Tl7b5/In1vaOcNZb+BsknaFTZ5rZMM8GDKGlX8j8W7cO4uOJ5yDW1Y3pNtm2ubBEYgrLaL2VHajboY8L6jCZNzqaVWYX7TlqoP8NEhWaKg0VG8q+kw37/Ip9sPqVff7nEjjb7ODmuwng5sHanNwK05j4634KHN4MIwWFmnAs5v6w3BFWCiL8Wg/tJStu+TV7Zxy3T38ACEpBvebXqB12gmeMBgSzyRZOSUmmwnCtgrpsAQl8fvo3C8yar7xxyAYJ4Op2kx9tDKj+coT8NL9oYv6PiwwO1uWwxkBgjM7UnNUTyKuODitpBgv+Bd+VIBytugXaznxhSILGwR2STsOh0f4JP0Z+Q4g==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 20:58:31 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '0'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '686'
+      gid:
+      - '201'
+      lang:
+      - en
+      rid:
+      - 682d5a05-35e9-43cc-8c4d-1020fef3b6b0
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

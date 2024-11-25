@@ -1,8 +1,7 @@
 """Historical EPS Standard Model."""
 
-
 from datetime import date as dateType
-from typing import List, Optional, Set, Union
+from typing import Optional
 
 from dateutil import parser
 from pydantic import Field, field_validator
@@ -22,11 +21,9 @@ class HistoricalEpsQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class HistoricalEpsData(Data):

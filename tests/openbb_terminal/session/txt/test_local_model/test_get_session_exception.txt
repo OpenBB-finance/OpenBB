@@ -1,2 +1,0 @@
-
-[red]Failed to get login info.[/red]

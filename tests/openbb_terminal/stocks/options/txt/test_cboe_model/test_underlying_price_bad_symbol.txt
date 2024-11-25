@@ -1,1 +1,0 @@
-The symbol, BAD_SYMBOL, was not found in the CBOE directory.

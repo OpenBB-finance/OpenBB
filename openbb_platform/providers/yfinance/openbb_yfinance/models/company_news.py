@@ -1,6 +1,8 @@
 """Yahoo Finance Company News Model."""
 
-import json
+# pylint: disable=unused-argument
+
+import asyncio
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -10,7 +12,6 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsQueryParams,
 )
 from pydantic import Field, field_validator
-from yfinance import Ticker  # type: ignore
 
 
 class YFinanceCompanyNewsQueryParams(CompanyNewsQueryParams):
@@ -18,6 +19,16 @@ class YFinanceCompanyNewsQueryParams(CompanyNewsQueryParams):
 
     Source: https://finance.yahoo.com/news/
     """
+
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def _symbol_mandatory(cls, v):
+        """Symbol mandatory validator."""
+        if not v:
+            raise ValueError("Required field missing -> symbol")
+        return v
 
 
 class YFinanceCompanyNewsData(CompanyNewsData):
@@ -27,38 +38,17 @@ class YFinanceCompanyNewsData(CompanyNewsData):
         "symbols": "relatedTickers",
         "date": "providerPublishTime",
         "url": "link",
+        "images": "thumbnail",
+        "source": "publisher",
     }
 
-    uuid: str = Field(description="Unique identifier for the news article")
-    publisher: str = Field(description="Publisher of the news article")
-    type: str = Field(description="Type of the news article")
-    thumbnail: Optional[List] = Field(
-        default=None, description="Thumbnail related data to the ticker news article."
-    )
+    source: str = Field(description="Source of the news article")
 
     @field_validator("symbols", mode="before", check_fields=False)
     @classmethod
     def symbols_string(cls, v):
         """Symbols string validator."""
         return ",".join(v)
-
-    @field_validator("providerPublishTime", mode="before", check_fields=False)
-    @classmethod
-    def date_validate(cls, v):
-        """Date validator."""
-        return datetime.fromtimestamp(v)
-
-    @field_validator("relatedTickers", mode="before", check_fields=False)
-    @classmethod
-    def related_tickers_string(cls, v):
-        """Related tickers string validator."""
-        return ", ".join(v)
-
-    @field_validator("thumbnail", mode="before", check_fields=False)
-    @classmethod
-    def thumbnail_list(cls, v):
-        """Thumbnail list validator."""
-        return v["resolutions"]
 
 
 class YFinanceCompanyNewsFetcher(
@@ -75,16 +65,38 @@ class YFinanceCompanyNewsFetcher(
         return YFinanceCompanyNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(  # pylint: disable=unused-argument
+    async def aextract_data(
         query: YFinanceCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
-        data = Ticker(query.symbols).get_news()
-        data = json.loads(json.dumps(data))
+        from yfinance import Ticker  # pylint: disable=import-outside-toplevel
 
-        return data
+        results = []
+        symbols = query.symbol.split(",")  # type: ignore
+
+        async def get_one(symbol):
+            data = Ticker(symbol).get_news()
+            for d in data:
+                images = None
+                if d.get("thumbnail"):
+                    images = d["thumbnail"].get("resolutions")
+                _ = d.pop("uuid")
+                _ = d.pop("type")
+                d["date"] = datetime.utcfromtimestamp(d["providerPublishTime"])
+                d["images"] = (
+                    [{k: str(v) for k, v in img.items()} for img in images]
+                    if images
+                    else None
+                )
+            results.extend(data)
+
+        tasks = [get_one(symbol) for symbol in symbols]
+
+        await asyncio.gather(*tasks)
+
+        return results
 
     @staticmethod
     def transform_data(

@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/securities/AAPL/prices?api_key=MOCK_API_KEY&end_date=2023-01-10&end_time=23%3A59%3A59&frequency=daily&source=realtime&start_date=2023-01-01&start_time=00%3A00%3A00&timezone=America%2FNew_York
+  response:
+    body:
+      string: !!binary |
+        H4sIALYJ4GUAA6yW226cMBCGX6XyNWv5ADbsXaJWUaU2PUStElUVsljvrhMC1LBJNlHeveM9YWDT
+        qjSXM54Z29/8jHlCdVNmN2llTaZrNP3xhGaq0WiKGGF8QuiEEhQgUzRWVdqacoamc5XXOkBzq3+t
+        dJGtIXimTL6GuLLSBZpSTjATAVqaxdJZdGPl5T0YLMaUBSjLy1pvIyUP0F2Zr27BFjxOBI0iTAKk
+        Ztfprh5LMJdbz74mOXh2dSVm0daxrw1Zcbh1Has/V1lTWohzRl3lpkmtaky588zMnZnpAu5LnJkt
+        VbHQzojiAAGKTBdN2noJCWH7uZk367S5L9N7rW/2h5Vyk9Rb3J2bY86egwF2kozCHsoWO8chPWAH
+        FkkHO41a7JLIhMSUD7FHPewMRx3qyT7Fg+6a7UP3q4+Gzl+ATl8Vuvh36ExgQlvooPzkAD3sQAc0
+        grXQYymjUNKB1qNNazzokBd2oIeYhD3qMZY9qfvlx1EPN90/Qp2LIdj/oR6NoC4x5QfqYEnpUZfC
+        ow4EfOokEUySuE9dHGS7rylw0qHOcUJ71ENMZY+6V34c9QnF/IjYJxBEiXhV7uEotTtJ7xnFWLST
+        HUDHHneBufC4J5RywQcjRmy643OHXsY9uTPeAx/tx9Cx8uO4wyN1fLBTwv9APRkOoL9Q5+Pe09if
+        Mf6IcRL0xS5b6JQySiVMgSPvadJ/TwntyZ2zgdwZ62LvbDBS7zAkX9A7dzPtOPmYYDFc9Mn/hDPo
+        bGVNA0CfkIF9nSNVi2u7uAa2WXlbqWKdblbASM8vxdnjJ1jZ/hLph+1ZtgH1wyItHz/axLWlUO7y
+        6KSqcv3mfZFtqs2c692XC2esrN118tvFW3A0JrvR1qWcfP6w27usTaPTzsr0m8uem4UBx+npGSHk
+        NLmKLlknpbd++fXKfcj1UlkNvVJ13YmgF9F5/D2GCPjHu1V2neambkyxQNPGrvQz3EY/NGmlHPVi
+        lefPvwEAAP//AwDtIUFLFAoAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Feb 2024 04:36:06 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

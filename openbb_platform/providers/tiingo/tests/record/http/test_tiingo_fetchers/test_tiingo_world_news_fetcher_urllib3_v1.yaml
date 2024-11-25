@@ -1,0 +1,119 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.tiingo.com/tiingo/news?limit=20&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":62543755,\"publishedDate\":\"2024-02-22T18:00:26Z\",\"title\":\"15
+        Hot Penny Stocks On the Move\",\"url\":\"https://www.insidermonkey.com/blog/15-hot-penny-stocks-on-the-move-1260788/\",\"description\":\"Strong
+        inflation data from January and the Fed\",\"source\":\"insidermonkey.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T18:00:41.711533Z\",\"tickers\":[]},{\"id\":62543748,\"publishedDate\":\"2024-02-22T18:00:00Z\",\"title\":\"The
+        U.S. Finally Started to Crack Down on Crypto Emissions in 2023\",\"url\":\"https://oilprice.com/Finance/the-Markets/The-US-Finally-Started-to-Crack-Down-on-Crypto-Emissions-in-2023.html\",\"description\":\"The
+        global push for comprehensive crypto regulations intensified in 2023 as the
+        U.S. cracked down on major firms, addressing environmental and security issues.\",\"source\":\"oilprice.com\",\"tags\":[\"Bitcoin\",\"Crime\",\"CryptoCurrency\",\"Cryptocurrency\",\"Energy\",\"Environment\",\"Mining\",\"Regulation\",\"United
+        States\"],\"crawlDate\":\"2024-02-22T18:00:27.430093Z\",\"tickers\":[]},{\"id\":62543750,\"publishedDate\":\"2024-02-22T18:00:00Z\",\"title\":\"VeChain:
+        Will This Important Update Take VET To 50 Cents?\",\"url\":\"https://watcher.guru/news/vechain-will-this-important-update-take-vet-to-50-cents\",\"description\":\"VeChain
+        (VET) has been gaining momentum in the cryptocurrency market, showcasing impressive
+        performance amid........\",\"source\":\"watcher.guru\",\"tags\":[\"CryptoCurrency\",\"Tiingo
+        Top\"],\"crawlDate\":\"2024-02-22T18:00:29.216257Z\",\"tickers\":[]},{\"id\":62543717,\"publishedDate\":\"2024-02-22T17:59:28Z\",\"title\":\"Mercedes-Benz
+        rallies after backing off 50% EV target, unveiling new buybacks\",\"url\":\"https://seekingalpha.com/news/4070483-mercedes-benz-rallies-after-backing-off-50-ev-target-unveiling-new-buybacks\",\"description\":\"Mercedes-Benz
+        delays electrification target by 5 years to 2030, announces stock buyback
+        program. Read more.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Consumer
+        Discretionary\",\"Stock\"],\"crawlDate\":\"2024-02-22T18:00:00.801505Z\",\"tickers\":[\"mbgaf\"]},{\"id\":62543699,\"publishedDate\":\"2024-02-22T17:59:27.191176Z\",\"title\":\"Understanding
+        the Waves of Bitcoin Buying\",\"url\":\"https://www.cryptoglobe.com/latest/2024/02/understanding-the-waves-of-bitcoin-buying/\",\"description\":\"Have
+        you ever found yourself at the edge of the digital currency ocean, wondering
+        how to dive into the swirling currents of Bitcoin? It's a common place to
+        be as cryptocurrency becomes a staple of modern financial discussions. Just
+        like any other form of trading, there's a need to grasp the essentials before
+        you make the plunge. Whether it's setting up a digital wallet to store your
+        coins or finding the right platform for exchange, each step lays the foundation
+        for a seamless experience. For many, dipping a toe in begins with a simple
+        google of Bitcoin buy to survey the expanse of buying options and educational
+        resources available.\",\"source\":\"cryptoglobe.com\",\"tags\":[\"CryptoCurrency\"],\"crawlDate\":\"2024-02-22T17:59:38.864060Z\",\"tickers\":[]},{\"id\":62543694,\"publishedDate\":\"2024-02-22T17:58:32Z\",\"title\":\"PCH
+        Reopens After Mudslides, Malibu Canyon Remains Closed\",\"url\":\"https://patch.com/california/malibu/pch-reopens-after-mudslides-malibu-canyon-remains-closed\",\"description\":\"Crews
+        are working to clear mudslides that have hampered travel in and around Malibu
+        this week.\",\"source\":\"patch.com\",\"tags\":[\"California\",\"Canyon\",\"Closed\",\"Malibu\",\"Mudslides\",\"Remains\",\"Reopens\",\"Traffic\",\"Transit\"],\"crawlDate\":\"2024-02-22T17:59:34.787354Z\",\"tickers\":[]},{\"id\":62543754,\"publishedDate\":\"2024-02-22T17:58:23Z\",\"title\":\"Hora
+        de hablar de una nueva solucin para el conflicto israel-palestino\",\"url\":\"https://www.jpost.com/spanish/opinion/article-788420\",\"description\":\"Despu\xE9s
+        del 7 de octubre, es momento de que pol\xEDticos, expertos en seguridad y
+        grupos de reflexi\xF3n ofrezcan nuevas y creativas sugerencias, ya que las
+        que han circulado hasta ahora han fracasado.\\r\\n\",\"source\":\"jpost.com\",\"tags\":[\"Es-Israel\",\"Ham\xE1s\",\"Israel\",\"Palestina\",\"Palestinian
+        Territories\",\"Soluci\xF3n De Dos Estados\"],\"crawlDate\":\"2024-02-22T18:00:40.855387Z\",\"tickers\":[]},{\"id\":62543573,\"publishedDate\":\"2024-02-22T17:58:19.939191Z\",\"title\":\"Illuminating
+        the source-sink balancing act of photosynthetic 'tiny green bacteria'\",\"url\":\"https://phys.org/news/2024-02-illuminating-source-photosynthetic-tiny-green.html\",\"description\":\"Cyanobacteria
+        are little green microorganisms that photosynthesize, like plants and algae
+        do, but with stark differences in how they function.\",\"source\":\"phys.org\",\"tags\":[\"Biology\",\"Cell
+        & Microbiology\"],\"crawlDate\":\"2024-02-22T17:58:23.064214Z\",\"tickers\":[]},{\"id\":62543644,\"publishedDate\":\"2024-02-22T17:57:08Z\",\"title\":\"2024
+        NFL Draft odds, predictions: Who will go after Caleb Williams?\",\"url\":\"https://nypost.com/2024/02/22/sports/2024-nfl-draft-odds-predictions-who-will-go-after-caleb-williams/\",\"description\":\"The
+        Washington Commanders\u2019 pick at No. 2 is a bit unclear.\",\"source\":\"nypost.com\",\"tags\":[\"Drake
+        Maye\",\"Nfl Betting\",\"Nfl Draft\",\"Nfl Draft 2024\",\"Sports Betting\",\"Sports
+        Picks\"],\"crawlDate\":\"2024-02-22T17:58:37.005962Z\",\"tickers\":[]},{\"id\":62543580,\"publishedDate\":\"2024-02-22T17:56:52Z\",\"title\":\"Is
+        Amazon shutting down Freevee? Here's what we know so far\",\"url\":\"https://www.tomsguide.com/entertainment/prime-video/is-amazon-shutting-down-freevee-heres-what-we-know-so-far\",\"description\":\"Prime
+        Video with ads may render Freevee redundant\",\"source\":\"tomsguide.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T17:58:24.495914Z\",\"tickers\":[]},{\"id\":62543753,\"publishedDate\":\"2024-02-22T17:56:50Z\",\"title\":\"Gemini
+        - Google's New AI, Offers Users Free Image Creation And More\",\"url\":\"https://www.ndtv.com/world-news/gemini-googles-new-ai-offers-users-free-image-creation-and-more-5105962\",\"description\":\"Gemini,
+        released on December 6, 2023, and powered by the Imagen 2 model, allows users
+        to generate high-quality images with text prompts.\",\"source\":\"ndtv.com\",\"tags\":[\"Gemini\",\"Google
+        Ai\",\"Healthcare\",\"Industrials\",\"Stock\",\"Technology\"],\"crawlDate\":\"2024-02-22T18:00:37.930340Z\",\"tickers\":[\"goog\",\"googl\",\"vrtx\",\"vtnr\"]},{\"id\":62543565,\"publishedDate\":\"2024-02-22T17:56:49Z\",\"title\":\"Municipal
+        Elections \u2013 a Basic Guide\",\"url\":\"https://www.jpost.com/israel-news/article-788422\",\"description\":\"Elections
+        for local authorities, first scheduled for October 31, were postponed twice
+        due to the October 7 massacre and subsequent nation-wide draft of hundreds
+        of thousands of reservists.\",\"source\":\"jpost.com\",\"tags\":[\"Israel
+        Elections\",\"Israel-Hamas War 2024\",\"Israeli\",\"Municipal Elections\"],\"crawlDate\":\"2024-02-22T17:58:17.440229Z\",\"tickers\":[]},{\"id\":62543688,\"publishedDate\":\"2024-02-22T17:56:39Z\",\"title\":\"Does
+        Fubo\u2019s antitrust lawsuit against ESPN, Fox, and WBD stand a chance?\",\"url\":\"https://arstechnica.com/tech-policy/2024/02/does-fubos-antitrust-lawsuit-against-espn-fox-and-wbd-stand-a-chance/\",\"description\":\"Fubo:
+        Media giants' anticompetitive tactics already killed PS Vue, other streamers.\",\"source\":\"arstechnica.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Stock\",\"Tiingo Top\"],\"crawlDate\":\"2024-02-22T17:59:25.401501Z\",\"tickers\":[\"dis\"]},{\"id\":62543696,\"publishedDate\":\"2024-02-22T17:56:28Z\",\"title\":\"Jan
+        6 Capitol Riot Participation Lands Charges For Philly Man: Feds\",\"url\":\"https://patch.com/pennsylvania/ardmore/philly-man-charged-jan-6-capitol-riot-participation-feds\",\"description\":\"A
+        67-year-old Philadelphia man is accused of illegally entering the United States
+        Capitol building on Jan. 6, 2021.\",\"source\":\"patch.com\",\"tags\":[\"Capitol\",\"Charges\",\"Crime\",\"Participation\",\"Pennsylvania\",\"Philadelphia\",\"Philly\",\"Safety\",\"United
+        States\"],\"crawlDate\":\"2024-02-22T17:59:36.085142Z\",\"tickers\":[]},{\"id\":62543627,\"publishedDate\":\"2024-02-22T17:56:24Z\",\"title\":\"5
+        Hot Penny Stock On the Move\",\"url\":\"https://www.insidermonkey.com/blog/5-hot-penny-stock-on-the-move-1260790/\",\"description\":\"Applied
+        Therapeutics Inc (NASDAQ:APLT) shares jumped about 79% over the past five
+        days through February 22.\",\"source\":\"insidermonkey.com\",\"tags\":[\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2024-02-22T17:58:33.379918Z\",\"tickers\":[\"aplt\"]},{\"id\":62543702,\"publishedDate\":\"2024-02-22T17:56:11Z\",\"title\":\"Police
+        special constable sacked for watching footage of stabbed Nottingham attack
+        victims\",\"url\":\"https://www.independent.co.uk/news/uk/crime/nottingham-valdo-calocane-police-sacked-grace-omalley-b2500862.html\",\"description\":\"Almost
+        180 police staff accessed material relating to the knife rampage \u2013 although
+        11 had no legitimate policing reason to do so\",\"source\":\"independent.co.uk\",\"tags\":[\"Nottingham\",\"Police\"],\"crawlDate\":\"2024-02-22T17:59:40.275499Z\",\"tickers\":[]},{\"id\":62543438,\"publishedDate\":\"2024-02-22T17:56:10Z\",\"title\":\"Putin
+        smiles when asked about 'crude' Biden remark\",\"url\":\"https://thewest.com.au/politics/putin-smiles-when-asked-about-crude-biden-remark-c-13695777\",\"description\":\"Russian
+        President Vladimir Putin has told media the US president's remark calling
+        him a \\\"crazy SOB\\\" shows why the Kremlin prefers Joe Biden to Donald
+        Trump.\",\"source\":\"thewest.com.au\",\"tags\":[\"Politics\",\"Russian Federation\",\"Tiingo
+        Top\"],\"crawlDate\":\"2024-02-22T17:56:21.908531Z\",\"tickers\":[]},{\"id\":62543751,\"publishedDate\":\"2024-02-22T17:55:48Z\",\"title\":\"Almadex
+        Samples 0.59% copper and 0.18 g/t gold in Outcrop at Newly-Acquired Porphyry
+        Target in Nevada, USA\",\"url\":\"https://www.globenewswire.com/news-release/2024/02/22/2833982/0/en/Almadex-Samples-0-59-copper-and-0-18-g-t-gold-in-Outcrop-at-Newly-Acquired-Porphyry-Target-in-Nevada-USA.html?f=22&fvtc=2&fvtv=1\",\"description\":\"VANCOUVER,
+        British Columbia, Feb.  22, 2024  (GLOBE NEWSWIRE) -- Almadex Minerals Ltd.
+        (\",\"source\":\"globenewswire.com\",\"tags\":[\"#Criticalminerals\",\"#Prospectgenerator\",\"Almadex
+        Minerals Ltd.\",\"Tsx Venture Exchange:Dex\"],\"crawlDate\":\"2024-02-22T18:00:31.672332Z\",\"tickers\":[]},{\"id\":62543490,\"publishedDate\":\"2024-02-22T17:55:38Z\",\"title\":\"Wi-Fi
+        software found in many major laptops and smartphones has a major security
+        flaw \u2014 here's what you need to know\",\"url\":\"https://www.techradar.com/pro/security/wi-fi-software-found-in-many-major-laptops-and-smartphones-has-a-major-security-flaw-heres-what-you-need-to-know\",\"description\":\"Do
+        you know which SSID you're connecting to?\",\"source\":\"techradar.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2024-02-22T17:57:20.899177Z\",\"tickers\":[\"rht\"]},{\"id\":62543752,\"publishedDate\":\"2024-02-22T17:55:38Z\",\"title\":\"Delhi
+        Police Issues Traffic Advisory In View Of Farmers' Protest\",\"url\":\"https://www.ndtv.com/india-news/delhi-police-issues-traffic-advisory-in-view-of-farmers-protest-5108716\",\"description\":\"The
+        Delhi Police on Thursday issued a traffic advisory in view of the farmers'
+        protest, saying vehicular movement will be affected on city borders due to
+        pickets and checkpoints and asked commuters to plan accordingly.\",\"source\":\"ndtv.com\",\"tags\":[\"Delhi
+        Police Advisory Farmers Protest\",\"Delhi Police Traffic Advisory\",\"Farmers
+        Protest Traffic Advisory\"],\"crawlDate\":\"2024-02-22T18:00:35.439403Z\",\"tickers\":[]}]"
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      Content-Length:
+      - '10951'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 22 Feb 2024 18:01:11 GMT
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Vary:
+      - Cookie, Origin
+      x-frame-options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

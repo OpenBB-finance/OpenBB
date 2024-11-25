@@ -1,6 +1,5 @@
 """Test coverage for the router module."""
 
-
 from unittest.mock import patch
 
 from openbb_core.api.router.coverage import get_command_coverage, get_provider_coverage

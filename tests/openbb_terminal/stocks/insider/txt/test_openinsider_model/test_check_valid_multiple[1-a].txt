@@ -1,1 +1,0 @@
-Invalid TransactionFiling.TradedMinK 'a'. Not a valid integer.

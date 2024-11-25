@@ -1,4 +1,5 @@
 """Test the router settings.py module."""
+
 import asyncio
 from unittest.mock import Mock
 

@@ -1,15 +1,22 @@
 """CBOE Futures Curve Model."""
 
-# IMPORT STANDARD
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
 
-from openbb_cboe.utils.helpers import get_settlement_prices
+from typing import Any, Dict, List, Literal, Optional
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveData,
     FuturesCurveQueryParams,
 )
-from pydantic import Field
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
+from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field, field_validator
+
+SymbolChoices = Literal["VX_AM", "VX_EOD"]
 
 
 class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
@@ -18,11 +25,32 @@ class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
     Source: https://www.cboe.com/
     """
 
+    __json_schema_extra__ = {"date": {"multiple_items_allowed": True}}
+
+    symbol: SymbolChoices = Field(
+        default="VX_EOD",
+        description=QUERY_DESCRIPTIONS.get("symbol", "")
+        + "Default is 'VX_EOD'. Entered dates return the data nearest to the entered date."
+        + "\n    'VX_AM' = Mid-Morning TWAP Levels"
+        + "\n    'VX_EOD' = 4PM Eastern Time Levels",
+        json_schema_extra={"choices": ["VX_AM", "VX_EOD"]},
+    )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def validate_symbol(cls, v):
+        """Validate the symbol."""
+        if not v or v.lower() in ["vx", "vix", "^vix", "vix_index"]:
+            return "VX_EOD"
+        return v.upper()
+
 
 class CboeFuturesCurveData(FuturesCurveData):
     """CBOE Futures Curve Data."""
 
-    symbol: str = Field(description="The trading symbol for the tenor of future.")
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
 
 
 class CboeFuturesCurveFetcher(
@@ -35,33 +63,33 @@ class CboeFuturesCurveFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeFuturesCurveQueryParams:
+        """Transform the query."""
         return CboeFuturesCurveQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: CboeFuturesCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_cboe.utils.vix import get_vx_by_date, get_vx_current
 
-        query.symbol = query.symbol.upper()
-        FUTURES = get_settlement_prices(settlement_date=query.date)
-        if len(FUTURES) == 0:
-            return []
-
-        if query.symbol not in FUTURES["product"].unique().tolist():
-            raise RuntimeError(
-                "The symbol, "
-                f"{query.symbol}"
-                ", is not valid.  Chose from: "
-                f"{FUTURES['product'].unique().tolist()}"
+        symbol = "am" if query.symbol == "VX_AM" else "eod"
+        if query.date is not None:
+            data = await get_vx_by_date(
+                date=query.date,  # type: ignore
+                vx_type=symbol,
+                use_cache=False,
             )
+        else:
+            data = await get_vx_current(vx_type=symbol, use_cache=False)
 
-        data = get_settlement_prices(settlement_date=query.date)
-        data = data[data["product"] == query.symbol]
+        if data.empty:
+            raise EmptyDataError("The response was returned empty.")
 
-        return data[["expiration", "symbol", "price"]].to_dict("records")
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(
@@ -69,4 +97,5 @@ class CboeFuturesCurveFetcher(
         data: List[Dict],
         **kwargs: Any,
     ) -> List[CboeFuturesCurveData]:
+        """Transform data."""
         return [CboeFuturesCurveData.model_validate(d) for d in data]

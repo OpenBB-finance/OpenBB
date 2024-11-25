@@ -1,0 +1,113 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?crumb=MOCK_CRUMB&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&symbol=AAPL&type=annualTaxEffectOfUnusualItems%2CannualTaxRateForCalcs%2CannualNormalizedEBITDA%2CannualNormalizedDilutedEPS%2CannualNormalizedBasicEPS%2CannualTotalUnusualItems%2CannualTotalUnusualItemsExcludingGoodwill%2CannualNetIncomeFromContinuingOperationNetMinorityInterest%2CannualReconciledDepreciation%2CannualReconciledCostOfRevenue%2CannualEBITDA%2CannualEBIT%2CannualNetInterestIncome%2CannualInterestExpense%2CannualInterestIncome%2CannualContinuingAndDiscontinuedDilutedEPS%2CannualContinuingAndDiscontinuedBasicEPS%2CannualNormalizedIncome%2CannualNetIncomeFromContinuingAndDiscontinuedOperation%2CannualTotalExpenses%2CannualRentExpenseSupplemental%2CannualReportedNormalizedDilutedEPS%2CannualReportedNormalizedBasicEPS%2CannualTotalOperatingIncomeAsReported%2CannualDividendPerShare%2CannualDilutedAverageShares%2CannualBasicAverageShares%2CannualDilutedEPS%2CannualDilutedEPSOtherGainsLosses%2CannualTaxLossCarryforwardDilutedEPS%2CannualDilutedAccountingChange%2CannualDilutedExtraordinary%2CannualDilutedDiscontinuousOperations%2CannualDilutedContinuousOperations%2CannualBasicEPS%2CannualBasicEPSOtherGainsLosses%2CannualTaxLossCarryforwardBasicEPS%2CannualBasicAccountingChange%2CannualBasicExtraordinary%2CannualBasicDiscontinuousOperations%2CannualBasicContinuousOperations%2CannualDilutedNIAvailtoComStockholders%2CannualAverageDilutionEarnings%2CannualNetIncomeCommonStockholders%2CannualOtherunderPreferredStockDividend%2CannualPreferredStockDividends%2CannualNetIncome%2CannualMinorityInterests%2CannualNetIncomeIncludingNoncontrollingInterests%2CannualNetIncomeFromTaxLossCarryforward%2CannualNetIncomeExtraordinary%2CannualNetIncomeDiscontinuousOperations%2CannualNetIncomeContinuousOperations%2CannualEarningsFromEquityInterestNetOfTax%2CannualTaxProvision%2CannualPretaxIncome%2CannualOtherIncomeExpense%2CannualOtherNonOperatingIncomeExpenses%2CannualSpecialIncomeCharges%2CannualGainOnSaleOfPPE%2CannualGainOnSaleOfBusiness%2CannualOtherSpecialCharges%2CannualWriteOff%2CannualImpairmentOfCapitalAssets%2CannualRestructuringAndMergernAcquisition%2CannualSecuritiesAmortization%2CannualEarningsFromEquityInterest%2CannualGainOnSaleOfSecurity%2CannualNetNonOperatingInterestIncomeExpense%2CannualTotalOtherFinanceCost%2CannualInterestExpenseNonOperating%2CannualInterestIncomeNonOperating%2CannualOperatingIncome%2CannualOperatingExpense%2CannualOtherOperatingExpenses%2CannualOtherTaxes%2CannualProvisionForDoubtfulAccounts%2CannualDepreciationAmortizationDepletionIncomeStatement%2CannualDepletionIncomeStatement%2CannualDepreciationAndAmortizationInIncomeStatement%2CannualAmortization%2CannualAmortizationOfIntangiblesIncomeStatement%2CannualDepreciationIncomeStatement%2CannualResearchAndDevelopment%2CannualSellingGeneralAndAdministration%2CannualSellingAndMarketingExpense%2CannualGeneralAndAdministrativeExpense%2CannualOtherGandA%2CannualInsuranceAndClaims%2CannualRentAndLandingFees%2CannualSalariesAndWages%2CannualGrossProfit%2CannualCostOfRevenue%2CannualTotalRevenue%2CannualExciseTaxes%2CannualOperatingRevenue%2CannualLossAdjustmentExpense%2CannualNetPolicyholderBenefitsAndClaims%2CannualPolicyholderBenefitsGross%2CannualPolicyholderBenefitsCeded%2CannualOccupancyAndEquipment%2CannualProfessionalExpenseAndContractServicesExpense%2CannualOtherNonInterestExpense
+  response:
+    body:
+      string: !!binary |
+        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
+        JPn161/W7bri2HgAAA==
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=60, stale-while-revalidate=30
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 24 Oct 2024 05:32:57 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '42'
+      y-rid:
+      - 7rnieg5jhjn09
+    status:
+      code: 200
+      message: OK
+version: 1

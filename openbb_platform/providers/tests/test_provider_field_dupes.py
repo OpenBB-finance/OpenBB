@@ -1,4 +1,5 @@
 """Test for common fields in the provider models that should be standard."""
+
 import glob
 import importlib
 import inspect
@@ -50,7 +51,7 @@ def get_subclasses_w_keys(module: object, cls: Type) -> Dict[Type, List[str]]:
 
     for _, obj in module_members:
         if inspect.isclass(obj) and issubclass(obj, cls) and obj != cls:
-            subclasses[obj] = list(obj.__fields__.keys())
+            subclasses[obj] = list(obj.model_fields.keys())
     return subclasses
 
 
@@ -195,7 +196,16 @@ class ProviderFieldDupesTest(unittest.TestCase):
 
         for std_cls in child_parent_dict:
             with self.subTest(i=std_cls):
-                providers_w_fields = child_parent_dict[std_cls]
+                providers_w_fields_raw = child_parent_dict[std_cls]
+
+                # remove duplicate keys
+                providers_w_fields = []
+                keys = []
+                for item in providers_w_fields_raw:
+                    k = list(item.keys())[0]
+                    if k not in keys:
+                        keys.append(k)
+                        providers_w_fields.append(item)
 
                 fields = []
                 provider_models = []
