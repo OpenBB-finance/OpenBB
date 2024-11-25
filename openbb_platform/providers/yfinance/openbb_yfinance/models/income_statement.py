@@ -52,6 +52,7 @@ class YFinanceIncomeStatementData(IncomeStatementData):
     }
 
     @field_validator("period_ending", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):
         """Validate the date field."""
         if isinstance(v, str):
