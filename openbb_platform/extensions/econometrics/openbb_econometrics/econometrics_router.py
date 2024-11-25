@@ -916,7 +916,7 @@ def panel_fmac(
 def variance_inflation_factor(
     data: List[Data], columns: Optional[list] = None
 ) -> OBBject[List[Data]]:
-    r"""Calculates VIF (variance inflation factor), which tests collinearity.
+    """Calculate VIF (variance inflation factor), which tests for collinearity.
 
     It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square
     root of the variance inflation factor indicates how much larger the standard error increases compared to if
@@ -965,7 +965,7 @@ def variance_inflation_factor(
     df = df.select_dtypes(exclude=["object", "datetime", "timedelta"])
 
     # Calculate the VIF values
-    vif_values = {}
+    vif_values: dict = {}
     for i in range(len(df.columns))[1:]:
         vif_values[f"{df.columns[i]}"] = vif(df.values, i)
 
