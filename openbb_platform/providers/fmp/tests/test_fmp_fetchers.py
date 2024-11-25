@@ -5,7 +5,7 @@ from datetime import date
 
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_fmp.models.form_13f import FMPForm13FHRFetcher
+from openbb_fmp.models.form_13FHR import FMPForm13FHRFetcher
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
@@ -765,12 +765,11 @@ def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+# @pytest.mark.record_http
 def test_fmp_form_13f_fetcher(credentials=test_credentials):
     """Test FMP form 13f fetcher."""
     params = {
-        "symbol": "0001388838",
-        "date": date(2021, 9, 30),
+        "symbol": "AAPL",
         "limit": 1,
     }
     fetcher = FMPForm13FHRFetcher()

@@ -1,18 +1,22 @@
 """Form 13f Model."""
 
 import asyncio
-from datetime import date as dateType
+from datetime import date as dateType, datetime
 from typing import Any, Dict, List, Optional
 from warnings import warn
+
+import pandas as pd
+import requests
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.form_13FHR import (
     Form13FHRData,
     Form13FHRQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import create_url
+from openbb_fmp.utils.helpers import create_url, response_callback
 from pydantic import Field
 
 
@@ -33,17 +37,17 @@ class FMPForm13FHRData(Form13FHRData):
         "asset_class": "titleOfClass",
         "filling_date": "fillingDate",
         "accepted_date": "acceptedDate",
-        "ticker_cusip": "tickercusip",
+        "symbol": "tickercusip",
         "final_link": "finalLink",
     }
-    filling_date: dateType = Field(
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
+    filling_date: Optional[dateType] = Field(
         default=None, description="Date when the filing was submitted to the SEC."
     )
-    accepted_date: dateType = Field(
+    accepted_date: Optional[dateType] = Field(
         default=None, description="Date when the filing was accepted by the SEC."
-    )
-    ticker_cusip: Optional[str] = Field(
-        default=None, description="Ticker symbol associated with the CUSIP."
     )
     link: Optional[str] = Field(
         default=None, description="URL link to the SEC filing on the SEC website."
@@ -73,32 +77,57 @@ class FMPForm13FHRFetcher(
         credentials: Optional[Dict[str, str]] = None,
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the House Disclosure endpoint."""
-        symbols = query.symbol.split(",")
+        """Return the raw data from the Form 13f endpoint."""
+        """Return the raw data from the Form 13f endpoint."""
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+        symbol = query.symbol
+        if symbol.isnumeric():
+            cik = symbol
+        else:
+            symbol_cik_json = requests.get("https://www.sec.gov/files/company_tickers.json",
+                                           headers={
+                                               "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36"}).json()
+            df = pd.DataFrame.from_dict(symbol_cik_json, orient="index")
+            df.set_index("ticker", inplace=True)
+            cik = str(df.loc[symbol, "cik_str"])
+            cik = cik.zfill(10)
+        date_url = create_url(
+            3,
+            f"form-thirteen-date/{cik}",
+            api_key,
+            query,
+            exclude=["symbol", "limit"],
+        )
+        dates = await amake_request(date_url, response_callback=response_callback, **kwargs)
+        if not dates:
+            raise EmptyDataError("No data returned for the given symbol.")
+        if not dates or len(dates) == 0:
+            warn(f"Symbol Error: No data found for symbol {symbol}")
         results: List[Dict] = []
 
-        async def get_one(symbol):
-            """Get data for the given symbol."""
-            api_key = credentials.get("fmp_api_key") if credentials else ""
+        async def get_one(date):
+            """Get data for the given date."""
+            date = datetime.strptime(date, "%Y-%m-%d").date()
+            query.date = date
             url = create_url(
                 3,
-                f"form-thirteen/{symbol}",
+                f"form-thirteen/{cik}",
                 api_key,
                 query,
                 exclude=["symbol", "limit"],
             )
-            result = await amake_request(url, **kwargs)
+            result = await amake_request(url, response_callback=response_callback, **kwargs)
             if not result or len(result) == 0:
                 warn(f"Symbol Error: No data found for symbol {symbol}")
             if result:
                 results.extend(result)
 
-        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
+        await asyncio.gather(*[get_one(date) for date in dates])
 
-        results = [i for i in results if isinstance(i, dict)]
         if not results:
             raise EmptyDataError("No data returned for the given symbol.")
-
+        if query.limit:
+            return results[:query.limit]
         return results
 
     @staticmethod
@@ -106,4 +135,5 @@ class FMPForm13FHRFetcher(
         query: FMPForm13FHRQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPForm13FHRData]:
         """Return the transformed data."""
+        [d.pop("cik", None) for d in data]
         return [FMPForm13FHRData(**d) for d in data]
