@@ -1484,6 +1484,24 @@ def test_equity_search(params, headers):
                 "provider": "finviz",
             }
         ),
+        (
+            {
+                "country": "us",
+                "sector": "consumer_cyclical",
+                "industry": "auto_manufacturers",
+                "exchange": None,
+                "mktcap_min": 60000000000,
+                "mktcap_max": None,
+                "price_min": 10,
+                "price_max": None,
+                "volume_min": 5000000,
+                "volume_max": None,
+                "beta_min": None,
+                "beta_max": None,
+                "provider": "yfinance",
+                "limit": 200,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
