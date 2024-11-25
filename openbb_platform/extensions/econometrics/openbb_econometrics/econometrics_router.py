@@ -919,7 +919,7 @@ def panel_fmac(
         PythonEx(
             description="Calculate the variance inflation factor.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='yfinance').to_df()",  # noqa: E501  pylint: C0301
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='yfinance').to_df()",  # noqa: E501  pylint: disable= C0301
                 'obb.econometrics.variance_inflation_factor(data=stock_data, column="close")',
             ],
         ),
