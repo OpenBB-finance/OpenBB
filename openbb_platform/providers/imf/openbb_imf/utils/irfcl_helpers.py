@@ -153,8 +153,6 @@ async def _get_irfcl_data(**kwargs) -> list[dict]:
     if start_date:
         start_date = to_datetime(start_date)
         if frequency == "Q":
-            # offset = offsets.QuarterBegin(startingMonth=1)
-            # start_date = start_date + offset
             start_date = offsets.QuarterBegin(startingMonth=1).rollback(start_date)
         elif frequency == "A":
             start_date = offsets.YearBegin().rollback(start_date)
@@ -217,13 +215,18 @@ async def _get_irfcl_data(**kwargs) -> list[dict]:
         _title: Optional[str] = None
         _unit: Optional[str] = None
 
-        if _symbol in all_symbols:
-            _table = all_symbols.get(_symbol, {}).get("table")
-            _parent = all_symbols.get(_symbol, {}).get("parent", "")
-            _order = all_symbols.get(_symbol, {}).get("order", "")
-            _level = all_symbols.get(_symbol, {}).get("level", "")
-            _title = all_symbols.get(_symbol, {}).get("title", "")
-            _unit = all_symbols.get(_symbol, {}).get("unit", "")
+        if _symbol not in all_symbols:
+            continue
+
+        _table = all_symbols.get(_symbol, {}).get("table")
+        _parent = all_symbols.get(_symbol, {}).get("parent", "")
+        _order = all_symbols.get(_symbol, {}).get("order", "")
+        _level = all_symbols.get(_symbol, {}).get("level", "")
+        _title = all_symbols.get(_symbol, {}).get("title", "").replace(", ", " - ")
+        _unit = all_symbols.get(_symbol, {}).get("unit", "")
+
+        if _title:
+            _title = " - ".join(_title.split(", ")[:-1])
 
         _data = s.pop("Obs", [])
 
