@@ -1989,3 +1989,47 @@ def test_equity_discovery_latest_financial_reports(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_historical_rating(params, obb):
+    """Test the equity estimates historical rating endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.estimates.historical_rating(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_rating(params, obb):
+    """Test the equity estimates rating endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.estimates.rating(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

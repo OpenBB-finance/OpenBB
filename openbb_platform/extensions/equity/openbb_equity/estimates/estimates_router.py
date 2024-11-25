@@ -194,7 +194,11 @@ async def forward_pe(
 @router.command(
     model="Rating",
     examples=[
-        APIEx(parameters={"symbol": "600519.SS","provider": "fmp"}),
+        APIEx(parameters={
+            "symbol": "600519.SS",
+            "provider": "fmp",
+            }
+        ),
     ],
 )
 async def rating(
@@ -210,7 +214,11 @@ async def rating(
 @router.command(
     model="HistoricalRating",
     examples=[
-        APIEx(parameters={"symbol": "600519.SS","provider": "fmp"}),
+        APIEx(parameters={
+            "symbol": "600519.SS",
+            "provider": "fmp",
+            }
+        ),
     ],
 )
 async def historical_rating(
