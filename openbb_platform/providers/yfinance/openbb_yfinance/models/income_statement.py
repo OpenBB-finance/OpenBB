@@ -1,8 +1,9 @@
 """Yahoo Finance Income Statement Model."""
 
-import json
+# pylint: disable=unused-argument
+
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement import (
@@ -10,8 +11,6 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import Field, field_validator
 
 
@@ -31,6 +30,11 @@ class YFinanceIncomeStatementQueryParams(IncomeStatementQueryParams):
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
+    limit: Optional[int] = Field(
+        default=5,
+        description=QUERY_DESCRIPTIONS.get("limit", ""),
+        le=5,
+    )
 
 
 class YFinanceIncomeStatementData(IncomeStatementData):
@@ -48,7 +52,7 @@ class YFinanceIncomeStatementData(IncomeStatementData):
     }
 
     @field_validator("period_ending", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Validate the date field."""
         if isinstance(v, str):
             return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
@@ -58,35 +62,44 @@ class YFinanceIncomeStatementData(IncomeStatementData):
 class YFinanceIncomeStatementFetcher(
     Fetcher[
         YFinanceIncomeStatementQueryParams,
-        List[YFinanceIncomeStatementData],
+        list[YFinanceIncomeStatementData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
+    """Yahoo Finance Income Statement Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceIncomeStatementQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceIncomeStatementQueryParams:
         """Transform the query parameters."""
         return YFinanceIncomeStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        # pylint: disable=unused-argument
         query: YFinanceIncomeStatementQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[YFinanceIncomeStatementData]:
+    ) -> list[YFinanceIncomeStatementData]:
         """Extract the data from the Yahoo Finance endpoints."""
-        from yfinance import Ticker  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        import json  # noqa
+        from numpy import nan
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import to_snake_case
+        from yfinance import Ticker
 
         period = "yearly" if query.period == "annual" else "quarterly"
         data = Ticker(query.symbol).get_income_stmt(
             as_dict=False, pretty=False, freq=period
         )
+
         if data is None:
             raise EmptyDataError()
+
+        if query.limit:
+            data = data.iloc[:, : query.limit]
+
         data.index = [to_snake_case(i) for i in data.index]
         data = data.reset_index().sort_index(ascending=False).set_index("index")
-        data = data.fillna("N/A").replace("N/A", None).to_dict()
+        data = data.replace({nan: None}).to_dict()
         data = [{"period_ending": str(key), **value} for key, value in data.items()]
 
         data = json.loads(json.dumps(data))
@@ -96,8 +109,8 @@ class YFinanceIncomeStatementFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceIncomeStatementQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceIncomeStatementData]:
+    ) -> list[YFinanceIncomeStatementData]:
         """Transform the data."""
         return [YFinanceIncomeStatementData.model_validate(d) for d in data]
