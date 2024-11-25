@@ -44,6 +44,7 @@ async def get_all_companies(use_cache: bool = True) -> DataFrame:
             cache=SQLiteBackend(cache_dir, expire_after=3600 * 24 * 2)
         ) as session:
             try:
+                await session.delete_expired_responses()
                 response = await amake_request(url, headers=SEC_HEADERS, session=session)  # type: ignore
             finally:
                 await session.close()
@@ -71,6 +72,7 @@ async def get_all_ciks(use_cache: bool = True) -> DataFrame:
             cache=SQLiteBackend(cache_dir, expire_after=3600 * 24 * 2)
         ) as session:
             try:
+                await session.delete_expired_responses()
                 response = await amake_request(url, headers=SEC_HEADERS, session=session, response_callback=callback)  # type: ignore
             finally:
                 await session.close()
@@ -104,6 +106,7 @@ async def get_mf_and_etf_map(use_cache: bool = True) -> DataFrame:
             cache=SQLiteBackend(cache_dir, expire_after=3600 * 24 * 2)
         ) as session:
             try:
+                await session.delete_expired_responses()
                 response = await amake_request(url, headers=SEC_HEADERS, session=session, response_callback=sec_callback)  # type: ignore
             finally:
                 await session.close()
@@ -329,6 +332,7 @@ async def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict
         cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
         async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
             try:
+                await session.delete_expired_responses()
                 response = await amake_request(url, session=session, headers=HEADERS, response_callback=sec_callback)  # type: ignore
             finally:
                 await session.close()
