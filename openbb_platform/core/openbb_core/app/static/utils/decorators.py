@@ -58,8 +58,8 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                 while tb.tb_next is not None:
                     tb = tb.tb_next
 
-            if isinstance(e, ValidationError) and "Data" not in e.title:
-                error_list = []
+            if isinstance(e, ValidationError):
+                error_list: list = []
                 validation_error = f"{e.error_count()} validations error(s)"
                 for err in e.errors(include_url=False):
                     loc = ".".join(
@@ -80,25 +80,26 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                         if msg == "Missing required argument"
                         else err.get("input", "")
                     )
-                    error_list.append(f"[Arg] {loc} -> input: {_input} -> {msg}")
+                    prefix = f"[Data Model] {e.title}\n" if "Data" in e.title else ""
+                    error_list.append(
+                        f"{prefix}[Arg] {loc} -> input: {_input} -> {msg}"
+                    )
                 error_list.insert(0, validation_error)
                 error_str = "\n".join(error_list)
                 raise OpenBBError(f"\n[Error] -> {error_str}").with_traceback(
                     tb
                 ) from None
             if isinstance(e, UnauthorizedError):
-                raise UnauthorizedError(f"\n[Error] -> {str(e)}").with_traceback(
+                raise UnauthorizedError(f"\n[Error] -> {e}").with_traceback(
                     tb
                 ) from None
             if isinstance(e, EmptyDataError):
-                raise EmptyDataError(f"\n[Empty] -> {str(e)}").with_traceback(
-                    tb
-                ) from None
+                raise EmptyDataError(f"\n[Empty] -> {e}").with_traceback(tb) from None
             if isinstance(e, OpenBBError):
-                raise OpenBBError(f"\n[Error] -> {str(e)}").with_traceback(tb) from None
+                raise OpenBBError(f"\n[Error] -> {e}").with_traceback(tb) from None
             if isinstance(e, Exception):
                 raise OpenBBError(
-                    f"\n[Unexpected Error] -> {e.__class__.__name__} -> {str(e.args[0] or e.args)}"
+                    f"\n[Unexpected Error] -> {e.__class__.__name__} -> {e}"
                 ).with_traceback(tb) from None
 
         return None
