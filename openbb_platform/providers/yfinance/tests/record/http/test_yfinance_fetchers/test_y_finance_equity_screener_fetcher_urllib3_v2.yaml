@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: '{"offset": 0, "size": 100, "sortField": "percentchange", "sortType": "DESC",
+      "quoteType": "EQUITY", "query": {"operands": [{"operator": "EQ", "operands":
+      ["region", "us"]}, {"operator": "EQ", "operands": ["sector", "Consumer Cyclical"]},
+      {"operator": "EQ", "operands": ["industry", "Auto Manufacturers"]}, {"operator":
+      "gt", "operands": ["intradaymarketcap", 60000000000]}, {"operator": "gt", "operands":
+      ["intradayprice", 10.0]}, {"operator": "gt", "operands": ["dayvolume", 5000000]}],
+      "operator": "AND"}, "userId": "", "userIdType": "guid"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '543'
+      Content-Type:
+      - application/json
+      Cookie:
+      - MOCK_COOKIE
+    method: POST
+    uri: https://query2.finance.yahoo.com/v1/finance/screener?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&lang=en-US&region=US
+  response:
+    body:
+      string: '{"finance":{"result":[{"start":0,"count":2,"total":2,"quotes":[{"language":"en-US","region":"US","quoteType":"EQUITY","typeDisp":"Equity","quoteSourceName":"Nasdaq
+        Real Time Price","triggerable":true,"customPriceAlertConfidence":"HIGH","regularMarketPrice":320.72,"regularMarketDayHigh":324.6799,"regularMarketDayRange":"309.22
+        - 324.6799","regularMarketDayLow":309.22,"regularMarketVolume":114440286,"regularMarketPreviousClose":311.18,"bid":320.47,"ask":320.92,"bidSize":3,"askSize":36,"market":"us_market","messageBoardId":"finmb_27444752","fullExchangeName":"NasdaqGS","longName":"Tesla,
+        Inc.","financialCurrency":"USD","regularMarketOpen":310.855,"averageDailyVolume3Month":87891878,"averageDailyVolume10Day":135191380,"fiftyTwoWeekLowChange":181.92,"fiftyTwoWeekLowChangePercent":1.3106627,"fiftyTwoWeekRange":"138.8
+        - 358.64","fiftyTwoWeekHighChange":-37.920013,"fiftyTwoWeekHighChangePercent":-0.1057328,"fiftyTwoWeekChangePercent":36.129032,"earningsTimestamp":1729714020,"earningsTimestampStart":1737752400,"earningsTimestampEnd":1738616400,"earningsCallTimestampStart":1729719000,"earningsCallTimestampEnd":1729719000,"isEarningsDateEstimate":true,"trailingAnnualDividendRate":0.0,"trailingPE":87.62841,"trailingAnnualDividendYield":0.0,"marketState":"CLOSED","epsTrailingTwelveMonths":3.66,"epsForward":3.24,"epsCurrentYear":2.47853,"priceEpsCurrentYear":129.39929,"sharesOutstanding":3210060032,"bookValue":21.806,"fiftyDayAverage":252.2958,"fiftyDayAverageChange":68.424194,"fiftyDayAverageChangePercent":0.27120623,"twoHundredDayAverage":207.8917,"twoHundredDayAverageChange":112.82831,"twoHundredDayAverageChangePercent":0.5427264,"marketCap":1029530451968,"forwardPE":98.987656,"priceToBook":14.707879,"sourceInterval":15,"exchangeDataDelayedBy":0,"exchangeTimezoneName":"America/New_York","exchangeTimezoneShortName":"EST","gmtOffSetMilliseconds":-18000000,"esgPopulated":false,"hasPrePostMarketData":true,"firstTradeDateMilliseconds":1277818200000,"priceHint":2,"postMarketChangePercent":0.0,"postMarketTime":1731718798,"postMarketPrice":320.72,"postMarketChange":0.0,"regularMarketChange":9.540009,"regularMarketTime":1731704400,"tradeable":false,"cryptoTradeable":false,"currency":"USD","regularMarketChangePercent":3.0657525,"exchange":"NMS","fiftyTwoWeekHigh":358.64,"fiftyTwoWeekLow":138.8,"averageAnalystRating":"2.8
+        - Hold","shortName":"Tesla, Inc.","displayName":"Tesla","symbol":"TSLA"},{"language":"en-US","region":"US","quoteType":"EQUITY","typeDisp":"Equity","quoteSourceName":"Nasdaq
+        Real Time Price","triggerable":false,"customPriceAlertConfidence":"LOW","regularMarketPrice":57.04,"regularMarketDayHigh":57.825,"regularMarketDayRange":"56.945
+        - 57.825","regularMarketDayLow":56.945,"regularMarketVolume":12617642,"regularMarketPreviousClose":57.62,"bid":57.0,"ask":57.1,"bidSize":30,"askSize":29,"market":"us_market","messageBoardId":"finmb_61206100","fullExchangeName":"NYSE","longName":"General
+        Motors Company","financialCurrency":"USD","regularMarketOpen":57.53,"averageDailyVolume3Month":12610575,"averageDailyVolume10Day":12358780,"fiftyTwoWeekLowChange":29.34,"fiftyTwoWeekLowChangePercent":1.0592058,"fiftyTwoWeekRange":"27.7
+        - 59.39","fiftyTwoWeekHighChange":-2.3499985,"fiftyTwoWeekHighChangePercent":-0.039568927,"fiftyTwoWeekChangePercent":100.0,"dividendDate":1734566400,"earningsTimestamp":1738063800,"earningsTimestampStart":1738063800,"earningsTimestampEnd":1738063800,"earningsCallTimestampStart":1729600200,"earningsCallTimestampEnd":1729600200,"isEarningsDateEstimate":false,"trailingAnnualDividendRate":0.45,"trailingPE":6.0875134,"dividendRate":0.48,"trailingAnnualDividendYield":0.007809788,"dividendYield":0.84,"marketState":"CLOSED","epsTrailingTwelveMonths":9.37,"epsForward":10.57,"epsCurrentYear":10.2588,"priceEpsCurrentYear":5.560105,"sharesOutstanding":1099600000,"bookValue":64.486,"fiftyDayAverage":49.7202,"fiftyDayAverageChange":7.3198013,"fiftyDayAverageChangePercent":0.14721987,"twoHundredDayAverage":45.6035,"twoHundredDayAverageChange":11.436501,"twoHundredDayAverageChangePercent":0.2507812,"marketCap":62721183744,"forwardPE":5.396405,"priceToBook":0.8845331,"sourceInterval":15,"exchangeDataDelayedBy":0,"exchangeTimezoneName":"America/New_York","exchangeTimezoneShortName":"EST","gmtOffSetMilliseconds":-18000000,"esgPopulated":false,"hasPrePostMarketData":true,"firstTradeDateMilliseconds":1290090600000,"priceHint":2,"postMarketChangePercent":0.0175286,"postMarketTime":1731718775,"postMarketPrice":57.05,"postMarketChange":0.00999832,"regularMarketChange":-0.579998,"regularMarketTime":1731704402,"tradeable":false,"cryptoTradeable":false,"currency":"USD","regularMarketChangePercent":-1.00659,"exchange":"NYQ","fiftyTwoWeekHigh":59.39,"fiftyTwoWeekLow":27.7,"averageAnalystRating":"2.2
+        - Buy","shortName":"General Motors Company","symbol":"GM"}],"useRecords":false}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - private, no-cache, no-store
+      content-encoding:
+      - gzip
+      content-length:
+      - '1602'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 18 Nov 2024 03:23:27 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-screeners--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '29'
+      y-rid:
+      - 33r6mf5jjlcpg
+    status:
+      code: 200
+      message: OK
+version: 1
