@@ -3,13 +3,12 @@
 from datetime import date as dateType
 from typing import Literal, Optional
 
-from pydantic import Field, field_validator
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
+from pydantic import Field, field_validator
 
 
 class Form13FHRQueryParams(QueryParams):
@@ -60,7 +59,7 @@ class Form13FHRData(Data):
     )
     security_type: Optional[Literal["SH", "PRN"]] = Field(
         default=None,
-        description="The total number of shares of the class of security"
+        description="Whether the principal amount represents the number of shares"
         + " or the principal amount of such class."
         + " 'SH' for shares. 'PRN' for principal amount."
         + " Convertible debt securities are reported as 'PRN'.",
@@ -70,24 +69,29 @@ class Form13FHRData(Data):
         description="Defined when the holdings being reported are put or call options."
         + " Only long positions are reported.",
     )
+    investment_discretion: Optional[str] = Field(
+        default=None,
+        description="The investment discretion held by the Manager."
+        + " Sole, shared-defined (DFN), or shared-other (OTR).",
+    )
     voting_authority_sole: Optional[int] = Field(
         default=None,
         description="The number of shares for which the Manager"
-        + " exercises sole voting authority (none).",
+        + " exercises sole voting authority.",
     )
     voting_authority_shared: Optional[int] = Field(
         default=None,
         description="The number of shares for which the Manager"
-        + " exercises a defined shared voting authority (none).",
+        + " exercises a defined shared voting authority.",
     )
-    voting_authority_other: Optional[int] = Field(
+    voting_authority_none: Optional[int] = Field(
         default=None,
         description="The number of shares for which the Manager"
-        + " exercises other shared voting authority (none).",
+        + " exercises no voting authority.",
     )
     principal_amount: int = Field(
         description="The total number of shares of the class of security"
-        + " or the principal amount of such class."
+        + " or the principal amount of such class. Defined by the 'security_type'."
         + " Only long positions are reported"
     )
     value: int = Field(
