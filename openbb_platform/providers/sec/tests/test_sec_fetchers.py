@@ -11,6 +11,7 @@ from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
+from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
@@ -168,5 +169,20 @@ def test_sec_latest_financial_reports_fetcher(credentials=test_credentials):
     }
 
     fetcher = SecLatestFinancialReportsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_insider_trading_fetcher(credentials=test_credentials):
+    """Test the SEC Insider Trading fetcher."""
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2024, 6, 30),
+        "end_date": date(2024, 9, 30),
+        "use_cache": False,
+    }
+
+    fetcher = SecInsiderTradingFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

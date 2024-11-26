@@ -155,9 +155,9 @@ class ROUTER_equity_ownership(Container):
             int, OpenBBField(description="The number of data entries to return.")
         ] = 500,
         provider: Annotated[
-            Optional[Literal["fmp", "intrinio"]],
+            Optional[Literal["fmp", "intrinio", "sec"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec."
             ),
         ] = None,
         **kwargs
@@ -170,25 +170,28 @@ class ROUTER_equity_ownership(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
+        provider : Optional[Literal['fmp', 'intrinio', 'sec']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
         transaction_type : Optional[Literal['award', 'conversion', 'return', 'expire_short', 'in_kind', 'gift', 'expire_long', 'discretionary', 'other', 'small', 'exempt', 'otm', 'purchase', 'sale', 'tender', 'will', 'itm', 'trust']]
             Type of the transaction. (provider: fmp)
         start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format. (provider: intrinio)
+            Start date of the data, in YYYY-MM-DD format. (provider: intrinio);
+            Start date of the data, in YYYY-MM-DD format. Wide date ranges can result in long download times. Recommended to use a smaller date range, default is 120 days ago. (provider: sec)
         end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format. (provider: intrinio)
+            End date of the data, in YYYY-MM-DD format. (provider: intrinio, sec)
         ownership_type : Optional[Literal['D', 'I']]
             Type of ownership. (provider: intrinio)
         sort_by : Optional[Literal['filing_date', 'updated_on']]
             Field to sort by. (provider: intrinio)
+        use_cache : bool
+            Persist the data locally for future use. Default is True. Each form submission is an individual download and the SEC limits the number of concurrent downloads. This prevents the same file from being downloaded multiple times. (provider: sec)
 
         Returns
         -------
         OBBject
             results : List[InsiderTrading]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'sec']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -230,33 +233,59 @@ class ROUTER_equity_ownership(Container):
         form_type : Optional[str]
             Form type of the insider trading. (provider: fmp)
         company_name : Optional[str]
-            Name of the company. (provider: intrinio)
+            Name of the company. (provider: intrinio, sec)
         conversion_exercise_price : Optional[float]
-            Conversion/Exercise price of the shares. (provider: intrinio)
+            Conversion/Exercise price of the shares. (provider: intrinio);
+            Price of conversion or exercise of the securities. (provider: sec)
         deemed_execution_date : Optional[date]
-            Deemed execution date of the trade. (provider: intrinio)
+            Deemed execution date of the trade. (provider: intrinio);
+            Deemed execution date. (provider: sec)
         exercise_date : Optional[date]
-            Exercise date of the trade. (provider: intrinio)
+            Exercise date of the trade. (provider: intrinio);
+            Date of exercise. (provider: sec)
         expiration_date : Optional[date]
-            Expiration date of the derivative. (provider: intrinio)
+            Expiration date of the derivative. (provider: intrinio);
+            Date of expiration for the derivative. (provider: sec)
         underlying_security_title : Optional[str]
-            Name of the underlying non-derivative security related to this derivative transaction. (provider: intrinio)
+            Name of the underlying non-derivative security related to this derivative transaction. (provider: intrinio);
+            Title of the underlying security. (provider: sec)
         underlying_shares : Optional[Union[int, float]]
             Number of underlying shares related to this derivative transaction. (provider: intrinio)
         nature_of_ownership : Optional[str]
-            Nature of ownership of the insider trading. (provider: intrinio)
+            Nature of ownership of the insider trading. (provider: intrinio);
+            Nature of the ownership. (provider: sec)
         director : Optional[bool]
-            Whether the owner is a director. (provider: intrinio)
+            Whether the owner is a director. (provider: intrinio, sec)
         officer : Optional[bool]
-            Whether the owner is an officer. (provider: intrinio)
+            Whether the owner is an officer. (provider: intrinio, sec)
         ten_percent_owner : Optional[bool]
-            Whether the owner is a 10% owner. (provider: intrinio)
+            Whether the owner is a 10% owner. (provider: intrinio, sec)
         other_relation : Optional[bool]
             Whether the owner is having another relation. (provider: intrinio)
         derivative_transaction : Optional[bool]
             Whether the owner is having a derivative transaction. (provider: intrinio)
         report_line_number : Optional[int]
             Report line number of the insider trading. (provider: intrinio)
+        form : Optional[Union[int, str]]
+            Form type. (provider: sec)
+        other : Optional[bool]
+            Whether the owner is classified as other. (provider: sec)
+        other_text : Optional[str]
+            Text for other classification. (provider: sec)
+        transaction_timeliness : Optional[str]
+            Timeliness of the transaction. (provider: sec)
+        ownership_type : Optional[str]
+            Type of ownership, direct or indirect. (provider: sec)
+        underlying_security_shares : Optional[float]
+            Number of underlying shares associated with the derivative. (provider: sec)
+        underlying_security_value : Optional[float]
+            Value of the underlying security. (provider: sec)
+        transaction_value : Optional[float]
+            Total value of the transaction. (provider: sec)
+        value_owned : Optional[float]
+            Value of the securities owned after the transaction. (provider: sec)
+        footnote : Optional[str]
+            Footnote for the transaction. (provider: sec)
 
         Examples
         --------
@@ -272,7 +301,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": self._get_provider(
                         provider,
                         "equity.ownership.insider_trading",
-                        ("fmp", "intrinio"),
+                        ("fmp", "intrinio", "sec"),
                     )
                 },
                 standard_params={

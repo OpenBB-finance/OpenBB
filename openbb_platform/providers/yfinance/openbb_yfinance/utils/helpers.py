@@ -86,6 +86,8 @@ async def get_defined_screener(
         "priceToBook",
         "trailingAnnualDividendYield",
         "currency",
+        "exchange",
+        "exchangeTimezoneName",
         "earnings_date",
     ]
     results: list = []
@@ -127,7 +129,7 @@ async def get_defined_screener(
         )
         item["earnings_date"] = earnings_date
         result = {k: item.get(k, None) for k in fields}
-        if result.get("regularMarketChange"):
+        if result.get("regularMarketChange") and result.get("regularMarketVolume"):
             output.append(result)
 
     return output[:limit] if limit is not None else output
