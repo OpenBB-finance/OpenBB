@@ -67,7 +67,7 @@ def headers():
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 5,
                 "provider": "yfinance",
             }
         ),
@@ -211,7 +211,7 @@ def test_equity_calendar_earnings(params, headers):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 5,
                 "provider": "yfinance",
             }
         ),
@@ -516,7 +516,7 @@ def test_equity_estimates_forward_eps(params, headers):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 5,
                 "provider": "yfinance",
             }
         ),
