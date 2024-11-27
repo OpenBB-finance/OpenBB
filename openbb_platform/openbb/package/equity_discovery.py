@@ -116,6 +116,10 @@ class ROUTER_equity_discovery(Container):
             Forward price-to-earnings ratio. (provider: yfinance)
         dividend_yield : Optional[float]
             Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
         earnings_date : Optional[datetime]
             Most recent earnings date. (provider: yfinance)
         currency : Optional[str]
@@ -234,6 +238,10 @@ class ROUTER_equity_discovery(Container):
             Forward price-to-earnings ratio. (provider: yfinance)
         dividend_yield : Optional[float]
             Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
         earnings_date : Optional[datetime]
             Most recent earnings date. (provider: yfinance)
         currency : Optional[str]
@@ -461,6 +469,10 @@ class ROUTER_equity_discovery(Container):
             Forward price-to-earnings ratio. (provider: yfinance)
         dividend_yield : Optional[float]
             Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
         earnings_date : Optional[datetime]
             Most recent earnings date. (provider: yfinance)
         currency : Optional[str]
@@ -579,6 +591,10 @@ class ROUTER_equity_discovery(Container):
             Forward price-to-earnings ratio. (provider: yfinance)
         dividend_yield : Optional[float]
             Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
         earnings_date : Optional[datetime]
             Most recent earnings date. (provider: yfinance)
         currency : Optional[str]
@@ -808,6 +824,10 @@ class ROUTER_equity_discovery(Container):
             Forward price-to-earnings ratio. (provider: yfinance)
         dividend_yield : Optional[float]
             Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
         earnings_date : Optional[datetime]
             Most recent earnings date. (provider: yfinance)
         currency : Optional[str]
@@ -926,6 +946,10 @@ class ROUTER_equity_discovery(Container):
             Forward price-to-earnings ratio. (provider: yfinance)
         dividend_yield : Optional[float]
             Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
         earnings_date : Optional[datetime]
             Most recent earnings date. (provider: yfinance)
         currency : Optional[str]
@@ -1044,6 +1068,10 @@ class ROUTER_equity_discovery(Container):
             Forward price-to-earnings ratio. (provider: yfinance)
         dividend_yield : Optional[float]
             Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
         earnings_date : Optional[datetime]
             Most recent earnings date. (provider: yfinance)
         currency : Optional[str]
