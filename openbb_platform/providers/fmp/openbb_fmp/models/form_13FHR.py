@@ -5,8 +5,7 @@ from datetime import date as dateType, datetime
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
-import pandas as pd
-import requests
+from pydantic import Field
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.form_13FHR import (
@@ -17,7 +16,6 @@ from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_fmp.utils.helpers import create_url, response_callback
-from pydantic import Field
 
 
 class FMPForm13FHRQueryParams(Form13FHRQueryParams):
@@ -84,13 +82,19 @@ class FMPForm13FHRFetcher(
         if symbol.isnumeric():
             cik = symbol
         else:
-            symbol_cik_json = requests.get("https://www.sec.gov/files/company_tickers.json",
-                                           headers={
-                                               "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36"}).json()
-            df = pd.DataFrame.from_dict(symbol_cik_json, orient="index")
-            df.set_index("ticker", inplace=True)
-            cik = str(df.loc[symbol, "cik_str"])
-            cik = cik.zfill(10)
+            query.includeCurrentQuarter = "false"
+            cik_url = create_url(
+                4,
+                f"institutional-ownership/symbol-ownership",
+                api_key,
+                query,
+                exclude=["limit"],
+            )
+            cik = await amake_request(cik_url, response_callback=response_callback, **kwargs)
+            if len(cik) == 0:
+                raise EmptyDataError("Can't get cik for the given symbol.")
+            cik = cik[0]["cik"]
+            del query.includeCurrentQuarter
         date_url = create_url(
             3,
             f"form-thirteen-date/{cik}",
@@ -135,5 +139,6 @@ class FMPForm13FHRFetcher(
         query: FMPForm13FHRQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPForm13FHRData]:
         """Return the transformed data."""
-        [d.pop("cik", None) for d in data]
+        if query.symbol.isnumeric():
+            [d.pop("cik", None) for d in data]
         return [FMPForm13FHRData(**d) for d in data]
