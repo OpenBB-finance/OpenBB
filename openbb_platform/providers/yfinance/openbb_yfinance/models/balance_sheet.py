@@ -1,8 +1,9 @@
 """Yahoo Finance Balance Sheet Model."""
 
-import json
+# pylint: disable=unused-argument
+
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_sheet import (
@@ -10,8 +11,6 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import Field, field_validator
 
 
@@ -27,9 +26,14 @@ class YFinanceBalanceSheetQueryParams(BalanceSheetQueryParams):
         }
     }
 
-    period: Literal["annual", "quarter", "ttm"] = Field(
+    period: Literal["annual", "quarter"] = Field(
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
+    )
+    limit: Optional[int] = Field(
+        default=5,
+        description=QUERY_DESCRIPTIONS.get("limit", ""),
+        le=5,
     )
 
 
@@ -59,25 +63,29 @@ class YFinanceBalanceSheetData(BalanceSheetData):
 class YFinanceBalanceSheetFetcher(
     Fetcher[
         YFinanceBalanceSheetQueryParams,
-        List[YFinanceBalanceSheetData],
+        list[YFinanceBalanceSheetData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
+    """Yahoo Finance Balance Sheet Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceBalanceSheetQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceBalanceSheetQueryParams:
         """Transform the query parameters."""
         return YFinanceBalanceSheetQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        # pylint: disable=unused-argument
         query: YFinanceBalanceSheetQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from the Yahoo Finance endpoints."""
-        from yfinance import Ticker  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        import json  # noqa
+        from numpy import nan
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import to_snake_case
+        from yfinance import Ticker
 
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_balance_sheet(
@@ -85,9 +93,11 @@ class YFinanceBalanceSheetFetcher(
         )
         if data is None:
             raise EmptyDataError()
+        if query.limit:
+            data = data.iloc[:, : query.limit]
         data.index = [to_snake_case(i) for i in data.index]
         data = data.reset_index().sort_index(ascending=False).set_index("index")
-        data = data.fillna("N/A").replace("N/A", None).to_dict()
+        data = data.replace({nan: None}).to_dict()
         data = [{"period_ending": str(key), **value} for key, value in data.items()]
 
         data = json.loads(json.dumps(data))
@@ -97,8 +107,8 @@ class YFinanceBalanceSheetFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceBalanceSheetQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceBalanceSheetData]:
+    ) -> list[YFinanceBalanceSheetData]:
         """Transform the data."""
         return [YFinanceBalanceSheetData.model_validate(d) for d in data]
