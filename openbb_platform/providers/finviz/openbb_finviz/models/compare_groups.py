@@ -223,9 +223,14 @@ class FinvizCompareGroupsFetcher(
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (  # noqa
+            get_certificates,
+            restore_certs,
+        )
         from finvizfinance.group import Overview, Performance, Valuation
         from pandas import DataFrame
 
+        old_verify = get_certificates()
         results: List = []
         data = DataFrame()
         if query.metric == "performance":
@@ -243,8 +248,11 @@ class FinvizCompareGroupsFetcher(
                 group=GROUPS_DICT[query.group],  # type: ignore
                 order="Change",
             )
+        restore_certs(old_verify)
+
         if not data.empty:
             results = data.fillna("N/A").replace("N/A", None).to_dict(orient="records")
+
         return results
 
     @staticmethod

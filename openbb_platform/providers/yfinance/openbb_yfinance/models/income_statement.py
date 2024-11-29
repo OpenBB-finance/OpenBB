@@ -84,13 +84,19 @@ class YFinanceIncomeStatementFetcher(
         import json  # noqa
         from numpy import nan
         from openbb_core.provider.utils.errors import EmptyDataError
-        from openbb_core.provider.utils.helpers import to_snake_case
+        from openbb_core.provider.utils.helpers import (
+            get_certificates,
+            restore_certs,
+            to_snake_case,
+        )
         from yfinance import Ticker
 
         period = "yearly" if query.period == "annual" else "quarterly"
+        old_verify = get_certificates()
         data = Ticker(query.symbol).get_income_stmt(
             as_dict=False, pretty=False, freq=period
         )
+        restore_certs(old_verify)
 
         if data is None:
             raise EmptyDataError()
@@ -102,7 +108,6 @@ class YFinanceIncomeStatementFetcher(
         data = data.reset_index().sort_index(ascending=False).set_index("index")
         data = data.replace({nan: None}).to_dict()
         data = [{"period_ending": str(key), **value} for key, value in data.items()]
-
         data = json.loads(json.dumps(data))
 
         return data

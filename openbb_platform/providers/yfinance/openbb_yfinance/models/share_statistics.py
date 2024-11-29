@@ -116,7 +116,10 @@ class YFinanceShareStatisticsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from yfinance import Ticker  # noqa
+        from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
+        from yfinance import Ticker
 
         symbols = query.symbol.split(",")
         results = []
@@ -136,11 +139,13 @@ class YFinanceShareStatisticsFetcher(
             "institutionsFloatPercentHeld",
             "institutionsCount",
         ]
+        old_verify = get_certificates()
+        messages: list = []
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
-            result = {}
-            ticker = {}
+            result: dict = {}
+            ticker: dict = {}
             try:
                 _ticker = Ticker(symbol)
                 ticker = _ticker.get_info()
@@ -148,7 +153,9 @@ class YFinanceShareStatisticsFetcher(
                 if major_holders:
                     ticker.update(major_holders)  # type: ignore
             except Exception as e:
-                warn(f"Error getting data for {symbol}: {e}")
+                messages.append(
+                    f"Error getting data for {symbol} -> {e.__class__.__name__}: {e}"
+                )
             if ticker:
                 for field in fields:
                     if field in ticker:
@@ -159,6 +166,18 @@ class YFinanceShareStatisticsFetcher(
         tasks = [get_one(symbol) for symbol in symbols]
 
         await asyncio.gather(*tasks)
+
+        restore_certs(old_verify)
+
+        if not results and messages:
+            raise OpenBBError("\n".join(messages))
+
+        if not results and not messages:
+            raise EmptyDataError("No data was returned for the given symbol(s).")
+
+        if results and messages:
+            for message in messages:
+                warn(message)
 
         return results
 

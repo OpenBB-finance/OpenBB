@@ -39,9 +39,14 @@ class HubService:
         base_url: Optional[str] = None,
     ):
         """Initialize Hub service."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
+
         self._base_url = base_url or Env().HUB_BACKEND
         self._session = session
         self._hub_user_settings: Optional[HubUserSettings] = None
+        self._get_certificates = get_certificates
+        self._restore_certs = restore_certs
 
     @property
     def base_url(self) -> str:
@@ -70,10 +75,13 @@ class HubService:
 
     def disconnect(self) -> bool:
         """Disconnect from Hub."""
+        old_verify = self._get_certificates()
         if self._session:
             result = self._post_logout(self._session)
             self._session = None
+            self._restore_certs(old_verify)
             return result
+        self._restore_certs(old_verify)
         raise OpenBBError(
             "No session found. Login or provide a 'HubSession' on initialization."
         )
@@ -112,6 +120,8 @@ class HubService:
         if not password:
             raise OpenBBError("Password not found.")
 
+        old_verify = self._get_certificates()
+
         response = post(
             url=self._base_url + "/login",
             json={
@@ -121,6 +131,8 @@ class HubService:
             },
             timeout=self.TIMEOUT,
         )
+
+        self._restore_certs(old_verify)
 
         if response.status_code == 200:
             session = response.json()
@@ -143,6 +155,7 @@ class HubService:
             raise OpenBBError("Platform personal access token not found.")
 
         self._check_token_expiration(token)
+        old_verify = self._get_certificates()
 
         response = post(
             url=self._base_url + "/sdk/login",
@@ -151,6 +164,8 @@ class HubService:
             },
             timeout=self.TIMEOUT,
         )
+
+        self._restore_certs(old_verify)
 
         if response.status_code == 200:
             session = response.json()
@@ -172,6 +187,7 @@ class HubService:
         access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
+        old_verify = self._get_certificates()
 
         response = get(
             url=self._base_url + "/logout",
@@ -179,6 +195,8 @@ class HubService:
             json={"token": access_token},
             timeout=self.TIMEOUT,
         )
+
+        self._restore_certs(old_verify)
 
         if response.status_code == 200:
             result = response.json()
@@ -193,12 +211,15 @@ class HubService:
         access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
+        old_verify = self._get_certificates()
 
         response = get(
             url=self._base_url + "/terminal/user",
             headers={"Authorization": authorization},
             timeout=self.TIMEOUT,
         )
+        self._restore_certs(old_verify)
+
         if response.status_code == 200:
             user_settings = response.json()
             filtered = {k: v for k, v in user_settings.items() if v is not None}
@@ -214,6 +235,7 @@ class HubService:
         access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
+        old_verify = self._get_certificates()
 
         response = put(
             url=self._base_url + "/user",
@@ -221,6 +243,8 @@ class HubService:
             json=settings.model_dump(exclude_defaults=True),
             timeout=self.TIMEOUT,
         )
+
+        self._restore_certs(old_verify)
 
         if response.status_code == 200:
             return True

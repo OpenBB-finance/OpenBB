@@ -71,12 +71,17 @@ class YFinanceCompanyNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
-        from yfinance import Ticker  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
+        from yfinance import Ticker
 
-        results = []
+        results: list = []
         symbols = query.symbol.split(",")  # type: ignore
+        old_verify = get_certificates()
 
         async def get_one(symbol):
+            """Get the data for one ticker symbol."""
             data = Ticker(symbol).get_news()
             for d in data:
                 images = None
@@ -95,6 +100,11 @@ class YFinanceCompanyNewsFetcher(
         tasks = [get_one(symbol) for symbol in symbols]
 
         await asyncio.gather(*tasks)
+
+        restore_certs(old_verify)
+
+        if not results:
+            raise EmptyDataError("No was returned for the given symbol(s)")
 
         return results
 

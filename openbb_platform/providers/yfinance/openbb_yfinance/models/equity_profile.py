@@ -119,8 +119,11 @@ class YFinanceEquityProfileFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from warnings import warn  # noqa
-        from yfinance import Ticker  # noqa
+        from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
+        from warnings import warn
+        from yfinance import Ticker
 
         symbols = query.symbol.split(",")
         results = []
@@ -152,15 +155,19 @@ class YFinanceEquityProfileFetcher(
             "dividendYield",
             "beta",
         ]
+        messages: list = []
+        old_verify = get_certificates()
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
-            result: Dict = {}
-            ticker: Dict = {}
+            result: dict = {}
+            ticker: dict = {}
             try:
                 ticker = Ticker(symbol).get_info()
             except Exception as e:
-                warn(f"Error getting data for {symbol}: {e}")
+                messages.append(
+                    f"Error getting data for {symbol} -> {e.__class__.__name__}: {e}"
+                )
             if ticker:
                 for field in fields:
                     if field in ticker:
@@ -175,6 +182,18 @@ class YFinanceEquityProfileFetcher(
         tasks = [get_one(symbol) for symbol in symbols]
 
         await asyncio.gather(*tasks)
+
+        restore_certs(old_verify)
+
+        if not results and messages:
+            raise OpenBBError("\n".join(messages))
+
+        if not results and not messages:
+            raise EmptyDataError("No data was returned for any symbol")
+
+        if results and messages:
+            for message in messages:
+                warn(message)
 
         return results
 

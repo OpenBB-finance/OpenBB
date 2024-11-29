@@ -549,6 +549,7 @@ class FinvizEquityScreenerFetcher(
             valuation,
         )
         from numpy import nan
+        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
         from openbb_finviz.utils.screener_helper import (
             get_preset_choices,
             d_check_screener,
@@ -557,6 +558,7 @@ class FinvizEquityScreenerFetcher(
         from pandas import DataFrame
 
         preset = None
+        old_verify = get_certificates()
 
         try:
             data_dir = kwargs.get("preferences", {}).get("data_directory")
@@ -568,6 +570,7 @@ class FinvizEquityScreenerFetcher(
                 )
         except Exception as e:
             if preset is not None:
+                restore_certs(old_verify)
                 raise e from e
             warn(f"Error loading presets: {e}")
             preset = None
@@ -608,6 +611,7 @@ class FinvizEquityScreenerFetcher(
                         )
 
                     if val not in d_check_screener[key]:
+                        restore_certs(old_verify)
                         raise OpenBBError(
                             f"Invalid [{section}] {key}={val}. "
                             f"Choose one of the following options:\n{', '.join(d_check_screener[key])}.\n"
@@ -702,6 +706,8 @@ class FinvizEquityScreenerFetcher(
                 sleep_sec=sleep,
                 verbose=0,
             )
+
+        restore_certs(old_verify)
 
         if df_screen is None or df_screen.empty:
             raise EmptyDataError(

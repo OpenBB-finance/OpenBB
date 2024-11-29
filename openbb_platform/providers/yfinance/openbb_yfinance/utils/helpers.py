@@ -54,7 +54,11 @@ async def get_defined_screener(
     """Get a predefined screener."""
     # pylint: disable=import-outside-toplevel
     import yfinance as yf  # noqa
-    from openbb_core.provider.utils.helpers import safe_fromtimestamp
+    from openbb_core.provider.utils.helpers import (
+        get_certificates,
+        restore_certs,
+        safe_fromtimestamp,
+    )
     from pytz import timezone
 
     if name and name not in PREDEFINED_SCREENERS:
@@ -91,6 +95,7 @@ async def get_defined_screener(
         "earnings_date",
     ]
     results: list = []
+    old_verify = get_certificates()
     screener = yf.screener.Screener()
 
     if screener.response:
@@ -132,6 +137,8 @@ async def get_defined_screener(
         if result.get("regularMarketChange") and result.get("regularMarketVolume"):
             output.append(result)
 
+    restore_certs(old_verify)
+
     return output[:limit] if limit is not None else output
 
 
@@ -151,16 +158,23 @@ def get_futures_data() -> "DataFrame":
     return read_csv(Path(__file__).resolve().parent / "futures.csv")
 
 
-def get_futures_symbols(symbol: str) -> List:
+def get_futures_symbols(symbol: str) -> list:
     """Get the list of futures symbols from the continuation symbol."""
     # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import (
+        get_certificates,
+        restore_certs,
+    )  # noqa
     from yfinance.data import YfData
+
+    old_verify = get_certificates()
 
     _symbol = symbol.upper() + "%3DF"
     URL = f"https://query2.finance.yahoo.com/v10/finance/quoteSummary/{_symbol}"
     params = {"modules": "futuresChain"}
     response: Dict = YfData(session=None).get_raw_json(url=URL, params=params)
-    futures_symbols: List = []
+    futures_symbols: list = []
+
     if "quoteSummary" in response:
         result = response["quoteSummary"].get("result", [])
         if not result:
@@ -168,6 +182,9 @@ def get_futures_symbols(symbol: str) -> List:
         futures = result[0].get("futuresChain", {})
         if futures:
             futures_symbols = futures.get("futures", [])
+
+    restore_certs(old_verify)
+
     return futures_symbols
 
 
@@ -420,8 +437,9 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     # pylint: disable=import-outside-toplevel
     from datetime import datetime  # noqa
     from dateutil.relativedelta import relativedelta
-    import yfinance as yf
+    from openbb_core.provider.utils.helpers import get_certificates, restore_certs
     from pandas import DataFrame, concat, to_datetime
+    import yfinance as yf
 
     symbol = symbol.upper()
     _start_date = start_date
@@ -445,6 +463,8 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     if adjusted is False:
         kwargs = dict(auto_adjust=False, back_adjust=False, period=period)
 
+    old_verify = get_certificates()
+
     try:
         data = yf.download(
             tickers=symbol,
@@ -466,8 +486,10 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
             data = data.tz_convert(None)
 
     except ValueError as exc:
+        restore_certs(old_verify)
         raise EmptyDataError() from exc
 
+    restore_certs(old_verify)
     tickers = symbol.split(",")
     if len(tickers) == 1:
         data = data.get(symbol, DataFrame())

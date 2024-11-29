@@ -63,15 +63,18 @@ class YFinanceOptionsChainsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
         from pandas import concat
         from yfinance import Ticker
         from pytz import timezone
 
         symbol = query.symbol.upper()
         symbol = "^" + symbol if symbol in ["VIX", "RUT", "SPX", "NDX"] else symbol
+        old_verify = get_certificates()
         ticker = Ticker(symbol)
         expirations = list(ticker.options)
         if not expirations or len(expirations) == 0:
+            restore_certs(old_verify)
             raise OpenBBError(f"No options found for {symbol}")
         chains_output: List = []
         underlying = ticker.option_chain(expirations[0])[2]
@@ -88,24 +91,24 @@ class YFinanceOptionsChainsFetcher(
             "last_price": underlying.get(
                 "postMarketPrice", underlying.get("regularMarketPrice")
             ),
-            "open": underlying.get("regularMarketOpen", None),
-            "high": underlying.get("regularMarketDayHigh", None),
-            "low": underlying.get("regularMarketDayLow", None),
-            "close": underlying.get("regularMarketPrice", None),
-            "prev_close": underlying.get("regularMarketPreviousClose", None),
-            "change": underlying.get("regularMarketChange", None),
-            "change_percent": underlying.get("regularMarketChangePercent", None),
-            "volume": underlying.get("regularMarketVolume", None),
+            "open": underlying.get("regularMarketOpen"),
+            "high": underlying.get("regularMarketDayHigh"),
+            "low": underlying.get("regularMarketDayLow"),
+            "close": underlying.get("regularMarketPrice"),
+            "prev_close": underlying.get("regularMarketPreviousClose"),
+            "change": underlying.get("regularMarketChange"),
+            "change_percent": underlying.get("regularMarketChangePercent"),
+            "volume": underlying.get("regularMarketVolume"),
             "dividend_yield": float(underlying.get("dividendYield", 0)) / 100,
-            "dividend_yield_ttm": underlying.get("trailingAnnualDividendYield", None),
-            "year_high": underlying.get("fiftyTwoWeekHigh", None),
-            "year_low": underlying.get("fiftyTwoWeekLow", None),
-            "ma_50": underlying.get("fiftyDayAverage", None),
-            "ma_200": underlying.get("twoHundredDayAverage", None),
-            "volume_avg_10d": underlying.get("averageDailyVolume10Day", None),
-            "volume_avg_3m": underlying.get("averageDailyVolume3Month", None),
-            "market_cap": underlying.get("marketCap", None),
-            "shares_outstanding": underlying.get("sharesOutstanding", None),
+            "dividend_yield_ttm": underlying.get("trailingAnnualDividendYield"),
+            "year_high": underlying.get("fiftyTwoWeekHigh"),
+            "year_low": underlying.get("fiftyTwoWeekLow"),
+            "ma_50": underlying.get("fiftyDayAverage"),
+            "ma_200": underlying.get("twoHundredDayAverage"),
+            "volume_avg_10d": underlying.get("averageDailyVolume10Day"),
+            "volume_avg_3m": underlying.get("averageDailyVolume3Month"),
+            "market_cap": underlying.get("marketCap"),
+            "shares_outstanding": underlying.get("sharesOutstanding"),
         }
         tz = timezone(underlying_output.get("exchange_tz", "UTC"))
 
@@ -147,8 +150,11 @@ class YFinanceOptionsChainsFetcher(
             ]
         )
 
+        restore_certs(old_verify)
+
         if not chains_output:
             raise EmptyDataError(f"No data was returned for {symbol}")
+
         return {"underlying": underlying_output, "chains": chains_output}
 
     @staticmethod

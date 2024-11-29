@@ -63,10 +63,15 @@ class FinvizPriceTargetFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Finviz endpoint."""
         # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (  # noqa
+            get_certificates,
+            restore_certs,
+        )
         from finvizfinance.quote import finvizfinance
         from pandas import DataFrame
 
         results: List[Dict] = []
+        old_verify = get_certificates()
 
         def get_one(symbol) -> List[Dict]:
             """Get the data for one symbol."""
@@ -99,7 +104,9 @@ class FinvizPriceTargetFetcher(
             result = price_targets.to_dict(orient="records")
             return result
 
+        restore_certs(old_verify)
         symbols = query.symbol.split(",") if query.symbol else []
+
         for symbol in symbols:
             result = get_one(symbol)
             if result is not None and result != []:

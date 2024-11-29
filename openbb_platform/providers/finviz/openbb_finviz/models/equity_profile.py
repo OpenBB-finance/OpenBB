@@ -97,9 +97,14 @@ class FinvizEquityProfileFetcher(
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (  # noqa
+            get_certificates,
+            restore_certs,
+        )
         from finvizfinance.quote import finvizfinance
 
         results: List = []
+        old_verify = get_certificates()
 
         def get_one(symbol) -> Dict:
             """Get the data for one symbol."""
@@ -212,6 +217,8 @@ class FinvizEquityProfileFetcher(
             result = get_one(symbol)
             if result is not None and result:
                 results.append(result)
+
+        restore_certs(old_verify)
 
         return results
 

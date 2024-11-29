@@ -98,18 +98,27 @@ class FinvizPricePerformanceFetcher(
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (  # noqa
+            get_certificates,
+            restore_certs,
+        )
         from finvizfinance.screener import performance
 
+        old_verify = get_certificates()
         screen = performance.Performance()
         screen.set_filter(ticker=query.symbol)
         try:
             screen_df = screen.screener_view(verbose=0)
             if screen_df is None:
+                restore_certs(old_verify)
                 raise EmptyDataError()
             screen_df.columns = screen_df.columns.str.strip()  # type: ignore
             screen_df = screen_df.fillna("N/A").replace("N/A", None)  # type: ignore
         except Exception as e:
+            restore_certs(old_verify)
             raise e from e
+
+        restore_certs(old_verify)
         symbols = query.symbol.split(",")
 
         # Check for missing symbols and warn of the missing symbols.
