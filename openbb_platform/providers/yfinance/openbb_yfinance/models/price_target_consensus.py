@@ -4,6 +4,7 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.price_target_consensus import (
     PriceTargetConsensusData,
@@ -84,7 +85,6 @@ class YFinancePriceTargetConsensusFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
         from openbb_core.provider.utils.helpers import get_certificates, restore_certs
         from warnings import warn

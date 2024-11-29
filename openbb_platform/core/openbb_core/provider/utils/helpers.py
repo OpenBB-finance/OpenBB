@@ -460,7 +460,7 @@ def make_request(
         kwargs["verify"] = combine_certificates(python_settings["cafile"])
 
     if os.environ.get("REQUESTS_CA_BUNDLE") and python_settings.get("cafile") is None:
-        certs = os.environ.get("REQUESTS_CA_BUNDLE")
+        certs = os.environ.get("REQUESTS_CA_BUNDLE", "")
         kwargs["verify"] = combine_certificates(certs)
 
     if (
