@@ -233,7 +233,7 @@ async def amake_request(
     )
 
     # We need to handle SSL context and proxy settings for AIOHTTP.
-    # We will accomodate the Requests environment variable for the CA bundle.
+    # We will accommodate the Requests environment variable for the CA bundle.
     python_settings = get_python_request_settings()
 
     if (
@@ -403,7 +403,7 @@ def combine_certificates(cert: str, bundle: Optional[str] = None) -> str:
         return combined_cert
     except Exception as e:  # pylint: disable=broad-except
         warn(
-            f"An error occured while handling the certificates file -> {e.__class__.__name__}: {e}"
+            f"An error occurred while handling the certificates file -> {e.__class__.__name__}: {e}"
         )
         return cert
 
