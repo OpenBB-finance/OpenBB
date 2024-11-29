@@ -19,7 +19,7 @@ class GovernmentTradesQueryParams(QueryParams):
         default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
     )
     chamber: Literal["house", "senate", "all"] = Field(
-        description="Government Chamber."
+        default="all", description="Government Chamber."
     )
     limit: Optional[NonNegativeInt] = Field(
         default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
@@ -29,7 +29,7 @@ class GovernmentTradesQueryParams(QueryParams):
     @classmethod
     def to_upper(cls, v: str) -> str:
         """Convert field to uppercase."""
-        return v.upper()
+        return v.upper() if v else None
 
 
 class GovernmentTradesData(Data):

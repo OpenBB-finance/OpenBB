@@ -88,29 +88,27 @@ class FMPGovernmentTradesFetcher(
             "all": ["senate-disclosure", "senate-trading"],
         }
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        keys_to_remove = {
+            "comment",
+            "district",
+            "capitalGainsOver200USD",
+            "disclosureYear",
+            "firstName",
+            "lastName",
+        }
+        keys_to_rename = {"dateRecieved": "date", "disclosureDate": "date"}
 
         async def get_one(url):
-            # 指定要移除的键
-            keys_to_remove = [
-                "comment",
-                "district",
-                "capitalGainsOver200USD",
-                "disclosureYear",
-            ]
-            # 指定要重命名的键，格式为 {原键: 新键}
-            keys_to_rename = {"dateRecieved": "date", "disclosureDate": "date"}
-            """Get data for the given symbol."""
-
+            """Get data for one URL."""
             result = await amake_request(url, response_callback=response_callback, **kwargs)
-            # 处理数据
             processed_list = []
+
             for entry in result:
-                # 创建新的字典用于存储处理后的数据
-                new_entry = {k: v for k, v in entry.items() if k not in keys_to_remove}
-                # 重命名指定的键
-                for old_key, new_key in keys_to_rename.items():
-                    if old_key in new_entry:
-                        new_entry[new_key] = new_entry.pop(old_key)
+                new_entry = {
+                    keys_to_rename.get(k, k): v
+                    for k, v in entry.items()
+                    if k not in keys_to_remove
+                }
                 processed_list.append(new_entry)
             if not processed_list or len(processed_list) == 0:
                 warn(f"Symbol Error: No data found for {url}")
@@ -160,4 +158,5 @@ class FMPGovernmentTradesFetcher(
         query: FMPGovernmentTradesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPGovernmentTradesData]:
         """Return the transformed data."""
+
         return [FMPGovernmentTradesData(**d) for d in data]

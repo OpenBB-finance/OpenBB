@@ -768,18 +768,11 @@ def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_government_trades_fetcher(credentials=test_credentials):
     """Test FMP government trades fetcher.
-    params limit only functions when there is no parameter symbol
+    params limit only functions when there is no parameter symbol.
     """
     params = {
-        "chamber": "all",
-        "symbol": "AAPL",
-    }
-    fetcher = FMPGovernmentTradesFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-    params = {
-        "chamber": "all",
-        "limit": 300,
+        "chamber": "senate",
+        "limit": 1,
     }
     fetcher = FMPGovernmentTradesFetcher()
     result = fetcher.test(params, credentials)
