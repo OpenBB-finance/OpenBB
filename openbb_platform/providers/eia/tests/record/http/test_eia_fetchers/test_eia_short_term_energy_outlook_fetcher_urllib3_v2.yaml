@@ -1,0 +1,226 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/steo/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=2024-Q2&facets%5BseriesId%5D%5B%5D=SNGPRL48&facets%5BseriesId%5D%5B%5D=TOPRAC&facets%5BseriesId%5D%5B%5D=TOPRBK&facets%5BseriesId%5D%5B%5D=TOPREF&facets%5BseriesId%5D%5B%5D=TOPRL48&facets%5BseriesId%5D%5B%5D=TOPRMP&facets%5BseriesId%5D%5B%5D=TOPRNI&facets%5BseriesId%5D%5B%5D=TOPRPM&facets%5BseriesId%5D%5B%5D=TOPRR48&facets%5BseriesId%5D%5B%5D=TOPRWF&frequency=quarterly&length=5000&offset=0&start=2024-Q1
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAALWXXXObOBSG/4qGq3YmJZIQQuQuTZNOdteJ89FkMnVnRwZhswFkSyJZb6b/vQc7
+        pfYumdZZzHAliaOH90ivdJ48o+xMV1Z5B0+e004W3oFHsbfnpdKpE21K6aDlDp53I+8CXujKjJrX
+        qkoW0DOvpXHKFIvVJ9I7+PzkzZTJdbqMRNm7CwJ9FpqUPW0ar84+Di//YKJt/aBsYvKZy3XVdE9l
+        oVBqFqiSrjayQBNp0czotE6WQ/a8B1nUQOxFsc+wEEEYYArNdZU3sOO8KGAcSupxnqBMKYcACKVy
+        4X3d+w8c3SEcjQIe4jiOXwv3L+Wuz4eXh0cvoF3nk6lDOi/WcFBmdIkOa+vyCh0B+z3KljndRPUJ
+        CSgnIQ7ZGmr5jDqWxqjCbiHiDjkFi3EQRzh8FWeHnu9/35rzvby/V1UnIfEJh6RzEoS9Kdk7oSAR
+        wTygpC8Nj0+2JjyWE9hIYDBpd6ZjwgmjcSwi1peOu6DkgYiJwEHQl5QvW08X5RqL8BmnnEU0Yq+D
+        6VDsf8BwHpCV+/WlzGC4dfoGubXNO5vlsns3+IQKSmgYxqK3/bor0DAK4LSjcW+Knp1uDXqW67GR
+        RqIjnaqi6EZlnGPMAgELsi9Nd4YqSMjjmIeitwNlONgadahMuZF4u8YY+gGlERUxj/pSs39ExigO
+        YwZp70vGy628ZwWp3RTm+ORf+d2cPhgkx+DYYdibR+6IE3ZQSCkVvC89b7c//W61TrMXzz4sGFwh
+        BI4Ied1FokPMHUAGEaGEwWn0Kxn/AkXMxrwDXblpsUB2qo1DUOiU6A0RqGya3zYsf6kli0W1zasJ
+        uro+PodeMBwfoZEZVej5uVSzJoKsUpRXEEfCZw9qLQJqqic0NvoR/v8ArSK9eXx89FUu/Yl+GO1b
+        p/Ro/y1o6S0rMOuaqi3RZQlhAXa0/0C/j2qijfbhl2dggaVtBspZ/ue9aoo2O89uzplK3d0Ayhl6
+        8tvVdVbixNa38Z37h6qbm09zdjFXP6/1npUG3TKZKLec50dOP6/dItqaoL3Stney9tBsnb41qXZR
+        /NhqbYX2BXSwDpA2lr2qNleYzjKrmiFNUVuoauKmjWNhjL2vEABEuVHGrrJNfeI3Jnv8d6KKwzQ9
+        rTb74JNvMXc1JjIPAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '869'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 06 Oct 2024 18:59:51 GMT
+      Etag: null
+      Expires:
+      - Sun, 06 Oct 2024 18:59:51 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      - max-age=31536000; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/steo/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=2024-Q2&facets%5BseriesId%5D%5B%5D=SNGPRBK&facets%5BseriesId%5D%5B%5D=SNGPRBN&facets%5BseriesId%5D%5B%5D=SNGPREF&facets%5BseriesId%5D%5B%5D=SNGPRFY&facets%5BseriesId%5D%5B%5D=SNGPRHA&facets%5BseriesId%5D%5B%5D=SNGPRMC&facets%5BseriesId%5D%5B%5D=SNGPRMP&facets%5BseriesId%5D%5B%5D=SNGPRNI&facets%5BseriesId%5D%5B%5D=SNGPRPM&facets%5BseriesId%5D%5B%5D=SNGPRUA&frequency=quarterly&length=5000&offset=0&start=2024-Q1
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAL2XbW/bNhDHvwqhVy2QKhRFkVLetV28ZoPTpGkyBHUxMNLZ0aInk5QzL+h379Fp
+        qxhTsEGTJuiFxSNPP/91vOM9eBpMU1cGvKMHz9ZWFd6Rx6h34GXKwqzWpbI4co3Xq4V3jjealhrW
+        LVTpFi3rVmkLutg+LlHe0acHrwGd19nOE+OvzgO0GRwCc+IGL05/Pvvw5tcfgz+BSXXe2LyunPVW
+        FUAqZVutCrJShjS6ztrUmclS1yV5o+7uAH/v4NyiA2+jihbc+3xOZRhwIWmCw22VO/qbvCjc6rS9
+        yVOyBLAECUmmtt6Xg7/Rsv+RNko4o1RwyofS9mp7+h9odQXW9uIGvkRWKoWQg3F7xZ0KV8QySgIu
+        pRhT3ePZYNxjtcIZuKuyXmLuM5kEUZzIYNTonZI4ZFKyUMgxFZ5dD+adqS3GA2yQAXqJ/Rhpk1hg
+        FEdjajwxc8S4DHk0bp5493ow8zu1rcA8jxyEfkRDwWIqwjFlnhKZ+WEgKI14Mmq+mL8djDxXOoWi
+        aE1/+Yh8GnMWxxEdDNyn8ZTAEWUhx+IcjKrw2XDg3Bh3N02univSYYRlT9A4YqOqPC00hkUg4oSx
+        wZWkT+nTk8HQp3l9o5VW5G2dYYg8gy3jmOORCINkTK0nx04YpmbBw8G5rk/ss/lg6jPQ5V5smKeJ
+        TmJ0BHhElnzUiJ6QN+ZxGLNg1Lx8ObyUXNo8Vc8ciAKZxEmELcjgFNen7SSwoZ9EkQikCMW/VPYz
+        Nnl7r5/Xlb0ttsTc1toSbARL8iKISemGXzqUP2CHYkhr8mpFLj4ev0crbiWfkIVeVOTb9QEa50FV
+        Gckr9KNw2QaeeCCuuyQ3ur5HGY7Io6cX9/f3PuTKX9WbxaGxUC8OX6Km3q5DNdZ1tWldlugWYReH
+        G/Z9lvO2OMR/3eDmLo2bqJr89ztwTa1ZL6/ec8js9RzVZbNfLj4uS5qa9rfk2v7F4Orqcs3P1/DP
+        vfA3rVG3pUrB7t7TfdtPT7rLrhXqzuzdybI7/HQluisjXZLrNuL3sPmMahiLYHubAar9eKuXSwNu
+        imv9C6hW9hYfsPBR7ws6QGmuQJvHb8587ARx2vGfWOtfZ9lJtW/DJV8BKEucAlgQAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '848'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 06 Oct 2024 18:59:51 GMT
+      Etag: null
+      Expires:
+      - Sun, 06 Oct 2024 18:59:51 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      - max-age=31536000; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/steo/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=2024-Q2&facets%5BseriesId%5D%5B%5D=SNGPRR48&facets%5BseriesId%5D%5B%5D=SNGPRWF&frequency=quarterly&length=5000&offset=0&start=2024-Q1
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAL2Tb2/aMBDGv8rJr1qpDU5Iyp93k1amTuo6oAVVTTWZ5ALZHDvYDoyhfvedoWuL
+        NmlTtc3Km9xzfvzz+W7LDNpaK4usv2VOOyFZn8XshOXC4UCbSjgK3NI6TdmQPpIKg8sGVbYhZdkI
+        49DIzX6LYP27LavRlDonNeJRfDoMSbMUQnvhg+MP7z6ORnH3KfoWbWbK2pVaeXkhJIISrjFCwlxY
+        qI3Om8zLUBhdgXYLNHATjAModoSkWHJbCdmgPzWIeNJp98544g9pVOnvMCul9BZZMyszKBAdECfk
+        YsMeTn5ijv47c5hEnbjXa58lr2X+VZ2ng1cjT7XOiTV/Bj7g7fK4HSVh3G7/zRr/Q96EmoKHPR7+
+        Ge89NfQBwaVWbiE3YBfaOKCmr+Ao7ELlw8ee5jPuaCw0tlRzGF+fX5GaowwAUpMqeFwjrL2DUDmU
+        inwEbVvhCwfwkwQzo9dUiT7snY7W63WApQjmepW2rEOdto6prGw3jdb5Ac50VZEtwaatVfQjy7ul
+        Lbp1LYyorE8UdfnpC/oBtstichVj7m4vqcDR4P34uqh4Zptp79Z9i3AyuVnGwyX+fu4fa011K0SG
+        bnfO8/PevXjfp2m6J3zryOmgh1Ed9oguCos+hdOPRDV3C/pJOOfsgQzoLhM0dv9INEdBh9LOv2Yo
+        3+T5hTrUaMt3uNK6i/QEAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '530'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 06 Oct 2024 18:59:51 GMT
+      Etag: null
+      Expires:
+      - Sun, 06 Oct 2024 18:59:51 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      - max-age=31536000; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

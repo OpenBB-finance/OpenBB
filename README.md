@@ -21,17 +21,17 @@ Offers access to equity, options, crypto, forex, macro economy, fixed income, an
 
 Sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
 
-We also have an open source AI financial analyst agent that can access all the data within OpenBB, and that repo can be found [here](https://github.com/OpenBB-finance/openbb-agents).
-
 ---
 
-If you are looking for the first AI financial terminal for professionals, the OpenBB Terminal Pro can be found at [pro.openbb.co](https://pro.openbb.co)
+If you are looking for our **FREE** AI-powered Research and Analytics Workspace, you can find it here: [pro.openbb.co](https://pro.openbb.co).
 
 <a href="https://pro.openbb.co">
   <div align="center">
-  <img src="https://openbb.co/api/image?src=%2Fassets%2Fimages%2Fhome%2Fhero.png&width=2400&fit=cover&position=center&background[]=0&background[]=0&background[]=0&background[]=0&quality=100&compressionLevel=9&loop=0&delay=100&crop=null" alt="Logo" width="600">
+  <img src="https://openbb.co/api/image?src=https%3A%2F%2Fopenbb-cms.directus.app%2Fassets%2Ff431ed60-5e46-439a-a9f7-4b06e72d0720.png&width=2400&height=1552&fit=cover&position=center&background[]=0&background[]=0&background[]=0&background[]=0&quality=100&compressionLevel=9&loop=0&delay=100&crop=null" alt="Logo" width="600">
   </div>
 </a>
+
+We also have an open source AI financial analyst agent that can access all the data within OpenBB, and that repo can be found [here](https://github.com/OpenBB-finance/openbb-agents).
 
 ---
 

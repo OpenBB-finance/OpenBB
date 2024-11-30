@@ -67,7 +67,7 @@ def headers():
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 5,
                 "provider": "yfinance",
             }
         ),
@@ -211,7 +211,7 @@ def test_equity_calendar_earnings(params, headers):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 5,
                 "provider": "yfinance",
             }
         ),
@@ -516,7 +516,7 @@ def test_equity_estimates_forward_eps(params, headers):
             {
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 5,
                 "provider": "yfinance",
             }
         ),
@@ -577,6 +577,16 @@ def test_equity_fundamental_income_growth(params, headers):
                 "end_date": "2023-06-06",
                 "ownership_type": None,
                 "sort_by": "updated_on",
+            }
+        ),
+        (
+            {
+                "provider": "sec",
+                "symbol": "AAPL",
+                "limit": 10,
+                "start_date": "2024-06-30",
+                "end_date": "2024-09-30",
+                "use_cache": True,
             }
         ),
     ],
@@ -1474,6 +1484,24 @@ def test_equity_search(params, headers):
                 "provider": "finviz",
             }
         ),
+        (
+            {
+                "country": "us",
+                "sector": "consumer_cyclical",
+                "industry": "auto_manufacturers",
+                "exchange": None,
+                "mktcap_min": 60000000000,
+                "mktcap_max": None,
+                "price_min": 10,
+                "price_max": None,
+                "volume_min": 5000000,
+                "volume_max": None,
+                "beta_min": None,
+                "beta_max": None,
+                "provider": "yfinance",
+                "limit": 200,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1537,7 +1565,7 @@ def test_equity_profile(params, headers):
 @parametrize(
     "params",
     [
-        ({"sort": "desc", "provider": "yfinance"}),
+        ({"sort": "desc", "provider": "yfinance", "limit": 10}),
         ({"provider": "tmx", "category": "52w_high"}),
     ],
 )
@@ -1555,7 +1583,7 @@ def test_equity_discovery_gainers(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_losers(params, headers):
@@ -1571,7 +1599,7 @@ def test_equity_discovery_losers(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_active(params, headers):
@@ -1606,7 +1634,7 @@ def test_equity_price_performance(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_undervalued_large_caps(params, headers):
@@ -1622,7 +1650,7 @@ def test_equity_discovery_undervalued_large_caps(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_undervalued_growth(params, headers):
@@ -1638,7 +1666,7 @@ def test_equity_discovery_undervalued_growth(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_aggressive_small_caps(params, headers):
@@ -1656,7 +1684,7 @@ def test_equity_discovery_aggressive_small_caps(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [({"sort": "desc", "provider": "yfinance", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_discovery_growth_tech(params, headers):
@@ -2082,7 +2110,16 @@ def test_equity_compare_company_facts(params, headers):
                 "end_date": None,
                 "provider": "fmp",
             }
-        )
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+                "provider": "intrinio",
+                "interval": "week",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -2092,6 +2129,30 @@ def test_equity_historical_market_cap(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/historical_market_cap?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "date": None,
+                "report_type": None,
+                "provider": "sec",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_discovery_latest_financial_reports(params, headers):
+    """Test the equity discovery latest financial reports endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/discovery/latest_financial_reports?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

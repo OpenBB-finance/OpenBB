@@ -2,7 +2,6 @@
 
 # pylint: disable=unused-argument,too-many-arguments,too-many-branches,too-many-locals,too-many-statements
 
-from datetime import datetime
 from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.utils.errors import EmptyDataError
@@ -27,6 +26,113 @@ MONTH_MAP = {
     "X": "11",
     "Z": "12",
 }
+
+PREDEFINED_SCREENERS = [
+    "aggressive_small_caps",
+    "day_gainers",
+    "day_losers",
+    "growth_technology_stocks",
+    "most_actives",
+    "most_shorted_stocks",
+    "small_cap_gainers",
+    "undervalued_growth_stocks",
+    "undervalued_large_caps",
+    "conservative_foreign_funds",
+    "high_yield_bond",
+    "portfolio_anchors",
+    "solid_large_growth_funds",
+    "solid_midcap_growth_funds",
+    "top_mutual_funds",
+]
+
+
+async def get_defined_screener(
+    name: Optional[str] = None,
+    body: Optional[dict[str, Any]] = None,
+    limit: Optional[int] = None,
+):
+    """Get a predefined screener."""
+    # pylint: disable=import-outside-toplevel
+    import yfinance as yf  # noqa
+    from openbb_core.provider.utils.helpers import safe_fromtimestamp
+    from pytz import timezone
+
+    if name and name not in PREDEFINED_SCREENERS:
+        raise ValueError(
+            f"Invalid predefined screener name: {name}\n    Valid names: {PREDEFINED_SCREENERS}"
+        )
+
+    fields = [
+        "symbol",
+        "shortName",
+        "regularMarketPrice",
+        "regularMarketChange",
+        "regularMarketChangePercent",
+        "regularMarketVolume",
+        "regularMarketOpen",
+        "regularMarketDayHigh",
+        "regularMarketDayLow",
+        "regularMarketPreviousClose",
+        "fiftyDayAverage",
+        "twoHundredDayAverage",
+        "fiftyTwoWeekHigh",
+        "fiftyTwoWeekLow",
+        "marketCap",
+        "sharesOutstanding",
+        "epsTrailingTwelveMonths",
+        "forwardPE",
+        "epsForward",
+        "bookValue",
+        "priceToBook",
+        "trailingAnnualDividendYield",
+        "currency",
+        "exchange",
+        "exchangeTimezoneName",
+        "earnings_date",
+    ]
+    results: list = []
+    screener = yf.screener.Screener()
+
+    if screener.response:
+        screener.response = None
+
+    if body is not None:
+        screener.set_body(body)
+    else:
+        if not name:
+            raise ValueError("Name must be provided if body is not.")
+        screener.set_predefined_body(name)
+        screener.patch_body({"size": 100, "offset": 0})
+
+    res = screener.response
+    total_results = res["total"]
+    results.extend(res["quotes"])
+
+    while len(results) < total_results:
+        if limit is not None and len(results) >= limit:
+            break
+        offset = len(results)
+        screener.patch_body({"offset": offset})
+        res = screener.response
+        results.extend(res.get("quotes", []))
+
+    output: list = []
+
+    for item in results:
+        tz = item["exchangeTimezoneName"]
+        earnings_date = (
+            safe_fromtimestamp(item["earningsTimestamp"], timezone(tz)).strftime(
+                "%Y-%m-%d %H:%M:%S%z"
+            )
+            if item.get("earningsTimestamp")
+            else None
+        )
+        item["earnings_date"] = earnings_date
+        result = {k: item.get(k, None) for k in fields}
+        if result.get("regularMarketChange") and result.get("regularMarketVolume"):
+            output.append(result)
+
+    return output[:limit] if limit is not None else output
 
 
 def get_expiration_month(symbol: str) -> str:
@@ -140,7 +246,7 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
         DataFrame with futures curve
     """
     # pylint: disable=import-outside-toplevel
-    from datetime import date as dateType  # noqa
+    from datetime import date as dateType, datetime  # noqa
     from dateutil.relativedelta import relativedelta  # noqa
     from pandas import Categorical, DataFrame, DatetimeIndex, to_datetime  # noqa
 
@@ -312,7 +418,8 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
 ) -> "DataFrame":
     """Get yFinance OHLC data for any ticker and interval available."""
     # pylint: disable=import-outside-toplevel
-    from dateutil.relativedelta import relativedelta  # noqa
+    from datetime import datetime  # noqa
+    from dateutil.relativedelta import relativedelta
     import yfinance as yf
     from pandas import DataFrame, concat, to_datetime
 

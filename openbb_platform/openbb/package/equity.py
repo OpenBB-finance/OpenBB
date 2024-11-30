@@ -81,7 +81,7 @@ class ROUTER_equity(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
             ),
         ],
         start_date: Annotated[
@@ -93,9 +93,9 @@ class ROUTER_equity(Container):
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
-            Optional[Literal["fmp"]],
+            Optional[Literal["fmp", "intrinio"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
             ),
         ] = None,
         **kwargs
@@ -105,20 +105,22 @@ class ROUTER_equity(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        provider : Optional[Literal['fmp', 'intrinio']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
+        interval : Literal['day', 'week', 'month', 'quarter', 'year']
+            None
 
         Returns
         -------
         OBBject
             results : List[HistoricalMarketCap]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -149,7 +151,7 @@ class ROUTER_equity(Container):
                     "provider": self._get_provider(
                         provider,
                         "equity.historical_market_cap",
-                        ("fmp",),
+                        ("fmp", "intrinio"),
                     )
                 },
                 standard_params={
@@ -159,7 +161,16 @@ class ROUTER_equity(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                    },
+                    "interval": {
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": ["day", "week", "month", "quarter", "year"],
+                        }
+                    },
                 },
             )
         )
@@ -537,9 +548,9 @@ class ROUTER_equity(Container):
     def screener(
         self,
         provider: Annotated[
-            Optional[Literal["fmp"]],
+            Optional[Literal["fmp", "yfinance"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance."
             ),
         ] = None,
         **kwargs
@@ -551,24 +562,24 @@ class ROUTER_equity(Container):
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        provider : Optional[Literal['fmp', 'yfinance']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.
         mktcap_min : Optional[int]
-            Filter by market cap greater than this value. (provider: fmp)
+            Filter by market cap greater than this value. (provider: fmp, yfinance)
         mktcap_max : Optional[int]
-            Filter by market cap less than this value. (provider: fmp)
+            Filter by market cap less than this value. (provider: fmp, yfinance)
         price_min : Optional[float]
-            Filter by price greater than this value. (provider: fmp)
+            Filter by price greater than this value. (provider: fmp, yfinance)
         price_max : Optional[float]
-            Filter by price less than this value. (provider: fmp)
+            Filter by price less than this value. (provider: fmp, yfinance)
         beta_min : Optional[float]
-            Filter by a beta greater than this value. (provider: fmp)
+            Filter by a beta greater than this value. (provider: fmp, yfinance)
         beta_max : Optional[float]
-            Filter by a beta less than this value. (provider: fmp)
+            Filter by a beta less than this value. (provider: fmp, yfinance)
         volume_min : Optional[int]
-            Filter by volume greater than this value. (provider: fmp)
+            Filter by volume greater than this value. (provider: fmp, yfinance)
         volume_max : Optional[int]
-            Filter by volume less than this value. (provider: fmp)
+            Filter by volume less than this value. (provider: fmp, yfinance)
         dividend_min : Optional[float]
             Filter by dividend amount greater than this value. (provider: fmp)
         dividend_max : Optional[float]
@@ -577,23 +588,25 @@ class ROUTER_equity(Container):
             If true, returns only ETFs. (provider: fmp)
         is_active : Optional[bool]
             If false, returns only inactive tickers. (provider: fmp)
-        sector : Optional[Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates']]
-            Filter by sector. (provider: fmp)
+        sector : Optional[Union[Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates'], Literal['basic_materials', 'communication_services', 'consumer_cyclical', 'consumer_defensive', 'energy', 'financial_services', 'healthcare', 'industrials', 'real_estate', 'technology', 'utilities']]]
+            Filter by sector. (provider: fmp, yfinance)
         industry : Optional[str]
-            Filter by industry. (provider: fmp)
+            Filter by industry. (provider: fmp, yfinance)
         country : Optional[str]
-            Filter by country, as a two-letter country code. (provider: fmp)
-        exchange : Optional[Literal['amex', 'ams', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'mutual_fund', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra']]
-            Filter by exchange. (provider: fmp)
+            Filter by country, as a two-letter country code. (provider: fmp);
+            Filter by country, as a two-letter country code. Default is, 'us'. Use, 'all', for all countries. (provider: yfinance)
+        exchange : Optional[Union[Literal['amex', 'ams', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'mutual_fund', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra'], Literal['ams', 'aqs', 'ase', 'asx', 'ath', 'ber', 'bru', 'bse', 'bts', 'bud', 'bue', 'bvb', 'bvc', 'ccs', 'cnq', 'cph', 'cxe', 'dfm', 'doh', 'dus', 'ebs', 'fka', 'fra', 'ger', 'ham', 'han', 'hel', 'hkg', 'ice', 'iob', 'ise', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'kuw', 'lis', 'lit', 'lse', 'mce', 'mex', 'mil', 'mun', 'ncm', 'neo', 'ngm', 'nms', 'nsi', 'nyq', 'nze', 'oem', 'oqb', 'oqx', 'osl', 'par', 'pnk', 'pra', 'ris', 'sau', 'ses', 'set', 'sgo', 'shh', 'shz', 'sto', 'stu', 'tai', 'tal', 'tlv', 'tor', 'two', 'van', 'vie', 'vse', 'wse']]]
+            Filter by exchange. (provider: fmp, yfinance)
         limit : Optional[int]
-            Limit the number of results to return. (provider: fmp)
+            Limit the number of results to return. (provider: fmp);
+            Limit the number of results returned. Default is, 200. Set to, 0, for all results. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[EquityScreener]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -608,8 +621,9 @@ class ROUTER_equity(Container):
             Symbol representing the entity requested in the data.
         name : Optional[str]
             Name of the company.
-        market_cap : Optional[int]
-            The market cap of ticker. (provider: fmp)
+        market_cap : Optional[Union[int, float]]
+            The market cap of ticker. (provider: fmp);
+            Market Cap. (provider: yfinance)
         sector : Optional[str]
             The sector the ticker belongs to. (provider: fmp)
         industry : Optional[str]
@@ -623,7 +637,8 @@ class ROUTER_equity(Container):
         volume : Optional[int]
             The current trading volume. (provider: fmp)
         exchange : Optional[str]
-            The exchange code the asset trades on. (provider: fmp)
+            The exchange code the asset trades on. (provider: fmp);
+            Exchange where the stock is listed. (provider: yfinance)
         exchange_name : Optional[str]
             The full name of the primary exchange. (provider: fmp)
         country : Optional[str]
@@ -632,6 +647,42 @@ class ROUTER_equity(Container):
             Whether the ticker is an ETF. (provider: fmp)
         actively_trading : Optional[Literal[True, False]]
             Whether the ETF is actively trading. (provider: fmp)
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -646,11 +697,329 @@ class ROUTER_equity(Container):
                     "provider": self._get_provider(
                         provider,
                         "equity.screener",
-                        ("fmp",),
+                        ("fmp", "yfinance"),
                     )
                 },
                 standard_params={},
                 extra_params=kwargs,
+                info={
+                    "sector": {
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "basic_materials",
+                                "communication_services",
+                                "consumer_cyclical",
+                                "consumer_defensive",
+                                "energy",
+                                "financial_services",
+                                "healthcare",
+                                "industrials",
+                                "real_estate",
+                                "technology",
+                                "utilities",
+                            ],
+                        }
+                    },
+                    "industry": {
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "advertising_agencies",
+                                "aerospace_defense",
+                                "agricultural_inputs",
+                                "airlines",
+                                "airports_air_services",
+                                "aluminum",
+                                "apparel_manufacturing",
+                                "apparel_retail",
+                                "asset_management",
+                                "auto_components",
+                                "auto_manufacturers",
+                                "auto_parts",
+                                "auto_truck_dealerships",
+                                "automobiles",
+                                "banks",
+                                "biotechnology",
+                                "broadcasting",
+                                "building_materials",
+                                "building_products",
+                                "building_products_equipment",
+                                "business_equipment_supplies",
+                                "capital_markets",
+                                "chemicals",
+                                "coking_coal",
+                                "commercial_services",
+                                "communication_equipment",
+                                "computer_hardware",
+                                "confectioners",
+                                "construction_engineering",
+                                "construction_materials",
+                                "consulting_services",
+                                "consumer_durables",
+                                "consumer_electronics",
+                                "consumer_services",
+                                "copper",
+                                "credit_services",
+                                "department_stores",
+                                "diagnostics_research",
+                                "discount_stores",
+                                "diversified_financials",
+                                "education_training_services",
+                                "electrical_equipment",
+                                "electrical_equipment_parts",
+                                "electronic_components",
+                                "electronic_gaming_multimedia",
+                                "electronics_computer_distribution",
+                                "energy_services",
+                                "engineering_construction",
+                                "entertainment",
+                                "farm_heavy_construction_machinery",
+                                "farm_products",
+                                "financial_conglomerates",
+                                "financial_data_stock_exchanges",
+                                "food_distribution",
+                                "footwear_accessories",
+                                "furnishings_fixtures_appliances",
+                                "gambling",
+                                "gold",
+                                "grocery_stores",
+                                "health_information_services",
+                                "healthcare_plans",
+                                "home_builders",
+                                "home_improvement_retail",
+                                "household_products",
+                                "household_personal_products",
+                                "industrial_conglomerates",
+                                "industrial_distribution",
+                                "information_technology_services",
+                                "infrastructure_operations",
+                                "insurance",
+                                "integrated_freight_logistics",
+                                "internet_content_information",
+                                "internet_retail",
+                                "leisure",
+                                "lodging",
+                                "lumber_wood_production",
+                                "luxury_goods",
+                                "machinery",
+                                "marine_shipping",
+                                "media",
+                                "medical_care_facilities",
+                                "medical_devices",
+                                "medical_distribution",
+                                "medical_instruments_supplies",
+                                "metal_fabrication",
+                                "mortgage_finance",
+                                "oil_gas_drilling",
+                                "oil_gas_e_p",
+                                "oil_gas_equipment_services",
+                                "oil_gas_integrated",
+                                "oil_gas_midstream",
+                                "oil_gas_producers",
+                                "oil_gas_refining_marketing",
+                                "other_industrial_metals_mining",
+                                "other_precious_metals_mining",
+                                "packaged_foods",
+                                "packaging_containers",
+                                "paper_forestry",
+                                "paper_paper_products",
+                                "personal_services",
+                                "pharmaceuticals",
+                                "pharmaceutical_retailers",
+                                "pollution_treatment_controls",
+                                "precious_metals",
+                                "publishing",
+                                "railroads",
+                                "real_estate",
+                                "recreational_vehicles",
+                                "refiners_pipelines",
+                                "rental_leasing_services",
+                                "residential_construction",
+                                "resorts_casinos",
+                                "restaurants",
+                                "retailing",
+                                "scientific_technical_instruments",
+                                "security_protection_services",
+                                "semiconductor_equipment_materials",
+                                "semiconductors",
+                                "shell_companies",
+                                "silver",
+                                "software_and_services",
+                                "solar",
+                                "specialty_business_services",
+                                "specialty_chemicals",
+                                "specialty_industrial_machinery",
+                                "specialty_retail",
+                                "staffing_employment_services",
+                                "steel",
+                                "technology_hardware",
+                                "telecom_services",
+                                "textiles_apparel",
+                                "textile_manufacturing",
+                                "thermal_coal",
+                                "tobacco",
+                                "tools_accessories",
+                                "traders_distributors",
+                                "transportation",
+                                "transportation_infrastructure",
+                                "travel_services",
+                                "trucking",
+                                "uranium",
+                                "utilities",
+                                "waste_management",
+                            ],
+                        }
+                    },
+                    "country": {
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "all",
+                                "ar",
+                                "at",
+                                "au",
+                                "be",
+                                "br",
+                                "ca",
+                                "ch",
+                                "cl",
+                                "cn",
+                                "cz",
+                                "de",
+                                "dk",
+                                "ee",
+                                "eg",
+                                "es",
+                                "fi",
+                                "fr",
+                                "gb",
+                                "gr",
+                                "hk",
+                                "hu",
+                                "id",
+                                "ie",
+                                "il",
+                                "in",
+                                "is",
+                                "it",
+                                "jp",
+                                "kr",
+                                "kw",
+                                "lk",
+                                "lt",
+                                "lv",
+                                "mx",
+                                "my",
+                                "nl",
+                                "no",
+                                "nz",
+                                "pe",
+                                "ph",
+                                "pk",
+                                "pl",
+                                "pt",
+                                "qa",
+                                "ro",
+                                "ru",
+                                "sa",
+                                "se",
+                                "sg",
+                                "sr",
+                                "th",
+                                "tr",
+                                "tw",
+                                "us",
+                                "ve",
+                                "vn",
+                                "za",
+                            ],
+                        }
+                    },
+                    "exchange": {
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "ams",
+                                "aqs",
+                                "ase",
+                                "asx",
+                                "ath",
+                                "ber",
+                                "bru",
+                                "bse",
+                                "bts",
+                                "bud",
+                                "bue",
+                                "bvb",
+                                "bvc",
+                                "ccs",
+                                "cnq",
+                                "cph",
+                                "cxe",
+                                "dfm",
+                                "doh",
+                                "dus",
+                                "ebs",
+                                "fka",
+                                "fra",
+                                "ger",
+                                "ham",
+                                "han",
+                                "hel",
+                                "hkg",
+                                "ice",
+                                "iob",
+                                "ise",
+                                "ist",
+                                "jkt",
+                                "jnb",
+                                "jpx",
+                                "kls",
+                                "kuw",
+                                "lis",
+                                "lit",
+                                "lse",
+                                "mce",
+                                "mex",
+                                "mil",
+                                "mun",
+                                "ncm",
+                                "neo",
+                                "ngm",
+                                "nms",
+                                "nsi",
+                                "nyq",
+                                "nze",
+                                "oem",
+                                "oqb",
+                                "oqx",
+                                "osl",
+                                "par",
+                                "pnk",
+                                "pra",
+                                "ris",
+                                "sau",
+                                "ses",
+                                "set",
+                                "sgo",
+                                "shh",
+                                "shz",
+                                "sto",
+                                "stu",
+                                "tai",
+                                "tal",
+                                "tlv",
+                                "tor",
+                                "two",
+                                "van",
+                                "vie",
+                                "vse",
+                                "wse",
+                            ],
+                        }
+                    },
+                },
             )
         )
 
