@@ -456,26 +456,32 @@ def make_request(
     # Allow a custom session for caching, if desired
     _session = kwargs.pop("session", None) or requests
 
-    if python_settings.get("cafile"):
-        kwargs["verify"] = combine_certificates(python_settings["cafile"])
-
-    if os.environ.get("REQUESTS_CA_BUNDLE") and python_settings.get("cafile") is None:
-        certs = os.environ.get("REQUESTS_CA_BUNDLE", "")
-        kwargs["verify"] = combine_certificates(certs)
-
     if (
         python_settings.get("cafile") is not None
         and os.environ.get("REQUESTS_CA_BUNDLE") is not None
     ):
-        kwargs["verify"] = combine_certificates(
-            python_settings["cafile"], os.environ.get("REQUESTS_CA_BUNDLE")
+        kwargs["verify"] = (
+            combine_certificates(
+                python_settings["cafile"], os.environ.get("REQUESTS_CA_BUNDLE")
+            )
+            if python_settings["cafile"] != os.environ.get("REQUESTS_CA_BUNDLE")
+            else combine_certificates(python_settings["cafile"])
         )
+    elif python_settings.get("cafile") is not None:
+        kwargs["verify"] = combine_certificates(python_settings["cafile"])
+    elif os.environ.get("REQUESTS_CA_BUNDLE") and python_settings.get("cafile") is None:
+        certs = os.environ.get("REQUESTS_CA_BUNDLE", "")
+        kwargs["verify"] = combine_certificates(certs)
 
     if python_settings.get("verify_ssl") is False:
         kwargs["verify"] = False
 
     if python_settings.get("certfile"):
-        kwargs["cert"] = (python_settings["certfile"], python_settings.get("keyfile"))
+        kwargs["cert"] = (
+            (python_settings["certfile"], python_settings.get("keyfile"))
+            if python_settings.get("keyfile") is not None
+            else python_settings["certfile"]
+        )
 
     if python_settings.get("proxy"):
         kwargs["proxies"] = {
