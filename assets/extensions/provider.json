@@ -278,6 +278,17 @@
         "website": "https://tradingeconomics.com"
     },
     {
+        "packageName": "openbb-us-eia",
+        "optional": false,
+        "reprName": "U.S. Energy Information Administration (EIA) Open Data and API",
+        "description": "The U.S. Energy Information Administration is committed to its free and open data by making it available through an Application Programming Interface (API) and its open data tools. See https://www.eia.gov/opendata/ for more information.",
+        "credentials": [
+            "eia_api_key"
+        ],
+        "website": "https://eia.gov/",
+        "instructions": "Credentials are required for functions calling the EIA's API.\n    Register for a free key here: https://www.eia.gov/opendata/register.php"
+    },
+    {
         "packageName": "openbb-wsj",
         "optional": true,
         "reprName": "Wall Street Journal (WSJ)",

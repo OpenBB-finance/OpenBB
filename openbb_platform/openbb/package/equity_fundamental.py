@@ -70,7 +70,7 @@ class ROUTER_equity_fundamental(Container):
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
-        period : Union[Literal['annual', 'quarter'], Literal['annual', 'quarter', 'ttm']]
+        period : Literal['annual', 'quarter']
             Time period of the data to return. (provider: fmp, intrinio, polygon, yfinance)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
