@@ -197,6 +197,7 @@ class WebSocketClient:
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         import threading
+        import time
         from openbb_websockets.helpers import setup_database
 
         def run_in_new_loop():
@@ -214,16 +215,14 @@ class WebSocketClient:
             """Run setup in separate thread."""
             thread = threading.Thread(target=run_in_new_loop)
             thread.start()
+            time.sleep(0.01)
             thread.join()
 
         try:
-            try:
-                loop = asyncio.get_running_loop()  # noqa
-                run_in_thread()
-            except RuntimeError:
-                run_in_new_loop()
-        finally:
-            return
+            loop = asyncio.get_running_loop()  # noqa
+            run_in_thread()
+        except RuntimeError:
+            run_in_new_loop()
 
     def _log_provider_output(self, output_queue) -> None:
         """Log output from the provider logger, handling exceptions, errors, and messages that are not data."""
@@ -294,6 +293,12 @@ class WebSocketClient:
                         break
 
                     output = clean_message(output)
+
+                    if output.startswith("ERROR:"):
+                        output = output.replace("ERROR:", "PROVIDER ERROR:")
+                    elif output.startswith("INFO:"):
+                        output = output.replace("INFO:", "PROVIDER INFO:")
+
                     output = output + "\n"
                     sys.stdout.write(output + "\n")
                     sys.stdout.flush()
@@ -735,8 +740,10 @@ def non_blocking_websocket(client, output_queue, provider_message_queue) -> None
                 output_queue.put(output.strip())
 
     except Exception as e:
+        client.logger.error(
+            f"Unexpected error in non_blocking_websocket: {e.__class__.__name__} -> {e}"
+        )
         raise e from e
-        client.logger.error(f"Error in non_blocking_websocket: {e}")
     finally:
         client._process.stdout.close()
         client._process.wait()
@@ -765,9 +772,7 @@ def send_message(
             else:
                 client.logger.error("Broadcast process is not running.")
     except Exception as e:
-        msg = (
-            f"Error sending message to WebSocket process: {e.__class__.__name__} -> {e}"
-        )
+        msg = f"Error sending message to the {target} process: {e.__class__.__name__} -> {e}"
         client.logger.error(msg)
 
 
@@ -788,7 +793,10 @@ def read_message_queue(
                     if message:
                         send_message(client, message, target="broadcast")
         except Exception as e:
-            err = f"Error reading message queue: {e.args[0]} -> {message}"
+            err = (
+                f"Error while attempting to transmit from the outgoing message queue: {e.__class__.__name__} "
+                f"-> {e} -> {message}"
+            )
             client.logger.error(err)
         finally:
             break
@@ -807,7 +815,9 @@ def non_blocking_broadcast(client, output_queue, broadcast_message_queue) -> Non
             if output:
                 output_queue.put(output.strip())
     except Exception as e:
-        client.logger.error(f"Error in non_blocking_broadcast: {e}")
+        client.logger.error(
+            f"Unexpected error in non_blocking_broadcast: {e.__class__.__name__} -> {e}"
+        )
     finally:
         client._broadcast_process.stdout.close()
         client._broadcast_process.wait()

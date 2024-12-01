@@ -195,11 +195,24 @@ async def write_to_db(message, results_path, table_name, limit):
     import aiosqlite
 
     conn = await aiosqlite.connect(results_path)
+
+    # Check if the table exists and create it if it doesn't
+    await conn.execute(
+        f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            message TEXT
+        )
+    """
+    )
+    await conn.commit()
+
     await conn.execute(
         f"INSERT INTO {table_name} (message) VALUES (?)",  # noqa
         (json.dumps(message),),
     )
     await conn.commit()
+
     records = await conn.execute(f"SELECT COUNT(*) FROM {table_name}")  # noqa
     count = (await records.fetchone())[0]
     count = await conn.execute(f"SELECT COUNT(*) FROM {table_name}")  # noqa
@@ -265,6 +278,7 @@ class MessageQueue:
         self.logger = get_logger("openbb.websocket.queue")
 
     async def dequeue(self):
+        """Dequeue a message."""
         return await self.queue.get()
 
     async def enqueue(self, message):
@@ -286,10 +300,12 @@ class MessageQueue:
         self.logger.error("Failed to enqueue message after maximum retries.")
 
     async def process_queue(self, handler):
+        """Process the message queue."""
         while True:
             message = await self.queue.get()
             await self._process_message(message, handler)
             self.queue.task_done()
 
     async def _process_message(self, message, handler):
+        """Process the message with the handler coroutine."""
         await handler(message)
