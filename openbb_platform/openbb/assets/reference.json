@@ -1,40 +1,40 @@
 {
-    "openbb": "4.3.4",
+    "openbb": "4.3.5",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.5",
+        "core": "1.3.6",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.2.5",
-                "crypto@1.3.4",
-                "currency@1.3.4",
-                "derivatives@1.3.4",
-                "economy@1.3.4",
-                "equity@1.3.4",
-                "etf@1.3.4",
-                "fixedincome@1.3.4",
-                "index@1.3.4",
-                "news@1.3.4",
-                "regulators@1.3.4"
+                "commodity@1.2.6",
+                "crypto@1.3.5",
+                "currency@1.3.5",
+                "derivatives@1.3.5",
+                "economy@1.3.5",
+                "equity@1.3.5",
+                "etf@1.3.5",
+                "fixedincome@1.3.5",
+                "index@1.3.5",
+                "news@1.3.5",
+                "regulators@1.3.5"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.3.4",
-                "bls@1.0.2",
-                "cftc@1.0.2",
-                "econdb@1.2.4",
-                "federal_reserve@1.3.4",
-                "fmp@1.3.4",
-                "fred@1.3.4",
-                "imf@1.0.1",
-                "intrinio@1.3.4",
-                "oecd@1.3.4",
-                "polygon@1.3.4",
-                "sec@1.3.4",
-                "tiingo@1.3.4",
-                "tradingeconomics@1.3.4",
-                "us_eia@1.0.0b0",
-                "yfinance@1.3.5"
+                "benzinga@1.3.5",
+                "bls@1.0.3",
+                "cftc@1.0.3",
+                "econdb@1.2.5",
+                "federal_reserve@1.3.5",
+                "fmp@1.3.5",
+                "fred@1.3.5",
+                "imf@1.0.2",
+                "intrinio@1.3.5",
+                "oecd@1.3.5",
+                "polygon@1.3.5",
+                "sec@1.3.5",
+                "tiingo@1.3.5",
+                "tradingeconomics@1.3.5",
+                "us_eia@1.0.0",
+                "yfinance@1.3.6"
             ],
             "openbb_obbject_extension": []
         }
@@ -17315,8 +17315,16 @@
                 ],
                 "yfinance": [
                     {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": 5,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "period",
-                        "type": "Literal['annual', 'quarter', 'ttm']",
+                        "type": "Literal['annual', 'quarter']",
                         "description": "Time period of the data to return.",
                         "default": "annual",
                         "optional": true,
@@ -19347,6 +19355,14 @@
                     }
                 ],
                 "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": 5,
+                        "optional": true,
+                        "choices": null
+                    },
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
@@ -21662,6 +21678,14 @@
                     }
                 ],
                 "yfinance": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": 5,
+                        "optional": true,
+                        "choices": null
+                    },
                     {
                         "name": "period",
                         "type": "Literal['annual', 'quarter']",
@@ -28182,7 +28206,7 @@
                     {
                         "name": "security_type",
                         "type": "Literal['SH', 'PRN']",
-                        "description": "The total number of shares of the class of security or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.",
+                        "description": "Whether the principal amount represents the number of shares or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -28196,9 +28220,17 @@
                         "choices": null
                     },
                     {
+                        "name": "investment_discretion",
+                        "type": "str",
+                        "description": "The investment discretion held by the Manager. Sole, shared-defined (DFN), or shared-other (OTR).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "voting_authority_sole",
                         "type": "int",
-                        "description": "The number of shares for which the Manager exercises sole voting authority (none).",
+                        "description": "The number of shares for which the Manager exercises sole voting authority.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -28206,15 +28238,15 @@
                     {
                         "name": "voting_authority_shared",
                         "type": "int",
-                        "description": "The number of shares for which the Manager exercises a defined shared voting authority (none).",
+                        "description": "The number of shares for which the Manager exercises a defined shared voting authority.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "voting_authority_other",
+                        "name": "voting_authority_none",
                         "type": "int",
-                        "description": "The number of shares for which the Manager exercises other shared voting authority (none).",
+                        "description": "The number of shares for which the Manager exercises no voting authority.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -28222,7 +28254,7 @@
                     {
                         "name": "principal_amount",
                         "type": "int",
-                        "description": "The total number of shares of the class of security or the principal amount of such class. Only long positions are reported",
+                        "description": "The total number of shares of the class of security or the principal amount of such class. Defined by the 'security_type'. Only long positions are reported",
                         "default": "",
                         "optional": false,
                         "choices": null

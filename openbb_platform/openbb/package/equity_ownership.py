@@ -99,17 +99,19 @@ class ROUTER_equity_ownership(Container):
         asset_class : str
             The title of the asset class for the security.
         security_type : Optional[Literal['SH', 'PRN']]
-            The total number of shares of the class of security or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.
+            Whether the principal amount represents the number of shares or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.
         option_type : Optional[Literal['call', 'put']]
             Defined when the holdings being reported are put or call options. Only long positions are reported.
+        investment_discretion : Optional[str]
+            The investment discretion held by the Manager. Sole, shared-defined (DFN), or shared-other (OTR).
         voting_authority_sole : Optional[int]
-            The number of shares for which the Manager exercises sole voting authority (none).
+            The number of shares for which the Manager exercises sole voting authority.
         voting_authority_shared : Optional[int]
-            The number of shares for which the Manager exercises a defined shared voting authority (none).
-        voting_authority_other : Optional[int]
-            The number of shares for which the Manager exercises other shared voting authority (none).
+            The number of shares for which the Manager exercises a defined shared voting authority.
+        voting_authority_none : Optional[int]
+            The number of shares for which the Manager exercises no voting authority.
         principal_amount : int
-            The total number of shares of the class of security or the principal amount of such class. Only long positions are reported
+            The total number of shares of the class of security or the principal amount of such class. Defined by the 'security_type'. Only long positions are reported
         value : int
             The fair market value of the holding of the particular class of security. The value reported for options is the fair market value of the underlying security with respect to the number of shares controlled. Values are rounded to the nearest US dollar and use the closing price of the last trading day of the calendar year or quarter.
         weight : Optional[float]
