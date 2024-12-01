@@ -40,12 +40,7 @@ async def read_stdin(broadcast_server):
                 if line.strip().startswith("{") or line.strip().startswith("[")
                 else line.strip()
             )
-            msg = (
-                "BROADCAST INFO:     Message received from parent process and relayed to active listeners ->"
-                + f" {json.dumps(command)}"
-            )
             await broadcast_server.broadcast(json.dumps(command))
-            broadcast_server.logger.info(msg)
         except json.JSONDecodeError:
             broadcast_server.logger.error("Invalid JSON received from stdin")
 
@@ -270,10 +265,12 @@ def main():
             **kwargs,
         )
     except TypeError as e:
-        msg = f"Invalid keyword argument passed to unvicorn. -> {e.args[0]}\n"
+        msg = (
+            f"ERROR:     Invalid keyword argument passed to unvicorn. -> {e.args[0]}\n"
+        )
         broadcast_server.logger.error(msg)
     except KeyboardInterrupt:
-        broadcast_server.logger.info("Broadcast server terminated.")
+        broadcast_server.logger.info("INFO:      Broadcast server terminated.")
     finally:
         sys.exit(0)
 

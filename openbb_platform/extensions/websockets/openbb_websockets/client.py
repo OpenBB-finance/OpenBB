@@ -477,6 +477,9 @@ class WebSocketClient:
         import time
         from openbb_core.app.model.abstract.error import OpenBBError
 
+        if not self.is_running:
+            raise OpenBBError("Provider connection is not running.")
+
         ticker = symbol if isinstance(symbol, list) else symbol.split(",")
         msg = {"event": "subscribe", "symbol": ticker}
         self.send_message(json.dumps(msg))
@@ -492,15 +495,21 @@ class WebSocketClient:
     def unsubscribe(self, symbol) -> None:
         """Unsubscribe from a symbol or list of symbols."""
         # pylint: disable=import-outside-toplevel
-        import json
+        import json  # noqa
+        import time
+        from openbb_core.app.model.abstract.error import OpenBBError
 
         if not self.symbol:
             self.logger.info("No subscribed symbols.")
             return
 
+        if not self.is_running:
+            raise OpenBBError("Provider connection is not running.")
+
         ticker = symbol if isinstance(symbol, list) else symbol.split(",")
         msg = {"event": "unsubscribe", "symbol": ticker}
         self.send_message(json.dumps(msg))
+        time.sleep(0.1)
         old_symbols = self.symbol.split(",")
         new_symbols = list(set(old_symbols) - set(ticker))
         self._symbol = ",".join(new_symbols)
@@ -782,22 +791,25 @@ def read_message_queue(
     """Read messages from the queue and send them to the WebSocketConnection process."""
     while not message_queue.empty():
         try:
-            if target == "provider":
-                while not client._stop_log_thread_event.is_set():
-                    message = message_queue.get(timeout=1)
-                    if message:
+            message = message_queue.get(timeout=1)
+            if message:
+                try:
+                    if (
+                        target == "provider"
+                        and not client._stop_log_thread_event.is_set()
+                    ):
                         send_message(client, message, target="provider")
-            elif target == "broadcast":
-                while not client._stop_broadcasting_event.is_set():
-                    message = message_queue.get(timeout=1)
-                    if message:
+                    elif (
+                        target == "broadcast"
+                        and not client._stop_broadcasting_event.is_set()
+                    ):
                         send_message(client, message, target="broadcast")
-        except Exception as e:
-            err = (
-                f"Error while attempting to transmit from the outgoing message queue: {e.__class__.__name__} "
-                f"-> {e} -> {message}"
-            )
-            client.logger.error(err)
+                except Exception as e:
+                    err = (
+                        f"Error while attempting to transmit from the outgoing message queue: {e.__class__.__name__} "
+                        f"-> {e} -> {message}"
+                    )
+                    client.logger.error(err)
         finally:
             break
 
