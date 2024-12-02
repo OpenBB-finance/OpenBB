@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-sec"
-version = "1.3.4"
+version = "1.3.5"
 description = "SEC extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,11 +9,11 @@ packages = [{ include = "openbb_sec" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-openbb-core = "^1.3.5"
+openbb-core = "^1.3.6"
 aiohttp-client-cache = "^0.11.0"
 aiosqlite = "^0.20.0"
 xmltodict = "^0.13.0"
-bs4 = "^0.0.2"
+beautifulsoup4 = "^4.12"
 lxml = "^5.2.1"
 
 [build-system]
