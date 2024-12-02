@@ -165,6 +165,7 @@ def parse_kwargs():
 
 
 async def setup_database(results_path, table_name):
+    """Setup the SQLite database."""
     # pylint: disable=import-outside-toplevel
     import os  # noqa
     import aiosqlite
@@ -261,6 +262,7 @@ class AuthTokenFilter(logging.Formatter):
     """Custom logging formatter to filter auth tokens."""
 
     def format(self, record):
+        """Format the log record."""
         original_message = super().format(record)
         cleaned_message = AUTH_TOKEN_FILTER.sub(r"\1********", original_message)
         return cleaned_message
