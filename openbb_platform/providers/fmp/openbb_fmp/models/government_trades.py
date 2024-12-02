@@ -37,9 +37,6 @@ class FMPGovernmentTradesData(GovernmentTradesData):
     link: Optional[str] = Field(
         default=None, description="Link to the transaction document."
     )
-    transaction_date: Optional[str] = Field(
-        default=None, description="Date of the transaction."
-    )
     owner: Optional[str] = Field(
         default=None, description="Ownership status (e.g., Spouse, Joint)."
     )
@@ -159,4 +156,13 @@ class FMPGovernmentTradesFetcher(
     ) -> List[FMPGovernmentTradesData]:
         """Return the transformed data."""
 
-        return [FMPGovernmentTradesData(**d) for d in data]
+        return sorted(
+            [
+                FMPGovernmentTradesData(
+                    **{k: v for k, v in d.items() if v and v != "--"}
+                )
+                for d in data
+            ],
+            key=lambda x: x.date,
+            reverse=True,
+        )
