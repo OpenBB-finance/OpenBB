@@ -138,11 +138,11 @@ class ROUTER_index(Container):
             Sub-sector the constituent company in the index belongs to. (provider: fmp)
         headquarter : Optional[str]
             Location of the headquarter of the constituent company in the index. (provider: fmp)
-        date_first_added : Optional[Union[str, date]]
+        date_first_added : Optional[Union[date, str]]
             Date the constituent company was added to the index. (provider: fmp)
         cik : Optional[int]
             Central Index Key (CIK) for the requested entity. (provider: fmp)
-        founded : Optional[Union[str, date]]
+        founded : Optional[Union[date, str]]
             Founding year of the constituent company in the index. (provider: fmp)
 
         Examples
