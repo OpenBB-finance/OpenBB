@@ -544,7 +544,11 @@ class WebSocketClient:
                     index, message = row
                     if self.data_model:
                         output.append(
-                            self.data_model.model_validate_json(json.loads(message))
+                            self.data_model.model_validate_json(
+                                json.loads(message)
+                                if isinstance(message, str)
+                                else message
+                            )
                         )
                     else:
                         output.append(json.loads(json.loads(message)))

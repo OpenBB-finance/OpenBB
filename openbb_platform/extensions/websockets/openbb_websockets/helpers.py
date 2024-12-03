@@ -170,14 +170,14 @@ async def setup_database(results_path, table_name):
     import os  # noqa
     import aiosqlite
 
-    async with aiosqlite.connect(results_path, check_same_thread=False) as conn:
+    async with aiosqlite.connect(results_path) as conn:
         if os.path.exists(results_path):
             try:
                 await conn.execute("SELECT name FROM sqlite_master WHERE type='table';")
             except aiosqlite.DatabaseError:
                 os.remove(results_path)
 
-    async with aiosqlite.connect(results_path, check_same_thread=False) as conn:
+    async with aiosqlite.connect(results_path) as conn:
         await conn.execute(
             f"""
             CREATE TABLE IF NOT EXISTS {table_name} (
@@ -195,7 +195,7 @@ async def write_to_db(message, results_path, table_name, limit):
     import json  # noqa
     import aiosqlite
 
-    conn = await aiosqlite.connect(results_path, check_same_thread=False)
+    conn = await aiosqlite.connect(results_path)
 
     # Check if the table exists and create it if it doesn't
     await conn.execute(
