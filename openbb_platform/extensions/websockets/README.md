@@ -336,7 +336,7 @@ Start the broadcast server.
 |Parameter|Type | Required| Description |
 |:-------|:-----|:--------:|------------:|
 |host |String |No |IP address to run the server over, default is `"127.0.0.1"` |
-|port |Interger |No |Port to bind the server to, default is `6666` |
+|port |Integer |No |Port to bind the server to, default is `6666` |
 |uvicorn_kwargs| Dictionary |No |Additional keyword arguments to pass directly to `uvicorn.run()`. |
 
 #### Example
