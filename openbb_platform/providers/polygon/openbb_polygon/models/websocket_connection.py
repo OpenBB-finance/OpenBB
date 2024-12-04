@@ -277,11 +277,12 @@ class PolygonCryptoAggsWebSocketData(WebSocketData):
         description=DATA_DESCRIPTIONS.get("close", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    vwap: float = Field(
-        description=DATA_DESCRIPTIONS.get("vwap", ""),
-    )
     volume: float = Field(
         description=DATA_DESCRIPTIONS.get("volume", ""),
+    )
+    vwap: Optional[float] = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("vwap", ""),
     )
     avg_size: Optional[float] = Field(
         default=None,
