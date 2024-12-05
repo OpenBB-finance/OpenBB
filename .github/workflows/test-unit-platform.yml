@@ -39,14 +39,8 @@ jobs:
           key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('openbb_platform/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-      - name: Set up virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          python -m pip install --upgrade pip
-          pip install nox
-          pip install poetry
+
       - name: Run tests
         run: |
-          source venv/bin/activate
+          pip install nox
           nox -f .github/scripts/noxfile.py -s unit_test_platform --python ${{ matrix.python_version }}
