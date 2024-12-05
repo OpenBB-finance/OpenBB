@@ -95,6 +95,6 @@ if __name__ == "__main__":
     if uvicorn_reload is None or uvicorn_reload:
         uvicorn_kwargs["reload"] = True
 
-    uvicorn_app = uvicorn_kwargs.pop("app", None) or "openbb_core.api.rest_api:app"
+    uvicorn_app = uvicorn_kwargs.pop("app", "openbb_core.api.rest_api:app")
 
     uvicorn.run(uvicorn_app, **uvicorn_kwargs)
