@@ -288,8 +288,10 @@ class WebSocketClient:
                         self._thread.join()
                         err = ChildProcessError(output)
                         self._exception = err
-                        sys.stdout.write(output + "\n")
-                        sys.stdout.flush()
+                        output = output + "\n"
+                        self.logger.info(output)
+                        # sys.stdout.write(output)
+                        # sys.stdout.flush()
                         break
 
                     output = clean_message(output)
@@ -299,9 +301,10 @@ class WebSocketClient:
                     elif output.startswith("INFO:"):
                         output = output.replace("INFO:", "PROVIDER INFO:")
 
-                    output = output + "\n"
-                    sys.stdout.write(output + "\n")
-                    sys.stdout.flush()
+                    # output = output + "\n"
+                    # sys.stdout.write(output + "\n")
+                    self.logger.info(output)
+                    # sys.stdout.flush()
             except queue.Empty:
                 continue
 
@@ -534,25 +537,28 @@ class WebSocketClient:
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         import sqlite3
+        from openbb_core.app.model.abstract.error import OpenBBError
 
         output: list = []
         file_path = self.results_path
         if file_path.exists():
             with sqlite3.connect(file_path) as conn:
-                cursor = conn.execute(f"SELECT * FROM {self.table_name}")  # noqa
-                for row in cursor:
-                    index, message = row
-                    if self.data_model:
-                        output.append(
-                            self.data_model.model_validate_json(
-                                json.loads(message)
-                                if isinstance(message, str)
-                                else message
-                            )
-                        )
-                    else:
-                        output.append(json.loads(json.loads(message)))
-
+                try:
+                    cursor = conn.execute(f"SELECT * FROM {self.table_name}")  # noqa
+                    for row in cursor:
+                        index, message = row
+                        if self.data_model:
+                            message = json.loads(message)
+                            if isinstance(message, (str, bytes)):
+                                output.append(
+                                    self.data_model.model_validate_json(message)
+                                )
+                            elif isinstance(message, dict):
+                                output.append(self.data_model(**message))
+                        else:
+                            output.append(json.loads(json.loads(message)))
+                except Exception as e:
+                    raise OpenBBError(f"Error retrieving results: {e}")
         if output:
             return output
 

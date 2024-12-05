@@ -17,6 +17,7 @@ from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
 from openbb_polygon.models.index_historical import (
     PolygonIndexHistoricalFetcher,
 )
+from openbb_polygon.models.websocket_connection import PolygonWebSocketFetcher
 from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -170,3 +171,33 @@ def test_polygon_currency_snapshots_fetcher(credentials=test_credentials):
     fetcher = PolygonCurrencySnapshotsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+@pytest.mark.record_verify_screen(hash=True)
+@pytest.mark.record_verify_object(hash=False)
+def test_polygon_websocket_fetcher(record, credentials=test_credentials):
+    """Test Polygon Websocket fetcher."""
+    import asyncio
+    import time
+
+    params = {
+        "symbol": "btcusd",
+        "name": "polygon_test",
+        "limit": 10,
+        "asset_type": "crypto",
+        "feed": "aggs_sec",
+    }
+
+    try:
+        fetcher = PolygonWebSocketFetcher()
+        response = asyncio.run(fetcher.fetch_data(params, credentials))
+        time.sleep(1)
+        record.add_verify(response.client.is_running)
+        assert response.client.is_running
+        time.sleep(1)
+        assert len(response.client.results) > 0
+        record.add_verify(list(response.client.results[0].model_dump().keys()))
+    finally:
+        response.client.disconnect()
+        assert not response.client.is_running
+        record.add_verify(response.client.is_running)
