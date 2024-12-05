@@ -161,19 +161,19 @@ def get_requests_session(**kwargs) -> "Session":
         os.environ.get("REQUESTS_CA_BUNDLE") is not None
         and python_settings.get("cafile") is None
     ):
-        certs = os.environ.get("REQUESTS_CA_BUNDLE")
+        certs = os.environ.get("REQUESTS_CA_BUNDLE", "")
         _session.verify = combine_certificates(certs)
     elif python_settings.get("verify_ssl") is False:
         _session.verify = False
 
     if python_settings.get("certfile"):
-        _session.cert = (
+        _session.cert = (  # type: ignore
             (python_settings["certfile"], python_settings.get("keyfile"))
             if python_settings.get("keyfile") is not None
             else python_settings["certfile"]
         )
 
-    if os.environ.get("HTTP_PROXY") or os.environ.get("HTTPS_PROXY"):
+    if os.environ.get("HTTP_PROXY", "") or os.environ.get("HTTPS_PROXY", ""):
         if not python_settings.get("proxy"):
             _session.proxies = {
                 "http": os.environ.get("HTTP_PROXY"),
