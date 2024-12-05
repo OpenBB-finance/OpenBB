@@ -580,6 +580,7 @@ def test_economy_country_profile(params, obb):
     "params",
     [
         ({"provider": "econdb", "use_cache": False}),
+        ({"provider": "imf", "query": "balance sheet;households;debt"}),
     ],
 )
 @pytest.mark.integration
