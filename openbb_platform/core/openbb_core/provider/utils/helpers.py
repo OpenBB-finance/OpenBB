@@ -303,7 +303,7 @@ async def get_async_requests_session(**kwargs) -> "ClientSession":
         if k == "timeout":
             conn_kwargs["read_timeout"] = v
             conn_kwargs["conn_timeout"] = v
-        elif k not in ("ssl", "verify_ssl", "fingerprint"):
+        elif k not in ("ssl", "verify_ssl", "fingerprint") and k in python_settings:
             conn_kwargs[k] = v
 
     _session: ClientSession = ClientSession(**conn_kwargs)
