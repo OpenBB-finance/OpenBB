@@ -3,6 +3,15 @@
 # pylint: disable=line-too-long
 # flake8: noqa: E501
 
+FSI_PRESETS = [
+    "fsi_core",
+    "fsi_core_underlying",
+    "fsi_other",
+    "fsi_encouraged_set",
+    "fsi_balance_sheets",
+    "fsi_all",
+]
+
 IRFCL_HEADLINE = "RAF_USD,RAFA_USD,RAFAFX_USD,RAOFA_USD,RAPFA_USD,RAFAIMF_USD,RAFASDR_USD,RAFAGOLD_USD,RACFA_USD,RAMDCD_USD,RAMFIFC_USD,RAMSR_USD"
 
 RESERVE_ASSETS_AND_OTHER_FX_ASSETS = "RAF_USD,RAFA_USD,RAFAFX_USD,RAFAFXS_USD,RAFAFXSI_USD,RAFAFXCD_USD,RAFAFXCDN_USD,RAFAFXCDBI_USD,RAFAFXCDBIA_USD,RAFAFXCDBO_USD,RAFAFXCDBOA_USD,RAFAIMF_USD,RAFASDR_USD,RAFAGOLD_USD,RAFAGOLDV_OZT,RAFAO_USD,RAFAOF_USD,RAFAOL_USD,RAFAOO_USD,RAOFA_USD,RAOFAS_USD,RAOFAD_USD,RAOFAL_USD,RAOFAF_USD,RAOFAG_USD"
@@ -91,3 +100,26 @@ REF_SECTOR_MAP = {
     "1C_AS": "All Sectors",
     "AllSectorsIncludingAllSectors": "All Sectors Including All Sectors",
 }
+
+
+def load_symbols(dataset: str) -> dict:
+    """Load IMF symbol list."""
+    # pylint: disable=import-outside-toplevel
+    import json  # noqa
+    from json.decoder import JSONDecodeError
+    from pathlib import Path
+    from openbb_core.app.model.abstract.error import OpenBBError
+
+    try:
+        symbols_file = Path(__file__).parents[1].joinpath("assets", "imf_symbols.json")
+        with symbols_file.open(encoding="utf-8") as file:
+            symbols = json.load(file)
+    except (FileNotFoundError, JSONDecodeError) as e:
+        raise OpenBBError(
+            f"Failed to load IMF symbols from the static file: {e}"
+        ) from e
+
+    if dataset == "all":
+        return symbols
+
+    return {k: v for k, v in symbols.items() if v["dataset"] == dataset}
