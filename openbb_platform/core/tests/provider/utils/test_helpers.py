@@ -1,12 +1,12 @@
 """Test the provider helpers."""
 
 import pytest
-import requests
 from openbb_core.provider.utils.client import ClientSession
 from openbb_core.provider.utils.helpers import (
     amake_request,
     amake_requests,
     get_querystring,
+    get_requests_session,
     make_request,
     to_snake_case,
 )
@@ -82,9 +82,10 @@ def test_make_request(monkeypatch):
         """Mock the requests.get method."""
         return MockResponse()
 
-    monkeypatch.setattr(requests, "get", mock_get)
+    client_session = get_requests_session()
+    monkeypatch.setattr(client_session, "get", mock_get)
 
-    response = make_request("http://mock.url")
+    response = make_request("http://mock.url", session=client_session)
     assert response.status_code == 200
 
     with pytest.raises(ValueError):
