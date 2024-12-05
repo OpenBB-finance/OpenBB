@@ -146,7 +146,7 @@ def install_platform_local(_extras: bool = False):
         extras_args = ["-E", "all"] if _extras else []
 
         subprocess.run(
-            CMD + ["lock", "-vv"],
+            CMD + ["lock", "--no-update"],
             cwd=PLATFORM_PATH,
             check=True,
         )
