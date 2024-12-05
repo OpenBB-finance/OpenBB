@@ -127,7 +127,7 @@ async def get_defined_screener(
     for item in results:
         tz = item["exchangeTimezoneName"]
         earnings_date = (
-            safe_fromtimestamp(item["earningsTimestamp"], timezone(tz)).strftime(
+            safe_fromtimestamp(item["earningsTimestamp"], timezone(tz)).strftime(  # type: ignore
                 "%Y-%m-%d %H:%M:%S%z"
             )
             if item.get("earningsTimestamp")
