@@ -21,10 +21,12 @@ No authorization is required to use, but IP addresses are bound by the limitatio
 - Databases:
   - International Reserves and Foreign Currency Liquidity
   - Direction of Trade Statistics
+  - Financial Soundness Indicators
 
 Coverage:
   - All IRFCL tables.
   - Individual, or multiple, time series from single or multiple countries.
+  - Core and Encouraged Set tables, plus all individual underlying series.
 
 ### Endpoints
 
