@@ -1,1 +1,0 @@
-"""OpenBB Core Charts Module."""

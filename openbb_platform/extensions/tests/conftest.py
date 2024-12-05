@@ -3,7 +3,7 @@
 from typing import Dict, List
 
 import pytest
-from core.openbb_core.app.router import CommandMap
+from openbb_core.app.router import CommandMap
 
 from extensions.tests.utils.helpers import list_openbb_extensions
 
