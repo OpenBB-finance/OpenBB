@@ -191,10 +191,22 @@ def get_requests_session(**kwargs) -> "Session":
         }
 
     if python_settings.get("cookies"):
-        _session.cookies = python_settings["cookies"]
+        _session.cookies = (
+            python_settings["cookies"]
+            if isinstance(
+                python_settings["cookies"], requests.cookies.RequestsCookieJar
+            )
+            else requests.cookies.cookiejar_from_dict(
+                python_settings.get("cookies", {})
+            )
+        )
 
     if python_settings.get("auth"):
-        _session.auth = python_settings["auth"]
+        _session.auth = (
+            python_settings["auth"]
+            if isinstance(python_settings["auth"], (tuple, requests.auth.AuthBase))
+            else tuple(python_settings["auth"])
+        )
 
     if kwargs:
         for key, value in kwargs.items():
@@ -219,6 +231,7 @@ async def get_async_requests_session(**kwargs) -> "ClientSession":
     import atexit
     import ssl
 
+    # Handle SSL settings and proxies
     # We will accommodate the Requests environment variable for the CA bundle and HTTP Proxies, if provided.
     # The settings file will take precedence over the environment variables.
     python_settings = get_python_request_settings()
@@ -271,25 +284,29 @@ async def get_async_requests_session(**kwargs) -> "ClientSession":
             {k: v for k, v in python_settings.items() if not k.endswith("file")}
         )
 
+    # SSL settings get passed to the TCPConnector used by the session.
     connector = (
         aiohttp.TCPConnector(ttl_dns_cache=300, **ssl_kwargs) if ssl_kwargs else None
     )
 
     conn_kwargs = {"connector": connector} if connector else {}
 
-    _session: ClientSession = ClientSession(**conn_kwargs)
+    # Add basic auth for proxies and requests, if provided.
+    if kwargs.get("proxy_auth"):
+        conn_kwargs["proxy_auth"] = aiohttp.BasicAuth(*kwargs.pop("proxy_auth", []))
 
+    if kwargs.get("auth"):
+        conn_kwargs["auth"] = aiohttp.BasicAuth(*kwargs.pop("auth", []))
+
+    # Pass the remaining kwargs to the session
     for k, v in kwargs.items():
-        try:
-            if hasattr(_session, k):
-                if k == "headers":
-                    _session.headers.update(v)
-                elif hasattr(getattr(_session, k, None), "update"):
-                    getattr(_session, k, {}).update(v)
-                else:
-                    setattr(_session, "read_timeout" if k == "timeout" else k, v)
-        except AttributeError:
-            continue
+        if k == "timeout":
+            conn_kwargs["read_timeout"] = v
+            conn_kwargs["conn_timeout"] = v
+        elif k not in ("ssl", "verify_ssl", "fingerprint"):
+            conn_kwargs[k] = v
+
+    _session: ClientSession = ClientSession(**conn_kwargs)
 
     def at_exit(session):
         """Close the session at exit if it was orphaned."""
