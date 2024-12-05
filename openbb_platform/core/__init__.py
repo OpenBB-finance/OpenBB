@@ -1,1 +1,1 @@
-"""OpenBB Core."""
+"""OpenBB Core Module."""
