@@ -16,7 +16,7 @@ CLI_TESTS = CLI_DIR / "tests"
 @nox.session(python=["3.9", "3.10", "3.11", "3.12"])
 def unit_test_platform(session):
     """Run the test suite."""
-    session.install("poetry")
+    session.install("poetry", "toml")
     session.run(
         "python",
         str(PLATFORM_DIR / "dev_install.py"),
