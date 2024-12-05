@@ -167,18 +167,23 @@ def get_requests_session(**kwargs) -> "Session":
         _session.verify = False
 
     if python_settings.get("certfile"):
-        _session.cert = (  # type: ignore
-            (python_settings["certfile"], python_settings.get("keyfile"))
-            if python_settings.get("keyfile") is not None
+        _session.cert = (
+            (python_settings["certfile"], python_settings.get("keyfile", ""))  # type: ignore
+            if python_settings.get("keyfile")
             else python_settings["certfile"]
         )
 
-    if os.environ.get("HTTP_PROXY", "") or os.environ.get("HTTPS_PROXY", ""):
-        if not python_settings.get("proxy"):
-            _session.proxies = {
-                "http": os.environ.get("HTTP_PROXY"),
-                "https": os.environ.get("HTTPS_PROXY"),
-            }
+    if (
+        os.environ.get("HTTP_PROXY") or os.environ.get("HTTPS_PROXY")
+    ) and not python_settings.get("proxy"):
+        http = os.environ.get("HTTP_PROXY", os.environ.get("HTTPS_PROXY", ""))
+        https = os.environ.get("HTTPS_PROXY", os.environ.get("HTTP_PROXY", ""))
+        proxies: dict = {}
+        if http:
+            proxies["http"] = http
+        if https:
+            proxies["https"] = https
+        _session.proxies = proxies
     elif python_settings.get("proxy"):
         _session.proxies = {
             "http": python_settings["proxy"],
@@ -195,8 +200,8 @@ def get_requests_session(**kwargs) -> "Session":
         for key, value in kwargs.items():
             try:
                 if hasattr(_session, key):
-                    if hasattr(getattr(_session, key), "update"):
-                        getattr(_session, key).update(value)
+                    if hasattr(getattr(_session, key, None), "update"):
+                        getattr(_session, key, {}).update(value)
                     else:
                         setattr(_session, key, value)
             except AttributeError:
@@ -279,8 +284,8 @@ async def get_async_requests_session(**kwargs) -> "ClientSession":
             if hasattr(_session, k):
                 if k == "headers":
                     _session.headers.update(v)
-                elif hasattr(getattr(_session, k), "update"):
-                    getattr(_session, k).update(v)
+                elif hasattr(getattr(_session, k, None), "update"):
+                    getattr(_session, k, {}).update(v)
                 else:
                     setattr(_session, "read_timeout" if k == "timeout" else k, v)
         except AttributeError:
@@ -338,10 +343,7 @@ async def amake_request(
     )
 
     with_session = kwargs.pop("with_session", "session" in kwargs)
-    session = kwargs.pop("session", None)
-
-    if session is None:
-        session = await get_async_requests_session(**kwargs)
+    session = kwargs.pop("session", await get_async_requests_session(**kwargs))
 
     try:
         response = await session.request(method, url, **kwargs)
@@ -378,12 +380,8 @@ async def amake_requests(
     Union[dict, List[dict]]
         Response json
     """
-    session = kwargs.pop("session", None)
-    if session is None:
-        session = await get_async_requests_session(**kwargs)
-
+    session = kwargs.pop("session", await get_async_requests_session(**kwargs))
     kwargs["response_callback"] = response_callback
-
     urls = urls if isinstance(urls, list) else [urls]
 
     try:
@@ -496,7 +494,7 @@ def make_request(
         headers["User-Agent"] = get_user_agent()
 
     # Allow a custom session for caching, if desired
-    _session = kwargs.pop("session", None) or get_requests_session(**kwargs)
+    _session = kwargs.pop("session", get_requests_session(**kwargs))
 
     if method.upper() == "GET":
         return _session.get(
