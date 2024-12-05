@@ -143,8 +143,6 @@ async def _get_fsi_data(**kwargs) -> list[dict]:  # noqa:PLR0912
         all_symbols = {
             k: v
             for k, v in all_symbols.items()
-            # if v.get("table") not in ["fsi_core", "fsi_encouraged_set"]
-            # and v.get("unit") == "Percent"
             if "Additional FSIs" in v.get("title", "")
         }
 
