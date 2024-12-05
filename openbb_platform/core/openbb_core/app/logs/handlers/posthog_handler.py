@@ -97,7 +97,9 @@ class PosthogHandler(logging.Handler):
         import re  # noqa
         from openbb_core.provider.utils.helpers import get_requests_session
 
-        posthog.request._session = get_requests_session()
+        posthog.request._session = (  # pylint: disable=protected-access
+            get_requests_session()
+        )
         level_name = logging.getLevelName(record.levelno)
         log_line = FormatterWithExceptions.filter_log_line(text=record.getMessage())
 
