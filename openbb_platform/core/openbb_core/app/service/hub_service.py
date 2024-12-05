@@ -44,7 +44,7 @@ class HubService:
         self._base_url = base_url or Env().HUB_BACKEND
         self._session = session
         self._hub_user_settings: Optional[HubUserSettings] = None
-        self._session = get_requests_session()
+        self._request_session = get_requests_session()
 
     @property
     def base_url(self) -> str:
@@ -73,13 +73,10 @@ class HubService:
 
     def disconnect(self) -> bool:
         """Disconnect from Hub."""
-        old_verify = self._get_certificates()
         if self._session:
             result = self._post_logout(self._session)
             self._session = None
-            self._restore_certs(old_verify)
             return result
-        self._restore_certs(old_verify)
         raise OpenBBError(
             "No session found. Login or provide a 'HubSession' on initialization."
         )
@@ -118,7 +115,7 @@ class HubService:
         if not password:
             raise OpenBBError("Password not found.")
 
-        response = self._session.post(
+        response = self._request_session.post(
             url=self._base_url + "/login",
             json={
                 "email": email,
@@ -150,7 +147,7 @@ class HubService:
 
         self._check_token_expiration(token)
 
-        response = self._session.post(
+        response = self._request_session.post(
             url=self._base_url + "/sdk/login",
             json={
                 "token": token,
@@ -179,7 +176,7 @@ class HubService:
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
-        response = self._session.get(
+        response = self._request_session.get(
             url=self._base_url + "/logout",
             headers={"Authorization": authorization},
             json={"token": access_token},
@@ -199,7 +196,7 @@ class HubService:
         access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
-        response = self._session.get(
+        response = self._request_session.get(
             url=self._base_url + "/terminal/user",
             headers={"Authorization": authorization},
             timeout=self.TIMEOUT,
@@ -220,7 +217,7 @@ class HubService:
         access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
-        response = self._session.put(
+        response = self._request_session.put(
             url=self._base_url + "/user",
             headers={"Authorization": authorization},
             json=settings.model_dump(exclude_defaults=True),
