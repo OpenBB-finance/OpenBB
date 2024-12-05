@@ -95,8 +95,9 @@ class PosthogHandler(logging.Handler):
         """Send log record to Posthog."""
         # pylint: disable=import-outside-toplevel
         import re  # noqa
-        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
+        from openbb_core.provider.utils.helpers import get_requests_session
 
+        posthog.request._session = get_requests_session()
         level_name = logging.getLevelName(record.levelno)
         log_line = FormatterWithExceptions.filter_log_line(text=record.getMessage())
 
@@ -117,10 +118,8 @@ class PosthogHandler(logging.Handler):
         if event_name not in [e.value for e in self.AllowedEvents]:
             return
 
-        old_verify = get_certificates()
         self.identify()
         posthog.capture(self.distinct_id(), event_name, properties=log_extra)
-        restore_certs(old_verify)
 
     def extract_log_extra(self, record: logging.LogRecord) -> Dict[str, Any]:
         """Extract log extra from record."""

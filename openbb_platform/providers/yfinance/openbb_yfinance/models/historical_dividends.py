@@ -40,10 +40,17 @@ class YFinanceHistoricalDividendsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
-        from yfinance import Ticker  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_requests_session
+        from yfinance import Ticker
 
+        session = get_requests_session()
         try:
-            ticker = Ticker(query.symbol).get_dividends()
+            ticker = Ticker(
+                query.symbol,
+                session=session,
+                proxy=session.proxies if session.proxies else None,
+            ).get_dividends()
             if isinstance(ticker, List) and not ticker or ticker.empty:  # type: ignore
                 raise OpenBBError(f"No dividend data found for {query.symbol}")
         except Exception as e:

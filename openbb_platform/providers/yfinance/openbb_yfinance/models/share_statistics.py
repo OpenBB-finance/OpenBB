@@ -118,7 +118,7 @@ class YFinanceShareStatisticsFetcher(
         import asyncio  # noqa
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
-        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
+        from openbb_core.provider.utils.helpers import get_requests_session
         from yfinance import Ticker
 
         symbols = query.symbol.split(",")
@@ -139,7 +139,7 @@ class YFinanceShareStatisticsFetcher(
             "institutionsFloatPercentHeld",
             "institutionsCount",
         ]
-        old_verify = get_certificates()
+        session = get_requests_session()
         messages: list = []
 
         async def get_one(symbol):
@@ -147,7 +147,11 @@ class YFinanceShareStatisticsFetcher(
             result: dict = {}
             ticker: dict = {}
             try:
-                _ticker = Ticker(symbol)
+                _ticker = Ticker(
+                    symbol,
+                    session=session,
+                    proxy=session.proxies if session.proxies else None,
+                )
                 ticker = _ticker.get_info()
                 major_holders = _ticker.get_major_holders(as_dict=True).get("Value")
                 if major_holders:
@@ -166,8 +170,6 @@ class YFinanceShareStatisticsFetcher(
         tasks = [get_one(symbol) for symbol in symbols]
 
         await asyncio.gather(*tasks)
-
-        restore_certs(old_verify)
 
         if not results and messages:
             raise OpenBBError("\n".join(messages))

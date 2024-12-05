@@ -82,18 +82,18 @@ class YFinanceCashFlowStatementFetcher(
         from numpy import nan
         from openbb_core.provider.utils.errors import EmptyDataError
         from openbb_core.provider.utils.helpers import (
-            get_certificates,
-            restore_certs,
+            get_requests_session,
             to_snake_case,
         )
         from yfinance import Ticker
 
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
-        old_verify = get_certificates()
-        data = Ticker(query.symbol).get_cash_flow(
-            as_dict=False, pretty=False, freq=period
-        )
-        restore_certs(old_verify)
+        session = get_requests_session()
+        data = Ticker(
+            query.symbol,
+            session=session,
+            proxy=session.proxies if session.proxies else None,
+        ).get_cash_flow(as_dict=False, pretty=False, freq=period)
 
         if data is None:
             raise EmptyDataError()

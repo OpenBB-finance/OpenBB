@@ -241,7 +241,7 @@ class YFinanceKeyMetricsFetcher(
         import asyncio  # noqa
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
-        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
+        from openbb_core.provider.utils.helpers import get_requests_session
         from warnings import warn
         from yfinance import Ticker
 
@@ -286,14 +286,18 @@ class YFinanceKeyMetricsFetcher(
             "financialCurrency",
         ]
         messages: list = []
-        old_verify = get_certificates()
+        session = get_requests_session()
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
             result: dict = {}
             ticker: dict = {}
             try:
-                ticker = Ticker(symbol).get_info()
+                ticker = Ticker(
+                    symbol,
+                    session=session,
+                    proxy=session.proxies if session.proxies else None,
+                ).get_info()
             except Exception as e:
                 messages.append(
                     f"Error getting data for {symbol} -> {e.__class__.__name__}: {e}"
@@ -310,8 +314,6 @@ class YFinanceKeyMetricsFetcher(
         tasks = [get_one(symbol) for symbol in symbols]
 
         await asyncio.gather(*tasks)
-
-        restore_certs(old_verify)
 
         if not results and not messages:
             raise EmptyDataError("No data was returned for the given symbol(s).")

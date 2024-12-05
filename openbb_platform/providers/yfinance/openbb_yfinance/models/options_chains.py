@@ -63,19 +63,24 @@ class YFinanceOptionsChainsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
+        from openbb_core.provider.utils.helpers import get_requests_session
         from pandas import concat
         from yfinance import Ticker
         from pytz import timezone
 
         symbol = query.symbol.upper()
         symbol = "^" + symbol if symbol in ["VIX", "RUT", "SPX", "NDX"] else symbol
-        old_verify = get_certificates()
-        ticker = Ticker(symbol)
+        session = get_requests_session()
+        ticker = Ticker(
+            symbol,
+            session=session,
+            proxy=session.proxies if session.proxies else None,
+        )
         expirations = list(ticker.options)
+
         if not expirations or len(expirations) == 0:
-            restore_certs(old_verify)
             raise OpenBBError(f"No options found for {symbol}")
+
         chains_output: List = []
         underlying = ticker.option_chain(expirations[0])[2]
         underlying_output: Dict = {
@@ -149,8 +154,6 @@ class YFinanceOptionsChainsFetcher(
                 for expiration in expirations
             ]
         )
-
-        restore_certs(old_verify)
 
         if not chains_output:
             raise EmptyDataError(f"No data was returned for {symbol}")

@@ -28,7 +28,7 @@ from openbb_core.provider.utils.client import (
 from typing_extensions import ParamSpec
 
 if TYPE_CHECKING:
-    from requests import Response  # pylint: disable=import-outside-toplevel
+    from requests import Response, Session  # pylint: disable=import-outside-toplevel
 
 T = TypeVar("T")
 P = ParamSpec("P")
@@ -125,117 +125,99 @@ def get_python_request_settings() -> dict:
     }
 
 
-def get_certificates() -> Optional[str]:
-    """Handle request certificate environment variable for Requests library.
+def get_requests_session(**kwargs) -> "Session":
+    """Get a requests session object with the applied user settings or environment variables."""
+    # pylint: disable=import-outside-toplevel
+    import requests
 
-    This function is used to set the REQUESTS_CA_BUNDLE environment variable for the Requests library
-    based on the system settings. If a custom certificate file is provided, it will be combined with the
-    default CA bundle. If a custom certificate file is not provided, the default CA bundle will be used.
+    # We want to add a user agent to the request, so check if there are any headers
+    # If there are headers, check if there is a user agent, if not add one.
+    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
+    python_settings = get_python_request_settings()
+    headers = kwargs.pop("headers", {})
+    headers.update(python_settings.pop("headers", {}))
 
-    We do this so that we can use a custom certificate file for requests, while still using the default CA
-    and without limiting the user to only using the custom certificate file.
+    if "User-Agent" not in headers:
+        headers["User-Agent"] = get_user_agent()
 
-    We also set the proxy environment variables for the session, if they are provided in the system settings.
+    # Allow a custom session for caching, if desired
+    _session: requests.Session = kwargs.pop("session", None) or requests.Session()
+    _session.headers.update(headers)
 
-    Returns
-    -------
-    Optional[str]
-        The original value of the REQUESTS_CA_BUNDLE environment variable.
-        Used to restore the variable after the request is made.
-    """
-    request_settings = get_python_request_settings()
-    old_verify = os.environ.get("REQUESTS_CA_BUNDLE")
-
-    if request_settings.get("verify_ssl") is False:
-        os.environ["REQUESTS_CA_BUNDLE"] = ""
-    else:
-        if request_settings.get("cafile"):
-            os.environ["REQUESTS_CA_BUNDLE"] = combine_certificates(
-                request_settings["cafile"]
+    if (
+        python_settings.get("cafile") is not None
+        and os.environ.get("REQUESTS_CA_BUNDLE") is not None
+    ):
+        _session.verify = (
+            combine_certificates(
+                python_settings["cafile"], os.environ.get("REQUESTS_CA_BUNDLE")
             )
-        if old_verify and not request_settings.get("cafile"):
-            certs = os.environ.pop("REQUESTS_CA_BUNDLE", None)
-            if certs:
-                os.environ["REQUESTS_CA_BUNDLE"] = combine_certificates(certs)
-        if (
-            request_settings.get("cafile")
-            and old_verify
-            and request_settings["cafile"] != old_verify
-        ):
-            os.environ["REQUESTS_CA_BUNDLE"] = combine_certificates(
-                request_settings["cafile"], old_verify
-            )
+            if python_settings["cafile"] != os.environ.get("REQUESTS_CA_BUNDLE")
+            else combine_certificates(python_settings["cafile"])
+        )
+    elif python_settings.get("cafile") is not None:
+        _session.verify = combine_certificates(python_settings["cafile"])
+    elif (
+        os.environ.get("REQUESTS_CA_BUNDLE") is not None
+        and python_settings.get("cafile") is None
+    ):
+        certs = os.environ.get("REQUESTS_CA_BUNDLE")
+        _session.verify = combine_certificates(certs)
+    elif python_settings.get("verify_ssl") is False:
+        _session.verify = False
 
-    if request_settings.get("proxy"):
-        os.environ["HTTPS_PROXY"] = request_settings["proxy"]
-        os.environ["HTTP_PROXY"] = request_settings["proxy"]
+    if python_settings.get("certfile"):
+        _session.cert = (
+            (python_settings["certfile"], python_settings.get("keyfile"))
+            if python_settings.get("keyfile") is not None
+            else python_settings["certfile"]
+        )
 
-    return old_verify
+    if os.environ.get("HTTP_PROXY") or os.environ.get("HTTPS_PROXY"):
+        if not python_settings.get("proxy"):
+            _session.proxies = {
+                "http": os.environ.get("HTTP_PROXY"),
+                "https": os.environ.get("HTTPS_PROXY"),
+            }
+    elif python_settings.get("proxy"):
+        _session.proxies = {
+            "http": python_settings["proxy"],
+            "https": python_settings["proxy"],
+        }
 
+    if python_settings.get("cookies"):
+        _session.cookies = python_settings["cookies"]
 
-def restore_certs(old_verify) -> None:
-    """Restore the original request certificate environment variable after use.
+    if python_settings.get("auth"):
+        _session.auth = python_settings["auth"]
 
-    We do this for the Requests library to ensure that the original value of the REQUESTS_CA_BUNDLE
-    environment variable is restored after the request is made.
-    """
-    if old_verify:
-        os.environ["REQUESTS_CA_BUNDLE"] = old_verify
-    else:
-        _ = os.environ.pop("REQUESTS_CA_BUNDLE", None)
+    if kwargs:
+        for key, value in kwargs.items():
+            try:
+                if hasattr(_session, key):
+                    if hasattr(getattr(_session, key), "update"):
+                        getattr(_session, key).update(value)
+                    else:
+                        setattr(_session, key, value)
+            except AttributeError:
+                continue
 
+    _session.trust_env = False
 
-async def amake_request(
-    url: str,
-    method: Literal["GET", "POST"] = "GET",
-    timeout: int = 10,
-    response_callback: Optional[
-        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
-    ] = None,
-    **kwargs,
-) -> Union[dict, List[dict]]:
-    """
-    Abstract helper to make requests from a url with potential headers and params.
-
-    Parameters
-    ----------
-    url : str
-        Url to make the request to
-    method : str, optional
-        HTTP method to use.  Can be "GET" or "POST", by default "GET"
-    timeout : int, optional
-        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
-    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
-        Async callback with response and session as arguments that returns the json, by default None
-    session : ClientSession, optional
-        Custom session to use for requests, by default None
+    return _session
 
 
-    Returns
-    -------
-    Union[dict, List[dict]]
-        Response json
-    """
+async def get_async_requests_session(**kwargs) -> "ClientSession":
+    """Get an aiohttp session object with the applied user settings or environment variables."""
     # pylint: disable=import-outside-toplevel
     import aiohttp  # noqa
+    import atexit
     import ssl
-    from openbb_core.env import Env
 
-    Env()
-
-    if method.upper() not in ["GET", "POST"]:
-        raise ValueError("Method must be GET or POST")
-
-    kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
-
-    response_callback = response_callback or (
-        lambda r, _: asyncio.ensure_future(r.json())
-    )
-
-    # We need to handle SSL context and proxy settings for AIOHTTP.
-    # We will accommodate the Requests environment variable for the CA bundle.
+    # We will accommodate the Requests environment variable for the CA bundle and HTTP Proxies, if provided.
+    # The settings file will take precedence over the environment variables.
     python_settings = get_python_request_settings()
-
+    _ = kwargs.pop("raise_for_status", None)
     if (
         os.environ.get("HTTP_PROXY")
         or os.environ.get("HTTPS_PROXY")
@@ -290,10 +272,76 @@ async def amake_request(
 
     conn_kwargs = {"connector": connector} if connector else {}
 
-    with_session = kwargs.pop("with_session", "session" in kwargs)
-    session: ClientSession = kwargs.pop(
-        "session", ClientSession(trust_env=True, **conn_kwargs)
+    _session: ClientSession = ClientSession(**conn_kwargs)
+
+    for k, v in kwargs.items():
+        try:
+            if hasattr(_session, k):
+                if k == "headers":
+                    _session.headers.update(v)
+                elif hasattr(getattr(_session, k), "update"):
+                    getattr(_session, k).update(v)
+                else:
+                    setattr(_session, "read_timeout" if k == "timeout" else k, v)
+        except AttributeError:
+            continue
+
+    def at_exit(session):
+        """Close the session at exit if it was orphaned."""
+        if not session.closed:
+            run_async(session.close)
+
+    # Register the session to close at exit
+    atexit.register(at_exit, _session)
+
+    return _session
+
+
+async def amake_request(
+    url: str,
+    method: Literal["GET", "POST"] = "GET",
+    timeout: int = 10,
+    response_callback: Optional[
+        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
+    ] = None,
+    **kwargs,
+) -> Union[dict, List[dict]]:
+    """
+    Abstract helper to make requests from a url with potential headers and params.
+
+    Parameters
+    ----------
+    url : str
+        Url to make the request to
+    method : str, optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
+
+
+    Returns
+    -------
+    Union[dict, List[dict]]
+        Response json
+    """
+    if method.upper() not in ["GET", "POST"]:
+        raise ValueError("Method must be GET or POST")
+
+    kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
+
+    response_callback = response_callback or (
+        lambda r, _: asyncio.ensure_future(r.json())
     )
+
+    with_session = kwargs.pop("with_session", "session" in kwargs)
+    session = kwargs.pop("session", None)
+
+    if session is None:
+        session = await get_async_requests_session(**kwargs)
 
     try:
         response = await session.request(method, url, **kwargs)
@@ -330,11 +378,10 @@ async def amake_requests(
     Union[dict, List[dict]]
         Response json
     """
-    # pylint: disable=import-outside-toplevel
-    from openbb_core.env import Env
+    session = kwargs.pop("session", None)
+    if session is None:
+        session = await get_async_requests_session(**kwargs)
 
-    Env()
-    session: ClientSession = kwargs.pop("session", ClientSession(trust_env=True))
     kwargs["response_callback"] = response_callback
 
     urls = urls if isinstance(urls, list) else [urls]
@@ -432,14 +479,9 @@ def make_request(
     ValueError
         If invalid method is passed
     """
-    # pylint: disable=import-outside-toplevel
-    import requests
-    from openbb_core.env import Env
-
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
-    Env()
     python_settings = get_python_request_settings()
     headers = kwargs.pop("headers", {})
     headers.update(python_settings.pop("headers", {}))
@@ -454,40 +496,7 @@ def make_request(
         headers["User-Agent"] = get_user_agent()
 
     # Allow a custom session for caching, if desired
-    _session = kwargs.pop("session", None) or requests
-
-    if (
-        python_settings.get("cafile") is not None
-        and os.environ.get("REQUESTS_CA_BUNDLE") is not None
-    ):
-        kwargs["verify"] = (
-            combine_certificates(
-                python_settings["cafile"], os.environ.get("REQUESTS_CA_BUNDLE")
-            )
-            if python_settings["cafile"] != os.environ.get("REQUESTS_CA_BUNDLE")
-            else combine_certificates(python_settings["cafile"])
-        )
-    elif python_settings.get("cafile") is not None:
-        kwargs["verify"] = combine_certificates(python_settings["cafile"])
-    elif os.environ.get("REQUESTS_CA_BUNDLE") and python_settings.get("cafile") is None:
-        certs = os.environ.get("REQUESTS_CA_BUNDLE", "")
-        kwargs["verify"] = combine_certificates(certs)
-
-    if python_settings.get("verify_ssl") is False:
-        kwargs["verify"] = False
-
-    if python_settings.get("certfile"):
-        kwargs["cert"] = (
-            (python_settings["certfile"], python_settings.get("keyfile"))
-            if python_settings.get("keyfile") is not None
-            else python_settings["certfile"]
-        )
-
-    if python_settings.get("proxy"):
-        kwargs["proxies"] = {
-            "http": python_settings["proxy"],
-            "https": python_settings["proxy"],
-        }
+    _session = kwargs.pop("session", None) or get_requests_session(**kwargs)
 
     if method.upper() == "GET":
         return _session.get(

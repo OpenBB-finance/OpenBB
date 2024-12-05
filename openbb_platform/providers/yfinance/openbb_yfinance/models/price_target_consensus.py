@@ -86,7 +86,7 @@ class YFinancePriceTargetConsensusFetcher(
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_core.provider.utils.errors import EmptyDataError
-        from openbb_core.provider.utils.helpers import get_certificates, restore_certs
+        from openbb_core.provider.utils.helpers import get_requests_session
         from warnings import warn
         from yfinance import Ticker
 
@@ -104,7 +104,7 @@ class YFinancePriceTargetConsensusFetcher(
             "recommendationKey",
             "numberOfAnalystOpinions",
         ]
-        old_verify = get_certificates()
+        session = get_requests_session()
         messages: list = []
 
         async def get_one(symbol):
@@ -112,7 +112,11 @@ class YFinancePriceTargetConsensusFetcher(
             result: dict = {}
             ticker: dict = {}
             try:
-                ticker = Ticker(symbol).get_info()
+                ticker = Ticker(
+                    symbol,
+                    session=session,
+                    proxy=session.proxies if session.proxies else None,
+                ).get_info()
             except Exception as e:
                 messages.append(
                     f"Error getting data for {symbol}: {e.__class__.__name__}: {e}"
@@ -127,8 +131,6 @@ class YFinancePriceTargetConsensusFetcher(
         tasks = [get_one(symbol) for symbol in symbols]
 
         await asyncio.gather(*tasks)
-
-        restore_certs(old_verify)
 
         if not results and not messages:
             raise EmptyDataError("No data was returned for the given symbol(s)")
