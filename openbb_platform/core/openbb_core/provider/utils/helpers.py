@@ -293,7 +293,9 @@ async def get_async_requests_session(**kwargs) -> ClientSession:
 
     # SSL settings get passed to the TCPConnector used by the session.
     connector = (
-        aiohttp.TCPConnector(ttl_dns_cache=300, **ssl_kwargs) if ssl_kwargs else None
+        aiohttp.TCPConnector(ttl_dns_cache=300, **ssl_kwargs)
+        if ssl_kwargs
+        else kwargs.pop("connector", None)
     )
 
     conn_kwargs = {"connector": connector} if connector else {}
