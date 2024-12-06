@@ -117,7 +117,6 @@ def get_python_request_settings() -> dict:
         "auth",
         "headers",
         "cookies",
-        "server_hostname",
     ]
 
     return {
