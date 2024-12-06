@@ -259,7 +259,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     commands = an_input.split("/") if "timezone" not in an_input else [an_input]
 
     for command_num, command in enumerate(commands):
-        if command == commands[command_num] == commands[-1] == "":
+        if command == command == commands[-1] == "":
             return list(filter(None, commands))
         matching_placeholders = [tag for tag in placeholders if tag in command]
         if len(matching_placeholders) > 0:

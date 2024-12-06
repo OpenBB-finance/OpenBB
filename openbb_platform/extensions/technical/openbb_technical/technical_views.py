@@ -348,7 +348,7 @@ class TechnicalViews:
         ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")  # type: ignore
         momentum_df = basemodel_to_df(kwargs["obbject_item"].rs_momentum, index="date")  # type: ignore
         benchmark_symbol = kwargs["obbject_item"].benchmark  # type: ignore
-        study = kwargs.get("study", None)
+        study = kwargs.get("study")
         study = str(kwargs["obbject_item"].study) if study is None else str(study)
         show_tails = kwargs.get("show_tails")
         show_tails = True if show_tails is None else show_tails

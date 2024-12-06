@@ -486,7 +486,7 @@ class OpenBBFigure(go.Figure):
         if wrap:
             title = "<br>".join(textwrap.wrap(title, width=wrap_width))
 
-        if kwargs.get("row", None) is not None and kwargs.get("col", None) is not None:
+        if kwargs.get("row") is not None and kwargs.get("col") is not None:
             self.add_annotation(
                 text=title,
                 xref="x domain",
@@ -1392,11 +1392,11 @@ class OpenBBFigure(go.Figure):
 
         header_values, cell_values = cls._tbl_values(data, print_index)
 
-        if (height := kwargs.get("height", None)) and height < len(
+        if (height := kwargs.get("height")) and height < len(
             data.index
         ) * 28 + 25:
             kwargs.pop("height")
-        if (width := kwargs.get("width", None)) and width < sum(columnwidth) * 8.7:
+        if (width := kwargs.get("width")) and width < sum(columnwidth) * 8.7:
             kwargs.pop("width")
 
         height = kwargs.pop("height", len(data.index) * 28 + 25)
