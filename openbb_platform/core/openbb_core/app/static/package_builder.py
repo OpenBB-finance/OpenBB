@@ -1095,7 +1095,7 @@ class DocstringGenerator:
             )
             metadata = getattr(annotation, "__metadata__", [])
             description = getattr(metadata[0], "description", "") if metadata else ""
-            return type_, description
+            return type_, description  # type: ignore
 
         # Description summary
         if "description" in sections:
