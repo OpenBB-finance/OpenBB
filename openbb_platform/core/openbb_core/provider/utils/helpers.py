@@ -130,6 +130,10 @@ def get_requests_session(**kwargs) -> "Session":
     # pylint: disable=import-outside-toplevel
     import requests
 
+    # If a session is already provided, just return it.
+    if "session" in kwargs and isinstance(kwargs.get("session"), requests.Session):
+        return kwargs["session"]
+
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
@@ -224,13 +228,16 @@ def get_requests_session(**kwargs) -> "Session":
     return _session
 
 
-async def get_async_requests_session(**kwargs) -> "ClientSession":
+async def get_async_requests_session(**kwargs) -> ClientSession:
     """Get an aiohttp session object with the applied user settings or environment variables."""
     # pylint: disable=import-outside-toplevel
     import aiohttp  # noqa
     import atexit
     import ssl
 
+    # If a session is already provided, just return it.
+    if "session" in kwargs and isinstance(kwargs.get("session"), ClientSession):
+        return kwargs["session"]
     # Handle SSL settings and proxies
     # We will accommodate the Requests environment variable for the CA bundle and HTTP Proxies, if provided.
     # The settings file will take precedence over the environment variables.
@@ -298,11 +305,23 @@ async def get_async_requests_session(**kwargs) -> "ClientSession":
     if kwargs.get("auth"):
         conn_kwargs["auth"] = aiohttp.BasicAuth(*kwargs.pop("auth", []))
 
+    if kwargs.get("cookies"):
+        _cookies = kwargs.pop("cookies", None)
+        if isinstance(_cookies, dict):
+            conn_kwargs["cookies"] = _cookies
+        elif isinstance(_cookies, aiohttp.CookieJar):
+            conn_kwargs["cookie_jar"] = _cookies
+
     # Pass the remaining kwargs to the session
     for k, v in kwargs.items():
+        if v is None:
+            continue
         if k == "timeout":
-            conn_kwargs["read_timeout"] = v
-            conn_kwargs["conn_timeout"] = v
+            conn_kwargs["timeout"] = (
+                v
+                if isinstance(v, aiohttp.ClientTimeout)
+                else aiohttp.ClientTimeout(total=v)
+            )
         elif k not in ("ssl", "verify_ssl", "fingerprint") and k in python_settings:
             conn_kwargs[k] = v
 
@@ -402,7 +421,7 @@ async def amake_requests(
     urls = urls if isinstance(urls, list) else [urls]
 
     try:
-        results = []
+        results: list = []
 
         for result in await asyncio.gather(
             *[amake_request(url, session=session, **kwargs) for url in urls],
