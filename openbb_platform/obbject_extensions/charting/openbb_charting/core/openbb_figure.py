@@ -1392,9 +1392,7 @@ class OpenBBFigure(go.Figure):
 
         header_values, cell_values = cls._tbl_values(data, print_index)
 
-        if (height := kwargs.get("height")) and height < len(
-            data.index
-        ) * 28 + 25:
+        if (height := kwargs.get("height")) and height < len(data.index) * 28 + 25:
             kwargs.pop("height")
         if (width := kwargs.get("width")) and width < sum(columnwidth) * 8.7:
             kwargs.pop("width")
