@@ -2166,17 +2166,18 @@ def test_equity_discovery_latest_financial_reports(params, headers):
                 "chamber": "all",
                 "symbol": "AAPL",
                 "provider": "fmp",
+                "limit": None,
             }
         ),
         (
             {
+                "symbol": None,
                 "chamber": "all",
                 "limit": 300,
                 "provider": "fmp",
             }
         ),
     ],
-
 )
 @pytest.mark.integration
 def test_equity_ownership_government_trades(params, headers):

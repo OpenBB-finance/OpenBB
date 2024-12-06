@@ -3,7 +3,7 @@
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.6",
+        "core": "1.3.7",
         "extensions": {
             "openbb_core_extension": [
                 "commodity@1.2.6",
@@ -10271,6 +10271,7 @@
                             "dominica",
                             "dominican_republic",
                             "east_germany",
+                            "eastern_caribbean_currency_union",
                             "ecuador",
                             "egypt",
                             "el_salvador",
@@ -10526,6 +10527,7 @@
                             "dominica",
                             "dominican_republic",
                             "east_germany",
+                            "eastern_caribbean_currency_union",
                             "ecuador",
                             "egypt",
                             "el_salvador",
@@ -28321,6 +28323,167 @@
                 ]
             },
             "model": "Form13FHR"
+        },
+        "/equity/ownership/government_trades": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Obtain government transaction data, including data from the Senate\nand the House of Representatives.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.government_trades(symbol='AAPL', chamber='all', provider='fmp')\nobb.equity.ownership.government_trades(limit=500, chamber='all', provider='fmp')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol to get data for.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "chamber",
+                        "type": "Literal['house', 'senate', 'all']",
+                        "description": "Government Chamber.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "limit",
+                        "type": "Annotated[int, Ge(ge=0)]",
+                        "description": "The number of data entries to return.",
+                        "default": 100,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[GovernmentTrades]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fmp']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "transaction_date",
+                        "type": "date",
+                        "description": "Date of Transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "representative",
+                        "type": "str",
+                        "description": "Name of Representative.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "link",
+                        "type": "str",
+                        "description": "Link to the transaction document.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "owner",
+                        "type": "str",
+                        "description": "Ownership status (e.g., Spouse, Joint).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "asset_type",
+                        "type": "str",
+                        "description": "Type of asset involved in the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "asset_description",
+                        "type": "str",
+                        "description": "Description of the asset.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "type",
+                        "type": "str",
+                        "description": "Type of transaction (e.g., Sale, Purchase).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "amount",
+                        "type": "str",
+                        "description": "Transaction amount range.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "comment",
+                        "type": "str",
+                        "description": "Additional comments on the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "GovernmentTrades"
         },
         "/equity/price/quote": {
             "deprecated": {
