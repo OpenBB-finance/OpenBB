@@ -292,20 +292,25 @@ async def get_async_requests_session(**kwargs) -> ClientSession:
         )
 
     # SSL settings get passed to the TCPConnector used by the session.
-    connector = (
-        aiohttp.TCPConnector(ttl_dns_cache=300, **ssl_kwargs)
-        if ssl_kwargs
-        else kwargs.pop("connector", None)
+    connector = kwargs.pop("connector", None) or (
+        aiohttp.TCPConnector(ttl_dns_cache=300, **ssl_kwargs) if ssl_kwargs else None
     )
 
     conn_kwargs = {"connector": connector} if connector else {}
 
-    # Add basic auth for proxies and requests, if provided.
+    # Add basic auth for proxies, if provided.
     if kwargs.get("proxy_auth"):
-        conn_kwargs["proxy_auth"] = aiohttp.BasicAuth(*kwargs.pop("proxy_auth", []))
+        p_auth = kwargs.pop("proxy_auth", [])
+        conn_kwargs["proxy_auth"] = aiohttp.BasicAuth(
+            *p_auth if isinstance(p_auth, (list, tuple)) else p_auth
+        )
 
+    # Add basic auth for the server connection, if provided.
     if kwargs.get("auth"):
-        conn_kwargs["auth"] = aiohttp.BasicAuth(*kwargs.pop("auth", []))
+        s_auth = kwargs.pop("auth", [])
+        conn_kwargs["auth"] = aiohttp.BasicAuth(
+            *s_auth if isinstance(s_auth, (list, tuple)) else s_auth
+        )
 
     if kwargs.get("cookies"):
         _cookies = kwargs.pop("cookies", None)
