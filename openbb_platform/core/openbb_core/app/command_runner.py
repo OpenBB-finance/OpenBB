@@ -272,7 +272,7 @@ class StaticCommandRunner:
 
     # pylint: disable=R0913, R0914
     @classmethod
-    async def _execute_func(
+    async def _execute_func(  # pylint: disable=too-many-positional-arguments
         cls,
         route: str,
         args: Tuple[Any, ...],

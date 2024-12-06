@@ -1045,7 +1045,7 @@ class DocstringGenerator:
         return ""
 
     @classmethod
-    def generate_model_docstring(
+    def generate_model_docstring(  # pylint: disable=too-many-positional-arguments
         cls,
         model_name: str,
         summary: str,
@@ -1150,7 +1150,7 @@ class DocstringGenerator:
         return docstring
 
     @classmethod
-    def generate(
+    def generate(  # pylint: disable=too-many-positional-arguments
         cls,
         path: str,
         func: Callable,
