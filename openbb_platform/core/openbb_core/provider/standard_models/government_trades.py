@@ -35,7 +35,10 @@ class GovernmentTradesQueryParams(QueryParams):
 class GovernmentTradesData(Data):
     """Government Trades data."""
 
-    symbol: Optional[str] = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     transaction_date: Optional[dateType] = Field(
         default=None, description="Date of Transaction."
