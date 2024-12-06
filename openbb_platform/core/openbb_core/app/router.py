@@ -19,10 +19,6 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
-from pydantic.v1.validators import find_validators
-from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
-
 from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWarning
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
@@ -35,6 +31,9 @@ from openbb_core.app.provider_interface import (
     StandardParams,
 )
 from openbb_core.env import Env
+from pydantic import BaseModel
+from pydantic.v1.validators import find_validators
+from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
 P = ParamSpec("P")
 

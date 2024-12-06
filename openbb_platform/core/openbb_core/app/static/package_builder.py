@@ -5,7 +5,6 @@ import builtins
 import inspect
 import re
 import shutil
-import sys
 from dataclasses import Field as DCField
 from functools import partial
 from inspect import Parameter, _empty, isclass, signature
@@ -31,11 +30,6 @@ from typing import (
 )
 
 from importlib_metadata import entry_points
-from pydantic.fields import FieldInfo
-from pydantic_core import PydanticUndefined
-from starlette.routing import BaseRoute
-from typing_extensions import Annotated, _AnnotatedAlias
-
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
 from openbb_core.app.model.example import Example
 from openbb_core.app.model.field import OpenBBField
@@ -47,6 +41,10 @@ from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
 from openbb_core.app.version import CORE_VERSION, VERSION
 from openbb_core.env import Env
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
+from starlette.routing import BaseRoute
+from typing_extensions import Annotated, _AnnotatedAlias
 
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
@@ -377,18 +375,11 @@ class ImportDefinition:
         code += "\nfrom typing import TYPE_CHECKING, ForwardRef, List, Dict, Union, Optional, Literal, Any"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         code += "\nfrom warnings import warn, simplefilter"
-        if sys.version_info < (3, 9):
-            code += "\nimport typing_extensions"
-        else:
-            code += "\nfrom typing_extensions import Annotated, deprecated"
-        # code += "\nfrom openbb_core.app.utils import df_to_basemodel"
+        code += "\nfrom typing_extensions import Annotated, deprecated"
         code += "\nfrom openbb_core.app.static.utils.decorators import exception_handler, validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         code += "\nfrom openbb_core.app.model.field import OpenBBField"
-        # if path.startswith("/quantitative"):
-        #    code += "\nfrom openbb_quantitative.models import "
-        #    code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
         module_list.sort()

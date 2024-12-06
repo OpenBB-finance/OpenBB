@@ -130,7 +130,7 @@ def test_get_type_hint(method_definition):
 
     field = TestField()
     result = method_definition.get_type(field)
-    assert result == int
+    assert result is int
 
 
 def test_field_with_type_attribute_missing_type(method_definition):
