@@ -7679,7 +7679,16 @@
                         "choices": null
                     }
                 ],
-                "imf": []
+                "imf": [
+                    {
+                        "name": "query",
+                        "type": "Union[str, List[str]]",
+                        "description": "The query string to search through the available indicators. Use semicolons to separate multiple terms. Multiple items allowed for provider(s): imf.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -7829,6 +7838,14 @@
                 ],
                 "imf": [
                     {
+                        "name": "dataset",
+                        "type": "str",
+                        "description": "The IMF dataset associated with the symbol.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "table",
                         "type": "str",
                         "description": "The name of the table associated with the symbol.",
@@ -7846,8 +7863,24 @@
                     },
                     {
                         "name": "order",
-                        "type": "int",
+                        "type": "Union[int, float]",
                         "description": "Order of the data, relative to the table.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "children",
+                        "type": "str",
+                        "description": "The symbol of the child data, if any.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "The unit of the data.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -7862,7 +7895,7 @@
                 "message": null
             },
             "description": "Get economic indicators by country and indicator.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol=PCOCO)\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol=CPI, country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol=main, country='eu')\n# When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'. Use 'IRFCL' to get all the data from the set of indicators.\nobb.economy.indicators(provider='imf')\n# When the provider is 'imf', complete tables are returned by using a 'preset'. Refer to the function's docstring for descriptions of each preset. When no country is supplied, the data is returned for all countries.\nobb.economy.indicators(provider='imf', symbol=gold_reserves)\n# When the provider is 'imf', multiple countries and symbols can be supplied. Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.\nobb.economy.indicators(provider='imf', symbol=RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO, country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency=annual)\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol=PCOCO)\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol=CPI, country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol=main, country='eu')\n# When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'. Use 'IRFCL' to get all the data from the set of indicators.\nobb.economy.indicators(provider='imf')\n# When the provider is 'imf', complete tables are returned by using a 'preset'. Refer to the function's docstring for descriptions of each preset. When no country is supplied, the data is returned for all countries.\nobb.economy.indicators(provider='imf', symbol=gold_reserves)\n# When the provider is 'imf', multiple countries and symbols can be supplied. Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.\nobb.economy.indicators(provider='imf', symbol=RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO, country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency=annual)\n# When the provider is 'imf', additional presets return the core Financial Soundness Indicators.\n    'fsi_core' -  Core FSIs\n    'fsi_encouraged_set' - Encouraged Set of FSIs,\n    'fsi_core_underlying' - Underlying data for the Core FSIs.\n    'fsi_other' - Additional/Other FSIs that are not in the Core or Encouraged Set.\n    'fsi_all' - all FSI data for a single country.\nobb.economy.indicators(provider='imf', symbol=fsi_encouraged_set, country='us,fr,gb', start_date='2022-01-01', end_date='2023-12-31', frequency=annual)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -8145,7 +8178,7 @@
                     {
                         "name": "symbol",
                         "type": "Union[str, List[str]]",
-                        "description": "Symbol to get data for. Use `available_indicators()` to get the list of available symbols. Use 'IRFCL' to get all the data from the set of indicators. Complete tables are available only by single country, and are keyed as described below. The default is 'irfcl_top_lines'. Available presets not listed in `available_indicators()` are:\n\n        'IRFCL': All the data from the set of indicators. Not compatible with multiple countries.\n        'irfcl_top_lines': The default, top line items from the IRFCL data. Compatible with multiple countries.\n        'reserve_assets_and_other_fx_assets': Table I of the IRFCL data. Not compatible with multiple countries.\n        'predetermined_drains_on_fx_assets': Table II of the IRFCL data. Not compatible with multiple countries.\n        'contingent_drains_fx_assets': Table III of the IRFCL data. Not compatible with multiple countries.\n        'memorandum_items': The memorandum items table of the IRFCL data. Not compatible with multiple countries.\n        'gold_reserves': Gold reserves as value in USD and Fine Troy Ounces. Compatible with multiple countries.\n        'derivative_assets': Net derivative assets as value in USD. Compatible with multipile countries. Multiple items allowed for provider(s): imf.",
+                        "description": "Symbol to get data for. Use `available_indicators()` to get the list of available symbols. Use 'IRFCL' to get all the data from International Reserves & Foreign Currency Liquidity indicators. Use 'core_fsi' to get the core Financial Soundness Indicators. Use 'core_fsi_underlying' to include underlying data for the core Financial Soundness Indicators. Complete tables are available only by single country, and are keyed as described below. The default is 'irfcl_top_lines'. Available presets not listed in `available_indicators()` are:\n\n        'IRFCL': All the data from the set of indicators. Not compatible with multiple countries.\n        'irfcl_top_lines': The default, top line items from the IRFCL data. Compatible with multiple countries.\n        'reserve_assets_and_other_fx_assets': Table I of the IRFCL data. Not compatible with multiple countries.\n        'predetermined_drains_on_fx_assets': Table II of the IRFCL data. Not compatible with multiple countries.\n        'contingent_drains_fx_assets': Table III of the IRFCL data. Not compatible with multiple countries.\n        'memorandum_items': The memorandum items table of the IRFCL data. Not compatible with multiple countries.\n        'gold_reserves': Gold reserves as value in USD and Fine Troy Ounces. Compatible with multiple countries.\n        'derivative_assets': Net derivative assets as value in USD. Compatible with multipile countries.\n        'fsi_core': The core Financial Soundness Indicators. Compatible with multiple countries.\n        'fsi_core_underlying': The core FSIs underlying series data. Not compatible with country='all'.\n        'fsi_encouraged_set': The encouraged set of Financial Soundness Indicators. Not compatible with country='all'.\n        'fsi_other': The other Financial Soundness Indicators. Not compatible with country='all'.\n        'fsi_balance_sheets': Data categorized as Balance Sheets and Income Statements. Not compatible with country='all'.\n        'fsi_all': All the Financial Soundness Indicators. Not compatible with multiple countries. Multiple items allowed for provider(s): imf.",
                         "default": "irfcl_top_lines",
                         "optional": true,
                         "choices": null
@@ -8153,7 +8186,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['annual', 'quarter', 'month']",
-                        "description": "Frequency of the data.",
+                        "description": "Frequency of the data, default is 'quarter'.",
                         "default": "quarter",
                         "optional": true,
                         "choices": [
@@ -8239,6 +8272,14 @@
                 "econdb": [],
                 "imf": [
                     {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "The unit of the value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "scale",
                         "type": "str",
                         "description": "The scale of the value.",
@@ -8264,7 +8305,7 @@
                     },
                     {
                         "name": "order",
-                        "type": "int",
+                        "type": "Union[int, float]",
                         "description": "Order of the data, relative to the table.",
                         "default": null,
                         "optional": true,
