@@ -3,6 +3,7 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
+from annotated_types import Ge
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
@@ -14,6 +15,7 @@ from typing_extensions import Annotated
 class ROUTER_equity_ownership(Container):
     """/equity/ownership
     form_13f
+    government_trades
     insider_trading
     institutional
     major_holders
@@ -142,6 +144,109 @@ class ROUTER_equity_ownership(Container):
                 standard_params={
                     "symbol": symbol,
                     "date": date,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def government_trades(
+        self,
+        symbol: Annotated[
+            Optional[str], OpenBBField(description="Symbol to get data for.")
+        ] = None,
+        chamber: Annotated[
+            Literal["house", "senate", "all"],
+            OpenBBField(description="Government Chamber."),
+        ] = "all",
+        limit: Annotated[
+            Optional[Annotated[int, Ge(ge=0)]],
+            OpenBBField(description="The number of data entries to return."),
+        ] = 100,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Obtain government transaction data, including data from the Senate
+        and the House of Representatives.
+
+
+        Parameters
+        ----------
+        symbol : Optional[str]
+            Symbol to get data for.
+        chamber : Literal['house', 'senate', 'all']
+            Government Chamber.
+        limit : Optional[Annotated[int, Ge(ge=0)]]
+            The number of data entries to return.
+        provider : Optional[Literal['fmp']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+
+        Returns
+        -------
+        OBBject
+            results : List[GovernmentTrades]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        GovernmentTrades
+        ----------------
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        date : date
+            The date of the data.
+        transaction_date : Optional[date]
+            Date of Transaction.
+        representative : Optional[str]
+            Name of Representative.
+        link : Optional[str]
+            Link to the transaction document. (provider: fmp)
+        owner : Optional[str]
+            Ownership status (e.g., Spouse, Joint). (provider: fmp)
+        asset_type : Optional[str]
+            Type of asset involved in the transaction. (provider: fmp)
+        asset_description : Optional[str]
+            Description of the asset. (provider: fmp)
+        type : Optional[str]
+            Type of transaction (e.g., Sale, Purchase). (provider: fmp)
+        amount : Optional[str]
+            Transaction amount range. (provider: fmp)
+        comment : Optional[str]
+            Additional comments on the transaction. (provider: fmp)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.ownership.government_trades(symbol='AAPL', chamber='all', provider='fmp')
+        >>> obb.equity.ownership.government_trades(limit=500, chamber='all', provider='fmp')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/ownership/government_trades",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.ownership.government_trades",
+                        ("fmp",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                    "chamber": chamber,
                     "limit": limit,
                 },
                 extra_params=kwargs,

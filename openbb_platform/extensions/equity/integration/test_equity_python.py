@@ -2027,10 +2027,12 @@ def test_equity_discovery_latest_financial_reports(params, obb):
                 "chamber": "all",
                 "symbol": "AAPL",
                 "provider": "fmp",
+                "limit": None,
             }
         ),
         (
             {
+                "symbol": None,
                 "chamber": "all",
                 "limit": 300,
                 "provider": "fmp",
