@@ -1,9 +1,8 @@
 """Command Context."""
 
-from pydantic import BaseModel, Field
-
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from pydantic import BaseModel, Field
 
 
 class CommandContext(BaseModel):

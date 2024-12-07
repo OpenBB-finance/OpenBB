@@ -3,9 +3,8 @@
 from typing import Any
 from warnings import warn
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
-
 from openbb_core.app.model.abstract.warning import OpenBBWarning
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class Defaults(BaseModel):

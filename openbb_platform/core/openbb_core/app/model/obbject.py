@@ -16,14 +16,13 @@ from typing import (
     Union,
 )
 
-from pydantic import BaseModel, Field, PrivateAttr
-
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
+from pydantic import BaseModel, Field, PrivateAttr
 
 if TYPE_CHECKING:
     from numpy import ndarray  # noqa

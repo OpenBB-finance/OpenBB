@@ -4,6 +4,10 @@ import traceback
 import warnings
 from typing import Dict, List, Optional, Tuple
 
+from openbb_core.app.extension_loader import ExtensionLoader
+from openbb_core.app.model.abstract.warning import OpenBBWarning
+from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.env import Env
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -13,11 +17,6 @@ from pydantic import (
 )
 from pydantic.functional_serializers import PlainSerializer
 from typing_extensions import Annotated
-
-from openbb_core.app.extension_loader import ExtensionLoader
-from openbb_core.app.model.abstract.warning import OpenBBWarning
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.env import Env
 
 
 class LoadingError(Exception):

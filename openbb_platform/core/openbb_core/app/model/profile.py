@@ -2,9 +2,8 @@
 
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, Field
-
 from openbb_core.app.model.hub.hub_session import HubSession
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Profile(BaseModel):
