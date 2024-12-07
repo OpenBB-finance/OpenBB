@@ -1,5 +1,7 @@
 """Deribit Options Chains Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Optional, Union
 
@@ -25,6 +27,7 @@ class DeribitOptionsChainsQueryParams(OptionsChainsQueryParams):
     }
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def _validate_symbol(cls, v):
         """Validate the symbol."""
         if v.upper() not in DERIBIT_OPTIONS_SYMBOLS:
@@ -236,7 +239,7 @@ class DeribitOptionsChainsFetcher(
                     df.loc[:, col] = (
                         df[col].astype(float).multiply(df.index_price).round(2)
                     )
-                elif col in ["price_change", "mark_iv", "bid_iv", "ask_iv"]:
+                elif col in ["price_change", "mark_iv", "bid_iv", "ask_iv", "vega"]:
                     df.loc[:, col] = df[col].astype(float).divide(100)
 
         df = df.replace({nan: None})

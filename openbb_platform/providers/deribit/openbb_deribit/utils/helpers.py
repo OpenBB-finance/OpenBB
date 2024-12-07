@@ -55,7 +55,9 @@ async def get_instruments(
         response = await amake_request(url)
         return response.get("result", [])  # type: ignore
     except Exception as e:  # pylint: disable=broad-except
-        raise OpenBBError(f"Failed to get instruments -> {e.__class__.__name__}: {e}")
+        raise OpenBBError(
+            f"Failed to get instruments -> {e.__class__.__name__}: {e}"
+        ) from e
 
 
 async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict:
@@ -96,17 +98,13 @@ async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict:
         )
     )
     for item in sorted(
-        list(
-            set(
-                [
-                    (
-                        to_datetime(d.split("-")[1]).date().strftime("%Y-%m-%d"),
-                        d.split("-")[1],
-                    )
-                    for d in all_options
-                ]
+        {
+            (
+                to_datetime(d.split("-")[1]).date().strftime("%Y-%m-%d"),
+                d.split("-")[1],
             )
-        )
+            for d in all_options
+        }
     ):
         expirations[item[0]] = item[1]
 
