@@ -155,7 +155,10 @@ class ROUTER_equity_ownership(Container):
     def government_trades(
         self,
         symbol: Annotated[
-            Optional[str], OpenBBField(description="Symbol to get data for.")
+            Union[str, None, List[Optional[str]]],
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+            ),
         ] = None,
         chamber: Annotated[
             Literal["house", "senate", "all"],
@@ -179,8 +182,8 @@ class ROUTER_equity_ownership(Container):
 
         Parameters
         ----------
-        symbol : Optional[str]
-            Symbol to get data for.
+        symbol : Union[str, None, List[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         chamber : Literal['house', 'senate', 'all']
             Government Chamber.
         limit : Optional[Annotated[int, Ge(ge=0)]]
@@ -212,20 +215,22 @@ class ROUTER_equity_ownership(Container):
             Date of Transaction.
         representative : Optional[str]
             Name of Representative.
-        link : Optional[str]
-            Link to the transaction document. (provider: fmp)
+        chamber : Optional[Literal['house', 'senate']]
+            Government Chamber - House or Senate. (provider: fmp)
         owner : Optional[str]
             Ownership status (e.g., Spouse, Joint). (provider: fmp)
         asset_type : Optional[str]
             Type of asset involved in the transaction. (provider: fmp)
         asset_description : Optional[str]
             Description of the asset. (provider: fmp)
-        type : Optional[str]
+        transaction_type : Optional[str]
             Type of transaction (e.g., Sale, Purchase). (provider: fmp)
         amount : Optional[str]
             Transaction amount range. (provider: fmp)
         comment : Optional[str]
             Additional comments on the transaction. (provider: fmp)
+        url : Optional[str]
+            Link to the transaction document. (provider: fmp)
 
         Examples
         --------
@@ -250,6 +255,9 @@ class ROUTER_equity_ownership(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 

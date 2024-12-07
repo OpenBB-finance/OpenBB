@@ -28335,8 +28335,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -28395,8 +28395,8 @@
                         "name": "symbol",
                         "type": "str",
                         "description": "Symbol representing the entity requested in the data.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -28426,11 +28426,11 @@
                 ],
                 "fmp": [
                     {
-                        "name": "link",
-                        "type": "str",
-                        "description": "Link to the transaction document.",
-                        "default": null,
-                        "optional": true,
+                        "name": "chamber",
+                        "type": "Literal['house', 'senate']",
+                        "description": "Government Chamber - House or Senate.",
+                        "default": "",
+                        "optional": false,
                         "choices": null
                     },
                     {
@@ -28458,7 +28458,7 @@
                         "choices": null
                     },
                     {
-                        "name": "type",
+                        "name": "transaction_type",
                         "type": "str",
                         "description": "Type of transaction (e.g., Sale, Purchase).",
                         "default": null,
@@ -28477,6 +28477,14 @@
                         "name": "comment",
                         "type": "str",
                         "description": "Additional comments on the transaction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "Link to the transaction document.",
                         "default": null,
                         "optional": true,
                         "choices": null
