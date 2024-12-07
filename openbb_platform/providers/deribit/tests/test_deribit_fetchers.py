@@ -52,7 +52,7 @@ MOCK_OPTIONS_DATA = DeribitOptionsChainsData.model_validate(
         "interest_rate": [0.0, 0.0],
         "bid_iv": [0.0, 0.0],
         "ask_iv": [0.0, 2.1254],
-        "volume_usd": [0.0, 7083.24],
+        "volume_notional": [0.0, 7083.24],
     }
 )
 

@@ -52,10 +52,25 @@ class DeribitOptionsChainsData(OptionsChainsData):
         "implied_volatility": "mark_iv",
         "mark": "mark_price",
         "last_trade_price": "last_price",
+        "volume_notional": "volume_usd",
     }
 
     __doc__ = OptionsChainsData.__doc__
 
+    bid_iv: list[Union[float, None]] = Field(
+        default_factory=list,
+        description="The implied volatility of the bid price.",
+        json_schema_extra={"x-unit_measurement": "decimal"},
+    )
+    ask_iv: list[Union[float, None]] = Field(
+        default_factory=list,
+        description="The implied volatility of the ask price.",
+        json_schema_extra={"x-unit_measurement": "decimal"},
+    )
+    interest_rate: list[Union[float, None]] = Field(
+        default_factory=list,
+        description="The interest rate used by Deribit to calculate greeks.",
+    )
     underlying_spot_price: list[float] = Field(
         description="The spot price of the underlying asset."
         " The underlying asset is the specific future or index that the option is based on.",
@@ -64,9 +79,25 @@ class DeribitOptionsChainsData(OptionsChainsData):
     settlement_price: list[Union[float, None]] = Field(
         default_factory=list,
         description="The settlement price of the contract.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    min_price: list[Union[float, None]] = Field(
+        default_factory=list,
+        description="The minimum price allowed.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    max_price: list[Union[float, None]] = Field(
+        default_factory=list,
+        description="The maximum price allowed.",
+        json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    volume_notional: list[Union[float, None]] = Field(
+        default_factory=list,
+        description="The notional trading volume of the contract, as USD or USDC.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
     timestamp: list[datetime] = Field(
-        description="The datetime of the data.",
+        description="The datetime of the data, as America/New_York time.",
     )
 
 
@@ -223,24 +254,21 @@ class DeribitOptionsChainsFetcher(
         df = DataFrame(data)
 
         # For BTC and ETH options, we need to convert price units to USD.
-        if query.symbol.upper() in ["BTC", "ETH"]:
-            for col in df.columns:
-                if col in [
-                    "last_price",
-                    "settlement_price",
-                    "mark_price",
-                    "min_price",
-                    "max_price",
-                    "best_ask_price",
-                    "best_bid_price",
-                    "high",
-                    "low",
-                ]:
-                    df.loc[:, col] = (
-                        df[col].astype(float).multiply(df.index_price).round(2)
-                    )
-                elif col in ["price_change", "mark_iv", "bid_iv", "ask_iv", "vega"]:
-                    df.loc[:, col] = df[col].astype(float).divide(100)
+        for col in df.columns:
+            if col in [
+                "last_price",
+                "settlement_price",
+                "mark_price",
+                "min_price",
+                "max_price",
+                "best_ask_price",
+                "best_bid_price",
+                "high",
+                "low",
+            ] and query.symbol.upper() in ["BTC", "ETH"]:
+                df.loc[:, col] = df[col].astype(float).multiply(df.index_price).round(2)
+            elif col in ["price_change", "mark_iv", "bid_iv", "ask_iv"]:
+                df.loc[:, col] = df[col].astype(float).divide(100)
 
         df = df.replace({nan: None})
         df = df.sort_values(["expiration", "strike", "option_type"])

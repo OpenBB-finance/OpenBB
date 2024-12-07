@@ -89,26 +89,23 @@ async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict:
     expirations: dict = {}
     all_options = list(
         set(
-            [
-                d.get("instrument_name")
-                for d in instruments
-                if d.get("instrument_name").startswith(symbol)
-                and d.get("instrument_name").endswith(("-C", "-P"))
-            ]
+            d.get("instrument_name")
+            for d in instruments
+            if d.get("instrument_name").startswith(symbol)
+            and d.get("instrument_name").endswith(("-C", "-P"))
         )
     )
     for item in sorted(
-        {
-            (
-                to_datetime(d.split("-")[1]).date().strftime("%Y-%m-%d"),
-                d.split("-")[1],
+        list(
+            set(
+                (
+                    to_datetime(d.split("-")[1]).date().strftime("%Y-%m-%d"),
+                    d.split("-")[1],
+                )
+                for d in all_options
             )
-            for d in all_options
-        }
+        )
     ):
         expirations[item[0]] = item[1]
 
-    return {
-        expiration: [d for d in all_options if expirations[expiration] in d]
-        for expiration in expirations
-    }
+    return {k: [d for d in all_options if v in d] for k, v in expirations.items()}
