@@ -1,7 +1,6 @@
 """OpenBB IMF Provider Module."""
 
 from openbb_core.provider.abstract.provider import Provider
-
 from openbb_imf.models.available_indicators import ImfAvailableIndicatorsFetcher
 from openbb_imf.models.direction_of_trade import ImfDirectionOfTradeFetcher
 from openbb_imf.models.economic_indicators import ImfEconomicIndicatorsFetcher

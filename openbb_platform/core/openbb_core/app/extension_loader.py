@@ -5,7 +5,6 @@ from functools import lru_cache
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from importlib_metadata import EntryPoint, EntryPoints, entry_points
-
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.extension import Extension
 

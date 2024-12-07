@@ -76,7 +76,7 @@ class DerivativesViews:
         from openbb_core.provider.abstract.data import Data
         from pandas import DataFrame, to_datetime
 
-        data = kwargs.get("data", None)
+        data = kwargs.get("data")
         symbol = kwargs.get("standard_params", {}).get("symbol", "")
         df: DataFrame = DataFrame()
         if data:

@@ -102,7 +102,7 @@ def test_get_flair_and_username(mock_session):
     """Test getting the flair and username."""
     result = get_flair_and_username()
     assert "testuser" in result
-    assert "rocket" in result  #
+    assert "rocket" in result
 
 
 @pytest.mark.parametrize(

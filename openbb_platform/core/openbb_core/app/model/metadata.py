@@ -3,9 +3,8 @@
 from datetime import datetime
 from typing import Any, Dict, Optional, Sequence, Union
 
-from pydantic import BaseModel, Field, field_validator
-
 from openbb_core.provider.abstract.data import Data
+from pydantic import BaseModel, Field, field_validator
 
 
 class Metadata(BaseModel):
