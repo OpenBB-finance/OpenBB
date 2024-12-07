@@ -27,7 +27,7 @@ class GovernmentTradesQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def to_upper(cls, v: str) -> str:
+    def to_upper(cls, v: str):
         """Convert field to uppercase."""
         return v.upper() if v else None
 
