@@ -81,7 +81,7 @@ class FMPGovernmentTradesData(GovernmentTradesData):
                     else (
                         "Fund"
                         if "fund" in description
-                        else ("ETF" if "etf" in description else "Other")
+                        else ("ETF" if "etf" in description else None)
                     )
                 )
             )
