@@ -58,7 +58,7 @@ async def get_instruments(
         raise OpenBBError(f"Failed to get instruments -> {e.__class__.__name__}: {e}")
 
 
-async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict[str, str]:
+async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict:
     """
     Get a dictionary of contract symbols by expiry.
 
@@ -111,6 +111,6 @@ async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict[str, str]:
         expirations[item[0]] = item[1]
 
     return {
-        expiration: [str(d) for d in all_options if expirations[expiration] in d]
+        expiration: [d for d in all_options if expirations[expiration] in d]
         for expiration in expirations
     }
