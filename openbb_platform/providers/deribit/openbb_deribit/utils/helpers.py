@@ -111,6 +111,6 @@ async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict[str, str]:
         expirations[item[0]] = item[1]
 
     return {
-        expiration: [d for d in all_options if expirations[expiration] in d]
+        expiration: [str(d) for d in all_options if expirations[expiration] in d]
         for expiration in expirations
     }

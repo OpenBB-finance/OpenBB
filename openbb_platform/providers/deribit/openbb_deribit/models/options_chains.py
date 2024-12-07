@@ -127,9 +127,7 @@ class DeribitOptionsChainsFetcher(
                         receive_data(websocket, symbols, received_symbols), timeout=2.0
                     )
                 except asyncio.TimeoutError:
-                    messages.append(
-                        f"Timeout reached for {expiration}, data incomplete."
-                    )
+                    messages.add(f"Timeout reached for {expiration}, data incomplete.")
 
         async def receive_data(websocket, symbols, received_symbols):
             """Receive the data from the websocket with a timeout."""
