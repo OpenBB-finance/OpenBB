@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument
 
 from typing import Any, Dict, List, Optional
-from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_info import (
@@ -212,11 +211,17 @@ class YFinanceEtfInfoFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from yfinance import Ticker  # noqa
-        from openbb_core.provider.utils.helpers import safe_fromtimestamp  # noqa
+        from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import (
+            get_requests_session,
+            safe_fromtimestamp,
+        )
+        from warnings import warn
+        from yfinance import Ticker
 
         symbols = query.symbol.split(",")
-        results = []
+        results: list = []
         fields = [
             "symbol",
             "quoteType",
@@ -256,15 +261,23 @@ class YFinanceEtfInfoFetcher(
             "longBusinessSummary",
             "firstTradeDateEpochUtc",
         ]
+        messages: list = []
+        session = get_requests_session()
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
-            result: Dict = {}
-            ticker: Dict = {}
+            result: dict = {}
+            ticker: dict = {}
             try:
-                ticker = Ticker(symbol).get_info()
+                ticker = Ticker(
+                    symbol,
+                    session=session,
+                    proxy=session.proxies if session.proxies else None,
+                ).get_info()
             except Exception as e:
-                warn(f"Error getting data for {symbol}: {e}")
+                messages.append(
+                    f"Error getting data for {symbol} -> {e.__class__.__name__}: {e}"
+                )
             if ticker:
                 quote_type = ticker.pop("quoteType", "")
                 if quote_type == "ETF":
@@ -282,16 +295,28 @@ class YFinanceEtfInfoFetcher(
                                     _first_trade
                                 )
                     except Exception as e:
-                        warn(f"Error processing data for {symbol}: {e}")
+                        messages.append(
+                            f"Error processing data for {symbol} -> {e.__class__.__name__}: {e}"
+                        )
                         result = {}
                 if quote_type != "ETF":
-                    warn(f"{symbol} is not an ETF.")
+                    messages.append(f"{symbol} is not an ETF.")
                 if result:
                     results.append(result)
 
         tasks = [get_one(symbol) for symbol in symbols]
 
         await asyncio.gather(*tasks)
+
+        if not results and not messages:
+            raise EmptyDataError("No data was returned for the given symbol(s).")
+
+        if not results and messages:
+            raise OpenBBError("\n".join(messages))
+
+        if results and messages:
+            for message in messages:
+                warn(message)
 
         return results
 

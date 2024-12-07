@@ -26,12 +26,17 @@ class PosthogHandler(logging.Handler):
 
     def __init__(self, settings: LoggingSettings):
         """Initialize Posthog Handler."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_requests_session
 
         super().__init__()
         self._settings = settings
         self.logged_in = False
         posthog.api_key = "phc_6FXLqu4uW9yxfyN8DpPdgzCdlYXOmIWdMGh6GnBgJLX"  # pragma: allowlist secret  # noqa
         posthog.host = "https://app.posthog.com"  # noqa
+        posthog.request._session = (  # pylint: disable=protected-access
+            get_requests_session()
+        )
 
     @property
     def settings(self) -> LoggingSettings:
