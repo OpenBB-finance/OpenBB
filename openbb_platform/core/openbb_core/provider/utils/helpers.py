@@ -19,14 +19,13 @@ from typing import (
 )
 
 from anyio.from_thread import start_blocking_portal
-from typing_extensions import ParamSpec
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.utils.client import (
     ClientResponse,
     ClientSession,
     get_user_agent,
 )
+from typing_extensions import ParamSpec
 
 if TYPE_CHECKING:
     from requests import Response  # pylint: disable=import-outside-toplevel

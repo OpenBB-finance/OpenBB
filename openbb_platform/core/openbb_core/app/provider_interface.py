@@ -16,6 +16,11 @@ from typing import (
 )
 
 from fastapi import Body, Query
+from openbb_core.app.model.abstract.singleton import SingletonMeta
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.provider.query_executor import QueryExecutor
+from openbb_core.provider.registry_map import MapType, RegistryMap
+from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -26,12 +31,6 @@ from pydantic import (
     create_model,
 )
 from pydantic.fields import FieldInfo
-
-from openbb_core.app.model.abstract.singleton import SingletonMeta
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.provider.query_executor import QueryExecutor
-from openbb_core.provider.registry_map import MapType, RegistryMap
-from openbb_core.provider.utils.helpers import to_snake_case
 
 TupleFieldType = Tuple[str, Optional[Type], Optional[Any]]
 

@@ -108,7 +108,7 @@ class Fetcher(Generic[Q, R]):
     @staticmethod
     def _get_data_type(data: Any) -> D:  # type: ignore
         """Get the type of the data."""
-        if get_origin(data) == list:
+        if get_origin(data) is list:
             data = get_args(data)[0]
         return data
 
