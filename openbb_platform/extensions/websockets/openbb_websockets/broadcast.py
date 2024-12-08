@@ -1,6 +1,7 @@
 import asyncio
 import json
 import sys
+from pathlib import Path
 from typing import Optional
 
 import uvicorn
@@ -21,6 +22,7 @@ RESULTS_FILE = kwargs.pop("results_file", None)
 TABLE_NAME = kwargs.pop("table_name", None) or "records"
 SLEEP_TIME = kwargs.pop("sleep_time", None) or 0.25
 AUTH_TOKEN = kwargs.pop("auth_token", None)
+
 
 app = FastAPI()
 
@@ -156,7 +158,6 @@ class BroadcastServer:
     async def stream_results(self):  # noqa: PLR0915
         """Continuously read the database and send new messages as JSON via WebSocket."""
         import sqlite3  # noqa
-        from pathlib import Path
         from openbb_core.app.model.abstract.error import OpenBBError
 
         file_path = Path(self.results_file).absolute()
@@ -232,6 +233,7 @@ class BroadcastServer:
             connected_clients.remove(client)
 
     def start_app(self, host: str = "127.0.0.1", port: int = 6666, **kwargs):
+        """Start the FastAPI app with Uvicorn."""
         uvicorn.run(
             self._app,
             host=host,
@@ -247,10 +249,12 @@ def create_broadcast_server(
     auth_token: Optional[str] = None,
     **kwargs,
 ):
+    """Create a new BroadcastServer instance."""
     return BroadcastServer(results_file, table_name, sleep_time, auth_token)
 
 
 def main():
+    """Main entry point."""
     broadcast_server = create_broadcast_server(
         RESULTS_FILE,
         TABLE_NAME,
@@ -276,4 +280,9 @@ def main():
 
 
 if __name__ == "__main__":
+    if not RESULTS_FILE:
+        raise ValueError("Results file path is required for Broadcast server.")
+
+    if not Path(RESULTS_FILE).absolute().exists():
+        raise FileNotFoundError(f"Results file not found: {RESULTS_FILE}")
     main()
