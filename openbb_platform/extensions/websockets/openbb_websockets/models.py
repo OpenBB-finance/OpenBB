@@ -146,7 +146,7 @@ class WebSocketData(Data):
 class WebSocketConnection(Data):
     """Data model for returning WebSocketClient from the Provider Interface."""
 
-    __model_config__ = ConfigDict(
+    model_config = ConfigDict(
         extra="forbid",
     )
 
