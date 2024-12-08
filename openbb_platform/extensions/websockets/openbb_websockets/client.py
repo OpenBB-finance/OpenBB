@@ -289,9 +289,8 @@ class WebSocketClient:
                         err = ChildProcessError(output)
                         self._exception = err
                         output = output + "\n"
-                        self.logger.info(output)
-                        # sys.stdout.write(output)
-                        # sys.stdout.flush()
+                        sys.stdout.write(output)
+                        sys.stdout.flush()
                         break
 
                     output = clean_message(output)
@@ -301,10 +300,7 @@ class WebSocketClient:
                     elif output.startswith("INFO:"):
                         output = output.replace("INFO:", "PROVIDER INFO:")
 
-                    # output = output + "\n"
-                    # sys.stdout.write(output + "\n")
                     self.logger.info(output)
-                    # sys.stdout.flush()
             except queue.Empty:
                 continue
 
