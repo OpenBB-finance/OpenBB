@@ -10,7 +10,7 @@ from starlette.websockets import WebSocketState
 
 from openbb_websockets.helpers import get_logger, parse_kwargs
 
-connected_clients = set()
+connected_clients: set = set()
 
 kwargs = parse_kwargs()
 

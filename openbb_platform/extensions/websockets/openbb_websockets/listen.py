@@ -10,7 +10,7 @@ class Listener:
         self.loop = None
         self.websocket = None
         self.current_task = None
-        self.kwargs = {}
+        self.kwargs: dict = {}
         if kwargs:
             self.kwargs = kwargs
 
@@ -103,18 +103,18 @@ class Listener:
     def stop(self):
         if self.current_task:
             self.current_task.cancel()
-            self.loop.run_until_complete(self.current_task)
+            self.loop.run_until_complete(self.current_task)  # type: ignore
         if self.websocket:
-            self.loop.run_until_complete(self.websocket.close())
-        if not self.loop.is_closed():
-            self.loop.stop()
+            self.loop.run_until_complete(self.websocket.close())  # type: ignore
+        if not self.loop.is_closed():  # type: ignore
+            self.loop.stop()  # type: ignore
 
     async def start_listening(self, url, **kwargs):
         # pylint: disable=import-outside-toplevel
         import asyncio
         import contextlib
 
-        self.current_task = self.loop.create_task(self.listen(url, **kwargs))
+        self.current_task = self.loop.create_task(self.listen(url, **kwargs))  # type: ignore
         with contextlib.suppress(asyncio.CancelledError):
             await self.current_task
 

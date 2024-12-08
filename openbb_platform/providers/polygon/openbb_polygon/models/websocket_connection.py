@@ -1186,19 +1186,20 @@ class PolygonWebSocketData(Data):
         ).startswith("O:")
 
         if options_symbol:
-            model = OPTIONS_MODEL_MAP.get(data.get("ev")) or OPTIONS_MODEL_MAP.get(
-                data.get("type")
+            model = OPTIONS_MODEL_MAP.get(data.get("ev", "")) or OPTIONS_MODEL_MAP.get(
+                data.get("type", "")
             )
         else:
             model = (
                 MODEL_MAP["A"]
                 if index_symbol
-                else MODEL_MAP.get(data.get("ev")) or MODEL_MAP.get(data.get("type"))
+                else MODEL_MAP.get(data.get("ev", ""))
+                or MODEL_MAP.get(data.get("type", ""))
             )
         if not model:
             return super().__new__(cls)
 
-        return model.model_validate(data)
+        return model.model_validate(data)  # type: ignore
 
 
 class PolygonWebSocketConnection(WebSocketConnection):

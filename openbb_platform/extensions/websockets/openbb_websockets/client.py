@@ -149,7 +149,7 @@ class WebSocketClient:
                 self.results_path = Path(temp_file_path).absolute()
                 self.results_file = temp_file_path
 
-        self.results_path = Path(self.results_file).absolute()
+        self.results_path = Path(self.results_file).absolute()  # type: ignore
         self.save_results = save_results
         self.logger = logger if logger else get_logger("openbb.websocket.client")
 
@@ -189,8 +189,8 @@ class WebSocketClient:
             self.stop_broadcasting()
         if self.save_results:
             self.logger.info("Websocket results saved to, %s\n", str(self.results_path))
-        if os.path.exists(self.results_file) and not self.save_results:
-            os.remove(self.results_file)
+        if os.path.exists(self.results_file) and not self.save_results:  # type: ignore
+            os.remove(self.results_file)  # type: ignore
 
     def _setup_database(self) -> None:
         """Set up the SQLite database and table."""
@@ -372,7 +372,7 @@ class WebSocketClient:
             self.logger.info("No subscribed symbols.")
             return
 
-        command = self.module.copy()
+        command = self.module
         command.extend([f"symbol={symbol}"])
         command.extend([f"results_file={self.results_file}"])
         command.extend([f"table_name={self.table_name}"]),
@@ -395,10 +395,10 @@ class WebSocketClient:
                 if kwargs
                 else None
             )
-
-            for kwarg in _kwargs:
-                if kwarg not in command:
-                    command.extend([kwarg])
+            if _kwargs is not None:
+                for kwarg in _kwargs:
+                    if kwarg not in command:
+                        command.extend([kwarg])
 
         self._process = subprocess.Popen(  # noqa
             command,
@@ -411,7 +411,7 @@ class WebSocketClient:
         )
         self._psutil_process = psutil.Process(self._process.pid)
 
-        log_output_queue = queue.Queue()
+        log_output_queue: queue.Queue = queue.Queue()
         self._thread = threading.Thread(
             target=non_blocking_websocket,
             args=(
@@ -564,7 +564,7 @@ class WebSocketClient:
 
         self.logger.info("No results found in %s", self.results_file)
 
-        return
+        return None
 
     @results.deleter
     def results(self):
@@ -588,7 +588,7 @@ class WebSocketClient:
             self.logger.error("Error clearing results: %s", e)
 
     @property
-    def module(self) -> str:
+    def module(self) -> list:
         """Path to the provider connection script."""
         return self._module
 
@@ -605,7 +605,7 @@ class WebSocketClient:
         ]
 
     @property
-    def symbol(self) -> str:
+    def symbol(self) -> Union[str, None]:
         """Symbol(s) requested to subscribe."""
         return self._symbol
 
@@ -683,7 +683,7 @@ class WebSocketClient:
             bufsize=1,
         )
         self._psutil_broadcast_process = psutil.Process(self._broadcast_process.pid)
-        output_queue = queue.Queue()
+        output_queue: queue.Queue = queue.Queue()
         self._broadcast_thread = threading.Thread(
             target=non_blocking_broadcast,
             args=(

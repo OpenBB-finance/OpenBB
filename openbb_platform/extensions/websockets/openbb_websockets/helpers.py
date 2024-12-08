@@ -153,7 +153,7 @@ def parse_kwargs():
                 value = args[i + 1]
 
                 if isinstance(value, str) and value.lower() in ["false", "true"]:
-                    value = value.lower() == "true"
+                    value = value.lower() == "true"  # type: ignore
                 elif isinstance(value, str) and value.lower() == "none":
                     value = None
                 _kwargs[key] = value
@@ -247,14 +247,14 @@ class StdOutSink:
         cleaned_message = AUTH_TOKEN_FILTER.sub(r"\1********", message)
         if cleaned_message != message:
             cleaned_message = f"{cleaned_message}\n"
-        sys.__stdout__.write(cleaned_message)
+        sys.__stdout__.write(cleaned_message)  # type: ignore
 
     def flush(self):
         """Flush stdout."""
         # pylint: disable=import-outside-toplevel
         import sys
 
-        sys.__stdout__.flush()
+        sys.__stdout__.flush()  # type: ignore
 
 
 class AuthTokenFilter(logging.Formatter):
@@ -273,7 +273,7 @@ class MessageQueue:
         # pylint: disable=import-outside-toplevel
         from asyncio import Queue
 
-        self.queue = Queue(maxsize=max_size)
+        self.queue: Queue = Queue(maxsize=max_size)
         self.max_retries = max_retries
         self.backoff_factor = backoff_factor
         self.logger = get_logger("openbb.websocket.queue")

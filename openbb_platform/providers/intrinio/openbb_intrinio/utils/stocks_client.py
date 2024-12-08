@@ -1,6 +1,6 @@
 """Intrinio Realtime Stocks Client."""
 
-# pylint: disable
+# pylint: skip-file
 # flake8: noqa
 # This file is a slightly modified version of the original file from the Intrinio Python SDK.
 
