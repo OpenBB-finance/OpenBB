@@ -5,6 +5,8 @@ from datetime import date as dateType, datetime
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_fmp.models.equity_profile import FMPEquityProfileFetcher
 from pydantic import Field
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -76,25 +78,17 @@ class FMPForm13FHRFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Form 13f endpoint."""
-        """Return the raw data from the Form 13f endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        symbol = query.symbol
-        if symbol.isnumeric():
-            cik = symbol
+        if query.symbol.isnumeric():
+            cik = query.symbol
         else:
-            query.includeCurrentQuarter = "false"
-            cik_url = create_url(
-                4,
-                f"institutional-ownership/symbol-ownership",
-                api_key,
-                query,
-                exclude=["limit"],
-            )
-            cik = await amake_request(cik_url, response_callback=response_callback, **kwargs)
-            if len(cik) == 0:
-                raise EmptyDataError("Can't get cik for the given symbol.")
-            cik = cik[0]["cik"]
-            del query.includeCurrentQuarter
+            try:
+                profile = await FMPEquityProfileFetcher.fetch_data({"symbol": query.symbol}, {"fmp_api_key": api_key})
+                cik = getattr(profile[0], "cik", "")
+                if not cik:
+                    raise OpenBBError(f"Invalid symbol -> {query.symbol}")
+            except OpenBBError as e:
+                raise OpenBBError(f"Invalid symbol -> {query.symbol} -> {e}")
         date_url = create_url(
             3,
             f"form-thirteen-date/{cik}",
@@ -106,7 +100,7 @@ class FMPForm13FHRFetcher(
         if not dates:
             raise EmptyDataError("No data returned for the given symbol.")
         if not dates or len(dates) == 0:
-            warn(f"Symbol Error: No data found for symbol {symbol}")
+            warn(f"Symbol Error: No data found for symbol {cik}")
         results: List[Dict] = []
 
         async def get_one(date):
