@@ -258,7 +258,7 @@ def create_broadcast_server(
 
 
 def main():
-    """The main function."""
+    """Run the main function."""
     broadcast_server = create_broadcast_server(
         RESULTS_FILE,
         TABLE_NAME,
