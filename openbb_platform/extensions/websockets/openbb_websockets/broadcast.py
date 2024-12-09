@@ -53,7 +53,7 @@ async def read_stdin(broadcast_server):
 async def websocket_endpoint(  # noqa: PLR0915
     websocket: WebSocket, auth_token: Optional[str] = None
 ):
-    """WebSocket endpoint."""
+    """Connect to the broadcast server."""
 
     broadcast_server = BroadcastServer(
         RESULTS_FILE,

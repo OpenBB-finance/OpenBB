@@ -46,6 +46,8 @@ HEADER_CLIENT_INFORMATION_VALUE = "IntrinioPythonSDKv5.3.0"
 
 
 class Quote:
+    """Intrinio Realtime Stocks Quote."""
+
     def __init__(
         self,
         symbol,
@@ -57,6 +59,7 @@ class Quote:
         market_center,
         condition,
     ):
+        """Initialize the Quote object."""
         self.symbol = symbol
         self.type = type
         self.price = price
@@ -65,8 +68,6 @@ class Quote:
         self.subprovider = subprovider
         self.market_center = market_center
         self.condition = condition
-
-    """Intrinio Realtime Stocks Client."""
 
     def __str__(self):
         """Return string representation of the quote."""
@@ -90,6 +91,8 @@ class Quote:
 
 
 class Trade:
+    """Intrinio Realtime Stocks Trade."""
+
     def __init__(
         self,
         symbol,
@@ -139,6 +142,8 @@ class Trade:
 
 
 class IntrinioRealtimeClient:
+    """Intrinio Realtime Stocks Client."""
+
     def __init__(
         self,
         options: Dict[str, Any],
@@ -419,6 +424,8 @@ class IntrinioRealtimeClient:
 
 
 class QuoteReceiver(threading.Thread):
+    """Intrinio Realtime Stocks Quote Receiver."""
+
     def __init__(self, client):
         """Initialize the QuoteReceiver."""
         threading.Thread.__init__(self, args=(), kwargs=None)
@@ -498,6 +505,8 @@ class QuoteReceiver(threading.Thread):
 
 
 class QuoteHandler(threading.Thread):
+    """Intrinio Realtime Stocks Quote Handler."""
+
     def __init__(self, client, bypass_parsing: bool):
         """Initialize the QuoteHandler."""
         threading.Thread.__init__(self, args=(), kwargs=None)
