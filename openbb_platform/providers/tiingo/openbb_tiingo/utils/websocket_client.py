@@ -73,6 +73,7 @@ queue = MessageQueue()
 logger = get_logger("openbb.websocket.tiingo")
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
+kwargs["results_file"] = os.path.abspath(kwargs["results_file"])
 
 
 # Subscribe and unsubscribe events are handled in a separate connection using the subscription_id set by the login event.
@@ -123,7 +124,7 @@ async def read_stdin_and_update_symbols():
             await update_symbols(symbol, event)
 
 
-async def process_message(message, results_path, table_name, limit):
+async def process_message(message):  # pylint: disable=too-many-branches
     """Process the message and write to the database."""
     result: dict = {}
     data_message: dict = {}
@@ -148,7 +149,7 @@ async def process_message(message, results_path, table_name, limit):
             msg = f"PROVIDER INFO:      Authorization: {response.get('message')}"
             logger.info(msg)
             if message.get("data", {}).get("subscriptionId"):
-                global SUBSCRIPTION_ID  # noqa: PLW0603
+                global SUBSCRIPTION_ID  # noqa: PLW0603  # pylint: disable=global-statement
                 SUBSCRIPTION_ID = message["data"]["subscriptionId"]
 
         if "tickers" in response.get("data", {}):
@@ -188,31 +189,32 @@ async def process_message(message, results_path, table_name, limit):
                 raise e from e
 
         if result:
-            await write_to_db(result, results_path, table_name, limit)
+            await write_to_db(
+                result,
+                kwargs["results_file"],
+                kwargs["table_name"],
+                kwargs.get("limit"),
+            )
     return
 
 
-async def connect_and_stream(
-    url, symbol, threshold_level, api_key, results_path, table_name, limit
-):
+async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
 
     handler_task = asyncio.create_task(
-        queue.process_queue(
-            lambda message: process_message(message, results_path, table_name, limit)
-        )
+        queue.process_queue(lambda message: process_message(message))
     )
-
     stdin_task = asyncio.create_task(read_stdin_and_update_symbols())
+    ticker: list = []
 
-    if isinstance(symbol, str):
-        ticker = symbol.lower().split(",")
+    if isinstance(kwargs["symbol"], str):
+        ticker = kwargs["symbol"].lower().split(",")
 
     subscribe_event = {
         "eventName": "subscribe",
-        "authorization": api_key,
+        "authorization": kwargs["api_key"],
         "eventData": {
-            "thresholdLevel": threshold_level,
+            "thresholdLevel": kwargs["threshold_level"],
             "tickers": ticker,
         },
     }
@@ -224,7 +226,7 @@ async def connect_and_stream(
 
     try:
         try:
-            async with websockets.connect(url, **connect_kwargs) as websocket:
+            async with websockets.connect(kwargs["url"], **connect_kwargs) as websocket:
                 logger.info("PROVIDER INFO:      WebSocket connection established.")
                 await websocket.send(json.dumps(subscribe_event))
                 while True:
@@ -241,15 +243,13 @@ async def connect_and_stream(
         # Attempt to reopen the connection
         logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds...")
         await asyncio.sleep(5)
-        await connect_and_stream(
-            url, symbol, threshold_level, api_key, results_path, table_name, limit
-        )
+        await connect_and_stream()
 
     except websockets.WebSocketException as e:
         logger.info(str(e))
         sys.exit(0)
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         msg = f"Unexpected error -> {e.__class__.__name__}: {e}"
         logger.error(msg)
         sys.exit(1)
@@ -270,24 +270,15 @@ if __name__ == "__main__":
         loop.add_signal_handler(signal.SIGTERM, handle_termination_signal, logger)
 
         asyncio.run_coroutine_threadsafe(
-            connect_and_stream(
-                kwargs["url"],
-                kwargs["symbol"],
-                kwargs["threshold_level"],
-                kwargs["api_key"],
-                os.path.abspath(kwargs["results_file"]),
-                kwargs["table_name"],
-                kwargs.get("limit", None),
-            ),
+            connect_and_stream(),
             loop,
         )
         loop.run_forever()
 
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"Unexpected error -> {e.__class__.__name__}: {e}"
-        logger.error(msg)
+        ERR = f"Unexpected error -> {e.__class__.__name__}: {e}"
+        logger.error(ERR)
 
     finally:
         loop.stop()
-        loop.close
         sys.exit(0)

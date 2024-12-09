@@ -1,5 +1,7 @@
 """WebSockets helpers."""
 
+# pylint: disable=protected-access
+
 import logging
 import re
 from typing import Any, Optional
@@ -24,7 +26,6 @@ def clean_message(message: str) -> str:
 def get_logger(name, level=logging.INFO):
     """Get a logger instance."""
     # pylint: disable=import-outside-toplevel
-    import logging
     import uuid
 
     logger = logging.getLogger(f"{name}-{uuid.uuid4()}")

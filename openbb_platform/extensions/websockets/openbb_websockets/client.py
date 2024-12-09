@@ -1,6 +1,6 @@
 """WebSocket Client module for interacting with a provider websocket in a non-blocking pattern."""
 
-# pylint: disable=too-many-statements
+# pylint: disable=too-many-statements,protected-access
 # flake8: noqa: PLR0915
 
 import logging
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from openbb_core.provider.abstract.data import Data
 
 
-class WebSocketClient:
+class WebSocketClient:  # pylint: disable=too-many-instance-attributes
     """Client for interacting with a websocket server in a non-blocking pattern.
 
     Parameters
@@ -79,7 +79,7 @@ class WebSocketClient:
         Send a message to the WebSocket process. Messages can be sent to "provider" or "broadcast" targets.
     """
 
-    def __init__(  # noqa: PLR0913
+    def __init__(  # noqa: PLR0913  # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
         self,
         name: str,
         module: str,
@@ -95,8 +95,7 @@ class WebSocketClient:
     ) -> None:
         """Initialize the WebSocketClient class."""
         # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        import atexit
+        import atexit  # noqa
         import os
         import tempfile
         import threading
@@ -105,6 +104,7 @@ class WebSocketClient:
         from pathlib import Path
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_websockets.helpers import get_logger
+        from openbb_websockets.helpers import encrypt_value
 
         self.name = name
         self.module = module.replace(".py", "")  # type: ignore
@@ -115,13 +115,14 @@ class WebSocketClient:
         self._symbol = symbol
         self._key = os.urandom(32)
         self._iv = os.urandom(16)
-        self._auth_token = self._encrypt_value(auth_token) if auth_token else None
+        self._auth_token = (
+            encrypt_value(self._key, self._iv, auth_token) if auth_token else None
+        )
         # strings in kwargs are encrypted before storing in the class but unencrypted when passed to the provider module.
         if kwargs:
             for k, v in kwargs.items():
                 if isinstance(v, str):
-                    encrypted_value = self._encrypt_value(v)
-                    kwargs[k] = encrypted_value
+                    kwargs[k] = encrypt_value(self._key, self._iv, v)
                 else:
                     kwargs[k] = v
 
@@ -144,7 +145,6 @@ class WebSocketClient:
 
         if not results_file:
             with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-                pass
                 temp_file_path = temp_file.name
                 self.results_path = Path(temp_file_path).absolute()
                 self.results_file = temp_file_path
@@ -161,20 +161,6 @@ class WebSocketClient:
             msg = f"Unexpected error setting up the SQLite database and table -> {e.__class___.__name__}: {e}"
             self.logger.error(msg)
             self._exception = OpenBBError(msg)
-
-    def _encrypt_value(self, value):
-        """Encrypt a value before storing."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_websockets.helpers import encrypt_value
-
-        return encrypt_value(self._key, self._iv, value)
-
-    def _decrypt_value(self, encrypted_value):
-        """Decrypt the value for use."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_websockets.helpers import decrypt_value
-
-        return decrypt_value(self._key, self._iv, encrypted_value)
 
     def _atexit(self) -> None:
         """Clean up the WebSocket client processes at exit."""
@@ -195,34 +181,10 @@ class WebSocketClient:
     def _setup_database(self) -> None:
         """Set up the SQLite database and table."""
         # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        import threading
-        import time
+        from openbb_core.provider.utils.helpers import run_async  # noqa
         from openbb_websockets.helpers import setup_database
 
-        def run_in_new_loop():
-            """Run setup in new event loop."""
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            try:
-                loop.run_until_complete(
-                    setup_database(self.results_path, self.table_name)
-                )
-            finally:
-                loop.close()
-
-        def run_in_thread():
-            """Run setup in separate thread."""
-            thread = threading.Thread(target=run_in_new_loop)
-            thread.start()
-            time.sleep(0.01)
-            thread.join()
-
-        try:
-            loop = asyncio.get_running_loop()  # noqa
-            run_in_thread()
-        except RuntimeError:
-            run_in_new_loop()
+        run_async(setup_database, self.results_path, self.table_name)
 
     def _log_provider_output(self, output_queue) -> None:
         """Log output from the provider logger, handling exceptions, errors, and messages that are not data."""
@@ -346,17 +308,17 @@ class WebSocketClient:
             except queue.Empty:
                 continue
 
-    def connect(self) -> None:
+    def connect(self) -> None:  # pylint: disable=too-many-locals
         """Connect to the provider WebSocket."""
         # pylint: disable=import-outside-toplevel
-        import json  # noqa
-        import os
+        import os  # noqa
         import psutil
         import queue
         import subprocess
         import threading
         import time
         from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_websockets.helpers import decrypt_value
 
         if self.is_running:
             self.logger.info("Provider connection already running.")
@@ -381,7 +343,9 @@ class WebSocketClient:
         if kwargs:
             for k, v in kwargs.items():
                 if isinstance(v, str):
-                    unencrypted_value = self._decrypt_value(v)
+                    unencrypted_value = decrypt_value(
+                        self._key, self._iv, v  # pylint: disable=protected-access
+                    )
                     kwargs[k] = unencrypted_value
                 else:
                     kwargs[k] = v
@@ -396,7 +360,7 @@ class WebSocketClient:
                     if kwarg not in command:
                         command.extend([kwarg])
 
-        self._process = subprocess.Popen(  # noqa
+        self._process = subprocess.Popen(  # noqa  # pylint: disable=consider-using-with
             command,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -430,9 +394,9 @@ class WebSocketClient:
         time.sleep(2)
 
         if self._exception is not None:
-            exc = getattr(self, "_exception", None)
-            self._exception = None
-            raise OpenBBError(exc)
+            with self._exception as exc:
+                self._exception = None
+                raise OpenBBError(exc)
 
         if not self.is_running:
             self.logger.error("The provider server failed to start.")
@@ -542,7 +506,7 @@ class WebSocketClient:
                 try:
                     cursor = conn.execute(f"SELECT * FROM {self.table_name}")  # noqa
                     for row in cursor:
-                        index, message = row
+                        _, message = row
                         if self.data_model:
                             message = json.loads(message)
                             if isinstance(message, (str, bytes)):
@@ -554,7 +518,7 @@ class WebSocketClient:
                         else:
                             output.append(json.loads(json.loads(message)))
                 except Exception as e:
-                    raise OpenBBError(f"Error retrieving results: {e}")
+                    raise OpenBBError(f"Error retrieving results: {e}") from e
         if output:
             return output
 
@@ -580,8 +544,9 @@ class WebSocketClient:
                 self.table_name,
                 self.results_file,
             )
-        except Exception as e:
-            self.logger.error("Error clearing results: %s", e)
+        except Exception as e:  # pylint: disable=broad-except
+            msg = f"Error clearing results: {e.__class__.__name__}: {e}"
+            self.logger.error(msg)
 
     @property
     def module(self) -> list:
@@ -624,7 +589,7 @@ class WebSocketClient:
             else None
         )
 
-    def start_broadcasting(
+    def start_broadcasting(  # pylint: disable=too-many-locals
         self,
         host: str = "127.0.0.1",
         port: int = 6666,
@@ -639,14 +604,14 @@ class WebSocketClient:
         import psutil
         import queue
         from openbb_platform_api.utils.api import check_port
+        from openbb_websockets.helpers import decrypt_value
 
         if (
             self._broadcast_process is not None
             and self._broadcast_process.poll() is None
         ):
-            self.logger.info(
-                f"WebSocket broadcast already running on: {self._broadcast_address}"
-            )
+            msg = f"WebSocket broadcast already running on: {self._broadcast_address}"
+            self.logger.info(msg)
             return
 
         open_port = check_port(host, port)
@@ -663,20 +628,22 @@ class WebSocketClient:
             f"port={open_port}",
             f"results_file={self.results_file}",
             f"table_name={self.table_name}",
-            f"auth_token={self._decrypt_value(self._auth_token) if self._auth_token else None}",
+            f"auth_token={decrypt_value(self._key, self._iv, self._auth_token) if self._auth_token else None}",
         ]
         if kwargs:
-            for kwarg in kwargs:
-                command.extend([f"{kwarg}={kwargs[kwarg]}"])
+            for k, v in kwargs.items():
+                command.extend([f"{k}={v}"])
 
-        self._broadcast_process = subprocess.Popen(  # noqa
-            command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            stdin=subprocess.PIPE,
-            env=os.environ,
-            text=True,
-            bufsize=1,
+        self._broadcast_process = (
+            subprocess.Popen(  # noqa  # pylint: disable=consider-using-with
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                stdin=subprocess.PIPE,
+                env=os.environ,
+                text=True,
+                bufsize=1,
+            )
         )
         self._psutil_broadcast_process = psutil.Process(self._broadcast_process.pid)
         output_queue: queue.Queue = queue.Queue()
@@ -786,7 +753,7 @@ def send_message(
                 client._broadcast_process.stdin.flush()
             else:
                 client.logger.error("Broadcast process is not running.")
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         msg = f"Error sending message to the {target} process: {e.__class__.__name__} -> {e}"
         client.logger.error(msg)
 
@@ -796,28 +763,22 @@ def read_message_queue(
 ):
     """Read messages from the queue and send them to the WebSocketConnection process."""
     while not message_queue.empty():
-        try:
-            message = message_queue.get(timeout=1)
-            if message:
-                try:
-                    if (
-                        target == "provider"
-                        and not client._stop_log_thread_event.is_set()
-                    ):
-                        send_message(client, message, target="provider")
-                    elif (
-                        target == "broadcast"
-                        and not client._stop_broadcasting_event.is_set()
-                    ):
-                        send_message(client, message, target="broadcast")
-                except Exception as e:
-                    err = (
-                        f"Error while attempting to transmit from the outgoing message queue: {e.__class__.__name__} "
-                        f"-> {e} -> {message}"
-                    )
-                    client.logger.error(err)
-        finally:
-            break
+        message = message_queue.get(timeout=1)
+        if message:
+            try:
+                if target == "provider" and not client._stop_log_thread_event.is_set():
+                    send_message(client, message, target="provider")
+                elif (
+                    target == "broadcast"
+                    and not client._stop_broadcasting_event.is_set()
+                ):
+                    send_message(client, message, target="broadcast")
+            except Exception as e:  # pylint: disable=broad-except
+                err = (
+                    f"Error while attempting to transmit from the outgoing message queue: {e.__class__.__name__} "
+                    f"-> {e} -> {message}"
+                )
+                client.logger.error(err)
 
 
 def non_blocking_broadcast(client, output_queue, broadcast_message_queue) -> None:
@@ -832,7 +793,7 @@ def non_blocking_broadcast(client, output_queue, broadcast_message_queue) -> Non
                 break
             if output:
                 output_queue.put(output.strip())
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         client.logger.error(
             f"Unexpected error in non_blocking_broadcast: {e.__class__.__name__} -> {e}"
         )

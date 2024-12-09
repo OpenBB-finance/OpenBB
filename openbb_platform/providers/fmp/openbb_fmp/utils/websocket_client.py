@@ -1,4 +1,4 @@
-"""FMP WebSocket server."""
+"""FMP WebSocket client."""
 
 import asyncio
 import json
@@ -24,14 +24,15 @@ kwargs = parse_kwargs()
 queue = MessageQueue()
 command_queue = MessageQueue()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
+kwargs["results_file"] = os.path.abspath(kwargs["results_file"])
 
 
-async def login(websocket, api_key):
+async def login(websocket):
     """Login to the WebSocket."""
     login_event = {
         "event": "login",
         "data": {
-            "apiKey": api_key,
+            "apiKey": kwargs["api_key"],
         },
     }
     try:
@@ -97,7 +98,7 @@ async def process_stdin_queue(websocket):
             await subscribe(websocket, symbol, event)
 
 
-async def process_message(message, results_path, table_name, limit):
+async def process_message(message):
     """Process the message and write to the database."""
     result: dict = {}
     message = json.loads(message) if isinstance(message, str) else message
@@ -124,24 +125,27 @@ async def process_message(message, results_path, table_name, limit):
                 except ValidationError:
                     raise e from e
             if result:
-                await write_to_db(result, results_path, table_name, limit)
+                await write_to_db(
+                    result,
+                    kwargs["results_file"],
+                    kwargs["table_name"],
+                    kwargs.get("limit"),
+                )
 
 
-async def connect_and_stream(url, symbol, api_key, results_path, table_name, limit):
+async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
 
     handler_task = asyncio.create_task(
-        queue.process_queue(
-            lambda message: process_message(message, results_path, table_name, limit)
-        )
+        queue.process_queue(lambda message: process_message(message))
     )
 
     stdin_task = asyncio.create_task(read_stdin_and_queue_commands())
 
     try:
-        websocket = await websockets.connect(url, **CONNECT_KWARGS)
-        await login(websocket, api_key)
-        await subscribe(websocket, symbol, "subscribe")
+        websocket = await websockets.connect(kwargs["url"], **CONNECT_KWARGS)
+        await login(websocket)
+        await subscribe(websocket, kwargs["symbol"], "subscribe")
 
         while True:
             ws_task = asyncio.create_task(websocket.recv())
@@ -166,13 +170,13 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
         # Attempt to reopen the connection
         logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds.")
         await asyncio.sleep(5)
-        await connect_and_stream(url, symbol, api_key, results_path, table_name, limit)
+        await connect_and_stream()
 
     except websockets.WebSocketException as e:
         logger.error(e)
         sys.exit(1)
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e}"
         logger.error(msg)
         sys.exit(1)
@@ -194,14 +198,7 @@ if __name__ == "__main__":
             loop.add_signal_handler(sig, handle_termination_signal, logger)
 
         asyncio.run_coroutine_threadsafe(
-            connect_and_stream(
-                kwargs["url"],
-                kwargs["symbol"],
-                kwargs["api_key"],
-                os.path.abspath(kwargs["results_file"]),
-                kwargs["table_name"],
-                kwargs.get("limit", None),
-            ),
+            connect_and_stream(),
             loop,
         )
         loop.run_forever()

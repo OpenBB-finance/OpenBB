@@ -1,6 +1,6 @@
 """Websockets Router."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,protected-access,unused-import
 
 import asyncio
 import sys
@@ -34,6 +34,17 @@ sys.stdout = StdOutSink()
 
 @router.command(
     model="WebSocketConnection",
+    examples=[
+        APIEx(
+            parameters={
+                "name": "client1",
+                "provider": "fmp",
+                "asset_type": "crypto",
+                "symbol": "btcusd,ethusd,solusd",
+                "start_broadcast": True,
+            }
+        )
+    ],
 )
 async def create_connection(
     cc: CommandContext,

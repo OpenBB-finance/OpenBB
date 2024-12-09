@@ -1,5 +1,7 @@
 """Tiingo WebSocket model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Literal, Optional
 
@@ -166,11 +168,13 @@ class TiingoWebSocketData(WebSocketData):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def _validate_symbol(cls, v):
         """Validate the symbol."""
         return v.upper()
 
     @field_validator("type", mode="before", check_fields=False)
+    @classmethod
     def _valiidate_data_type(cls, v):
         """Validate the data type."""
         return (
@@ -178,6 +182,7 @@ class TiingoWebSocketData(WebSocketData):
         )
 
     @field_validator("date", "timestamp", mode="before", check_fields=False)
+    @classmethod
     def _validate_date(cls, v):
         """Validate the date."""
         # pylint: disable=import-outside-toplevel
@@ -284,10 +289,9 @@ class TiingoWebSocketFetcher(
 
         await sleep(1)
 
-        if client._exception:
-            exc = getattr(client, "_exception", None)
-            client._exception = None
-            client._atexit()
+        if getattr(client, "_exception", None):
+            exc = client._exception  # pylint: disable=protected-access
+            client._exception = None  # pylint: disable=protected-access
             raise OpenBBError(exc)
 
         if client.is_running:

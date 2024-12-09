@@ -1,5 +1,7 @@
 """FMP WebSocket model."""
 
+# pylint: disable=unused-argument,protected-access
+
 from datetime import datetime
 from typing import Any, Literal, Optional
 
@@ -92,11 +94,13 @@ class FmpWebSocketData(WebSocketData):
     )
 
     @field_validator("symbol", mode="before")
+    @classmethod
     def _validate_symbol(cls, v):
         """Validate the symbol."""
         return v.upper()
 
     @field_validator("type", mode="before", check_fields=False)
+    @classmethod
     def _valiidate_data_type(cls, v):
         """Validate the data type."""
         return (
@@ -104,6 +108,7 @@ class FmpWebSocketData(WebSocketData):
         )
 
     @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def _validate_date(cls, v):
         """Validate the date."""
         # pylint: disable=import-outside-toplevel

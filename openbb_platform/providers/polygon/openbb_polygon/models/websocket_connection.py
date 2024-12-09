@@ -371,6 +371,7 @@ class PolygonCryptoTradeWebSocketData(WebSocketData):
         return CRYPTO_EXCHANGE_MAP.get(v, str(v))
 
     @model_validator(mode="before")
+    @classmethod
     def _validate_model(cls, values):
         """Validate the model."""
         _ = values.pop("i", None)
@@ -1184,7 +1185,7 @@ class PolygonWebSocketData(Data):
         options_symbol = data.get("sym", "").startswith("O:") or data.get(
             "symbol", ""
         ).startswith("O:")
-
+        model = ""
         if options_symbol:
             model = OPTIONS_MODEL_MAP.get(data.get("ev", "")) or OPTIONS_MODEL_MAP.get(
                 data.get("type", "")
@@ -1259,8 +1260,8 @@ class PolygonWebSocketFetcher(
                 client.disconnect()
             raise e from e
 
-        if client._exception:
-            raise client._exception from client._exception
+        if client._exception:  # pylint: disable=protected-access
+            raise client._exception  # pylint: disable=protected-access
 
         if client.is_running:
             return {"client": client}

@@ -1,5 +1,7 @@
 """Intrinio WebSocket model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Literal, Optional
 
@@ -82,6 +84,7 @@ class IntrinioWebSocketData(WebSocketData):
     )
 
     @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def _validate_date(cls, v):
         """Validate the date."""
         # pylint: disable=import-outside-toplevel
@@ -99,6 +102,12 @@ class IntrinioWebSocketData(WebSocketData):
                 dt = datetime.fromtimestamp(v)
 
         return dt.astimezone(timezone("America/New_York"))
+
+    @field_validator("condition", mode="before", check_fields=False)
+    @classmethod
+    def _validate_condition(cls, v):
+        """Strip the empty spaces from the condition."""
+        return v.strip().replace(" ", "") if v and isinstance(v, str) else None
 
 
 class IntrinioWebSocketConnection(WebSocketConnection):
@@ -152,8 +161,8 @@ class IntrinioWebSocketFetcher(
         try:
             client.connect()
             await asyncio.sleep(2)
-            if client._exception:
-                raise client._exception
+            if client._exception:  # pylint: disable=protected-access
+                raise client._exception  # pylint: disable=protected-access
         except OpenBBError as e:
             if client.is_running:
                 client.disconnect()

@@ -10,11 +10,14 @@ class Listener:
         self.loop = None
         self.websocket = None
         self.current_task = None
+        self.logger = None
         self.kwargs: dict = {}
         if kwargs:
             self.kwargs = kwargs
 
-    async def listen(self, url, **kwargs):  # noqa: PLR0915
+    async def listen(  # noqa: PLR0915  # pylint: disable=too-many-branches,too-many-statements,too-many-locals
+        self, url, **kwargs
+    ):
         """Listen for WebSocket messages."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -47,9 +50,8 @@ class Listener:
                     async with websockets.connect(url, **kwargs) as websocket:
                         self.websocket = websocket
                         url = clean_message(url)
-                        self.logger.info(
-                            f"\nListening for messages from {clean_message(url)}"
-                        )
+                        msg = f"\nListening for messages from {clean_message(url)}"
+                        self.logger.info(msg)
                         for handler in self.logger.handlers:
                             handler.flush()
                         async for message in websocket:
@@ -71,30 +73,30 @@ class Listener:
                     websockets.ConnectionClosedError,
                     asyncio.IncompleteReadError,
                 ):
-                    self.logger.error(
-                        f"The process hosting {clean_message(url)} was terminated."
-                    )
+                    msg = f"The process hosting {clean_message(url)} was terminated."
+                    self.logger.error(msg)
                     break
                 except websockets.exceptions.InvalidURI as error:
-                    self.logger.error(f"Invalid URI -> {error}")
+                    msg = f"Invalid URI -> {error}"
+                    self.logger.error(msg)
                     break
                 except InvalidStatusCode as error:
-                    self.logger.error(f"Invalid status code -> {error}")
+                    msg = f"Invalid status code -> {error}"
+                    self.logger.error(msg)
                     break
                 except OSError as error:
                     if "Multiple exceptions" in str(error):
                         err = str(error).split("Multiple exceptions:")[1].strip()
                         err = err.split("[")[-1].strip().replace("]", ":")
-                        self.logger.error(
-                            f"An error occurred while attempting to connect to: {clean_message(url)} -> {err}"
-                        )
+                        msg = f"An error occurred while attempting to connect to: {clean_message(url)} -> {err}"
+                        self.logger.error(msg)
                     else:
-                        self.logger.error(
-                            f"An error occurred while attempting to connect to: {clean_message(url)} -> {error}"
-                        )
+                        msg = f"An error occurred while attempting to connect to: {clean_message(url)} -> {error}"
+                        self.logger.error(msg)
                     break
-        except Exception as error:
-            self.logger.error(f"An unexpected error occurred: {error}")
+        except Exception as error:  # pylint: disable=broad-except
+            msg = f"Unexpected error -> {error.__class__.__name__}: {error}"
+            self.logger.error(msg)
             raise OpenBBError(error) from error
         finally:
             if self.websocket:
@@ -154,7 +156,5 @@ def listen(url, **kwargs):
     try:
         listener = Listener(**kwargs)
         listener.run(url, **kwargs)
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         raise OpenBBError(e) from e
-    finally:
-        return

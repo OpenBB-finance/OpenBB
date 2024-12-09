@@ -1,10 +1,13 @@
 """Intrinio WebSocket server."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 import json
 import signal
 import sys
 
+from openbb_core.provider.utils.helpers import run_async
 from openbb_intrinio.models.websocket_connection import IntrinioWebSocketData
 from openbb_intrinio.utils.stocks_client import IntrinioRealtimeClient, Quote, Trade
 from openbb_websockets.helpers import (
@@ -21,45 +24,6 @@ logger = get_logger("openbb.websocket.intrinio")
 kwargs = parse_kwargs()
 command_queue = MessageQueue()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
-
-
-async def subscribe(client, symbol, event):
-    """Subscribe or unsubscribe to a symbol."""
-    ticker = symbol.split(",") if isinstance(symbol, str) else symbol
-    try:
-        if event == "subscribe":
-            client.join(ticker)
-        elif event == "unsubscribe":
-            client.leave(ticker)
-    except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:     {e.__class__.__name__}: {e}"
-        logger.error(msg)
-
-
-async def read_stdin_and_queue_commands():
-    """Read from stdin and queue commands."""
-    while True:
-        line = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
-        sys.stdin.flush()
-
-        if not line:
-            break
-
-        try:
-            command = json.loads(line.strip())
-            await command_queue.enqueue(command)
-        except json.JSONDecodeError:
-            logger.error("Invalid JSON received from stdin -> %s", line.strip())
-
-
-async def process_stdin_queue(client):
-    """Process the command queue."""
-    while True:
-        command = await command_queue.dequeue()
-        symbol = ["lobby" if d == "*" else d.upper() for d in command.get("symbol", [])]
-        event = command.get("event")
-        if symbol and event:
-            await subscribe(client, symbol, event)
 
 
 async def process_message(message):
@@ -91,7 +55,7 @@ async def process_message(message):
 
 def on_message(message, backlog):
     """Process the message and write to the database."""
-    asyncio.run(process_message(message))
+    run_async(process_message, message)
 
 
 options = {
@@ -108,6 +72,45 @@ client = IntrinioRealtimeClient(
 )
 
 
+async def subscribe(symbol, event):
+    """Subscribe or unsubscribe to a symbol."""
+    ticker = symbol.split(",") if isinstance(symbol, str) else symbol
+    try:
+        if event == "subscribe":
+            client.join(ticker)
+        elif event == "unsubscribe":
+            client.leave(ticker)
+    except Exception as e:  # pylint: disable=broad-except
+        msg = f"PROVIDER ERROR:     {e.__class__.__name__}: {e}"
+        logger.error(msg)
+
+
+async def read_stdin_and_queue_commands():
+    """Read from stdin and queue commands."""
+    while True:
+        line = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
+        sys.stdin.flush()
+
+        if not line:
+            break
+
+        try:
+            command = json.loads(line.strip())
+            await command_queue.enqueue(command)
+        except json.JSONDecodeError:
+            logger.error("Invalid JSON received from stdin -> %s", line.strip())
+
+
+async def process_stdin_queue():
+    """Process the command queue."""
+    while True:
+        command = await command_queue.dequeue()
+        symbol = ["lobby" if d == "*" else d.upper() for d in command.get("symbol", [])]
+        event = command.get("event")
+        if symbol and event:
+            await subscribe(symbol, event)
+
+
 async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
     symbol = kwargs.pop("symbol", "lobby")
@@ -115,7 +118,7 @@ async def connect_and_stream():
     asyncio.create_task(read_stdin_and_queue_commands())
     client.connect()
     client.join(symbol)
-    asyncio.create_task(process_stdin_queue(client))
+    asyncio.create_task(process_stdin_queue())
 
 
 if __name__ == "__main__":

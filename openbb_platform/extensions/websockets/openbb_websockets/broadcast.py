@@ -10,7 +10,7 @@ import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from starlette.websockets import WebSocketState
 
-from openbb_websockets.helpers import get_logger, parse_kwargs
+from openbb_websockets.helpers import get_logger, parse_kwargs, setup_database
 
 connected_clients: set = set()
 
@@ -65,7 +65,10 @@ async def websocket_endpoint(  # noqa: PLR0915
 
     if (
         broadcast_server.auth_token is not None
-        and auth_token != broadcast_server._decrypt_value(broadcast_server.auth_token)
+        and auth_token
+        != broadcast_server._decrypt_value(  # pylint: disable=protected-access
+            broadcast_server.auth_token
+        )
     ):
         await websocket.accept()
         await websocket.send_text(
@@ -92,10 +95,9 @@ async def websocket_endpoint(  # noqa: PLR0915
 
     except WebSocketDisconnect:
         pass
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         msg = f"Unexpected error: {e.__class__.__name__} -> {e}"
         broadcast_server.logger.error(msg)
-        pass
     finally:
         if broadcast_server in connected_clients:
             connected_clients.remove(broadcast_server)
@@ -106,7 +108,7 @@ async def websocket_endpoint(  # noqa: PLR0915
             await stdin_task
         except asyncio.CancelledError:
             broadcast_server.logger.info("INFO:     A listener task was cancelled.")
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             msg = f"Unexpected error while cancelling stream task: {e.__class__.__name__} -> {e}"
             broadcast_server.logger.error(msg)
         if websocket.client_state != WebSocketState.DISCONNECTED:
@@ -117,7 +119,7 @@ async def websocket_endpoint(  # noqa: PLR0915
                 broadcast_server.logger.error(msg)
 
 
-class BroadcastServer:
+class BroadcastServer:  # pylint: disable=too-many-instance-attributes
     """Stream new results from a continuously written SQLite database.
 
     Not intended to be used directly, it is initialized by the server app when it accepts a new connection.
@@ -144,6 +146,7 @@ class BroadcastServer:
         self._iv = os.urandom(16)
         self.auth_token = self._encrypt_value(auth_token) if auth_token else None
         self.websocket = None
+        self.kwargs = kwargs
 
     def _encrypt_value(self, value: str) -> str:
         """Encrypt the value for storage."""
@@ -159,8 +162,11 @@ class BroadcastServer:
 
         return decrypt_value(self._key, self._iv, value)
 
-    async def stream_results(self):  # noqa: PLR0915
+    async def stream_results(  # noqa: PLR0915  # pylint: disable=too-many-branches
+        self,
+    ):
         """Continuously read the database and send new messages as JSON via WebSocket."""
+        # pylint: disable=import-outside-toplevel
         import sqlite3  # noqa
         from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -168,16 +174,15 @@ class BroadcastServer:
         last_id = 0
 
         if not file_path.exists():
-            self.logger.error(f"Results file not found: {file_path}")
+            self.logger.error("Results file not found: %s", str(file_path))
             return
-        else:
-            conn = sqlite3.connect(self.results_file)
-            cursor = conn.cursor()
-            cursor.execute(f"SELECT MAX(id) FROM {self.table_name}")  # noqa:S608
-            last_id = cursor.fetchone()[0] or 0
-            conn.close()
+        conn = sqlite3.connect(self.results_file)
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT MAX(id) FROM {self.table_name}")  # noqa:S608
+        last_id = cursor.fetchone()[0] or 0
+        conn.close()
 
-        try:
+        try:  # pylint: disable=too-many-nested-blocks
             while True:
                 try:
                     if file_path.exists():
@@ -192,7 +197,7 @@ class BroadcastServer:
 
                         if rows:
                             for row in rows:
-                                index, message = row
+                                _, message = row
                                 await self.broadcast(json.dumps(json.loads(message)))
                             last_id = max(row[0] for row in rows)
                     else:
@@ -209,17 +214,15 @@ class BroadcastServer:
                             "Results file was removed by the parent process."
                         )
                         break
-                    else:
-                        raise OpenBBError(e) from e
+                    raise OpenBBError(e) from e
                 except asyncio.CancelledError:
                     break
         except WebSocketDisconnect:
             pass
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             msg = f"Unexpected error: {e.__class__.__name__} -> {e}"
             self.logger.error(msg)
-        finally:
-            return
+        return
 
     async def broadcast(self, message: str):
         """Broadcast a message to all connected connected clients."""
@@ -229,14 +232,15 @@ class BroadcastServer:
                 await client.websocket.send_text(message)
             except WebSocketDisconnect:
                 disconnected_clients.add(client)
-            except Exception as e:
-                self.logger.error(f"Unexpected error: {e}")
+            except Exception as e:  # pylint: disable=broad-except
+                msg = f"Unexpected error: {e.__class__.__name__} -> {e}"
+                self.logger.error(msg)
                 disconnected_clients.add(client)
         # Remove disconnected connected clients
         for client in disconnected_clients:
             connected_clients.remove(client)
 
-    def start_app(self, host: str = "127.0.0.1", port: int = 6666, **kwargs):
+    def start_app(self, host: str = "127.0.0.1", port: int = 6666):
         """Start the FastAPI app with Uvicorn."""
         uvicorn.run(
             self._app,
@@ -251,7 +255,6 @@ def create_broadcast_server(
     table_name: str,
     sleep_time: float = 0.25,
     auth_token: Optional[str] = None,
-    **kwargs,
 ):
     """Create a new BroadcastServer instance."""
     return BroadcastServer(results_file, table_name, sleep_time, auth_token)
@@ -288,5 +291,8 @@ if __name__ == "__main__":
         raise ValueError("Results file path is required for Broadcast server.")
 
     if not Path(RESULTS_FILE).absolute().exists():
-        raise FileNotFoundError(f"Results file not found: {RESULTS_FILE}")
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import run_async
+
+        run_async(setup_database, RESULTS_FILE, TABLE_NAME)
     main()
