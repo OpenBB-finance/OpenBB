@@ -1,8 +1,9 @@
 """Intrinio Realtime Stocks Client."""
 
 # pylint: skip-file
+# mypy: ignore-errors
+# ruff: noqa
 # flake8: noqa
-# type: ignore
 # This file is a slightly modified version of the original file from the Intrinio Python SDK.
 
 import logging
