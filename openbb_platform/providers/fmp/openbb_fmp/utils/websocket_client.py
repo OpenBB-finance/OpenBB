@@ -27,6 +27,7 @@ CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 
 
 async def login(websocket, api_key):
+    """Login to the WebSocket."""
     login_event = {
         "event": "login",
         "data": {

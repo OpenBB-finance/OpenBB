@@ -164,7 +164,7 @@ def parse_kwargs():
 
 
 async def setup_database(results_path, table_name):
-    """Setup the SQLite database."""
+    """Create the SQLite database, if required."""
     # pylint: disable=import-outside-toplevel
     import os  # noqa
     import aiosqlite
@@ -268,6 +268,8 @@ class AuthTokenFilter(logging.Formatter):
 
 
 class MessageQueue:
+    """Async message queue for the WebSocket connection."""
+
     def __init__(self, max_size: int = 1000, max_retries=5, backoff_factor=0.5):
         """Initialize the MessageQueue."""
         # pylint: disable=import-outside-toplevel

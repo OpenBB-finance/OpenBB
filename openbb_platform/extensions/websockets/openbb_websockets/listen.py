@@ -101,6 +101,7 @@ class Listener:
                 await self.websocket.close()
 
     def stop(self):
+        """Stop the listener."""
         if self.current_task:
             self.current_task.cancel()
             self.loop.run_until_complete(self.current_task)  # type: ignore
@@ -110,6 +111,7 @@ class Listener:
             self.loop.stop()  # type: ignore
 
     async def start_listening(self, url, **kwargs):
+        """Start listening for WebSocket messages."""
         # pylint: disable=import-outside-toplevel
         import asyncio
         import contextlib
@@ -119,6 +121,7 @@ class Listener:
             await self.current_task
 
     def run(self, url, **kwargs):
+        """Run the listener."""
         # pylint: disable=import-outside-toplevel
         import asyncio
 

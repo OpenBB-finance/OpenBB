@@ -85,6 +85,7 @@ async def handle_symbol(symbol):
 
 
 async def login(websocket, api_key):
+    """Login to the WebSocket."""
     login_event = f'{{"action":"auth","params":"{api_key}"}}'
     try:
         await websocket.send(login_event)

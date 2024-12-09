@@ -1,3 +1,5 @@
+"""Broadcast server for streaming results to connected clients via WebSocket."""
+
 import asyncio
 import json
 import sys
@@ -51,6 +53,7 @@ async def read_stdin(broadcast_server):
 async def websocket_endpoint(  # noqa: PLR0915
     websocket: WebSocket, auth_token: Optional[str] = None
 ):
+    """WebSocket endpoint."""
 
     broadcast_server = BroadcastServer(
         RESULTS_FILE,
@@ -128,6 +131,7 @@ class BroadcastServer:
         sleep_time: float = 0.25,
         auth_token: Optional[str] = None,
     ):
+        """Initialize the BroadcastServer instance."""
         # pylint: disable=import-outside-toplevel
         import os
 
@@ -254,7 +258,7 @@ def create_broadcast_server(
 
 
 def main():
-    """Main entry point."""
+    """The main function."""
     broadcast_server = create_broadcast_server(
         RESULTS_FILE,
         TABLE_NAME,

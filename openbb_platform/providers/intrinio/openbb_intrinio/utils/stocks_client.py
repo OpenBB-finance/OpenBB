@@ -8,7 +8,6 @@
 # noqa: F401
 # noqa: F403
 # noqa: F405
-# pydocstyle: ignore=*
 
 # This file is a slightly modified version of the original file from the Intrinio Python SDK.
 
@@ -67,7 +66,10 @@ class Quote:
         self.market_center = market_center
         self.condition = condition
 
+    """Intrinio Realtime Stocks Client."""
+
     def __str__(self):
+        """Return string representation of the quote."""
         return (
             self.symbol
             + ", "
@@ -99,6 +101,7 @@ class Trade:
         market_center,
         condition,
     ):
+        """Initialize the Trade object."""
         self.symbol = symbol
         self.price = price
         self.size = size
@@ -109,6 +112,7 @@ class Trade:
         self.condition = condition
 
     def __str__(self):
+        """Return string representation of the trade."""
         return (
             self.symbol
             + ", trade, price: "
@@ -126,6 +130,7 @@ class Trade:
         )
 
     def is_darkpool(self):
+        """Return True if the trade is a dark pool trade."""
         return (
             not self.market_center
             or self.market_center in ("D", "E", "\x00")
@@ -140,6 +145,7 @@ class IntrinioRealtimeClient:
         on_trade: Optional[callable],
         on_quote: Optional[callable],
     ):
+        """Initialize the Intrinio Realtime Client."""
         if options is None:
             raise ValueError("Options parameter is required")
 
@@ -216,6 +222,7 @@ class IntrinioRealtimeClient:
         self.quote_handler.start()
 
     def auth_url(self) -> str:
+        """Return the authentication URL."""
         auth_url = ""
 
         if self.provider == REALTIME:
@@ -233,11 +240,13 @@ class IntrinioRealtimeClient:
         return auth_url
 
     def api_auth_url(self, auth_url: str) -> str:
+        """Return the API authentication URL."""
         auth_url = auth_url + "&" if "?" in auth_url else auth_url + "?"
 
         return auth_url + "api_key=" + self.api_key
 
     def websocket_url(self) -> str:
+        """Return the websocket URL."""
         if self.provider == REALTIME:
             return (
                 "wss://realtime-mx.intrinio.com/socket/websocket?vsn=1.0.0&token="
@@ -262,12 +271,14 @@ class IntrinioRealtimeClient:
             )
 
     def do_backoff(self):
+        """Perform a backoff."""
         self.last_self_heal_backoff += 1
         i = min(self.last_self_heal_backoff, len(SELF_HEAL_BACKOFFS) - 1)
         backoff = SELF_HEAL_BACKOFFS[i]
         time.sleep(backoff)
 
     def connect(self):
+        """Connect to the websocket."""
         connected = False
         while not connected:
             try:
@@ -287,6 +298,7 @@ class IntrinioRealtimeClient:
                 self.do_backoff()
 
     def disconnect(self):
+        """Disconnect from the websocket."""
         self.ready = False
         self.joined_channels = set()
 
@@ -295,6 +307,7 @@ class IntrinioRealtimeClient:
             time.sleep(1)
 
     def refresh_token(self):
+        """Refresh the authentication token."""
         headers = {HEADER_CLIENT_INFORMATION_KEY: HEADER_CLIENT_INFORMATION_VALUE}
         if self.api_key:
             response = requests.get(self.auth_url(), headers=headers, timeout=5)
@@ -313,20 +326,24 @@ class IntrinioRealtimeClient:
         self.logger.info("INFO:      Authentication successful!")
 
     def refresh_websocket(self):
+        """Refresh the websocket connection."""
         self.quote_receiver = QuoteReceiver(self)
         self.quote_receiver.start()
 
     def on_connect(self):
+        """Handle the connection event."""
         self.ready = True
         self.last_self_heal_backoff = -1
         self.refresh_channels()
 
     def on_queue_full(self):
+        """Handle the queue full event."""
         if time.time() - self.last_queue_warning_time > 1:
             self.logger.error("INFO:      Quote queue is full! Dropped some new quotes")
             self.last_queue_warning_time = time.time()
 
     def join(self, channels: list[str]):
+        """Join the specified channels."""
         if isinstance(channels, str):
             channels = [channels]
 
@@ -334,6 +351,7 @@ class IntrinioRealtimeClient:
         self.refresh_channels()
 
     def leave(self, channels: list[str]):
+        """Leave the specified channels."""
         if isinstance(channels, str):
             channels = [channels]
 
@@ -341,10 +359,12 @@ class IntrinioRealtimeClient:
         self.refresh_channels()
 
     def leave_all(self):
+        """Leave all channels."""
         self.channels = set()
         self.refresh_channels()
 
     def refresh_channels(self):
+        """Refresh the channels."""
         if self.ready is not True:
             return
 
@@ -368,6 +388,7 @@ class IntrinioRealtimeClient:
         self.logger.debug(f"Current channels: {self.joined_channels}")
 
     def join_binary_message(self, channel: str):
+        """Return the binary message to join the specified channel."""
         if channel == "lobby":
             message = bytearray([74, 1 if self.tradesonly else 0])
             channel_bytes = bytes("$FIREHOSE", "ascii")
@@ -380,6 +401,7 @@ class IntrinioRealtimeClient:
             return message
 
     def leave_binary_message(self, channel: str):
+        """Return the binary message to leave the specified channel."""
         if channel == "lobby":
             message = bytearray([76])
             channel_bytes = bytes("$FIREHOSE", "ascii")
@@ -392,17 +414,20 @@ class IntrinioRealtimeClient:
             return message
 
     def valid_api_key(self, api_key: str):
+        """Return True if the API key is valid."""
         return not (not isinstance(api_key, str) or api_key == "")
 
 
 class QuoteReceiver(threading.Thread):
     def __init__(self, client):
+        """Initialize the QuoteReceiver."""
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.daemon = True
         self.client = client
         self.enabled = True
 
     def run(self):
+        """Run the QuoteReceiver."""
         self.client.ws = websocket.WebSocketApp(
             self.client.websocket_url(),
             header={
@@ -422,13 +447,16 @@ class QuoteReceiver(threading.Thread):
         self.client.logger.debug("QuoteReceiver exiting")
 
     def on_open(self, ws):
+        """Handle the open event."""
         self.client.logger.info("INFO:      Websocket opened!")
         self.client.on_connect()
 
     def on_close(self, ws, code, message):
+        """Handle the close event."""
         self.client.logger.info("INFO:      Websocket closed!")
 
     def on_error(self, ws, error, *args):
+        """Handle the error event."""
         try:
             msg = (
                 f"Unexpected error -> {error.__class__.__name__}: {repr(error)}"
@@ -443,6 +471,7 @@ class QuoteReceiver(threading.Thread):
             raise e
 
     def on_message(self, ws, message):
+        """Handle the message event."""
         try:
             if (
                 DEBUGGING
@@ -470,6 +499,7 @@ class QuoteReceiver(threading.Thread):
 
 class QuoteHandler(threading.Thread):
     def __init__(self, client, bypass_parsing: bool):
+        """Initialize the QuoteHandler."""
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.daemon = True
         self.client = client
@@ -485,6 +515,7 @@ class QuoteHandler(threading.Thread):
         }
 
     def parse_quote(self, quote_bytes: bytes, start_index: int = 0) -> Quote:
+        """Parse the quote."""
         buffer = memoryview(quote_bytes)
         symbol_length = buffer[start_index + 2]
         symbol = (
@@ -533,6 +564,7 @@ class QuoteHandler(threading.Thread):
         )
 
     def parse_trade(self, trade_bytes: bytes, start_index: int = 0) -> Trade:
+        """Parse the trade."""
         buffer = memoryview(trade_bytes)
         symbol_length = buffer[start_index + 2]
         symbol = (
@@ -582,6 +614,7 @@ class QuoteHandler(threading.Thread):
     def parse_message(
         self, message_bytes: bytes, start_index: int, backlog_len: int
     ) -> int:
+        """Parse the message."""
         message_type = message_bytes[start_index]
         message_length = message_bytes[start_index + 1]
         new_start_index = start_index + message_length
@@ -609,6 +642,7 @@ class QuoteHandler(threading.Thread):
         return new_start_index
 
     def run(self):
+        """Run the QuoteHandler."""
         self.client.logger.debug("QuoteHandler ready")
         while True:
             message = self.client.quotes.get()
