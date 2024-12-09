@@ -107,7 +107,7 @@ class WebSocketClient:
         from openbb_websockets.helpers import get_logger
 
         self.name = name
-        self.module = module.replace(".py", "")
+        self.module = module.replace(".py", "")  # type: ignore
         self.results_file = results_file if results_file else None
         self.table_name = table_name if table_name else "records"
         self._limit = limit
@@ -371,7 +371,7 @@ class WebSocketClient:
         command = self.module
         command.extend([f"symbol={symbol}"])
         command.extend([f"results_file={self.results_file}"])
-        command.extend([f"table_name={self.table_name}"]),
+        command.extend([f"table_name={self.table_name}"])
 
         if self.limit:
             command.extend([f"limit={self.limit}"])
@@ -487,7 +487,7 @@ class WebSocketClient:
             exc = getattr(self, "_exception", None)
             self._exception = None
             raise OpenBBError(exc)
-        old_symbols = self.symbol.split(",")
+        old_symbols = self.symbol.split(",") if self.symbol is not None else []
         new_symbols = list(set(old_symbols + ticker))
         self._symbol = ",".join(new_symbols)
 
