@@ -1187,15 +1187,14 @@ class PolygonWebSocketData(Data):
         options_symbol = data.get("sym", "").startswith("O:") or data.get(
             "symbol", ""
         ).startswith("O:")
-        model = ""
         if options_symbol:
-            model = OPTIONS_MODEL_MAP.get(data.get("ev", "")) or OPTIONS_MODEL_MAP.get(
+            model = OPTIONS_MODEL_MAP.get(data.get("ev", "")) or OPTIONS_MODEL_MAP.get(  # type: ignore
                 data.get("type", "")
             )
         else:
             model = (
                 MODEL_MAP["A"]
-                if index_symbol
+                if index_symbol  # type: ignore
                 else MODEL_MAP.get(data.get("ev", ""))
                 or MODEL_MAP.get(data.get("type", ""))
             )
