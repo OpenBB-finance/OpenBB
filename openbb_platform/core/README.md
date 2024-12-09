@@ -16,7 +16,7 @@ The Core extension serves as the foundational component of the OpenBB Platform. 
 
 ### Prerequisites
 
-- Python 3.8 or higher.
+- Python 3.9 or higher.
 - Familiarity with FastAPI and Pydantic.
 
 ### Installation

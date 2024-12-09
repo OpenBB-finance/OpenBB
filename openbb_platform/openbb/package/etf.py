@@ -426,7 +426,7 @@ class ROUTER_etf(Container):
             Symbol to get data for. (ETF)
         provider : Optional[Literal['fmp', 'intrinio', 'sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
-        date : Optional[Union[str, datetime.date]]
+        date : Optional[Union[datetime.date, str]]
             A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
             A specific date to get data for. (provider: intrinio);
             A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing. (provider: sec)

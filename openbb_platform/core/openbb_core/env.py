@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Dict, Optional
 
 import dotenv
-
 from openbb_core.app.constants import OPENBB_DIRECTORY
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 
