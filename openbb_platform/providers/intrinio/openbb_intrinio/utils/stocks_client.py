@@ -8,6 +8,7 @@
 # noqa: F401
 # noqa: F403
 # noqa: F405
+# pydocstyle: ignore=*
 
 # This file is a slightly modified version of the original file from the Intrinio Python SDK.
 
