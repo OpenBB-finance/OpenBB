@@ -5,12 +5,11 @@ import json
 from datetime import time
 from typing import TYPE_CHECKING, Dict, List, Optional, Union
 
-from pydantic import ValidationError
-
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.provider.abstract.data import Data
+from pydantic import ValidationError
 
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel

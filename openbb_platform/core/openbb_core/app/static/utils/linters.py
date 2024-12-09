@@ -39,8 +39,8 @@ class Linters:
             command = [linter]
             if flags:
                 command.extend(flags)  # type: ignore
-            subprocess.run(
-                command + list(self.directory.glob("*.py")), check=False  # noqa: S603
+            subprocess.run(  # noqa: S603
+                command + list(self.directory.glob("*.py")), check=False
             )
 
             self.print_separator("-")

@@ -5,12 +5,11 @@ from inspect import getfile, isclass
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, get_origin
 
-from pydantic import BaseModel
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.registry import Registry, RegistryLoader
+from pydantic import BaseModel
 
 MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
 

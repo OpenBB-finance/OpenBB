@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.direction_of_trade import (
     DirectionOfTradeQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-
 from openbb_imf.utils.dot_helpers import (
     load_country_map,
     load_country_to_code_map,

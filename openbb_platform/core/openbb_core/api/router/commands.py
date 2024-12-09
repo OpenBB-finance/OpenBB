@@ -203,9 +203,7 @@ def build_api_wrapper(
         )
 
         if defaults:
-            provider_choices = getattr(
-                kwargs.get("provider_choices", None), "__dict__", {}
-            )
+            provider_choices = getattr(kwargs.get("provider_choices"), "__dict__", {})
             _provider = defaults.pop("provider", None)
 
             if (

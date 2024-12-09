@@ -93,9 +93,9 @@ class Registry:
                     else ""
                 )
                 if data_schema and "title" in data_schema:
-                    data_repr = f"{data_schema['title']}"
+                    data_repr = f"{data_schema['title']}"  # type: ignore
                 if data_schema and "description" in data_schema:
-                    data_repr += f" - {data_schema['description'].split('.')[0]}"
+                    data_repr += f" - {data_schema['description'].split('.')[0]}"  # type: ignore
 
             return data_repr
 
