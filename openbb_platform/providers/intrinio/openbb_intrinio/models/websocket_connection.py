@@ -107,7 +107,7 @@ class IntrinioWebSocketData(WebSocketData):
     @classmethod
     def _validate_condition(cls, v):
         """Strip the empty spaces from the condition."""
-        return v.strip().replace(" ", "") if v and isinstance(v, str) else None
+        return str(v).strip().replace(" ", "") if v else None
 
 
 class IntrinioWebSocketConnection(WebSocketConnection):

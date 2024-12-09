@@ -67,7 +67,7 @@ class Quote:
         self.timestamp = timestamp
         self.subprovider = subprovider
         self.market_center = market_center
-        self.condition = condition
+        self.condition = str(condition.strip().replace(" ", ""))
 
     def __str__(self):
         """Return string representation of the quote."""
@@ -112,7 +112,7 @@ class Trade:
         self.timestamp = timestamp
         self.subprovider = subprovider
         self.market_center = market_center
-        self.condition = condition
+        self.condition = str(condition).strip().replace(" ", "")
 
     def __str__(self):
         """Return string representation of the trade."""
@@ -160,7 +160,7 @@ class IntrinioRealtimeClient:
         self.password = options.get("password")
         self.provider = options.get("provider")
         self.ipaddress = options.get("ipaddress")
-        self.tradesonly = options.get("tradesonly")
+        self.tradesonly = None
         self.bypass_parsing = options.get("bypass_parsing", False)
 
         if "channels" in options:

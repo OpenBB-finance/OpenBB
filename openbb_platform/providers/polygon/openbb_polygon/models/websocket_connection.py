@@ -771,7 +771,8 @@ class PolygonStockQuoteWebSocketData(WebSocketData):
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    bid_exchange: str = Field(
+    bid_exchange: Optional[str] = Field(
+        default=None,
         description="The exchange where the bid originated.",
     )
     bid_size: Optional[float] = Field(
@@ -792,7 +793,8 @@ class PolygonStockQuoteWebSocketData(WebSocketData):
         default=None,
         description="The size of the ask.",
     )
-    ask_exchange: str = Field(
+    ask_exchange: Optional[str] = Field(
+        default=None,
         description="The exchange where the ask originated.",
     )
     tape: str = Field(
