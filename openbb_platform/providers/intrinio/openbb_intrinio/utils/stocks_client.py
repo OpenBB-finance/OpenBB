@@ -4,6 +4,11 @@
 # mypy: ignore-errors
 # ruff: noqa
 # flake8: noqa
+# noqa: E501
+# noqa: F401
+# noqa: F403
+# noqa: F405
+
 # This file is a slightly modified version of the original file from the Intrinio Python SDK.
 
 import logging
