@@ -1200,7 +1200,7 @@ class PolygonWebSocketData(Data):
                 or MODEL_MAP.get(data.get("type", ""))
             )
         if not model:
-            return super().__new__(cls)  # type: ignore
+            return super().__new__(cls)  # pylint: disable=E1120
 
         return model.model_validate(data)  # type: ignore
 
