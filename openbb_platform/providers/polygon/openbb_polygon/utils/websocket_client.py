@@ -1,4 +1,4 @@
-"""Polygon WebSocket server."""
+"""Polygon WebSocket client."""
 
 import asyncio
 import json
@@ -30,7 +30,7 @@ kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 FEED = kwargs.pop("feed", None)
 ASSET_TYPE = kwargs.pop("asset_type", None)
-kwargs["results_file"] = os.path.abspath(kwargs["results_file"])
+kwargs["results_file"] = os.path.abspath(kwargs.get("results_file"))
 
 
 async def handle_symbol(symbol):
@@ -85,9 +85,8 @@ async def handle_symbol(symbol):
     return ",".join(new_symbols)
 
 
-async def login(websocket, api_key):
-    """Login to the WebSocket."""
-    login_event = f'{{"action":"auth","params":"{api_key}"}}'
+async def login(websocket):
+    login_event = f'{{"action":"auth","params":"{kwargs["api_key"]}"}}'
     try:
         await websocket.send(login_event)
         res = await websocket.recv()
@@ -108,7 +107,7 @@ async def login(websocket, api_key):
                 logger.error(err)
                 sys.exit(1)
             logger.info("PROVIDER INFO:      %s", msg.get("message"))
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:
         logger.error("PROVIDER ERROR:     %s -> %s", e.__class__.__name__, e.args[0])
         sys.exit(1)
 
@@ -123,7 +122,7 @@ async def subscribe(websocket, symbol, event):
     subscribe_event = f'{{"action":"{event}","params":"{ticker}"}}'
     try:
         await websocket.send(subscribe_event)
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:
         msg = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
         logger.error(msg)
 
@@ -183,7 +182,7 @@ async def process_message(message):
             if result:
                 await write_to_db(
                     result,
-                    kwargs["results_path"],
+                    kwargs["results_file"],
                     kwargs["table_name"],
                     kwargs.get("limit"),
                 )
@@ -191,7 +190,7 @@ async def process_message(message):
             logger.info("PROVIDER INFO:      %s", msg)
 
 
-async def connect_and_stream():  # pylint: disable=too-many-branches, too-many-statements
+async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
 
     handler_task = asyncio.create_task(
@@ -207,7 +206,8 @@ async def connect_and_stream():  # pylint: disable=too-many-branches, too-many-s
 
         try:
             async with websockets.connect(kwargs["url"], **connect_kwargs) as websocket:
-                await login(websocket, kwargs["api_key"])
+
+                await login(websocket)
                 response = await websocket.recv()
                 messages = json.loads(response)
                 await process_message(messages)
@@ -262,7 +262,7 @@ async def connect_and_stream():  # pylint: disable=too-many-branches, too-many-s
         logger.error(msg)
         sys.exit(1)
 
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:
         msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e}"
         logger.error(msg)
         sys.exit(1)
@@ -293,8 +293,8 @@ if __name__ == "__main__":
         logger.error("PROVIDER ERROR:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
-        ERR = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
-        logger.error(ERR)
+        msg = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
+        logger.error(msg)
 
     finally:
         sys.exit(0)

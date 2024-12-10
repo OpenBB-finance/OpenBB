@@ -237,6 +237,8 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                     if "SymbolError" in output:
                         err = ValueError(output)
                         self._exception = err
+                        sys.stdout.write(output + "\n")
+                        sys.stdout.flush()
                         continue
                     # Other errors are logged to stdout and the process is killed.
                     # If the exception is raised by the parent thread, it will be treated as an unexpected error.
@@ -262,7 +264,8 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                     elif output.startswith("INFO:"):
                         output = output.replace("INFO:", "PROVIDER INFO:")
 
-                    self.logger.info(output)
+                    sys.stdout.write(output + "\n")
+                    sys.stdout.flush()
             except queue.Empty:
                 continue
 
@@ -394,9 +397,9 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         time.sleep(2)
 
         if self._exception is not None:
-            with self._exception as exc:
-                self._exception = None
-                raise OpenBBError(exc)
+            exc = getattr(self, "_exception", None)
+            self._exception = None
+            raise OpenBBError(exc)
 
         if not self.is_running:
             self.logger.error("The provider server failed to start.")
@@ -722,9 +725,10 @@ def non_blocking_websocket(client, output_queue, provider_message_queue) -> None
                 output_queue.put(output.strip())
 
     except Exception as e:
-        client.logger.error(
+        msg = (
             f"Unexpected error in non_blocking_websocket: {e.__class__.__name__} -> {e}"
         )
+        client.logger.error(msg)
         raise e from e
     finally:
         client._process.stdout.close()
@@ -794,9 +798,10 @@ def non_blocking_broadcast(client, output_queue, broadcast_message_queue) -> Non
             if output:
                 output_queue.put(output.strip())
     except Exception as e:  # pylint: disable=broad-except
-        client.logger.error(
+        err = (
             f"Unexpected error in non_blocking_broadcast: {e.__class__.__name__} -> {e}"
         )
+        client.logger.error(err)
     finally:
         client._broadcast_process.stdout.close()
         client._broadcast_process.wait()

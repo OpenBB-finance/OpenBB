@@ -122,8 +122,8 @@ def validate_date(cls, v):
                 v = v / 1e9  # Convert nanoseconds to seconds
             dt = datetime.fromtimestamp(v, tz=timezone("UTC"))
             dt = dt.astimezone(timezone("America/New_York"))
-
-    return dt
+            return dt
+    return v
 
 
 class PolygonWebSocketQueryParams(WebSocketQueryParams):
@@ -353,9 +353,9 @@ class PolygonCryptoTradeWebSocketData(WebSocketData):
         """Validate the conditions."""
         if v is None or isinstance(v, list) and v[0] == 0:
             return None
-        if isinstance(v, list) and v[0] == 1:
+        elif isinstance(v, list) and v[0] == 1:
             return "sellside"
-        if isinstance(v, list) and v[0] == 2:
+        elif isinstance(v, list) and v[0] == 2:
             return "buyside"
         return str(v)
 
@@ -1200,7 +1200,7 @@ class PolygonWebSocketData(Data):
                 or MODEL_MAP.get(data.get("type", ""))
             )
         if not model:
-            return super().__new__(cls)  # pylint: disable=E1120
+            return super().__new__(cls)
 
         return model.model_validate(data)  # type: ignore
 
