@@ -69,6 +69,7 @@ from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
+from openbb_fmp.models.websocket_connection import FmpWebSocketFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
 
@@ -762,3 +763,27 @@ def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
     fetcher = FmpHistoricalMarketCapFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+@pytest.mark.record_verify_screen(hash=True)
+@pytest.mark.record_verify_object(hash=False)
+def test_fmp_websocket_fetcher(record, credentials=test_credentials):
+    """Test FMP Websocket fetcher."""
+    import asyncio
+    import time
+
+    params = {"symbol": "btcusd", "name": "test", "limit": 10, "asset_type": "crypto"}
+
+    try:
+        fetcher = FmpWebSocketFetcher()
+        response = asyncio.run(fetcher.fetch_data(params, credentials))
+        time.sleep(1)
+        record.add_verify(response.client.is_running)
+        assert response.client.is_running
+        time.sleep(1)
+        assert len(response.client.results) > 0
+        record.add_verify(list(response.client.results[0].model_dump().keys()))
+    finally:
+        response.client.disconnect()
+        assert not response.client.is_running
+        record.add_verify(response.client.is_running)
