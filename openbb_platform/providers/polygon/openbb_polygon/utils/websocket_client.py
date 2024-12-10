@@ -30,6 +30,7 @@ kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 FEED = kwargs.pop("feed", None)
 ASSET_TYPE = kwargs.pop("asset_type", None)
+kwargs["results_file"] = os.path.abspath(kwargs["results_file"])
 
 
 async def handle_symbol(symbol):
@@ -100,16 +101,14 @@ async def login(websocket, api_key):
                 err = f"UnauthorizedError -> {msg.get('message')}"
                 logger.error(err)
                 sys.exit(1)
-                break
             if msg.get("status") != "auth_success":
                 err = (
                     f"UnauthorizedError -> {msg.get('status')} -> {msg.get('message')}"
                 )
                 logger.error(err)
                 sys.exit(1)
-                break
             logger.info("PROVIDER INFO:      %s", msg.get("message"))
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         logger.error("PROVIDER ERROR:     %s -> %s", e.__class__.__name__, e.args[0])
         sys.exit(1)
 
@@ -124,12 +123,12 @@ async def subscribe(websocket, symbol, event):
     subscribe_event = f'{{"action":"{event}","params":"{ticker}"}}'
     try:
         await websocket.send(subscribe_event)
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         msg = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
         logger.error(msg)
 
 
-async def read_stdin(command_queue):
+async def read_stdin():
     """Read from stdin and queue commands."""
     while True:
         line = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
@@ -155,7 +154,7 @@ async def process_stdin_queue(websocket):
             await subscribe(websocket, symbol, event)
 
 
-async def process_message(message, results_path, table_name, limit):
+async def process_message(message):
     """Process the WebSocket message."""
     messages = message if isinstance(message, list) else [message]
     for msg in messages:
@@ -168,7 +167,6 @@ async def process_message(message, results_path, table_name, limit):
                     err = f"UnauthorizedError -> {msg.get('message')}"
                     logger.error(err)
                     sys.exit(1)
-                    break
 
                 logger.info("PROVIDER INFO:      %s", msg.get("message"))
         elif msg and "ev" in msg and "status" not in msg:
@@ -183,20 +181,23 @@ async def process_message(message, results_path, table_name, limit):
                     raise e from e
 
             if result:
-                await write_to_db(result, results_path, table_name, limit)
+                await write_to_db(
+                    result,
+                    kwargs["results_path"],
+                    kwargs["table_name"],
+                    kwargs.get("limit"),
+                )
         else:
             logger.info("PROVIDER INFO:      %s", msg)
 
 
-async def connect_and_stream(url, symbol, api_key, results_path, table_name, limit):
+async def connect_and_stream():  # pylint: disable=too-many-branches, too-many-statements
     """Connect to the WebSocket and stream data to file."""
 
     handler_task = asyncio.create_task(
-        queue.process_queue(
-            lambda message: process_message(message, results_path, table_name, limit)
-        )
+        queue.process_queue(lambda message: process_message(message))
     )
-    stdin_task = asyncio.create_task(read_stdin(command_queue))
+    stdin_task = asyncio.create_task(read_stdin())
     try:
         connect_kwargs = CONNECT_KWARGS.copy()
         if "ping_timeout" not in connect_kwargs:
@@ -205,16 +206,15 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
             connect_kwargs["close_timeout"] = None
 
         try:
-            async with websockets.connect(url, **connect_kwargs) as websocket:
-
-                await login(websocket, api_key)
+            async with websockets.connect(kwargs["url"], **connect_kwargs) as websocket:
+                await login(websocket, kwargs["api_key"])
                 response = await websocket.recv()
                 messages = json.loads(response)
-                await process_message(messages, results_path, table_name, limit)
-                await subscribe(websocket, symbol, "subscribe")
+                await process_message(messages)
+                await subscribe(websocket, kwargs["symbol"], "subscribe")
                 response = await websocket.recv()
                 messages = json.loads(response)
-                await process_message(messages, results_path, table_name, limit)
+                await process_message(messages)
                 while True:
                     cmd_task = asyncio.create_task(process_stdin_queue(websocket))
                     msg_task = asyncio.create_task(websocket.recv())
@@ -255,14 +255,14 @@ async def connect_and_stream(url, symbol, api_key, results_path, table_name, lim
         # Attempt to reopen the connection
         logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds.")
         await asyncio.sleep(5)
-        await connect_and_stream(url, symbol, api_key, results_path, table_name, limit)
+        await connect_and_stream()
 
     except websockets.WebSocketException as e:
         msg = f"PROVIDER ERROR:     WebSocketException -> {e}"
         logger.error(msg)
         sys.exit(1)
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e}"
         logger.error(msg)
         sys.exit(1)
@@ -284,14 +284,7 @@ if __name__ == "__main__":
             loop.add_signal_handler(sig, handle_termination_signal, logger)
 
         asyncio.run_coroutine_threadsafe(
-            connect_and_stream(
-                kwargs["url"],
-                kwargs["symbol"],
-                kwargs["api_key"],
-                os.path.abspath(kwargs["results_file"]),
-                kwargs["table_name"],
-                kwargs.get("limit", None),
-            ),
+            connect_and_stream(),
             loop,
         )
         loop.run_forever()
@@ -300,8 +293,8 @@ if __name__ == "__main__":
         logger.error("PROVIDER ERROR:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
-        logger.error(msg)
+        ERR = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
+        logger.error(ERR)
 
     finally:
         sys.exit(0)
