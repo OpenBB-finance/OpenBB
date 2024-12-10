@@ -9,7 +9,7 @@ import sys
 
 from openbb_core.provider.utils.helpers import run_async
 from openbb_intrinio.models.websocket_connection import IntrinioWebSocketData
-from openbb_intrinio.utils.stocks_client import IntrinioRealtimeClient, Quote, Trade
+from openbb_intrinio.utils.stocks_client import IntrinioRealtimeClient, Trade
 from openbb_websockets.helpers import (
     MessageQueue,
     get_logger,
@@ -31,17 +31,13 @@ async def process_message(message):
     result: dict = {}
     message = json.loads(message) if isinstance(message, str) else message
     is_trade = isinstance(message, Trade)
-    is_quote = isinstance(message, Quote)
     if hasattr(message, "__dict__"):
         message = message.__dict__
-        if is_trade or is_quote:
+        if is_trade:
             message["type"] = "trade" if is_trade else "quote"
 
     try:
-        result = IntrinioWebSocketData.model_validate(message).model_dump_json(
-            exclude_none=True, exclude_unset=True
-        )
-        result = message
+        result = IntrinioWebSocketData.model_validate(message).model_dump_json()
     except ValidationError as e:
         try:
             handle_validation_error(logger, e)
@@ -49,7 +45,7 @@ async def process_message(message):
             raise e from e
     if result:
         await write_to_db(
-            message, kwargs["results_file"], kwargs["table_name"], kwargs["limit"]
+            result, kwargs["results_file"], kwargs["table_name"], kwargs["limit"]
         )
 
 

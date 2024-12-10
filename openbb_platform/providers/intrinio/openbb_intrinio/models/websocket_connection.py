@@ -62,7 +62,7 @@ class IntrinioWebSocketData(WebSocketData):
         default=None,
         description="The exchange of the data.",
     )
-    type: Literal["quote", "trade"] = Field(
+    type: Literal["bid", "ask", "trade"] = Field(
         description="The type of data.",
     )
     price: Optional[float] = Field(

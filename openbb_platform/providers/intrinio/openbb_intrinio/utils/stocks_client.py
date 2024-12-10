@@ -112,7 +112,7 @@ class Trade:
         self.timestamp = timestamp
         self.subprovider = subprovider
         self.market_center = market_center
-        self.condition = str(condition).strip().replace(" ", "")
+        self.condition = condition
 
     def __str__(self):
         """Return string representation of the trade."""
