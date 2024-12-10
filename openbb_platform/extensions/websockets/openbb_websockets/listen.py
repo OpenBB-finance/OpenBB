@@ -135,7 +135,7 @@ class Listener:
         try:
             self.loop.run_until_complete(self.start_listening(url, **kwargs))
         except KeyboardInterrupt:
-            self.logger.info("\nWebSocket listener terminated.")
+            self.logger.info("\nWebSocket listener terminated.")  # type: ignore
         finally:
             self.stop()
 
