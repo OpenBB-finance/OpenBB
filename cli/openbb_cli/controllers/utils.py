@@ -259,7 +259,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     commands = an_input.split("/") if "timezone" not in an_input else [an_input]
 
     for command_num, command in enumerate(commands):
-        if command == commands[command_num] == commands[-1] == "":
+        if command == commands[-1] == "":
             return list(filter(None, commands))
         matching_placeholders = [tag for tag in placeholders if tag in command]
         if len(matching_placeholders) > 0:
@@ -300,7 +300,7 @@ def return_colored_value(value: str):
     return f"{value}"
 
 
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,too-many-positional-arguments
 def print_rich_table(  # noqa: PLR0912
     df: pd.DataFrame,
     show_index: bool = False,
@@ -753,7 +753,7 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
 
 
 # This is a false positive on pylint and being tracked in pylint #3060
-# pylint: disable=abstract-class-instantiated
+# pylint: disable=abstract-class-instantiated,too-many-positional-arguments
 def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=True):
     """Save a Pandas DataFrame to an Excel file.
 
@@ -803,7 +803,7 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
 
 
 # This is a false positive on pylint and being tracked in pylint #3060
-# pylint: disable=abstract-class-instantiated
+# pylint: disable=abstract-class-instantiated,too-many-positional-arguments
 def export_data(
     export_type: str,
     dir_path: str,
