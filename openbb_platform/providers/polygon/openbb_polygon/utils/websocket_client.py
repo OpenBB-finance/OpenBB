@@ -23,8 +23,8 @@ from openbb_websockets.helpers import (
 from pydantic import ValidationError
 
 logger = get_logger("openbb.websocket.polygon")
-queue = MessageQueue()
-command_queue = MessageQueue()
+queue = MessageQueue(logger=logger)
+command_queue = MessageQueue(logger=logger)
 
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})

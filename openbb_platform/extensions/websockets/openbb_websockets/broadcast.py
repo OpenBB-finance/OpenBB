@@ -229,7 +229,7 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
         disconnected_clients = set()
         for client in connected_clients.copy():
             try:
-                await client.websocket.send_text(message)
+                await client.websocket.send_json(message)
             except WebSocketDisconnect:
                 disconnected_clients.add(client)
             except Exception as e:  # pylint: disable=broad-except

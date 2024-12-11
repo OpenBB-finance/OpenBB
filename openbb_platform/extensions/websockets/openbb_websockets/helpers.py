@@ -174,15 +174,18 @@ async def setup_database(results_path, table_name):
         if os.path.exists(results_path):
             try:
                 await conn.execute("SELECT name FROM sqlite_master WHERE type='table';")
-            except aiosqlite.DatabaseError:
-                os.remove(results_path)
-
+            except aiosqlite.DatabaseError as e:
+                raise OpenBBError(
+                    "Unexpected error caused by an invalid SQLite database file."
+                    "Please check the path, and inspect the file if it exists."
+                    + f" -> {e}"
+                )
     async with aiosqlite.connect(results_path) as conn:
         await conn.execute(
             f"""
             CREATE TABLE IF NOT EXISTS {table_name} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                message TEXT
+                message JSON
             )
         """
         )
@@ -197,44 +200,46 @@ async def write_to_db(message, results_path, table_name, limit):
 
     conn = await aiosqlite.connect(results_path)
 
-    # Check if the table exists and create it if it doesn't
-    await conn.execute(
-        f"""
-        CREATE TABLE IF NOT EXISTS {table_name} (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            message TEXT
-        )
-    """
-    )
-    await conn.commit()
-
-    await conn.execute(
-        f"INSERT INTO {table_name} (message) VALUES (?)",  # noqa
-        (json.dumps(message),),
-    )
-    await conn.commit()
-
-    records = await conn.execute(f"SELECT COUNT(*) FROM {table_name}")  # noqa
-    count = (await records.fetchone())[0]
-    count = await conn.execute(f"SELECT COUNT(*) FROM {table_name}")  # noqa
-    current_count = int((await count.fetchone())[0])
-    limit = 0 if limit is None else int(limit)
-
-    if current_count > limit and limit != 0:
+    try:
+        # Check if the table exists and create it if it doesn't
         await conn.execute(
             f"""
-            DELETE FROM {table_name}
-            WHERE id IN (
-                SELECT id FROM {table_name}
-                ORDER BY id DESC
-                LIMIT -1 OFFSET ?
+            CREATE TABLE IF NOT EXISTS {table_name} (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                message JSON
             )
-        """,  # noqa: S608
-            (limit,),
+        """
         )
+        await conn.commit()
 
-    await conn.commit()
-    await conn.close()
+        await conn.execute(
+            f"INSERT INTO {table_name} (message) VALUES (?)",  # noqa
+            (message,),
+        )
+        await conn.commit()
+
+        records = await conn.execute(f"SELECT COUNT(*) FROM {table_name}")  # noqa
+        count = (await records.fetchone())[0]
+        count = await conn.execute(f"SELECT COUNT(*) FROM {table_name}")  # noqa
+        current_count = int((await count.fetchone())[0])
+        limit = 0 if limit is None else int(limit)
+
+        if current_count > limit and limit != 0:
+            await conn.execute(
+                f"""
+                DELETE FROM {table_name}
+                WHERE id IN (
+                    SELECT id FROM {table_name}
+                    ORDER BY id DESC
+                    LIMIT -1 OFFSET ?
+                )
+            """,  # noqa: S608
+                (limit,),
+            )
+
+        await conn.commit()
+    finally:
+        await conn.close()
 
 
 class StdOutSink:
@@ -271,7 +276,13 @@ class AuthTokenFilter(logging.Formatter):
 class MessageQueue:
     """Async message queue for the WebSocket connection."""
 
-    def __init__(self, max_size: int = 1000, max_retries=5, backoff_factor=0.5):
+    def __init__(
+        self,
+        max_size: int = 5000,
+        max_retries=5,
+        backoff_factor=0.5,
+        logger: Optional[logging.Logger] = None,
+    ):
         """Initialize the MessageQueue."""
         # pylint: disable=import-outside-toplevel
         from asyncio import Queue
@@ -279,7 +290,7 @@ class MessageQueue:
         self.queue: Queue = Queue(maxsize=max_size)
         self.max_retries = max_retries
         self.backoff_factor = backoff_factor
-        self.logger = get_logger("openbb.websocket.queue")
+        self.logger = logger if logger else get_logger("openbb.websocket.queue")
 
     async def dequeue(self):
         """Dequeue a message."""

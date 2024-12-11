@@ -22,7 +22,7 @@ from pydantic import ValidationError
 
 logger = get_logger("openbb.websocket.intrinio")
 kwargs = parse_kwargs()
-command_queue = MessageQueue()
+command_queue = MessageQueue(logger=logger)
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 
 
@@ -34,10 +34,15 @@ async def process_message(message):
     if hasattr(message, "__dict__"):
         message = message.__dict__
         if is_trade:
-            message["type"] = "trade" if is_trade else "quote"
+            message["type"] = "trade"
 
     try:
-        result = IntrinioWebSocketData.model_validate(message).model_dump_json()
+        result = IntrinioWebSocketData.model_validate(message)
+        result = (
+            {}
+            if result.exchange == "!" or result.price == 0
+            else result.model_dump_json()
+        )
     except ValidationError as e:
         try:
             handle_validation_error(logger, e)
@@ -45,7 +50,10 @@ async def process_message(message):
             raise e from e
     if result:
         await write_to_db(
-            result, kwargs["results_file"], kwargs["table_name"], kwargs["limit"]
+            result,
+            kwargs["results_file"],
+            kwargs["table_name"],
+            kwargs["limit"],
         )
 
 

@@ -519,7 +519,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                             elif isinstance(message, dict):
                                 output.append(self.data_model(**message))
                         else:
-                            output.append(json.loads(json.loads(message)))
+                            output.append(json.loads(message))
                 except Exception as e:
                     raise OpenBBError(f"Error retrieving results: {e}") from e
         if output:

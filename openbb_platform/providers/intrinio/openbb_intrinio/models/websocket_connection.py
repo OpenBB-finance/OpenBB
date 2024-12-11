@@ -7,13 +7,14 @@ from typing import Any, Literal, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_intrinio.utils.references import TRADE_CONDITIONS, VENUES
 from openbb_websockets.client import WebSocketClient
 from openbb_websockets.models import (
     WebSocketConnection,
     WebSocketData,
     WebSocketQueryParams,
 )
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
 
 class IntrinioWebSocketQueryParams(WebSocketQueryParams):
@@ -78,7 +79,7 @@ class IntrinioWebSocketData(WebSocketData):
         default=None,
         description="The total volume of the trade or quote.",
     )
-    condition: Optional[str] = Field(
+    conditions: Optional[str] = Field(
         default=None,
         description="The condition attached to the trade or quote.",
     )
@@ -103,11 +104,35 @@ class IntrinioWebSocketData(WebSocketData):
 
         return dt.astimezone(timezone("America/New_York"))
 
-    @field_validator("condition", mode="before", check_fields=False)
+    @field_validator("exchange", mode="before", check_fields=False)
     @classmethod
-    def _validate_condition(cls, v):
-        """Strip the empty spaces from the condition."""
-        return str(v).strip().replace(" ", "") if v else None
+    def _validate_exchange(cls, v):
+        """Validate the exchange."""
+        return VENUES.get(v, v)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_conditions(cls, values):
+        """Validate the exchange."""
+        new_values = values.copy()
+        conditions = new_values.pop("condition", None)
+        trade_type = new_values.get("type")
+        if trade_type == "trade":
+
+            if not conditions:
+                return new_values
+
+            new_conditions = []
+            conditions = conditions.replace(" ", "")
+            for char in range(len(conditions)):
+                if trade_type == "trade":
+                    new_conditions.append(
+                        TRADE_CONDITIONS.get(conditions[char], conditions[char])
+                    )
+            new_values["conditions"] = "; ".join(new_conditions)
+        else:
+            new_values["conditions"] = conditions if conditions else None
+        return new_values
 
 
 class IntrinioWebSocketConnection(WebSocketConnection):
