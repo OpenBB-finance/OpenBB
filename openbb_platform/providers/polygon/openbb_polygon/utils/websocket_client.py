@@ -294,8 +294,9 @@ if __name__ == "__main__":
         logger.error("PROVIDER ERROR:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
-        logger.error(msg)
+        ERR = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
+        logger.error(ERR)
 
     finally:
+        loop.stop()
         sys.exit(0)

@@ -179,7 +179,7 @@ async def setup_database(results_path, table_name):
                     "Unexpected error caused by an invalid SQLite database file."
                     "Please check the path, and inspect the file if it exists."
                     + f" -> {e}"
-                )
+                ) from e
     async with aiosqlite.connect(results_path) as conn:
         await conn.execute(
             f"""
@@ -195,7 +195,6 @@ async def setup_database(results_path, table_name):
 async def write_to_db(message, results_path, table_name, limit):
     """Write the WebSocket message to the SQLite database."""
     # pylint: disable=import-outside-toplevel
-    import json  # noqa
     import aiosqlite
 
     conn = await aiosqlite.connect(results_path)
@@ -238,6 +237,11 @@ async def write_to_db(message, results_path, table_name, limit):
             )
 
         await conn.commit()
+    except Exception as e:  # pylint: disable=broad-except
+        raise OpenBBError(
+            f"Unexpected error encountered while inserting message into the database. -> {e.__class__.__name__}: {e}"
+        ) from e
+
     finally:
         await conn.close()
 

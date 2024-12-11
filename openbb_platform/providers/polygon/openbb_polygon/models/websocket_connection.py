@@ -353,9 +353,9 @@ class PolygonCryptoTradeWebSocketData(WebSocketData):
         """Validate the conditions."""
         if v is None or isinstance(v, list) and v[0] == 0:
             return None
-        elif isinstance(v, list) and v[0] == 1:
+        if isinstance(v, list) and v[0] == 1:
             return "sellside"
-        elif isinstance(v, list) and v[0] == 2:
+        if isinstance(v, list) and v[0] == 2:
             return "buyside"
         return str(v)
 
@@ -1200,7 +1200,7 @@ class PolygonWebSocketData(Data):
                 or MODEL_MAP.get(data.get("type", ""))
             )
         if not model:
-            return super().__new__(cls)
+            return super().__new__(cls)  # pylint: disable=E1120
 
         return model.model_validate(data)  # type: ignore
 
