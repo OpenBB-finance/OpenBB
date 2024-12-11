@@ -39188,7 +39188,7 @@
                     {
                         "name": "index",
                         "type": "Union[str, List[str]]",
-                        "description": "The specific index to query. Used in conjunction with 'category' and 'index_type', default is 'yield_curve'. Multiple items allowed for provider(s): fred.",
+                        "description": "The specific index to query. Used in conjunction with 'category' and 'index_type', default is 'yield_curve'.\n        Possible values are:\n            corporate\n            seasoned_corporate\n            liquid_corporate\n            yield_curve\n            crossover\n            public_sector\n            private_sector\n            non_financial\n            high_grade\n            high_yield\n            liquid_emea\n            emea\n            liquid_asia\n            asia\n            liquid_latam\n            latam\n            liquid_aaa\n            liquid_bbb\n            aaa\n            aa\n            a\n            bbb\n            bb\n            b\n            ccc Multiple items allowed for provider(s): fred.",
                         "default": "yield_curve",
                         "optional": true,
                         "choices": [
