@@ -45,6 +45,7 @@ openbb-regulators = "^1.3.5"
 openbb-alpha-vantage = { version = "^1.3.5", optional = true }
 openbb-biztoc = { version = "^1.3.5", optional = true }
 openbb-cboe = { version = "^1.3.5", optional = true }
+openbb-deribit = { path = "./providers/deribit", optional = true }
 openbb-ecb = { version = "^1.3.5", optional = true }
 openbb-finra = { version = "^1.3.5", optional = true }
 openbb-finviz = { version = "^1.2.5", optional = true }
@@ -88,6 +89,7 @@ all = [
     "openbb-biztoc",
     "openbb-cboe",
     "openbb-charting",
+    "openbb-deribit",
     "openbb-ecb",
     "openbb-econometrics",
     "openbb-finra",
