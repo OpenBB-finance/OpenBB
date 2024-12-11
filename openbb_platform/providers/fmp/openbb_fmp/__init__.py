@@ -41,6 +41,7 @@ from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFet
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forward_ebitda_estimates import FMPForwardEbitdaEstimatesFetcher
 from openbb_fmp.models.forward_eps_estimates import FMPForwardEpsEstimatesFetcher
+from openbb_fmp.models.government_trades import FMPGovernmentTradesFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
 from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
@@ -139,6 +140,7 @@ stock market information (news, currencies, and stock prices).""",
         "EtfHistorical": FMPEquityHistoricalFetcher,
         "WebSocketConnection": FmpWebSocketFetcher,
         "YieldCurve": FMPYieldCurveFetcher,
+        "GovernmentTrades": FMPGovernmentTradesFetcher,
     },
     repr_name="Financial Modeling Prep (FMP)",
     deprecated_credentials={"API_KEY_FINANCIALMODELINGPREP": "fmp_api_key"},

@@ -2156,3 +2156,36 @@ def test_equity_discovery_latest_financial_reports(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "chamber": "all",
+                "symbol": "AAPL",
+                "provider": "fmp",
+                "limit": None,
+            }
+        ),
+        (
+            {
+                "symbol": None,
+                "chamber": "all",
+                "limit": 300,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_ownership_government_trades(params, headers):
+    """Test the equity ownership government trades endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/ownership/government_trades?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

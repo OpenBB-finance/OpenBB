@@ -72,6 +72,7 @@ from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.websocket_connection import FmpWebSocketFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
+from openbb_fmp.models.government_trades import FMPGovernmentTradesFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -787,3 +788,17 @@ def test_fmp_websocket_fetcher(record, credentials=test_credentials):
         response.client.disconnect()
         assert not response.client.is_running
         record.add_verify(response.client.is_running)
+
+
+@pytest.mark.record_http
+def test_fmp_government_trades_fetcher(credentials=test_credentials):
+    """Test FMP government trades fetcher.
+    params limit only functions when there is no parameter symbol.
+    """
+    params = {
+        "chamber": "senate",
+        "limit": 1,
+    }
+    fetcher = FMPGovernmentTradesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
