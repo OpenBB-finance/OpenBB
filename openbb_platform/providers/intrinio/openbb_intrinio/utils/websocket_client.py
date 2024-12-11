@@ -6,10 +6,11 @@ import asyncio
 import json
 import signal
 import sys
+from typing import Any
 
 from openbb_core.provider.utils.helpers import run_async
 from openbb_intrinio.models.websocket_connection import IntrinioWebSocketData
-from openbb_intrinio.utils.stocks_client import IntrinioRealtimeClient, Trade
+from openbb_intrinio.utils.stocks_client import IntrinioRealtimeClient
 from openbb_websockets.helpers import (
     MessageQueue,
     get_logger,
@@ -28,16 +29,9 @@ CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 
 async def process_message(message):
     """Process the message and write to the database."""
-    result: dict = {}
-    message = json.loads(message) if isinstance(message, str) else message
-    is_trade = isinstance(message, Trade)
-    if hasattr(message, "__dict__"):
-        message = message.__dict__
-        if is_trade:
-            message["type"] = "trade"
-
+    result: Any = None
     try:
-        result = IntrinioWebSocketData.model_validate(message)
+        result = IntrinioWebSocketData.model_validate_json(message.to_json())
         result = (  # type: ignore
             {}
             if result.exchange == "!" or result.price == 0  # type: ignore

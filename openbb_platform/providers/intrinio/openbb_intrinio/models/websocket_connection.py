@@ -83,6 +83,10 @@ class IntrinioWebSocketData(WebSocketData):
         default=None,
         description="The condition attached to the trade or quote.",
     )
+    is_darkpool: Optional[bool] = Field(
+        default=None,
+        description="Flag if the trade is reported from an unlit venue.",
+    )
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
@@ -115,23 +119,26 @@ class IntrinioWebSocketData(WebSocketData):
     def _validate_conditions(cls, values):
         """Validate the exchange."""
         new_values = values.copy()
-        conditions = new_values.pop("condition", None)
         trade_type = new_values.get("type")
-        if trade_type == "trade":
+        conditions = new_values.pop("condition", None)
 
+        if trade_type == "trade":
             if not conditions:
                 return new_values
 
             new_conditions = []
             conditions = conditions.replace(" ", "")
+
             for char in range(len(conditions)):
                 if trade_type == "trade":
                     new_conditions.append(
                         TRADE_CONDITIONS.get(conditions[char], conditions[char])
                     )
+
             new_values["conditions"] = "; ".join(new_conditions)
         else:
             new_values["conditions"] = conditions if conditions else None
+
         return new_values
 
 

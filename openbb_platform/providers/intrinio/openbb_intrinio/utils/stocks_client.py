@@ -11,11 +11,13 @@
 
 # This file is a slightly modified version of the original file from the Intrinio Python SDK.
 
+import json
 import logging
 import queue
 import struct
 import sys
 import threading
+
 import time
 from typing import Any, Dict, Optional
 
@@ -67,7 +69,7 @@ class Quote:
         self.timestamp = timestamp
         self.subprovider = subprovider
         self.market_center = market_center
-        self.condition = str(condition.strip().replace(" ", ""))
+        self.condition = condition
 
     def __str__(self):
         """Return string representation of the quote."""
@@ -87,6 +89,30 @@ class Quote:
             + str(self.market_center)
             + ", condition: "
             + str(self.condition)
+        )
+
+    def is_darkpool(self):
+        """Return True if the trade is a dark pool trade."""
+        return (
+            not self.market_center
+            or self.market_center in ("D", "E", "\x00")
+            or self.market_center.strip() == ""
+        )
+
+    def to_json(self):
+        return json.dumps(
+            dict(
+                symbol=self.symbol,
+                type=self.type,
+                price=self.price,
+                size=self.size,
+                total_volume=None,
+                timestamp=self.timestamp,
+                subprovider=self.subprovider,
+                market_center=self.market_center,
+                condition=self.condition,
+                is_darkpool=self.is_darkpool() if self.is_darkpool() else None,
+            )
         )
 
 
@@ -140,6 +166,22 @@ class Trade:
             or self.market_center.strip() == ""
         )
 
+    def to_json(self):
+        return json.dumps(
+            dict(
+                symbol=self.symbol,
+                type="trade",
+                price=self.price,
+                size=self.size,
+                total_volume=self.total_volume,
+                timestamp=self.timestamp,
+                subprovider=self.subprovider,
+                market_center=self.market_center,
+                condition=self.condition,
+                is_darkpool=self.is_darkpool() if self.is_darkpool() else None,
+            )
+        )
+
 
 class IntrinioRealtimeClient:
     """Intrinio Realtime Stocks Client."""
@@ -160,7 +202,7 @@ class IntrinioRealtimeClient:
         self.password = options.get("password")
         self.provider = options.get("provider")
         self.ipaddress = options.get("ipaddress")
-        self.tradesonly = None
+        self.tradesonly = options.get("tradesonly")
         self.bypass_parsing = options.get("bypass_parsing", False)
 
         if "channels" in options:
