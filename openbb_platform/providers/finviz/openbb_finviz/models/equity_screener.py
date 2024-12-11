@@ -540,6 +540,7 @@ class FinvizEquityScreenerFetcher(
         """Extract data from Finviz."""
         # pylint: disable=import-outside-toplevel
         import configparser  # noqa
+        from finvizfinance import util
         from finvizfinance.screener import (
             financial,
             overview,
@@ -549,6 +550,7 @@ class FinvizEquityScreenerFetcher(
             valuation,
         )
         from numpy import nan
+        from openbb_core.provider.utils.helpers import get_requests_session
         from openbb_finviz.utils.screener_helper import (
             get_preset_choices,
             d_check_screener,
@@ -557,6 +559,7 @@ class FinvizEquityScreenerFetcher(
         from pandas import DataFrame
 
         preset = None
+        util.session = get_requests_session()
 
         try:
             data_dir = kwargs.get("preferences", {}).get("data_directory")
@@ -569,7 +572,7 @@ class FinvizEquityScreenerFetcher(
         except Exception as e:
             if preset is not None:
                 raise e from e
-            warn(f"Error loading presets: {e}")
+            warn(f"Error loading presets -> {e.__class__.__name__}: {e}")
             preset = None
 
         data_type = query.metric
