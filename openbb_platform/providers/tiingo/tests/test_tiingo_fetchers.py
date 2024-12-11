@@ -9,6 +9,7 @@ from openbb_tiingo.models.crypto_historical import TiingoCryptoHistoricalFetcher
 from openbb_tiingo.models.currency_historical import TiingoCurrencyHistoricalFetcher
 from openbb_tiingo.models.equity_historical import TiingoEquityHistoricalFetcher
 from openbb_tiingo.models.trailing_dividend_yield import TiingoTrailingDivYieldFetcher
+from openbb_tiingo.models.websocket_connection import TiingoWebSocketFetcher
 from openbb_tiingo.models.world_news import TiingoWorldNewsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -97,3 +98,32 @@ def test_tiingo_trailing_div_yield_fetcher(credentials=test_credentials):
     fetcher = TiingoTrailingDivYieldFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+@pytest.mark.record_verify_screen(hash=True)
+@pytest.mark.record_verify_object(hash=False)
+def test_tiingo_websocket_fetcher(record, credentials=test_credentials):
+    """Test Tiingo Websocket fetcher."""
+    import asyncio
+    import time
+
+    params = {
+        "symbol": "btcusd",
+        "name": "tiingo_test",
+        "limit": 10,
+        "asset_type": "crypto",
+    }
+
+    try:
+        fetcher = TiingoWebSocketFetcher()
+        response = asyncio.run(fetcher.fetch_data(params, credentials))
+        time.sleep(1)
+        record.add_verify(response.client.is_running)
+        assert response.client.is_running
+        time.sleep(1)
+        assert len(response.client.results) > 0
+        record.add_verify(list(response.client.results[0].model_dump().keys()))
+    finally:
+        response.client.disconnect()
+        assert not response.client.is_running
+        record.add_verify(response.client.is_running)
