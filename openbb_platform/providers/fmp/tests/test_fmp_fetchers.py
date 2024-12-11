@@ -71,6 +71,7 @@ from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
+from openbb_fmp.models.government_trades import FMPGovernmentTradesFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -760,5 +761,19 @@ def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
     }
 
     fetcher = FmpHistoricalMarketCapFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_government_trades_fetcher(credentials=test_credentials):
+    """Test FMP government trades fetcher.
+    params limit only functions when there is no parameter symbol.
+    """
+    params = {
+        "chamber": "senate",
+        "limit": 1,
+    }
+    fetcher = FMPGovernmentTradesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
