@@ -69,8 +69,8 @@ CRYPTO_QUOTE_FIELDS = [
     "ask_price",
 ]
 SUBSCRIPTION_ID = ""
-queue = MessageQueue()
 logger = get_logger("openbb.websocket.tiingo")
+queue = MessageQueue(logger=logger)
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 kwargs["results_file"] = os.path.abspath(kwargs["results_file"])
