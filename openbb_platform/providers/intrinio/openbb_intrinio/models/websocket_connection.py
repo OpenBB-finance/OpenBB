@@ -129,9 +129,7 @@ class IntrinioWebSocketData(WebSocketData):
             new_conditions = []
             conditions = conditions.replace(" ", "")
 
-            for char in range(
-                len(conditions)
-            ):  # pylint: disable=consider-using-enumerate
+            for char in range(len(conditions)):  # pylint: C0200
                 if trade_type == "trade":
                     new_conditions.append(
                         TRADE_CONDITIONS.get(conditions[char], conditions[char])
