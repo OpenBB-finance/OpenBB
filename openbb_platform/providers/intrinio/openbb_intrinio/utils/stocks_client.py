@@ -100,6 +100,7 @@ class Quote:
         )
 
     def to_json(self):
+        """Return the quote as a JSON string."""
         return json.dumps(
             dict(
                 symbol=self.symbol,
@@ -167,6 +168,7 @@ class Trade:
         )
 
     def to_json(self):
+        """Return the trade as a JSON string."""
         return json.dumps(
             dict(
                 symbol=self.symbol,
@@ -341,7 +343,7 @@ class IntrinioRealtimeClient:
                 self.refresh_websocket()
                 connected = True
             except Exception as e:
-                self.logger.error(f"Cannot connect: {repr(e)}")
+                self.logger.error(f"Unexpected error while connecting -> {repr(e)}")
                 self.do_backoff()
 
     def disconnect(self):
@@ -367,7 +369,9 @@ class IntrinioRealtimeClient:
             )
 
         if response.status_code != 200:
-            raise UnauthorizedError("Auth failed")
+            raise UnauthorizedError(
+                f"""Connection failed with status code {response.status_code} and message "{response.reason}"."""
+            )
 
         self.token = response.text
         self.logger.info("INFO:      Authentication successful!")
