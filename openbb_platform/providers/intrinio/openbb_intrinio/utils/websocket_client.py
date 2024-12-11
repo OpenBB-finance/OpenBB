@@ -38,10 +38,10 @@ async def process_message(message):
 
     try:
         result = IntrinioWebSocketData.model_validate(message)
-        result = (
+        result = (  # type: ignore
             {}
-            if result.exchange == "!" or result.price == 0
-            else result.model_dump_json()
+            if result.exchange == "!" or result.price == 0  # type: ignore
+            else result.model_dump_json()  # type: ignore
         )
     except ValidationError as e:
         try:
