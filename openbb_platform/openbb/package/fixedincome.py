@@ -68,7 +68,35 @@ class ROUTER_fixedincome(Container):
         category : Literal['high_yield', 'us', 'emerging_markets']
             The type of index category. Used in conjunction with 'index', default is 'us'. (provider: fred)
         index : str
-            The specific index to query. Used in conjunction with 'category' and 'index_type', default is 'yield_curve'. Multiple comma separated items allowed. (provider: fred)
+            The specific index to query. Used in conjunction with 'category' and 'index_type', default is 'yield_curve'.
+                Possible values are:
+                    corporate
+                    seasoned_corporate
+                    liquid_corporate
+                    yield_curve
+                    crossover
+                    public_sector
+                    private_sector
+                    non_financial
+                    high_grade
+                    high_yield
+                    liquid_emea
+                    emea
+                    liquid_asia
+                    asia
+                    liquid_latam
+                    latam
+                    liquid_aaa
+                    liquid_bbb
+                    aaa
+                    aa
+                    a
+                    bbb
+                    bb
+                    b
+                    ccc
+
+                 Multiple comma separated items allowed. (provider: fred)
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
                 Frequency aggregation to convert daily data to lower frequency.

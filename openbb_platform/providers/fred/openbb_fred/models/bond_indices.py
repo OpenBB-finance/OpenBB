@@ -290,6 +290,8 @@ INDEX_CHOICES = [
     "ccc",
 ]
 
+index_choices_str = "\n            ".join(INDEX_CHOICES)
+
 
 class FredBondIndicesQueryParams(BondIndicesQueryParams):
     """FRED Bond Indices Query."""
@@ -308,7 +310,11 @@ class FredBondIndicesQueryParams(BondIndicesQueryParams):
     index: str = Field(
         default="yield_curve",
         description="The specific index to query."
-        + " Used in conjunction with 'category' and 'index_type', default is 'yield_curve'.",
+        + " Used in conjunction with 'category' and 'index_type', default is 'yield_curve'."
+        + f"""
+        Possible values are:
+            {index_choices_str}\n
+        """,
     )
     frequency: Union[
         None,
@@ -455,8 +461,8 @@ class FredBondIndicesFetcher(
                 if values["category"] == "us":
                     if index not in BAML_CATEGORIES.get("us"):  # type: ignore
                         message = (
-                            "Invalid index for category: 'us'."
-                            + f" Must be one of {','.join(BAML_CATEGORIES.get('us'))}."  # type: ignore
+                            f"Invalid index, {index}, for category: 'us'."
+                            + f" Must be one of {', '.join(BAML_CATEGORIES.get('us'))}."  # type: ignore
                         )
                         messages.append(message)
                     elif (
@@ -473,8 +479,8 @@ class FredBondIndicesFetcher(
                 if values["category"] == "high_yield":
                     if index not in ("us", "europe", "emerging"):
                         message = (
-                            "Invalid index for category: 'high_yield'."
-                            + f" Must be one of {','.join(BAML_CATEGORIES.get('high_yield', ''))}."  # type: ignore
+                            f"Invalid index, {index}, for category: 'high_yield'."
+                            + f" Must be one of {', '.join(BAML_CATEGORIES.get('high_yield', ''))}."  # type: ignore
                         )
                         messages.append(message)
                     else:
@@ -482,8 +488,8 @@ class FredBondIndicesFetcher(
                 if values["category"] == "emerging_markets":
                     if index not in BAML_CATEGORIES.get("emerging_markets"):  # type: ignore
                         message = (
-                            "Invalid index for category: 'emerging_markets'."
-                            + f" Must be one of {','.join(BAML_CATEGORIES.get('emerging_markets', ''))}."  # type: ignore
+                            f"Invalid index, {index}, for category: 'emerging_markets'."
+                            + f" Must be one of {', '.join(BAML_CATEGORIES.get('emerging_markets', ''))}."  # type: ignore
                         )
                         messages.append(message)
                     else:
