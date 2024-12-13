@@ -77,6 +77,25 @@ def obb(pytestconfig):
                 "connect_kwargs": None,
             }
         ),
+        (
+            {
+                "name": "test_intrinio",
+                "provider": "intrinio",
+                "symbol": "spy,qqq,iwm,tsla,nvda",
+                "asset_type": "stock",
+                "feed": "realtime",
+                "auth_token": None,
+                "results_file": None,
+                "save_results": False,
+                "table_name": "records",
+                "limit": 10,
+                "sleep_time": 0.25,
+                "broadcast_host": "0.0.0.0",  # noqa: S104
+                "broadcast_port": 6666,
+                "start_broadcast": False,
+                "connect_kwargs": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -106,6 +125,10 @@ def test_websockets_create_connection(params, obb):
         },
         {
             "name": "test_polygon",
+            "auth_token": None,
+        },
+        {
+            "name": "test_intrinio",
             "auth_token": None,
         },
     ],
@@ -167,6 +190,11 @@ def test_websockets_clear_results(params, obb):
             "symbol": "ethusd",
             "auth_token": None,
         },
+        {
+            "name": "test_intrinio",
+            "symbol": "amzn",
+            "auth_token": None,
+        },
     ],
 )
 @pytest.mark.integration
@@ -204,6 +232,13 @@ def test_websockets_subscribe(params, obb):
             "port": None,
             "uvicorn_kwargs": None,
         },
+        {
+            "name": "test_intrinio",
+            "auth_token": None,
+            "host": "0.0.0.0",  # noqa: S104
+            "port": None,
+            "uvicorn_kwargs": None,
+        },
     ],
 )
 @pytest.mark.integration
@@ -235,6 +270,11 @@ def test_websockets_start_broadcasting(params, obb):
             "symbol": "ethusd",
             "auth_token": None,
         },
+        {
+            "name": "test_intrinio",
+            "symbol": "amzn",
+            "auth_token": None,
+        },
     ],
 )
 @pytest.mark.integration
@@ -261,6 +301,10 @@ def test_websockets_unsubscribe(params, obb):
         },
         {
             "name": "test_polygon",
+            "auth_token": None,
+        },
+        {
+            "name": "test_intrinio",
             "auth_token": None,
         },
     ],
@@ -291,6 +335,10 @@ def test_websockets_get_client(params, obb):
             "name": "test_polygon",
             "auth_token": None,
         },
+        {
+            "name": "test_intrinio",
+            "auth_token": None,
+        },
     ],
 )
 @pytest.mark.integration
@@ -317,6 +365,10 @@ def test_websockets_stop_connection(params, obb):
         },
         {
             "name": "test_polygon",
+            "auth_token": None,
+        },
+        {
+            "name": "test_intrinio",
             "auth_token": None,
         },
     ],
@@ -347,6 +399,10 @@ def test_websockets_restart_connection(params, obb):
             "name": "test_polygon",
             "auth_token": None,
         },
+        {
+            "name": "test_intrinio",
+            "auth_token": None,
+        },
     ],
 )
 @pytest.mark.integration
@@ -373,6 +429,10 @@ def test_websockets_stop_broadcasting(params, obb):
         },
         {
             "name": "test_polygon",
+            "auth_token": None,
+        },
+        {
+            "name": "test_intrinio",
             "auth_token": None,
         },
     ],
