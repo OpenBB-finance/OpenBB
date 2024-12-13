@@ -170,8 +170,8 @@ async def setup_database(results_path, table_name):
     import os  # noqa
     import aiosqlite
 
-    async with aiosqlite.connect(results_path) as conn:
-        if os.path.exists(results_path):
+    if os.path.exists(results_path):
+        async with aiosqlite.connect(results_path) as conn:
             try:
                 await conn.execute("SELECT name FROM sqlite_master WHERE type='table';")
             except aiosqlite.DatabaseError as e:
@@ -180,6 +180,7 @@ async def setup_database(results_path, table_name):
                     "Please check the path, and inspect the file if it exists."
                     + f" -> {e}"
                 ) from e
+
     async with aiosqlite.connect(results_path) as conn:
         await conn.execute(
             f"""
@@ -198,7 +199,7 @@ async def write_to_db(message, results_path, table_name, limit):
     import aiosqlite
 
     conn = await aiosqlite.connect(results_path)
-
+    await conn.execute("PRAGMA journal_mode=WAL;")
     try:
         # Check if the table exists and create it if it doesn't
         await conn.execute(

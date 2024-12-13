@@ -537,6 +537,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
 
         try:
             with sqlite3.connect(self.results_path) as conn:
+                conn.execute("PRAGMA journal_mode=WAL;")
                 conn.execute(f"DELETE FROM {self.table_name}")  # noqa
                 conn.commit()
 

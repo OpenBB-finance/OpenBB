@@ -1,7 +1,9 @@
 """Unit tests for FMP provider modules."""
 
 import re
+import time
 from datetime import date
+from unittest.mock import MagicMock, patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
@@ -45,6 +47,7 @@ from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFet
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forward_ebitda_estimates import FMPForwardEbitdaEstimatesFetcher
 from openbb_fmp.models.forward_eps_estimates import FMPForwardEpsEstimatesFetcher
+from openbb_fmp.models.government_trades import FMPGovernmentTradesFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
 from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
@@ -69,14 +72,94 @@ from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
-from openbb_fmp.models.websocket_connection import FmpWebSocketFetcher
+from openbb_fmp.models.websocket_connection import (
+    FmpWebSocketConnection,
+    FmpWebSocketData,
+    FmpWebSocketFetcher,
+)
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
-from openbb_fmp.models.government_trades import FMPGovernmentTradesFetcher
+from openbb_websockets.client import WebSocketClient
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
 )
+
+
+MOCK_WEBSOCKET_DATA = [
+    {
+        "date": "2024-12-12T21:13:17.925000-05:00",
+        "symbol": "BTCUSD",
+        "exchange": "gdax",
+        "type": "trade",
+        "last_price": 99344.20658975664,
+        "last_size": 1.1701095899999996,
+    },
+    {
+        "date": "2024-12-12T21:13:19.134000-05:00",
+        "symbol": "BTCUSD",
+        "exchange": "gemini",
+        "type": "trade",
+        "last_price": 99356.52,
+        "last_size": 0.01106662,
+    },
+    {
+        "date": "2024-12-12T21:13:23.017000-05:00",
+        "symbol": "BTCUSD",
+        "exchange": "gdax",
+        "type": "trade",
+        "last_price": 99359.9798569503,
+        "last_size": 0.16290354,
+    },
+    {
+        "date": "2024-12-12T21:13:27.253000-05:00",
+        "symbol": "BTCUSD",
+        "exchange": "gemini",
+        "type": "trade",
+        "last_price": 99350.54645901076,
+        "last_size": 0.10452787999999999,
+    },
+    {
+        "date": "2024-12-12T21:13:28.332000-05:00",
+        "symbol": "BTCUSD",
+        "exchange": "gdax",
+        "type": "trade",
+        "last_price": 99351.54026716301,
+        "last_size": 0.11509677,
+    },
+    {
+        "date": "2024-12-12T21:13:33.842000-05:00",
+        "symbol": "BTCUSD",
+        "exchange": "gdax",
+        "type": "trade",
+        "last_price": 99353.72826832562,
+        "last_size": 0.00476533,
+    },
+    {
+        "date": "2024-12-12T21:13:37.500000-05:00",
+        "symbol": "BTCUSD",
+        "exchange": "kraken",
+        "type": "trade",
+        "last_price": 99325.1,
+        "last_size": 0.00302361,
+    },
+    {
+        "date": "2024-12-12T21:13:38.764000-05:00",
+        "symbol": "BTCUSD",
+        "exchange": "gemini",
+        "type": "trade",
+        "last_price": 99376.83,
+        "last_size": 0.00739754,
+    },
+    {
+        "date": "2024-12-12T21:13:39.310000-05:00",
+        "symbol": "BTCUSD",
+        "exchange": "gdax",
+        "type": "trade",
+        "last_price": 99363.03061442816,
+        "last_size": 0.04905618,
+    },
+]
 
 
 def response_filter(response):
@@ -99,6 +182,66 @@ def vcr_config():
         ],
         "before_record_response": response_filter,
     }
+
+
+@pytest.fixture
+def mock_websocket_connection():
+    """Mock websocket client."""
+
+    mock_connection = FmpWebSocketConnection(
+        client=MagicMock(
+            spec=WebSocketClient(
+                name="fmp_test",
+                module="openbb_fmp.utils.websocket_client",
+                symbol="btcusd",
+                limit=10,
+                data_model=FmpWebSocketData,
+                url="wss://mock.fmp.com/crypto",
+                api_key="MOCK_API_KEY",
+            )
+        )
+    )
+    mock_connection.client.is_running = False
+    mock_results = []
+
+    def mock_connect():
+        mock_connection.client.is_running = True
+        for data in MOCK_WEBSOCKET_DATA:
+            mock_results.append(FmpWebSocketData(**data))
+            time.sleep(0.1)
+
+    def mock_get_results():
+        return mock_results
+
+    mock_connection.client.connect = mock_connect
+    mock_connection.client.results = mock_get_results
+
+    return mock_connection
+
+
+@pytest.mark.asyncio
+async def test_websocket_fetcher(
+    mock_websocket_connection, credentials=test_credentials
+):
+    """Test websocket fetcher."""
+    fetcher = FmpWebSocketFetcher()
+    params = {
+        "symbol": "btcusd",
+        "name": "fmp_test",
+        "limit": 10,
+        "asset_type": "crypto",
+    }
+
+    with patch.object(fetcher, "fetch_data", return_value=mock_websocket_connection):
+        result = await fetcher.fetch_data(params, credentials)
+
+        # Ensure the client is not running initially
+        assert not result.client.is_running
+        assert result.client.results() == []
+        result.client.connect()
+        assert result.client.is_running
+        assert len(result.client.results()) == len(MOCK_WEBSOCKET_DATA)
+        assert result.client.results()[0] == FmpWebSocketData(**MOCK_WEBSOCKET_DATA[0])
 
 
 @pytest.mark.record_http

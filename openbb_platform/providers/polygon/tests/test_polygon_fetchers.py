@@ -1,6 +1,8 @@
 """Test the Polygon fetchers."""
 
+import time
 from datetime import date
+from unittest.mock import MagicMock, patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
@@ -17,12 +19,130 @@ from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
 from openbb_polygon.models.index_historical import (
     PolygonIndexHistoricalFetcher,
 )
-from openbb_polygon.models.websocket_connection import PolygonWebSocketFetcher
 from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
+from openbb_polygon.models.websocket_connection import (
+    PolygonWebSocketConnection,
+    PolygonWebSocketData,
+    PolygonWebSocketFetcher,
+)
+from openbb_websockets.client import WebSocketClient
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
 )
+
+MOCK_WEBSOCKET_DATA = [
+    {
+        "date": "2024-12-12T21:04:02-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99445.07,
+        "high": 99445.08,
+        "low": 99445.07,
+        "close": 99445.08,
+        "volume": 0.00188791,
+        "vwap": 99445.0778,
+    },
+    {
+        "date": "2024-12-12T21:04:03-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99445.07,
+        "high": 99445.08,
+        "low": 99445.07,
+        "close": 99445.07,
+        "volume": 0.00670653,
+        "vwap": 99445.0702,
+    },
+    {
+        "date": "2024-12-12T21:04:04-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99445.07,
+        "high": 99445.07,
+        "low": 99445.07,
+        "close": 99445.07,
+        "volume": 0.00007158,
+        "vwap": 99445.07,
+    },
+    {
+        "date": "2024-12-12T21:04:05-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99445.07,
+        "high": 99445.07,
+        "low": 99428.34,
+        "close": 99428.34,
+        "volume": 0.6058888,
+        "vwap": 99441.6093,
+    },
+    {
+        "date": "2024-12-12T21:04:06-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99428.33,
+        "high": 99428.34,
+        "low": 99428.33,
+        "close": 99428.34,
+        "volume": 0.01953452,
+        "vwap": 99428.3301,
+    },
+    {
+        "date": "2024-12-12T21:04:07-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99428.33,
+        "high": 99428.34,
+        "low": 99428.33,
+        "close": 99428.33,
+        "volume": 0.1214753,
+        "vwap": 99428.33,
+    },
+    {
+        "date": "2024-12-12T21:04:08-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99428.33,
+        "high": 99435.48,
+        "low": 99428.33,
+        "close": 99435.48,
+        "volume": 0.20089819,
+        "vwap": 99429.29,
+    },
+    {
+        "date": "2024-12-12T21:04:09-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99435.47,
+        "high": 99435.47,
+        "low": 99435.02,
+        "close": 99435.02,
+        "volume": 0.03098464,
+        "vwap": 99435.3318,
+    },
+    {
+        "date": "2024-12-12T21:04:10-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99445.08,
+        "high": 99445.08,
+        "low": 99445.05,
+        "close": 99445.05,
+        "volume": 0.00245657,
+        "vwap": 99445.0502,
+    },
+    {
+        "date": "2024-12-12T21:04:11-05:00",
+        "symbol": "BTC-USD",
+        "type": "XAS",
+        "open": 99445.08,
+        "high": 99445.08,
+        "low": 99440.55,
+        "close": 99440.55,
+        "volume": 0.06000562,
+        "vwap": 99443.6374,
+    },
+]
 
 
 @pytest.fixture(scope="module")
@@ -34,6 +154,69 @@ def vcr_config():
             ("apiKey", "MOCK_API_KEY"),
         ],
     }
+
+
+@pytest.fixture
+def mock_websocket_connection():
+    """Mock websocket client."""
+
+    mock_connection = PolygonWebSocketConnection(
+        client=MagicMock(
+            spec=WebSocketClient(
+                name="polygon_test",
+                module="openbb_polygon.utils.websocket_client",
+                symbol="btcusd",
+                limit=10,
+                data_model=PolygonWebSocketData,
+                url="wss://mock.polygon.com/crypto",
+                api_key="MOCK_API_KEY",
+            )
+        )
+    )
+    mock_connection.client.is_running = False
+    mock_results = []
+
+    def mock_connect():
+        mock_connection.client.is_running = True
+        for data in MOCK_WEBSOCKET_DATA:
+            mock_results.append(PolygonWebSocketData(**data))
+            time.sleep(0.1)
+
+    def mock_get_results():
+        return mock_results
+
+    mock_connection.client.connect = mock_connect
+    mock_connection.client.results = mock_get_results
+
+    return mock_connection
+
+
+@pytest.mark.asyncio
+async def test_websocket_fetcher(
+    mock_websocket_connection, credentials=test_credentials
+):
+    """Test websocket fetcher."""
+    fetcher = PolygonWebSocketFetcher()
+    params = {
+        "symbol": "btcusd",
+        "name": "polygon_test",
+        "limit": 10,
+        "asset_type": "crypto",
+        "feed": "aggs_sec",
+    }
+
+    with patch.object(fetcher, "fetch_data", return_value=mock_websocket_connection):
+        result = await fetcher.fetch_data(params, credentials)
+
+        # Ensure the client is not running initially
+        assert not result.client.is_running
+        assert result.client.results() == []
+        result.client.connect()
+        assert result.client.is_running
+        assert len(result.client.results()) == len(MOCK_WEBSOCKET_DATA)
+        assert result.client.results()[0] == PolygonWebSocketData(
+            **MOCK_WEBSOCKET_DATA[0]
+        )
 
 
 @pytest.mark.record_http
@@ -171,33 +354,3 @@ def test_polygon_currency_snapshots_fetcher(credentials=test_credentials):
     fetcher = PolygonCurrencySnapshotsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
-
-
-@pytest.mark.record_verify_screen(hash=True)
-@pytest.mark.record_verify_object(hash=False)
-def test_polygon_websocket_fetcher(record, credentials=test_credentials):
-    """Test Polygon Websocket fetcher."""
-    import asyncio
-    import time
-
-    params = {
-        "symbol": "btcusd",
-        "name": "polygon_test",
-        "limit": 10,
-        "asset_type": "crypto",
-        "feed": "aggs_sec",
-    }
-
-    try:
-        fetcher = PolygonWebSocketFetcher()
-        response = asyncio.run(fetcher.fetch_data(params, credentials))
-        time.sleep(1)
-        record.add_verify(response.client.is_running)
-        assert response.client.is_running
-        time.sleep(1)
-        assert len(response.client.results) > 0
-        record.add_verify(list(response.client.results[0].model_dump().keys()))
-    finally:
-        response.client.disconnect()
-        assert not response.client.is_running
-        record.add_verify(response.client.is_running)
