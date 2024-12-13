@@ -84,6 +84,7 @@ def obb(pytestconfig):
                 "symbol": "spy,qqq,iwm,tsla,nvda",
                 "asset_type": "stock",
                 "feed": "realtime",
+                "trades_only": True,
                 "auth_token": None,
                 "results_file": None,
                 "save_results": False,
@@ -315,6 +316,38 @@ def test_websockets_get_client(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.websockets.get_client(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert result.results is not None
+
+
+@parametrize(
+    "params",
+    [
+        {
+            "name": "test_fmp",
+            "auth_token": None,
+        },
+        {
+            "name": "test_tiingo",
+            "auth_token": None,
+        },
+        {
+            "name": "test_polygon",
+            "auth_token": None,
+        },
+        {
+            "name": "test_intrinio",
+            "auth_token": None,
+        },
+    ],
+)
+@pytest.mark.integration
+def test_websockets_get_client_status(params, obb):
+    """Test the websockets_get_client endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.websockets.get_client_status(**params)
     assert result
     assert isinstance(result, OBBject)
     assert result.results is not None

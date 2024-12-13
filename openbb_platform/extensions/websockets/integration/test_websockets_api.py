@@ -88,6 +88,7 @@ def headers():
                 "symbol": "spy,qqq,iwm,tsla,nvda",
                 "asset_type": "stock",
                 "feed": "realtime",
+                "trades_only": True,
                 "auth_token": None,
                 "results_file": None,
                 "save_results": False,
@@ -299,6 +300,39 @@ def test_websockets_unsubscribe(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/websockets/unsubscribe?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        {
+            "name": "test_fmp",
+            "auth_token": None,
+        },
+        {
+            "name": "test_tiingo",
+            "auth_token": None,
+        },
+        {
+            "name": "test_polygon",
+            "auth_token": None,
+        },
+        {
+            "name": "test_intrinio",
+            "auth_token": None,
+        },
+    ],
+)
+@pytest.mark.skip(reason="Python interface only.")
+def test_websockets_get_client(params, headers):
+    """Test the websockets_get_client endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/websockets/get_client?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
