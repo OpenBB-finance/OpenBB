@@ -8,7 +8,7 @@ from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -43,7 +43,20 @@ sys.stdout = StdOutSink()
                 "symbol": "btcusd,ethusd,solusd",
                 "start_broadcast": True,
             }
-        )
+        ),
+        APIEx(
+            parameters={
+                "name": "client2",
+                "provider": "polygon",
+                "asset_type": "stock_delayed",
+                "feed": "aggs_sec",
+                "symbol": "*",
+                "limit": "None",
+                "results_file": "/path/to/results.db",
+                "save_results": "True",
+                "auth_token": "someAuthToken123$",
+            }
+        ),
     ],
 )
 async def create_connection(
@@ -98,6 +111,12 @@ async def create_connection(
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Get all written results from a client connection.",
+            code=["res = obb.websockets.get_results(name='client1')", "res.to_df()"],
+        )
+    ],
 )
 async def get_results(name: str, auth_token: Optional[str] = None) -> OBBject:
     """Get all recorded results from a client connection.
@@ -128,6 +147,12 @@ async def get_results(name: str, auth_token: Optional[str] = None) -> OBBject:
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Clear all results from a client connection database.",
+            code=["obb.websockets.clear_results(name='client1')"],
+        )
+    ],
 )
 async def clear_results(name: str, auth_token: Optional[str] = None) -> OBBject[str]:
     """Clear all stored results from a client connection. Does not stop the client or broadcast.
@@ -154,6 +179,12 @@ async def clear_results(name: str, auth_token: Optional[str] = None) -> OBBject[
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Subscribe to a new symbol in an active client connection.",
+            code=["obb.websockets.subscribe(name='client1', subscribe='ethusd')"],
+        )
+    ],
 )
 async def subscribe(
     name: str, symbol: str, auth_token: Optional[str] = None
@@ -200,6 +231,12 @@ async def subscribe(
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Unsubscribe from a symbol in an active client connection.",
+            code=["obb.websockets.unsubscribe(name='client1', symbol='btcusd')"],
+        )
+    ],
 )
 async def unsubscribe(
     name: str, symbol: str, auth_token: Optional[str] = None
@@ -238,6 +275,16 @@ async def unsubscribe(
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Get the status of all created clients which have not been killed.",
+            code=["obb.websockets.get_client_status()"],
+        ),
+        PythonEx(
+            description="Get the status of a specific client.",
+            code=["obb.websockets.get_client_status(name='client1')"],
+        ),
+    ],
 )
 async def get_client_status(
     name: str = "all",
@@ -268,6 +315,13 @@ async def get_client_status(
 @router.command(
     methods=["GET"],
     include_in_schema=False,
+    examples=[
+        PythonEx(
+            description="Get the Python client object by 'name'."
+            + " Useful if the local was collected by the Garbage Collector.",
+            code=["obb.websockets.get_client(name='client1')"],
+        ),
+    ],
 )
 async def get_client(name: str, auth_token: Optional[str] = None) -> OBBject:
     """Get an open client connection object. This endpoint is only available from the Python interface.
@@ -292,6 +346,12 @@ async def get_client(name: str, auth_token: Optional[str] = None) -> OBBject:
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Stop the connection to a provider websocket.",
+            code=["obb.websockets.stop_connection(name='client2')"],
+        ),
+    ],
 )
 async def stop_connection(
     name: str, auth_token: Optional[str] = None
@@ -321,6 +381,12 @@ async def stop_connection(
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Restart a stopped connection to a provider websocket.",
+            code=["obb.websockets.restart_connection(name='client2')"],
+        ),
+    ],
 )
 async def restart_connection(
     name: str, auth_token: Optional[str] = None
@@ -357,6 +423,12 @@ async def restart_connection(
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Stop broadcasting the results file.",
+            code=["obb.websockets.stop_broadcasting(name='client1')"],
+        ),
+    ],
 )
 async def stop_broadcasting(
     name: str, auth_token: Optional[str] = None
@@ -402,6 +474,14 @@ async def stop_broadcasting(
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Start broadcasting the results file.",
+            code=[
+                "obb.websockets.start_broadcasting(name='client1', host='0.0.0.0', port=6942)"
+            ],
+        ),
+    ],
 )
 async def start_broadcasting(
     name: str,
@@ -452,6 +532,12 @@ async def start_broadcasting(
 
 @router.command(
     methods=["GET"],
+    examples=[
+        PythonEx(
+            description="Kill all associated processes with a websocket connection.",
+            code=["obb.websockets.kill(name='client2')"],
+        ),
+    ],
 )
 async def kill(name: str, auth_token: Optional[str] = None) -> OBBject[str]:
     """Kills a client.

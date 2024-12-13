@@ -99,8 +99,8 @@ class TiingoWebSocketQueryParams(WebSocketQueryParams):
     )
     feed: Literal["trade", "trade_and_quote"] = Field(
         default="trade_and_quote",
-        description="The type of data feed to subscribe to. FX only supports quote."
-        + " Choices are 'trade' or 'trade_and_quote'.",
+        description="The asset type associated with the symbol. Choices are 'trade' or 'trade_and_quote'."
+        + " FX only supports quote.",
     )
 
 

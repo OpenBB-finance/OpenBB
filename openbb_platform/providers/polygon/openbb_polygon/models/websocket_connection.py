@@ -202,8 +202,8 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
     feed: Literal["aggs_min", "aggs_sec", "trade", "quote", "l2", "fmv", "value"] = (
         Field(
             default="aggs_sec",
-            description="The feed type to subscribe to. Choose from: aggs_min, aggs_sec, trade, quote, l2, fmv, value"
-            + "l2 is only available for crypto. value is only available for index.",
+            description="The asset type associated with the symbol."
+            + "l2 is only available for crypto, and value is only available for index.",
         )
     )
 
