@@ -744,9 +744,9 @@ class MethodDefinition:
         elif isclass(return_type) and issubclass(return_type, OBBject):
             func_returns = "OBBject"
         else:
-            func_returns = return_type.__name__ if return_type else Any.__name__
+            func_returns = return_type.__name__ if return_type else Any  # type: ignore
 
-        return func_returns
+        return func_returns  # type: ignore
 
     @staticmethod
     def build_command_method_signature(
