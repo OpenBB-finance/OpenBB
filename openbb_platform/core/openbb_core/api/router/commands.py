@@ -195,8 +195,9 @@ def build_api_wrapper(
 
     if no_validate is True:
         return_class = func.__annotations__["return"]
-        if "OBBject" in return_class.__name__:
-            returns = sig.__str__().split("->")[-1].strip().split("\n\n")
+        # If we still have OBBject as a return class, we inject the dependent model
+        if return_class == OBBject or "OBBject" in str(return_class):
+            returns = str(sig).split("->")[-1].strip().split("\n\n")
             route.response_model = OBBject[returns.__class__.__name__]
         else:
             route.response_model = None

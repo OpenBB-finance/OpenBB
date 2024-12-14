@@ -16,6 +16,7 @@ from openbb_core.app.model.abstract.warning import OpenBBWarning, cast_warning
 from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ExtraParams
+from openbb_core.app.static.package_builder import PathHandler
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
 from pydantic import BaseModel, ConfigDict, create_model
@@ -29,6 +30,9 @@ if TYPE_CHECKING:
 class ExecutionContext:
     """Execution context."""
 
+    # For checking if the command specifies no validation in the API Route
+    _route_map = PathHandler.build_route_map()
+
     def __init__(
         self,
         command_map: "CommandMap",
@@ -41,6 +45,11 @@ class ExecutionContext:
         self.route = route
         self.system_settings = system_settings
         self.user_settings = user_settings
+
+    @property
+    def api_route(self) -> Dict[str, Any]:
+        """API route."""
+        return self._route_map[self.route]
 
 
 class ParametersBuilder:
@@ -319,12 +328,19 @@ class StaticCommandRunner:
                 for name, default in model_headers.items() or {}
             } or None
 
+            validate = not execution_context.api_route.openapi_extra.get("no_validate")
             try:
                 obbject = await cls._command(func, kwargs)
                 # The output might be from a router command with 'no_validate=True'
                 # It might be of a different type than OBBject.
                 # In this case, we avoid accessing those attributes.
-                if isinstance(obbject, OBBject):
+                if isinstance(obbject, OBBject) or validate:
+                    if type(obbject) is not OBBject:
+                        raise OpenBBError(
+                            TypeError(
+                                f"Expected OBBject instance at function output, got {type(obbject)} instead."
+                            )
+                        )
                     # This section prepares the obbject to pass to the charting service.
                     obbject._route = route  # pylint: disable=protected-access
                     std_params = cls._extract_params(kwargs, "standard_params") or (
