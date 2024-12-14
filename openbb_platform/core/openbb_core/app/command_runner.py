@@ -336,7 +336,7 @@ class StaticCommandRunner:
                 # It might be of a different type than OBBject.
                 # In this case, we avoid accessing those attributes.
                 if isinstance(obbject, OBBject) or validate:
-                    if type(obbject) is not OBBject:
+                    if validate and not isinstance(obbject, OBBject):
                         raise OpenBBError(
                             TypeError(
                                 f"Expected OBBject instance at function output, got {type(obbject)} instead."
@@ -351,8 +351,8 @@ class StaticCommandRunner:
                     obbject._standard_params = (  # pylint: disable=protected-access
                         std_params
                     )
-                    obbject._extra_params = (
-                        extra_params  # pylint: disable=protected-access
+                    obbject._extra_params = (  # pylint: disable=protected-access
+                        extra_params
                     )
                     if chart and obbject.results:
                         cls._chart(obbject, **kwargs)
