@@ -741,10 +741,10 @@ class MethodDefinition:
             func_returns = "None"
         elif isinstance(return_type, str):
             func_returns = f"ForwardRef('{return_type}')"
-        elif issubclass(return_type, OBBject):
+        elif isclass(return_type) and issubclass(return_type, OBBject):
             func_returns = "OBBject"
         else:
-            func_returns = return_type.__name__
+            func_returns = return_type.__name__ if return_type else Any
 
         return func_returns
 
