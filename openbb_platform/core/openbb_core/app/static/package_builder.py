@@ -323,13 +323,7 @@ class ImportDefinition:
         func = route.endpoint
         sig = signature(func)
         if no_validate is True:
-            return_class = func.__annotations__["return"]
-            if return_class == OBBject or "OBBject" in str(return_class):
-                # If we still have OBBject as a return class, we inject the dependent model
-                returns = str(sig).split("->")[-1].strip().split("\n\n")
-                route.response_model = OBBject[returns.__class__.__name__]
-            else:
-                route.response_model = None
+            route.response_model = None
 
         parameter_map = sig.parameters
         return_type = sig.return_annotation if not no_validate else route.response_model

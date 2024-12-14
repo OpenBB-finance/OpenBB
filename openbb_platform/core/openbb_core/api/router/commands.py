@@ -186,21 +186,13 @@ def build_api_wrapper(
     path: str = route.path  # type: ignore
 
     no_validate = route.openapi_extra.get("no_validate")
-    sig = signature(func)
-
     new_signature = build_new_signature(path=path, func=func)
     new_annotations_map = build_new_annotation_map(sig=new_signature)
     func.__signature__ = new_signature  # type: ignore
     func.__annotations__ = new_annotations_map
 
     if no_validate is True:
-        return_class = func.__annotations__["return"]
-        # If we still have OBBject as a return class, we inject the dependent model
-        if return_class == OBBject or "OBBject" in str(return_class):
-            returns = str(sig).split("->")[-1].strip().split("\n\n")
-            route.response_model = OBBject[returns.__class__.__name__]
-        else:
-            route.response_model = None
+        route.response_model = None
 
     @wraps(wrapped=func)
     async def wrapper(*args: Tuple[Any], **kwargs: Dict[str, Any]) -> OBBject:
