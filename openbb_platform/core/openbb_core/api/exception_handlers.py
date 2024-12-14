@@ -4,9 +4,10 @@
 
 import logging
 from collections.abc import Iterable
-from typing import Any
+from typing import Any, Union
 
 from fastapi import Request
+from fastapi.exceptions import ResponseValidationError
 from fastapi.responses import JSONResponse, Response
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
@@ -35,7 +36,15 @@ class ExceptionHandlers:
     @staticmethod
     async def exception(_: Request, error: Exception) -> JSONResponse:
         """Exception handler for Base Exception."""
-        errors = error.errors(include_url=False) if hasattr(error, "errors") else error
+        try:
+            errors = (
+                error.errors(include_url=False)
+                if hasattr(error, "errors")
+                else error.errors
+            )
+        except Exception:
+            errors = error.errors if hasattr(error, "errors") else error
+
         if errors:
             if isinstance(errors, ValueError):
                 return await ExceptionHandlers._handle(
@@ -55,11 +64,13 @@ class ExceptionHandlers:
         return await ExceptionHandlers._handle(
             exception=error,
             status_code=500,
-            detail=f"Unexpected Error -> {error.__class__.__name__} -> {str(error.args[0] or error.args)}",
+            detail=f"Unexpected Error -> {error.__class__.__name__} -> {error}",
         )
 
     @staticmethod
-    async def validation(request: Request, error: ValidationError):
+    async def validation(
+        request: Request, error: Union[ValidationError, ResponseValidationError]
+    ):
         """Exception handler for ValidationError."""
         # Some validation is performed at Fetcher level.
         # So we check if the validation error comes from a QueryParams class.
@@ -67,7 +78,27 @@ class ExceptionHandlers:
         # If yes, we update the error location with query.
         # If not, we handle it as a base Exception error.
         query_params = dict(request.query_params)
-        errors = error.errors(include_url=False)
+        if isinstance(error, ResponseValidationError):
+            detail = [
+                {
+                    **{k: v for k, v in err.items() if k != "ctx"},
+                    "loc": ("query",) + err.get("loc", ()),
+                }
+                for err in error.errors()
+            ]
+            return await ExceptionHandlers._handle(
+                exception=error,
+                status_code=422,
+                detail=detail,
+            )
+        try:
+            errors = (
+                error.errors(include_url=False)
+                if hasattr(error, "errors")
+                else error.errors
+            )
+        except Exception:
+            errors = error.errors if hasattr(error, "errors") else error
         all_in_query = all(
             loc in query_params for err in errors for loc in err.get("loc", ())
         )

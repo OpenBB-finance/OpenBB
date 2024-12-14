@@ -301,7 +301,13 @@ class ImportDefinition:
         """Filter the hint type list."""
         new_hint_type_list = []
         for hint_type in hint_type_list:
-            if hint_type != _empty and hint_type.__module__ != "builtins":
+            if hint_type != _empty and (
+                (
+                    hasattr(hint_type, "__module__")
+                    and hint_type.__module__ != "builtins"
+                )
+                or (isinstance(hint_type, str))
+            ):
                 new_hint_type_list.append(hint_type)
 
         new_hint_type_list = list(set(new_hint_type_list))
@@ -309,11 +315,23 @@ class ImportDefinition:
         return new_hint_type_list
 
     @classmethod
-    def get_function_hint_type_list(cls, func: Callable) -> List[Type]:
+    def get_function_hint_type_list(cls, route) -> List[Type]:
         """Get the hint type list from the function."""
+
+        no_validate = route.openapi_extra.get("no_validate")
+
+        func = route.endpoint
         sig = signature(func)
+        if no_validate is True:
+            return_class = func.__annotations__["return"]
+            if return_class == OBBject or "OBBject" in str(return_class):
+                returns = sig.__str__().split("->")[-1].strip().split("\n\n")
+                route.response_model = OBBject[returns.__class__.__name__]
+            else:
+                route.response_model = None
+
         parameter_map = sig.parameters
-        return_type = sig.return_annotation
+        return_type = sig.return_annotation if not no_validate else route.response_model
 
         hint_type_list = []
 
@@ -321,9 +339,13 @@ class ImportDefinition:
             hint_type_list.append(parameter.annotation)
 
         if return_type:
-            if not issubclass(return_type, OBBject):
+            if not no_validate and not issubclass(return_type, OBBject):
                 raise ValueError("Return type must be an OBBject.")
-            hint_type = get_args(get_type_hints(return_type)["results"])[0]
+            hint_type = (
+                get_args(get_type_hints(return_type)["results"])[0]
+                if "OBBject" in return_type.__class__.__name__
+                else return_type
+            )
             hint_type_list.append(hint_type)
 
         hint_type_list = cls.filter_hint_type_list(hint_type_list)
@@ -344,7 +366,7 @@ class ImportDefinition:
             if route:
                 if route.deprecated:
                     hint_type_list.append(type(route.summary.metadata))
-                function_hint_type_list = cls.get_function_hint_type_list(func=route.endpoint)  # type: ignore
+                function_hint_type_list = cls.get_function_hint_type_list(route=route)  # type: ignore
                 hint_type_list.extend(function_hint_type_list)
 
         hint_type_list = list(set(hint_type_list))
@@ -380,7 +402,10 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         code += "\nfrom openbb_core.app.model.field import OpenBBField"
-        module_list = [hint_type.__module__ for hint_type in hint_type_list]
+        module_list = [
+            hint_type.__module__ if hasattr(hint_type, "__module__") else hint_type
+            for hint_type in hint_type_list
+        ]
         module_list = list(set(module_list))
         module_list.sort()
 
@@ -536,7 +561,7 @@ class MethodDefinition:
     def is_data_processing_function(path: str) -> bool:
         """Check if the function is a data processing function."""
         methods = PathHandler.build_route_map()[path].methods  # type: ignore
-        return "POST" in methods
+        return "POST" in methods or "PUT" in methods
 
     @staticmethod
     def is_deprecated_function(path: str) -> bool:
@@ -714,10 +739,12 @@ class MethodDefinition:
         """Build the function returns."""
         if return_type == _empty:
             func_returns = "None"
-        elif return_type.__module__ == "builtins":
-            func_returns = return_type.__name__
-        else:
+        elif isinstance(return_type, str):
+            func_returns = f"ForwardRef('{return_type}')"
+        elif issubclass(return_type, OBBject):
             func_returns = "OBBject"
+        else:
+            func_returns = return_type.__name__
 
         return func_returns
 
@@ -1668,7 +1695,11 @@ class ReferenceGenerator:
             content_inside_brackets = re.search(
                 r"OBBject\[\s*((?:[^\[\]]|\[[^\[\]]*\])*)\s*\]", return_type
             )
-            return_type = content_inside_brackets.group(1)  # type: ignore
+            return_type = (  # type: ignore
+                content_inside_brackets.group(1)
+                if content_inside_brackets is not None
+                else return_type
+            )
 
             returns_list = [
                 {

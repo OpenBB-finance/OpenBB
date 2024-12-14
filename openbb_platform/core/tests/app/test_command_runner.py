@@ -304,6 +304,7 @@ async def test_static_command_runner_run(
             self.results = results
             self.extra = {}
             self.extra["metadata"] = {"test": "test"}
+            self.provider = None
 
     mock_get_command.return_value = other_mock_func
     mock_execute_func.return_value = MockOBBject(results=[1, 2, 3, 4])
@@ -369,6 +370,7 @@ def test_static_command_runner_chart():
             {"date": "1991", "value": 200},
             {"date": "1992", "value": 300},
         ],
+        provider="mock_provider",
         accessors={"charting": Mock()},
     )
     mock_obbject.charting.show = Mock()
@@ -385,9 +387,10 @@ async def test_static_command_runner_command():
     class MockOBBject:
         """Mock OBBject"""
 
-        def __init__(self, results):
+        def __init__(self, results, **kwargs):
             self.results = results
             self.extra = {}
+            self.provider = kwargs.get("provider_choices").provider
 
     class MockProviderChoices:
         """Mock ProviderChoices"""
@@ -396,7 +399,7 @@ async def test_static_command_runner_command():
             self.provider = provider
 
     def other_mock_func(**kwargs):
-        return MockOBBject(results=[1, 2, 3, 4])
+        return MockOBBject([1, 2, 3, 4], **kwargs)
 
     mock_provider_choices = MockProviderChoices(provider="mock_provider")
 

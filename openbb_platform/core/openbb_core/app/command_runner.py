@@ -222,7 +222,12 @@ class StaticCommandRunner:
     ) -> OBBject:
         """Run a command and return the output."""
         obbject = await maybe_coroutine(func, **kwargs)
-        obbject.provider = getattr(kwargs.get("provider_choices"), "provider", None)
+        if isinstance(obbject, OBBject):
+            obbject.provider = getattr(
+                kwargs.get("provider_choices"),
+                "provider",
+                getattr(obbject, "provider", None),
+            )
         return obbject
 
     @classmethod
@@ -316,19 +321,40 @@ class StaticCommandRunner:
 
             try:
                 obbject = await cls._command(func, kwargs)
+                # The output might be an from a router with validate=False
+                # The output might be of a different type than OBBject.
+                # In this case, we avoid accessing those attributes.
+                if isinstance(obbject, OBBject):
+                    # This section prepares the obbject to pass to the charting service.
+                    obbject._route = route  # pylint: disable=protected-access
+                    std_params = cls._extract_params(kwargs, "standard_params") or (
+                        kwargs if "data" in kwargs else {}
+                    )
+                    extra_params = cls._extract_params(kwargs, "extra_params")
+                    obbject._standard_params = (  # pylint: disable=protected-access
+                        std_params
+                    )
+                    obbject._extra_params = (
+                        extra_params  # pylint: disable=protected-access
+                    )
+                    if chart and obbject.results:
+                        cls._chart(obbject, **kwargs)
 
-                # This section prepares the obbject to pass to the charting service.
-                obbject._route = route  # pylint: disable=protected-access
-                std_params = cls._extract_params(kwargs, "standard_params") or (
-                    kwargs if "data" in kwargs else {}
-                )
-                extra_params = cls._extract_params(kwargs, "extra_params")
-                obbject._standard_params = (  # pylint: disable=protected-access
-                    std_params
-                )
-                obbject._extra_params = extra_params  # pylint: disable=protected-access
-                if chart and obbject.results:
-                    cls._chart(obbject, **kwargs)
+                if warning_list:
+                    if isinstance(obbject, OBBject):
+                        obbject.warnings = []
+                    for w in warning_list:
+                        if isinstance(obbject, OBBject):
+                            obbject.warnings.append(cast_warning(w))
+                        if user_settings.preferences.show_warnings:
+                            showwarning(
+                                message=w.message,
+                                category=w.category,
+                                filename=w.filename,
+                                lineno=w.lineno,
+                                file=w.file,
+                                line=w.line,
+                            )
             finally:
                 ls = LoggingService(system_settings, user_settings)
                 ls.log(
@@ -341,19 +367,6 @@ class StaticCommandRunner:
                     custom_headers=custom_headers,
                 )
 
-        if warning_list:
-            obbject.warnings = []
-            for w in warning_list:
-                obbject.warnings.append(cast_warning(w))
-                if user_settings.preferences.show_warnings:
-                    showwarning(
-                        message=w.message,
-                        category=w.category,
-                        filename=w.filename,
-                        lineno=w.lineno,
-                        file=w.file,
-                        line=w.line,
-                    )
         return obbject
 
     # pylint: disable=W0718
@@ -385,7 +398,9 @@ class StaticCommandRunner:
 
         duration = perf_counter_ns() - start_ns
 
-        if execution_context.user_settings.preferences.metadata:
+        if execution_context.user_settings.preferences.metadata and isinstance(
+            obbject, OBBject
+        ):
             try:
                 obbject.extra["metadata"] = Metadata(
                     arguments=kwargs,

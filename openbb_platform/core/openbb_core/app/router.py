@@ -148,7 +148,10 @@ class CommandValidator:
 
         valid_return_type = False
 
-        if isclass(return_type) and issubclass(return_type, OBBject):
+        if isclass(return_type) and issubclass(
+            return_type,
+            OBBject,
+        ):
             results_type = return_type.__pydantic_generic_metadata__.get("args", [])[
                 0
             ]  # type: ignore
@@ -172,6 +175,8 @@ class CommandValidator:
                 "Allowed return type:"
                 f"    {func.__name__}(...) -> OBBject[T] :\n"
                 "If you need T = None, use an empty model instead.\n"
+                "If you need to return an object that is not OBBject,"
+                " use the proper response or primitive type, and include 'no_validate=True' in the command decorator.\n"
             )
 
     @classmethod
@@ -253,7 +258,9 @@ class Router:
         api_router = self._api_router
 
         model = kwargs.pop("model", "")
-
+        no_validate = kwargs.pop("no_validate", None)
+        if no_validate is True:
+            func.__annotations__["return"] = None
         if func := SignatureInspector.complete(func, model):
 
             kwargs["response_model_exclude_unset"] = True
@@ -263,15 +270,20 @@ class Router:
                 examples=kwargs.pop("examples", []),
                 providers=ProviderInterface().available_providers,
             )
+            kwargs["openapi_extra"]["no_validate"] = no_validate
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
             kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
-            kwargs["response_model"] = kwargs.get(
-                "response_model",
-                func.__annotations__["return"],  # type: ignore
+            kwargs["response_model"] = (
+                kwargs.get(
+                    "response_model",
+                    func.__annotations__["return"],  # type: ignore
+                )
+                if not no_validate
+                else func.__annotations__["return"]
             )
             kwargs["response_model_by_alias"] = kwargs.get(
                 "response_model_by_alias", False
@@ -431,19 +443,20 @@ class SignatureInspector:
         return_type = func.__annotations__["return"]
         is_list = False
 
-        results_type = get_type_hints(return_type)["results"]
-        results_type_args = get_args(results_type)
-        if not isinstance(results_type, type(None)):
-            results_type = results_type_args[0]
+        if return_type == OBBject:
+            results_type = get_type_hints(return_type)["results"]
+            results_type_args = get_args(results_type)
+            if not isinstance(results_type, type(None)):
+                results_type = results_type_args[0]
 
-        is_list = isinstance(get_origin(results_type), list)
-        inner_type = (
-            results_type_args[0] if is_list and results_type_args else results_type
-        )
-        inner_type_name = getattr(inner_type, "__name__", inner_type)
+            is_list = isinstance(get_origin(results_type), list)
+            inner_type = (
+                results_type_args[0] if is_list and results_type_args else results_type
+            )
+            inner_type_name = getattr(inner_type, "__name__", inner_type)
 
-        func.__annotations__["return"].__doc__ = "OBBject"
-        func.__annotations__["return"].__name__ = f"OBBject[{inner_type_name}]"
+            func.__annotations__["return"].__doc__ = "OBBject"
+            func.__annotations__["return"].__name__ = f"OBBject[{inner_type_name}]"
 
         return func
 
