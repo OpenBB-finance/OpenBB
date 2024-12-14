@@ -36,14 +36,7 @@ class ExceptionHandlers:
     @staticmethod
     async def exception(_: Request, error: Exception) -> JSONResponse:
         """Exception handler for Base Exception."""
-        try:
-            errors = (
-                error.errors(include_url=False)
-                if hasattr(error, "errors")
-                else error.errors
-            )
-        except Exception:
-            errors = error.errors if hasattr(error, "errors") else error
+        errors = error.errors if hasattr(error, "errors") else error
 
         if errors:
             if isinstance(errors, ValueError):

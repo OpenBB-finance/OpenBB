@@ -744,7 +744,7 @@ class MethodDefinition:
         elif isclass(return_type) and issubclass(return_type, OBBject):
             func_returns = "OBBject"
         else:
-            func_returns = return_type.__name__ if return_type else Any
+            func_returns = return_type.__name__ if return_type else Any.__name__
 
         return func_returns
 
