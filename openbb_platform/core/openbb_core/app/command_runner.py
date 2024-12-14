@@ -22,6 +22,7 @@ from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
 from pydantic import BaseModel, ConfigDict, create_model
 
 if TYPE_CHECKING:
+    from fastapi.routing import APIRoute
     from openbb_core.app.model.system_settings import SystemSettings
     from openbb_core.app.model.user_settings import UserSettings
     from openbb_core.app.router import CommandMap
@@ -47,7 +48,7 @@ class ExecutionContext:
         self.user_settings = user_settings
 
     @property
-    def api_route(self) -> Dict[str, Any]:
+    def api_route(self) -> "APIRoute":
         """API route."""
         return self._route_map[self.route]
 
