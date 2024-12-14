@@ -321,8 +321,8 @@ class StaticCommandRunner:
 
             try:
                 obbject = await cls._command(func, kwargs)
-                # The output might be an from a router with validate=False
-                # The output might be of a different type than OBBject.
+                # The output might be from a router command with 'no_validate=True'
+                # It might be of a different type than OBBject.
                 # In this case, we avoid accessing those attributes.
                 if isinstance(obbject, OBBject):
                     # This section prepares the obbject to pass to the charting service.
