@@ -1826,8 +1826,8 @@ class ReferenceGenerator:
             # Add data for the endpoints without a standard model (data processing endpoints)
             elif (
                 route_method == {"POST"}
-                or "PUT" in route_method
-                or "PATCH" in route_method
+                or "PUT" in str(route_method)
+                or "PATCH" in str(route_method)
             ) or (route_method == {"GET"} and not model_map):
                 # Non-model method's router `description` attribute is unreliable as it may or
                 # may not contain the "Parameters" and "Returns" sections. Hence, the
