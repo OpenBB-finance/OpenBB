@@ -556,7 +556,7 @@ class MethodDefinition:
     def is_data_processing_function(path: str) -> bool:
         """Check if the function is a data processing function."""
         methods = PathHandler.build_route_map()[path].methods  # type: ignore
-        return "POST" in methods or "PUT" in methods
+        return "POST" in methods or "PUT" in methods or "PATCH" in methods
 
     @staticmethod
     def is_deprecated_function(path: str) -> bool:
