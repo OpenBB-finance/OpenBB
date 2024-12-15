@@ -2,14 +2,13 @@
 
 import traceback
 import warnings
-from functools import lru_cache, partial
-from inspect import Parameter, Signature, isclass, iscoroutinefunction, signature
+from functools import lru_cache
+from inspect import isclass
 from typing import (
     Any,
     Callable,
     Dict,
     List,
-    Mapping,
     Optional,
     Type,
     get_args,

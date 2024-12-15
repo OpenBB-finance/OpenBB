@@ -84,11 +84,10 @@ def test_correctly_initialized():
         "openbb_core.app.logs.logging_service.LoggingService._log_startup",
         mock_log_startup,
     ):
-        LoggingService(
+        ls = LoggingService(  # noqa: F841  # pylint: disable=unused-variable
             system_settings=mock_system_settings,
             user_settings=mock_user_settings,
         )
-
         mock_setup_handlers.assert_called_once()
         mock_log_startup.assert_called_once()
 
