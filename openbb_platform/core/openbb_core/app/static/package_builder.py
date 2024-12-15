@@ -1383,6 +1383,7 @@ class ReferenceGenerator:
 
     # pylint: disable=protected-access
     pi = DocstringGenerator.provider_interface
+    route_map = PathHandler.build_route_map()
 
     @classmethod
     def _get_endpoint_examples(
@@ -1749,16 +1750,14 @@ class ReferenceGenerator:
                 route_func,
                 examples,  # type: ignore
             )
+            validate_output = not cls.route_map[path].openapi_extra.get("no_validate")
+            model_map = cls.pi.map.get(standard_model, {})
+
             # Add data for the endpoints having a standard model
-            if route_method == {"GET"}:
+            if route_method == {"GET"} and model_map:
                 reference[path]["description"] = getattr(
                     route, "description", "No description available."
                 )
-
-                # TODO: The reference is not getting populated when a command does not use a standard model
-                # Access model map from the ProviderInterface
-                model_map = cls.pi.map.get(standard_model, {})
-
                 for provider in model_map:
                     if provider == "openbb":
                         # openbb provider is always present hence its the standard field
@@ -1815,28 +1814,42 @@ class ReferenceGenerator:
 
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
-                providers = provider_parameter_fields["type"]
-                reference[path]["returns"]["OBBject"] = cls._get_obbject_returns_fields(
-                    standard_model, providers
-                )
+                if validate_output is False:
+                    reference[path]["returns"]["Any"] = {
+                        "description": "Unvalidated results object.",
+                    }
+                else:
+                    providers = provider_parameter_fields["type"]
+                    reference[path]["returns"]["OBBject"] = (
+                        cls._get_obbject_returns_fields(standard_model, providers)
+                    )
             # Add data for the endpoints without a standard model (data processing endpoints)
-            elif route_method == {"POST"}:
-                # POST method router `description` attribute is unreliable as it may or
+            elif (
+                route_method == {"POST"}
+                or "PUT" in route_method
+                or "PATCH" in route_method
+            ) or (route_method == {"GET"} and not model_map):
+                # Non-model method's router `description` attribute is unreliable as it may or
                 # may not contain the "Parameters" and "Returns" sections. Hence, the
                 # endpoint function docstring is used instead.
                 docstring = getattr(route_func, "__doc__", "")
                 description = docstring.split("Parameters")[0].strip()
                 # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
-                # Add endpoint parameters fields for POST methods
+                # Add endpoint parameters fields for non-model methods
                 reference[path]["parameters"]["standard"] = (
                     cls._get_post_method_parameters_info(docstring)
                 )
                 # Add endpoint returns data
-                # Currently only OBBject object is returned
-                reference[path]["returns"]["OBBject"] = (
-                    cls._get_post_method_returns_info(docstring)
-                )
+                # If the endpoint is not validated, the return type is set to Any
+                if validate_output is False:
+                    reference[path]["returns"]["Any"] = {
+                        "description": "Unvalidated results object.",
+                    }
+                else:
+                    reference[path]["returns"]["OBBject"] = (
+                        cls._get_post_method_returns_info(docstring)
+                    )
 
         return reference
 
