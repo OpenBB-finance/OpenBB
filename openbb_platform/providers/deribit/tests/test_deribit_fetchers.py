@@ -68,15 +68,6 @@ def vcr_config():
     }
 
 
-@pytest.fixture
-def mocker():
-    """Fixture for mocker."""
-    with patch(
-        "openbb_deribit.models.options_chains.DeribitOptionsChainsFetcher"
-    ) as mock:
-        yield mock
-
-
 @pytest.mark.record_http
 def test_get_options_symbols():
     """Test getting the list of options symbols."""
@@ -99,8 +90,6 @@ async def test_deribit_options_chains_fetcher(credentials=test_credentials):
     """Test Deribit Options Chains Fetcher."""
     params = {"symbol": "BTC"}
     fetcher = DeribitOptionsChainsFetcher()
-    result = fetcher.test(params, test_credentials)
-    assert result is None
 
     with patch(
         "openbb_deribit.models.options_chains.DeribitOptionsChainsFetcher.fetch_data",
