@@ -8,15 +8,15 @@ import sys
 
 import websockets
 from openbb_core.provider.utils.errors import UnauthorizedError
-from openbb_tiingo.models.websocket_connection import TiingoWebSocketData
-from openbb_websockets.helpers import (
-    MessageQueue,
+from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
     handle_validation_error,
     parse_kwargs,
     write_to_db,
 )
+from openbb_core.provider.utils.websockets.message_queue import MessageQueue
+from openbb_tiingo.models.websocket_connection import TiingoWebSocketData
 from pydantic import ValidationError
 
 # These are the data array definitions.

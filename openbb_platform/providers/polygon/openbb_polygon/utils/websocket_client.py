@@ -8,17 +8,17 @@ import sys
 
 import websockets
 import websockets.exceptions
-from openbb_polygon.models.websocket_connection import (
-    FEED_MAP,
-    PolygonWebSocketData,
-)
-from openbb_websockets.helpers import (
-    MessageQueue,
+from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
     handle_validation_error,
     parse_kwargs,
     write_to_db,
+)
+from openbb_core.provider.utils.websockets.message_queue import MessageQueue
+from openbb_polygon.models.websocket_connection import (
+    FEED_MAP,
+    PolygonWebSocketData,
 )
 from pydantic import ValidationError
 

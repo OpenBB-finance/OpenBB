@@ -9,16 +9,16 @@ import sys
 from typing import Any
 
 from openbb_core.provider.utils.helpers import run_async
-from openbb_intrinio.models.websocket_connection import IntrinioWebSocketData
-from openbb_intrinio.utils.stocks_client import IntrinioRealtimeClient
-from openbb_websockets.helpers import (
-    MessageQueue,
+from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
     handle_validation_error,
     parse_kwargs,
     write_to_db,
 )
+from openbb_core.provider.utils.websockets.message_queue import MessageQueue
+from openbb_intrinio.models.websocket_connection import IntrinioWebSocketData
+from openbb_intrinio.utils.stocks_client import IntrinioRealtimeClient
 from pydantic import ValidationError
 
 logger = get_logger("openbb.websocket.intrinio")
