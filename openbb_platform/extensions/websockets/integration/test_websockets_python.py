@@ -326,19 +326,15 @@ def test_websockets_get_client(params, obb):
     [
         {
             "name": "test_fmp",
-            "auth_token": None,
         },
         {
             "name": "test_tiingo",
-            "auth_token": None,
         },
         {
             "name": "test_polygon",
-            "auth_token": None,
         },
         {
             "name": "test_intrinio",
-            "auth_token": None,
         },
     ],
 )

@@ -310,6 +310,35 @@ def test_websockets_unsubscribe(params, headers):
     [
         {
             "name": "test_fmp",
+        },
+        {
+            "name": "test_tiingo",
+        },
+        {
+            "name": "test_polygon",
+        },
+        {
+            "name": "test_intrinio",
+        },
+    ],
+)
+@pytest.mark.integration
+def test_websockets_get_client_status(params, headers):
+    """Test the websockets_get_client_status endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/websockets/get_client?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        {
+            "name": "test_fmp",
             "auth_token": None,
         },
         {
