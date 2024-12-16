@@ -89,10 +89,11 @@ def test_get_options_symbols():
 async def test_deribit_options_chains_fetcher(credentials=test_credentials):
     """Test Deribit Options Chains Fetcher."""
     params = {"symbol": "BTC"}
+    fetcher = DeribitOptionsChainsFetcher()
 
     with patch(
         "openbb_deribit.models.options_chains.DeribitOptionsChainsFetcher.fetch_data",
         return_value=MagicMock(MOCK_OPTIONS_DATA),
     ):
-        result = await DeribitOptionsChainsFetcher.fetch_data(params, {})
+        result = await fetcher.fetch_data(params, {})
         assert isinstance(result, DeribitOptionsChainsData)
