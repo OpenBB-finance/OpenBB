@@ -1986,12 +1986,12 @@ def test_equity_fundamental_reported_financials(params, headers):
             }
         ),
         (
-                {
-                    "symbol": "NVDA",
-                    "date": None,
-                    "limit": 10,
-                    "provider": "fmp",
-                }
+            {
+                "symbol": "NVDA",
+                "date": None,
+                "limit": 10,
+                "provider": "fmp",
+            }
         ),
     ],
 )
