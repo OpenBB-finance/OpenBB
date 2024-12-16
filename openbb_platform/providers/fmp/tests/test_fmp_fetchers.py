@@ -771,10 +771,12 @@ def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
 def test_fmp_form_13f_fetcher(credentials=test_credentials):
     """Test FMP form 13f fetcher."""
     params = {
-        "symbol": "AAPL",
+        "symbol": "NVDA",
         "limit": 1,
     }
     fetcher = FMPForm13FHRFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http
