@@ -3,6 +3,7 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, FastAPI
+from fastapi.exceptions import ResponseValidationError
 from openbb_core.api.exception_handlers import ExceptionHandlers
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.router import RouterLoader
@@ -38,6 +39,7 @@ class AppLoader:
         """Add exception handlers."""
         app.exception_handlers[Exception] = ExceptionHandlers.exception
         app.exception_handlers[ValidationError] = ExceptionHandlers.validation
+        app.exception_handlers[ResponseValidationError] = ExceptionHandlers.validation
         app.exception_handlers[OpenBBError] = ExceptionHandlers.openbb
         app.exception_handlers[EmptyDataError] = ExceptionHandlers.empty_data
         app.exception_handlers[UnauthorizedError] = ExceptionHandlers.unauthorized

@@ -301,7 +301,13 @@ class ImportDefinition:
         """Filter the hint type list."""
         new_hint_type_list = []
         for hint_type in hint_type_list:
-            if hint_type != _empty and hint_type.__module__ != "builtins":
+            if hint_type != _empty and (
+                (
+                    hasattr(hint_type, "__module__")
+                    and hint_type.__module__ != "builtins"
+                )
+                or (isinstance(hint_type, str))
+            ):
                 new_hint_type_list.append(hint_type)
 
         new_hint_type_list = list(set(new_hint_type_list))
@@ -309,21 +315,32 @@ class ImportDefinition:
         return new_hint_type_list
 
     @classmethod
-    def get_function_hint_type_list(cls, func: Callable) -> List[Type]:
+    def get_function_hint_type_list(cls, route) -> List[Type]:
         """Get the hint type list from the function."""
-        sig = signature(func)
-        parameter_map = sig.parameters
-        return_type = sig.return_annotation
 
-        hint_type_list = []
+        no_validate = route.openapi_extra.get("no_validate")
+
+        func = route.endpoint
+        sig = signature(func)
+        if no_validate is True:
+            route.response_model = None
+
+        parameter_map = sig.parameters
+        return_type = sig.return_annotation if not no_validate else route.response_model
+
+        hint_type_list: list = []
 
         for parameter in parameter_map.values():
             hint_type_list.append(parameter.annotation)
 
         if return_type:
-            if not issubclass(return_type, OBBject):
+            if not no_validate and not issubclass(return_type, OBBject):
                 raise ValueError("Return type must be an OBBject.")
-            hint_type = get_args(get_type_hints(return_type)["results"])[0]
+            hint_type = (
+                get_args(get_type_hints(return_type)["results"])[0]
+                if "OBBject" in return_type.__class__.__name__
+                else return_type
+            )
             hint_type_list.append(hint_type)
 
         hint_type_list = cls.filter_hint_type_list(hint_type_list)
@@ -344,7 +361,7 @@ class ImportDefinition:
             if route:
                 if route.deprecated:
                     hint_type_list.append(type(route.summary.metadata))
-                function_hint_type_list = cls.get_function_hint_type_list(func=route.endpoint)  # type: ignore
+                function_hint_type_list = cls.get_function_hint_type_list(route=route)  # type: ignore
                 hint_type_list.extend(function_hint_type_list)
 
         hint_type_list = list(set(hint_type_list))
@@ -380,7 +397,10 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         code += "\nfrom openbb_core.app.model.field import OpenBBField"
-        module_list = [hint_type.__module__ for hint_type in hint_type_list]
+        module_list = [
+            hint_type.__module__ if hasattr(hint_type, "__module__") else hint_type
+            for hint_type in hint_type_list
+        ]
         module_list = list(set(module_list))
         module_list.sort()
 
@@ -536,7 +556,7 @@ class MethodDefinition:
     def is_data_processing_function(path: str) -> bool:
         """Check if the function is a data processing function."""
         methods = PathHandler.build_route_map()[path].methods  # type: ignore
-        return "POST" in methods
+        return "POST" in methods or "PUT" in methods or "PATCH" in methods
 
     @staticmethod
     def is_deprecated_function(path: str) -> bool:
@@ -714,12 +734,14 @@ class MethodDefinition:
         """Build the function returns."""
         if return_type == _empty:
             func_returns = "None"
-        elif return_type.__module__ == "builtins":
-            func_returns = return_type.__name__
-        else:
+        elif isinstance(return_type, str):
+            func_returns = f"ForwardRef('{return_type}')"
+        elif isclass(return_type) and issubclass(return_type, OBBject):
             func_returns = "OBBject"
+        else:
+            func_returns = return_type.__name__ if return_type else Any  # type: ignore
 
-        return func_returns
+        return func_returns  # type: ignore
 
     @staticmethod
     def build_command_method_signature(
@@ -1361,6 +1383,7 @@ class ReferenceGenerator:
 
     # pylint: disable=protected-access
     pi = DocstringGenerator.provider_interface
+    route_map = PathHandler.build_route_map()
 
     @classmethod
     def _get_endpoint_examples(
@@ -1668,7 +1691,11 @@ class ReferenceGenerator:
             content_inside_brackets = re.search(
                 r"OBBject\[\s*((?:[^\[\]]|\[[^\[\]]*\])*)\s*\]", return_type
             )
-            return_type = content_inside_brackets.group(1)  # type: ignore
+            return_type = (  # type: ignore
+                content_inside_brackets.group(1)
+                if content_inside_brackets is not None
+                else return_type
+            )
 
             returns_list = [
                 {
@@ -1723,16 +1750,14 @@ class ReferenceGenerator:
                 route_func,
                 examples,  # type: ignore
             )
+            validate_output = not cls.route_map[path].openapi_extra.get("no_validate")
+            model_map = cls.pi.map.get(standard_model, {})
+
             # Add data for the endpoints having a standard model
-            if route_method == {"GET"}:
+            if route_method == {"GET"} and model_map:
                 reference[path]["description"] = getattr(
                     route, "description", "No description available."
                 )
-
-                # TODO: The reference is not getting populated when a command does not use a standard model
-                # Access model map from the ProviderInterface
-                model_map = cls.pi.map.get(standard_model, {})
-
                 for provider in model_map:
                     if provider == "openbb":
                         # openbb provider is always present hence its the standard field
@@ -1789,28 +1814,42 @@ class ReferenceGenerator:
 
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
-                providers = provider_parameter_fields["type"]
-                reference[path]["returns"]["OBBject"] = cls._get_obbject_returns_fields(
-                    standard_model, providers
-                )
+                if validate_output is False:
+                    reference[path]["returns"]["Any"] = {
+                        "description": "Unvalidated results object.",
+                    }
+                else:
+                    providers = provider_parameter_fields["type"]
+                    reference[path]["returns"]["OBBject"] = (
+                        cls._get_obbject_returns_fields(standard_model, providers)
+                    )
             # Add data for the endpoints without a standard model (data processing endpoints)
-            elif route_method == {"POST"}:
-                # POST method router `description` attribute is unreliable as it may or
+            elif (
+                route_method == {"POST"}
+                or "PUT" in str(route_method)
+                or "PATCH" in str(route_method)
+            ) or (route_method == {"GET"} and not model_map):
+                # Non-model method's router `description` attribute is unreliable as it may or
                 # may not contain the "Parameters" and "Returns" sections. Hence, the
                 # endpoint function docstring is used instead.
                 docstring = getattr(route_func, "__doc__", "")
                 description = docstring.split("Parameters")[0].strip()
                 # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
-                # Add endpoint parameters fields for POST methods
+                # Add endpoint parameters fields for non-model methods
                 reference[path]["parameters"]["standard"] = (
                     cls._get_post_method_parameters_info(docstring)
                 )
                 # Add endpoint returns data
-                # Currently only OBBject object is returned
-                reference[path]["returns"]["OBBject"] = (
-                    cls._get_post_method_returns_info(docstring)
-                )
+                # If the endpoint is not validated, the return type is set to Any
+                if validate_output is False:
+                    reference[path]["returns"]["Any"] = {
+                        "description": "Unvalidated results object.",
+                    }
+                else:
+                    reference[path]["returns"]["OBBject"] = (
+                        cls._get_post_method_returns_info(docstring)
+                    )
 
         return reference
 

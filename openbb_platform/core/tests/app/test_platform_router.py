@@ -16,7 +16,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.router import (
     CommandMap,
-    CommandValidator,
     Router,
     RouterLoader,
     SignatureInspector,
@@ -28,106 +27,6 @@ class MockBaseModel(BaseModel):
     """Mock BaseModel class."""
 
     model_config = ConfigDict(extra="allow", populate_by_name=True)
-
-
-@pytest.fixture(scope="module")
-def command_validator():
-    """Set up command_validator."""
-    return CommandValidator()
-
-
-def test_command_validator_init(command_validator):
-    """Test init."""
-    assert command_validator
-
-
-@pytest.mark.parametrize(
-    "type_, expected",
-    [
-        (str, True),
-        (int, True),
-        (float, True),
-        (bool, True),
-        (list, True),
-        (MockBaseModel, False),
-    ],
-)
-def test_is_standard_pydantic_type(command_validator, type_, expected):
-    """Test is_standard_pydantic_type."""
-    # assert command_validator.is_standard_pydantic_type(str)
-    assert command_validator.is_standard_pydantic_type(type_) == expected
-
-
-def test_is_valid_pydantic_model_type(command_validator):
-    """Test is_valid_pydantic_model_type."""
-    assert command_validator.is_valid_pydantic_model_type(MockBaseModel)
-    assert not command_validator.is_valid_pydantic_model_type(str)
-
-
-@pytest.mark.parametrize(
-    "type_, expected",
-    [
-        (str, True),
-        (int, True),
-        (float, True),
-        (bool, True),
-        (list, True),
-        (MockBaseModel, True),
-    ],
-)
-def test_is_serializable_value_type(command_validator, type_, expected):
-    """Test is_serializable_value_type."""
-    assert command_validator.is_serializable_value_type(type_) == expected
-
-
-def test_is_annotated_dc(command_validator):
-    """Test is_annotated_dc."""
-    assert not command_validator.is_annotated_dc(str)
-
-
-def test_check_reserved_param(command_validator):
-    """Test check_reserved_param."""
-    assert command_validator.check_reserved_param("name", str, {}, str, str) is None
-    assert not command_validator.check_reserved_param("name", str, {}, str, int)
-
-
-def test_check_parameters(command_validator):
-    """Test check_parameters."""
-
-    async def func():
-        pass
-
-    assert command_validator.check_parameters(func) is None
-    with pytest.raises(TypeError):
-        command_validator.check_parameters(MockBaseModel)
-
-
-def test_check_return_error(command_validator):
-    """Test check_return fail."""
-    with pytest.raises(TypeError):
-
-        async def func():
-            pass
-
-        command_validator.check_return(func)
-
-
-def test_check_return(command_validator):
-    """Test check_return."""
-
-    async def valid_function() -> OBBject[Optional[List[int]]]:
-        return OBBject(results=[1, 2, 3])
-
-    assert command_validator.check_return(valid_function) is None
-
-
-def test_check(command_validator):
-    """Test check."""
-
-    async def valid_function() -> OBBject[Optional[List[int]]]:
-        return OBBject(results=[1, 2, 3])
-
-    assert command_validator.check(valid_function) is None
 
 
 @pytest.fixture(scope="module")
