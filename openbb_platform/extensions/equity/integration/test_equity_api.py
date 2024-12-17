@@ -1985,6 +1985,14 @@ def test_equity_fundamental_reported_financials(params, headers):
                 "provider": "sec",
             }
         ),
+        (
+            {
+                "symbol": "NVDA",
+                "date": None,
+                "limit": 10,
+                "provider": "fmp",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
