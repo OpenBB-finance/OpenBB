@@ -4,18 +4,14 @@
 
 import logging
 import re
-from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.provider.utils.errors import UnauthorizedError
 from pydantic import ValidationError
 
 AUTH_TOKEN_FILTER = re.compile(
     r"(auth_token=)([^&]*)",
     re.IGNORECASE | re.MULTILINE,
 )
-
-connected_clients: dict = {}
 
 
 def clean_message(message: str) -> str:
@@ -44,33 +40,6 @@ def handle_validation_error(logger: logging.Logger, error: ValidationError):
     err = f"{error.__class__.__name__} -> {error.title}: {error.json()}"
     logger.error(err)
     raise error from error
-
-
-async def get_status(name: Optional[str] = None, client: Optional[Any] = None) -> dict:
-    """Get the status of a client."""
-    if name and name not in connected_clients:
-        raise OpenBBError(f"Client {name} not connected.")
-    if not name and not client:
-        raise OpenBBError("Either name or client must be provided.")
-    client = client if client else connected_clients[name]
-    provider_pid = client._psutil_process.pid if client.is_running else None
-    broadcast_pid = (
-        client._psutil_broadcast_process.pid if client.is_broadcasting else None
-    )
-    status = {
-        "name": client.name,
-        "auth_required": client._auth_token is not None,
-        "subscribed_symbols": client.symbol,
-        "is_running": client.is_running,
-        "provider_pid": provider_pid,
-        "is_broadcasting": client.is_broadcasting,
-        "broadcast_address": client.broadcast_address,
-        "broadcast_pid": broadcast_pid,
-        "results_file": client.results_file,
-        "table_name": client.table_name,
-        "save_results": client.save_results,
-    }
-    return status
 
 
 def encrypt_value(key, iv, value):
@@ -103,20 +72,6 @@ def decrypt_value(key, iv, encrypted_value):
     return decrypted_value.decode()
 
 
-async def check_auth(name: str, auth_token: Optional[str] = None) -> bool:
-    """Check the auth token."""
-    if name not in connected_clients:
-        raise OpenBBError(f"Client {name} not connected.")
-    client = connected_clients[name]
-    if client._auth_token is None:
-        return True
-    if auth_token is None:
-        raise UnauthorizedError(f"Client authorization token is required for {name}.")
-    if auth_token != client._decrypt_value(client._auth_token):
-        raise UnauthorizedError(f"Invalid client authorization token for {name}.")
-    return True
-
-
 def handle_termination_signal(logger):
     """Handle termination signals to ensure graceful shutdown."""
     # pylint: disable=import-outside-toplevel
@@ -128,8 +83,19 @@ def handle_termination_signal(logger):
     sys.exit(0)
 
 
-def parse_kwargs():
-    """Parse command line keyword arguments."""
+def parse_kwargs() -> dict:
+    """
+    Parse command line keyword arguments supplied to a script file.
+
+    Accepts arguments in the form of `key=value` or `--key value`.
+
+    Keys and values should not contain spaces.
+
+    Returns
+    -------
+    dict
+        A Python dictionary with the parsed kwargs.
+    """
     # pylint: disable=import-outside-toplevel
     import json
     import sys
@@ -137,7 +103,7 @@ def parse_kwargs():
     args = sys.argv[1:].copy()
     _kwargs: dict = {}
     for i, arg in enumerate(args):
-        if arg.startswith("url"):
+        if arg.startswith("url") or arg.startswith("uri"):
             _kwargs["url"] = arg[4:]
             continue
         if "=" in arg:
@@ -245,34 +211,3 @@ async def write_to_db(message, results_path, table_name, limit):
 
     finally:
         await conn.close()
-
-
-class StdOutSink:
-    """Filter stdout for PII."""
-
-    def write(self, message):
-        """Write to stdout."""
-        # pylint: disable=import-outside-toplevel
-        import sys
-
-        cleaned_message = AUTH_TOKEN_FILTER.sub(r"\1********", message)
-        if cleaned_message != message:
-            cleaned_message = f"{cleaned_message}\n"
-        sys.__stdout__.write(cleaned_message)  # type: ignore
-
-    def flush(self):
-        """Flush stdout."""
-        # pylint: disable=import-outside-toplevel
-        import sys
-
-        sys.__stdout__.flush()  # type: ignore
-
-
-class AuthTokenFilter(logging.Formatter):
-    """Custom logging formatter to filter auth tokens."""
-
-    def format(self, record):
-        """Format the log record."""
-        original_message = super().format(record)
-        cleaned_message = AUTH_TOKEN_FILTER.sub(r"\1********", original_message)
-        return cleaned_message
