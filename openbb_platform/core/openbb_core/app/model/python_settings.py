@@ -2,11 +2,13 @@
 
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 
 class PythonSettings(BaseModel):
     """Settings model for Python interface configuration."""
+
+    model_config = ConfigDict(extra="allow")
 
     docstring_sections: List[str] = Field(
         default_factory=lambda: ["description", "parameters", "returns", "examples"],

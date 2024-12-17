@@ -36,4 +36,4 @@ class UnauthorizedError(OpenBBError):
                 msg = msg.replace("<provider name>", provider_name)
             message = msg
         self.message = message
-        super().__init__(self.message)
+        super().__init__(str(self.message))

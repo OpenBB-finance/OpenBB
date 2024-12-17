@@ -97,9 +97,15 @@ class FinvizEquityProfileFetcher(
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
+        from finvizfinance import util
         from finvizfinance.quote import finvizfinance
+        from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import get_requests_session
 
+        util.session = get_requests_session()
         results: List = []
+        messages: List = []
 
         def get_one(symbol) -> Dict:
             """Get the data for one symbol."""
@@ -109,7 +115,7 @@ class FinvizEquityProfileFetcher(
                 fundament = data.ticker_fundament()
                 description = data.ticker_description()
             except Exception as e:  # pylint: disable=W0718
-                warn(f"Failed to get data for {symbol} -> {e}")
+                messages.append(f"Failed to get data for {symbol} -> {e}")
                 return result
             div_yield = (
                 float(str(fundament.get("Dividend %", None)).replace("%", "")) / 100
@@ -212,6 +218,16 @@ class FinvizEquityProfileFetcher(
             result = get_one(symbol)
             if result is not None and result:
                 results.append(result)
+
+        if not results and messages:
+            raise OpenBBError("\n".join(messages))
+
+        if not results and not messages:
+            raise EmptyDataError("No data was returned for any symbol")
+
+        if results and messages:
+            for message in messages:
+                warn(message)
 
         return results
 

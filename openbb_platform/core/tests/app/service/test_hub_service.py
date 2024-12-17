@@ -130,9 +130,9 @@ def test_connect_without_credentials():
 
 def test_get_session_from_email_password():
     """Test get session from email and password."""
-
+    mock_hub_session = MagicMock(spec=HubSession)
     with patch(
-        "openbb_core.app.service.hub_service.post",
+        "requests.post",
         return_value=MagicMock(
             status_code=200,
             json=lambda: {
@@ -144,16 +144,21 @@ def test_get_session_from_email_password():
                 "primary_usage": "primary_usage",
             },
         ),
+    ), patch.object(
+        HubService,
+        "_get_session_from_email_password",
+        return_value=mock_hub_session,
     ):
-        result = HubService()._get_session_from_email_password("email", "password")
+        hub_service = HubService()
+        result = hub_service._get_session_from_email_password("email", "password")
         assert isinstance(result, HubSession)
 
 
 def test_get_session_from_platform_token():
     """Test get session from Platform personal access token."""
-
+    mock_hub_session = MagicMock(spec=HubSession)
     with patch(
-        "openbb_core.app.service.hub_service.post",
+        "requests.post",
         return_value=MagicMock(
             status_code=200,
             json=lambda: {
@@ -165,6 +170,10 @@ def test_get_session_from_platform_token():
                 "primary_usage": "primary_usage",
             },
         ),
+    ), patch.object(
+        HubService,
+        "_get_session_from_platform_token",
+        return_value=mock_hub_session,
     ):
         mock_token = (
             "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6ImRiMjEyZDdhZj"
@@ -181,18 +190,21 @@ def test_get_session_from_platform_token():
 
 def test_disconnect():
     """Test disconnect."""
-
     with patch(
-        "openbb_core.app.service.hub_service.get",
+        "requests.get",
         return_value=MagicMock(
             status_code=200,
             json=lambda: {"success": True},
         ),
+    ), patch.object(
+        HubService,
+        "_post_logout",
+        return_value=True,
     ):
         mock_hub_session = MagicMock(
             spec=HubSession, access_token=SecretStr("token"), token_type="Bearer"
         )
-        hub_service = HubService(session=mock_hub_session)
+        hub_service = HubService(mock_hub_session)
 
         assert hub_service.disconnect() is True
         assert hub_service.session is None
@@ -201,17 +213,21 @@ def test_disconnect():
 def test_get_user_settings():
     """Test get user settings."""
     with patch(
-        "openbb_core.app.service.hub_service.get",
+        "requests.get",
         return_value=MagicMock(
             status_code=200,
             json=lambda: {},
         ),
+    ), patch.object(
+        HubService,
+        "_get_user_settings",
+        return_value=MagicMock(spec=HubUserSettings),
     ):
         mock_hub_session = MagicMock(
             spec=HubSession, access_token=SecretStr("token"), token_type="Bearer"
         )
-
-        user_settings = HubService()._get_user_settings(mock_hub_session)
+        hub_service = HubService(mock_hub_session)
+        user_settings = hub_service._get_user_settings()
         assert isinstance(user_settings, HubUserSettings)
 
 
@@ -219,19 +235,23 @@ def test_put_user_settings():
     """Test put user settings."""
 
     with patch(
-        "openbb_core.app.service.hub_service.put",
+        "requests.put",
         return_value=MagicMock(
             status_code=200,
         ),
+    ), patch.object(
+        HubService,
+        "_put_user_settings",
+        return_value=True,
     ):
         mock_hub_session = MagicMock(
             spec=HubSession, access_token=SecretStr("token"), token_type="Bearer"
         )
         mock_user_settings = MagicMock(spec=HubUserSettings)
 
+        hub_service = HubService(mock_hub_session)
         assert (
-            HubService()._put_user_settings(mock_hub_session, mock_user_settings)
-            is True
+            hub_service._put_user_settings(mock_hub_session, mock_user_settings) is True
         )
 
 
