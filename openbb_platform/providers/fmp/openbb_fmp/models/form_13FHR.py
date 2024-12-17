@@ -116,7 +116,7 @@ class FMPForm13FHRFetcher(
             )
             result = await amake_request(url, response_callback=response_callback, **kwargs)
             if not result or len(result) == 0:
-                warn(f"Symbol Error: No data found for symbol {symbol}")
+                warn(f"Symbol Error: No data found for symbol {query.symbol}")
             if result:
                 results.extend(result)
 
