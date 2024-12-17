@@ -99,8 +99,6 @@ class FMPForm13FHRFetcher(
         dates = await amake_request(date_url, response_callback=response_callback, **kwargs)
         if not dates:
             raise EmptyDataError("No data returned for the given symbol.")
-        if not dates or len(dates) == 0:
-            warn(f"Symbol Error: No data found for symbol {cik}")
         results: List[Dict] = []
 
         async def get_one(date):
@@ -134,4 +132,5 @@ class FMPForm13FHRFetcher(
     ) -> List[FMPForm13FHRData]:
         """Return the transformed data."""
         if query.symbol.isnumeric():
-        return [FMPForm13FHRData(**{k: v for k, v in d.items if k != "cik"}) for d in data]
+            return [FMPForm13FHRData(**{k: v for k, v in d.items() if k != "cik"}) for d in data]
+        return [FMPForm13FHRData(**d) for d in data]
