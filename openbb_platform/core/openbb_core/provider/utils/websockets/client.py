@@ -181,7 +181,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Unexpected error setting up the SQLite database and table ->"
-                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
             self._exception = OpenBBError(msg)
@@ -570,7 +570,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Error clearing results:"
-                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
 
@@ -800,7 +800,7 @@ def non_blocking_websocket(client, output_queue, provider_message_queue) -> None
     except Exception as e:  # pylint: disable=broad-except
         msg = (
             "Unexpected error in non_blocking_websocket:"
-            f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
+            f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
         )
         client.logger.error(msg)
         raise e from e
@@ -834,7 +834,7 @@ def send_message(
     except Exception as e:  # pylint: disable=broad-except
         msg = (
             f"Error sending message to the {target} process:"
-            f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
+            f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
         )
         client.logger.error(msg)
 
@@ -877,7 +877,7 @@ def non_blocking_broadcast(client, output_queue, broadcast_message_queue) -> Non
     except Exception as e:  # pylint: disable=broad-except
         err = (
             f"Unexpected error in non_blocking_broadcast:"
-            f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
+            f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
         )
         client.logger.error(err)
     finally:

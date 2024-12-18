@@ -88,7 +88,7 @@ class Database:
                 self.results_file = temp_file_path
         elif results_file and "://" in results_file:
             self.results_file = results_file
-            self.results_path = results_file
+            self.results_path = results_file  # type: ignore
             kwargs["uri"] = True
         else:
             self.results_path = Path(results_file).absolute()
@@ -144,10 +144,10 @@ class Database:
         except Exception as e:
             msg = (
                 "Unexpected error while creating SQLite database ->"
-                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
-            self._exception = e
+            self._exception = e  # type: ignore
             raise OpenBBError(msg) from e
 
     async def _write_to_db(self, message) -> None:
@@ -224,7 +224,7 @@ class Database:
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Unexpected error while writing to SQLite database ->"
-                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
             self._exception = e
@@ -278,10 +278,10 @@ class Database:
         except Exception as e:
             msg = (
                 "Unexpected error while deserializing row -> "
-                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
-            self._exception = e
+            self._exception = e  # type: ignore
             raise OpenBBError(msg) from e
 
     def fetch_all(self, limit: Optional[int] = None) -> list:
@@ -291,7 +291,7 @@ class Database:
         except Exception as e:
             msg = (
                 "Unexpected error while reading from SQLite database ->"
-                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
             self._exception = e
@@ -414,7 +414,7 @@ class Database:
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Error clearing results: "
-                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
             raise OpenBBError(msg) from e
