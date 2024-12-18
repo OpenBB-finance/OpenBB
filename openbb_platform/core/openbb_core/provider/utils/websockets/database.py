@@ -60,7 +60,7 @@ class Database:
         Clear all results from the SQLite database.
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-positional-arguments
         self,
         results_file: Optional[str] = None,
         table_name: Optional[str] = None,

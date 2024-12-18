@@ -264,6 +264,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                         "server rejected" in output.lower()
                         or "PROVIDER ERROR" in output
                         or "unexpected error" in output.lower()
+                        or "Error:" in output
                     ):
                         self._psutil_process.kill()
                         self._process.wait()

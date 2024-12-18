@@ -203,7 +203,7 @@ async def process_message(message):
                     raise e from e
 
             if result:
-                await DATABASE._write_to_db(result)
+                await DATABASE._write_to_db(result)  # pylint: disable=protected-access
         else:
             logger.info("PROVIDER INFO:      %s", msg)
 

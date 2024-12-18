@@ -53,7 +53,7 @@ async def check_auth(name: str, auth_token: Optional[str] = None) -> bool:
         return True
     if auth_token is None:
         raise UnauthorizedError(f"Client authorization token is required for {name}.")
-    if auth_token != client._decrypt_value(
+    if auth_token != client._decrypt_value(  # pylint: disable=protected-access
         client._auth_token  # pylint: disable=protected-access
     ):
         raise UnauthorizedError(f"Invalid client authorization token for {name}.")

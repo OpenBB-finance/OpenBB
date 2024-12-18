@@ -288,12 +288,13 @@ def main():
 
 
 if __name__ == "__main__":
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import run_async
+
     if not RESULTS_FILE:
         raise ValueError("Results file path is required for Broadcast server.")
 
     if not Path(RESULTS_FILE).absolute().exists():
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import run_async
+        run_async(DATABASE._setup_database)  # pylint: disable=protected-access
 
-        run_async(DATABASE._setup_database)
     main()

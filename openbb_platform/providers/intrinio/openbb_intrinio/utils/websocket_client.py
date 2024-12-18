@@ -8,7 +8,6 @@ import signal
 import sys
 from typing import Any
 
-from openbb_core.provider.utils.helpers import run_async
 from openbb_core.provider.utils.websockets.database import Database
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
