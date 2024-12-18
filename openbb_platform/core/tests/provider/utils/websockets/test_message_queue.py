@@ -61,9 +61,14 @@ async def test_process_queue(message_queue):
         """Test handler."""
         nonlocal NUM_MESSAGES
         NUM_MESSAGES += 1
+        assert message in MOCK_MESSAGES
 
     await message_queue.enqueue(MOCK_MESSAGES[0])
     await message_queue.enqueue(MOCK_MESSAGES[1])
-    asyncio.create_task(message_queue.process_queue(handler))
-    await asyncio.sleep(0.1)
+    while not message_queue.queue.empty():
+        await message_queue._process_message(await message_queue.dequeue(), handler)
+        await asyncio.sleep(0.1)
+        message_queue.queue.task_done()
+
     assert NUM_MESSAGES == 2
+    assert message_queue.queue.empty()
