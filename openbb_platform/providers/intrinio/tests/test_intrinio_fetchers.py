@@ -7,6 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_core.provider.utils.websockets.client import WebSocketClient
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
@@ -73,7 +74,6 @@ from openbb_intrinio.models.websocket_connection import (
     IntrinioWebSocketFetcher,
 )
 from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
-from openbb_websockets.client import WebSocketClient
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"

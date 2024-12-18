@@ -7,6 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_core.provider.utils.websockets.client import WebSocketClient
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
@@ -79,7 +80,6 @@ from openbb_fmp.models.websocket_connection import (
 )
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
-from openbb_websockets.client import WebSocketClient
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"

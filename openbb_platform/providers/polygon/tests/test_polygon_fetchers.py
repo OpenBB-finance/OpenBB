@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_core.provider.utils.websockets.client import WebSocketClient
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
 from openbb_polygon.models.company_news import PolygonCompanyNewsFetcher
@@ -25,7 +26,6 @@ from openbb_polygon.models.websocket_connection import (
     PolygonWebSocketData,
     PolygonWebSocketFetcher,
 )
-from openbb_websockets.client import WebSocketClient
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"

@@ -18,11 +18,20 @@ from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_fmp.models.websocket_connection import FmpWebSocketData
 from pydantic import ValidationError
 
+URL_MAP = {
+    "stock": "wss://websockets.financialmodelingprep.com",
+    "fx": "wss://forex.financialmodelingprep.com",
+    "crypto": "wss://crypto.financialmodelingprep.com",
+}
+
 logger = get_logger("openbb.websocket.fmp")
 kwargs = parse_kwargs()
 queue = MessageQueue()
 command_queue = MessageQueue()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
+URL = URL_MAP.get(kwargs.pop("asset_type"), None)
+if not URL:
+    raise ValueError("Invalid asset type provided.")
 
 DATABASE = Database(
     results_file=kwargs["results_file"],
@@ -143,7 +152,7 @@ async def connect_and_stream():
     stdin_task = asyncio.create_task(read_stdin_and_queue_commands())
 
     try:
-        websocket = await websockets.connect(kwargs["url"], **CONNECT_KWARGS)
+        websocket = await websockets.connect(URL, **CONNECT_KWARGS)
         await login(websocket)
         await subscribe(websocket, kwargs["symbol"], "subscribe")
 

@@ -7,19 +7,13 @@ from typing import Any, Literal, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_websockets.client import WebSocketClient
+from openbb_core.provider.utils.websockets.client import WebSocketClient
 from openbb_websockets.models import (
     WebSocketConnection,
     WebSocketData,
     WebSocketQueryParams,
 )
 from pydantic import Field, field_validator
-
-URL_MAP = {
-    "stock": "wss://websockets.financialmodelingprep.com",
-    "fx": "wss://forex.financialmodelingprep.com",
-    "crypto": "wss://crypto.financialmodelingprep.com",
-}
 
 
 class FmpWebSocketQueryParams(WebSocketQueryParams):
@@ -151,12 +145,10 @@ class FmpWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnectio
         import asyncio
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        url = URL_MAP[query.asset_type]
 
         symbol = query.symbol.lower()
-
         kwargs = {
-            "url": url,
+            "asset_type": query.asset_type,
             "api_key": api_key,
             "connect_kwargs": query.connect_kwargs,
         }

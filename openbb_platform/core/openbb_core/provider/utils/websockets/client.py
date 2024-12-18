@@ -1,48 +1,60 @@
-"""WebSocket Client module for interacting with a provider websocket in a non-blocking pattern."""
+"""Module for running OpenBB Provider websocket connection scripts."""
 
 # pylint: disable=too-many-statements,protected-access
 # flake8: noqa: PLR0915
 
-import logging
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 if TYPE_CHECKING:
-    from openbb_core.provider.abstract.data import Data
+    import logging
+
+    from pydantic import BaseModel
 
 
 class WebSocketClient:  # pylint: disable=too-many-instance-attributes
-    """Client for interacting with a websocket server in a non-blocking pattern.
+    """
+    Client for interacting with a websocket server in a non-blocking pattern, and handling the subprocesses.
 
     Parameters
     ----------
     name : str
-        Name to assign the WebSocket connection. Used to identify and manage multiple instances.
+        Name to assign the WebSocket connection. Used to identify and manage multiple instances from the API.
     module : str
-        The Python module for the provider websocket_client module. Runs in a separate thread.
-        Example: 'openbb_fmp.utils.websocket_client'. Pass additional keyword arguments by including kwargs.
+        The Python module for the provider websocket_client module.
+        Runs in a separate thread, and is an equivalent to 'python -m module'.
+        Example: 'openbb_fmp.utils.websocket_client'.
+        Pass additional keyword arguments to the script by including **kwargs.
     symbol : Optional[str]
-        The symbol(s) requested to subscribe. Enter multiple symbols separated by commas without spaces.
+        The symbol(s) requested to subscribe on start. Enter multiple symbols separated by commas, without spaces.
+        Where supported by the provider, * represents all symbols within the feed.
     limit : Optional[int]
         The limit of records to hold in memory. Once the limit is reached, the oldest records are removed.
-        Default is 1000. Set to None to keep all records.
+        Default is 5000. Set to None to keep all records.
     results_file : Optional[str]
         Absolute path to the file for continuous writing. By default, a temporary file is created.
+        File is discarded when the Python session ends unless 'save_results' is set to True.
+        The connection can be re-established with the same results file to continue writing.
+        EACH NEW CONNECTION SHOULD HAVE A UNIQUE RESULTS FILE.
+        If the intention is to permanently store the results for historical records,
+        save the current session to a new file and copy new records at periodic intervals into the master.
     table_name : Optional[str]
         SQL table name to store serialized data messages. By default, 'records'.
     save_results : bool
         Whether to persist the results after the main Python session ends. Default is False.
-    data_model : Optional[Data]
+    data_model : Optional[BaseModel]
         Pydantic data model to validate the results before storing them in the database.
         Also used to deserialize the results from the database.
     auth_token : Optional[str]
-        The authentication token to use for the WebSocket connection. Default is None.
-        Only used for API and Python application endpoints.
+        Used to limit access to the broadcast stream. When provided, listeners should supply as a URL parameter.
+        Example: 'ws://127.0.0.1:6666/?auth_token=SOME_TOKEN'.
+        When provided, the auth_token is required to interact with the instance of this class
+        from the REST API and Python application endpoints.
     logger : Optional[logging.Logger]
-        The pre-configured logger instance to use for this connection. By default, a new logger is created.
+        A pre-configured logger to use for this instance. By default, a new logger is created.
     kwargs : Optional[dict]
         Additional keyword arguments to pass to the target provider module. Keywords and values must not contain spaces.
         To pass items to 'websocket.connect()', include them in the 'kwargs' dictionary as,
-        {'connect_kwargs': {'key': 'value'}}.
+        {'api_key': 'MY_API_KEY', 'connect_kwargs': {'key': 'value'}}.
 
     Properties
     ----------
@@ -55,10 +67,9 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
     is_broadcasting : bool
         Check if the broadcast server process is running.
     broadcast_address : str
-        URI address for the results broadcast server.
+        URI address for connecting to the broadcast stream.
     results : list[Data]
-        All stored results from the provider's WebSocket stream.
-        Results are stored in a SQLite database as a serialized JSON string, this property deserializes the results.
+        All stored results from the provider connection.
         Clear the results by deleting the property. e.g., del client.results
 
     Methods
@@ -68,15 +79,17 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
     disconnect
         Disconnect from the provider WebSocket.
     subscribe
-        Subscribe to a new symbol or list of symbols.
+        Send a subscribe message to the provider connection.
     unsubscribe
-        Unsubscribe from a symbol or list of symbols.
+        Send an unsubscribe message to the provider connection.
     start_broadcasting
-        Start the broadcast server to stream results over a network connection.
+        Start the broadcast server to stream results over a network.
     stop_broadcasting
         Stop the broadcast server and disconnect all listening clients.
     send_message
         Send a message to the WebSocket process. Messages can be sent to "provider" or "broadcast" targets.
+    query_database
+        Run a SELECT query to the database. Returns a list of deserialized results, or validated models.
     """
 
     def __init__(  # noqa: PLR0913  # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
@@ -84,13 +97,13 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         name: str,
         module: str,
         symbol: Optional[str] = None,
-        limit: Optional[int] = 1000,
+        limit: Optional[int] = 5000,
         results_file: Optional[str] = None,
         table_name: Optional[str] = None,
         save_results: bool = False,
-        data_model: Optional["Data"] = None,
+        data_model: Optional["BaseModel"] = None,
         auth_token: Optional[str] = None,
-        logger: Optional[logging.Logger] = None,
+        logger: Optional["logging.Logger"] = None,
         **kwargs,
     ) -> None:
         """Initialize the WebSocketClient class."""
@@ -162,20 +175,21 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                 results_file=self.results_file,
                 table_name=self.table_name,
                 limit=self._limit,
-                keep_results=self.save_results,
                 logger=self.logger,
                 data_model=self.data_model,
             )
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Unexpected error setting up the SQLite database and table ->"
-                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
             )
             self.logger.error(msg)
             self._exception = OpenBBError(msg)
+            self._atexit()
+            raise OpenBBError(msg) from e
 
     def _atexit(self) -> None:
-        """Clean up the WebSocket client processes at exit."""
+        """Clean up the running processes at exit."""
         # pylint: disable=import-outside-toplevel
         import os
 
@@ -310,13 +324,23 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                         output = output.replace("INFO:", "BROADCAST INFO:") + "\n"
                     output = output[0] if isinstance(output, tuple) else output
                     output = clean_message(output)
+                    if (
+                        output.startswith("BROADCAST ERROR:")
+                        or "unexpected error" in output.lower()
+                    ):
+                        self._psutil_broadcast_process.kill()
+                        self._broadcast_process.wait()
+                        self._broadcast_thread.join()
+                        sys.stdout.write(output + "\n")
+                        sys.stdout.flush()
+                        break
                     sys.stdout.write(output + "\n")
                     sys.stdout.flush()
             except queue.Empty:
                 continue
 
     def connect(self) -> None:  # pylint: disable=too-many-locals
-        """Connect to the provider WebSocket."""
+        """Connect to the provider client connection."""
         # pylint: disable=import-outside-toplevel
         import os  # noqa
         import psutil
@@ -367,35 +391,44 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                     if kwarg not in command:
                         command.extend([kwarg])
 
-        self._process = subprocess.Popen(  # noqa  # pylint: disable=consider-using-with
-            command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            stdin=subprocess.PIPE,
-            env=os.environ,
-            text=True,
-            bufsize=1,
-        )
-        self._psutil_process = psutil.Process(self._process.pid)
+        try:
+            self._process = (
+                subprocess.Popen(  # noqa  # pylint: disable=consider-using-with
+                    command,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    stdin=subprocess.PIPE,
+                    env=os.environ,
+                    text=True,
+                    bufsize=1,
+                )
+            )
+            self._psutil_process = psutil.Process(self._process.pid)
 
-        log_output_queue: queue.Queue = queue.Queue()
-        self._thread = threading.Thread(
-            target=non_blocking_websocket,
-            args=(
-                self,
-                log_output_queue,
-                self._provider_message_queue,
-            ),
-        )
-        self._thread.daemon = True
-        self._thread.start()
+            log_output_queue: queue.Queue = queue.Queue()
+            self._thread = threading.Thread(
+                target=non_blocking_websocket,
+                args=(
+                    self,
+                    log_output_queue,
+                    self._provider_message_queue,
+                ),
+            )
+            self._thread.daemon = True
+            self._thread.start()
 
-        self._log_thread = threading.Thread(
-            target=self._log_provider_output,
-            args=(log_output_queue,),
-        )
-        self._log_thread.daemon = True
-        self._log_thread.start()
+            self._log_thread = threading.Thread(
+                target=self._log_provider_output,
+                args=(log_output_queue,),
+            )
+            self._log_thread.daemon = True
+            self._log_thread.start()
+
+        except Exception as e:  # pylint: disable=broad-except
+            msg = f"Unexpected error -> {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
+            self.logger.error(msg)
+            self._atexit()
+            raise OpenBBError(msg) from e
 
         # Give it some startup time to allow the connection to be established and for exceptions to populate.
         time.sleep(2)
@@ -406,12 +439,14 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
             raise OpenBBError(exc)
 
         if not self.is_running:
-            self.logger.error("The provider server failed to start.")
+            self.logger.error(
+                "Unexpected error -> Provider connection process failed to start."
+            )
 
     def send_message(
         self, message, target: Literal["provider", "broadcast"] = "provider"
     ) -> None:
-        """Send a message to the WebSocket process."""
+        """Write to the provider, or broadcast, process stdin."""
         if target == "provider":
             self._provider_message_queue.put(message)
             read_message_queue(self, self._provider_message_queue)
@@ -420,10 +455,10 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
             read_message_queue(self, self._broadcast_message_queue, target="broadcast")
 
     def disconnect(self) -> None:
-        """Disconnect from the provider WebSocket."""
+        """Disconnect from the provider connection."""
         self._stop_log_thread_event.set()
         if self._process is None or self.is_running is False:
-            self.logger.info("Not connected to the provider WebSocket.")
+            self.logger.info("Provider client connection is not running.")
             return
         if (
             self._psutil_process is not None
@@ -435,13 +470,18 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         self._thread.join()
         self._log_thread.join()
         self._stop_log_thread_event.clear()
-        self.logger.info("Disconnected from the provider WebSocket.")
+        self.logger.info("Disconnected from the provider server.")
         if hasattr(self, "_exception") and self._exception:
             raise self._exception
         return
 
     def subscribe(self, symbol) -> None:
-        """Subscribe to a new symbol or list of symbols."""
+        """
+        Send a subscribe message to the active provider connection.
+
+        Messages are sent as JSON strings formatted as:
+            {"event": "subscribe", "symbol": "AAPL,MSFT"}
+        """
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         import time
@@ -463,7 +503,12 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         self._symbol = ",".join(new_symbols)
 
     def unsubscribe(self, symbol) -> None:
-        """Unsubscribe from a symbol or list of symbols."""
+        """
+        Unsubscribe from a symbol or list of symbols.
+
+        Messages are sent as JSON strings formatted as:
+            {"event": "unsubscribe", "symbol": "AAPL,MSFT"}
+        """
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         import time
@@ -500,23 +545,33 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
 
     @property
     def results(self) -> list:
-        """Retrieve the deserialized results from the results file."""
+        """
+        Retrieve the deserialized results from the active Database.
+
+        Clear the results by deleting the property. e.g., del client.results
+        """
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.abstract.error import OpenBBError
 
         try:
             return self.database.fetch_all()
         except Exception as e:  # pylint: disable=broad-except
-            raise OpenBBError(f"Error retrieving results: {e}") from e
+            msg = (
+                "Error retrieving results:"
+                f" {e.__class__.__name__ if hasattr(e,'__class__') else e.__name__} -> {e}"
+            )
+            raise OpenBBError(msg) from e
 
     @results.deleter
     def results(self):
-        """Clear results stored from the WebSocket stream."""
-        # pylint: disable=import-outside-toplevel
+        """Clear results stored by the active WebSocket stream."""
         try:
             self.database.clear_results()
         except Exception as e:  # pylint: disable=broad-except
-            msg = f"Error clearing results: {e.__class__.__name__}: {e}"
+            msg = (
+                "Error clearing results:"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
+            )
             self.logger.error(msg)
 
     @property
@@ -560,13 +615,63 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
             else None
         )
 
+    def query_database(
+        self,
+        sql: Optional[str] = None,
+        limit: Optional[int] = 25,
+    ) -> list:
+        """
+        Make a SELECT query to the database for results.
+
+        The database always contains two columns:
+            "id" - an auto-incrementing ID
+            "message" - a JSON serialized row of data
+
+        Parameters
+        ----------
+        sql : Optional[str]
+            SQL query to execute. Default is None.
+        limit : Optional[int]
+            Limit the number of records returned, by most recent. Default is 25, set to None to return all records.
+
+        Returns
+        -------
+        list
+            A list of deserialized results from the database.
+            If a 'data_model' was supplied at initialization, it will be a list of validated models.
+        """
+        if not sql:
+            query = f"SELECT message FROM {self.table_name} ORDER BY id DESC"  # noqa
+            if limit is not None:
+                query += f" LIMIT {limit};"
+        else:
+            query = (
+                sql.replace(";", "") + f" LIMIT {limit}"
+                if limit is not None and "LIMIT" not in sql.upper()
+                else sql
+            )
+
+        return self.database.query(query)
+
     def start_broadcasting(  # pylint: disable=too-many-locals
         self,
         host: str = "127.0.0.1",
         port: int = 6666,
         **kwargs,
     ) -> None:
-        """Broadcast results over a network connection."""
+        """
+        Broadcast results over a network connection.
+
+        Parameters
+        ----------
+        host : str
+            The host address to broadcast results to. Default is 127.0.0.1
+        port : int
+            The port to broadcast results to. Default is 6666
+            If the port is already in use, the next available port is used.
+        **kwargs: dict
+            Additional keyword arguments to pass to the `uvicorn.run`.
+        """
         # pylint: disable=import-outside-toplevel
         import os  # noqa
         import subprocess
@@ -692,9 +797,10 @@ def non_blocking_websocket(client, output_queue, provider_message_queue) -> None
             if output:
                 output_queue.put(output.strip())
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         msg = (
-            f"Unexpected error in non_blocking_websocket: {e.__class__.__name__} -> {e}"
+            "Unexpected error in non_blocking_websocket:"
+            f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
         )
         client.logger.error(msg)
         raise e from e
@@ -710,7 +816,7 @@ def send_message(
     # pylint: disable=import-outside-toplevel
     import json
 
-    if isinstance(message, (dict, list)):
+    if not isinstance(message, str):
         message = json.dumps(message)
     try:
         if target == "provider":
@@ -726,7 +832,10 @@ def send_message(
             else:
                 client.logger.error("Broadcast process is not running.")
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"Error sending message to the {target} process: {e.__class__.__name__} -> {e}"
+        msg = (
+            f"Error sending message to the {target} process:"
+            f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
+        )
         client.logger.error(msg)
 
 
@@ -747,8 +856,8 @@ def read_message_queue(
                     send_message(client, message, target="broadcast")
             except Exception as e:  # pylint: disable=broad-except
                 err = (
-                    f"Error while attempting to transmit from the outgoing message queue: {e.__class__.__name__} "
-                    f"-> {e} -> {message}"
+                    "Error while attempting to transmit from the outgoing message queue:"
+                    f"{e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e} -> {message}"
                 )
                 client.logger.error(err)
 
@@ -767,7 +876,8 @@ def non_blocking_broadcast(client, output_queue, broadcast_message_queue) -> Non
                 output_queue.put(output.strip())
     except Exception as e:  # pylint: disable=broad-except
         err = (
-            f"Unexpected error in non_blocking_broadcast: {e.__class__.__name__} -> {e}"
+            f"Unexpected error in non_blocking_broadcast:"
+            f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
         )
         client.logger.error(err)
     finally:

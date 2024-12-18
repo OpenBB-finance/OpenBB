@@ -10,19 +10,13 @@ from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
-from openbb_websockets.client import WebSocketClient
+from openbb_core.provider.utils.websockets.client import WebSocketClient
 from openbb_websockets.models import (
     WebSocketConnection,
     WebSocketData,
     WebSocketQueryParams,
 )
 from pydantic import Field, field_validator, model_validator
-
-URL_MAP = {
-    "stock": "wss://api.tiingo.com/iex",
-    "fx": "wss://api.tiingo.com/fx",
-    "crypto": "wss://api.tiingo.com/crypto",
-}
 
 # These are the data array order of definitions.
 IEX_FIELDS = [
@@ -244,7 +238,6 @@ class TiingoWebSocketFetcher(
         from asyncio import sleep
 
         api_key = credentials.get("tiingo_token") if credentials else ""
-        url = URL_MAP[query.asset_type]
         threshold_level = (
             5
             if query.asset_type == "fx" or query.feed == "trade"
@@ -254,12 +247,11 @@ class TiingoWebSocketFetcher(
                 else 0
             )
         )
-
         symbol = query.symbol.lower()
 
         kwargs = {
-            "url": url,
             "api_key": api_key,
+            "asset_type": query.asset_type,
             "threshold_level": threshold_level,
             "connect_kwargs": query.connect_kwargs,
         }

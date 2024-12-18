@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_provider.utils.websockets.client import WebSocketClient
 from openbb_tiingo.models.company_news import TiingoCompanyNewsFetcher
 from openbb_tiingo.models.crypto_historical import TiingoCryptoHistoricalFetcher
 from openbb_tiingo.models.currency_historical import TiingoCurrencyHistoricalFetcher
@@ -17,7 +18,6 @@ from openbb_tiingo.models.websocket_connection import (
     TiingoWebSocketFetcher,
 )
 from openbb_tiingo.models.world_news import TiingoWorldNewsFetcher
-from openbb_websockets.client import WebSocketClient
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"

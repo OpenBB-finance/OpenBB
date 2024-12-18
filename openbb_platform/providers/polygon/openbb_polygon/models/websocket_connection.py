@@ -9,6 +9,7 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_core.provider.utils.websockets.client import WebSocketClient
 from openbb_polygon.utils.constants import (
     CRYPTO_EXCHANGE_MAP,
     FX_EXCHANGE_MAP,
@@ -20,7 +21,6 @@ from openbb_polygon.utils.constants import (
     STOCK_TRADE_CONDITIONS,
 )
 from openbb_polygon.utils.helpers import map_tape
-from openbb_websockets.client import WebSocketClient
 from openbb_websockets.models import (
     WebSocketConnection,
     WebSocketData,
@@ -28,16 +28,6 @@ from openbb_websockets.models import (
 )
 from pydantic import Field, field_validator, model_validator
 
-URL_MAP = {
-    "stock": "wss://socket.polygon.io/stocks",
-    "stock_delayed": "wss://delayed.polygon.io/stocks",
-    "options": "wss://socket.polygon.io/options",
-    "options_delayed": "wss://delayed.polygon.io/options",
-    "fx": "wss://socket.polygon.io/forex",
-    "crypto": "wss://socket.polygon.io/crypto",
-    "index": "wss://socket.polygon.io/indices",
-    "index_delayed": "wss://delayed.polygon.io/indices",
-}
 
 ASSET_CHOICES = [
     "stock",
@@ -1227,12 +1217,8 @@ class PolygonWebSocketFetcher(
     ) -> dict:
         """Extract data from the WebSocket."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
-        url = URL_MAP[query.asset_type]
-
         symbol = query.symbol.upper()
-
         kwargs = {
-            "url": url,
             "asset_type": query.asset_type,
             "feed": query.feed,
             "api_key": api_key,

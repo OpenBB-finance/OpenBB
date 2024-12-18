@@ -7,8 +7,8 @@ from typing import Any, Literal, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.utils.websockets.client import WebSocketClient
 from openbb_intrinio.utils.references import TRADE_CONDITIONS, VENUES
-from openbb_websockets.client import WebSocketClient
 from openbb_websockets.models import (
     WebSocketConnection,
     WebSocketData,

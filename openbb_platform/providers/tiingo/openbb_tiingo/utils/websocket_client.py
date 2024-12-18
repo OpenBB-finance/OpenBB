@@ -19,6 +19,12 @@ from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_tiingo.models.websocket_connection import TiingoWebSocketData
 from pydantic import ValidationError
 
+URL_MAP = {
+    "stock": "wss://api.tiingo.com/iex",
+    "fx": "wss://api.tiingo.com/fx",
+    "crypto": "wss://api.tiingo.com/crypto",
+}
+
 # These are the data array definitions.
 IEX_FIELDS = [
     "type",
@@ -74,6 +80,10 @@ queue = MessageQueue(logger=logger)
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 kwargs["results_file"] = os.path.abspath(kwargs["results_file"])
+URL = URL_MAP.get(kwargs.pop("asset_type", "crypto"))
+
+if not URL:
+    raise ValueError("Invalid asset type provided.")
 
 DATABASE = Database(
     results_file=kwargs["results_file"],
@@ -86,8 +96,6 @@ DATABASE = Database(
 # Subscribe and unsubscribe events are handled in a separate connection using the subscription_id set by the login event.
 async def update_symbols(symbol, event):
     """Update the symbols to subscribe to."""
-    url = kwargs["url"]
-
     if not SUBSCRIPTION_ID:
         logger.error(
             "PROVIDER ERROR:    Must be assigned a subscription ID to update symbols. Try logging in."
@@ -103,7 +111,7 @@ async def update_symbols(symbol, event):
         },
     }
 
-    async with websockets.connect(url) as websocket:
+    async with websockets.connect(URL) as websocket:
         await websocket.send(json.dumps(update_event))
         response = await websocket.recv()
         message = json.loads(response)
@@ -228,7 +236,7 @@ async def connect_and_stream():
 
     try:
         try:
-            async with websockets.connect(kwargs["url"], **connect_kwargs) as websocket:
+            async with websockets.connect(URL, **connect_kwargs) as websocket:
                 logger.info("PROVIDER INFO:      WebSocket connection established.")
                 await websocket.send(json.dumps(subscribe_event))
                 while True:

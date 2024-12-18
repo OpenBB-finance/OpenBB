@@ -9,9 +9,8 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
 )
+from openbb_core.provider.utils.websockets.client import WebSocketClient
 from pydantic import ConfigDict, Field, field_validator, model_validator
-
-from openbb_websockets.client import WebSocketClient
 
 
 class WebSocketQueryParams(QueryParams):

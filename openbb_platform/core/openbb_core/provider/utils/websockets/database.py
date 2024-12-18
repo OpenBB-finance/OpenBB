@@ -66,7 +66,6 @@ class Database:
         table_name: Optional[str] = None,
         data_model: Optional["BaseModel"] = None,
         limit: Optional[int] = None,
-        keep_results: Optional[bool] = False,
         logger: Optional["logging.Logger"] = None,
         loop: Optional["asyncio.AbstractEventLoop"] = None,
         **kwargs,
@@ -87,6 +86,10 @@ class Database:
                 temp_file_path = temp_file.name
                 self.results_path = Path(temp_file_path).absolute()
                 self.results_file = temp_file_path
+        elif results_file and "://" in results_file:
+            self.results_file = results_file
+            self.results_path = results_file
+            kwargs["uri"] = True
         else:
             self.results_path = Path(results_file).absolute()
             self.results_file = results_file

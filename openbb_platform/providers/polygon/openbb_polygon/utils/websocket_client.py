@@ -22,6 +22,17 @@ from openbb_polygon.models.websocket_connection import (
 )
 from pydantic import ValidationError
 
+URL_MAP = {
+    "stock": "wss://socket.polygon.io/stocks",
+    "stock_delayed": "wss://delayed.polygon.io/stocks",
+    "options": "wss://socket.polygon.io/options",
+    "options_delayed": "wss://delayed.polygon.io/options",
+    "fx": "wss://socket.polygon.io/forex",
+    "crypto": "wss://socket.polygon.io/crypto",
+    "index": "wss://socket.polygon.io/indices",
+    "index_delayed": "wss://delayed.polygon.io/indices",
+}
+
 logger = get_logger("openbb.websocket.polygon")
 queue = MessageQueue(logger=logger)
 command_queue = MessageQueue(logger=logger)
@@ -29,8 +40,12 @@ command_queue = MessageQueue(logger=logger)
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 FEED = kwargs.pop("feed", None)
-ASSET_TYPE = kwargs.pop("asset_type", None)
+ASSET_TYPE = kwargs.pop("asset_type", "crypto")
 kwargs["results_file"] = os.path.abspath(kwargs.get("results_file"))
+URL = URL_MAP.get(ASSET_TYPE)
+
+if not URL:
+    raise ValueError("Invalid asset type provided.")
 
 DATABASE = Database(
     results_file=kwargs["results_file"],
@@ -208,7 +223,7 @@ async def connect_and_stream():
             connect_kwargs["close_timeout"] = None
 
         try:
-            async with websockets.connect(kwargs["url"], **connect_kwargs) as websocket:
+            async with websockets.connect(URL, **connect_kwargs) as websocket:
 
                 await login(websocket)
                 response = await websocket.recv()
