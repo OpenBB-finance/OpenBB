@@ -237,13 +237,18 @@ class Database:
 
         try:
             rows: list = []
+            conn_kwargs = self.kwargs.copy()
+            if not conn_kwargs.get("check_same_thread"):
+                conn_kwargs["check_same_thread"] = False
             async with aiosqlite.connect(
-                self.results_file, loop=self.loop, **self.kwargs
+                self.results_file,
+                loop=self.loop,
+                **conn_kwargs,
             ) as conn:
                 query = (
                     f"SELECT message FROM {self.table_name} ORDER BY id DESC"  # noqa
                 )
-                if limit:
+                if limit is not None:
                     query += f" LIMIT {limit}"
                 async with conn.execute(query) as cursor:
                     async for row in cursor:
@@ -317,8 +322,13 @@ class Database:
             )
         rows: list = []
         try:
+            conn_kwargs = self.kwargs.copy()
+            if not conn_kwargs.get("check_same_thread"):
+                conn_kwargs["check_same_thread"] = False
             async with aiosqlite.connect(
-                self.results_file, loop=self.loop, **self.kwargs
+                self.results_file,
+                loop=self.loop,
+                **conn_kwargs,
             ) as conn, conn.execute(query) as cursor:
                 async for row in cursor:
                     rows.append(
