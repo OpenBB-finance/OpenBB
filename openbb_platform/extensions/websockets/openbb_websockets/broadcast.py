@@ -8,6 +8,7 @@ from typing import Optional
 
 import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from openbb_core.provider.utils.helpers import run_async
 from openbb_core.provider.utils.websockets.database import Database
 from openbb_core.provider.utils.websockets.helpers import get_logger, parse_kwargs
 from starlette.websockets import WebSocketState
@@ -288,9 +289,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import run_async
-
     if not RESULTS_FILE:
         raise ValueError("Results file path is required for Broadcast server.")
 
