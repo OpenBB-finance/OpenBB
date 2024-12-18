@@ -141,7 +141,7 @@ class Database:
         except Exception as e:
             msg = (
                 "Unexpected error while creating SQLite database ->"
-                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
             )
             self.logger.error(msg)
             self._exception = e
@@ -226,7 +226,7 @@ class Database:
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Unexpected error while writing to SQLite database ->"
-                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
             )
             self.logger.error(msg)
             self._exception = e
@@ -280,7 +280,7 @@ class Database:
         except Exception as e:
             msg = (
                 "Unexpected error while deserializing row -> "
-                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
             )
             self.logger.error(msg)
             self._exception = e
@@ -293,7 +293,7 @@ class Database:
         except Exception as e:
             msg = (
                 "Unexpected error while reading from SQLite database ->"
-                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
             )
             self.logger.error(msg)
             self._exception = e
@@ -416,7 +416,7 @@ class Database:
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Error clearing results: "
-                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__}: {e}"
             )
             self.logger.error(msg)
             raise OpenBBError(msg) from e
