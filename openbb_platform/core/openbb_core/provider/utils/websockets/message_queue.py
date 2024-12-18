@@ -9,7 +9,7 @@ class MessageQueue:
 
     def __init__(
         self,
-        max_size: int = 5000,
+        max_size: int = 10000,
         max_retries=5,
         backoff_factor=0.5,
         logger: Optional[logging.Logger] = None,
@@ -52,7 +52,7 @@ class MessageQueue:
 
     async def process_queue(self, handler):
         """Process the message queue."""
-        while not self.queue.empty():
+        while True:
             message = await self.queue.get()
             await self._process_message(message, handler)
             self.queue.task_done()

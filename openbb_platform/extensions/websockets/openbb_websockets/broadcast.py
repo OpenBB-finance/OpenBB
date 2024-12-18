@@ -8,9 +8,9 @@ from typing import Optional
 
 import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from openbb_core.provider.utils.websockets.database import Database
+from openbb_core.provider.utils.websockets.helpers import get_logger, parse_kwargs
 from starlette.websockets import WebSocketState
-
-from openbb_websockets.helpers import get_logger, parse_kwargs, setup_database
 
 connected_clients: set = set()
 
@@ -25,6 +25,7 @@ TABLE_NAME = kwargs.pop("table_name", None) or "records"
 SLEEP_TIME = kwargs.pop("sleep_time", None) or 0.25
 AUTH_TOKEN = kwargs.pop("auth_token", None)
 
+DATABASE = Database(results_file=RESULTS_FILE, table_name=TABLE_NAME)
 
 app = FastAPI()
 
@@ -151,14 +152,14 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
     def _encrypt_value(self, value: str) -> str:
         """Encrypt the value for storage."""
         # pylint: disable=import-outside-toplevel
-        from openbb_websockets.helpers import encrypt_value
+        from openbb_core.provider.utils.websockets.helpers import encrypt_value
 
         return encrypt_value(self._key, self._iv, value)
 
     def _decrypt_value(self, value: str) -> str:
         """Decrypt the value for use."""
         # pylint: disable=import-outside-toplevel
-        from openbb_websockets.helpers import decrypt_value
+        from openbb_core.provider.utils.websockets.helpers import decrypt_value
 
         return decrypt_value(self._key, self._iv, value)
 
@@ -294,5 +295,5 @@ if __name__ == "__main__":
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import run_async
 
-        run_async(setup_database, RESULTS_FILE, TABLE_NAME)
+        run_async(DATABASE._setup_database)
     main()

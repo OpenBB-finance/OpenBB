@@ -9,12 +9,12 @@ import sys
 from typing import Any
 
 from openbb_core.provider.utils.helpers import run_async
+from openbb_core.provider.utils.websockets.database import Database
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
     handle_validation_error,
     parse_kwargs,
-    write_to_db,
 )
 from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_intrinio.models.websocket_connection import IntrinioWebSocketData
@@ -26,8 +26,15 @@ kwargs = parse_kwargs()
 command_queue = MessageQueue(logger=logger)
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 
+DATABASE = Database(
+    results_file=kwargs["results_file"],
+    table_name=kwargs["table_name"],
+    limit=kwargs.get("limit"),
+    logger=logger,
+)
 
-async def process_message(message):
+
+def process_message(message):
     """Process the message and write to the database."""
     result: Any = None
     try:
@@ -43,17 +50,12 @@ async def process_message(message):
         except ValidationError:
             raise e from e
     if result:
-        await write_to_db(
-            result,
-            kwargs["results_file"],
-            kwargs["table_name"],
-            kwargs["limit"],
-        )
+        DATABASE.write_to_db(result)
 
 
 def on_message(message, backlog):
     """Process the message and write to the database."""
-    run_async(process_message, message)
+    process_message(message)
 
 
 options = {
@@ -73,6 +75,7 @@ client = IntrinioRealtimeClient(
 async def subscribe(symbol, event):
     """Subscribe or unsubscribe to a symbol."""
     ticker = symbol.split(",") if isinstance(symbol, str) else symbol
+    ticker = ["lobby"] if "*" in ticker or "LOBBY" in ticker else ticker
     try:
         if event == "subscribe":
             client.join(ticker)
@@ -123,7 +126,7 @@ if __name__ == "__main__":
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        loop.set_exception_handler(lambda loop, context: None)
+        # loop.set_exception_handler(lambda loop, context: None)
 
         for sig in (signal.SIGINT, signal.SIGTERM):
             loop.add_signal_handler(sig, handle_termination_signal, logger)

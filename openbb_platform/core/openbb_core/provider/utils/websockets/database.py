@@ -41,8 +41,6 @@ class Database:
         A Pydantic model to validate the JSON data. Default is None.
     limit: Optional[int]
         The maximum number of records to keep in the database. Default is None.
-    keep_results: Optional[bool]
-        Whether to persist the file on disk after the Python session is over. Default is False.
     logger : Optional[logging.Logger]
         A custom logger to use. If not provided, a new logger will be created.
     loop: Optional[asyncio.AbstractEventLoop]
@@ -75,8 +73,7 @@ class Database:
     ):
         """Initialize the ResultsDB class."""
         # pylint: disable=import-outside-toplevel
-        import atexit  # noqa
-        import tempfile
+        import tempfile  # noqa
         from pathlib import Path
         from openbb_core.provider.utils.websockets.helpers import get_logger
 
@@ -94,11 +91,9 @@ class Database:
             self.results_path = Path(results_file).absolute()
             self.results_file = results_file
 
-        self.keep_results = keep_results
         self.table_name = table_name if table_name else "records"
         self.limit = limit
         self.loop = loop
-        atexit.register(self._atexit)
         self.kwargs = kwargs if kwargs else {}
         run_async(self._setup_database)
         self.data_model = data_model
@@ -136,7 +131,6 @@ class Database:
                     f"""
                     CREATE TABLE IF NOT EXISTS {self.table_name} (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        symbol TEXT,
                         message TEXT NOT NULL
                     )
                 """
@@ -149,17 +143,6 @@ class Database:
             self.logger.error(msg)
             self._exception = e
             raise OpenBBError(msg) from e
-
-    def _atexit(self) -> None:
-        """Clean up the WebSocket client processes at exit."""
-        # pylint: disable=import-outside-toplevel
-        import os
-
-        self._exception = None
-        if self.keep_results:
-            self.logger.info("Results database saved to, %s\n", str(self.results_file))
-        if os.path.exists(self.results_file) and not self.keep_results:  # type: ignore
-            os.remove(self.results_file)  # type: ignore
 
     async def _write_to_db(self, message) -> None:
         """Write the WebSocket message to the SQLite database."""

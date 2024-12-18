@@ -99,12 +99,14 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         import os
         import tempfile
         import threading
-        from aiosqlite import DatabaseError
         from queue import Queue
         from pathlib import Path
         from openbb_core.app.model.abstract.error import OpenBBError
-        from openbb_websockets.helpers import get_logger
-        from openbb_websockets.helpers import encrypt_value
+        from openbb_core.provider.utils.websockets.database import Database
+        from openbb_core.provider.utils.websockets.helpers import (
+            encrypt_value,
+            get_logger,
+        )
 
         self.name = name
         self.module = module.replace(".py", "")  # type: ignore
@@ -156,8 +158,15 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         atexit.register(self._atexit)
 
         try:
-            self._setup_database()
-        except DatabaseError as e:
+            self.database = Database(
+                results_file=self.results_file,
+                table_name=self.table_name,
+                limit=self._limit,
+                keep_results=self.save_results,
+                logger=self.logger,
+                data_model=self.data_model,
+            )
+        except Exception as e:  # pylint: disable=broad-except
             msg = f"Unexpected error setting up the SQLite database and table -> {e.__class___.__name__}: {e}"
             self.logger.error(msg)
             self._exception = OpenBBError(msg)
@@ -178,14 +187,6 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         if os.path.exists(self.results_file) and not self.save_results:  # type: ignore
             os.remove(self.results_file)  # type: ignore
 
-    def _setup_database(self) -> None:
-        """Set up the SQLite database and table."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import run_async  # noqa
-        from openbb_websockets.helpers import setup_database
-
-        run_async(setup_database, self.results_path, self.table_name)
-
     def _log_provider_output(self, output_queue) -> None:
         """Log output from the provider logger, handling exceptions, errors, and messages that are not data."""
         # pylint: disable=import-outside-toplevel
@@ -193,7 +194,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         import queue
         import sys
         from openbb_core.provider.utils.errors import UnauthorizedError
-        from openbb_websockets.helpers import clean_message
+        from openbb_core.provider.utils.websockets.helpers import clean_message
         from pydantic import ValidationError
 
         while not self._stop_log_thread_event.is_set():
@@ -274,7 +275,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         # pylint: disable=import-outside-toplevel
         import queue  # noqa
         import sys
-        from openbb_websockets.helpers import clean_message
+        from openbb_core.provider.utils.websockets.helpers import clean_message
 
         while not self._stop_broadcasting_event.is_set():
             try:
@@ -321,7 +322,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         import threading
         import time
         from openbb_core.app.model.abstract.error import OpenBBError
-        from openbb_websockets.helpers import decrypt_value
+        from openbb_core.provider.utils.websockets.helpers import decrypt_value
 
         if self.is_running:
             self.logger.info("Provider connection already running.")
@@ -495,59 +496,22 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         return False
 
     @property
-    def results(self) -> Union[list[dict], list["Data"], None]:
+    def results(self) -> list:
         """Retrieve the deserialized results from the results file."""
         # pylint: disable=import-outside-toplevel
-        import json  # noqa
-        import sqlite3
         from openbb_core.app.model.abstract.error import OpenBBError
 
-        output: list = []
-        file_path = self.results_path
-        if file_path.exists():
-            with sqlite3.connect(file_path) as conn:
-                try:
-                    cursor = conn.execute(f"SELECT * FROM {self.table_name}")  # noqa
-                    for row in cursor:
-                        _, message = row
-                        if self.data_model:
-                            message = json.loads(message)
-                            if isinstance(message, (str, bytes)):
-                                output.append(
-                                    self.data_model.model_validate_json(message)
-                                )
-                            elif isinstance(message, dict):
-                                output.append(self.data_model(**message))
-                        else:
-                            output.append(json.loads(message))
-                except Exception as e:
-                    raise OpenBBError(f"Error retrieving results: {e}") from e
-        if output:
-            return output
-
-        self.logger.info("No results found in %s", self.results_file)
-
-        return None
+        try:
+            return self.database.fetch_all()
+        except Exception as e:  # pylint: disable=broad-except
+            raise OpenBBError(f"Error retrieving results: {e}") from e
 
     @results.deleter
     def results(self):
         """Clear results stored from the WebSocket stream."""
         # pylint: disable=import-outside-toplevel
-        import sqlite3  # noqa
-
         try:
-            with sqlite3.connect(self.results_path) as conn:
-                conn.execute("PRAGMA journal_mode=WAL;")
-                conn.execute(f"DELETE FROM {self.table_name}")  # noqa
-                conn.commit()
-
-            self._setup_database()
-
-            self.logger.info(
-                "Results cleared from table %s in %s",
-                self.table_name,
-                self.results_file,
-            )
+            self.database.clear_results()
         except Exception as e:  # pylint: disable=broad-except
             msg = f"Error clearing results: {e.__class__.__name__}: {e}"
             self.logger.error(msg)
@@ -608,7 +572,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         import psutil
         import queue
         from openbb_platform_api.utils.api import check_port
-        from openbb_websockets.helpers import decrypt_value
+        from openbb_core.provider.utils.websockets.helpers import decrypt_value
 
         if (
             self._broadcast_process is not None

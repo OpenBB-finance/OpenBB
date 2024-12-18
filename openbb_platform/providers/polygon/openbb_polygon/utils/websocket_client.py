@@ -8,12 +8,12 @@ import sys
 
 import websockets
 import websockets.exceptions
+from openbb_core.provider.utils.websockets.database import Database
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
     handle_validation_error,
     parse_kwargs,
-    write_to_db,
 )
 from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_polygon.models.websocket_connection import (
@@ -31,6 +31,13 @@ CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 FEED = kwargs.pop("feed", None)
 ASSET_TYPE = kwargs.pop("asset_type", None)
 kwargs["results_file"] = os.path.abspath(kwargs.get("results_file"))
+
+DATABASE = Database(
+    results_file=kwargs["results_file"],
+    table_name=kwargs["table_name"],
+    limit=kwargs.get("limit"),
+    logger=logger,
+)
 
 
 async def handle_symbol(symbol):
@@ -181,12 +188,7 @@ async def process_message(message):
                     raise e from e
 
             if result:
-                await write_to_db(
-                    result,
-                    kwargs["results_file"],
-                    kwargs["table_name"],
-                    kwargs.get("limit"),
-                )
+                await DATABASE._write_to_db(result)
         else:
             logger.info("PROVIDER INFO:      %s", msg)
 

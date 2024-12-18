@@ -8,12 +8,12 @@ import sys
 
 import websockets
 from openbb_core.provider.utils.errors import UnauthorizedError
+from openbb_core.provider.utils.websockets.database import Database
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
     handle_validation_error,
     parse_kwargs,
-    write_to_db,
 )
 from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_tiingo.models.websocket_connection import TiingoWebSocketData
@@ -74,6 +74,13 @@ queue = MessageQueue(logger=logger)
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 kwargs["results_file"] = os.path.abspath(kwargs["results_file"])
+
+DATABASE = Database(
+    results_file=kwargs["results_file"],
+    table_name=kwargs["table_name"],
+    limit=kwargs.get("limit"),
+    logger=logger,
+)
 
 
 # Subscribe and unsubscribe events are handled in a separate connection using the subscription_id set by the login event.
@@ -189,12 +196,7 @@ async def process_message(message):  # pylint: disable=too-many-branches
                 raise e from e
 
         if result:
-            await write_to_db(
-                result,
-                kwargs["results_file"],
-                kwargs["table_name"],
-                kwargs.get("limit"),
-            )
+            await DATABASE._write_to_db(result)  # pylint: disable=protected-access
     return
 
 

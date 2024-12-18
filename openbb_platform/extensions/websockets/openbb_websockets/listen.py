@@ -25,7 +25,10 @@ class Listener:
         import websockets
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import UnauthorizedError
-        from openbb_websockets.helpers import clean_message, get_logger
+        from openbb_core.provider.utils.websockets.helpers import (
+            clean_message,
+            get_logger,
+        )
         from websockets.exceptions import InvalidStatusCode
 
         kwargs = kwargs or {}
