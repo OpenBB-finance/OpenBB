@@ -425,7 +425,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
             self._log_thread.start()
 
         except Exception as e:  # pylint: disable=broad-except
-            msg = f"Unexpected error -> {e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e}"
+            msg = f"Unexpected error -> {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             self.logger.error(msg)
             self._atexit()
             raise OpenBBError(msg) from e
@@ -558,7 +558,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Error retrieving results:"
-                f" {e.__class__.__name__ if hasattr(e,'__class__') else e.__name__} -> {e}"
+                f" {e.__class__.__name__ if hasattr(e,'__class__') else e} -> {e.args}"
             )
             raise OpenBBError(msg) from e
 
@@ -857,7 +857,7 @@ def read_message_queue(
             except Exception as e:  # pylint: disable=broad-except
                 err = (
                     "Error while attempting to transmit from the outgoing message queue:"
-                    f"{e.__class__.__name__ if hasattr(e, '__class__') else e.__name__} -> {e} -> {message}"
+                    f"{e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args} -> {message}"
                 )
                 client.logger.error(err)
 

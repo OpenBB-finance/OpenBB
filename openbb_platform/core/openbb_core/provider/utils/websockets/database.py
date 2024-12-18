@@ -227,7 +227,7 @@ class Database:
                 f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
-            self._exception = e
+            self._exception = e  # type: ignore
             raise OpenBBError(msg) from e
 
     async def _fetch_all(self, limit: Optional[int] = None) -> list:
@@ -294,7 +294,7 @@ class Database:
                 f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
-            self._exception = e
+            self._exception = e  # type: ignore
             raise OpenBBError(msg) from e
 
     async def _query_db(self, sql) -> list:
