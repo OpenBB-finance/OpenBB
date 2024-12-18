@@ -105,7 +105,7 @@ class Database:
         import aiosqlite
 
         try:
-            if os.path.exists(self.results_file):
+            if self.results_file is not None and os.path.exists(self.results_file):  # type: ignore
                 async with aiosqlite.connect(
                     self.results_file, loop=self.loop, **self.kwargs
                 ) as conn:
@@ -139,7 +139,10 @@ class Database:
                 await conn.commit()
                 self.table_exists = True
         except Exception as e:
-            msg = f"Unexpected error while creating SQLite database -> {e.__class__.__name__}: {e}"
+            msg = (
+                "Unexpected error while creating SQLite database ->"
+                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+            )
             self.logger.error(msg)
             self._exception = e
             raise OpenBBError(msg) from e
@@ -221,7 +224,10 @@ class Database:
         try:
             run_async(self._write_to_db, message)
         except Exception as e:  # pylint: disable=broad-except
-            msg = f"Unexpected error while writing to SQLite database -> {e.__class__.__name__}: {e}"
+            msg = (
+                "Unexpected error while writing to SQLite database ->"
+                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+            )
             self.logger.error(msg)
             self._exception = e
             raise OpenBBError(msg) from e
@@ -272,7 +278,10 @@ class Database:
                 )
             )
         except Exception as e:
-            msg = f"Unexpected error while deserializing row -> {e.__class__.__name__}: {e}"
+            msg = (
+                "Unexpected error while deserializing row -> "
+                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+            )
             self.logger.error(msg)
             self._exception = e
             raise OpenBBError(msg) from e
@@ -282,7 +291,10 @@ class Database:
         try:
             return run_async(self._fetch_all, limit)
         except Exception as e:
-            msg = f"Unexpected error while reading from SQLite database -> {e.__class__.__name__}: {e}"
+            msg = (
+                "Unexpected error while reading from SQLite database ->"
+                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+            )
             self.logger.error(msg)
             self._exception = e
             raise OpenBBError(msg) from e
@@ -402,6 +414,9 @@ class Database:
         try:
             run_async(self._clear_results)
         except Exception as e:  # pylint: disable=broad-except
-            msg = f"Error clearing results: {e.__class__.__name__}: {e}"
+            msg = (
+                "Error clearing results: "
+                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+            )
             self.logger.error(msg)
             raise OpenBBError(msg) from e

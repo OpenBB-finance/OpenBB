@@ -167,7 +167,10 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                 data_model=self.data_model,
             )
         except Exception as e:  # pylint: disable=broad-except
-            msg = f"Unexpected error setting up the SQLite database and table -> {e.__class___.__name__}: {e}"
+            msg = (
+                "Unexpected error setting up the SQLite database and table ->"
+                f" {e.__class__.__name__ if hasattr(e, "__class__") else e.__name__}: {e}"
+            )
             self.logger.error(msg)
             self._exception = OpenBBError(msg)
 
