@@ -188,11 +188,6 @@ class Database:
                 await cursor.close()
 
                 if self.limit is not None:
-                    records = await conn.execute(
-                        f"SELECT COUNT(*) FROM {self.table_name}"  # noqa
-                    )
-                    count = (await records.fetchone())[0]
-                    await records.close()
                     count = await conn.execute(
                         f"SELECT COUNT(*) FROM {self.table_name}"  # noqa
                     )
