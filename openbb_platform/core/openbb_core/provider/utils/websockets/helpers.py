@@ -5,7 +5,6 @@
 import logging
 import re
 
-from openbb_core.app.model.abstract.error import OpenBBError
 from pydantic import ValidationError
 
 AUTH_TOKEN_FILTER = re.compile(
@@ -128,86 +127,3 @@ def parse_kwargs() -> dict:
                 _kwargs[key] = True
 
     return _kwargs
-
-
-async def setup_database(results_path, table_name):
-    """Create the SQLite database, if required."""
-    # pylint: disable=import-outside-toplevel
-    import os  # noqa
-    import aiosqlite
-
-    if os.path.exists(results_path):
-        async with aiosqlite.connect(results_path) as conn:
-            try:
-                await conn.execute("SELECT name FROM sqlite_master WHERE type='table';")
-            except aiosqlite.DatabaseError as e:
-                raise OpenBBError(
-                    "Unexpected error caused by an invalid SQLite database file."
-                    "Please check the path, and inspect the file if it exists."
-                    + f" -> {e}"
-                ) from e
-
-    async with aiosqlite.connect(results_path) as conn:
-        await conn.execute(
-            f"""
-            CREATE TABLE IF NOT EXISTS {table_name} (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                message JSON
-            )
-        """
-        )
-        await conn.commit()
-
-
-async def write_to_db(message, results_path, table_name, limit):
-    """Write the WebSocket message to the SQLite database."""
-    # pylint: disable=import-outside-toplevel
-    import aiosqlite
-
-    conn = await aiosqlite.connect(results_path)
-    await conn.execute("PRAGMA journal_mode=WAL;")
-    try:
-        # Check if the table exists and create it if it doesn't
-        await conn.execute(
-            f"""
-            CREATE TABLE IF NOT EXISTS {table_name} (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                message JSON
-            )
-        """
-        )
-        await conn.commit()
-
-        await conn.execute(
-            f"INSERT INTO {table_name} (message) VALUES (?)",  # noqa
-            (message,),
-        )
-        await conn.commit()
-
-        records = await conn.execute(f"SELECT COUNT(*) FROM {table_name}")  # noqa
-        count = (await records.fetchone())[0]
-        count = await conn.execute(f"SELECT COUNT(*) FROM {table_name}")  # noqa
-        current_count = int((await count.fetchone())[0])
-        limit = 0 if limit is None else int(limit)
-
-        if current_count > limit and limit != 0:
-            await conn.execute(
-                f"""
-                DELETE FROM {table_name}
-                WHERE id IN (
-                    SELECT id FROM {table_name}
-                    ORDER BY id DESC
-                    LIMIT -1 OFFSET ?
-                )
-            """,  # noqa: S608
-                (limit,),
-            )
-
-        await conn.commit()
-    except Exception as e:  # pylint: disable=broad-except
-        raise OpenBBError(
-            f"Unexpected error encountered while inserting message into the database. -> {e.__class__.__name__}: {e}"
-        ) from e
-
-    finally:
-        await conn.close()
