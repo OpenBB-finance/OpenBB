@@ -1,10 +1,13 @@
 """Test Intrinio fetchers."""
 
+import time
 from datetime import date
 from unittest import mock
+from unittest.mock import MagicMock, patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_core.provider.utils.websockets.client import WebSocketClient
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
@@ -65,11 +68,175 @@ from openbb_intrinio.models.search_attributes import (
     IntrinioSearchAttributesFetcher,
 )
 from openbb_intrinio.models.share_statistics import IntrinioShareStatisticsFetcher
+from openbb_intrinio.models.websocket_connection import (
+    IntrinioWebSocketConnection,
+    IntrinioWebSocketData,
+    IntrinioWebSocketFetcher,
+)
 from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
 )
+
+
+MOCK_WEBSOCKET_DATA = [
+    {
+        "date": "2024-12-12T18:27:22.943000-05:00",
+        "symbol": "DJT",
+        "exchange": "Bats EDGX Exchange",
+        "type": "trade",
+        "price": 36.2400016784668,
+        "size": 155,
+        "volume": 15968471,
+        "conditions": "Regular Sale; Form T",
+        "is_darkpool": None,
+        "feed": "UTP",
+    },
+    {
+        "date": "2024-12-12T18:27:22.873000-05:00",
+        "symbol": "CLF",
+        "exchange": "NYSE Arca",
+        "type": "ask",
+        "price": 11.0,
+        "size": 4,
+        "volume": None,
+        "conditions": None,
+        "is_darkpool": None,
+        "feed": "CTA_A",
+    },
+    {
+        "date": "2024-12-12T18:27:22.873000-05:00",
+        "symbol": "CLF",
+        "exchange": "NYSE Arca",
+        "type": "bid",
+        "price": 10.960000038146973,
+        "size": 3,
+        "volume": None,
+        "conditions": None,
+        "is_darkpool": None,
+        "feed": "CTA_A",
+    },
+    {
+        "date": "2024-12-12T18:27:22.752000-05:00",
+        "symbol": "TSLZ",
+        "exchange": "NYSE Arca",
+        "type": "ask",
+        "price": 2.609999895095825,
+        "size": 223,
+        "volume": None,
+        "conditions": None,
+        "is_darkpool": None,
+        "feed": "UTP",
+    },
+    {
+        "date": "2024-12-12T18:27:22.796000-05:00",
+        "symbol": "QQQM",
+        "exchange": "NASDAQ (Tape C securities)",
+        "type": "ask",
+        "price": 217.67999267578125,
+        "size": 56,
+        "volume": None,
+        "conditions": None,
+        "is_darkpool": None,
+        "feed": "UTP",
+    },
+    {
+        "date": "2024-12-12T18:27:22.796000-05:00",
+        "symbol": "QQQM",
+        "exchange": "NASDAQ (Tape C securities)",
+        "type": "bid",
+        "price": 217.38999938964844,
+        "size": 100,
+        "volume": None,
+        "conditions": None,
+        "is_darkpool": None,
+        "feed": "UTP",
+    },
+    {
+        "date": "2024-12-12T18:27:22.796000-05:00",
+        "symbol": "QQQM",
+        "exchange": "NYSE Arca",
+        "type": "trade",
+        "price": 217.5500030517578,
+        "size": 300,
+        "volume": 2234058,
+        "conditions": "Regular Sale; Form T",
+        "is_darkpool": None,
+        "feed": "UTP",
+    },
+    {
+        "date": "2024-12-12T18:27:22.935000-05:00",
+        "symbol": "LCTX",
+        "exchange": "Bats BZX Exchange",
+        "type": "ask",
+        "price": 0.5356000065803528,
+        "size": 12,
+        "volume": None,
+        "conditions": None,
+        "is_darkpool": None,
+        "feed": "CTA_B",
+    },
+    {
+        "date": "2024-12-12T18:27:22.870000-05:00",
+        "symbol": "BITU",
+        "exchange": "Bats EDGX Exchange",
+        "type": "ask",
+        "price": 59.5,
+        "size": 1,
+        "volume": None,
+        "conditions": None,
+        "is_darkpool": None,
+        "feed": "CTA_B",
+    },
+    {
+        "date": "2024-12-12T18:27:22.870000-05:00",
+        "symbol": "BITU",
+        "exchange": "Bats EDGX Exchange",
+        "type": "bid",
+        "price": 58.33000183105469,
+        "size": 1,
+        "volume": None,
+        "conditions": None,
+        "is_darkpool": None,
+        "feed": "CTA_B",
+    },
+]
+
+
+@pytest.fixture
+def mock_websocket_connection():
+    """Mock websocket client."""
+
+    mock_connection = IntrinioWebSocketConnection(
+        client=MagicMock(
+            spec=WebSocketClient(
+                name="intrinio_test",
+                module="openbb_intrinio.utils.websocket_client",
+                symbol="btcusd",
+                limit=10,
+                data_model=IntrinioWebSocketData,
+                url="wss://mock.intrinio.com/",
+                api_key="MOCK_API_KEY",
+            )
+        )
+    )
+    mock_connection.client.is_running = False
+    mock_results = []
+
+    def mock_connect():
+        mock_connection.client.is_running = True
+        for data in MOCK_WEBSOCKET_DATA:
+            mock_results.append(IntrinioWebSocketData(**data))
+            time.sleep(0.1)
+
+    def mock_get_results():
+        return mock_results
+
+    mock_connection.client.connect = mock_connect
+    mock_connection.client.results = mock_get_results
+
+    return mock_connection
 
 
 @pytest.fixture(scope="module")
@@ -97,6 +264,33 @@ def mock_cpu_count():
     ) as mock_cpu_count:  # pylint: disable=redefined-outer-name
         mock_cpu_count.return_value = -3
         yield
+
+
+@pytest.mark.asyncio
+async def test_websocket_fetcher(
+    mock_websocket_connection, credentials=test_credentials
+):
+    """Test websocket fetcher."""
+    fetcher = IntrinioWebSocketFetcher()
+    params = {
+        "symbol": "*",
+        "name": "intrinio_test",
+        "limit": 10,
+        "asset_type": "stock",
+    }
+
+    with patch.object(fetcher, "fetch_data", return_value=mock_websocket_connection):
+        result = await fetcher.fetch_data(params, credentials)
+
+        # Ensure the client is not running initially
+        assert not result.client.is_running
+        assert result.client.results() == []
+        result.client.connect()
+        assert result.client.is_running
+        assert len(result.client.results()) == len(MOCK_WEBSOCKET_DATA)
+        assert result.client.results()[0] == IntrinioWebSocketData(
+            **MOCK_WEBSOCKET_DATA[0]
+        )
 
 
 @pytest.mark.record_http
