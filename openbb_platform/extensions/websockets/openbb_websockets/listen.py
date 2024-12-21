@@ -53,11 +53,14 @@ class Listener:
                     async with websockets.connect(url, **kwargs) as websocket:
                         self.websocket = websocket
                         url = clean_message(url)
-                        msg = f"\nListening for messages from {clean_message(url)}"
+                        msg = f"\nConnecting to {clean_message(url)} ..."
                         self.logger.info(msg)
                         for handler in self.logger.handlers:
                             handler.flush()
                         async for message in websocket:
+                            if "invalid SQL" in message:
+                                raise websockets.exceptions.WebSocketException(message)
+
                             if (
                                 isinstance(message, str)
                                 and "Invalid authentication token" in message
@@ -79,6 +82,9 @@ class Listener:
                     msg = f"The process hosting {clean_message(url)} was terminated."
                     self.logger.error(msg)
                     break
+                except websockets.exceptions.WebSocketException as error:
+                    self.logger.error(error)
+                    break
                 except websockets.exceptions.InvalidURI as error:
                     msg = f"Invalid URI -> {error}"
                     self.logger.error(msg)
@@ -97,8 +103,12 @@ class Listener:
                         msg = f"An error occurred while attempting to connect to: {clean_message(url)} -> {error}"
                         self.logger.error(msg)
                     break
+
         except Exception as error:  # pylint: disable=broad-except
-            msg = f"Unexpected error -> {error.__class__.__name__}: {error}"
+            msg = (
+                "Unexpected error -> "
+                f"{error.__class__.__name__ if hasattr(error, '__class__') else error}: {error.args}"
+            )
             self.logger.error(msg)
             raise OpenBBError(error) from error
         finally:

@@ -131,12 +131,15 @@ async def read_stdin_and_update_symbols():
         if not line:
             break
 
-        line = json.loads(line.strip())
+        if "qsize" in line:
+            logger.info(f"PROVIDER INFO:      Queue size: {queue.queue.qsize()}")
+        else:
+            line = json.loads(line.strip())
 
-        if line:
-            symbol = line.get("symbol")
-            event = line.get("event")
-            await update_symbols(symbol, event)
+            if line:
+                symbol = line.get("symbol")
+                event = line.get("event")
+                await update_symbols(symbol, event)
 
 
 async def process_message(message):  # pylint: disable=too-many-branches
@@ -211,9 +214,17 @@ async def process_message(message):  # pylint: disable=too-many-branches
 async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
 
+    tasks: set = set()
+
     handler_task = asyncio.create_task(
         queue.process_queue(lambda message: process_message(message))
     )
+    tasks.add(handler_task)
+    for i in range(0, 15):
+        new_task = asyncio.create_task(
+            queue.process_queue(lambda message: process_message(message))
+        )
+        tasks.add(new_task)
     stdin_task = asyncio.create_task(read_stdin_and_update_symbols())
     ticker: list = []
 
@@ -265,10 +276,11 @@ async def connect_and_stream():
         sys.exit(1)
 
     finally:
-        handler_task.cancel()
-        await handler_task
-        stdin_task.cancel()
-        await stdin_task
+        tasks.add(stdin_task)
+        for task in tasks:
+            task.cancel()
+            await task
+        asyncio.gather(*tasks, return_exceptions=True)
         sys.exit(0)
 
 
@@ -290,5 +302,5 @@ if __name__ == "__main__":
         logger.error(ERR)
 
     finally:
-        loop.stop()
+        loop.close()
         sys.exit(0)

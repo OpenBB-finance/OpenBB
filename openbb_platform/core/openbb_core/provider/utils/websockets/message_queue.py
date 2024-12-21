@@ -11,7 +11,7 @@ class MessageQueue:
         self,
         max_size: int = 10000,
         max_retries=5,
-        backoff_factor=0.5,
+        backoff_factor=0.75,
         logger: Optional[logging.Logger] = None,
     ):
         """Initialize the MessageQueue."""

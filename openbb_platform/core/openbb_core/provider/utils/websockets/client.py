@@ -28,7 +28,8 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         The symbol(s) requested to subscribe on start. Enter multiple symbols separated by commas, without spaces.
         Where supported by the provider, * represents all symbols within the feed.
     limit : Optional[int]
-        The limit of records to hold in memory. Once the limit is reached, the oldest records are removed.
+        The limit of records to store. Once the limit is reached, a one-in-one-out policy is used.
+        A limit of None is the most efficient setting, but requires adequate disk storage to handle high volume.
         Default is 5000. Set to None to keep all records.
     results_file : Optional[str]
         Absolute path to the file for continuous writing. By default, a temporary file is created.
@@ -40,10 +41,9 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
     table_name : Optional[str]
         SQL table name to store serialized data messages. By default, 'records'.
     save_results : bool
-        Whether to persist the results after the main Python session ends. Default is False.
+        Whether to persist the results after exiting. Default is False.
     data_model : Optional[BaseModel]
         Pydantic data model to validate the results before storing them in the database.
-        Also used to deserialize the results from the database.
     auth_token : Optional[str]
         Used to limit access to the broadcast stream. When provided, listeners should supply as a URL parameter.
         Example: 'ws://127.0.0.1:6666/?auth_token=SOME_TOKEN'.
@@ -53,8 +53,9 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         A pre-configured logger to use for this instance. By default, a new logger is created.
     kwargs : Optional[dict]
         Additional keyword arguments to pass to the target provider module. Keywords and values must not contain spaces.
-        To pass items to 'websocket.connect()', include them in the 'kwargs' dictionary as,
-        {'api_key': 'MY_API_KEY', 'connect_kwargs': {'key': 'value'}}.
+        To pass items to 'websocket.connect()', include them in the 'kwargs' dictionary as a nested dictionary,
+        with key, 'connect_kwargs'.
+            {'api_key': 'MY_API_KEY', 'connect_kwargs': {'key': 'value'}}.
 
     Properties
     ----------
@@ -68,6 +69,8 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         Check if the broadcast server process is running.
     broadcast_address : str
         URI address for connecting to the broadcast stream.
+    num_results : int
+        Number of results stored in the database.
     results : list[Data]
         All stored results from the provider connection.
         Clear the results by deleting the property. e.g., del client.results
@@ -88,8 +91,10 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         Stop the broadcast server and disconnect all listening clients.
     send_message
         Send a message to the WebSocket process. Messages can be sent to "provider" or "broadcast" targets.
+    get_latest_results
+        Get the latest results from the database, optionally filter by symbol.
     query_database
-        Run a SELECT query to the database. Returns a list of deserialized results, or validated models.
+        Run a SELECT query to the database. Returns a list of deserialized results.
     """
 
     def __init__(  # noqa: PLR0913  # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
@@ -309,9 +314,6 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                     output = "INFO:     " + f"Stream results from {address}"
                     self._broadcast_address = address
 
-                if output and "Started server process" in output:
-                    output = None
-
                 if output and "Waiting for application startup." in output:
                     output = None
 
@@ -325,16 +327,16 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                         output = output.replace("INFO:", "BROADCAST INFO:") + "\n"
                     output = output[0] if isinstance(output, tuple) else output
                     output = clean_message(output)
-                    if (
-                        output.startswith("BROADCAST ERROR:")
-                        or "unexpected error" in output.lower()
-                    ):
-                        self._psutil_broadcast_process.kill()
-                        self._broadcast_process.wait()
-                        self._broadcast_thread.join()
-                        sys.stdout.write(output + "\n")
-                        sys.stdout.flush()
-                        break
+                    # if (
+                    #    output.startswith("BROADCAST ERROR:")
+                    #    or "unexpected error" in output.lower()
+                    # ):
+                    #    self._psutil_broadcast_process.kill()
+                    #    self._broadcast_process.wait()
+                    #    self._broadcast_thread.join()
+                    #    sys.stdout.write(output + "\n")
+                    #    sys.stdout.flush()
+                    #    continue
                     sys.stdout.write(output + "\n")
                     sys.stdout.flush()
             except queue.Empty:
@@ -545,6 +547,13 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         return False
 
     @property
+    def num_results(self) -> int:
+        """Get the number of results stored in the database."""
+        return self.query_database(f"SELECT COUNT(*) FROM {self.table_name};")[  # noqa
+            0
+        ]
+
+    @property
     def results(self) -> list:
         """
         Retrieve the deserialized results from the active Database.
@@ -616,10 +625,16 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
             else None
         )
 
+    def get_latest_results(
+        self, symbol: Optional[str] = None, limit: Optional[int] = 100
+    ) -> list:
+        """Get the latest results from the database, optionally filter by symbol."""
+        return self.database.get_latest_results(symbol=symbol, limit=limit)
+
     def query_database(
         self,
         sql: Optional[str] = None,
-        limit: Optional[int] = 25,
+        limit: Optional[int] = 100,
     ) -> list:
         """
         Make a SELECT query to the database for results.
@@ -700,7 +715,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         command = [
             sys.executable,
             "-m",
-            "openbb_websockets.broadcast",
+            "openbb_core.provider.utils.websockets.broadcast",
             f"host={host}",
             f"port={open_port}",
             f"results_file={self.results_file}",
