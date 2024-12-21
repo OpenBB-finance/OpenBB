@@ -303,7 +303,7 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
         except WebSocketDisconnect:
             pass
         except Exception as e:  # pylint: disable=broad-except
-            msg = f"{e.__class__.__name__ if hasattr(e, "__class__") else e} -> {e}"
+            msg = f"{e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e}"
             self.logger.error(msg)
         return
 
