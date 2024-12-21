@@ -7,7 +7,6 @@ import signal
 import sys
 
 import websockets
-import websockets.exceptions
 from openbb_core.provider.utils.websockets.database import Database
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
@@ -34,7 +33,7 @@ URL_MAP = {
 }
 
 logger = get_logger("openbb.websocket.polygon")
-queue = MessageQueue(logger=logger)
+queue = MessageQueue(logger=logger, backoff_factor=2)
 command_queue = MessageQueue(logger=logger)
 
 kwargs = parse_kwargs()
@@ -159,11 +158,15 @@ async def read_stdin():
         if not line:
             break
 
-        try:
-            command = json.loads(line.strip())
-            await command_queue.enqueue(command)
-        except json.JSONDecodeError:
-            logger.error("Invalid JSON received from stdin")
+        if "qsize" in line:
+            logger.info(f"PROVIDER INFO:      Queue size: {queue.queue.qsize()}")
+
+        else:
+            try:
+                command = json.loads(line.strip())
+                await command_queue.enqueue(command)
+            except json.JSONDecodeError:
+                logger.error("Invalid JSON received from stdin")
 
 
 async def process_stdin_queue(websocket):
@@ -211,9 +214,17 @@ async def process_message(message):
 async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
 
+    tasks: set = set()
+
     handler_task = asyncio.create_task(
         queue.process_queue(lambda message: process_message(message))
     )
+    tasks.add(handler_task)
+    for i in range(0, 48):
+        new_task = asyncio.create_task(
+            queue.process_queue(lambda message: process_message(message))
+        )
+        tasks.add(new_task)
     stdin_task = asyncio.create_task(read_stdin())
     try:
         connect_kwargs = CONNECT_KWARGS.copy()
@@ -281,14 +292,19 @@ async def connect_and_stream():
         sys.exit(1)
 
     except Exception as e:
-        msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e}"
+        msg = (
+            f"PROVIDER ERROR:     Unexpected error -> "
+            f"{e.__class__.__name__ if hasattr(e, '__class__') else e}: {e}"
+        )
         logger.error(msg)
         sys.exit(1)
 
     finally:
-        handler_task.cancel()
-        stdin_task.cancel()
-        await asyncio.gather(handler_task, stdin_task, return_exceptions=True)
+        tasks.add(stdin_task)
+        for task in tasks:
+            task.cancel()
+            await task
+        asyncio.gather(*tasks, return_exceptions=True)
         sys.exit(0)
 
 
@@ -296,7 +312,6 @@ if __name__ == "__main__":
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        loop.set_exception_handler(lambda loop, context: None)
 
         for sig in (signal.SIGINT, signal.SIGTERM):
             loop.add_signal_handler(sig, handle_termination_signal, logger)
@@ -315,5 +330,5 @@ if __name__ == "__main__":
         logger.error(ERR)
 
     finally:
-        loop.stop()
+        loop.close()
         sys.exit(0)

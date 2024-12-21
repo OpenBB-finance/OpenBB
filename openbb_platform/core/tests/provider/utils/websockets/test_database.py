@@ -13,7 +13,7 @@ MOCK_MESSAGES = [
 @pytest.fixture(scope="module")
 def database():
     """Return a MessageQueue instance."""
-    return Database(table_name="test_table")
+    return Database(table_name="test")
 
 
 def test_setup_database(database):
@@ -61,7 +61,7 @@ def test_multiple_connections(database):
     )
     another_db = Database(
         results_file=database.results_file,
-        table_name="other_table",
+        table_name="other_test",
     )
     assert new_db.fetch_all()[0] == MOCK_MESSAGES[0]
     database.write_to_db(MOCK_MESSAGES[1])
@@ -87,16 +87,16 @@ def test_query_db(database):
     assert len(database.query(query)) == 2
     query = "json_extract (message, '$.type') == 'quote'"
     assert len(database.query(query)) == 1
-    query = "SELECT message FROM test_table WHERE json_extract (message, '$.type') = 'trade'"
+    query = "SELECT message FROM test WHERE json_extract (message, '$.type') = 'trade'"
     assert len(database.query(query)) == 2
-    query = "SELECT json_extract (message, '$.symbol') FROM test_table WHERE json_extract (message, '$.type') = 'trade'"
+    query = "SELECT json_extract (message, '$.symbol') FROM test WHERE json_extract (message, '$.type') = 'trade'"
     assert database.query(query) == ["test1", "test3"]
 
 
 def test_limit():
     """Test if the limit parameter is working and that the auto increment index doesn't reset when cleared."""
     database = Database(
-        table_name="test_limit_table",
+        table_name="test_limit",
         limit=2,
     )
     assert database
@@ -112,5 +112,5 @@ def test_limit():
     database.clear_results()
     assert database.fetch_all() == []
     database.write_to_db(MOCK_MESSAGES[0])
-    query = "SELECT id FROM test_limit_table"
+    query = "SELECT id FROM test_limit"
     assert database.query(query)[0] > 3

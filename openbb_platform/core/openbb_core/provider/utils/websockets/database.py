@@ -143,11 +143,11 @@ class Database:
                 temp_file_path = temp_file.name
                 self.results_path = Path(temp_file_path).absolute()
                 self.results_file = temp_file_path
-        if ":" in results_file:
-            self.results_file = results_file
-            self.results_path = results_file  # type: ignore
-            kwargs["uri"] = True
         else:
+            if ":" in results_file:
+                self.results_file = results_file
+                self.results_path = results_file  # type: ignore
+                kwargs["uri"] = True
             self.results_path = Path(results_file).absolute()
             self.results_file = results_file
 
