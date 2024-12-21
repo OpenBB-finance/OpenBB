@@ -288,7 +288,7 @@ if __name__ == "__main__":
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-
+        loop.set_exception_handler(lambda loop, context: None)
         loop.add_signal_handler(signal.SIGTERM, handle_termination_signal, logger)
 
         asyncio.run_coroutine_threadsafe(
@@ -298,7 +298,10 @@ if __name__ == "__main__":
         loop.run_forever()
 
     except Exception as e:  # pylint: disable=broad-except
-        ERR = f"Unexpected error -> {e.__class__.__name__}: {e}"
+        ERR = (
+            f"PROVIDER ERROR:     Unexpected error -> "
+            f"{e.__class__.__name__ if hasattr(e, '__class__') else e}: {e}"
+        )
         logger.error(ERR)
 
     finally:

@@ -156,11 +156,10 @@ async def read_stdin():
         sys.stdin.flush()
 
         if not line:
-            break
+            continue
 
         if "qsize" in line:
             logger.info(f"PROVIDER INFO:      Queue size: {queue.queue.qsize()}")
-
         else:
             try:
                 command = json.loads(line.strip())
@@ -221,21 +220,20 @@ async def connect_and_stream():
     )
     tasks.add(handler_task)
     for i in range(0, 48):
-        new_task = asyncio.create_task(
-            queue.process_queue(lambda message: process_message(message))
+        new_task = asyncio.shield(
+            asyncio.create_task(
+                queue.process_queue(lambda message: process_message(message))
+            )
         )
         tasks.add(new_task)
-    stdin_task = asyncio.create_task(read_stdin())
+    stdin_task = asyncio.shield(asyncio.create_task(read_stdin()))
     try:
         connect_kwargs = CONNECT_KWARGS.copy()
-        if "ping_timeout" not in connect_kwargs:
-            connect_kwargs["ping_timeout"] = None
-        if "close_timeout" not in connect_kwargs:
-            connect_kwargs["close_timeout"] = None
+        connect_kwargs["max_size"] = None
+        connect_kwargs["read_limit"] = 2**32
 
         try:
             async with websockets.connect(URL, **connect_kwargs) as websocket:
-
                 await login(websocket)
                 response = await websocket.recv()
                 messages = json.loads(response)
@@ -312,7 +310,7 @@ if __name__ == "__main__":
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-
+        loop.set_exception_handler(lambda loop, context: None)
         for sig in (signal.SIGINT, signal.SIGTERM):
             loop.add_signal_handler(sig, handle_termination_signal, logger)
 
