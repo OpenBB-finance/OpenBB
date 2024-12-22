@@ -28,7 +28,6 @@ from openbb_websockets.models import (
 )
 from pydantic import Field, field_validator, model_validator
 
-
 ASSET_CHOICES = [
     "stock",
     "stock_delayed",
@@ -46,7 +45,6 @@ FEED_MAP = {
         "aggs_sec": "XAS",
         "trade": "XT",
         "quote": "XQ",
-        "l2": "XL2",
         "fmv": "FMV",
     },
     "fx": {
@@ -125,6 +123,17 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
             "multiple_items_allowed": False,
             "choices": ASSET_CHOICES,
         },
+        "feed": {
+            "multiple_items_allowed": False,
+            "choices": [
+                "aggs_min",
+                "aggs_sec",
+                "trade",
+                "quote",
+                "fmv",
+                "value",
+            ],
+        },
     }
 
     symbol: str = Field(
@@ -164,7 +173,6 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
         - aggs_sec: XAS.<SYMBOL>
         - trade: XT.<SYMBOL>
         - quote: XQ.<SYMBOL>
-        - l2: XL2.<SYMBOL>
         - fmv: FMV.<SYMBOL>
 
         FX
@@ -189,12 +197,10 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
         description="The asset type associated with the symbol(s)."
         + " Choose from: stock, stock_delayed, fx, crypto.",
     )
-    feed: Literal["aggs_min", "aggs_sec", "trade", "quote", "l2", "fmv", "value"] = (
-        Field(
-            default="aggs_sec",
-            description="The asset type associated with the symbol."
-            + "l2 is only available for crypto, and value is only available for index.",
-        )
+    feed: Literal["aggs_min", "aggs_sec", "trade", "quote", "fmv", "value"] = Field(
+        default="aggs_sec",
+        description="The asset type associated with the symbol."
+        + "Value is only available for index.",
     )
 
     @model_validator(mode="before")
@@ -203,26 +209,30 @@ class PolygonWebSocketQueryParams(WebSocketQueryParams):
         """Validate the feed."""
         feed = values.get("feed")
         asset_type = values.get("asset_type")
-        if asset_type == "fx" and feed in ["trade", "l2", "value"]:
+        if asset_type == "fx" and feed in ["trade", "value"]:
             raise ValueError(f"FX does not support the {feed} feed.")
-        if asset_type in [
-            "stock",
-            "stock_delayed",
-            "options",
-            "options_delayed",
-        ] and feed in ["l2", "value"]:
+        if (
+            asset_type
+            in [
+                "stock",
+                "stock_delayed",
+                "options",
+                "options_delayed",
+            ]
+            and feed == "value"
+        ):
             raise ValueError(
                 f"Asset type, {asset_type}, does not support the {feed} feed."
             )
         if asset_type in ["index", "index_delayed"] and feed in [
             "trade",
             "quote",
-            "l2",
             "fmv",
         ]:
             raise ValueError(f"Index does not support the {feed} feed.")
         if asset_type == "crypto" and feed == "value":
             raise ValueError(f"Crypto does not support the {feed} feed.")
+
         return values
 
 
@@ -291,6 +301,8 @@ class PolygonCryptoAggsWebSocketData(WebSocketData):
     def _validate_model(cls, values):
         """Validate the model."""
         _ = values.pop("s", None)
+        symbol = values.pop("p", "") if "p" in values else values.pop("pair", "")
+        values["pair"] = symbol.replace("-", "").replace("/", "")
         return values
 
 
@@ -366,6 +378,8 @@ class PolygonCryptoTradeWebSocketData(WebSocketData):
     def _validate_model(cls, values):
         """Validate the model."""
         _ = values.pop("i", None)
+        symbol = values.pop("pair", "")
+        values["pair"] = symbol.replace("-", "")
         return values
 
 
@@ -433,65 +447,17 @@ class PolygonCryptoQuoteWebSocketData(WebSocketData):
         """Validate the model."""
         lp = values.pop("lp", None)
         ls = values.pop("ls", None)
+
         if lp:
             values["last_price"] = lp
+
         if ls:
             values["last_size"] = ls
 
+        symbol = values.pop("pair", "")
+        values["pair"] = symbol.replace("-", "")
+
         return values
-
-
-class PolygonCryptoL2WebSocketData(WebSocketData):
-    """Polygon Crypto L2 WebSocket data model."""
-
-    __alias_dict__ = {
-        "type": "ev",
-        "symbol": "pair",
-        "date": "t",
-        "exchange": "x",
-        "bid": "b",
-        "ask": "a",
-        "received_at": "r",
-    }
-
-    type: str = Field(
-        description="The type of data.",
-    )
-    date: datetime = Field(
-        description=DATA_DESCRIPTIONS.get("date", ""),
-    )
-    received_at: datetime = Field(
-        description="The time the data was received by Polygon.",
-    )
-    symbol: str = Field(
-        description=DATA_DESCRIPTIONS.get("symbol", ""),
-    )
-    exchange: str = Field(
-        default=None,
-        description="The exchange of the data.",
-    )
-    bid: list[list[float]] = Field(
-        description="An array of bid prices, where each entry contains two elements:"
-        + " the first is the bid price, and the second is the size, with a maximum depth of 100.",
-        json_schema_extra={"x-unit_measurement": "currency"},
-    )
-    ask: list[list[float]] = Field(
-        description="An array of ask prices, where each entry contains two elements:"
-        + " the first is the ask price, and the second is the size, with a maximum depth of 100.",
-        json_schema_extra={"x-unit_measurement": "currency"},
-    )
-
-    @field_validator("date", "received_at", mode="before", check_fields=False)
-    @classmethod
-    def _validate_date(cls, v):
-        """Validate the date."""
-        return validate_date(cls, v)
-
-    @field_validator("exchange", mode="before", check_fields=False)
-    @classmethod
-    def _validate_exchange(cls, v):
-        """Validate the exchange."""
-        return CRYPTO_EXCHANGE_MAP.get(v, str(v))
 
 
 class PolygonFXQuoteWebSocketData(WebSocketData):
@@ -545,6 +511,8 @@ class PolygonFXQuoteWebSocketData(WebSocketData):
     def _validate_model(cls, values):
         """Validate the model."""
         _ = values.pop("i", None)
+        symbol = values.pop("p", "")
+        values["p"] = symbol.replace("/", "")
         return values
 
 
@@ -1103,11 +1071,22 @@ class PolygonFairMarketValueData(WebSocketData):
         json_schema_extra={"x-unit_measurement": "currency"},
     )
 
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def _validate_date(cls, v):
+        """Validate the date."""
+        return validate_date(cls, v)
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def _validate_symbol(cls, v):
+        """Validate the symbol."""
+        return v.replace("-", "").replace("/", "")
+
 
 MODEL_MAP = {
     "XT": PolygonCryptoTradeWebSocketData,
     "XQ": PolygonCryptoQuoteWebSocketData,
-    "XL2": PolygonCryptoL2WebSocketData,
     "XA": PolygonCryptoAggsWebSocketData,
     "XAS": PolygonCryptoAggsWebSocketData,
     "FMV": PolygonFairMarketValueData,
@@ -1160,7 +1139,6 @@ class PolygonWebSocketData(Data):
     - Aggs: XAS, XA - PolygonCryptoAggsWebSocketData
     - Trade: XT - PolygonCryptoTradeWebSocketData
     - Quote: XQ - PolygonCryptoQuoteWebSocketData
-    - L2: XL2 - PolygonCryptoL2WebSocketData
     - Fair Market Value: FMV - PolygonFairMarketValueData
 
     FX

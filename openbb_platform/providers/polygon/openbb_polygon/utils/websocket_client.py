@@ -101,7 +101,11 @@ async def handle_symbol(symbol):
             _feed, _ticker = ticker.split(".") if "." in ticker else (feed, ticker)
             ticker = f"{_feed}.O:{_ticker}"
 
-        new_symbols.append(ticker)
+        if ticker == "XL2.*":
+            symbol_error = f"SymbolError -> {symbol}: L2 Crypto does not support the all-symbols wildcard."
+            logger.error(symbol_error)
+        else:
+            new_symbols.append(ticker)
 
     return ",".join(new_symbols)
 
@@ -130,7 +134,11 @@ async def login(websocket):
                 sys.exit(1)
             logger.info("PROVIDER INFO:      %s", msg.get("message"))
     except Exception as e:
-        logger.error("PROVIDER ERROR:     %s -> %s", e.__class__.__name__, e.args[0])
+        logger.error(
+            "PROVIDER ERROR:     %s -> %s",
+            e.__class__.__name__ if hasattr(e, "__class__") else e,
+            e.args[0],
+        )
         sys.exit(1)
 
 
@@ -154,15 +162,9 @@ async def read_stdin():
     while True:
         line = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
         sys.stdin.flush()
-
-        if not line:
-            continue
-
-        if "qsize" in line:
-            logger.info(f"PROVIDER INFO:      Queue size: {queue.queue.qsize()}")
-        else:
+        if line:
             try:
-                command = json.loads(line.strip())
+                command = line.strip() if "qsize" in line else json.loads(line.strip())
                 await command_queue.enqueue(command)
             except json.JSONDecodeError:
                 logger.error("Invalid JSON received from stdin")
@@ -172,10 +174,13 @@ async def process_stdin_queue(websocket):
     """Process the command queue."""
     while True:
         command = await command_queue.dequeue()
-        symbol = command.get("symbol")
-        event = command.get("event")
-        if symbol and event:
-            await subscribe(websocket, symbol, event)
+        if command == "qsize":
+            logger.info(f"PROVIDER INFO:      Queue size: {queue.queue.qsize()}")
+        else:
+            symbol = command.get("symbol")
+            event = command.get("event")
+            if symbol and event:
+                await subscribe(websocket, symbol, event)
 
 
 async def process_message(message):
@@ -219,11 +224,9 @@ async def connect_and_stream():
         queue.process_queue(lambda message: process_message(message))
     )
     tasks.add(handler_task)
-    for i in range(0, 48):
-        new_task = asyncio.shield(
-            asyncio.create_task(
-                queue.process_queue(lambda message: process_message(message))
-            )
+    for i in range(0, 64):
+        new_task = asyncio.create_task(
+            queue.process_queue(lambda message: process_message(message))
         )
         tasks.add(new_task)
     stdin_task = asyncio.shield(asyncio.create_task(read_stdin()))
@@ -231,6 +234,8 @@ async def connect_and_stream():
         connect_kwargs = CONNECT_KWARGS.copy()
         connect_kwargs["max_size"] = None
         connect_kwargs["read_limit"] = 2**32
+        connect_kwargs["close_timeout"] = 10
+        connect_kwargs["ping_timeout"] = None
 
         try:
             async with websockets.connect(URL, **connect_kwargs) as websocket:
@@ -242,22 +247,16 @@ async def connect_and_stream():
                 response = await websocket.recv()
                 messages = json.loads(response)
                 await process_message(messages)
+                cmd_task = asyncio.get_running_loop().create_task(
+                    process_stdin_queue(websocket)
+                )
                 while True:
-                    cmd_task = asyncio.create_task(process_stdin_queue(websocket))
-                    msg_task = asyncio.create_task(websocket.recv())
-                    done, pending = await asyncio.wait(
-                        [cmd_task, msg_task],
-                        return_when=asyncio.FIRST_COMPLETED,
-                    )
-                    for task in pending:
-                        task.cancel()
+                    messages = await websocket.recv()
+                    await queue.enqueue(json.loads(messages))
 
-                    for task in done:
-                        if task == cmd_task:
-                            await cmd_task
-                        elif task == msg_task:
-                            messages = task.result()
-                            await asyncio.shield(queue.enqueue(json.loads(messages)))
+                cmd_task.cancel()
+                await cmd_task
+                asyncio.gather(*cmd_task, return_exceptions=True)
 
         except websockets.InvalidStatusCode as e:
             if e.status_code == 404:
