@@ -224,7 +224,7 @@ async def connect_and_stream():
         queue.process_queue(lambda message: process_message(message))
     )
     tasks.add(handler_task)
-    for i in range(0, 64):
+    for i in range(0, 128):
         new_task = asyncio.create_task(
             queue.process_queue(lambda message: process_message(message))
         )

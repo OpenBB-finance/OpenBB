@@ -41,7 +41,7 @@ class MessageQueue:
         while retries < self.max_retries:
 
             if self.queue.qsize() / self.queue.maxsize > 0.3:
-                await sleep(0.000005)
+                await sleep(0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.5:
                 await sleep(0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.55:
@@ -52,8 +52,12 @@ class MessageQueue:
                 await sleep(0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.7:
                 await sleep(0.00005)
-            if self.queue.qsize() / self.queue.maxsize > 0.99:
+            if self.queue.qsize() / self.queue.maxsize > 0.75:
                 await sleep(0.00005)
+            if self.queue.qsize() / self.queue.maxsize > 0.8:
+                await sleep(0.00005)
+            if self.queue.qsize() / self.queue.maxsize > 0.98:
+                await sleep(0.0005)
 
             if self.queue.full():
                 retries += 1
