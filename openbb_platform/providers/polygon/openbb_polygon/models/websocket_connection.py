@@ -1225,6 +1225,7 @@ class PolygonWebSocketFetcher(
             broadcast_host=query.broadcast_host,
             broadcast_port=query.broadcast_port,
             auth_token=query.auth_token,
+            verbose=query.verbose,
             **kwargs,
         )
 

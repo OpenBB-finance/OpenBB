@@ -32,14 +32,14 @@ Optional Keyword Arguments
 
 import asyncio
 import json
-import orjson
 import os
 import signal
 import sys
 import time
-
-import websockets
 from concurrent.futures import ThreadPoolExecutor
+
+import orjson
+import websockets
 from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
@@ -67,10 +67,10 @@ URL_MAP = {
 }
 
 logger = get_logger("openbb.websocket.polygon")
-process_queue = MessageQueue(logger=logger, backoff_factor=0)
-input_queue = MessageQueue(logger=logger, backoff_factor=0)
-command_queue = MessageQueue(logger=logger, backoff_factor=0)
-db_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=100000)
+process_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=1000000)
+input_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=1000000)
+command_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=1000000)
+db_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=1000000)
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 FEED = kwargs.pop("feed", None)
@@ -78,7 +78,7 @@ ASSET_TYPE = kwargs.pop("asset_type", "crypto")
 kwargs["results_file"] = os.path.abspath(kwargs.get("results_file"))
 URL = URL_MAP.get(ASSET_TYPE)
 SUBSCRIBED_SYMBOLS: set = set()
-message_thread_pool = ThreadPoolExecutor(max_workers=8)
+message_thread_pool = ThreadPoolExecutor(max_workers=16)
 
 if not kwargs.get("api_key"):
     raise ValueError("No API key provided.")
@@ -93,7 +93,6 @@ DATABASE = DatabaseWriter(
         limit=kwargs.get("limit"),
         logger=logger,
     ),
-    batch_size=1,
     queue=db_queue,
 )
 
@@ -281,10 +280,11 @@ async def connect_and_stream():
 
     conn_kwargs.update(
         {
-            "ping_interval": 20,
-            "ping_timeout": 30,
+            "ping_interval": None,
+            "ping_timeout": None,
             "close_timeout": 1,
-            "max_queue": 1000,
+            "max_size": 2**63,
+            "max_queue": None,
         }
     )
 
@@ -293,6 +293,7 @@ async def connect_and_stream():
         try:
             async for message in websocket:
                 input_queue.queue.put_nowait(message)
+
         except Exception as e:
             raise e from e
 
@@ -337,17 +338,14 @@ async def connect_and_stream():
 
         await DATABASE.start_writer()
 
-        for _ in range(30):
-            processor_task = asyncio.create_task(
-                input_queue.process_queue(
-                    lambda message: process_input_messages(message)
-                )
-            )
-            tasks.add(processor_task)
-            handler_task = asyncio.create_task(
-                process_queue.process_queue(lambda message: process_message(message))
-            )
-            tasks.add(handler_task)
+        processor_task = asyncio.create_task(
+            input_queue.process_queue(lambda message: process_input_messages(message))
+        )
+        tasks.add(processor_task)
+        handler_task = asyncio.create_task(
+            process_queue.process_queue(lambda message: process_message(message))
+        )
+        tasks.add(handler_task)
 
         async for websocket in connect(URL, **conn_kwargs):
             try:
@@ -374,6 +372,7 @@ async def connect_and_stream():
                     receiver_task = asyncio.create_task(
                         message_receiver(websocket), name="receiver"
                     )
+                    tasks.add(receiver_task)
                     await asyncio.gather(receiver_task)
 
             # Attempt to reopen the connection

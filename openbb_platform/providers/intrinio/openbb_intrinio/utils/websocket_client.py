@@ -143,7 +143,7 @@ if __name__ == "__main__":
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        # loop.set_exception_handler(lambda loop, context: None)
+        loop.set_exception_handler(lambda loop, context: None)
 
         for sig in (signal.SIGINT, signal.SIGTERM):
             loop.add_signal_handler(sig, handle_termination_signal, logger)

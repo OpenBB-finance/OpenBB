@@ -189,6 +189,10 @@ class IntrinioWebSocketFetcher(
             broadcast_host=query.broadcast_host,
             broadcast_port=query.broadcast_port,
             auth_token=query.auth_token,
+            export_directory=query.export_directory,
+            export_interval=query.export_interval,
+            prune_interval=query.prune_interval,
+            verbose=query.verbose,
             **kwargs,
         )
 

@@ -756,7 +756,7 @@ class DatabaseWriter:
 
         chunk_size = 20000
         minutes = self.export_interval or 5
-
+        latest_date = None
         if not self._export_running or not self.export_thread:
             return
         try:
@@ -768,25 +768,31 @@ class DatabaseWriter:
             """  # noqa
 
             async with self.database.get_connection("read") as conn:
-                cursor = await conn.execute(latest_query)
-                latest_date = await cursor.fetchone()
-                if not latest_date:
+                try:
+                    async with conn.execute(latest_query) as cursor:
+                        latest_date = await cursor.fetchone()
+                        if not latest_date:
+                            return
+
+                except asyncio.InvalidStateError as e:
+                    self.database.logger.error(f"Database connection state error: {e}")
+                    self._export_running = False
                     return
 
-                latest_timestamp = to_datetime(latest_date[0])
+            latest_timestamp = to_datetime(latest_date[0])
 
-                # Round down to nearest interval
-                cutoff_time = latest_timestamp - timedelta(
-                    minutes=latest_timestamp.minute % minutes,
-                    seconds=latest_timestamp.second,
-                    microseconds=latest_timestamp.microsecond,
-                )
+            # Round down to nearest interval
+            cutoff_time = latest_timestamp - timedelta(
+                minutes=latest_timestamp.minute % minutes,
+                seconds=latest_timestamp.second,
+                microseconds=latest_timestamp.microsecond,
+            )
 
-                # If we have processed data before, use that as reference
-                if self._last_processed_timestamp:
-                    start_time = self._last_processed_timestamp
-                else:
-                    start_time = cutoff_time - timedelta(minutes=minutes)
+            # If we have processed data before, use that as reference
+            if self._last_processed_timestamp:
+                start_time = self._last_processed_timestamp
+            else:
+                start_time = cutoff_time - timedelta(minutes=minutes)
 
             cutoff_time = self._last_processed_timestamp + timedelta(minutes=minutes)
             start_time = self._last_processed_timestamp
