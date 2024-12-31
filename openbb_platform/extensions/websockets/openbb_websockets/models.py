@@ -76,6 +76,10 @@ class WebSocketQueryParams(QueryParams):
         description="A formatted dictionary, or serialized JSON string, of keyword arguments to pass"
         + " directly to websockets.connect().",
     )
+    verbose: bool = Field(
+        default=True,
+        description="Whether to print export and prune messages to the console.",
+    )
 
     @field_validator("connect_kwargs", mode="before", check_fields=False)
     @classmethod

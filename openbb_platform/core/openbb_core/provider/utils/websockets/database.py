@@ -563,13 +563,11 @@ class Database:
     def create_writer(
         self,
         queue: Optional["MessageQueue"] = None,
-        batch_size: int = 250,
-        collection_time: int = 0.1,
+        batch_size: int = 25000,
         prune_interval: Optional[int] = None,
         export_directory: Optional[Union[str, "Path"]] = None,
         export_interval: Optional[int] = None,
         compress_export: bool = False,
-        num_workers: int = 60,
         verbose: bool = True,
     ):
         """
@@ -585,12 +583,10 @@ class Database:
             self,
             queue,
             batch_size,
-            collection_time,
             prune_interval,
             export_directory,
             export_interval,
             compress_export,
-            num_workers,
             verbose,
         )
 
@@ -613,34 +609,26 @@ class DatabaseWriter:
     queue : Optional[MessageQueue]
         The MessageQueue instance to use. Default is None, which creates a new instance.
     batch_size : int
-        The target batch size for writing to the database. Default is 250.
-    collection_time : int
-        The maximum time in seconds to collect messages before writing to the database. Default is 0.1.
+        The target batch size for writing to the database. Default is 25000.
     prune_interval : Optional[int]
         The interval in minutes to prune the database of older records. Default is None.
     export_directory : Optional[Union[str, Path]]
         The directory to export the database to, if an interval is set. Default is 'OpenBBUserData/exports/websockets'.
     export_interval : Optional[int]
         The interval in minutes to export the database to a CSV file. Default is None.
-    compress_export : bool
-        Whether to compress the exported CSV files. Default is False.
     num_workers : int
-        The number of parallel writers reading the queue and preparing batches. Default is 60.
-    verbose : bool
-        Whether to print verbose output for export and prune tasks. Default is True.
+        The number of parallel writers to use. Default is 120.
     """
 
     def __init__(
         self,
         database: Database,
         queue: Optional["MessageQueue"] = None,
-        batch_size: int = 250,
-        collection_time: int = 0.1,
+        batch_size: int = 25000,
         prune_interval: Optional[int] = None,
         export_directory: Optional[Union[str, "Path"]] = None,
         export_interval: Optional[int] = None,
         compress_export: bool = False,
-        num_workers: int = 60,
         verbose: bool = True,
     ):
         """Initialize the DatabaseWriter class."""
@@ -683,7 +671,7 @@ class DatabaseWriter:
         self._first_timestamp = None
         self._last_processed_timestamp = None
         self._conn = None
-        self.num_workers = num_workers
+        self.num_workers = 60
         self.write_tasks = []
         self._export_running = False
         self._prune_running = False
@@ -707,7 +695,7 @@ class DatabaseWriter:
 
     async def stop_writer(self):
         """Stop all queue processors."""
-        self._flush_queue()
+        await self._flush_queue()
         self.writer_running = False
         await asyncio.gather(*self.write_tasks, return_exceptions=True)
         if self._conn:
@@ -717,17 +705,11 @@ class DatabaseWriter:
 
     async def _process_queue(self):
         """Process queue with parallel writers."""
-        # pylint: disable=import-outside-toplevel
-        import time
+        batch = []
 
-        batch: list = []
-        collection_start = time.time()
         while self.writer_running:
             try:
-                while (
-                    time.time() - collection_start < self.collection_time
-                    and len(batch) < self.batch_size
-                ):
+                while len(batch) < self.batch_size:
                     try:
                         message = await asyncio.wait_for(
                             self.queue.dequeue(), timeout=0.1
@@ -746,11 +728,12 @@ class DatabaseWriter:
                 self.database.logger.error(msg, exc_info=True)
                 await asyncio.sleep(0.1)
 
-    def _flush_queue(self):
+    async def _flush_queue(self):
         """Flush the queue of messages to the database."""
         batch: list = []
-        while not self.queue.queue.empty():
-            batch.append(self.queue.queue.get_nowait())
+        while not self.queue.queue.empty() and len(batch) < self.batch_size:
+            batch.append(await self.queue.dequeue())
+
         self._write_batch(batch)
 
     def _write_batch(self, batch):
@@ -886,7 +869,8 @@ class DatabaseWriter:
                             await f.write(buffer.getvalue())
 
             self._last_processed_timestamp = cutoff_time
-            if self.verbose:
+
+            if self.verbose is True:
                 msg = f"DATABASE INFO:      Interval for period ending {cutoff_time} saved to: {path}"
                 sys.stdout.write(msg + "\n")
                 sys.stdout.flush()
@@ -913,15 +897,12 @@ class DatabaseWriter:
             if not self._export_running:
                 self._export_running = True
             return
-        try:
-            self._export_running = True
-            self.export_thread = threading.Thread(
-                target=self._run_export_event, name="ExportThread", daemon=True
-            )
-            self.export_thread.start()
-        finally:
-            self.export_thread.join(timeout=1)
-            self._export_running = False
+
+        self._export_running = True
+        self.export_thread = threading.Thread(
+            target=self._run_export_event, name="ExportThread", daemon=True
+        )
+        self.export_thread.start()
 
     def stop_export_task(self):
         """Public method to stop the background export task."""
@@ -947,14 +928,13 @@ class DatabaseWriter:
 
         try:
             self._prune_running = True
-            prune_thread = threading.Thread(
-                target=self._run_prune_event, daemon=True, name="WebSocketPruneThread"
-            )
+            prune_thread = threading.Thread(target=self._run_prune_event)
+            prune_thread.daemon = True
+            prune_thread.name = "WebSocketPruneThread"
             self.prune_thread = prune_thread
             self.prune_thread.start()
         finally:
             self.prune_thread.join(timeout=1)
-            self._prune_running = False
 
     def stop_prune_task(self):
         """Public method to stop the background pruning task."""
@@ -1007,7 +987,7 @@ class DatabaseWriter:
 
                 async with self.database.get_connection("write") as conn:
 
-                    if self.verbose:
+                    if self.verbose is True:
                         msg = f"DATABASE INFO:      Pruning database of records before: {cutoff_timestamp}"
                         sys.stdout.write(msg + "\n")
                         sys.stdout.flush()
@@ -1077,7 +1057,9 @@ class BatchProcessor(threading.Thread):
     This class is a thread intended for use as a subprocess and is called by `DatabaseWriter.start_writer()`.
     """
 
-    def __init__(self, database_writer: DatabaseWriter):
+    def __init__(
+        self, database_writer: DatabaseWriter, num_workers=120, collection_time=0.35
+    ):
         """Initialize the BatchProcessor class."""
         # pylint: disable=import-outside-toplevel
         import queue
@@ -1087,7 +1069,9 @@ class BatchProcessor(threading.Thread):
         self.write_queue: queue.Queue = queue.Queue()
         self.running = True
         self.loop = None
+        self.num_workers = num_workers
         self.workers: list = []
+        self.collection_time = collection_time
 
     def run(self):
         """Run the batch processor as tasks."""
@@ -1096,7 +1080,7 @@ class BatchProcessor(threading.Thread):
         asyncio.set_event_loop(self.loop)
         try:
             # Create worker tasks
-            for _ in range(self.writer.num_workers):
+            for _ in range(self.num_workers):
                 worker = self.loop.create_task(self._worker())
                 self.workers.append(worker)
             # Run workers
@@ -1108,6 +1092,7 @@ class BatchProcessor(threading.Thread):
         # pylint: disable=import-outside-toplevel
         import time
 
+        batch_size = 200
         while self.running:
             try:
                 batch = []
@@ -1115,8 +1100,8 @@ class BatchProcessor(threading.Thread):
                 collection_start = time.time()
 
                 while (
-                    time.time() - collection_start < (self.writer.collection_time * 2.5)
-                    and total < self.batch_size
+                    time.time() - collection_start < self.collection_time
+                    and total < batch_size
                 ):
                     if not self.write_queue.empty():
                         msg = self.write_queue.get_nowait()
