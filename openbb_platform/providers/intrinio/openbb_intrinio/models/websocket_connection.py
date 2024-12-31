@@ -183,7 +183,7 @@ class IntrinioWebSocketFetcher(
             limit=query.limit,
             results_file=query.results_file,
             table_name=query.table_name,
-            save_results=query.save_results,
+            save_database=query.save_database,
             data_model=IntrinioWebSocketData,
             sleep_time=query.sleep_time,
             broadcast_host=query.broadcast_host,

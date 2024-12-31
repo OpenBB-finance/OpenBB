@@ -8,7 +8,7 @@ import signal
 import sys
 from typing import Any
 
-from openbb_core.provider.utils.websockets.database import Database
+from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
@@ -24,12 +24,16 @@ logger = get_logger("openbb.websocket.intrinio")
 kwargs = parse_kwargs()
 command_queue = MessageQueue(logger=logger)
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
+db_queue = MessageQueue(logger=logger)
 
-DATABASE = Database(
-    results_file=kwargs["results_file"],
-    table_name=kwargs["table_name"],
-    limit=kwargs.get("limit"),
-    logger=logger,
+DATABASE = DatabaseWriter(
+    database=Database(
+        results_file=kwargs["results_file"],
+        table_name=kwargs["table_name"],
+        limit=kwargs.get("limit"),
+        logger=logger,
+    ),
+    queue=db_queue,
 )
 
 
@@ -49,7 +53,7 @@ def process_message(message):
         except ValidationError:
             raise e from e
     if result:
-        DATABASE.write_to_db(result)
+        db_queue.queue.put_nowait(result)
 
 
 def on_message(message, backlog):
@@ -95,6 +99,12 @@ async def read_stdin_and_queue_commands():
             break
 
         try:
+            if line == "qsize":
+                logger.info(
+                    "Queue size: %i - Writer Queue: %i",
+                    command_queue.queue.qsize(),
+                    DATABASE.batch_processor.task_queue.qsize(),
+                )
             command = json.loads(line.strip())
             await command_queue.enqueue(command)
         except json.JSONDecodeError:
@@ -113,12 +123,20 @@ async def process_stdin_queue():
 
 async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
-    symbol = kwargs.pop("symbol", "lobby")
-    symbol = ["lobby"] if "*" in symbol else symbol.split(",")
-    asyncio.create_task(read_stdin_and_queue_commands())
-    client.connect()
-    client.join(symbol)
-    asyncio.create_task(process_stdin_queue())
+    try:
+        symbol = kwargs.pop("symbol", "lobby")
+        symbol = ["lobby"] if "*" in symbol else symbol.split(",")
+        stdin_task = asyncio.create_task(read_stdin_and_queue_commands())
+        await DATABASE.start_writer()
+        client.connect()
+        client.join(symbol)
+        process_stdin_task = asyncio.create_task(process_stdin_queue())
+    finally:
+        stdin_task.cancel()
+        process_stdin_task.cancel()
+        await stdin_task
+        await process_stdin_task
+        await DATABASE.stop_writer()
 
 
 if __name__ == "__main__":

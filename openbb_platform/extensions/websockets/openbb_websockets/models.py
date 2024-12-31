@@ -27,7 +27,7 @@ class WebSocketQueryParams(QueryParams):
         default=None,
         description="Absolute path to the file for continuous writing. By default, a temporary file is created.",
     )
-    save_results: bool = Field(
+    save_database: bool = Field(
         default=False,
         description="Whether to save the results after the session ends.",
     )
@@ -39,6 +39,18 @@ class WebSocketQueryParams(QueryParams):
         default=1000,
         description="Maximum number of newest records to keep in the database."
         + " If None, all records are kept, which can be memory-intensive.",
+    )
+    prune_interval: Optional[int] = Field(
+        default=None,
+        description="Prune all entries older than the given number of minutes."
+        + " If export interval is set, the prune interval must be at least twice as long.",
+    )
+    export_interval: Optional[int] = Field(
+        default=None, description="Export all entries as a CSV file every N minutes."
+    )
+    export_directory: Optional[str] = Field(
+        default=None,
+        description="Directory to save the exported CSV files to. Defaults to OpenBBUserData/exports/websockets",
     )
     sleep_time: float = Field(
         default=0.25,
@@ -126,7 +138,7 @@ class WebSocketConnectionStatus(Data):
         default=None,
         description="Name of the SQL table to write the results to.",
     )
-    save_results: bool = Field(
+    save_database: bool = Field(
         description="Whether to save the results after the session ends.",
     )
 

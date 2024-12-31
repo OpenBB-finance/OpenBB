@@ -26,7 +26,7 @@ def get_logger(name, level=logging.INFO):
     logger = logging.getLogger(f"{name}-{uuid.uuid4()}")
     handler = logging.StreamHandler()
     handler.setLevel(level)
-    formatter = logging.Formatter("%(message)s\n")
+    formatter = logging.Formatter("%(message)s")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     logger.setLevel(level)

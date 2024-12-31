@@ -53,7 +53,7 @@ sys.stdout = StdOutSink()
                 "symbol": "*",
                 "limit": "None",
                 "results_file": "/path/to/results.db",
-                "save_results": "True",
+                "save_database": "True",
                 "auth_token": "someAuthToken123$",
             }
         ),
@@ -66,7 +66,6 @@ async def create_connection(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Create a new provider websocket connection."""
-
     name = extra_params.name
     if name in connected_clients:
         broadcast_address = connected_clients[name].broadcast_address
@@ -81,6 +80,11 @@ async def create_connection(
     obbject = await OBBject.from_query(Query(**locals()))
     client = obbject.results.client
 
+    # pylint: disable=import-outside-toplevel
+    import asyncio
+
+    await asyncio.sleep(1)
+
     if not client.is_running or client._exception is not None:
         exc = getattr(client, "_exception", None)
         if exc:
@@ -92,8 +96,8 @@ async def create_connection(
 
     if hasattr(extra_params, "start_broadcast") and extra_params.start_broadcast:
         try:
-            client.start_broadcasting()
             await asyncio.sleep(1)
+            client.start_broadcasting()
             if client._exception is not None:
                 exc = getattr(client, "_exception", None)
                 client._exception = None

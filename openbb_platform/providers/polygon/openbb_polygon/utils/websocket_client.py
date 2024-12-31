@@ -1,13 +1,46 @@
-"""Polygon WebSocket client."""
+"""
+Polygon WebSocket Client.
+
+This file should be run as a script, and is intended to be run as a subprocess of PolygonWebSocketFetcher.
+
+Keyword arguments are passed from the command line as space-delimited, `key=value`, pairs.
+
+Required Keyword Arguments
+--------------------------
+    api_key: str
+        The API key for the Polygon WebSocket.
+    symbol: str
+        The symbol to subscribe to. Example: "AAPL" or "AAPL,MSFT". Use "*" to subscribe to all symbols.
+    feed: str
+        The feed to subscribe to. Example: "aggs_sec", "aggs_min", "trade", "quote".
+    results_file: str
+        The path to the file where the results will be stored.
+
+Optional Keyword Arguments
+--------------------------
+    asset_type: str
+        The asset type to subscribe to. Default is "crypto".
+        Options: "stock", "stock_delayed", "options", "options_delayed", "fx", "crypto", "index", "index_delayed".
+    table_name: str
+        The name of the table to store the data in. Default is "records".
+    limit: int
+        The maximum number of rows to store in the database.
+    connect_kwargs: dict
+        Additional keyword arguments to pass directly to `websockets.connect()`.
+        Example: {"ping_timeout": 300}
+"""
 
 import asyncio
 import json
+import orjson
 import os
 import signal
 import sys
+import time
 
 import websockets
-from openbb_core.provider.utils.websockets.database import Database
+from concurrent.futures import ThreadPoolExecutor
+from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
@@ -20,6 +53,7 @@ from openbb_polygon.models.websocket_connection import (
     PolygonWebSocketData,
 )
 from pydantic import ValidationError
+from websockets.asyncio.client import connect
 
 URL_MAP = {
     "stock": "wss://socket.polygon.io/stocks",
@@ -33,24 +67,34 @@ URL_MAP = {
 }
 
 logger = get_logger("openbb.websocket.polygon")
-queue = MessageQueue(logger=logger, backoff_factor=2)
-command_queue = MessageQueue(logger=logger)
-
+process_queue = MessageQueue(logger=logger, backoff_factor=0)
+input_queue = MessageQueue(logger=logger, backoff_factor=0)
+command_queue = MessageQueue(logger=logger, backoff_factor=0)
+db_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=100000)
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 FEED = kwargs.pop("feed", None)
 ASSET_TYPE = kwargs.pop("asset_type", "crypto")
 kwargs["results_file"] = os.path.abspath(kwargs.get("results_file"))
 URL = URL_MAP.get(ASSET_TYPE)
+SUBSCRIBED_SYMBOLS: set = set()
+message_thread_pool = ThreadPoolExecutor(max_workers=8)
+
+if not kwargs.get("api_key"):
+    raise ValueError("No API key provided.")
 
 if not URL:
     raise ValueError("Invalid asset type provided.")
 
-DATABASE = Database(
-    results_file=kwargs["results_file"],
-    table_name=kwargs["table_name"],
-    limit=kwargs.get("limit"),
-    logger=logger,
+DATABASE = DatabaseWriter(
+    database=Database(
+        results_file=kwargs["results_file"],
+        table_name=kwargs.get("table_name", "records"),
+        limit=kwargs.get("limit"),
+        logger=logger,
+    ),
+    batch_size=1,
+    queue=db_queue,
 )
 
 
@@ -153,8 +197,18 @@ async def subscribe(websocket, symbol, event):
     try:
         await websocket.send(subscribe_event)
     except Exception as e:
-        msg = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
+        msg = f"PROVIDER ERROR:     {e.__class__.__name__  if hasattr(e, '__class__') else e} -> {e.args}"
         logger.error(msg)
+
+    tickers = ticker.split(",")
+    if event == "subscribe":
+        for t in tickers:
+            SUBSCRIBED_SYMBOLS.add(t)
+    elif event == "unsubscribe":
+        for t in tickers:
+            SUBSCRIBED_SYMBOLS.discard(t)
+
+    kwargs["symbol"] = ",".join(SUBSCRIBED_SYMBOLS)
 
 
 async def read_stdin():
@@ -175,7 +229,11 @@ async def process_stdin_queue(websocket):
     while True:
         command = await command_queue.dequeue()
         if command == "qsize":
-            logger.info(f"PROVIDER INFO:      Queue size: {queue.queue.qsize()}")
+            logger.info(
+                f"PROVIDER INFO:      Input Queue: {input_queue.queue.qsize()} -"
+                f" Processing Queue: {process_queue.queue.qsize()}:{db_queue.queue.qsize()} -"
+                f" Writing Queue: {DATABASE.batch_processor.write_queue.qsize()}"
+            )
         else:
             symbol = command.get("symbol")
             event = command.get("event")
@@ -210,7 +268,7 @@ async def process_message(message):
                     raise e from e
 
             if result:
-                await DATABASE._write_to_db(result)  # pylint: disable=protected-access
+                db_queue.queue.put_nowait(result)
         else:
             logger.info("PROVIDER INFO:      %s", msg)
 
@@ -219,89 +277,140 @@ async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
 
     tasks: set = set()
+    conn_kwargs = CONNECT_KWARGS.copy()
 
-    handler_task = asyncio.create_task(
-        queue.process_queue(lambda message: process_message(message))
+    conn_kwargs.update(
+        {
+            "ping_interval": 20,
+            "ping_timeout": 30,
+            "close_timeout": 1,
+            "max_queue": 1000,
+        }
     )
-    tasks.add(handler_task)
-    for i in range(0, 128):
-        new_task = asyncio.create_task(
-            queue.process_queue(lambda message: process_message(message))
-        )
-        tasks.add(new_task)
-    stdin_task = asyncio.shield(asyncio.create_task(read_stdin()))
-    try:
-        connect_kwargs = CONNECT_KWARGS.copy()
-        connect_kwargs["max_size"] = None
-        connect_kwargs["read_limit"] = 2**32
-        connect_kwargs["close_timeout"] = 10
-        connect_kwargs["ping_timeout"] = None
 
+    async def message_receiver(websocket):
+        """Message receiver."""
         try:
-            async with websockets.connect(URL, **connect_kwargs) as websocket:
-                await login(websocket)
-                response = await websocket.recv()
-                messages = json.loads(response)
-                await process_message(messages)
-                await subscribe(websocket, kwargs["symbol"], "subscribe")
-                response = await websocket.recv()
-                messages = json.loads(response)
-                await process_message(messages)
-                cmd_task = asyncio.get_running_loop().create_task(
-                    process_stdin_queue(websocket)
+            async for message in websocket:
+                input_queue.queue.put_nowait(message)
+        except Exception as e:
+            raise e from e
+
+    async def process_input_messages(message):
+        """Process the messages offloaded from the websocket."""
+
+        def _process_in_thread():
+            message_data = orjson.loads(message)
+            if isinstance(message_data, list):
+                status_msgs = [
+                    msg
+                    for msg in message_data
+                    if isinstance(msg, dict) and ("status" in msg or "message" in msg)
+                ]
+                data_msgs = [msg for msg in message_data if msg not in status_msgs]
+
+                if status_msgs:
+                    # Convert to sync call
+                    asyncio.run(process_message(status_msgs))
+                if data_msgs:
+                    process_queue.queue.put_nowait(data_msgs)
+            elif isinstance(message_data, dict):
+                if "status" in message_data or "message" in message_data:
+                    asyncio.run(process_message(message_data))
+                else:
+                    process_queue.queue.put_nowait(message_data)
+            elif isinstance(message_data, str) and "status" in message_data:
+                asyncio.run(process_message(message_data))
+
+        # Run processing in thread
+        await asyncio.get_event_loop().run_in_executor(
+            message_thread_pool, _process_in_thread
+        )
+
+    try:
+        handler_task = asyncio.create_task(
+            process_queue.process_queue(lambda message: process_message(message))
+        )
+        tasks.add(handler_task)
+        stdin_task = asyncio.create_task(read_stdin())
+        tasks.add(stdin_task)
+
+        await DATABASE.start_writer()
+
+        for _ in range(30):
+            processor_task = asyncio.create_task(
+                input_queue.process_queue(
+                    lambda message: process_input_messages(message)
                 )
-                while True:
-                    messages = await websocket.recv()
-                    await queue.enqueue(json.loads(messages))
+            )
+            tasks.add(processor_task)
+            handler_task = asyncio.create_task(
+                process_queue.process_queue(lambda message: process_message(message))
+            )
+            tasks.add(handler_task)
 
-                cmd_task.cancel()
-                await cmd_task
-                asyncio.gather(*cmd_task, return_exceptions=True)
+        async for websocket in connect(URL, **conn_kwargs):
+            try:
+                if not any(
+                    task.name == "cmd_task" for task in tasks if hasattr(task, "name")
+                ):
+                    cmd_task = asyncio.create_task(
+                        process_stdin_queue(websocket), name="cmd_task"
+                    )
+                    tasks.add(cmd_task)
 
-        except websockets.InvalidStatusCode as e:
-            if e.status_code == 404:
-                msg = f"PROVIDER ERROR:     {e}"
+                await login(websocket)
+
+                response = await websocket.recv()
+                messages = json.loads(response)
+
+                await process_message(messages)
+
+                await subscribe(websocket, kwargs["symbol"], "subscribe")
+
+                if not any(
+                    task.name == "receiver" for task in tasks if hasattr(task, "name")
+                ):
+                    receiver_task = asyncio.create_task(
+                        message_receiver(websocket), name="receiver"
+                    )
+                    await asyncio.gather(receiver_task)
+
+            # Attempt to reopen the connection
+            except (
+                websockets.ConnectionClosed,
+                websockets.ConnectionClosedError,
+            ) as e:
+                msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
+                logger.info(msg)
+                logger.info("PROVIDER INFO:      Attempting to reconnect...")
+                await asyncio.sleep(1)
+                continue
+
+            except websockets.ConnectionClosedOK as e:
+                msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
+                logger.info(msg)
+                sys.exit(0)
+
+            except websockets.WebSocketException as e:
+                msg = f"PROVIDER ERROR:     WebSocketException -> {e}"
                 logger.error(msg)
                 sys.exit(1)
-            else:
-                raise
-        except websockets.InvalidURI as e:
-            msg = f"PROVIDER ERROR:     {e}"
-            logger.error(msg)
-            sys.exit(1)
 
-    except websockets.ConnectionClosedOK as e:
-        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
-        logger.info(msg)
-        sys.exit(0)
-
-    except websockets.ConnectionClosed as e:
-        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
-        logger.info(msg)
-        # Attempt to reopen the connection
-        logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds.")
-        await asyncio.sleep(5)
-        await connect_and_stream()
-
-    except websockets.WebSocketException as e:
-        msg = f"PROVIDER ERROR:     WebSocketException -> {e}"
-        logger.error(msg)
-        sys.exit(1)
-
-    except Exception as e:
-        msg = (
-            f"PROVIDER ERROR:     Unexpected error -> "
-            f"{e.__class__.__name__ if hasattr(e, '__class__') else e}: {e}"
-        )
-        logger.error(msg)
-        sys.exit(1)
+            except Exception as e:  # pylint: disable=broad-except
+                msg = (
+                    f"PROVIDER ERROR:     Unexpected error -> "
+                    f"{e.__class__.__name__ if hasattr(e, '__class__') else e}: {e.args}"
+                )
+                logger.error(msg)
+                sys.exit(1)
 
     finally:
-        tasks.add(stdin_task)
         for task in tasks:
             task.cancel()
             await task
         asyncio.gather(*tasks, return_exceptions=True)
+        await DATABASE.stop_writer()
         sys.exit(0)
 
 
@@ -310,6 +419,7 @@ if __name__ == "__main__":
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.set_exception_handler(lambda loop, context: None)
+
         for sig in (signal.SIGINT, signal.SIGTERM):
             loop.add_signal_handler(sig, handle_termination_signal, logger)
 
@@ -319,11 +429,22 @@ if __name__ == "__main__":
         )
         loop.run_forever()
 
+    except (websockets.ConnectionClosed, websockets.ConnectionClosedError) as e:
+        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
+        logger.info(msg)
+        # Attempt to reopen the connection
+        logger.info("PROVIDER INFO:      Attempting to reconnect...")
+        time.sleep(1)
+        asyncio.run_coroutine_threadsafe(
+            connect_and_stream(),
+            loop,
+        )
+
     except (KeyboardInterrupt, websockets.ConnectionClosed):
         logger.error("PROVIDER ERROR:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
-        ERR = f"PROVIDER ERROR:     {e.__class__.__name__} -> {e}"
+        ERR = f"PROVIDER ERROR:     {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
         logger.error(ERR)
 
     finally:

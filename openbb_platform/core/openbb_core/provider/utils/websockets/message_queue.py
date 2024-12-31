@@ -40,24 +40,28 @@ class MessageQueue:
         retries = 0
         while retries < self.max_retries:
 
+            if self.queue.qsize() / self.queue.maxsize > 0.20:
+                await sleep(self.backoff_factor * 0.00005)
+            if self.queue.qsize() / self.queue.maxsize > 0.25:
+                await sleep(self.backoff_factor * 0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.3:
-                await sleep(0.00005)
+                await sleep(self.backoff_factor * 0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.5:
-                await sleep(0.00005)
+                await sleep(self.backoff_factor * 0.0001)
             if self.queue.qsize() / self.queue.maxsize > 0.55:
-                await sleep(0.00005)
+                await sleep(self.backoff_factor * 0.0001)
             if self.queue.qsize() / self.queue.maxsize > 0.6:
-                await sleep(0.00005)
+                await sleep(self.backoff_factor * 0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.65:
-                await sleep(0.00005)
+                await sleep(self.backoff_factor * 0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.7:
-                await sleep(0.00005)
+                await sleep(self.backoff_factor * 0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.75:
-                await sleep(0.00005)
+                await sleep(self.backoff_factor * 0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.8:
-                await sleep(0.00005)
+                await sleep(self.backoff_factor * 0.00005)
             if self.queue.qsize() / self.queue.maxsize > 0.98:
-                await sleep(0.0005)
+                await sleep(self.backoff_factor * 0.0001)
 
             if self.queue.full():
                 retries += 1

@@ -102,7 +102,6 @@ def validate_date(cls, v):
     try:
         dt = datetime.utcfromtimestamp(v / 1000).replace(tzinfo=timezone("UTC"))
         dt = dt.astimezone(timezone("America/New_York"))
-        return dt
     except Exception:
         if isinstance(v, (int, float)):
             # Check if the timestamp is in nanoseconds and convert to seconds
@@ -110,8 +109,10 @@ def validate_date(cls, v):
                 v = v / 1e9  # Convert nanoseconds to seconds
             dt = datetime.fromtimestamp(v, tz=timezone("UTC"))
             dt = dt.astimezone(timezone("America/New_York"))
-            return dt
-    return v
+        else:
+            return v
+
+    return dt.strftime("%Y-%m-%d %H:%M:%S.%f%z")
 
 
 class PolygonWebSocketQueryParams(WebSocketQueryParams):
@@ -545,7 +546,8 @@ class PolygonStockAggsWebSocketData(WebSocketData):
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    day_open: float = Field(
+    day_open: Optional[float] = Field(
+        default=None,
         description="Today's official opening price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
@@ -573,14 +575,16 @@ class PolygonStockAggsWebSocketData(WebSocketData):
         description=DATA_DESCRIPTIONS.get("vwap", "")
         + " For the current aggregate window.",
     )
-    day_vwap: float = Field(
+    day_vwap: Optional[float] = Field(
+        default=None,
         description="Today's volume weighted average price.",
     )
     volume: float = Field(
         description=DATA_DESCRIPTIONS.get("volume", "")
         + " For the current aggregate window.",
     )
-    day_volume: float = Field(
+    day_volume: Optional[float] = Field(
+        default=None,
         description="Today's accumulated volume.",
     )
     avg_size: Optional[float] = Field(
@@ -1194,6 +1198,8 @@ class PolygonWebSocketFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract data from the WebSocket."""
+        import time
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
         symbol = query.symbol.upper()
         kwargs = {
@@ -1210,8 +1216,11 @@ class PolygonWebSocketFetcher(
             limit=query.limit,
             results_file=query.results_file,
             table_name=query.table_name,
-            save_results=query.save_results,
+            save_database=query.save_database,
             data_model=PolygonWebSocketData,
+            prune_interval=query.prune_interval,
+            export_interval=query.export_interval,
+            export_directory=query.export_directory,
             sleep_time=query.sleep_time,
             broadcast_host=query.broadcast_host,
             broadcast_port=query.broadcast_port,
@@ -1221,6 +1230,7 @@ class PolygonWebSocketFetcher(
 
         try:
             client.connect()
+            time.sleep(0.5)
         except OpenBBError as e:
             if client.is_running:
                 client.disconnect()

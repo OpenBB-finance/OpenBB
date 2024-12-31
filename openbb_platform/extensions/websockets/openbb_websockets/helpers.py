@@ -39,7 +39,7 @@ async def get_status(name: Optional[str] = None, client: Optional[Any] = None) -
         "broadcast_pid": broadcast_pid,
         "results_file": client.results_file,
         "table_name": client.table_name,
-        "save_results": client.save_results,
+        "save_database": client.save_database,
     }
     return status
 

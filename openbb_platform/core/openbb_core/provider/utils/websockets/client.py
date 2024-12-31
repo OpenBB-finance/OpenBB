@@ -5,6 +5,8 @@
 
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
+
 if TYPE_CHECKING:
     import logging
 
@@ -33,14 +35,14 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         Default is 5000. Set to None to keep all records.
     results_file : Optional[str]
         Absolute path to the file for continuous writing. By default, a temporary file is created.
-        File is discarded when the Python session ends unless 'save_results' is set to True.
+        File is discarded when the Python session ends unless 'save_database' is set to True.
         The connection can be re-established with the same results file to continue writing.
         EACH NEW CONNECTION SHOULD HAVE A UNIQUE RESULTS FILE.
         If the intention is to permanently store the results for historical records,
         save the current session to a new file and copy new records at periodic intervals into the master.
     table_name : Optional[str]
         SQL table name to store serialized data messages. By default, 'records'.
-    save_results : bool
+    save_database : bool
         Whether to persist the results after exiting. Default is False.
     data_model : Optional[BaseModel]
         Pydantic data model to validate the results before storing them in the database.
@@ -67,6 +69,8 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         Check if the provider connection process is running.
     is_broadcasting : bool
         Check if the broadcast server process is running.
+    is_exporting : bool
+        Check if the export thread is running.
     broadcast_address : str
         URI address for connecting to the broadcast stream.
     num_results : int
@@ -105,8 +109,14 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         limit: Optional[int] = 5000,
         results_file: Optional[str] = None,
         table_name: Optional[str] = None,
-        save_results: bool = False,
+        batch_size: int = 5000,
+        save_database: bool = False,
         data_model: Optional["BaseModel"] = None,
+        prune_interval: Optional[int] = None,
+        export_directory: Optional[str] = None,
+        export_interval: Optional[int] = None,
+        compress_export: bool = False,
+        verbose: bool = True,
         auth_token: Optional[str] = None,
         logger: Optional["logging.Logger"] = None,
         **kwargs,
@@ -170,7 +180,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                 self.results_file = temp_file_path
 
         self.results_path = Path(self.results_file).absolute()  # type: ignore
-        self.save_results = save_results
+        self.save_database = save_database
         self.logger = logger if logger else get_logger("openbb.websocket.client")
 
         atexit.register(self._atexit)
@@ -183,6 +193,16 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                 logger=self.logger,
                 data_model=self.data_model,
             )
+            self.database.writer = self.database.create_writer(
+                queue=None,
+                prune_interval=prune_interval,
+                batch_size=batch_size,
+                export_directory=export_directory,
+                export_interval=export_interval,
+                compress_export=compress_export,
+                verbose=verbose,
+            )
+
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Unexpected error setting up the SQLite database and table ->"
@@ -200,14 +220,25 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
 
         self._exception = None
 
+        if self.is_exporting:
+            self.database.writer.stop_export_task()
+        if self.is_pruning:
+            self.database.writer.stop_prune_task()
+
         if self.is_running:
             self.disconnect()
         if self.is_broadcasting:
             self.stop_broadcasting()
-        if self.save_results:
+        if self.save_database:
             self.logger.info("Websocket results saved to, %s\n", str(self.results_path))
-        if os.path.exists(self.results_file) and not self.save_results:  # type: ignore
+        if os.path.exists(self.results_file) and not self.save_database:  # type: ignore
             os.remove(self.results_file)  # type: ignore
+            if os.path.exists(self.results_file + "-journal"):
+                os.remove(self.results_file + "-journal")
+            if os.path.exists(self.results_file + "-shm"):
+                os.remove(self.results_file + "-shm")
+            if os.path.exists(self.results_file + "-wal"):
+                os.remove(self.results_file + "-wal")
 
     def _log_provider_output(self, output_queue) -> None:
         """Log output from the provider logger, handling exceptions, errors, and messages that are not data."""
@@ -228,7 +259,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                     if "UnauthorizedError" in output:
                         self._psutil_process.kill()
                         self._process.wait()
-                        self._thread.join()
+                        self._thread.join(timeout=1)
                         err = UnauthorizedError(output)
                         self._exception = err
                         sys.stdout.write(output + "\n")
@@ -240,7 +271,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                     if "ValidationError" in output:
                         self._psutil_process.kill()
                         self._process.wait()
-                        self._thread.join()
+                        self._thread.join(timeout=1)
                         title, errors = output.split(" -> ")[-1].split(": ")
                         line_errors = json.loads(errors.strip())
                         err = ValidationError.from_exception_data(
@@ -273,7 +304,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                     ):
                         self._psutil_process.kill()
                         self._process.wait()
-                        self._thread.join()
+                        self._thread.join(timeout=1)
                         err = ChildProcessError(output)
                         self._exception = err
                         output = output + "\n"
@@ -322,9 +353,9 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
 
                 if output:
                     if output.startswith("ERROR:"):
-                        output = output.replace("ERROR:", "BROADCAST ERROR:") + "\n"
+                        output = output.replace("ERROR:", "BROADCAST ERROR:")
                     elif output.startswith("INFO:"):
-                        output = output.replace("INFO:", "BROADCAST INFO:") + "\n"
+                        output = output.replace("INFO:", "BROADCAST INFO:")
                     output = output[0] if isinstance(output, tuple) else output
                     output = clean_message(output)
                     # if (
@@ -372,69 +403,71 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         if self.limit:
             command.extend([f"limit={self.limit}"])
 
-        kwargs = self._kwargs.copy()
-
-        if kwargs:
-            for k, v in kwargs.items():
-                if isinstance(v, str):
-                    unencrypted_value = decrypt_value(
-                        self._key, self._iv, v  # pylint: disable=protected-access
-                    )
-                    kwargs[k] = unencrypted_value
-                else:
-                    kwargs[k] = v
-
-            _kwargs = (
-                [f"{k}={str(v).strip().replace(' ', '_')}" for k, v in kwargs.items()]
-                if kwargs
-                else None
-            )
-            if _kwargs is not None:
-                for kwarg in _kwargs:
-                    if kwarg not in command:
-                        command.extend([kwarg])
-
         try:
-            self._process = (
-                subprocess.Popen(  # noqa  # pylint: disable=consider-using-with
-                    command,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    stdin=subprocess.PIPE,
-                    env=os.environ,
-                    text=True,
-                    bufsize=1,
+            kwargs = self._kwargs.copy()
+
+            if kwargs:
+                for k, v in kwargs.items():
+                    if isinstance(v, str):
+                        unencrypted_value = decrypt_value(
+                            self._key, self._iv, v  # pylint: disable=protected-access
+                        )
+                        kwargs[k] = unencrypted_value
+                    else:
+                        kwargs[k] = v
+
+                _kwargs = (
+                    [
+                        f"{k}={str(v).strip().replace(' ', '_')}"
+                        for k, v in kwargs.items()
+                    ]
+                    if kwargs
+                    else None
                 )
-            )
-            self._psutil_process = psutil.Process(self._process.pid)
+                if _kwargs is not None:
+                    for kwarg in _kwargs:
+                        if kwarg not in command:
+                            command.extend([kwarg])
 
-            log_output_queue: queue.Queue = queue.Queue()
-            self._thread = threading.Thread(
-                target=non_blocking_websocket,
-                args=(
-                    self,
-                    log_output_queue,
-                    self._provider_message_queue,
-                ),
-            )
-            self._thread.daemon = True
-            self._thread.start()
+                self._process = (
+                    subprocess.Popen(  # noqa  # pylint: disable=consider-using-with
+                        command,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        stdin=subprocess.PIPE,
+                        env=os.environ,
+                        text=True,
+                        bufsize=1,
+                    )
+                )
+                self._psutil_process = psutil.Process(self._process.pid)
 
-            self._log_thread = threading.Thread(
-                target=self._log_provider_output,
-                args=(log_output_queue,),
-            )
-            self._log_thread.daemon = True
-            self._log_thread.start()
+                log_output_queue: queue.Queue = queue.Queue()
+                self._thread = threading.Thread(
+                    target=non_blocking_websocket,
+                    args=(
+                        self,
+                        log_output_queue,
+                        self._provider_message_queue,
+                    ),
+                )
+                self._thread.name = f"Provider-Connection-{self.name}"
+                self._thread.daemon = True
+                self._thread.start()
+
+                self._log_thread = threading.Thread(
+                    target=self._log_provider_output,
+                    args=(log_output_queue,),
+                )
+                self._log_thread.name = f"Provider-Log-{self.name}"
+                self._log_thread.daemon = True
+                self._log_thread.start()
 
         except Exception as e:  # pylint: disable=broad-except
             msg = f"Unexpected error -> {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             self.logger.error(msg)
             self._atexit()
             raise OpenBBError(msg) from e
-
-        # Give it some startup time to allow the connection to be established and for exceptions to populate.
-        time.sleep(2)
 
         if self._exception is not None:
             exc = getattr(self, "_exception", None)
@@ -445,6 +478,12 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
             self.logger.error(
                 "Unexpected error -> Provider connection process failed to start."
             )
+
+        if self.database.writer.export_interval:
+            self.database.writer.start_export_task()
+
+        if self.database.writer.prune_interval:
+            self.database.writer.start_prune_task()
 
     def send_message(
         self, message, target: Literal["provider", "broadcast"] = "provider"
@@ -463,6 +502,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         if self._process is None or self.is_running is False:
             self.logger.info("Provider client connection is not running.")
             return
+
         if (
             self._psutil_process is not None
             and hasattr(self._psutil_process, "is_running")
@@ -470,8 +510,8 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         ):
             self._psutil_process.kill()
         self._process.wait()
-        self._thread.join()
-        self._log_thread.join()
+        self._thread.join(timeout=1)
+        self._log_thread.join(timeout=1)
         self._stop_log_thread_event.clear()
         self.logger.info("Disconnected from the provider server.")
         if hasattr(self, "_exception") and self._exception:
@@ -547,6 +587,28 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         return False
 
     @property
+    def is_exporting(self) -> bool:
+        """Check if the database is exporting records."""
+        if (
+            hasattr(self.database, "writer")
+            and hasattr(self.database.writer, "export_thread")
+            and hasattr(self.database.writer.export_thread, "is_alive")
+        ):
+            return self.database.writer.export_thread.is_alive()
+        return False
+
+    @property
+    def is_pruning(self) -> bool:
+        """Check if the pruning event is running."""
+        if (
+            hasattr(self.database, "writer")
+            and hasattr(self.database.writer, "prune_thread")
+            and hasattr(self.database.writer.prune_thread, "is_alive")
+        ):
+            return self.database.writer.prune_thread.is_alive()
+        return False
+
+    @property
     def num_results(self) -> int:
         """Get the number of results stored in the database."""
         return self.query_database(f"SELECT COUNT(*) FROM {self.table_name};")[  # noqa
@@ -560,9 +622,6 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
 
         Clear the results by deleting the property. e.g., del client.results
         """
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.app.model.abstract.error import OpenBBError
-
         try:
             return self.database.fetch_all()
         except Exception as e:  # pylint: disable=broad-except
@@ -747,6 +806,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                 self._broadcast_message_queue,
             ),
         )
+        self._broadcast_thread.name = f"Broadcast-Connection-{self.name}"
         self._broadcast_thread.daemon = True
         self._broadcast_thread.start()
 
@@ -754,6 +814,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
             target=self._log_broadcast_output,
             args=(output_queue,),
         )
+        self._broadcast_log_thread.name = f"Broadcast-Log-{self.name}"
         self._broadcast_log_thread.daemon = True
         self._broadcast_log_thread.start()
 
@@ -780,8 +841,8 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
                 self.logger.info("Stopped broadcasting to: %s", broadcast_address)
 
         self._broadcast_process.wait()
-        self._broadcast_thread.join()
-        self._broadcast_log_thread.join()
+        self._broadcast_thread.join(timeout=1)
+        self._broadcast_log_thread.join(timeout=1)
         self._broadcast_process = None
         self._psutil_broadcast_process = None
         self._broadcast_address = None
@@ -791,13 +852,13 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
     def __repr__(self):
         """Return the WebSocketClient representation."""
         return (
-            f"WebSocketClient(module={self.module}, symbol={self.symbol}, "
+            f"WebSocketClient(module={[d for d in self.module if "api_key" not in d]}, symbol={self.symbol}, "
             f"is_running={self.is_running}, provider_pid: "
             f"{self._psutil_process.pid if self._psutil_process else ''}, is_broadcasting={self.is_broadcasting}, "
             f"broadcast_address={self.broadcast_address}, "
             f"broadcast_pid: {self._psutil_broadcast_process.pid if self._psutil_broadcast_process else ''}, "
             f"results_file={self.results_file}, table_name={self.table_name}, "
-            f"save_results={self.save_results})"
+            f"save_database={self.save_database})"
         )
 
 
@@ -805,11 +866,28 @@ def non_blocking_websocket(client, output_queue, provider_message_queue) -> None
     """Communicate with the threaded process."""
     try:
         while not client._stop_log_thread_event.is_set():
+
+            if (
+                client.database.writer.prune_interval
+                and client.database.writer.prune_thread is not None
+                and not client.database.writer.prune_thread.is_alive()
+            ):
+                client.database.writer.start_prune_task()
+
+            if (
+                client.database.writer.export_interval is not None
+                and client.database.writer.export_thread is not None
+                and not client.database.writer.export_thread.is_alive()
+            ):
+                client.database.writer.start_export_task()
+
             while not provider_message_queue.empty():
                 read_message_queue(client, provider_message_queue)
             output = client._process.stdout.readline()
+
             if output == "" and client._process.poll() is not None:
                 break
+
             if output:
                 output_queue.put(output.strip())
 
@@ -823,6 +901,10 @@ def non_blocking_websocket(client, output_queue, provider_message_queue) -> None
     finally:
         client._process.stdout.close()
         client._process.wait()
+        if client.is_exporting:
+            client.database.writer.stop_export_task()
+        if client.is_pruning:
+            client.database.writer.stop_prune_task()
 
 
 def send_message(

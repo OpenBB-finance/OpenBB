@@ -4,14 +4,23 @@ import asyncio
 import json
 import logging
 import os
+import signal
 import sys
 from pathlib import Path
 from typing import Optional
 
 import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from openbb_core.provider.utils.websockets.database import CHECK_FOR, Database
-from openbb_core.provider.utils.websockets.helpers import parse_kwargs
+from openbb_core.provider.utils.websockets.database import (
+    CHECK_FOR,
+    Database,
+    kill_thread,
+)
+from openbb_core.provider.utils.websockets.helpers import (
+    get_logger,
+    handle_termination_signal,
+    parse_kwargs,
+)
 from starlette.websockets import WebSocketState
 
 kwargs = parse_kwargs()
@@ -30,8 +39,13 @@ SQL_CONNECT_KWARGS = kwargs.pop("sql_connect_kwargs", None) or {}
 
 app = FastAPI()
 
+CONNECTED_CLIENTS = set()
+MAIN_CLIENT = None
+STDIN_TASK = None
+LOGGER = get_logger("broadcast-server")
 
-async def read_stdin(broadcast_server):
+
+async def read_stdin():
     """Read from stdin."""
     while True:
         line = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
@@ -39,17 +53,30 @@ async def read_stdin(broadcast_server):
         sys.stdout.flush()
 
         if not line:
-            break
+            continue
 
-        try:
-            command = (
-                json.loads(line.strip())
-                if line.strip().startswith("{") or line.strip().startswith("[")
-                else line.strip()
+        if line.strip() == "numclients":
+            MAIN_CLIENT.logger.info(
+                "Number of connected clients: %i", len(CONNECTED_CLIENTS)
             )
-            await broadcast_server.websocket.send_json(json.dumps(command))
-        except json.JSONDecodeError:
-            broadcast_server.logger.error("Invalid JSON received from stdin")
+            continue
+        if len(CONNECTED_CLIENTS) > 0:
+            try:
+                command = (
+                    json.loads(line.strip())
+                    if line.strip().startswith("{") or line.strip().startswith("[")
+                    else line.strip()
+                )
+            except json.JSONDecodeError:
+                err_msg = f"Invalid JSON received from stdin -> {line}"
+                for client in CONNECTED_CLIENTS:
+                    client.logger.error(err_msg)
+
+            for client in CONNECTED_CLIENTS:
+                if client.websocket.client_state != WebSocketState.DISCONNECTED:
+                    await client.websocket.send_json(command)
+                else:
+                    CONNECTED_CLIENTS.remove(client)
 
 
 @app.websocket("/")
@@ -108,42 +135,31 @@ async def websocket_endpoint(  # noqa: PLR0915
         raise ValueError("Results file path is required for WebSocket server.")
 
     broadcast_server.websocket = websocket
-
-    stream_task = asyncio.create_task(broadcast_server.stream_results())
-    stdin_task = asyncio.create_task(read_stdin(broadcast_server))
+    CONNECTED_CLIENTS.add(broadcast_server)
     try:
-        await websocket.receive_text()
+        stream_task = asyncio.create_task(broadcast_server.stream_results())
+        stdin_task = asyncio.create_task(read_stdin())
+        await asyncio.gather(*[stdin_task, stream_task], return_exceptions=True)
+
+    except (asyncio.CancelledError, RuntimeError):
+        broadcast_server.logger.info("A listener task was cancelled.")
 
     except WebSocketDisconnect:
-        pass
+        broadcast_server.logger.info("A listener connection was disconnected.")
+
     except Exception as e:  # pylint: disable=broad-except
         msg = f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
         broadcast_server.logger.error(msg)
+
     finally:
+        CONNECTED_CLIENTS.remove(broadcast_server)
         stream_task.cancel()
+        await stream_task
         stdin_task.cancel()
         try:
-            await stream_task
             await stdin_task
         except asyncio.CancelledError:
             broadcast_server.logger.info("A listener task was cancelled.")
-            for handler in broadcast_server.logger.handlers:
-                handler.flush()
-        except Exception as e:  # pylint: disable=broad-except
-            msg = (
-                f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
-            )
-            broadcast_server.logger.error(msg)
-            for handler in broadcast_server.logger.handlers:
-                handler.flush()
-        if websocket.client_state != WebSocketState.DISCONNECTED:
-            try:
-                await websocket.close()
-            except RuntimeError as e:
-                msg = f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
-                broadcast_server.logger.error(msg)
-                for handler in broadcast_server.logger.handlers:
-                    handler.flush()
 
 
 class BroadcastServer:  # pylint: disable=too-many-instance-attributes
@@ -218,11 +234,18 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
             return
 
         query = f"SELECT MAX(id) FROM {self.table_name}"  # noqa:S608
+
+        async with self.database.get_connection("read") as conn:
+            cursor = await conn.execute(query)
+            last_id = (await cursor.fetchone())[0]
+            await cursor.close()
+
         last_id = (
             0
             if hasattr(self, "replay") and self.replay is True or replay is True
-            else self.database.query(query)[0]
+            else last_id
         )
+
         if sql and self.sql is None:
             self.sql = sql
         elif self.sql is not None and sql is None:
@@ -246,46 +269,29 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
         try:  # pylint: disable=too-many-nested-blocks
             while True:
                 try:
-                    if file_path.exists():
+                    async with self.database.get_connection("read") as conn:
                         query = (
                             sql.replace(";", "")
-                            + f" {'AND' if 'WHERE' in sql else 'WHERE'} id > {last_id}"
+                            + f" {'AND' if 'WHERE' in sql else 'WHERE'} id > ?"
                             if sql is not None
-                            else f"SELECT * FROM {self.table_name} WHERE id > {last_id}"  # noqa:S608
+                            else f"SELECT * FROM {self.table_name} WHERE id > ?"  # noqa:S608
+                            + " ORDER BY json_extract (message, '$.date') ASC"
                         )
-
-                        if ":" not in self.results_file:
-                            results_file = (
-                                "file:"
-                                + (
-                                    self.results_file
-                                    if self.results_file.startswith("/")
-                                    else "/" + self.results_file
-                                )
-                                + "?mode=ro"
+                        params = (last_id,)
+                        cursor = await conn.execute(query, params)
+                        rows = await cursor.fetchall()
+                        if not rows:
+                            await cursor.close()
+                            await asyncio.sleep(1)
+                            continue
+                        for row in rows:
+                            last_id = row[0] if row[0] > last_id else last_id
+                            await self.websocket.send_json(
+                                json.dumps(json.loads(row[1]))
                             )
-                        else:
-                            results_file = (
-                                self.results_file
-                                + f"{'&mode=ro' if '?' in self.results_file else '?mode=ro'}"
-                            )
-                        conn_kwargs = self.sql_connect_kwargs.copy()
-                        conn_kwargs["uri"] = True
-                        conn_kwargs["check_same_thread"] = False
-
-                        async with aiosqlite.connect(
-                            results_file, **conn_kwargs
-                        ) as conn, conn.execute(query) as cursor:
-                            async for row in cursor:
-                                last_id = row[0] if row[0] > last_id else last_id
-                                await self.websocket.send_json(
-                                    json.dumps(json.loads(row[1]))
-                                )
-                                if self.replay is True:
-                                    await asyncio.sleep(self.sleep_time / 10)
-                    else:
-                        self.logger.error("Results file not found: %s", str(file_path))
-                        break
+                            if self.replay is True:
+                                await asyncio.sleep(self.sleep_time / 10)
+                        await cursor.close()
 
                     await asyncio.sleep(self.sleep_time)
                 except KeyboardInterrupt:
@@ -305,7 +311,9 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
         except Exception as e:  # pylint: disable=broad-except
             msg = f"{e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e}"
             self.logger.error(msg)
-        return
+        finally:
+            CONNECTED_CLIENTS.remove(self)
+            self.logger.info("Listener connection was disconnected.")
 
     def start_app(self, host: str = "127.0.0.1", port: int = 6666):
         """Start the FastAPI app with Uvicorn."""
@@ -338,8 +346,19 @@ def create_broadcast_server(
     )
 
 
-def main():
+def run_broadcast_server(broadcast_server, host, port, **kwargs):
+    """Run the broadcast server."""
+    broadcast_server.start_app(host=host, port=port, **kwargs)
+
+
+async def main():
     """Run the main function."""
+    import threading
+
+    loop = asyncio.get_running_loop()
+
+    STDIN_TASK = loop.create_task(read_stdin())
+
     broadcast_server = create_broadcast_server(
         RESULTS_FILE,
         TABLE_NAME,
@@ -348,23 +367,32 @@ def main():
         SQL_CONNECT_KWARGS,
         SQL,
     )
-
+    global MAIN_CLIENT  # noqa: PLW0603
+    MAIN_CLIENT = broadcast_server
     try:
-        broadcast_server.start_app(
-            host=HOST,
-            port=PORT,
-            **kwargs,
+        broadcast_thread = threading.Thread(
+            target=run_broadcast_server,
+            args=(broadcast_server, HOST, PORT),
+            kwargs=kwargs,
+            daemon=True,
         )
+        broadcast_thread.start()
+        await asyncio.sleep(0.1)
+
+        await asyncio.gather(STDIN_TASK, return_exceptions=True)
+
     except TypeError as e:
         msg = f"Invalid keyword argument passed to unvicorn. -> {e.args[0]}"
         broadcast_server.logger.error(msg)
-        for handler in broadcast_server.logger.handlers:
-            handler.flush()
     except KeyboardInterrupt:
         broadcast_server.logger.info("Broadcast server terminated.")
-        for handler in broadcast_server.logger.handlers:
-            handler.flush()
     finally:
+        if STDIN_TASK:
+            STDIN_TASK.cancel()
+        broadcast_thread.join()
+
+        loop.stop()
+        loop.close()
         sys.exit(0)
 
 
@@ -373,6 +401,7 @@ if __name__ == "__main__":
         raise ValueError("Results file path is required for Broadcast server.")
 
     try:
-        main()
+        asyncio.run(main())
+
     except KeyboardInterrupt:
         sys.exit(0)

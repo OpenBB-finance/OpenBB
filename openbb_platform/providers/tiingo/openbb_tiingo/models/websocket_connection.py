@@ -21,7 +21,7 @@ from pydantic import Field, field_validator, model_validator
 # These are the data array order of definitions.
 IEX_FIELDS = [
     "type",
-    "date",
+    "tiingo_date",
     "timestamp",
     "symbol",
     "bid_size",
@@ -40,7 +40,7 @@ IEX_FIELDS = [
 FX_FIELDS = [
     "type",
     "symbol",
-    "date",
+    "tiingo_date",
     "bid_size",
     "bid_price",
     "mid_price",
@@ -51,7 +51,7 @@ FX_FIELDS = [
 CRYPTO_TRADE_FIELDS = [
     "type",
     "symbol",
-    "date",
+    "tiingo_date",
     "exchange",
     "last_size",
     "last_price",
@@ -59,7 +59,7 @@ CRYPTO_TRADE_FIELDS = [
 CRYPTO_QUOTE_FIELDS = [
     "type",
     "symbol",
-    "date",
+    "tiingo_date",
     "exchange",
     "bid_size",
     "bid_price",
@@ -101,6 +101,9 @@ class TiingoWebSocketQueryParams(WebSocketQueryParams):
 class TiingoWebSocketData(WebSocketData):
     """Tiingo WebSocket data model."""
 
+    timestamp: Optional[datetime] = Field(
+        description="The timestamp of the data.",
+    )
     type: Literal["quote", "trade", "break"] = Field(
         description="The type of data.",
     )
@@ -187,17 +190,18 @@ class TiingoWebSocketData(WebSocketData):
             dt = to_datetime(v, utc=True).tz_convert(timezone("America/New_York"))
         else:
             try:
-                dt = datetime.fromtimestamp(v / 1000)
+                dt = datetime.fromtimestamp(v / 1000, timezone.utc)
+                dt = dt.astimezone(timezone("America/New_York"))
             except Exception:
                 if isinstance(v, (int, float)):
                     # Check if the timestamp is in nanoseconds and convert to seconds
                     if v > 1e12:
                         v = v / 1e9  # Convert nanoseconds to seconds
-                    dt = datetime.fromtimestamp(v)
+                    dt = datetime.fromtimestamp(v, timezone.utc)
+                    dt = dt.astimezone(timezone("America/New_York"))
                 else:
                     dt = v
-
-        return dt
+        return dt.strftime("%Y-%m-%d %H:%M:%S.%f%z")
 
     @model_validator(mode="before")
     @classmethod
@@ -263,8 +267,11 @@ class TiingoWebSocketFetcher(
             limit=query.limit,
             results_file=query.results_file,
             table_name=query.table_name,
-            save_results=query.save_results,
+            save_database=query.save_database,
             data_model=TiingoWebSocketData,
+            prune_interval=query.prune_interval,
+            export_interval=query.export_interval,
+            export_directory=query.export_directory,
             sleep_time=query.sleep_time,
             broadcast_host=query.broadcast_host,
             broadcast_port=query.broadcast_port,

@@ -5,10 +5,11 @@ import json
 import os
 import signal
 import sys
+from datetime import datetime, UTC
 
 import websockets
 from openbb_core.provider.utils.errors import UnauthorizedError
-from openbb_core.provider.utils.websockets.database import Database
+from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
@@ -17,6 +18,7 @@ from openbb_core.provider.utils.websockets.helpers import (
 )
 from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_tiingo.models.websocket_connection import TiingoWebSocketData
+from pandas import to_datetime
 from pydantic import ValidationError
 
 URL_MAP = {
@@ -58,7 +60,7 @@ FX_FIELDS = [
 CRYPTO_TRADE_FIELDS = [
     "type",
     "symbol",
-    "date",
+    "timestamp",
     "exchange",
     "last_size",
     "last_price",
@@ -66,7 +68,7 @@ CRYPTO_TRADE_FIELDS = [
 CRYPTO_QUOTE_FIELDS = [
     "type",
     "symbol",
-    "date",
+    "timestamp",
     "exchange",
     "bid_size",
     "bid_price",
@@ -76,20 +78,26 @@ CRYPTO_QUOTE_FIELDS = [
 ]
 SUBSCRIPTION_ID = ""
 logger = get_logger("openbb.websocket.tiingo")
-queue = MessageQueue(logger=logger)
+input_queue = MessageQueue(logger=logger, backoff_factor=0)
+db_queue = MessageQueue(logger=logger, backoff_factor=0)
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 kwargs["results_file"] = os.path.abspath(kwargs["results_file"])
 URL = URL_MAP.get(kwargs.pop("asset_type", "crypto"))
+SUBSCRIBED_SYMBOLS: set = set()
 
 if not URL:
     raise ValueError("Invalid asset type provided.")
 
-DATABASE = Database(
-    results_file=kwargs["results_file"],
-    table_name=kwargs["table_name"],
-    limit=kwargs.get("limit"),
-    logger=logger,
+DATABASE = DatabaseWriter(
+    database=Database(
+        results_file=kwargs["results_file"],
+        table_name=kwargs["table_name"],
+        limit=kwargs.get("limit"),
+        logger=logger,
+    ),
+    queue=db_queue,
+    batch_size=100,
 )
 
 
@@ -121,6 +129,16 @@ async def update_symbols(symbol, event):
             msg = f"PROVIDER INFO:      Subscribed to {tickers} with threshold level {threshold_level}"
             logger.info(msg)
 
+    symbols = symbol.split(",")
+    if event == "subscribe":
+        for sym in symbols:
+            SUBSCRIBED_SYMBOLS.add(sym)
+    elif event == "unsubscribe":
+        for sym in symbols:
+            SUBSCRIBED_SYMBOLS.discard(sym)
+
+    kwargs["symbol"] = ",".join(SUBSCRIBED_SYMBOLS)
+
 
 async def read_stdin_and_update_symbols():
     """Read from stdin and update symbols."""
@@ -132,7 +150,10 @@ async def read_stdin_and_update_symbols():
             break
 
         if "qsize" in line:
-            logger.info(f"PROVIDER INFO:      Queue size: {queue.queue.qsize()}")
+            logger.info(
+                f"PROVIDER INFO:      Input Queue : {input_queue.queue.qsize()}"
+                f" Database Queue : {db_queue.queue.qsize()}"
+            )
         else:
             line = json.loads(line.strip())
 
@@ -175,7 +196,6 @@ async def process_message(message):  # pylint: disable=too-many-branches
             threshold_level = message["data"].get("thresholdLevel")
             msg = f"PROVIDER INFO:      Subscribed to {tickers} with threshold level {threshold_level}"
             logger.info(msg)
-
     elif message.get("messageType") == "A":
         data = message.get("data", [])
         service = message.get("service")
@@ -185,17 +205,22 @@ async def process_message(message):  # pylint: disable=too-many-branches
         elif service == "fx":
             data_message = {FX_FIELDS[i]: data[i] for i in range(len(data))}
         elif service == "crypto_data":
-            if data[0] == "T":
-                data_message = {
-                    CRYPTO_TRADE_FIELDS[i]: data[i] for i in range(len(data))
-                }
-            elif data[0] == "Q":
+            if data[0] == "Q":
                 data_message = {
                     CRYPTO_QUOTE_FIELDS[i]: data[i] for i in range(len(data))
                 }
-        else:
-            return
+            elif data[0] == "T":
+                data_message = {
+                    CRYPTO_TRADE_FIELDS[i]: data[i] for i in range(len(data))
+                }
+            data_message["date"] = datetime.now(UTC).isoformat()
+            tiingo_date = data_message.pop("tiingo_date", None)
+            if isinstance(tiingo_date, str):
+                tiingo_date = to_datetime(tiingo_date)
+                tiingo_date = tiingo_date.tz_convert("America/New_York").to_pydatetime()
+                data_message["timestamp"] = tiingo_date
 
+    if data_message:
         try:
             result = TiingoWebSocketData.model_validate(data_message).model_dump_json(
                 exclude_none=True, exclude_unset=True
@@ -207,26 +232,26 @@ async def process_message(message):  # pylint: disable=too-many-branches
                 raise e from e
 
         if result:
-            await DATABASE._write_to_db(result)  # pylint: disable=protected-access
-    return
+            await db_queue.enqueue(result)
 
 
 async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
 
     tasks: set = set()
-
-    handler_task = asyncio.create_task(
-        queue.process_queue(lambda message: process_message(message))
-    )
-    tasks.add(handler_task)
-    for i in range(0, 15):
-        new_task = asyncio.create_task(
-            queue.process_queue(lambda message: process_message(message))
-        )
-        tasks.add(new_task)
-    stdin_task = asyncio.create_task(read_stdin_and_update_symbols())
     ticker: list = []
+
+    conn_kwargs = CONNECT_KWARGS.copy()
+
+    conn_kwargs.update(
+        {
+            "ping_interval": 8,
+            "ping_timeout": 8,
+            "read_limit": 2**256,
+            "close_timeout": 1,
+            "max_queue": 10000,
+        }
+    )
 
     if isinstance(kwargs["symbol"], str):
         ticker = kwargs["symbol"].lower().split(",")
@@ -239,31 +264,41 @@ async def connect_and_stream():
             "tickers": ticker,
         },
     }
-    connect_kwargs = CONNECT_KWARGS.copy()
-    if "ping_timeout" not in connect_kwargs:
-        connect_kwargs["ping_timeout"] = None
-    if "close_timeout" not in connect_kwargs:
-        connect_kwargs["close_timeout"] = None
+
+    async def message_receiver(websocket):
+        """Receive messages from the WebSocket."""
+        while True:
+            message = await websocket.recv()
+            await input_queue.enqueue(message)
+
+    stdin_task = asyncio.create_task(read_stdin_and_update_symbols())
+    tasks.add(stdin_task)
 
     try:
-        try:
-            async with websockets.connect(URL, **connect_kwargs) as websocket:
-                logger.info("PROVIDER INFO:      WebSocket connection established.")
-                await websocket.send(json.dumps(subscribe_event))
-                while True:
-                    message = await websocket.recv()
-                    await queue.enqueue(message)
+        await DATABASE.start_writer()
+        websocket = await websockets.connect(URL, **conn_kwargs)
+        receiver_task = asyncio.create_task(message_receiver(websocket))
+        tasks.add(receiver_task)
+        await websocket.send(json.dumps(subscribe_event))
+        logger.info("PROVIDER INFO:      WebSocket connection established.")
+        for _ in range(9):
+            process_task = asyncio.create_task(
+                input_queue.process_queue(lambda message: process_message(message))
+            )
+            tasks.add(process_task)
 
-        except UnauthorizedError as e:
-            logger.error(str(e))
-            sys.exit(1)
+        await asyncio.gather(*tasks, return_exceptions=True)
+
+    except UnauthorizedError as e:
+        logger.error(str(e))
+        sys.exit(1)
 
     except websockets.ConnectionClosed as e:
         msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
         logger.info(msg)
         # Attempt to reopen the connection
-        logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds...")
-        await asyncio.sleep(5)
+        logger.info("PROVIDER INFO:      Attempting to reconnect...")
+        await asyncio.sleep(1)
         await connect_and_stream()
 
     except websockets.WebSocketException as e:
@@ -271,16 +306,17 @@ async def connect_and_stream():
         sys.exit(0)
 
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"Unexpected error -> {e.__class__.__name__}: {e}"
+        msg = f"Unexpected error -> {e.__class__.__name__ if hasattr(e, '__class__') else e}: {e.args}"
         logger.error(msg)
         sys.exit(1)
 
     finally:
-        tasks.add(stdin_task)
+        await websocket.close()
         for task in tasks:
             task.cancel()
             await task
         asyncio.gather(*tasks, return_exceptions=True)
+        await DATABASE.stop_writer()
         sys.exit(0)
 
 
@@ -289,13 +325,17 @@ if __name__ == "__main__":
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.set_exception_handler(lambda loop, context: None)
-        loop.add_signal_handler(signal.SIGTERM, handle_termination_signal, logger)
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            loop.add_signal_handler(signal.SIGTERM, handle_termination_signal, logger)
 
         asyncio.run_coroutine_threadsafe(
             connect_and_stream(),
             loop,
         )
         loop.run_forever()
+
+    except (KeyboardInterrupt, websockets.ConnectionClosed):
+        logger.error("PROVIDER ERROR:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
         ERR = (
