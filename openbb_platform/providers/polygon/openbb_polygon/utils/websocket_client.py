@@ -324,9 +324,8 @@ async def connect_and_stream():
                 asyncio.run(process_message(message_data))
 
         # Run processing in thread
-        await asyncio.get_event_loop().run_in_executor(
-            message_thread_pool, _process_in_thread
-        )
+        process = asyncio.to_thread(_process_in_thread)
+        asyncio.create_task(process)
 
     try:
         handler_task = asyncio.create_task(
@@ -338,14 +337,13 @@ async def connect_and_stream():
 
         await DATABASE.start_writer()
 
-        processor_task = asyncio.create_task(
-            input_queue.process_queue(lambda message: process_input_messages(message))
-        )
-        tasks.add(processor_task)
-        handler_task = asyncio.create_task(
-            process_queue.process_queue(lambda message: process_message(message))
-        )
-        tasks.add(handler_task)
+        for i in range(16):
+            processor_task = asyncio.create_task(
+                input_queue.process_queue(
+                    lambda message: process_input_messages(message)
+                )
+            )
+            tasks.add(processor_task)
 
         async for websocket in connect(URL, **conn_kwargs):
             try:
@@ -360,20 +358,13 @@ async def connect_and_stream():
                 await login(websocket)
 
                 response = await websocket.recv()
-                messages = json.loads(response)
+                messages = orjson.loads(response)
 
                 await process_message(messages)
 
                 await subscribe(websocket, kwargs["symbol"], "subscribe")
 
-                if not any(
-                    task.name == "receiver" for task in tasks if hasattr(task, "name")
-                ):
-                    receiver_task = asyncio.create_task(
-                        message_receiver(websocket), name="receiver"
-                    )
-                    tasks.add(receiver_task)
-                    await asyncio.gather(receiver_task)
+                await message_receiver(websocket)
 
             # Attempt to reopen the connection
             except (

@@ -99,12 +99,6 @@ async def read_stdin_and_queue_commands():
             break
 
         try:
-            if line == "qsize":
-                logger.info(
-                    "Queue size: %i - Writer Queue: %i",
-                    command_queue.queue.qsize(),
-                    DATABASE.batch_processor.task_queue.qsize(),
-                )
             command = json.loads(line.strip())
             await command_queue.enqueue(command)
         except json.JSONDecodeError:
@@ -115,6 +109,13 @@ async def process_stdin_queue():
     """Process the command queue."""
     while True:
         command = await command_queue.dequeue()
+        if command == "qsize":
+            logger.info(
+                "Queue size: %i - Writer Queue: %i",
+                command_queue.queue.qsize(),
+                DATABASE.batch_processor.task_queue.qsize(),
+            )
+
         symbol = ["lobby" if d == "*" else d.upper() for d in command.get("symbol", [])]
         event = command.get("event")
         if symbol and event:
