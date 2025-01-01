@@ -2193,6 +2193,23 @@ files = [
 openbb-core = ">=1.3.6,<2.0.0"
 
 [[package]]
+name = "openbb-deribit"
+version = "1.0.0b"
+description = "Deribit is a cryptocurrency exchange that offers futures and options trading."
+optional = true
+python-versions = "^3.9"
+files = []
+develop = false
+
+[package.dependencies]
+async-lru = "^2.0.4"
+openbb-core = "^1.3.7"
+
+[package.source]
+type = "directory"
+url = "providers/deribit"
+
+[[package]]
 name = "openbb-derivatives"
 version = "1.3.5"
 description = "Derivatives extension for OpenBB"
@@ -3005,10 +3022,13 @@ testing = ["pytest", "pytest-benchmark"]
 [[package]]
 name = "poetry"
 version = "1.8.5"
+version = "1.8.5"
 description = "Python dependency management and packaging made easy."
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
+    {file = "poetry-1.8.5-py3-none-any.whl", hash = "sha256:5505fba69bf2a792b5d7402d21839c853644337392b745109b86a23010cce5f3"},
+    {file = "poetry-1.8.5.tar.gz", hash = "sha256:eb2c88d224f58f36df8f7b36d6c380c07d1001bca28bde620f68fc086e881b70"},
     {file = "poetry-1.8.5-py3-none-any.whl", hash = "sha256:5505fba69bf2a792b5d7402d21839c853644337392b745109b86a23010cce5f3"},
     {file = "poetry-1.8.5.tar.gz", hash = "sha256:eb2c88d224f58f36df8f7b36d6c380c07d1001bca28bde620f68fc086e881b70"},
 ]
@@ -3025,6 +3045,7 @@ installer = ">=0.7.0,<0.8.0"
 keyring = ">=24.0.0,<25.0.0"
 packaging = ">=23.1"
 pexpect = ">=4.7.0,<5.0.0"
+pkginfo = ">=1.12,<2.0"
 pkginfo = ">=1.12,<2.0"
 platformdirs = ">=3.0.0,<5"
 poetry-core = "1.9.1"
@@ -4754,6 +4775,7 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 type = ["pytest-mypy"]
 
 [extras]
+all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-deribit", "openbb-ecb", "openbb-econometrics", "openbb-finra", "openbb-finviz", "openbb-government-us", "openbb-multpl", "openbb-nasdaq", "openbb-quantitative", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-technical", "openbb-tmx", "openbb-tradier", "openbb-wsj"]
 all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-ecb", "openbb-econometrics", "openbb-finra", "openbb-finviz", "openbb-government-us", "openbb-multpl", "openbb-nasdaq", "openbb-quantitative", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-technical", "openbb-tmx", "openbb-tradier", "openbb-websockets", "openbb-wsj"]
 alpha-vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
@@ -4778,4 +4800,5 @@ wsj = ["openbb-wsj"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
+content-hash = "814de57cabbeaba8d3614703e3ac73d124aded9ff34970c06957fad994c6397f"
 content-hash = "f413db7dd49a5054b633e84046b463da37296c1e7f6ff09eeddc4f4271914411"
