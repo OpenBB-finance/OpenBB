@@ -802,6 +802,9 @@ class DatabaseWriter:
             if start_time < earliest_timestamp:
                 start_time = earliest_time
 
+            # Set end_time to be one interval after start_time
+            end_time = start_time + timedelta(minutes=minutes)
+
             results_file = (
                 self.export_directory
                 + "/"
@@ -820,7 +823,7 @@ class DatabaseWriter:
                 "read"
             ) as conn, conn.cursor() as cursor:
                 await cursor.execute(
-                    query, (start_time.isoformat(), cutoff_time.isoformat())
+                    query, (start_time.isoformat(), end_time.isoformat())
                 )
 
                 headers = OrderedDict()
