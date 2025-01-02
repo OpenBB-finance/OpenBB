@@ -18,11 +18,18 @@ from openbb_core.provider.standard_models.historical_dividends import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
+from openbb_nasdaq.utils.helpers import get_data_from_url
+
 
 class NasdaqHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     """Nasdaq Historical Dividends Query Params."""
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+
+    use_cache: Optional[bool] = Field(
+        default=True,
+        description="Whether or not to use cache. If True, cache will store for two days.",
+    )
 
 
 class NasdaqHistoricalDividendsData(HistoricalDividendsData):
@@ -117,10 +124,8 @@ class NasdaqHistoricalDividendsFetcher(
             asset_class = "stocks"
             url = f"https://api.nasdaq.com/api/quote/{symbol}/dividends?assetclass={asset_class}"
 
-            response = await amake_request(
-                url,
-                headers=IPO_HEADERS,
-            )
+            response = await get_data_from_url(url=url, file_path="historical_dividends", use_cache=query.use_cache,
+                                             headers=IPO_HEADERS)
             if response.get("status").get("rCode") == 400:  # type: ignore
                 response = await amake_request(
                     url.replace("stocks", "etf"),
