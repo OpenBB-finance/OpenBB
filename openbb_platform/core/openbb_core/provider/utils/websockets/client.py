@@ -852,7 +852,7 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
     def __repr__(self):
         """Return the WebSocketClient representation."""
         return (
-            f"WebSocketClient(module={[d for d in self.module if "api_key" not in d]}, symbol={self.symbol}, "
+            f"WebSocketClient(module={[d for d in self.module if 'api_key' not in d]}, symbol={self.symbol}, "
             f"is_running={self.is_running}, provider_pid: "
             f"{self._psutil_process.pid if self._psutil_process else ''}, is_broadcasting={self.is_broadcasting}, "
             f"broadcast_address={self.broadcast_address}, "

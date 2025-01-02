@@ -66,8 +66,10 @@ class StdOutSink:
     def write(self, message):
         """Write to stdout."""
         # pylint: disable=import-outside-toplevel
+        import os
         import sys
 
+        os.set_blocking(sys.__stdout__.fileno(), False)  # type: ignore
         cleaned_message = AUTH_TOKEN_FILTER.sub(r"\1********", message)
         if cleaned_message != message:
             cleaned_message = f"{cleaned_message}\n"

@@ -1,12 +1,13 @@
 """FMP WebSocket server."""
 
 import asyncio
-import json
 import os
 import signal
 import sys
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 
+import orjson
+import uvloop
 import websockets
 from openbb_core.provider.utils.errors import UnauthorizedError
 from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
@@ -20,6 +21,8 @@ from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_tiingo.models.websocket_connection import TiingoWebSocketData
 from pandas import to_datetime
 from pydantic import ValidationError
+
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 URL_MAP = {
     "stock": "wss://api.tiingo.com/iex",
@@ -97,7 +100,6 @@ DATABASE = DatabaseWriter(
         logger=logger,
     ),
     queue=db_queue,
-    batch_size=100,
 )
 
 
@@ -120,9 +122,9 @@ async def update_symbols(symbol, event):
     }
 
     async with websockets.connect(URL) as websocket:
-        await websocket.send(json.dumps(update_event))
-        response = await websocket.recv()
-        message = json.loads(response)
+        await websocket.send(orjson.dumps(update_event))
+        response = await websocket.recv(decode=False)
+        message = orjson.loads(response)
         if "tickers" in message.get("data", {}):
             tickers = message["data"]["tickers"]
             threshold_level = message["data"].get("thresholdLevel")
@@ -155,7 +157,7 @@ async def read_stdin_and_update_symbols():
                 f" Database Queue : {db_queue.queue.qsize()}"
             )
         else:
-            line = json.loads(line.strip())
+            line = orjson.loads(line.strip())
 
             if line:
                 symbol = line.get("symbol")
@@ -167,7 +169,7 @@ async def process_message(message):  # pylint: disable=too-many-branches
     """Process the message and write to the database."""
     result: dict = {}
     data_message: dict = {}
-    message = message if isinstance(message, (dict, list)) else json.loads(message)
+    message = message if isinstance(message, (dict, list)) else orjson.loads(message)
     msg: str = ""
     if message.get("messageType") == "E":
         response = message.get("response", {})
@@ -232,7 +234,7 @@ async def process_message(message):  # pylint: disable=too-many-branches
                 raise e from e
 
         if result:
-            await db_queue.enqueue(result)
+            db_queue.queue.put_nowait(result)
 
 
 async def connect_and_stream():
@@ -247,9 +249,7 @@ async def connect_and_stream():
         {
             "ping_interval": 8,
             "ping_timeout": 8,
-            "read_limit": 2**256,
             "close_timeout": 1,
-            "max_queue": 10000,
         }
     )
 
@@ -268,38 +268,50 @@ async def connect_and_stream():
     async def message_receiver(websocket):
         """Receive messages from the WebSocket."""
         while True:
-            message = await websocket.recv()
-            await input_queue.enqueue(message)
+            message = await websocket.recv(decode=False)
+            input_queue.queue.put_nowait(orjson.loads(message))
 
     stdin_task = asyncio.create_task(read_stdin_and_update_symbols())
     tasks.add(stdin_task)
 
     try:
         await DATABASE.start_writer()
-        websocket = await websockets.connect(URL, **conn_kwargs)
-        receiver_task = asyncio.create_task(message_receiver(websocket))
-        tasks.add(receiver_task)
-        await websocket.send(json.dumps(subscribe_event))
-        logger.info("PROVIDER INFO:      WebSocket connection established.")
-        for _ in range(9):
-            process_task = asyncio.create_task(
-                input_queue.process_queue(lambda message: process_message(message))
-            )
-            tasks.add(process_task)
 
-        await asyncio.gather(*tasks, return_exceptions=True)
+        async for websocket in websockets.connect(URL, **conn_kwargs):
+            try:
+                if not any(
+                    task.name == "receiver_task"
+                    for task in tasks
+                    if hasattr(task, "name")
+                ):
+                    receiver_task = asyncio.create_task(
+                        message_receiver(websocket), name="receiver_task"
+                    )
+                    tasks.add(receiver_task)
 
-    except UnauthorizedError as e:
-        logger.error(str(e))
-        sys.exit(1)
+                await websocket.send(orjson.dumps(subscribe_event))
+                logger.info("PROVIDER INFO:      WebSocket connection established.")
+                for _ in range(9):
+                    process_task = asyncio.create_task(
+                        input_queue.process_queue(
+                            lambda message: process_message(message)
+                        )
+                    )
+                    tasks.add(process_task)
 
-    except websockets.ConnectionClosed as e:
-        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
-        logger.info(msg)
-        # Attempt to reopen the connection
-        logger.info("PROVIDER INFO:      Attempting to reconnect...")
-        await asyncio.sleep(1)
-        await connect_and_stream()
+                await asyncio.gather(*tasks, return_exceptions=True)
+
+            except UnauthorizedError as e:
+                logger.error(str(e))
+                sys.exit(1)
+
+            except websockets.ConnectionClosed as e:
+                msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
+                logger.info(msg)
+                # Attempt to reopen the connection
+                logger.info("PROVIDER INFO:      Attempting to reconnect...")
+                await asyncio.sleep(1)
+                continue
 
     except websockets.WebSocketException as e:
         logger.info(str(e))
@@ -311,7 +323,6 @@ async def connect_and_stream():
         sys.exit(1)
 
     finally:
-        await websocket.close()
         for task in tasks:
             task.cancel()
             await task
@@ -322,9 +333,10 @@ async def connect_and_stream():
 
 if __name__ == "__main__":
     try:
-        loop = asyncio.new_event_loop()
+        loop = uvloop.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.set_exception_handler(lambda loop, context: None)
+
         for sig in (signal.SIGINT, signal.SIGTERM):
             loop.add_signal_handler(signal.SIGTERM, handle_termination_signal, logger)
 

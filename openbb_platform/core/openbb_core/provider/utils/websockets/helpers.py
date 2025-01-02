@@ -4,8 +4,12 @@
 
 import logging
 import re
+from typing import TYPE_CHECKING
 
 from pydantic import ValidationError
+
+if TYPE_CHECKING:
+    import threading
 
 AUTH_TOKEN_FILTER = re.compile(
     r"(auth_token=)([^&]*)",
@@ -73,13 +77,10 @@ def decrypt_value(key, iv, encrypted_value):
 
 def handle_termination_signal(logger):
     """Handle termination signals to ensure graceful shutdown."""
-    # pylint: disable=import-outside-toplevel
-    import sys
-
     logger.info(
         "PROVIDER INFO:      Termination signal received. WebSocket connection closed."
     )
-    sys.exit(0)
+    raise SystemExit("Termination signal received.")
 
 
 def parse_kwargs() -> dict:
@@ -127,3 +128,28 @@ def parse_kwargs() -> dict:
                 _kwargs[key] = True
 
     return _kwargs
+
+
+def kill_thread(thread: "threading.Thread") -> None:
+    """Kill thread by setting a stop flag."""
+    # pylint: disable=import-outside-toplevel
+    import asyncio
+    import ctypes
+
+    if hasattr(thread, "loop") and thread.loop:
+        for task in asyncio.all_tasks(thread.loop):
+            task.cancel()
+
+    if not thread.is_alive():
+        return
+
+    thread_id = thread.ident
+    if thread_id is None:
+        return
+
+    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(
+        ctypes.c_long(thread_id), ctypes.py_object(SystemExit)
+    )
+    if res > 1:
+        ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(thread_id), None)
+        raise SystemError("PyThreadState_SetAsyncExc failed")

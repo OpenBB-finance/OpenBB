@@ -36,9 +36,9 @@ import os
 import signal
 import sys
 import time
-from concurrent.futures import ThreadPoolExecutor
 
 import orjson
+import uvloop
 import websockets
 from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
 from openbb_core.provider.utils.websockets.helpers import (
@@ -54,6 +54,9 @@ from openbb_polygon.models.websocket_connection import (
 )
 from pydantic import ValidationError
 from websockets.asyncio.client import connect
+from websockets.extensions import permessage_deflate
+
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 URL_MAP = {
     "stock": "wss://socket.polygon.io/stocks",
@@ -78,13 +81,13 @@ ASSET_TYPE = kwargs.pop("asset_type", "crypto")
 kwargs["results_file"] = os.path.abspath(kwargs.get("results_file"))
 URL = URL_MAP.get(ASSET_TYPE)
 SUBSCRIBED_SYMBOLS: set = set()
-message_thread_pool = ThreadPoolExecutor(max_workers=16)
 
 if not kwargs.get("api_key"):
     raise ValueError("No API key provided.")
 
 if not URL:
     raise ValueError("Invalid asset type provided.")
+
 
 DATABASE = DatabaseWriter(
     database=Database(
@@ -158,8 +161,8 @@ async def login(websocket):
     login_event = f'{{"action":"auth","params":"{kwargs["api_key"]}"}}'
     try:
         await websocket.send(login_event)
-        res = await websocket.recv()
-        response = json.loads(res)
+        res = await websocket.recv(decode=False)
+        response = orjson.loads(res)
         messages = response if isinstance(response, list) else [response]
         for msg in messages:
             if msg.get("status") == "connected":
@@ -213,7 +216,7 @@ async def subscribe(websocket, symbol, event):
 async def read_stdin():
     """Read from stdin and queue commands."""
     while True:
-        line = await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
+        line = await asyncio.to_thread(sys.stdin.readline)
         sys.stdin.flush()
         if line:
             try:
@@ -280,22 +283,21 @@ async def connect_and_stream():
 
     conn_kwargs.update(
         {
-            "ping_interval": None,
             "ping_timeout": None,
             "close_timeout": 1,
-            "max_size": 2**63,
+            "max_size": 32768,
             "max_queue": None,
         }
     )
 
     async def message_receiver(websocket):
         """Message receiver."""
-        try:
-            async for message in websocket:
+        while True:
+            try:
+                message = await websocket.recv(decode=False)
                 input_queue.queue.put_nowait(message)
-
-        except Exception as e:
-            raise e from e
+            except Exception as e:
+                raise e from e
 
     async def process_input_messages(message):
         """Process the messages offloaded from the websocket."""
@@ -325,7 +327,8 @@ async def connect_and_stream():
 
         # Run processing in thread
         process = asyncio.to_thread(_process_in_thread)
-        asyncio.create_task(process)
+        process_task = asyncio.create_task(process)
+        tasks.add(process_task)
 
     try:
         handler_task = asyncio.create_task(
@@ -337,15 +340,25 @@ async def connect_and_stream():
 
         await DATABASE.start_writer()
 
-        for i in range(16):
-            processor_task = asyncio.create_task(
-                input_queue.process_queue(
-                    lambda message: process_input_messages(message)
-                )
-            )
-            tasks.add(processor_task)
+        processor_task = asyncio.create_task(
+            input_queue.process_queue(lambda message: process_input_messages(message))
+        )
+        tasks.add(processor_task)
 
-        async for websocket in connect(URL, **conn_kwargs):
+        conn_kwargs["extensions"] = [
+            permessage_deflate.ClientPerMessageDeflateFactory(
+                server_max_window_bits=11,
+                client_max_window_bits=11,
+                compress_settings={
+                    "memLevel": 1,
+                    "level": 1,
+                },
+            ),
+        ]
+        async for websocket in connect(
+            URL,
+            **conn_kwargs,
+        ):
             try:
                 if not any(
                     task.name == "cmd_task" for task in tasks if hasattr(task, "name")
@@ -357,10 +370,9 @@ async def connect_and_stream():
 
                 await login(websocket)
 
-                response = await websocket.recv()
-                messages = orjson.loads(response)
+                response = await websocket.recv(decode=False)
 
-                await process_message(messages)
+                await process_message(orjson.loads(response))
 
                 await subscribe(websocket, kwargs["symbol"], "subscribe")
 
@@ -406,7 +418,7 @@ async def connect_and_stream():
 
 if __name__ == "__main__":
     try:
-        loop = asyncio.new_event_loop()
+        loop = uvloop.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.set_exception_handler(lambda loop, context: None)
 

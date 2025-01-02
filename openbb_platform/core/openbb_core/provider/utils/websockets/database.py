@@ -8,8 +8,12 @@ from contextlib import asynccontextmanager
 from datetime import timedelta
 from typing import TYPE_CHECKING, Any, Iterable, Optional, Union
 
+import uvloop
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.helpers import run_async
+from openbb_core.provider.utils.websockets.helpers import kill_thread
+
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 if TYPE_CHECKING:
     import logging
@@ -63,30 +67,6 @@ CHECK_FOR = (
     "' '",
     '" "',
 )
-
-
-def kill_thread(thread: threading.Thread) -> None:
-    """Kill thread by setting a stop flag."""
-    # pylint: disable=import-outside-toplevel
-    import ctypes
-
-    if hasattr(thread, "loop") and thread.loop:
-        for task in asyncio.all_tasks(thread.loop):
-            task.cancel()
-
-    if not thread.is_alive():
-        return
-
-    thread_id = thread.ident
-    if thread_id is None:
-        return
-
-    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(
-        ctypes.c_long(thread_id), ctypes.py_object(SystemExit)
-    )
-    if res > 1:
-        ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(thread_id), None)
-        raise SystemError("PyThreadState_SetAsyncExc failed")
 
 
 class Database:
@@ -160,7 +140,7 @@ class Database:
         data_model: Optional["BaseModel"] = None,
         limit: Optional[int] = None,
         logger: Optional["logging.Logger"] = None,
-        loop: Optional["asyncio.AbstractEventLoop"] = None,
+        loop: Optional[asyncio.AbstractEventLoop] = None,
         **kwargs,
     ):
         """Initialize the ResultsDB class."""
@@ -212,7 +192,7 @@ class Database:
 
         try:
             if self.results_file is not None and os.path.exists(self.results_file):  # type: ignore
-                async with self.get_connection("read") as conn:
+                async with self.get_connection("write") as conn:
                     try:
                         cursor = await conn.execute(
                             "SELECT name FROM sqlite_master WHERE type='table';"
@@ -238,7 +218,8 @@ class Database:
                 )
                 pragmas = [
                     "PRAGMA journal_mode=WAL",
-                    "PRAGMA synchronous=OFF",
+                    "PRAGMA synchronous=off",
+                    "PRAGMA temp_store=memory",
                 ]
 
                 for pragma in pragmas:
@@ -288,6 +269,15 @@ class Database:
 
         if name not in self._connections:
             conn = await aiosqlite.connect(results_file, **conn_kwargs)
+            pragmas = [
+                "PRAGMA journal_mode=WAL",
+                "PRAGMA synchronous=off",
+                "PRAGMA temp_store=memory",
+            ]
+            for pragma in pragmas:
+                await conn.execute(pragma)
+
+            await conn.commit()
             self._connections[name] = conn
 
         yield self._connections[name]
@@ -373,30 +363,39 @@ class Database:
                     params = ()
                 async with conn.execute(query, params) as cursor:
                     async for row in cursor:
-                        rows.append(await self._deserialize_row(row))
+                        rows.append(await self._deserialize_row(row, cursor))
 
             return rows
 
         except Exception as e:  # pylint: disable=broad-except
             raise OpenBBError(e) from e
 
-    async def _deserialize_row(self, row) -> dict:
-        """Deserialize a row from the SQLite database."""
+    async def _deserialize_row(self, row, cursor) -> dict:
+        """Deserialize a row from the SQLite database.
+        Handles both single message column and multiple extracted fields."""
         # pylint: disable=import-outside-toplevel
         import json
 
         try:
-            return (
-                json.loads(row[0])
-                if (
-                    (
+            if len(row) == 1:
+                # Single column case (full message)
+                return (
+                    json.loads(row[0])
+                    if (
                         isinstance(row[0], str)
                         and (row[0].startswith("{") or row[0].startswith("["))
                     )
                     or isinstance(row[0], bytes)
+                    else row[0]
                 )
-                else row[0]
-            )
+            else:
+                # Multiple column case (extracted fields)
+                return {cursor.description[i][0]: row[i] for i in range(len(row))}
+
+        except (json.JSONDecodeError, AttributeError) as e:
+            self.logger.error(f"Failed to deserialize row: {e}")
+            return row[0] if len(row) == 1 else dict(enumerate(row))
+
         except Exception as e:  # pylint: disable=broad-except
             msg = (
                 "Unexpected error while deserializing row -> "
@@ -453,14 +452,12 @@ class Database:
 
     async def _query_db(self, sql, parameters: Optional[Iterable[Any]] = None) -> list:
         """Query the SQLite database."""
-        # pylint: disable=import-outside-toplevel
-        import json
 
         if not sql or sql in ("", "''"):
             raise OpenBBError("Empty query not allowed.")
         query = (
             sql
-            if sql.startswith("SELECT")
+            if sql.strip().startswith("SELECT")
             else f"SELECT message FROM {self.table_name} WHERE {sql}"  # noqa
         )
         if not query.endswith(";"):
@@ -479,17 +476,7 @@ class Database:
                 query, parameters
             ) as cursor:
                 async for row in cursor:
-                    rows.append(
-                        json.loads(row[0])
-                        if (
-                            (
-                                isinstance(row[0], str)
-                                and (row[0].startswith("{") or row[0].startswith("["))
-                            )
-                            or isinstance(row[0], bytes)
-                        )
-                        else row[0]
-                    )
+                    rows.append(await self._deserialize_row(row, cursor))
             return rows
         except Exception as e:  # pylint: disable=broad-except
             raise OpenBBError(e) from e
@@ -563,7 +550,7 @@ class Database:
     def create_writer(
         self,
         queue: Optional["MessageQueue"] = None,
-        batch_size: int = 25000,
+        batch_size: int = 200,
         prune_interval: Optional[int] = None,
         export_directory: Optional[Union[str, "Path"]] = None,
         export_interval: Optional[int] = None,
@@ -624,7 +611,7 @@ class DatabaseWriter:
         self,
         database: Database,
         queue: Optional["MessageQueue"] = None,
-        batch_size: int = 25000,
+        batch_size: int = 200,
         prune_interval: Optional[int] = None,
         export_directory: Optional[Union[str, "Path"]] = None,
         export_interval: Optional[int] = None,
@@ -687,7 +674,8 @@ class DatabaseWriter:
     async def start_writer(self):
         """Start writing tasks."""
         if not self.writer_running:
-            asyncio.get_event_loop().run_in_executor(None, self.batch_processor.start())
+            if not self.batch_processor.is_alive():
+                self.batch_processor.start()
             await self._create_connection()
         for _ in range(self.num_workers):
             task = asyncio.create_task(self._process_queue())
@@ -700,7 +688,7 @@ class DatabaseWriter:
         await asyncio.gather(*self.write_tasks, return_exceptions=True)
         if self._conn:
             await self._conn.close()
-        self.batch_processor.running = False
+        self.batch_processor.stop()
         kill_thread(self.batch_processor)
 
     async def _process_queue(self):
@@ -718,7 +706,7 @@ class DatabaseWriter:
                     except asyncio.TimeoutError:
                         break
                 if batch:
-                    self._write_batch(batch)
+                    await self._write_batch(batch)
                     batch = []
                 else:
                     await asyncio.sleep(0.001)
@@ -734,9 +722,9 @@ class DatabaseWriter:
         while not self.queue.queue.empty() and len(batch) < self.batch_size:
             batch.append(await self.queue.dequeue())
 
-        self._write_batch(batch)
+        await self._write_batch(batch)
 
-    def _write_batch(self, batch):
+    async def _write_batch(self, batch):
         """Write the batch of messages to the database."""
         if not batch:
             return
@@ -757,6 +745,7 @@ class DatabaseWriter:
         chunk_size = 20000
         minutes = self.export_interval or 5
         latest_date = None
+        earliest_date = None
         if not self._export_running or not self.export_thread:
             return
         try:
@@ -767,10 +756,21 @@ class DatabaseWriter:
                 ORDER BY json_extract(message, '$.date') DESC LIMIT 1
             """  # noqa
 
+            earliest_query = f"""
+                SELECT json_extract(message, '$.date')
+                FROM {self.database.table_name}
+                ORDER BY json_extract(message, '$.date') ASC LIMIT 1
+            """  # noqa
+
             async with self.database.get_connection("read") as conn:
                 try:
                     async with conn.execute(latest_query) as cursor:
                         latest_date = await cursor.fetchone()
+                        if not latest_date:
+                            return
+
+                    async with conn.execute(earliest_query) as cursor:
+                        earliest_date = await cursor.fetchone()
                         if not latest_date:
                             return
 
@@ -780,9 +780,14 @@ class DatabaseWriter:
                     return
 
             latest_timestamp = to_datetime(latest_date[0])
-
+            earliest_timestamp = to_datetime(earliest_date[0])
             # Round down to nearest interval
             cutoff_time = latest_timestamp - timedelta(
+                minutes=latest_timestamp.minute % minutes,
+                seconds=latest_timestamp.second,
+                microseconds=latest_timestamp.microsecond,
+            )
+            earliest_time = earliest_timestamp - timedelta(
                 minutes=latest_timestamp.minute % minutes,
                 seconds=latest_timestamp.second,
                 microseconds=latest_timestamp.microsecond,
@@ -794,8 +799,9 @@ class DatabaseWriter:
             else:
                 start_time = cutoff_time - timedelta(minutes=minutes)
 
-            cutoff_time = self._last_processed_timestamp + timedelta(minutes=minutes)
-            start_time = self._last_processed_timestamp
+            if start_time < earliest_timestamp:
+                start_time = earliest_time
+
             results_file = (
                 self.export_directory
                 + "/"
@@ -1042,9 +1048,7 @@ class DatabaseWriter:
                     count = await self.database._query_db(query, (cutoff_timestamp,))
 
                     if count[0] > 0:
-                        # task = asyncio.create_task(self._export_database())
-                        task = await asyncio.to_thread(self._export_database)
-                        await asyncio.gather(task)
+                        await self._export_database()
                     else:
                         await asyncio.sleep(minutes * 60)
                         # Stagger slightly so things don't happen exactly on the minute.
@@ -1058,13 +1062,11 @@ class DatabaseWriter:
 
 class BatchProcessor(threading.Thread):
     """
-    Batch processor for writing messages to the SQLite database in a new thread.
-
     This class is a thread intended for use as a subprocess and is called by `DatabaseWriter.start_writer()`.
     """
 
     def __init__(
-        self, database_writer: DatabaseWriter, num_workers=120, collection_time=0.35
+        self, database_writer: DatabaseWriter, num_workers=120, collection_time=0.25
     ):
         """Initialize the BatchProcessor class."""
         # pylint: disable=import-outside-toplevel
@@ -1078,20 +1080,42 @@ class BatchProcessor(threading.Thread):
         self.num_workers = num_workers
         self.workers: list = []
         self.collection_time = collection_time
+        self._shutdown = threading.Event()
 
     def run(self):
         """Run the batch processor as tasks."""
-
-        self.loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(self.loop)
         try:
+            self.loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(self.loop)
             # Create worker tasks
-            for _ in range(self.num_workers):
-                worker = self.loop.create_task(self._worker())
-                self.workers.append(worker)
-            # Run workers
-            self.loop.run_until_complete(asyncio.gather(*self.workers))
+            while self.running and not self._shutdown.is_set():
+                try:
+                    self.loop.run_until_complete(self._worker())
+                except (SystemExit, KeyboardInterrupt):
+                    self.running = False
+                    break
+                except Exception as e:
+                    self.writer.database.logger.error(f"Batch processing error: {e}")
+                    break
         finally:
+            self._cleanup()
+
+    def stop(self):
+        """Signal thread to stop gracefully."""
+        self.running = False
+        self._shutdown.set()
+        if self.loop and self.loop.is_running():
+            self.loop.call_soon_threadsafe(self.loop.stop)
+
+    def _cleanup(self):
+        """Clean up resources on shutdown"""
+        if self.loop:
+            pending = asyncio.all_tasks(self.loop)
+            for task in pending:
+                task.cancel()
+            self.loop.run_until_complete(
+                asyncio.gather(*pending, return_exceptions=True)
+            )
             self.loop.close()
 
     async def _worker(self):
@@ -1101,7 +1125,7 @@ class BatchProcessor(threading.Thread):
         batch_size = 200
         while self.running:
             try:
-                batch = []
+                batch: list = []
                 total = 0
                 collection_start = time.time()
 
@@ -1136,6 +1160,7 @@ class BatchProcessor(threading.Thread):
             for b in batch:
                 values.extend([(msg,) for msg in b])
             async with self.writer.database.get_connection("write") as conn:
+                await conn.execute("PRAGMA temp_store=memory")
                 async with conn.cursor() as cursor:
                     await cursor.executemany(query, values)
                 await conn.commit()
