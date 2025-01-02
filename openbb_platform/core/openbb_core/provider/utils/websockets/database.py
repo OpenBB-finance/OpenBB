@@ -8,12 +8,9 @@ from contextlib import asynccontextmanager
 from datetime import timedelta
 from typing import TYPE_CHECKING, Any, Iterable, Optional, Union
 
-import uvloop
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.helpers import run_async
 from openbb_core.provider.utils.websockets.helpers import kill_thread
-
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 if TYPE_CHECKING:
     import logging

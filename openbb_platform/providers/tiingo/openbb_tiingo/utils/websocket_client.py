@@ -7,7 +7,6 @@ import sys
 from datetime import UTC, datetime
 
 import orjson
-import uvloop
 import websockets
 from openbb_core.provider.utils.errors import UnauthorizedError
 from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
@@ -21,8 +20,6 @@ from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_tiingo.models.websocket_connection import TiingoWebSocketData
 from pandas import to_datetime
 from pydantic import ValidationError
-
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 URL_MAP = {
     "stock": "wss://api.tiingo.com/iex",

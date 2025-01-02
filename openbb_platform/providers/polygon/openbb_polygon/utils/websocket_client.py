@@ -38,7 +38,6 @@ import sys
 import time
 
 import orjson
-import uvloop
 import websockets
 from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
 from openbb_core.provider.utils.websockets.helpers import (
@@ -55,8 +54,6 @@ from openbb_polygon.models.websocket_connection import (
 from pydantic import ValidationError
 from websockets.asyncio.client import connect
 from websockets.extensions import permessage_deflate
-
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 URL_MAP = {
     "stock": "wss://socket.polygon.io/stocks",

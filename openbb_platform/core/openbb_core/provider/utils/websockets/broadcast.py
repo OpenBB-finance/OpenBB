@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Optional
 
 import uvicorn
+
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from openbb_core.provider.utils.websockets.database import (
     CHECK_FOR,
@@ -22,6 +23,7 @@ from openbb_core.provider.utils.websockets.helpers import (
     parse_kwargs,
 )
 from starlette.websockets import WebSocketState
+
 
 kwargs = parse_kwargs()
 
