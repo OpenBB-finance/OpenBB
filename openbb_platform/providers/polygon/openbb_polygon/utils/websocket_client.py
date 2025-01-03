@@ -69,7 +69,7 @@ URL_MAP = {
 logger = get_logger("openbb.websocket.polygon")
 process_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=1000000)
 input_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=1000000)
-command_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=1000000)
+stdin_queue = MessageQueue(logger=logger)
 db_queue = MessageQueue(logger=logger, backoff_factor=0, max_size=1000000)
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
@@ -78,6 +78,11 @@ ASSET_TYPE = kwargs.pop("asset_type", "crypto")
 kwargs["results_file"] = os.path.abspath(kwargs.get("results_file"))
 URL = URL_MAP.get(ASSET_TYPE)
 SUBSCRIBED_SYMBOLS: set = set()
+
+MESSAGE_COUNT = 0
+AVG_RATE = 0
+LAST_MINUTE_COUNT = 0
+PREVIOUS_MINUTE_COUNT = 0
 
 if not kwargs.get("api_key"):
     raise ValueError("No API key provided.")
@@ -94,7 +99,28 @@ DATABASE = DatabaseWriter(
         logger=logger,
     ),
     queue=db_queue,
+    batch_size=1,
 )
+
+
+async def message_rate():
+    """Calculate the average message rate."""
+    global AVG_RATE  # pylint: disable=global-statement  # noqa
+    start = time.time()
+    while True:
+        await asyncio.sleep(1)
+        elapsed = time.time() - start
+        if elapsed > 0:
+            AVG_RATE = round(MESSAGE_COUNT / elapsed)
+
+
+async def reset_last_minute_count():
+    """Reset the last minute message count every minute."""
+    global LAST_MINUTE_COUNT, PREVIOUS_MINUTE_COUNT  # pylint: disable=global-statement  # noqa
+    while True:
+        await asyncio.sleep(60)
+        PREVIOUS_MINUTE_COUNT = LAST_MINUTE_COUNT
+        LAST_MINUTE_COUNT = 0
 
 
 async def handle_symbol(symbol):
@@ -143,10 +169,6 @@ async def handle_symbol(symbol):
         elif ASSET_TYPE in ["options", "options_delayed"] and ":" not in ticker:
             _feed, _ticker = ticker.split(".") if "." in ticker else (feed, ticker)
             ticker = f"{_feed}.O:{_ticker}"
-
-        if ticker == "XL2.*":
-            symbol_error = f"SymbolError -> {symbol}: L2 Crypto does not support the all-symbols wildcard."
-            logger.error(symbol_error)
         else:
             new_symbols.append(ticker)
 
@@ -217,8 +239,22 @@ async def read_stdin():
         sys.stdin.flush()
         if line:
             try:
-                command = line.strip() if "qsize" in line else json.loads(line.strip())
-                await command_queue.enqueue(command)
+                command = line.strip()
+                if command == "qsize":
+                    logger.info(
+                        f"PROVIDER INFO:      Input Queue: {input_queue.queue.qsize()} -"
+                        f" Processing Queue: {process_queue.queue.qsize()}:{db_queue.queue.qsize()} -"
+                        f" Writing Queue: {DATABASE.batch_processor.write_queue.qsize()}"
+                    )
+                elif command == "msgrate":
+                    logger.info(
+                        f"PROVIDER INFO:      Total Messages: {MESSAGE_COUNT}"
+                        f" - Average Message Rate: {AVG_RATE}"
+                        f" - Messages in Last Minute: {PREVIOUS_MINUTE_COUNT}"
+                    )
+                else:
+                    command = json.loads(line.strip())
+                    await stdin_queue.enqueue(command)
             except json.JSONDecodeError:
                 logger.error("Invalid JSON received from stdin")
 
@@ -226,18 +262,11 @@ async def read_stdin():
 async def process_stdin_queue(websocket):
     """Process the command queue."""
     while True:
-        command = await command_queue.dequeue()
-        if command == "qsize":
-            logger.info(
-                f"PROVIDER INFO:      Input Queue: {input_queue.queue.qsize()} -"
-                f" Processing Queue: {process_queue.queue.qsize()}:{db_queue.queue.qsize()} -"
-                f" Writing Queue: {DATABASE.batch_processor.write_queue.qsize()}"
-            )
-        else:
-            symbol = command.get("symbol")
-            event = command.get("event")
-            if symbol and event:
-                await subscribe(websocket, symbol, event)
+        command = await stdin_queue.dequeue()
+        symbol = command.get("symbol")
+        event = command.get("event")
+        if symbol and event:
+            await subscribe(websocket, symbol, event)
 
 
 async def process_message(message):
@@ -281,27 +310,39 @@ async def connect_and_stream():
     conn_kwargs.update(
         {
             "ping_timeout": None,
+            "ping_interval": 10,
             "close_timeout": 1,
             "max_size": 32768,
-            "max_queue": None,
         }
     )
+
+    conn_kwargs["extensions"] = [
+        permessage_deflate.ClientPerMessageDeflateFactory(
+            server_max_window_bits=11,
+            client_max_window_bits=11,
+            compress_settings={
+                "memLevel": 1,
+                "level": 1,
+            },
+        ),
+    ]
 
     async def message_receiver(websocket):
         """Message receiver."""
         while True:
-            try:
-                message = await websocket.recv(decode=False)
-                input_queue.queue.put_nowait(message)
-            except Exception as e:
-                raise e from e
+            message = await websocket.recv(decode=False)
+            await input_queue.enqueue(message)
 
     async def process_input_messages(message):
         """Process the messages offloaded from the websocket."""
 
         def _process_in_thread():
+            global LAST_MINUTE_COUNT, MESSAGE_COUNT  # pylint: disable=global-statement  # noqa
+
             message_data = orjson.loads(message)
             if isinstance(message_data, list):
+                MESSAGE_COUNT += len(message_data)
+                LAST_MINUTE_COUNT += len(message_data)
                 status_msgs = [
                     msg
                     for msg in message_data
@@ -328,30 +369,24 @@ async def connect_and_stream():
         tasks.add(process_task)
 
     try:
-        handler_task = asyncio.create_task(
-            process_queue.process_queue(lambda message: process_message(message))
-        )
-        tasks.add(handler_task)
+        for i in range(1, 120):
+            handler_task = asyncio.create_task(
+                process_queue.process_queue(lambda message: process_message(message))
+            )
+            tasks.add(handler_task)
         stdin_task = asyncio.create_task(read_stdin())
         tasks.add(stdin_task)
 
         await DATABASE.start_writer()
 
-        processor_task = asyncio.create_task(
-            input_queue.process_queue(lambda message: process_input_messages(message))
-        )
-        tasks.add(processor_task)
+        for i in range(1, 120):
+            processor_task = asyncio.create_task(
+                input_queue.process_queue(
+                    lambda message: process_input_messages(message)
+                )
+            )
+            tasks.add(processor_task)
 
-        conn_kwargs["extensions"] = [
-            permessage_deflate.ClientPerMessageDeflateFactory(
-                server_max_window_bits=11,
-                client_max_window_bits=11,
-                compress_settings={
-                    "memLevel": 1,
-                    "level": 1,
-                },
-            ),
-        ]
         async for websocket in connect(
             URL,
             **conn_kwargs,
@@ -373,6 +408,11 @@ async def connect_and_stream():
 
                 await subscribe(websocket, kwargs["symbol"], "subscribe")
 
+                rate_task = asyncio.create_task(message_rate())
+                tasks.add(rate_task)
+                minute_task = asyncio.create_task(reset_last_minute_count())
+                tasks.add(minute_task)
+
                 await message_receiver(websocket)
 
             # Attempt to reopen the connection
@@ -392,6 +432,18 @@ async def connect_and_stream():
                 sys.exit(0)
 
             except websockets.WebSocketException as e:
+                if "code=1012" in str(e):
+                    await asyncio.sleep(1)
+                    for task in tasks:
+                        task.cancel()
+                        await task
+                    asyncio.gather(*tasks, return_exceptions=True)
+                    await DATABASE.stop_writer()
+                    await asyncio.sleep(1)
+                    asyncio.run_coroutine_threadsafe(
+                        connect_and_stream(),
+                        asyncio.get_event_loop(),
+                    )
                 msg = f"PROVIDER ERROR:     WebSocketException -> {e}"
                 logger.error(msg)
                 sys.exit(1)
@@ -415,7 +467,7 @@ async def connect_and_stream():
 
 if __name__ == "__main__":
     try:
-        loop = uvloop.new_event_loop()
+        loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.set_exception_handler(lambda loop, context: None)
 

@@ -216,7 +216,6 @@ class Database:
                 pragmas = [
                     "PRAGMA journal_mode=WAL",
                     "PRAGMA synchronous=off",
-                    "PRAGMA temp_store=memory",
                 ]
 
                 for pragma in pragmas:
@@ -269,7 +268,6 @@ class Database:
             pragmas = [
                 "PRAGMA journal_mode=WAL",
                 "PRAGMA synchronous=off",
-                "PRAGMA temp_store=memory",
             ]
             for pragma in pragmas:
                 await conn.execute(pragma)
@@ -768,7 +766,7 @@ class DatabaseWriter:
 
                     async with conn.execute(earliest_query) as cursor:
                         earliest_date = await cursor.fetchone()
-                        if not latest_date:
+                        if not earliest_date:
                             return
 
                 except asyncio.InvalidStateError as e:
@@ -792,12 +790,13 @@ class DatabaseWriter:
 
             # If we have processed data before, use that as reference
             if self._last_processed_timestamp:
-                start_time = self._last_processed_timestamp
+                start_time = (
+                    self._last_processed_timestamp
+                    if self._last_processed_timestamp > earliest_time
+                    else earliest_time
+                )
             else:
                 start_time = cutoff_time - timedelta(minutes=minutes)
-
-            if start_time < earliest_timestamp:
-                start_time = earliest_time
 
             # Set end_time to be one interval after start_time
             end_time = start_time + timedelta(minutes=minutes)
@@ -880,10 +879,10 @@ class DatabaseWriter:
                             csv_writer.writerows(new_rows)
                             await f.write(buffer.getvalue())
 
-            self._last_processed_timestamp = cutoff_time
+            self._last_processed_timestamp = end_time
 
             if self.verbose is True:
-                msg = f"DATABASE INFO:      Interval for period ending {cutoff_time} saved to: {path}"
+                msg = f"DATABASE INFO:      Interval for period beginning {start_time} and ending {end_time} saved to: {path}"
                 sys.stdout.write(msg + "\n")
                 sys.stdout.flush()
 
@@ -1019,7 +1018,7 @@ class DatabaseWriter:
 
         minutes = self.export_interval or 5
 
-        while self.export_thread is not None:
+        while self.export_thread is not None and not self._shutdown:
             # Get the initial row to determine the "first time"
             try:
                 query = f"SELECT json_extract(message, '$.date') FROM {self.database.table_name} ORDER BY json_extract(message, '$.date') ASC LIMIT 1"  # noqa
@@ -1034,25 +1033,28 @@ class DatabaseWriter:
                 if not first_time:
                     await asyncio.sleep(1)
                 self._first_timestamp = first_time.replace(second=0, microsecond=0)
-                self._last_processed_timestamp = self._first_timestamp
+                self._last_processed_timestamp = (
+                    self._first_timestamp
+                    if not self._last_processed_timestamp
+                    else self._last_processed_timestamp
+                )
 
-                while not self._shutdown:
-                    if self.export_thread is None:
-                        break
-                    # Check if the next interval has been reached and export immediately if available.
-                    next_interval = self._last_processed_timestamp + timedelta(
-                        minutes=minutes
-                    )
-                    cutoff_timestamp = next_interval.isoformat()
-                    query = f"SELECT COUNT(*) FROM {self.database.table_name} WHERE json_extract(message, '$.date') >= ?"  # noqa
-                    count = await self.database._query_db(query, (cutoff_timestamp,))
+                # Check if the next interval has been reached and export immediately if available.
+                next_interval = self._last_processed_timestamp + timedelta(
+                    minutes=minutes
+                )
+                cutoff_timestamp = next_interval.isoformat()
+                query = f"SELECT COUNT(*) FROM {self.database.table_name} WHERE json_extract(message, '$.date') >= ?"  # noqa
+                count = await self.database._query_db(query, (cutoff_timestamp,))
 
-                    if count[0] > 0:
-                        await self._export_database()
-                    else:
-                        await asyncio.sleep(minutes * 60)
-                        # Stagger slightly so things don't happen exactly on the minute.
-                        await asyncio.sleep(3)
+                if count[0] > 0:
+                    export_task = await asyncio.to_thread(self._export_database)
+                    await export_task
+                else:
+                    await asyncio.sleep(minutes * 60)
+                    # Stagger slightly so things don't happen exactly on the minute.
+                    await asyncio.sleep(3)
+                    continue
             except asyncio.CancelledError:
                 break
             finally:
@@ -1138,10 +1140,13 @@ class BatchProcessor(threading.Thread):
                         batch.append(msg)
                         total += len(msg)
                     else:
-                        await asyncio.sleep(0.01)
+                        break
 
                 if batch:
                     await self._write_batch(batch)
+
+                if not batch:
+                    time.sleep(0.2)
 
             except Exception as e:  # pylint: disable=broad-except
                 self.writer.database.logger.error(f"Worker error: {e}")
@@ -1160,7 +1165,6 @@ class BatchProcessor(threading.Thread):
             for b in batch:
                 values.extend([(msg,) for msg in b])
             async with self.writer.database.get_connection("write") as conn:
-                await conn.execute("PRAGMA temp_store=memory")
                 async with conn.cursor() as cursor:
                     await cursor.executemany(query, values)
                 await conn.commit()
