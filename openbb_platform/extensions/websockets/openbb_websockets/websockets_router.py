@@ -18,6 +18,7 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
+from openbb_core.provider.utils.websockets.models import WebSocketConnectionStatus
 from pydantic import ValidationError
 
 from openbb_websockets.helpers import (
@@ -26,7 +27,6 @@ from openbb_websockets.helpers import (
     connected_clients,
     get_status,
 )
-from openbb_websockets.models import WebSocketConnectionStatus
 
 router = Router("", description="WebSockets Router")
 sys.stdout = StdOutSink()

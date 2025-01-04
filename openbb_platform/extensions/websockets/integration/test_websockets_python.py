@@ -5,7 +5,7 @@
 import pytest
 from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
-from openbb_websockets.models import WebSocketConnectionStatus
+from openbb_core.provider.utils.websockets.models import WebSocketConnectionStatus
 
 
 @pytest.fixture(scope="session")
@@ -29,7 +29,7 @@ def obb(pytestconfig):
                 "asset_type": "crypto",
                 "auth_token": None,
                 "results_file": None,
-                "save_results": False,
+                "save_database": False,
                 "table_name": "records",
                 "limit": 10,
                 "sleep_time": 0.25,
@@ -37,6 +37,11 @@ def obb(pytestconfig):
                 "broadcast_port": 6666,
                 "start_broadcast": False,
                 "connect_kwargs": None,
+                "export_interval": None,
+                "export_directory": None,
+                "compress_export": False,
+                "prune_interval": None,
+                "verbose": False,
             }
         ),
         (
@@ -48,7 +53,7 @@ def obb(pytestconfig):
                 "feed": "trade_and_quote",
                 "auth_token": None,
                 "results_file": None,
-                "save_results": False,
+                "save_database": False,
                 "table_name": "records",
                 "limit": 10,
                 "sleep_time": 0.25,
@@ -56,6 +61,11 @@ def obb(pytestconfig):
                 "broadcast_port": 6666,
                 "start_broadcast": False,
                 "connect_kwargs": None,
+                "export_interval": None,
+                "export_directory": None,
+                "compress_export": False,
+                "prune_interval": None,
+                "verbose": False,
             }
         ),
         (
@@ -67,7 +77,7 @@ def obb(pytestconfig):
                 "feed": "quote",
                 "auth_token": None,
                 "results_file": None,
-                "save_results": False,
+                "save_database": False,
                 "table_name": "records",
                 "limit": 10,
                 "sleep_time": 0.25,
@@ -75,6 +85,11 @@ def obb(pytestconfig):
                 "broadcast_port": 6666,
                 "start_broadcast": False,
                 "connect_kwargs": None,
+                "export_interval": None,
+                "export_directory": None,
+                "compress_export": False,
+                "prune_interval": None,
+                "verbose": False,
             }
         ),
         (
@@ -87,7 +102,7 @@ def obb(pytestconfig):
                 "trades_only": True,
                 "auth_token": None,
                 "results_file": None,
-                "save_results": False,
+                "save_database": False,
                 "table_name": "records",
                 "limit": 10,
                 "sleep_time": 0.25,
@@ -95,6 +110,11 @@ def obb(pytestconfig):
                 "broadcast_port": 6666,
                 "start_broadcast": False,
                 "connect_kwargs": None,
+                "export_interval": None,
+                "export_directory": None,
+                "compress_export": False,
+                "prune_interval": None,
+                "verbose": False,
             }
         ),
     ],

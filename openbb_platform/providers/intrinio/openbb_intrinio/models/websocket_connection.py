@@ -8,12 +8,12 @@ from typing import Any, Literal, Optional
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.utils.websockets.client import WebSocketClient
-from openbb_intrinio.utils.references import TRADE_CONDITIONS, VENUES
-from openbb_websockets.models import (
+from openbb_core.provider.utils.websockets.models import (
     WebSocketConnection,
     WebSocketData,
     WebSocketQueryParams,
 )
+from openbb_intrinio.utils.references import TRADE_CONDITIONS, VENUES
 from pydantic import Field, field_validator, model_validator
 
 
@@ -192,6 +192,7 @@ class IntrinioWebSocketFetcher(
             export_directory=query.export_directory,
             export_interval=query.export_interval,
             prune_interval=query.prune_interval,
+            compress_export=query.compress_export,
             verbose=query.verbose,
             **kwargs,
         )

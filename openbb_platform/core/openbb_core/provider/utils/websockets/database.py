@@ -798,8 +798,10 @@ class DatabaseWriter:
             else:
                 start_time = cutoff_time - timedelta(minutes=minutes)
 
-            # Set end_time to be one interval after start_time
-            end_time = start_time + timedelta(minutes=minutes)
+            end_time = (start_time + timedelta(minutes=minutes)).replace(
+                second=0, microsecond=0
+            )
+            start_time = start_time.replace(second=0, microsecond=0)
 
             results_file = (
                 self.export_directory
@@ -882,7 +884,10 @@ class DatabaseWriter:
             self._last_processed_timestamp = end_time
 
             if self.verbose is True:
-                msg = f"DATABASE INFO:      Interval for period beginning {start_time} and ending {end_time} saved to: {path}"
+                msg = (
+                    "DATABASE INFO:      Interval for period beginning"
+                    f" {start_time} and ending {end_time} saved to: {path}"
+                )
                 sys.stdout.write(msg + "\n")
                 sys.stdout.flush()
 
@@ -977,8 +982,7 @@ class DatabaseWriter:
                     break
 
                 # Stagger the prune task slightly to avoid things happening exactly on the minute.
-                await asyncio.sleep(minutes * 60)
-                await asyncio.sleep(7)
+                await asyncio.sleep((minutes * 60) + 7)
 
                 if not self._last_processed_timestamp:
                     last_date = await self.database._query_db(
@@ -1097,7 +1101,9 @@ class BatchProcessor(threading.Thread):
                     self.running = False
                     break
                 except Exception as e:
-                    self.writer.database.logger.error(f"Batch processing error: {e}")
+                    self.writer.database.logger.error(
+                        f"DATABASE ERROR:      Batch processing error: {e}"
+                    )
                     break
         finally:
             self._cleanup()

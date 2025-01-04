@@ -1,13 +1,12 @@
 """FMP WebSocket client."""
 
 import asyncio
-import json
 import signal
 import sys
 
+import orjson as json
 import websockets
-import websockets.exceptions
-from openbb_core.provider.utils.websockets.database import Database
+from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
     handle_termination_signal,
@@ -26,18 +25,26 @@ URL_MAP = {
 
 logger = get_logger("openbb.websocket.fmp")
 kwargs = parse_kwargs()
-queue = MessageQueue()
+input_queue = MessageQueue()
 command_queue = MessageQueue()
+database_queue = MessageQueue()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 URL = URL_MAP.get(kwargs.pop("asset_type"), None)
+
 if not URL:
     raise ValueError("Invalid asset type provided.")
 
-DATABASE = Database(
-    results_file=kwargs["results_file"],
-    table_name=kwargs["table_name"],
-    limit=kwargs.get("limit"),
-    logger=logger,
+if not kwargs.get("api_key"):
+    raise ValueError("API key is required.")
+
+DATABASE = DatabaseWriter(
+    database=Database(
+        results_file=kwargs.get("results_file"),
+        table_name=kwargs.get("table_name"),
+        limit=kwargs.get("limit"),
+        logger=logger,
+    ),
+    queue=database_queue,
 )
 
 
@@ -64,7 +71,7 @@ async def login(websocket):
             msg = message.get("message")
             logger.info("PROVIDER INFO:      %s", msg)
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:     {e.__class__.__name__}: {e}"
+        msg = f"PROVIDER ERROR:     {e.__class__.__name__ if hasattr(e, '__class__') else e}: {e.args}"
         logger.error(msg)
         sys.exit(1)
 
@@ -80,9 +87,8 @@ async def subscribe(websocket, symbol, event):
     }
     try:
         await websocket.send(json.dumps(subscribe_event))
-        await asyncio.sleep(1)
     except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:     {e.__class__.__name__}: {e}"
+        msg = f"PROVIDER ERROR:     {e.__class__.__name__ if hasattr(e, '__class__') else e}: {e}"
         logger.error(msg)
 
 
@@ -139,63 +145,73 @@ async def process_message(message):
                 except ValidationError:
                     raise e from e
             if result:
-                await DATABASE._write_to_db(result)  # pylint: disable=protected-access
+                await database_queue.enqueue(result)
 
 
 async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
 
     handler_task = asyncio.create_task(
-        queue.process_queue(lambda message: process_message(message))
+        input_queue.process_queue(lambda message: process_message(message))
     )
 
     stdin_task = asyncio.create_task(read_stdin_and_queue_commands())
 
-    try:
-        websocket = await websockets.connect(URL, **CONNECT_KWARGS)
-        await login(websocket)
-        await subscribe(websocket, kwargs["symbol"], "subscribe")
+    await DATABASE.start_writer()
 
-        while True:
-            ws_task = asyncio.create_task(websocket.recv())
-            cmd_task = asyncio.create_task(process_stdin_queue(websocket))
+    disconnects = 0
 
-            done, pending = await asyncio.wait(
-                [ws_task, cmd_task], return_when=asyncio.FIRST_COMPLETED
-            )
-            for task in pending:
-                task.cancel()
+    async for websocket in websockets.connect(URL, **CONNECT_KWARGS):
+        try:
+            await login(websocket)
 
-            for task in done:
-                if task == cmd_task:
-                    await cmd_task
-                elif task == ws_task:
-                    message = task.result()
-                    await asyncio.shield(queue.enqueue(json.loads(message)))
+            await subscribe(websocket, kwargs["symbol"], "subscribe")
 
-    except websockets.ConnectionClosed as e:
-        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
-        logger.info(msg)
-        # Attempt to reopen the connection
-        logger.info("PROVIDER INFO:      Attempting to reconnect after five seconds.")
-        await asyncio.sleep(5)
-        await connect_and_stream()
+            while True:
+                ws_task = asyncio.create_task(websocket.recv())
+                cmd_task = asyncio.create_task(process_stdin_queue(websocket))
 
-    except websockets.WebSocketException as e:
-        logger.error(e)
-        sys.exit(1)
+                done, pending = await asyncio.wait(
+                    [ws_task, cmd_task], return_when=asyncio.FIRST_COMPLETED
+                )
+                for task in pending:
+                    task.cancel()
 
-    except Exception as e:  # pylint: disable=broad-except
-        msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e}"
-        logger.error(msg)
-        sys.exit(1)
+                for task in done:
+                    if task == cmd_task:
+                        await cmd_task
+                    elif task == ws_task:
+                        message = task.result()
+                        await input_queue.enqueue(json.loads(message))
 
-    finally:
-        await websocket.close()
-        handler_task.cancel()
-        stdin_task.cancel()
-        await asyncio.gather(handler_task, stdin_task, return_exceptions=True)
-        sys.exit(0)
+        except websockets.ConnectionClosed as e:
+            msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
+            logger.info(msg)
+            # Attempt to reopen the connection
+            logger.info("PROVIDER INFO:      Attempting to reconnect...")
+            await asyncio.sleep(2)
+            disconnects += 1
+            if disconnects > 5:
+                logger.error("PROVIDER ERROR:    Too many disconnects. Exiting...")
+                sys.exit(1)
+            continue
+
+        except websockets.WebSocketException as e:
+            logger.error(e)
+            sys.exit(1)
+
+        except Exception as e:  # pylint: disable=broad-except
+            msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e}"
+            logger.error(msg)
+            sys.exit(1)
+
+        finally:
+            await websocket.close()
+            handler_task.cancel()
+            stdin_task.cancel()
+            await asyncio.gather(handler_task, stdin_task, return_exceptions=True)
+            await DATABASE.stop_writer()
+            sys.exit(0)
 
 
 if __name__ == "__main__":
@@ -216,8 +232,10 @@ if __name__ == "__main__":
         logger.error("PROVIDER ERROR:    WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
-        ERR = f"PROVIDER ERROR:    {e.__class__.__name__}: {e}"
+        ERR = f"PROVIDER ERROR:    {e.__class__.__name__ if hasattr(e, '__class__') else e}"
         logger.error(ERR)
 
     finally:
+        loop.call_soon_threadsafe(loop.stop)
+        loop.close()
         sys.exit(0)

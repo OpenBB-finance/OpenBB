@@ -40,6 +40,11 @@ async def get_status(name: Optional[str] = None, client: Optional[Any] = None) -
         "results_file": client.results_file,
         "table_name": client.table_name,
         "save_database": client.save_database,
+        "is_pruning": client.is_pruning,
+        "prune_interval": client.database.writer.prune_interval,
+        "is_exporting": client.is_exporting,
+        "export_interval": client.database.writer.export_interval,
+        "export_directory": client.database.writer.export_directory,
     }
     return status
 

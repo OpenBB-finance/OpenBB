@@ -20,6 +20,7 @@ from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_tiingo.models.websocket_connection import TiingoWebSocketData
 from pandas import to_datetime
 from pydantic import ValidationError
+from websockets.asyncio.client import connect
 
 URL_MAP = {
     "stock": "wss://api.tiingo.com/iex",
@@ -118,7 +119,7 @@ async def update_symbols(symbol, event):
         },
     }
 
-    async with websockets.connect(URL) as websocket:
+    async with connect(URL) as websocket:
         await websocket.send(orjson.dumps(update_event))
         response = await websocket.recv(decode=False)
         message = orjson.loads(response)
@@ -198,12 +199,14 @@ async def process_message(message):  # pylint: disable=too-many-branches
     elif message.get("messageType") == "A":
         data = message.get("data", [])
         service = message.get("service")
+
         if service == "iex":
             data_message = {IEX_FIELDS[i]: data[i] for i in range(len(data))}
             _ = data_message.pop("timestamp", None)
         elif service == "fx":
             data_message = {FX_FIELDS[i]: data[i] for i in range(len(data))}
         elif service == "crypto_data":
+
             if data[0] == "Q":
                 data_message = {
                     CRYPTO_QUOTE_FIELDS[i]: data[i] for i in range(len(data))
@@ -214,6 +217,7 @@ async def process_message(message):  # pylint: disable=too-many-branches
                 }
             data_message["date"] = datetime.now(UTC).isoformat()
             tiingo_date = data_message.pop("tiingo_date", None)
+
             if isinstance(tiingo_date, str):
                 tiingo_date = to_datetime(tiingo_date)
                 tiingo_date = tiingo_date.tz_convert("America/New_York").to_pydatetime()
@@ -231,7 +235,7 @@ async def process_message(message):  # pylint: disable=too-many-branches
                 raise e from e
 
         if result:
-            db_queue.queue.put_nowait(result)
+            await db_queue.enqueue(result)
 
 
 async def connect_and_stream():
@@ -274,7 +278,7 @@ async def connect_and_stream():
     try:
         await DATABASE.start_writer()
 
-        async for websocket in websockets.connect(URL, **conn_kwargs):
+        async for websocket in connect(URL, **conn_kwargs):
             try:
                 if not any(
                     task.name == "receiver_task"
@@ -330,7 +334,7 @@ async def connect_and_stream():
 
 if __name__ == "__main__":
     try:
-        loop = uvloop.new_event_loop()
+        loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.set_exception_handler(lambda loop, context: None)
 
@@ -354,5 +358,6 @@ if __name__ == "__main__":
         logger.error(ERR)
 
     finally:
+        loop.call_soon_threadsafe(loop.stop)
         loop.close()
         sys.exit(0)

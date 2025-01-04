@@ -11,7 +11,7 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.websockets.client import WebSocketClient
-from openbb_websockets.models import (
+from openbb_core.provider.utils.websockets.models import (
     WebSocketConnection,
     WebSocketData,
     WebSocketQueryParams,
@@ -272,6 +272,7 @@ class TiingoWebSocketFetcher(
             prune_interval=query.prune_interval,
             export_interval=query.export_interval,
             export_directory=query.export_directory,
+            compress_export=query.compress_export,
             sleep_time=query.sleep_time,
             broadcast_host=query.broadcast_host,
             broadcast_port=query.broadcast_port,

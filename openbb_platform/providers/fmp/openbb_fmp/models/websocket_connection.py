@@ -8,7 +8,7 @@ from typing import Any, Literal, Optional
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.utils.websockets.client import WebSocketClient
-from openbb_websockets.models import (
+from openbb_core.provider.utils.websockets.models import (
     WebSocketConnection,
     WebSocketData,
     WebSocketQueryParams,
@@ -160,12 +160,16 @@ class FmpWebSocketFetcher(Fetcher[FmpWebSocketQueryParams, FmpWebSocketConnectio
             limit=query.limit,
             results_file=query.results_file,
             table_name=query.table_name,
-            save_results=query.save_results,
+            save_database=query.save_database,
             data_model=FmpWebSocketData,
             sleep_time=query.sleep_time,
             broadcast_host=query.broadcast_host,
             broadcast_port=query.broadcast_port,
             auth_token=query.auth_token,
+            prune_interval=query.prune_interval,
+            export_directory=query.export_directory,
+            export_interval=query.export_interval,
+            compress_export=query.compress_export,
             **kwargs,
         )
 

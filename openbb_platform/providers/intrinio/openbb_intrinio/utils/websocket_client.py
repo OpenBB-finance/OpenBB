@@ -85,7 +85,7 @@ async def subscribe(symbol, event):
         elif event == "unsubscribe":
             client.leave(ticker)
     except Exception as e:  # pylint: disable=broad-except
-        exc = f"PROVIDER ERROR:     {e.__class__.__name__}: {e}"
+        exc = f"PROVIDER ERROR:     {e.__class__.__name__ if hasattr(e, '__class__') else e}: {e.args}"
         logger.error(exc)
 
 
@@ -156,9 +156,11 @@ if __name__ == "__main__":
         logger.error("PROVIDER INFO:     WebSocket connection closed")
 
     except Exception as e:  # pylint: disable=broad-except
-        EXC = f"PROVIDER ERROR:    {e.__class__.__name__}: {e}"
+        EXC = f"PROVIDER ERROR:    {e.__class__.__name__ if hasattr(e, '__class__') else e}: {e.args}"
         logger.error(EXC)
 
     finally:
         client.disconnect()
+        loop.call_soon_threadsafe(loop.stop)
+        loop.close()
         sys.exit(0)

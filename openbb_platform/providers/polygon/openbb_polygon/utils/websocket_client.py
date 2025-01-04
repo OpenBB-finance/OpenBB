@@ -53,7 +53,6 @@ from openbb_polygon.models.websocket_connection import (
 )
 from pydantic import ValidationError
 from websockets.asyncio.client import connect
-from websockets.extensions import permessage_deflate
 
 URL_MAP = {
     "stock": "wss://socket.polygon.io/stocks",
@@ -75,7 +74,6 @@ kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 FEED = kwargs.pop("feed", None)
 ASSET_TYPE = kwargs.pop("asset_type", "crypto")
-kwargs["results_file"] = os.path.abspath(kwargs.get("results_file"))
 URL = URL_MAP.get(ASSET_TYPE)
 SUBSCRIBED_SYMBOLS: set = set()
 
@@ -99,7 +97,6 @@ DATABASE = DatabaseWriter(
         logger=logger,
     ),
     queue=db_queue,
-    batch_size=1,
 )
 
 
@@ -305,27 +302,14 @@ async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
 
     tasks: set = set()
-    conn_kwargs = CONNECT_KWARGS.copy()
-
-    conn_kwargs.update(
-        {
-            "ping_timeout": None,
-            "ping_interval": 10,
-            "close_timeout": 1,
-            "max_size": 32768,
-        }
-    )
-
-    conn_kwargs["extensions"] = [
-        permessage_deflate.ClientPerMessageDeflateFactory(
-            server_max_window_bits=11,
-            client_max_window_bits=11,
-            compress_settings={
-                "memLevel": 1,
-                "level": 1,
-            },
-        ),
-    ]
+    conn_kwargs = {
+        "ping_timeout": None,
+        "ping_interval": 10,
+        "close_timeout": 1,
+        "max_size": 32768,
+        "compression": None,
+    }
+    conn_kwargs.update(CONNECT_KWARGS)
 
     async def message_receiver(websocket):
         """Message receiver."""
@@ -351,7 +335,6 @@ async def connect_and_stream():
                 data_msgs = [msg for msg in message_data if msg not in status_msgs]
 
                 if status_msgs:
-                    # Convert to sync call
                     asyncio.run(process_message(status_msgs))
                 if data_msgs:
                     process_queue.queue.put_nowait(data_msgs)
@@ -369,23 +352,23 @@ async def connect_and_stream():
         tasks.add(process_task)
 
     try:
-        for i in range(1, 120):
-            handler_task = asyncio.create_task(
-                process_queue.process_queue(lambda message: process_message(message))
-            )
-            tasks.add(handler_task)
+        handler_task = asyncio.create_task(
+            process_queue.process_queue(lambda message: process_message(message))
+        )
+        tasks.add(handler_task)
         stdin_task = asyncio.create_task(read_stdin())
         tasks.add(stdin_task)
 
         await DATABASE.start_writer()
 
-        for i in range(1, 120):
-            processor_task = asyncio.create_task(
-                input_queue.process_queue(
-                    lambda message: process_input_messages(message)
-                )
-            )
-            tasks.add(processor_task)
+        processor_task = asyncio.create_task(
+            input_queue.process_queue(lambda message: process_input_messages(message))
+        )
+        tasks.add(processor_task)
+        rate_task = asyncio.create_task(message_rate())
+        tasks.add(rate_task)
+        minute_task = asyncio.create_task(reset_last_minute_count())
+        tasks.add(minute_task)
 
         async for websocket in connect(
             URL,
@@ -407,11 +390,6 @@ async def connect_and_stream():
                 await process_message(orjson.loads(response))
 
                 await subscribe(websocket, kwargs["symbol"], "subscribe")
-
-                rate_task = asyncio.create_task(message_rate())
-                tasks.add(rate_task)
-                minute_task = asyncio.create_task(reset_last_minute_count())
-                tasks.add(minute_task)
 
                 await message_receiver(websocket)
 
@@ -499,5 +477,6 @@ if __name__ == "__main__":
         logger.error(ERR)
 
     finally:
+        loop.call_soon_threadsafe(loop.stop)
         loop.close()
         sys.exit(0)

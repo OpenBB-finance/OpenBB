@@ -10,6 +10,11 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.websockets.client import WebSocketClient
+from openbb_core.provider.utils.websockets.models import (
+    WebSocketConnection,
+    WebSocketData,
+    WebSocketQueryParams,
+)
 from openbb_polygon.utils.constants import (
     CRYPTO_EXCHANGE_MAP,
     FX_EXCHANGE_MAP,
@@ -21,11 +26,6 @@ from openbb_polygon.utils.constants import (
     STOCK_TRADE_CONDITIONS,
 )
 from openbb_polygon.utils.helpers import map_tape
-from openbb_websockets.models import (
-    WebSocketConnection,
-    WebSocketData,
-    WebSocketQueryParams,
-)
 from pydantic import Field, field_validator, model_validator
 
 ASSET_CHOICES = [
@@ -1221,6 +1221,7 @@ class PolygonWebSocketFetcher(
             prune_interval=query.prune_interval,
             export_interval=query.export_interval,
             export_directory=query.export_directory,
+            compress_export=query.compress_export,
             sleep_time=query.sleep_time,
             broadcast_host=query.broadcast_host,
             broadcast_port=query.broadcast_port,
