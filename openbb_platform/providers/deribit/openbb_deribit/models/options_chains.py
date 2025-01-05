@@ -126,6 +126,7 @@ class DeribitOptionsChainsFetcher(
         import websockets
         from openbb_deribit.utils.helpers import get_options_symbols
         from pandas import to_datetime
+        from websockets.asyncio.client import connect
         from warnings import warn
 
         # We need to identify each option contract in order to fetch the chains data.
@@ -152,9 +153,7 @@ class DeribitOptionsChainsFetcher(
                 "method": "public/subscribe",
                 "params": {"channels": ["ticker." + d + ".100ms" for d in symbols]},
             }
-            async with websockets.connect(
-                "wss://www.deribit.com/ws/api/v2"
-            ) as websocket:
+            async with connect("wss://www.deribit.com/ws/api/v2") as websocket:
                 await websocket.send(json.dumps(msg))
                 try:
                     await asyncio.wait_for(
@@ -165,8 +164,11 @@ class DeribitOptionsChainsFetcher(
 
         async def receive_data(websocket, symbols, received_symbols):
             """Receive the data from the websocket with a timeout."""
-            while websocket.open:
-                response = await websocket.recv()
+            while True:
+                try:
+                    response = await websocket.recv()
+                except websockets.ConnectionClosed:
+                    break
                 data = json.loads(response)
 
                 if "params" not in data:
@@ -226,7 +228,7 @@ class DeribitOptionsChainsFetcher(
         tasks = [
             asyncio.create_task(call_api(expiration)) for expiration in symbols_dict
         ]
-        await asyncio.gather(*tasks)
+        await asyncio.gather(*tasks, return_exceptions=True)
 
         if messages and not results:
             raise OpenBBError(", ".join(messages))
