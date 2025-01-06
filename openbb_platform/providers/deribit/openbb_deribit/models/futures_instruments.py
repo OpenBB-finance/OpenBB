@@ -1,5 +1,7 @@
 """Deribit Futures Instruments Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Optional
 
@@ -82,7 +84,9 @@ class DeribitFuturesInstrumentData(FuturesInstrumentsData):
     )
 
     @field_validator("expiration_timestamp", mode="before", check_fields=False)
+    @classmethod
     def _validate_expiration(cls, v):
+        """Validate the expiration timestamp."""
         if int(v) == 32503708800000:
             return None
         return v
@@ -105,7 +109,7 @@ class DeribitFuturesInstrumentsFetcher(
         **kwargs: Any,
     ) -> list:
         """Extract data from Deribit API."""
-        # pylint: disable=unused-argument
+        # pylint: disable=import-outside-toplevel
         from openbb_deribit.utils.helpers import get_instruments
 
         try:

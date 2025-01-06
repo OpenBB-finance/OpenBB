@@ -1,5 +1,7 @@
 """Deribit Futures Info Models."""
 
+# pylint: disable=import-outside-toplevel
+
 from datetime import datetime
 from typing import Any, Literal, Optional
 
@@ -30,6 +32,7 @@ class DeribitFuturesInfoQueryParams(FuturesInfoQueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def _validate_symbol(cls, v):
         """Validate the symbol."""
         # pylint: disable=import-outside-toplevel

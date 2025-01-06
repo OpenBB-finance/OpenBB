@@ -117,7 +117,6 @@ class DeribitFuturesHistoricalFetcher(
     ) -> list:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
         from openbb_deribit.utils.helpers import get_ohlc_data
 
         symbols = query.symbol.split(",")
