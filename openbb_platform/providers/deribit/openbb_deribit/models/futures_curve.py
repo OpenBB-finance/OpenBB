@@ -122,11 +122,13 @@ class DeribitFuturesCurveFetcher(
             tasks = [get_ticker_data(s) for s in symbols]
             data = await asyncio.gather(*tasks, return_exceptions=True)
 
-            if query.hours_ago:
+            if query.hours_ago is not None:
+                num_hours = query.hours_ago
+
                 hours_ago = (
-                    [int(d) for d in query.hours_ago.split(",")]
-                    if isinstance(query.hours_ago, str) and "," in query.hours_ago
-                    else [int(query.hours_ago)]
+                    [int(d) for d in num_hours.split(",")]
+                    if isinstance(num_hours, str)
+                    else [int(num_hours)] if isinstance(num_hours, int) else num_hours
                 )
 
                 for hours in hours_ago:

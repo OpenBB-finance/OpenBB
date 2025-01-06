@@ -98,14 +98,14 @@ async def get_instruments(
         ) from e
 
 
-async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict:
+async def get_options_symbols(symbol: OptionsSymbols = "btc") -> dict:
     """
     Get a dictionary of contract symbols by expiry.
 
     Parameters
     ----------
     symbol : OptionsSymbols
-        The underlying symbol to get options for. Default is "BTC".
+        The underlying symbol to get options for. Default is "btc".
 
     Returns
     -------
@@ -149,7 +149,7 @@ async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict:
     return {k: [d for d in all_options if v in d] for k, v in expirations.items()}
 
 
-async def get_futures_curve_symbols(symbol: FuturesCurveSymbols = "btc") -> list[str]:
+async def get_futures_curve_symbols(symbol: FuturesCurveSymbols = "BTC") -> list[str]:
     """
     Get a list of futures symbols for a given symbol.
 
@@ -163,7 +163,7 @@ async def get_futures_curve_symbols(symbol: FuturesCurveSymbols = "btc") -> list
     list[str]
         A list of futures symbols.
     """
-    symbol = symbol.upper()
+    symbol = symbol.upper()  # type: ignore
     if symbol not in DERIBIT_FUTURES_CURVE_SYMBOLS:
         raise ValueError(
             f"Invalid Deribit symbol. Supported symbols are: {', '.join(DERIBIT_FUTURES_CURVE_SYMBOLS)}",
@@ -239,8 +239,7 @@ async def get_ohlc_data(
     from openbb_core.provider.utils.helpers import amake_request
     from pandas import DataFrame, date_range, to_datetime
 
-    if interval in INTERVAL_MAP:
-        interval = INTERVAL_MAP[interval]
+    new_interval = INTERVAL_MAP.get(interval, interval)
 
     all_instruments = await get_instruments("all", None)
     all_symbols = {
@@ -312,7 +311,7 @@ async def get_ohlc_data(
                 ].to_dict(orient="records")
             )
 
-    urls = generate_urls(symbol, start_date, end_date, interval)
+    urls = generate_urls(symbol, start_date, end_date, new_interval)
 
     if len(urls) > 15:
         raise OpenBBError(
@@ -328,7 +327,7 @@ async def get_ohlc_data(
     raise EmptyDataError("No data found for the given symbol and dates.")
 
 
-async def check_ohlc_symbol(symbol) -> Union[bool, str]:
+async def check_ohlc_symbol(symbol: str) -> Union[bool, str]:
     """
     Check if the symbol has OHLC data.
 
@@ -344,7 +343,8 @@ async def check_ohlc_symbol(symbol) -> Union[bool, str]:
     """
     all_instruments = await get_instruments("all", None)
     all_symbols = {
-        d.get("instrument_name"): d.get("creation_timestamp") for d in all_instruments
+        d.get("instrument_name", ""): d.get("creation_timestamp")
+        for d in all_instruments
     }
     all_perpetuals = await get_perpetual_symbols()
 
