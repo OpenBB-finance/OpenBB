@@ -3,7 +3,7 @@
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.7",
+        "core": "1.3.8",
         "extensions": {
             "openbb_core_extension": [
                 "commodity@1.2.6",
@@ -2007,8 +2007,16 @@
                         "choices": null
                     },
                     {
+                        "name": "contract_size",
+                        "type": "List[Union[int, float]]",
+                        "description": "Number of underlying units per contract.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "open_interest",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Open interest on the contract.",
                         "default": "",
                         "optional": true,
@@ -2016,7 +2024,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": true,
@@ -2040,7 +2048,7 @@
                     },
                     {
                         "name": "last_trade_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Last trade size of the option.",
                         "default": "",
                         "optional": true,
@@ -2072,7 +2080,7 @@
                     },
                     {
                         "name": "bid_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Bid size for the option.",
                         "default": "",
                         "optional": true,
@@ -2104,7 +2112,7 @@
                     },
                     {
                         "name": "ask_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Ask size for the option.",
                         "default": "",
                         "optional": true,
@@ -2216,7 +2224,7 @@
                     },
                     {
                         "name": "close_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing trade size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -2240,7 +2248,7 @@
                     },
                     {
                         "name": "close_bid_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing bid size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -2264,7 +2272,7 @@
                     },
                     {
                         "name": "close_ask_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing ask size for the option that day.",
                         "default": "",
                         "optional": true,

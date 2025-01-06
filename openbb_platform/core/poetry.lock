@@ -136,13 +136,13 @@ files = [
 
 [[package]]
 name = "anyio"
-version = "4.7.0"
+version = "4.8.0"
 description = "High level compatibility layer for multiple asynchronous event loop implementations"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "anyio-4.7.0-py3-none-any.whl", hash = "sha256:ea60c3723ab42ba6fff7e8ccb0488c898ec538ff4df1f1d5e642c3601d07e352"},
-    {file = "anyio-4.7.0.tar.gz", hash = "sha256:2f834749c602966b7d456a7567cafcb309f96482b5081d14ac93ccd457f9dd48"},
+    {file = "anyio-4.8.0-py3-none-any.whl", hash = "sha256:b5011f270ab5eb0abf13385f851315585cc37ef330dd88e27ec3d34d651fd47a"},
+    {file = "anyio-4.8.0.tar.gz", hash = "sha256:1d9fe889df5212298c0c0723fa20479d1b94883a2df44bd3897aa91083316f7a"},
 ]
 
 [package.dependencies]
@@ -153,7 +153,7 @@ typing_extensions = {version = ">=4.5", markers = "python_version < \"3.13\""}
 
 [package.extras]
 doc = ["Sphinx (>=7.4,<8.0)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx_rtd_theme"]
-test = ["anyio[trio]", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "truststore (>=0.9.1)", "uvloop (>=0.21)"]
+test = ["anyio[trio]", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "trustme", "truststore (>=0.9.1)", "uvloop (>=0.21)"]
 trio = ["trio (>=0.26.1)"]
 
 [[package]]
@@ -859,13 +859,13 @@ xml = ["lxml (>=4.9.2)"]
 
 [[package]]
 name = "posthog"
-version = "3.7.4"
+version = "3.7.5"
 description = "Integrate PostHog into any python application."
 optional = false
 python-versions = "*"
 files = [
-    {file = "posthog-3.7.4-py2.py3-none-any.whl", hash = "sha256:21c18c6bf43b2de303ea4cd6e95804cc0f24c20cb2a96a8fd09da2ed50b62faa"},
-    {file = "posthog-3.7.4.tar.gz", hash = "sha256:19384bd09d330f9787a7e2446aba14c8057ece56144970ea2791072d4e40cd36"},
+    {file = "posthog-3.7.5-py2.py3-none-any.whl", hash = "sha256:022132c17069dde03c5c5904e2ae1b9bd68d5059cbc5a8dffc5c1537a1b71cb5"},
+    {file = "posthog-3.7.5.tar.gz", hash = "sha256:8ba40ab623da35db72715fc87fe7dccb7fc272ced92581fe31db2d4dbe7ad761"},
 ]
 
 [package.dependencies]
