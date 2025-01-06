@@ -14,6 +14,7 @@ class DerivativesViews:
         **kwargs,
     ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Get Derivatives Price Historical Chart."""
+        # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_historical import price_historical
 
         kwargs.update({"candles": False, "same_axis": False})
