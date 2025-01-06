@@ -1,6 +1,6 @@
 """Deribit Futures Info Models."""
 
-# pylint: disable=import-outside-toplevel
+# pylint: disable=unused-argument
 
 from datetime import datetime
 from typing import Any, Literal, Optional
