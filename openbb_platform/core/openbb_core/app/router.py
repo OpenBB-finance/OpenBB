@@ -19,10 +19,6 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
-from pydantic.v1.validators import find_validators
-from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
-
 from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWarning
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
@@ -35,6 +31,9 @@ from openbb_core.app.provider_interface import (
     StandardParams,
 )
 from openbb_core.env import Env
+from pydantic import BaseModel
+from pydantic.v1.validators import find_validators
+from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
 P = ParamSpec("P")
 
@@ -293,6 +292,10 @@ class Router:
                         "model": OpenBBErrorResponse,
                         "description": "Internal Error",
                     },
+                    502: {
+                        "model": OpenBBErrorResponse,
+                        "description": "Unauthorized",
+                    },
                 },
             )
 
@@ -433,7 +436,7 @@ class SignatureInspector:
         if not isinstance(results_type, type(None)):
             results_type = results_type_args[0]
 
-        is_list = get_origin(results_type) == list
+        is_list = isinstance(get_origin(results_type), list)
         inner_type = (
             results_type_args[0] if is_list and results_type_args else results_type
         )

@@ -31,8 +31,18 @@ class ROUTER_etf(Container):
     @validate
     def countries(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp.")],
-        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp."
+            ),
+        ],
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Country weighting.
@@ -61,7 +71,7 @@ class ROUTER_etf(Container):
         EtfCountries
         ------------
         country : str
-            The country of the exposure.  Corresponding values are normalized percentage points. 
+            The country of the exposure.  Corresponding values are normalized percentage points.
 
         Examples
         --------
@@ -83,7 +93,9 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}},
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -91,8 +103,18 @@ class ROUTER_etf(Container):
     @validate
     def equity_exposure(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp.")],
-        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp."
+            ),
+        ],
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the exposure to ETFs for a specific stock.
@@ -121,15 +143,15 @@ class ROUTER_etf(Container):
         EtfEquityExposure
         -----------------
         equity_symbol : str
-            The symbol of the equity requested. 
+            The symbol of the equity requested.
         etf_symbol : str
-            The symbol of the ETF with exposure to the requested equity. 
+            The symbol of the ETF with exposure to the requested equity.
         shares : Optional[float]
-            The number of shares held in the ETF. 
+            The number of shares held in the ETF.
         weight : Optional[float]
-            The weight of the equity in the ETF, as a normalized percent. 
+            The weight of the equity in the ETF, as a normalized percent.
         market_value : Optional[Union[int, float]]
-            The market value of the equity position in the ETF. 
+            The market value of the equity position in the ETF.
 
         Examples
         --------
@@ -153,7 +175,9 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}},
+                info={
+                    "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -161,10 +185,26 @@ class ROUTER_etf(Container):
     @validate
     def historical(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.")],
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        provider: Annotated[Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.")] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
+            ),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Historical Market Price.
@@ -179,7 +219,7 @@ class ROUTER_etf(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.
-        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'], str, Literal['1d', '1W', '1M', '1Y'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
+        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'], str, Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
             Time interval of the data to return. (provider: fmp, intrinio, polygon, tiingo, yfinance)
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
@@ -217,19 +257,19 @@ class ROUTER_etf(Container):
         EtfHistorical
         -------------
         date : Union[date, datetime]
-            The date of the data. 
+            The date of the data.
         open : float
-            The open price. 
+            The open price.
         high : float
-            The high price. 
+            The high price.
         low : float
-            The low price. 
+            The low price.
         close : float
-            The close price. 
+            The close price.
         volume : Optional[Union[int, float]]
-            The trading volume. 
+            The trading volume.
         vwap : Optional[float]
-            Volume Weighted Average Price over the period. 
+            Volume Weighted Average Price over the period.
         adj_close : Optional[float]
             The adjusted close price. (provider: fmp, intrinio, tiingo)
         unadjusted_volume : Optional[float]
@@ -294,7 +334,72 @@ class ROUTER_etf(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}, "intrinio": {"multiple_items_allowed": False, "choices": ["1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1W", "1M", "1Q", "1Y"]}, "polygon": {"multiple_items_allowed": True, "choices": None}, "tiingo": {"multiple_items_allowed": True, "choices": None}, "yfinance": {"multiple_items_allowed": True, "choices": None}}, "interval": {"fmp": {"multiple_items_allowed": False, "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]}, "tiingo": {"multiple_items_allowed": False, "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]}, "yfinance": {"multiple_items_allowed": False, "choices": ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1W", "1M", "1Q"]}}},
+                info={
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "polygon": {"multiple_items_allowed": True, "choices": None},
+                        "tiingo": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
+                    },
+                    "interval": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": ["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+                        },
+                        "intrinio": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "1m",
+                                "5m",
+                                "10m",
+                                "15m",
+                                "30m",
+                                "60m",
+                                "1h",
+                                "1d",
+                                "1W",
+                                "1M",
+                                "1Q",
+                                "1Y",
+                            ],
+                        },
+                        "tiingo": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "1m",
+                                "5m",
+                                "15m",
+                                "30m",
+                                "90m",
+                                "1h",
+                                "2h",
+                                "4h",
+                                "1d",
+                                "1W",
+                                "1M",
+                                "1Y",
+                            ],
+                        },
+                        "yfinance": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "1m",
+                                "2m",
+                                "5m",
+                                "15m",
+                                "30m",
+                                "60m",
+                                "90m",
+                                "1h",
+                                "1d",
+                                "5d",
+                                "1W",
+                                "1M",
+                                "1Q",
+                            ],
+                        },
+                    },
+                },
             )
         )
 
@@ -302,8 +407,15 @@ class ROUTER_etf(Container):
     @validate
     def holdings(
         self,
-        symbol: Annotated[str, OpenBBField(description="Symbol to get data for. (ETF)")],
-        provider: Annotated[Optional[Literal["fmp", "intrinio", "sec"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.")] = None,
+        symbol: Annotated[
+            str, OpenBBField(description="Symbol to get data for. (ETF)")
+        ],
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "sec"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the holdings for an individual ETF.
@@ -314,7 +426,7 @@ class ROUTER_etf(Container):
             Symbol to get data for. (ETF)
         provider : Optional[Literal['fmp', 'intrinio', 'sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
-        date : Optional[Union[str, datetime.date]]
+        date : Optional[Union[datetime.date, str]]
             A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
             A specific date to get data for. (provider: intrinio);
             A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing. (provider: sec)
@@ -340,9 +452,9 @@ class ROUTER_etf(Container):
         EtfHoldings
         -----------
         symbol : Optional[str]
-            Symbol representing the entity requested in the data. (ETF) 
+            Symbol representing the entity requested in the data. (ETF)
         name : Optional[str]
-            Name of the ETF holding. 
+            Name of the ETF holding.
         lei : Optional[str]
             The LEI of the holding. (provider: fmp, sec)
         title : Optional[str]
@@ -554,8 +666,15 @@ class ROUTER_etf(Container):
     @validate
     def holdings_date(
         self,
-        symbol: Annotated[str, OpenBBField(description="Symbol to get data for. (ETF)")],
-        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
+        symbol: Annotated[
+            str, OpenBBField(description="Symbol to get data for. (ETF)")
+        ],
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Use this function to get the holdings dates, if available.
@@ -586,7 +705,7 @@ class ROUTER_etf(Container):
         EtfHoldingsDate
         ---------------
         date : date
-            The date of the data. 
+            The date of the data.
 
         Examples
         --------
@@ -615,8 +734,18 @@ class ROUTER_etf(Container):
     @validate
     def info(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.")],
-        provider: Annotated[Optional[Literal["fmp", "intrinio", "yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.")] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
+            ),
+        ],
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Information Overview.
@@ -645,13 +774,13 @@ class ROUTER_etf(Container):
         EtfInfo
         -------
         symbol : str
-            Symbol representing the entity requested in the data. (ETF) 
+            Symbol representing the entity requested in the data. (ETF)
         name : Optional[str]
-            Name of the ETF. 
+            Name of the ETF.
         description : Optional[str]
-            Description of the fund. 
+            Description of the fund.
         inception_date : Optional[str]
-            Inception date of the ETF. 
+            Inception date of the ETF.
         issuer : Optional[str]
             Company of the ETF. (provider: fmp);
             Issuer of the ETF. (provider: intrinio)
@@ -983,7 +1112,13 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}, "intrinio": {"multiple_items_allowed": True, "choices": None}, "yfinance": {"multiple_items_allowed": True, "choices": None}}},
+                info={
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                        "yfinance": {"multiple_items_allowed": True, "choices": None},
+                    }
+                },
             )
         )
 
@@ -991,8 +1126,18 @@ class ROUTER_etf(Container):
     @validate
     def price_performance(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBField(description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.")],
-        provider: Annotated[Optional[Literal["fmp", "intrinio"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.")] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
+            ),
+        ],
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Price performance as a return, over different periods.
@@ -1025,39 +1170,39 @@ class ROUTER_etf(Container):
         EtfPricePerformance
         -------------------
         symbol : Optional[str]
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         one_day : Optional[float]
-            One-day return. 
+            One-day return.
         wtd : Optional[float]
-            Week to date return. 
+            Week to date return.
         one_week : Optional[float]
-            One-week return. 
+            One-week return.
         mtd : Optional[float]
-            Month to date return. 
+            Month to date return.
         one_month : Optional[float]
-            One-month return. 
+            One-month return.
         qtd : Optional[float]
-            Quarter to date return. 
+            Quarter to date return.
         three_month : Optional[float]
-            Three-month return. 
+            Three-month return.
         six_month : Optional[float]
-            Six-month return. 
+            Six-month return.
         ytd : Optional[float]
-            Year to date return. 
+            Year to date return.
         one_year : Optional[float]
-            One-year return. 
+            One-year return.
         two_year : Optional[float]
-            Two-year return. 
+            Two-year return.
         three_year : Optional[float]
-            Three-year return. 
+            Three-year return.
         four_year : Optional[float]
-            Four-year 
+            Four-year
         five_year : Optional[float]
-            Five-year return. 
+            Five-year return.
         ten_year : Optional[float]
-            Ten-year return. 
+            Ten-year return.
         max : Optional[float]
-            Return from the beginning of the time series. 
+            Return from the beginning of the time series.
         max_annualized : Optional[float]
             Annualized rate of return from inception. (provider: intrinio)
         volatility_one_year : Optional[float]
@@ -1110,7 +1255,12 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}, "intrinio": {"multiple_items_allowed": True, "choices": None}}},
+                info={
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True, "choices": None},
+                        "intrinio": {"multiple_items_allowed": True, "choices": None},
+                    }
+                },
             )
         )
 
@@ -1119,13 +1269,18 @@ class ROUTER_etf(Container):
     def search(
         self,
         query: Annotated[Optional[str], OpenBBField(description="Search query.")] = "",
-        provider: Annotated[Optional[Literal["fmp", "intrinio"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.")] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for ETFs.
 
         An empty query returns the full list of ETFs from the provider.
-        
+
 
         Parameters
         ----------
@@ -1156,9 +1311,9 @@ class ROUTER_etf(Container):
         EtfSearch
         ---------
         symbol : str
-            Symbol representing the entity requested in the data.(ETF) 
+            Symbol representing the entity requested in the data.(ETF)
         name : Optional[str]
-            Name of the ETF. 
+            Name of the ETF.
         market_cap : Optional[float]
             The market cap of the ETF. (provider: fmp)
         sector : Optional[str]
@@ -1223,8 +1378,15 @@ class ROUTER_etf(Container):
     @validate
     def sectors(
         self,
-        symbol: Annotated[str, OpenBBField(description="Symbol to get data for. (ETF)")],
-        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
+        symbol: Annotated[
+            str, OpenBBField(description="Symbol to get data for. (ETF)")
+        ],
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Sector weighting.
@@ -1253,9 +1415,9 @@ class ROUTER_etf(Container):
         EtfSectors
         ----------
         sector : str
-            Sector of exposure. 
+            Sector of exposure.
         weight : Optional[float]
-            Exposure of the ETF to the sector in normalized percentage points. 
+            Exposure of the ETF to the sector in normalized percentage points.
 
         Examples
         --------

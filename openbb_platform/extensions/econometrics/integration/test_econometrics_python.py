@@ -66,8 +66,8 @@ def get_data(menu: Literal["equity", "crypto"]):
 @parametrize(
     "params, data_type",
     [
-        ({"data": ""}, "equity"),
-        ({"data": ""}, "crypto"),
+        ({"data": "", "method": "pearson"}, "equity"),
+        ({"data": "", "method": "pearson"}, "crypto"),
     ],
 )
 @pytest.mark.integration
@@ -400,6 +400,25 @@ def test_econometrics_panel_fmac(params, obb):
 
     result = obb.econometrics.panel_fmac(**params)
     """Test the econometrics panel fmac."""
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"data": "", "columns": ["income", "age"]}),
+        ({"data": "", "columns": ["education"]}),
+    ],
+)
+@pytest.mark.integration
+def test_econometrics_variance_inflation_factor(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    params["data"] = mock_multi_index_data()
+
+    result = obb.econometrics.variance_inflation_factor(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

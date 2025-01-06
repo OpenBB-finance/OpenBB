@@ -434,6 +434,24 @@ async def available_indicators(
                 "frequency": "annual",
             },
         ),
+        APIEx(
+            description=(
+                "When the provider is 'imf', additional presets return the core Financial Soundness Indicators."
+                "\n    'fsi_core' -  Core FSIs"
+                "\n    'fsi_encouraged_set' - Encouraged Set of FSIs,"
+                "\n    'fsi_core_underlying' - Underlying data for the Core FSIs."
+                "\n    'fsi_other' - Additional/Other FSIs that are not in the Core or Encouraged Set."
+                "\n    'fsi_all' - all FSI data for a single country."
+            ),
+            parameters={
+                "provider": "imf",
+                "symbol": "fsi_encouraged_set",
+                "country": "us,fr,gb",
+                "start_date": "2022-01-01",
+                "end_date": "2023-12-31",
+                "frequency": "annual",
+            },
+        ),
     ],
 )
 async def indicators(

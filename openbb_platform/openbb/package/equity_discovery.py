@@ -18,6 +18,7 @@ class ROUTER_equity_discovery(Container):
     filings
     gainers
     growth_tech
+    latest_financial_reports
     losers
     undervalued_growth
     undervalued_large_caps
@@ -30,8 +31,18 @@ class ROUTER_equity_discovery(Container):
     @validate
     def active(
         self,
-        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
-        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
+        sort: Annotated[
+            Literal["asc", "desc"],
+            OpenBBField(
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            ),
+        ] = "desc",
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the most actively traded stocks based on volume.
@@ -42,6 +53,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -60,23 +73,57 @@ class ROUTER_equity_discovery(Container):
         EquityActive
         ------------
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         name : Optional[str]
-            Name of the entity. 
+            Name of the entity.
         price : float
-            Last price. 
+            Last price.
         change : float
-            Change in price. 
+            Change in price.
         percent_change : float
-            Percent change. 
+            Percent change.
         volume : Union[int, float]
-            The trading volume. 
+            The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
-            Market Cap displayed in billions. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+            Market Cap. (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -106,8 +153,18 @@ class ROUTER_equity_discovery(Container):
     @validate
     def aggressive_small_caps(
         self,
-        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
-        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
+        sort: Annotated[
+            Literal["asc", "desc"],
+            OpenBBField(
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            ),
+        ] = "desc",
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get top small cap stocks based on earnings growth.
@@ -118,6 +175,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. Default is all. (provider: yfinance)
 
         Returns
         -------
@@ -136,23 +195,57 @@ class ROUTER_equity_discovery(Container):
         EquityAggressiveSmallCaps
         -------------------------
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         name : Optional[str]
-            Name of the entity. 
+            Name of the entity.
         price : float
-            Last price. 
+            Last price.
         change : float
-            Change in price. 
+            Change in price.
         percent_change : float
-            Percent change. 
+            Percent change.
         volume : Union[int, float]
-            The trading volume. 
+            The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -182,11 +275,29 @@ class ROUTER_equity_discovery(Container):
     @validate
     def filings(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBField(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        form_type: Annotated[Optional[str], OpenBBField(description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.")] = None,
-        limit: Annotated[int, OpenBBField(description="The number of data entries to return.")] = 100,
-        provider: Annotated[Optional[Literal["fmp"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        form_type: Annotated[
+            Optional[str],
+            OpenBBField(
+                description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types."
+            ),
+        ] = None,
+        limit: Annotated[
+            int, OpenBBField(description="The number of data entries to return.")
+        ] = 100,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.
@@ -195,7 +306,7 @@ class ROUTER_equity_discovery(Container):
         Foreign Investment Disclosures and others. The annual 10-K report is required to be
         filed annually and includes the company's financial statements, management discussion and analysis,
         and audited financial statements.
-        
+
 
         Parameters
         ----------
@@ -229,17 +340,17 @@ class ROUTER_equity_discovery(Container):
         DiscoveryFilings
         ----------------
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         cik : str
-            Central Index Key (CIK) for the requested entity. 
+            Central Index Key (CIK) for the requested entity.
         title : str
-            Title of the filing. 
+            Title of the filing.
         date : datetime
-            The date of the data. 
+            The date of the data.
         form_type : str
-            The form type of the filing 
+            The form type of the filing
         link : str
-            URL to the filing page on the SEC site. 
+            URL to the filing page on the SEC site.
 
         Examples
         --------
@@ -273,8 +384,18 @@ class ROUTER_equity_discovery(Container):
     @validate
     def gainers(
         self,
-        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
-        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
+        sort: Annotated[
+            Literal["asc", "desc"],
+            OpenBBField(
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            ),
+        ] = "desc",
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the top price gainers in the stock market.
@@ -285,6 +406,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -303,23 +426,57 @@ class ROUTER_equity_discovery(Container):
         EquityGainers
         -------------
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         name : Optional[str]
-            Name of the entity. 
+            Name of the entity.
         price : float
-            Last price. 
+            Last price.
         change : float
-            Change in price. 
+            Change in price.
         percent_change : float
-            Percent change. 
+            Percent change.
         volume : Union[int, float]
-            The trading volume. 
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
+            The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -349,8 +506,18 @@ class ROUTER_equity_discovery(Container):
     @validate
     def growth_tech(
         self,
-        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
-        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
+        sort: Annotated[
+            Literal["asc", "desc"],
+            OpenBBField(
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            ),
+        ] = "desc",
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get top tech stocks based on revenue and earnings growth.
@@ -361,6 +528,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -379,23 +548,57 @@ class ROUTER_equity_discovery(Container):
         GrowthTechEquities
         ------------------
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         name : Optional[str]
-            Name of the entity. 
+            Name of the entity.
         price : float
-            Last price. 
+            Last price.
         change : float
-            Change in price. 
+            Change in price.
         percent_change : float
-            Percent change. 
+            Percent change.
         volume : Union[int, float]
-            The trading volume. 
+            The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -423,10 +626,131 @@ class ROUTER_equity_discovery(Container):
 
     @exception_handler
     @validate
+    def latest_financial_reports(
+        self,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get the newest quarterly, annual, and current reports for all companies.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['sec']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
+        date : Optional[datetime.date]
+            A specific date to get data for. Defaults to today. (provider: sec)
+        report_type : Optional[str]
+            Return only a specific form type. Default is all quarterly, annual, and current reports. Choices: 1-K, 1-SA, 1-U, 10-D, 10-K, 10-KT, 10-Q, 10-QT, 20-F, 40-F, 6-K, 8-K. Multiple comma separated items allowed. (provider: sec)
+
+        Returns
+        -------
+        OBBject
+            results : List[LatestFinancialReports]
+                Serializable results.
+            provider : Optional[Literal['sec']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        LatestFinancialReports
+        ----------------------
+        filing_date : date
+            The date of the filing.
+        period_ending : Optional[date]
+            Report for the period ending.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Name of the company.
+        cik : Optional[str]
+            Central Index Key (CIK) for the requested entity.
+        sic : Optional[str]
+            Standard Industrial Classification code.
+        report_type : Optional[str]
+            Type of filing.
+        description : Optional[str]
+            Description of the report.
+        url : str
+            URL to the filing page.
+        items : Optional[str]
+            Item codes associated with the filing. (provider: sec)
+        index_headers : Optional[str]
+            URL to the index headers file. (provider: sec)
+        complete_submission : Optional[str]
+            URL to the complete submission text file. (provider: sec)
+        metadata : Optional[str]
+            URL to the MetaLinks.json file, if available. (provider: sec)
+        financial_report : Optional[str]
+            URL to the Financial_Report.xlsx file, if available. (provider: sec)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.discovery.latest_financial_reports(provider='sec')
+        >>> obb.equity.discovery.latest_financial_reports(provider='sec', date='2024-09-30')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/discovery/latest_financial_reports",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.discovery.latest_financial_reports",
+                        ("sec",),
+                    )
+                },
+                standard_params={},
+                extra_params=kwargs,
+                info={
+                    "report_type": {
+                        "sec": {
+                            "multiple_items_allowed": True,
+                            "choices": [
+                                "1-K",
+                                "1-SA",
+                                "1-U",
+                                "10-D",
+                                "10-K",
+                                "10-KT",
+                                "10-Q",
+                                "10-QT",
+                                "20-F",
+                                "40-F",
+                                "6-K",
+                                "8-K",
+                            ],
+                        }
+                    }
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
     def losers(
         self,
-        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
-        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
+        sort: Annotated[
+            Literal["asc", "desc"],
+            OpenBBField(
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            ),
+        ] = "desc",
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the top price losers in the stock market.
@@ -437,6 +761,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -455,23 +781,57 @@ class ROUTER_equity_discovery(Container):
         EquityLosers
         ------------
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         name : Optional[str]
-            Name of the entity. 
+            Name of the entity.
         price : float
-            Last price. 
+            Last price.
         change : float
-            Change in price. 
+            Change in price.
         percent_change : float
-            Percent change. 
+            Percent change.
         volume : Union[int, float]
-            The trading volume. 
+            The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -501,8 +861,18 @@ class ROUTER_equity_discovery(Container):
     @validate
     def undervalued_growth(
         self,
-        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
-        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
+        sort: Annotated[
+            Literal["asc", "desc"],
+            OpenBBField(
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            ),
+        ] = "desc",
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get potentially undervalued growth stocks.
@@ -513,6 +883,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -531,23 +903,57 @@ class ROUTER_equity_discovery(Container):
         EquityUndervaluedGrowth
         -----------------------
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         name : Optional[str]
-            Name of the entity. 
+            Name of the entity.
         price : float
-            Last price. 
+            Last price.
         change : float
-            Change in price. 
+            Change in price.
         percent_change : float
-            Percent change. 
+            Percent change.
         volume : Union[int, float]
-            The trading volume. 
+            The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------
@@ -577,8 +983,18 @@ class ROUTER_equity_discovery(Container):
     @validate
     def undervalued_large_caps(
         self,
-        sort: Annotated[Literal["asc", "desc"], OpenBBField(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
-        provider: Annotated[Optional[Literal["yfinance"]], OpenBBField(description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.")] = None,
+        sort: Annotated[
+            Literal["asc", "desc"],
+            OpenBBField(
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            ),
+        ] = "desc",
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get potentially undervalued large cap stocks.
@@ -589,6 +1005,8 @@ class ROUTER_equity_discovery(Container):
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        limit : Optional[int]
+            Limit the number of results. (provider: yfinance)
 
         Returns
         -------
@@ -607,23 +1025,57 @@ class ROUTER_equity_discovery(Container):
         EquityUndervaluedLargeCaps
         --------------------------
         symbol : str
-            Symbol representing the entity requested in the data. 
+            Symbol representing the entity requested in the data.
         name : Optional[str]
-            Name of the entity. 
+            Name of the entity.
         price : float
-            Last price. 
+            Last price.
         change : float
-            Change in price. 
+            Change in price.
         percent_change : float
-            Percent change. 
+            Percent change.
         volume : Union[int, float]
-            The trading volume. 
+            The trading volume.
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
-        avg_volume_3_months : Optional[float]
-            Average volume over the last 3 months in millions. (provider: yfinance)
-        pe_ratio_ttm : Optional[float]
-            PE Ratio (TTM). (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        exchange : Optional[str]
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
 
         Examples
         --------

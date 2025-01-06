@@ -10,7 +10,7 @@ from io import StringIO
 from typing import Any, Dict, List, Optional, TypeVar, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -63,8 +63,10 @@ async def response_callback(
     """Use callback for async_request."""
     data = await response.json()
 
-    if isinstance(data, dict) and response.status != 200:
+    if isinstance(data, dict) and (response.status != 200 or data.get("error")):
         if message := data.get("error", None) or data.get("message", None):
+            if "api key" in message.lower():
+                raise UnauthorizedError(f"Unauthorized Intrinio request -> {message}")
             raise OpenBBError(f"Error in Intrinio request -> {message}")
 
         if error := data.get("Error Message", None):

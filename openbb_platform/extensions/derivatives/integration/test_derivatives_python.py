@@ -36,11 +36,13 @@ def obb(pytestconfig):
                 "model": "black_scholes",
                 "show_extended_price": False,
                 "include_related_symbols": False,
+                "delay": "delayed",
             }
         ),
         ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
         ({"provider": "tradier", "symbol": "AAPL"}),
         ({"provider": "yfinance", "symbol": "AAPL"}),
+        ({"provider": "deribit", "symbol": "BTC"}),
         (
             {
                 "provider": "tmx",

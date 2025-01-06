@@ -40,8 +40,8 @@ def is_git_repo(path: Path):
     if not git_executable:
         return False
     try:
-        subprocess.run(
-            [git_executable, "rev-parse", "--is-inside-work-tree"],  # noqa: S603
+        subprocess.run(  # noqa: S603
+            [git_executable, "rev-parse", "--is-inside-work-tree"],
             cwd=path,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,

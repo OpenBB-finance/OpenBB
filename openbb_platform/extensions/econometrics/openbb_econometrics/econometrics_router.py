@@ -1,7 +1,7 @@
 """Econometrics Router."""
 
 from itertools import combinations
-from typing import Dict, List, Literal
+from typing import Dict, List, Literal, Optional
 
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -25,7 +25,9 @@ router = Router(prefix="", description="Econometrics analysis tools.")
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
+def correlation_matrix(
+    data: List[Data], method: Literal["pearson", "kendall", "spearman"] = "pearson"
+) -> OBBject[List[Data]]:
     """Get the correlation matrix of an input dataset.
 
     The correlation matrix provides a view of how different variables in your dataset relate to one another.
@@ -37,6 +39,11 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     ----------
     data : List[Data]
         Input dataset.
+    method : Literal["pearson", "kendall", "spearman"]
+        Method to use for correlation calculation. Default is "pearson".
+            pearson : standard correlation coefficient
+            kendall : Kendall Tau correlation coefficient
+            spearman : Spearman rank correlation
 
     Returns
     -------
@@ -49,9 +56,14 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
 
     df = basemodel_to_df(data)
     # remove non float columns from the dataframe to perform the correlation
-    df = df.select_dtypes(include=["float64"])
 
-    corr = df.corr()
+    if "symbol" in df.columns and len(df.symbol.unique()) > 1 and "close" in df.columns:
+        df = df.pivot(
+            columns="symbol",
+            values="close",
+        )
+
+    corr = df.corr(method=method, numeric_only=True)
 
     # replace nan values with None to allow for json serialization
     corr = corr.replace(np.NaN, None)
@@ -898,3 +910,76 @@ def panel_fmac(
     exogenous = sm.add_constant(X)
     results = FamaMacBeth(y, exogenous).fit()
     return OBBject(results={"results": results})
+
+
+@router.command(
+    methods=["POST"],
+    include_in_schema=False,
+    examples=[
+        PythonEx(
+            description="Calculate the variance inflation factor.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='yfinance').to_df()",  # noqa: E501  pylint: disable= C0301
+                'obb.econometrics.variance_inflation_factor(data=stock_data, column="close")',
+            ],
+        ),
+    ],
+)
+def variance_inflation_factor(
+    data: List[Data], columns: Optional[list] = None
+) -> OBBject[List[Data]]:
+    """Calculate VIF (variance inflation factor), which tests for collinearity.
+
+    It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square
+    root of the variance inflation factor indicates how much larger the standard error increases compared to if
+    that variable had 0 correlation to other predictor variables in the model.
+
+    It is defined as:
+
+    $ VIF_i = 1 / (1 - R_i^2) $
+    where $ R_i $ is the coefficient of determination of the regression equation with the column i being the result
+    from the i:th series being the exogenous variable.
+
+    A VIF over 5 indicates a high collinearity and correlation. Values over 10 indicates causes problems, while a
+    value of 1 indicates no correlation. Thus VIF values between 1 and 5 are most commonly considered acceptable.
+    In order to improve the results one can often remove a column with high VIF.
+
+    For further information see: https://en.wikipedia.org/wiki/Variance_inflation_factor
+
+    Parameters
+    ----------
+    dataset: List[Data]
+        Dataset to calculate VIF on
+    columns: Optional[list]
+        The columns to calculate to test for collinearity
+
+    Returns
+    -------
+    OBBject[List[Data]]
+        The resulting VIF values for the selected columns
+    """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        df_to_basemodel,
+    )
+    from pandas import DataFrame
+    from statsmodels.stats.outliers_influence import variance_inflation_factor as vif
+    from statsmodels.tools.tools import add_constant
+
+    # Convert to pandas dataframe
+    dataset = basemodel_to_df(data)
+
+    # Add a constant
+    df = add_constant(dataset if columns is None else dataset[columns])
+
+    # Remove date and string type because VIF doesn't work for these types
+    df = df.select_dtypes(exclude=["object", "datetime", "timedelta"])
+
+    # Calculate the VIF values
+    vif_values: dict = {}
+    for i in range(len(df.columns))[1:]:
+        vif_values[f"{df.columns[i]}"] = vif(df.values, i)
+
+    results = df_to_basemodel(DataFrame(vif_values, index=[0]))
+    return OBBject(results=results)

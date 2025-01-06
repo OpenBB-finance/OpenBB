@@ -10,7 +10,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse, Response
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
-from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 from pydantic import ValidationError
 
 logger = logging.getLogger("uvicorn.error")
@@ -55,7 +55,7 @@ class ExceptionHandlers:
         return await ExceptionHandlers._handle(
             exception=error,
             status_code=500,
-            detail="Unexpected error.",
+            detail=f"Unexpected Error -> {error.__class__.__name__} -> {str(error.args[0] or error.args)}",
         )
 
     @staticmethod
@@ -99,3 +99,12 @@ class ExceptionHandlers:
     async def empty_data(_: Request, error: EmptyDataError):
         """Exception handler for EmptyDataError."""
         return Response(status_code=204)
+
+    @staticmethod
+    async def unauthorized(_: Request, error: UnauthorizedError):
+        """Exception handler for OpenBBError."""
+        return await ExceptionHandlers._handle(
+            exception=error,
+            status_code=502,
+            detail=str(error.original),
+        )

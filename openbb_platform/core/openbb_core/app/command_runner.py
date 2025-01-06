@@ -11,8 +11,6 @@ from time import perf_counter_ns
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Type
 from warnings import catch_warnings, showwarning, warn
 
-from pydantic import BaseModel, ConfigDict, create_model
-
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import OpenBBWarning, cast_warning
 from openbb_core.app.model.metadata import Metadata
@@ -20,6 +18,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
+from pydantic import BaseModel, ConfigDict, create_model
 
 if TYPE_CHECKING:
     from openbb_core.app.model.system_settings import SystemSettings
@@ -273,7 +272,7 @@ class StaticCommandRunner:
 
     # pylint: disable=R0913, R0914
     @classmethod
-    async def _execute_func(
+    async def _execute_func(  # pylint: disable=too-many-positional-arguments
         cls,
         route: str,
         args: Tuple[Any, ...],

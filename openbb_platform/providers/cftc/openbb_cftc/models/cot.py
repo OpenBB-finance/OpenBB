@@ -5,7 +5,7 @@
 from datetime import (
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -69,22 +69,22 @@ class CftcCotData(COTData):
     }
 
 
-class CftcCotFetcher(Fetcher[CftcCotQueryParams, List[CftcCotData]]):
+class CftcCotFetcher(Fetcher[CftcCotQueryParams, list[CftcCotData]]):
     """CFTC Commitment of Traders Reports Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CftcCotQueryParams:
+    def transform_query(params: dict[str, Any]) -> CftcCotQueryParams:
         """Transform query parameters."""
         return CftcCotQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: CftcCotQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from the CFTC API."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta  # noqa
@@ -152,9 +152,9 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, List[CftcCotData]]):
     @staticmethod
     def transform_data(
         query: CftcCotQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[CftcCotData]:
+    ) -> list[CftcCotData]:
         """Transform and validate the data."""
         response = data.copy()
         string_cols = [
@@ -177,23 +177,23 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, List[CftcCotData]]):
             "id",
             "futonly_or_combined",
         ]
-        results: List[CftcCotData] = []
+        results: list[CftcCotData] = []
         for values in response:
-            new_values: Dict = {}
+            new_values: dict = {}
             for key, value in values.items():
                 if key in string_cols and value:
-                    new_values[key] = str(value)
+                    new_values[key.lower()] = str(value)
                 elif key == "report_date_as_yyyy_mm_dd":
                     new_values["report_date_as_yyyy_mm_dd"] = value.split("T")[0]
-                elif key.startswith("pct_") and value:
-                    new_values[key.replace("__", "_")] = float(value) / 100
-                elif key.startswith("conc_") and value:
-                    new_values[key.replace("__", "_")] = float(value)
+                elif key.lower().startswith("pct_") and value:
+                    new_values[key.lower().replace("__", "_")] = float(value) / 100
+                elif key.lower().startswith("conc_") and value:
+                    new_values[key.lower().replace("__", "_")] = float(value)
                 elif value:
                     try:
-                        new_values[key.replace("__", "_")] = int(value)
+                        new_values[key.lower().replace("__", "_")] = int(value)
                     except ValueError:
-                        new_values[key.replace("__", "_")] = value
+                        new_values[key.lower().replace("__", "_")] = value
 
             if new_values:
                 results.append(CftcCotData.model_validate(new_values))

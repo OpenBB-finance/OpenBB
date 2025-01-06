@@ -6,14 +6,13 @@ from datetime import (
 )
 from typing import List, Union
 
-from pydantic import Field, field_validator
-
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.options_chains_properties import OptionsChainsProperties
+from pydantic import Field, field_validator
 
 
 class OptionsChainsQueryParams(QueryParams):
@@ -151,10 +150,13 @@ class OptionsChainsData(OptionsChainsProperties):
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     option_type: List[str] = Field(description="Call or Put.")
-    open_interest: List[Union[int, None]] = Field(
+    contract_size: List[Union[int, float, None]] = Field(
+        default_factory=list, description="Number of underlying units per contract."
+    )
+    open_interest: List[Union[int, float, None]] = Field(
         default_factory=list, description="Open interest on the contract."
     )
-    volume: List[Union[int, None]] = Field(
+    volume: List[Union[int, float, None]] = Field(
         default_factory=list, description=DATA_DESCRIPTIONS.get("volume", "")
     )
     theoretical_price: List[Union[float, None]] = Field(
@@ -167,7 +169,7 @@ class OptionsChainsData(OptionsChainsProperties):
         description="Last trade price of the option.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    last_trade_size: List[Union[int, None]] = Field(
+    last_trade_size: List[Union[int, float, None]] = Field(
         default_factory=list, description="Last trade size of the option."
     )
     last_trade_time: List[Union[datetime, None]] = Field(
@@ -183,7 +185,7 @@ class OptionsChainsData(OptionsChainsProperties):
         description="Current bid price for the option.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_size: List[Union[int, None]] = Field(
+    bid_size: List[Union[int, float, None]] = Field(
         default_factory=list, description="Bid size for the option."
     )
     bid_time: List[Union[datetime, None]] = Field(
@@ -198,7 +200,7 @@ class OptionsChainsData(OptionsChainsProperties):
         description="Current ask price for the option.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_size: List[Union[int, None]] = Field(
+    ask_size: List[Union[int, float, None]] = Field(
         default_factory=list, description="Ask size for the option."
     )
     ask_time: List[Union[datetime, None]] = Field(
@@ -263,7 +265,7 @@ class OptionsChainsData(OptionsChainsProperties):
         description=DATA_DESCRIPTIONS.get("close", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    close_size: List[Union[int, None]] = Field(
+    close_size: List[Union[int, float, None]] = Field(
         default_factory=list,
         description="The closing trade size for the option that day.",
     )
@@ -276,7 +278,7 @@ class OptionsChainsData(OptionsChainsProperties):
         description="The closing bid price for the option that day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    close_bid_size: List[Union[int, None]] = Field(
+    close_bid_size: List[Union[int, float, None]] = Field(
         default_factory=list,
         description="The closing bid size for the option that day.",
     )
@@ -288,7 +290,7 @@ class OptionsChainsData(OptionsChainsProperties):
         default_factory=list,
         description="The closing ask price for the option that day.",
     )
-    close_ask_size: List[Union[int, None]] = Field(
+    close_ask_size: List[Union[int, float, None]] = Field(
         default_factory=list,
         description="The closing ask size for the option that day.",
     )

@@ -18,9 +18,8 @@ def main():
         ModuleNotFoundError,
         AttributeError,
     ) as e:
-        subprocess.run(
-            ["/bin/echo", "\nOpenBB build script not found, installing from PyPI...\n"],
-            check=True,
+        print(  # noqa: T201
+            "\nOpenBB build script not found, installing from PyPI...\n",
         )
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "openbb", "--no-deps"],

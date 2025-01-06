@@ -30,6 +30,8 @@ logging_settings.user_logs_directory.absolute.return_value = Path(
 )
 logging_settings.session_id = "test_session_id"
 logging_settings.frequency = "H"
+logging_settings.logging_suppress = False
+logging_settings.log_collect = True
 
 
 @pytest.fixture(scope="module")

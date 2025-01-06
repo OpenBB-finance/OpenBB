@@ -15,6 +15,7 @@ from openbb_yfinance.models.currency_historical import YFinanceCurrencyHistorica
 from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFetcher
 from openbb_yfinance.models.equity_profile import YFinanceEquityProfileFetcher
 from openbb_yfinance.models.equity_quote import YFinanceEquityQuoteFetcher
+from openbb_yfinance.models.equity_screener import YFinanceEquityScreenerFetcher
 from openbb_yfinance.models.etf_info import YFinanceEtfInfoFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
@@ -30,9 +31,6 @@ from openbb_yfinance.models.index_historical import (
 from openbb_yfinance.models.key_executives import YFinanceKeyExecutivesFetcher
 from openbb_yfinance.models.key_metrics import YFinanceKeyMetricsFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
-from openbb_yfinance.models.market_indices import (
-    YFinanceMarketIndicesFetcher,
-)
 from openbb_yfinance.models.options_chains import YFinanceOptionsChainsFetcher
 from openbb_yfinance.models.price_target_consensus import (
     YFinancePriceTargetConsensusFetcher,
@@ -61,20 +59,8 @@ def vcr_config():
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
             ("crumb", "MOCK_CRUMB"),
-            ("date", "MOCK_DATE"),
         ],
     }
-
-
-@pytest.mark.record_http
-def test_y_finance_options_chains_fetcher(credentials=test_credentials):
-    """Test YFinanceOptionsChainsFetcher."""
-
-    params = {"symbol": "OXY"}
-
-    fetcher = YFinanceOptionsChainsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
 
 
 @pytest.mark.record_http
@@ -146,20 +132,6 @@ def test_y_finance_historical_dividends_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_y_finance_market_indices_fetcher(credentials=test_credentials):
-    """Test YFinanceMarketIndicesFetcher."""
-    params = {
-        "symbol": "^GSPC",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 1, 10),
-    }
-
-    fetcher = YFinanceMarketIndicesFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
     """Test YFinanceFuturesHistoricalFetcher."""
     params = {
@@ -169,6 +141,17 @@ def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
     }
 
     fetcher = YFinanceFuturesHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_options_chains_fetcher(credentials=test_credentials):
+    """Test YFinanceOptionsChainsFetcher."""
+
+    params = {"symbol": "OXY"}
+
+    fetcher = YFinanceOptionsChainsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -236,7 +219,7 @@ def test_y_finance_available_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_active_fetcher(credentials=test_credentials):
     """Test YFActiveFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFActiveFetcher()
     result = fetcher.test(params, credentials)
@@ -246,7 +229,7 @@ def test_y_finance_active_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_gainers_fetcher(credentials=test_credentials):
     """Test YFGainersFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFGainersFetcher()
     result = fetcher.test(params, credentials)
@@ -256,7 +239,7 @@ def test_y_finance_gainers_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_losers_fetcher(credentials=test_credentials):
     """Test YFLosersFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFLosersFetcher()
     result = fetcher.test(params, credentials)
@@ -266,7 +249,7 @@ def test_y_finance_losers_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_undervalued_large_caps_fetcher(credentials=test_credentials):
     """Test YFUndervaluedLargeCapsFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFUndervaluedLargeCapsFetcher()
     result = fetcher.test(params, credentials)
@@ -276,7 +259,7 @@ def test_y_finance_undervalued_large_caps_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_undervalued_growth_equities_fetcher(credentials=test_credentials):
     """Test YFUndervaluedGrowthEquitiesFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFUndervaluedGrowthEquitiesFetcher()
     result = fetcher.test(params, credentials)
@@ -286,7 +269,7 @@ def test_y_finance_undervalued_growth_equities_fetcher(credentials=test_credenti
 @pytest.mark.record_http
 def test_y_finance_aggressive_small_caps_fetcher(credentials=test_credentials):
     """Test YFAggressiveSmallCapsFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFAggressiveSmallCapsFetcher()
     result = fetcher.test(params, credentials)
@@ -296,7 +279,7 @@ def test_y_finance_aggressive_small_caps_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_growth_tech_equities_fetcher(credentials=test_credentials):
     """Test YFGrowthTechEquitiesFetcher."""
-    params = {}
+    params = {"limit": 10}
 
     fetcher = YFGrowthTechEquitiesFetcher()
     result = fetcher.test(params, credentials)
@@ -369,5 +352,22 @@ def test_y_finance_etf_info_fetcher(credentials=test_credentials):
     params = {"symbol": "QQQ"}
 
     fetcher = YFinanceEtfInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_equity_screener_fetcher(credentials=test_credentials):
+    """Test YFinanceEquityScreener."""
+    params = {
+        "country": "us",
+        "sector": "consumer_cyclical",
+        "industry": "auto_manufacturers",
+        "mktcap_min": 60000000000,
+        "volume_min": 5000000,
+        "price_min": 10,
+    }
+
+    fetcher = YFinanceEquityScreenerFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

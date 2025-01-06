@@ -41,6 +41,9 @@ from openbb_intrinio.models.historical_attributes import (
 from openbb_intrinio.models.historical_dividends import (
     IntrinioHistoricalDividendsFetcher,
 )
+from openbb_intrinio.models.historical_market_cap import (
+    IntrinioHistoricalMarketCapFetcher,
+)
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
 from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
@@ -50,7 +53,6 @@ from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
 # )
 from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
-from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.market_snapshots import IntrinioMarketSnapshotsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_snapshots import IntrinioOptionsSnapshotsFetcher
@@ -167,7 +169,7 @@ def test_intrinio_equity_quote_fetcher(credentials=test_credentials):
 def test_intrinio_options_chains_fetcher(credentials=test_credentials):
     """Test options chains fetcher."""
 
-    params = {"symbol": "AAPL", "date": date(2023, 9, 15)}
+    params = {"symbol": "AAPL", "date": date(2023, 9, 15), "delay": "eod"}
 
     fetcher = IntrinioOptionsChainsFetcher()
     result = fetcher.test(params, credentials)
@@ -293,21 +295,6 @@ def test_intrinio_equity_info_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioEquityInfoFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_intrinio_market_indices_fetcher(credentials=test_credentials):
-    """Test market indices fetcher."""
-    params = {
-        "symbol": "$DJI",
-        "tag": "level",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 6, 6),
-    }
-
-    fetcher = IntrinioMarketIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -541,5 +528,20 @@ def test_intrinio_options_snapshots(credentials=test_credentials):
     params = {"date": "2024-06-11"}
 
     fetcher = IntrinioOptionsSnapshotsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_historical_market_cap(credentials=test_credentials):
+    """Test options snapshots fetcher."""
+    params = {
+        "symbol": "AAPL,MSFT",
+        "start_date": date(2020, 1, 1),
+        "end_date": date(2020, 12, 31),
+        "interval": "week",
+    }
+
+    fetcher = IntrinioHistoricalMarketCapFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

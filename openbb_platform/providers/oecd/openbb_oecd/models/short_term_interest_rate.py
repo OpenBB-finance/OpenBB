@@ -130,4 +130,7 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
         query: OECDSTIRQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDSTIRData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDSTIRData.model_validate(d) for d in data]
+        return [
+            OECDSTIRData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["date"])
+        ]

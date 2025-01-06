@@ -35,9 +35,9 @@ class HandlersManager:
                 self._add_stderr_handler()
             elif handler_type == "noop":
                 self._add_noop_handler()
-            elif handler_type == "file":
+            elif handler_type == "file" and not self._settings.logging_suppress:
                 self._add_file_handler()
-            elif handler_type == "posthog":
+            elif handler_type == "posthog" and not self._settings.logging_suppress:
                 self._add_posthog_handler()
             else:
                 self._logger.debug("Unknown log handler.")
@@ -81,6 +81,9 @@ class HandlersManager:
         """Update the handlers with new settings."""
         logger = self._logger
         for hdlr in logger.handlers:
-            if isinstance(hdlr, (PathTrackingFileHandler, PosthogHandler)):
+            if (
+                isinstance(hdlr, (PathTrackingFileHandler, PosthogHandler))
+                and not settings.logging_suppress
+            ):
                 hdlr.settings = settings
                 hdlr.formatter.settings = settings  # type: ignore
