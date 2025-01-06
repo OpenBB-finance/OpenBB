@@ -74,7 +74,7 @@ async def instruments(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Reference data for available futures instruments by provider."""
+    """Get reference data for available futures instruments by provider."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -93,5 +93,5 @@ async def info(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Current trading statistics by futures contract symbol."""
+    """Get current trading statistics by futures contract symbol."""
     return await OBBject.from_query(Query(**locals()))

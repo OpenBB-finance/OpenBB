@@ -1,3 +1,5 @@
+"""Deribit Futures Info Models."""
+
 from datetime import datetime
 from typing import Any, Literal, Optional
 

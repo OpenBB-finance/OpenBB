@@ -95,6 +95,7 @@ class DeribitFuturesInstrumentsFetcher(
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> DeribitFuturesInstrumentsQueryParams:
+        """Transform the query."""
         return DeribitFuturesInstrumentsQueryParams(**params)
 
     @staticmethod
@@ -124,4 +125,5 @@ class DeribitFuturesInstrumentsFetcher(
         data: list,
         **kwargs: Any,
     ) -> list[DeribitFuturesInstrumentData]:
-        return [DeribitFuturesInstrumentData(**d) for d in data]
+        """Transform the data."""
+        return [DeribitFuturesInstrumentData.model_validate(d) for d in data]
