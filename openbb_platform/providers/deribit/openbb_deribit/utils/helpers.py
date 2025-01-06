@@ -98,7 +98,7 @@ async def get_instruments(
         ) from e
 
 
-async def get_options_symbols(symbol: OptionsSymbols = "btc") -> dict:
+async def get_options_symbols(symbol: OptionsSymbols = "BTC") -> dict:
     """
     Get a dictionary of contract symbols by expiry.
 
@@ -349,7 +349,7 @@ async def check_ohlc_symbol(symbol: str) -> Union[bool, str]:
     all_perpetuals = await get_perpetual_symbols()
 
     if symbol in all_perpetuals:
-        return all_perpetuals.get(symbol)
+        return all_perpetuals.get(symbol, False)
     if symbol in all_symbols:
         return symbol
     return False
