@@ -2130,7 +2130,7 @@ description = "OpenBB package with core functionality."
 optional = false
 python-versions = "^3.9"
 files = []
-develop = false
+develop = true
 
 [package.dependencies]
 aiohttp = "^3.10.11"
@@ -4757,4 +4757,4 @@ wsj = ["openbb-wsj"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "3da2f018d3bba273b4c9fa338ac69d3670d792b1659eb73d6f84e9b329eb8c5e"
+content-hash = "200b7051433d552a30abd9a65b9cb43a2dc31b7a0a59e779de63f1fa156caa30"
