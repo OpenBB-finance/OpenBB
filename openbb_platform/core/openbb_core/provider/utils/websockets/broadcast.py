@@ -215,7 +215,7 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
 
     async def stream_results(  # noqa: PLR0915  # pylint: disable=too-many-branches
         self,
-        sql: str = None,
+        sql: Optional[str] = None,
         replay: bool = False,
     ):
         """Continuously read the database and send new messages as JSON via WebSocket."""
@@ -283,7 +283,7 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
                             continue
                         for row in rows:
                             last_id = row[0] if row[0] > last_id else last_id
-                            await self.websocket.send_json(
+                            await self.websocket.send_json(  # type: ignore
                                 json.dumps(json.loads(row[1]))
                             )
                             if self.replay is True:  # type: ignore

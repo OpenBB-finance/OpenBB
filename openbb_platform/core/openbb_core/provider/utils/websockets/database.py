@@ -244,7 +244,7 @@ class Database:
         if name == "read":
             if ":" not in self.results_file:  # type: ignore
                 results_file = (  # type: ignore
-                    "file:"
+                    "file:"  # type: ignore
                     + (
                         self.results_file  # type: ignore
                         if self.results_file.startswith("/")  # type: ignore
@@ -506,6 +506,7 @@ class Database:
         except Exception as e:  # pylint: disable=broad-except
             msg = f"{e.__class__.__name__ if hasattr(e, '__class__') else e}: {e.args}"
             self.logger.error(msg)
+        return []
 
     async def _clear_results(self):
         """Clear the results from the SQLite database."""
@@ -951,17 +952,17 @@ class DatabaseWriter:
             prune_thread = threading.Thread(target=self._run_prune_event)
             prune_thread.daemon = True
             prune_thread.name = "WebSocketPruneThread"
-            self.prune_thread = prune_thread
-            self.prune_thread.start()
+            self.prune_thread = prune_thread  # type: ignore
+            self.prune_thread.start()  # type: ignore
         finally:
-            self.prune_thread.join(timeout=1)
+            self.prune_thread.join(timeout=1)  # type: ignore
 
     def stop_prune_task(self):
         """Public method to stop the background pruning task."""
         if hasattr(self, "prune_thread") and self.prune_thread:
-            self.prune_thread.join(timeout=1)
-            if self.prune_thread.is_alive():
-                kill_thread(self.prune_thread)
+            self.prune_thread.join(timeout=1)  # type: ignore
+            if self.prune_thread.is_alive():  # type: ignore
+                kill_thread(self.prune_thread)  # type: ignore
         self._prune_running = False
         self.prune_thread = None
 
