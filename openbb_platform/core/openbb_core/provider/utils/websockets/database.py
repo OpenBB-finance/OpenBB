@@ -166,10 +166,10 @@ class Database:
             self.results_path = Path(results_file).absolute()
             self.results_file = results_file
 
-        if (
-            " " in table_name
-            or table_name.isupper()
-            or any(x.lower() in table_name.lower() for x in CHECK_FOR)
+        if table_name and (
+            " " in table_name  # type: ignore
+            or table_name.isupper()  # type: ignore
+            or any(x.lower() in table_name.lower() for x in CHECK_FOR)  # type: ignore
         ):
             raise OpenBBError(ProgrammingError(f"Invalid table name, {table_name}."))
 
@@ -177,7 +177,7 @@ class Database:
         self.limit = limit
         self.loop = loop
         self.kwargs = kwargs if kwargs else {}
-        self._connections = {}
+        self._connections: dict = {}
         run_async(self._setup_database)
         self.data_model = data_model
 
@@ -242,29 +242,29 @@ class Database:
         conn_kwargs = self.kwargs.copy()
 
         if name == "read":
-            if ":" not in self.results_file:
-                results_file = (
+            if ":" not in self.results_file:  # type: ignore
+                results_file = (  # type: ignore
                     "file:"
                     + (
-                        self.results_file
-                        if self.results_file.startswith("/")
-                        else "/" + self.results_file
+                        self.results_file  # type: ignore
+                        if self.results_file.startswith("/")  # type: ignore
+                        else "/" + self.results_file  # type: ignore
                     )
                     + "?mode=ro"
                 )
             else:
-                results_file = (
-                    self.results_file
-                    + f"{'&mode=ro' if '?' in self.results_file else '?mode=ro'}"
+                results_file = (  # type: ignore
+                    self.results_file  # type: ignore
+                    + f"{'&mode=ro' if '?' in self.results_file else '?mode=ro'}"  # type: ignore
                 )
             conn_kwargs["uri"] = True
         elif name == "write":
-            results_file = self.results_file
+            results_file = self.results_file  # type: ignore
 
         conn_kwargs["check_same_thread"] = False
 
         if name not in self._connections:
-            conn = await aiosqlite.connect(results_file, **conn_kwargs)
+            conn = await aiosqlite.connect(results_file, **conn_kwargs)  # type: ignore
             pragmas = [
                 "PRAGMA journal_mode=WAL",
                 "PRAGMA synchronous=off",
@@ -355,8 +355,8 @@ class Database:
                     query += " LIMIT ?"
                     params = (limit,)
                 else:
-                    params = ()
-                async with conn.execute(query, params) as cursor:
+                    params = None
+                async with conn.execute(query, params) as cursor:  # type: ignore
                     async for row in cursor:
                         rows.append(await self._deserialize_row(row, cursor))
 
@@ -444,6 +444,7 @@ class Database:
                 f" {e.__class__.__name__ if hasattr(e, '__class__') else e} -> {e.args}"
             )
             self.logger.error(msg)
+        return []
 
     async def _query_db(self, sql, parameters: Optional[Iterable[Any]] = None) -> list:
         """Query the SQLite database."""
@@ -472,9 +473,10 @@ class Database:
             ) as cursor:
                 async for row in cursor:
                     rows.append(await self._deserialize_row(row, cursor))
-            return rows
         except Exception as e:  # pylint: disable=broad-except
             raise OpenBBError(e) from e
+
+        return rows
 
     def query(self, sql: str, parameters: Optional[Iterable[Any]] = None) -> list:
         """
@@ -654,7 +656,7 @@ class DatabaseWriter:
         self._last_processed_timestamp = None
         self._conn = None
         self.num_workers = 60
-        self.write_tasks = []
+        self.write_tasks: list = []
         self._export_running = False
         self._prune_running = False
         self.batch_processor = BatchProcessor(self)
@@ -688,7 +690,7 @@ class DatabaseWriter:
 
     async def _process_queue(self):
         """Process queue with parallel writers."""
-        batch = []
+        batch: list = []
 
         while self.writer_running:
             try:
@@ -833,6 +835,8 @@ class DatabaseWriter:
                     for key in json.loads(row[0]):
                         headers[key] = None
 
+                new_rows: list = []
+
                 if self.compress_export:
                     with gzip.open(path, "wt") as gz_file:
                         writer = csv.DictWriter(gz_file, fieldnames=list(headers))
@@ -841,7 +845,7 @@ class DatabaseWriter:
 
                         while True:
                             rows = await cursor.fetchmany(chunk_size)
-                            new_rows: list = []
+
                             if not rows:
                                 break
 
@@ -864,7 +868,7 @@ class DatabaseWriter:
 
                         while True:
                             rows = await cursor.fetchmany(chunk_size)
-                            new_rows: list = []
+
                             if not rows:
                                 break
 
@@ -915,17 +919,17 @@ class DatabaseWriter:
             return
 
         self._export_running = True
-        self.export_thread = threading.Thread(
+        self.export_thread = threading.Thread(  # type: ignore
             target=self._run_export_event, name="ExportThread", daemon=True
         )
-        self.export_thread.start()
+        self.export_thread.start()  # type: ignore
 
     def stop_export_task(self):
         """Public method to stop the background export task."""
         if hasattr(self, "export_thread") and self.export_thread:
-            self.export_thread.join(timeout=1)
-            if self.export_thread.is_alive():
-                kill_thread(self.export_thread)
+            self.export_thread.join(timeout=1)  # type: ignore
+            if self.export_thread.is_alive():  # type: ignore
+                kill_thread(self.export_thread)  # type: ignore
         self._export_running = False
         self.export_thread = None
 
@@ -1091,12 +1095,12 @@ class BatchProcessor(threading.Thread):
     def run(self):
         """Run the batch processor as tasks."""
         try:
-            self.loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(self.loop)
+            self.loop = asyncio.new_event_loop()  # type: ignore
+            asyncio.set_event_loop(self.loop)  # type: ignore
             # Create worker tasks
             while self.running and not self._shutdown.is_set():
                 try:
-                    self.loop.run_until_complete(self._worker())
+                    self.loop.run_until_complete(self._worker())  # type: ignore
                 except (SystemExit, KeyboardInterrupt):
                     self.running = False
                     break
@@ -1112,19 +1116,19 @@ class BatchProcessor(threading.Thread):
         """Signal thread to stop gracefully."""
         self.running = False
         self._shutdown.set()
-        if self.loop and self.loop.is_running():
-            self.loop.call_soon_threadsafe(self.loop.stop)
+        if self.loop and self.loop.is_running():  # type: ignore
+            self.loop.call_soon_threadsafe(self.loop.stop)  # type: ignore
 
     def _cleanup(self):
         """Clean up resources on shutdown"""
         if self.loop:
-            pending = asyncio.all_tasks(self.loop)
+            pending = asyncio.all_tasks(self.loop)  # type: ignore
             for task in pending:
                 task.cancel()
-            self.loop.run_until_complete(
+            self.loop.run_until_complete(  # type: ignore
                 asyncio.gather(*pending, return_exceptions=True)
             )
-            self.loop.close()
+            self.loop.close()  # type: ignore
 
     async def _worker(self):
         # pylint: disable=import-outside-toplevel

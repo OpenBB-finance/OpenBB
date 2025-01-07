@@ -92,7 +92,7 @@ class TiingoWebSocketQueryParams(WebSocketQueryParams):
         description="The asset type for the feed. Choices are 'stock', 'fx', or 'crypto'.",
     )
     feed: Literal["trade", "trade_and_quote"] = Field(
-        default="trade_and_quote",
+        default="trade",
         description="The asset type associated with the symbol. Choices are 'trade' or 'trade_and_quote'."
         + " FX only supports quote.",
     )
@@ -102,6 +102,7 @@ class TiingoWebSocketData(WebSocketData):
     """Tiingo WebSocket data model."""
 
     timestamp: Optional[datetime] = Field(
+        default=None,
         description="The timestamp of the data.",
     )
     type: Literal["quote", "trade", "break"] = Field(
@@ -242,28 +243,20 @@ class TiingoWebSocketFetcher(
         from asyncio import sleep
 
         api_key = credentials.get("tiingo_token") if credentials else ""
-        threshold_level = (
-            5
-            if query.asset_type == "fx" or query.feed == "trade"
-            else (
-                2
-                if query.asset_type == "crypto" and query.feed == "trade_and_quote"
-                else 0
-            )
-        )
+
         symbol = query.symbol.lower()
 
         kwargs = {
             "api_key": api_key,
             "asset_type": query.asset_type,
-            "threshold_level": threshold_level,
+            "feed": query.feed,
             "connect_kwargs": query.connect_kwargs,
         }
 
         client = WebSocketClient(
             name=query.name,
             module="openbb_tiingo.utils.websocket_client",
-            symbol=symbol.lower(),
+            symbol=symbol,
             limit=query.limit,
             results_file=query.results_file,
             table_name=query.table_name,

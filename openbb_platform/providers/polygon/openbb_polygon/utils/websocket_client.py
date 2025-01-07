@@ -32,12 +32,10 @@ Optional Keyword Arguments
 
 import asyncio
 import json
-import os
 import signal
 import sys
 import time
 
-import orjson
 import websockets
 from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
 from openbb_core.provider.utils.websockets.helpers import (
@@ -178,7 +176,7 @@ async def login(websocket):
     try:
         await websocket.send(login_event)
         res = await websocket.recv(decode=False)
-        response = orjson.loads(res)
+        response = json.loads(res)
         messages = response if isinstance(response, list) else [response]
         for msg in messages:
             if msg.get("status") == "connected":
@@ -323,7 +321,7 @@ async def connect_and_stream():
         def _process_in_thread():
             global LAST_MINUTE_COUNT, MESSAGE_COUNT  # pylint: disable=global-statement  # noqa
 
-            message_data = orjson.loads(message)
+            message_data = json.loads(message)
             if isinstance(message_data, list):
                 MESSAGE_COUNT += len(message_data)
                 LAST_MINUTE_COUNT += len(message_data)
@@ -387,7 +385,7 @@ async def connect_and_stream():
 
                 response = await websocket.recv(decode=False)
 
-                await process_message(orjson.loads(response))
+                await process_message(json.loads(response))
 
                 await subscribe(websocket, kwargs["symbol"], "subscribe")
 

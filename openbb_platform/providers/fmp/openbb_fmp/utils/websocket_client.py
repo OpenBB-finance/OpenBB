@@ -1,10 +1,38 @@
-"""FMP WebSocket client."""
+"""
+FMP WebSocket Client.
+
+This file should be run as a script, and is intended to be run as a subprocess of FmpWebSocketFetcher.
+
+Keyword arguments are passed from the command line as space-delimited, `key=value`, pairs.
+
+Required Keyword Arguments
+--------------------------
+    api_key: str
+        The API key for the Polygon WebSocket.
+    asset_type: str
+        The asset type to subscribe to. Default is "crypto".
+        Options: "stock", "crypto", "fx"
+    symbol: str
+        The symbol to subscribe to. Example: "AAPL" or "AAPL,MSFT".
+    results_file: str
+        The path to the file where the results will be stored.
+
+Optional Keyword Arguments
+--------------------------
+    table_name: str
+        The name of the table to store the data in. Default is "records".
+    limit: int
+        The maximum number of rows to store in the database.
+    connect_kwargs: dict
+        Additional keyword arguments to pass directly to `websockets.connect()`.
+        Example: {"ping_timeout": 300}
+"""
 
 import asyncio
+import json
 import signal
 import sys
 
-import orjson as json
 import websockets
 from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
 from openbb_core.provider.utils.websockets.helpers import (
@@ -30,6 +58,8 @@ command_queue = MessageQueue()
 database_queue = MessageQueue()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
 URL = URL_MAP.get(kwargs.pop("asset_type"), None)
+
+SUBSCRIBED_SYMBOLS: set = set()
 
 if not URL:
     raise ValueError("Invalid asset type provided.")
@@ -87,6 +117,14 @@ async def subscribe(websocket, symbol, event):
     }
     try:
         await websocket.send(json.dumps(subscribe_event))
+
+        for t in ticker:
+            if event == "subscribe":
+                SUBSCRIBED_SYMBOLS.add(t)
+            else:
+                SUBSCRIBED_SYMBOLS.discard(t)
+
+        kwargs["symbol"] = ",".join(SUBSCRIBED_SYMBOLS)
     except Exception as e:  # pylint: disable=broad-except
         msg = f"PROVIDER ERROR:     {e.__class__.__name__ if hasattr(e, '__class__') else e}: {e}"
         logger.error(msg)
@@ -201,7 +239,10 @@ async def connect_and_stream():
             sys.exit(1)
 
         except Exception as e:  # pylint: disable=broad-except
-            msg = f"PROVIDER ERROR:     Unexpected error -> {e.__class__.__name__}: {e}"
+            msg = (
+                "PROVIDER ERROR:     Unexpected error ->"
+                f" {e.__class__.__name__ if hasattr(e, '__class__') else e}: {e.args}"
+            )
             logger.error(msg)
             sys.exit(1)
 

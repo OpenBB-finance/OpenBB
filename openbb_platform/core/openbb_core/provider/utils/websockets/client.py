@@ -233,12 +233,12 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
             self.logger.info("Websocket results saved to, %s\n", str(self.results_path))
         if os.path.exists(self.results_file) and not self.save_database:  # type: ignore
             os.remove(self.results_file)  # type: ignore
-            if os.path.exists(self.results_file + "-journal"):
-                os.remove(self.results_file + "-journal")
-            if os.path.exists(self.results_file + "-shm"):
-                os.remove(self.results_file + "-shm")
-            if os.path.exists(self.results_file + "-wal"):
-                os.remove(self.results_file + "-wal")
+            if os.path.exists(self.results_file + "-journal"):  # type: ignore
+                os.remove(self.results_file + "-journal")  # type: ignore
+            if os.path.exists(self.results_file + "-shm"):  # type: ignore
+                os.remove(self.results_file + "-shm")  # type: ignore
+            if os.path.exists(self.results_file + "-wal"):  # type: ignore
+                os.remove(self.results_file + "-wal")  # type: ignore
 
     def _log_provider_output(self, output_queue) -> None:
         """Log output from the provider logger, handling exceptions, errors, and messages that are not data."""

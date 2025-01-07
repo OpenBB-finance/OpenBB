@@ -1,12 +1,41 @@
-"""FMP WebSocket server."""
+"""
+Tiingo WebSocket Client.
+
+This file should be run as a script, and is intended to be run as a subprocess of TiingoWebSocketFetcher.
+
+Keyword arguments are passed from the command line as space-delimited, `key=value`, pairs.
+
+Required Keyword Arguments
+--------------------------
+    api_key: str
+        The API key for the Polygon WebSocket.
+    asset_type: str
+        The asset type to subscribe to. Default is "crypto".
+        Options: "stock", "crypto", "fx"
+    symbol: str
+        The symbol to subscribe to. Example: "AAPL" or "AAPL,MSFT". Use "*" to subscribe to all symbols.
+    feed: str
+        The feed to subscribe to. One of: "trade" or "trade_and_quote".
+    results_file: str
+        The path to the file where the results will be stored.
+
+Optional Keyword Arguments
+--------------------------
+    table_name: str
+        The name of the table to store the data in. Default is "records".
+    limit: int
+        The maximum number of rows to store in the database.
+    connect_kwargs: dict
+        Additional keyword arguments to pass directly to `websockets.connect()`.
+        Example: {"ping_timeout": 300}
+"""
 
 import asyncio
-import os
+import json
 import signal
 import sys
-from datetime import UTC, datetime
+from datetime import datetime
 
-import orjson
 import websockets
 from openbb_core.provider.utils.errors import UnauthorizedError
 from openbb_core.provider.utils.websockets.database import Database, DatabaseWriter
@@ -20,6 +49,7 @@ from openbb_core.provider.utils.websockets.message_queue import MessageQueue
 from openbb_tiingo.models.websocket_connection import TiingoWebSocketData
 from pandas import to_datetime
 from pydantic import ValidationError
+from pytz import UTC
 from websockets.asyncio.client import connect
 
 URL_MAP = {
@@ -79,13 +109,27 @@ CRYPTO_QUOTE_FIELDS = [
 ]
 SUBSCRIPTION_ID = ""
 logger = get_logger("openbb.websocket.tiingo")
-input_queue = MessageQueue(logger=logger, backoff_factor=0)
-db_queue = MessageQueue(logger=logger, backoff_factor=0)
+input_queue = MessageQueue(logger=logger)
+db_queue = MessageQueue(logger=logger)
 kwargs = parse_kwargs()
 CONNECT_KWARGS = kwargs.pop("connect_kwargs", {})
-kwargs["results_file"] = os.path.abspath(kwargs["results_file"])
-URL = URL_MAP.get(kwargs.pop("asset_type", "crypto"))
+ASSET_TYPE = kwargs.pop("asset_type", "crypto")
+FEED = kwargs.pop("feed", "trade")
+
+
 SUBSCRIBED_SYMBOLS: set = set()
+
+THRESHOLD_LEVEL = (
+    5
+    if ASSET_TYPE == "fx" or FEED == "trade"
+    else (2 if ASSET_TYPE == "crypto" and FEED == "trade_and_quote" else 0)
+)
+
+URL = URL_MAP.get(ASSET_TYPE)
+
+if not kwargs.get("api_key"):
+    raise ValueError("No API key provided.")
+
 
 if not URL:
     raise ValueError("Invalid asset type provided.")
@@ -120,9 +164,9 @@ async def update_symbols(symbol, event):
     }
 
     async with connect(URL) as websocket:
-        await websocket.send(orjson.dumps(update_event))
+        await websocket.send(json.dumps(update_event))
         response = await websocket.recv(decode=False)
-        message = orjson.loads(response)
+        message = json.loads(response)
         if "tickers" in message.get("data", {}):
             tickers = message["data"]["tickers"]
             threshold_level = message["data"].get("thresholdLevel")
@@ -155,7 +199,7 @@ async def read_stdin_and_update_symbols():
                 f" Database Queue : {db_queue.queue.qsize()}"
             )
         else:
-            line = orjson.loads(line.strip())
+            line = json.loads(line.strip())
 
             if line:
                 symbol = line.get("symbol")
@@ -167,7 +211,7 @@ async def process_message(message):  # pylint: disable=too-many-branches
     """Process the message and write to the database."""
     result: dict = {}
     data_message: dict = {}
-    message = message if isinstance(message, (dict, list)) else orjson.loads(message)
+    message = message if isinstance(message, (dict, list)) else json.loads(message)
     msg: str = ""
     if message.get("messageType") == "E":
         response = message.get("response", {})
@@ -243,16 +287,12 @@ async def connect_and_stream():
 
     tasks: set = set()
     ticker: list = []
-
-    conn_kwargs = CONNECT_KWARGS.copy()
-
-    conn_kwargs.update(
-        {
-            "ping_interval": 8,
-            "ping_timeout": 8,
-            "close_timeout": 1,
-        }
-    )
+    conn_kwargs = {
+        "ping_interval": 8,
+        "ping_timeout": 8,
+        "close_timeout": 1,
+    }
+    conn_kwargs.update(CONNECT_KWARGS)
 
     if isinstance(kwargs["symbol"], str):
         ticker = kwargs["symbol"].lower().split(",")
@@ -261,7 +301,7 @@ async def connect_and_stream():
         "eventName": "subscribe",
         "authorization": kwargs["api_key"],
         "eventData": {
-            "thresholdLevel": kwargs["threshold_level"],
+            "thresholdLevel": THRESHOLD_LEVEL,
             "tickers": ticker,
         },
     }
@@ -270,7 +310,7 @@ async def connect_and_stream():
         """Receive messages from the WebSocket."""
         while True:
             message = await websocket.recv(decode=False)
-            input_queue.queue.put_nowait(orjson.loads(message))
+            input_queue.queue.put_nowait(json.loads(message))
 
     stdin_task = asyncio.create_task(read_stdin_and_update_symbols())
     tasks.add(stdin_task)
@@ -290,7 +330,7 @@ async def connect_and_stream():
                     )
                     tasks.add(receiver_task)
 
-                await websocket.send(orjson.dumps(subscribe_event))
+                await websocket.send(json.dumps(subscribe_event))
                 logger.info("PROVIDER INFO:      WebSocket connection established.")
                 for _ in range(9):
                     process_task = asyncio.create_task(

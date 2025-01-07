@@ -4,26 +4,21 @@ import asyncio
 import json
 import logging
 import os
-import signal
 import sys
 from pathlib import Path
 from typing import Optional
 
 import uvicorn
-
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from openbb_core.provider.utils.websockets.database import (
     CHECK_FOR,
     Database,
-    kill_thread,
 )
 from openbb_core.provider.utils.websockets.helpers import (
     get_logger,
-    handle_termination_signal,
     parse_kwargs,
 )
 from starlette.websockets import WebSocketState
-
 
 kwargs = parse_kwargs()
 
@@ -41,7 +36,7 @@ SQL_CONNECT_KWARGS = kwargs.pop("sql_connect_kwargs", None) or {}
 
 app = FastAPI()
 
-CONNECTED_CLIENTS = set()
+CONNECTED_CLIENTS: set = set()
 MAIN_CLIENT = None
 STDIN_TASK = None
 LOGGER = get_logger("broadcast-server")
@@ -58,7 +53,7 @@ async def read_stdin():
             continue
 
         if line.strip() == "numclients":
-            MAIN_CLIENT.logger.info(
+            MAIN_CLIENT.logger.info(  # type: ignore
                 "Number of connected clients: %i", len(CONNECTED_CLIENTS)
             )
             continue
@@ -101,7 +96,7 @@ async def websocket_endpoint(  # noqa: PLR0915
         str(AUTH_TOKEN),
         sql=sql,
     )
-    broadcast_server.replay = replay
+    broadcast_server.replay = replay  # type: ignore
     auth_token = str(auth_token)
 
     if sql and (
@@ -244,7 +239,7 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
 
         last_id = (
             0
-            if hasattr(self, "replay") and self.replay is True or replay is True
+            if hasattr(self, "replay") and self.replay is True or replay is True  # type: ignore
             else last_id
         )
 
@@ -260,10 +255,10 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
             any(x.lower() in sql.lower() for x in CHECK_FOR)
             or (self.table_name not in sql and "message" not in sql)
         ):
-            await self.websocket.accept()
-            await self.websocket.send_text("Invalid SQL query passed.")
-            await self.websocket.close(code=1008, reason="Invalid query")
-            self.logger.error(
+            await self.websocket.accept()  # type: ignore
+            await self.websocket.send_text("Invalid SQL query passed.")  # type: ignore
+            await self.websocket.close(code=1008, reason="Invalid query")  # type: ignore
+            self.logger.error(  # type: ignore
                 "Invalid query passed to the stream_results method: %s", sql
             )
             return
@@ -291,7 +286,7 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
                             await self.websocket.send_json(
                                 json.dumps(json.loads(row[1]))
                             )
-                            if self.replay is True:
+                            if self.replay is True:  # type: ignore
                                 await asyncio.sleep(self.sleep_time / 10)
                         await cursor.close()
 
