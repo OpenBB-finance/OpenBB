@@ -124,14 +124,14 @@ async def process_stdin_queue():
 
 async def connect_and_stream():
     """Connect to the WebSocket and stream data to file."""
+    stdin_task = asyncio.create_task(read_stdin_and_queue_commands())
+    process_stdin_task = asyncio.create_task(process_stdin_queue())
     try:
         symbol = kwargs.pop("symbol", "lobby")
         symbol = ["lobby"] if "*" in symbol else symbol.split(",")
-        stdin_task = asyncio.create_task(read_stdin_and_queue_commands())
         await DATABASE.start_writer()
         client.connect()
         client.join(symbol)
-        process_stdin_task = asyncio.create_task(process_stdin_queue())
     finally:
         stdin_task.cancel()
         process_stdin_task.cancel()

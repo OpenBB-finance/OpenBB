@@ -457,8 +457,8 @@ if __name__ == "__main__":
         loop.run_forever()
 
     except (websockets.ConnectionClosed, websockets.ConnectionClosedError) as e:
-        msg = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
-        logger.info(msg)
+        MSG = f"PROVIDER INFO:      The WebSocket connection was closed -> {e}"
+        logger.info(MSG)
         # Attempt to reopen the connection
         logger.info("PROVIDER INFO:      Attempting to reconnect...")
         time.sleep(1)

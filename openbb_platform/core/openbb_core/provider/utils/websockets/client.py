@@ -129,7 +129,6 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         import threading
         from queue import Queue
         from pathlib import Path
-        from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.websockets.database import Database
         from openbb_core.provider.utils.websockets.helpers import (
             encrypt_value,
@@ -381,8 +380,6 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         import queue
         import subprocess
         import threading
-        import time
-        from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.websockets.helpers import decrypt_value
 
         if self.is_running:
@@ -528,7 +525,6 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         import time
-        from openbb_core.app.model.abstract.error import OpenBBError
 
         if not self.is_running:
             raise OpenBBError("Provider connection is not running.")
@@ -555,7 +551,6 @@ class WebSocketClient:  # pylint: disable=too-many-instance-attributes
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         import time
-        from openbb_core.app.model.abstract.error import OpenBBError
 
         if not self.symbol:
             self.logger.info("No subscribed symbols.")

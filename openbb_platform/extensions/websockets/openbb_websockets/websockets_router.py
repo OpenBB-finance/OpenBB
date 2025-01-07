@@ -80,9 +80,6 @@ async def create_connection(
     obbject = await OBBject.from_query(Query(**locals()))
     client = obbject.results.client
 
-    # pylint: disable=import-outside-toplevel
-    import asyncio
-
     await asyncio.sleep(1)
 
     if not client.is_running or client._exception is not None:

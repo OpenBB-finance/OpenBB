@@ -1,6 +1,6 @@
 """Database module for serialized websockets results."""
 
-# pylint: disable=too-many-lines,too-many-arguments,too-many-locals,too-many-branches,too-many-statements,protected-access
+# pylint: disable=too-many-lines,too-many-arguments,too-many-locals,too-many-branches,too-many-statements,protected-access,too-many-instance-attributes,too-many-positional-arguments
 
 import asyncio
 import threading
@@ -297,7 +297,7 @@ class Database:
                 """,  # noqa
                     (message,),
                 )
-                self._at_limit = False
+                self._at_limit = False  # pylint: disable=attribute-defined-outside-init
 
                 if self.limit is not None and not self._at_limit:
                     limit = max(0, int(self.limit))
@@ -309,7 +309,9 @@ class Database:
                         count = await count_cursor.fetchone()
 
                         if count[0] > limit:
-                            self._at_limit = True
+                            self._at_limit = (
+                                True  # pylint: disable=attribute-defined-outside-init
+                            )
 
                         await count_cursor.close()
 
@@ -382,9 +384,7 @@ class Database:
                     or isinstance(row[0], bytes)
                     else row[0]
                 )
-            else:
-                # Multiple column case (extracted fields)
-                return {cursor.description[i][0]: row[i] for i in range(len(row))}
+            return {cursor.description[i][0]: row[i] for i in range(len(row))}
 
         except (json.JSONDecodeError, AttributeError) as e:
             self.logger.error(f"Failed to deserialize row: {e}")
@@ -990,7 +990,8 @@ class DatabaseWriter:
 
                 if not self._last_processed_timestamp:
                     last_date = await self.database._query_db(
-                        f"SELECT json_extract(message, '$.date') FROM {self.database.table_name} ORDER BY json_extract(message, '$.date') DESC LIMIT 1"  # noqa
+                        "SELECT json_extract(message, '$.date') FROM"  # noqa
+                        f" {self.database.table_name} ORDER BY json_extract(message, '$.date') DESC LIMIT 1"
                     )
                     if not last_date:
                         continue
@@ -1022,6 +1023,7 @@ class DatabaseWriter:
 
     async def _start_export_task(self):
         """Start a background task to prune the database periodically."""
+        # pylint: disable=import-outside-toplevel
         from pandas import to_datetime
 
         minutes = self.export_interval or 5
@@ -1029,7 +1031,10 @@ class DatabaseWriter:
         while self.export_thread is not None and not self._shutdown:
             # Get the initial row to determine the "first time"
             try:
-                query = f"SELECT json_extract(message, '$.date') FROM {self.database.table_name} ORDER BY json_extract(message, '$.date') ASC LIMIT 1"  # noqa
+                query = (
+                    "SELECT json_extract(message, '$.date') FROM"  # noqa
+                    f" {self.database.table_name} ORDER BY json_extract(message, '$.date') ASC LIMIT 1"
+                )
                 initial_row = await self.database._query_db(query)
                 if not initial_row:
                     await asyncio.sleep(1)

@@ -1198,6 +1198,7 @@ class PolygonWebSocketFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract data from the WebSocket."""
+        # pylint: disable=import-outside-toplevel
         import time
 
         api_key = credentials.get("polygon_api_key") if credentials else ""

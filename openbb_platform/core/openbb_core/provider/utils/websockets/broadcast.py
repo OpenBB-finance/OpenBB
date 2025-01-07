@@ -1,5 +1,7 @@
 """Broadcast server for streaming results to connected clients via WebSocket."""
 
+# pylint: disable=too-many-positional-arguments
+
 import asyncio
 import json
 import logging
@@ -20,19 +22,19 @@ from openbb_core.provider.utils.websockets.helpers import (
 )
 from starlette.websockets import WebSocketState
 
-kwargs = parse_kwargs()
+KWARGS = parse_kwargs()
 
-HOST = kwargs.pop("host", None) or "localhost"
-PORT = kwargs.pop("port", None) or 6666
+HOST = KWARGS.pop("host", None) or "localhost"
+PORT = KWARGS.pop("port", None) or 6666
 PORT = int(PORT)
 
-RESULTS_FILE = kwargs.pop("results_file", None)
-TABLE_NAME = kwargs.pop("table_name", None) or "records"
-SLEEP_TIME = kwargs.pop("sleep_time", None) or 0.25
-AUTH_TOKEN = kwargs.pop("auth_token", None)
+RESULTS_FILE = KWARGS.pop("results_file", None)
+TABLE_NAME = KWARGS.pop("table_name", None) or "records"
+SLEEP_TIME = KWARGS.pop("sleep_time", None) or 0.25
+AUTH_TOKEN = KWARGS.pop("auth_token", None)
 
-SQL = kwargs.pop("sql", None)
-SQL_CONNECT_KWARGS = kwargs.pop("sql_connect_kwargs", None) or {}
+SQL = KWARGS.pop("sql", None)
+SQL_CONNECT_KWARGS = KWARGS.pop("sql_connect_kwargs", None) or {}
 
 app = FastAPI()
 
@@ -69,7 +71,7 @@ async def read_stdin():
                 for client in CONNECTED_CLIENTS:
                     client.logger.error(err_msg)
 
-            for client in CONNECTED_CLIENTS:
+            for client in CONNECTED_CLIENTS.copy():
                 if client.websocket.client_state != WebSocketState.DISCONNECTED:
                     await client.websocket.send_json(command)
                 else:
@@ -96,7 +98,7 @@ async def websocket_endpoint(  # noqa: PLR0915
         str(AUTH_TOKEN),
         sql=sql,
     )
-    broadcast_server.replay = replay  # type: ignore
+    broadcast_server.replay = replay  # type: ignore  # pylint: disable=attribute-defined-outside-init
     auth_token = str(auth_token)
 
     if sql and (
@@ -318,7 +320,7 @@ class BroadcastServer:  # pylint: disable=too-many-instance-attributes
             self._app,
             host=host,
             port=port,
-            **kwargs,
+            **KWARGS,
         )
 
 
@@ -350,6 +352,7 @@ def run_broadcast_server(broadcast_server, host, port, **kwargs):
 
 async def main():
     """Run the main function."""
+    # pylint: disable=import-outside-toplevel
     import threading
 
     loop = asyncio.get_running_loop()
@@ -364,13 +367,13 @@ async def main():
         SQL_CONNECT_KWARGS,
         SQL,
     )
-    global MAIN_CLIENT  # noqa: PLW0603
+    global MAIN_CLIENT  # noqa: PLW0603  pylint: disable=global-statement
     MAIN_CLIENT = broadcast_server
     try:
         broadcast_thread = threading.Thread(
             target=run_broadcast_server,
             args=(broadcast_server, HOST, PORT),
-            kwargs=kwargs,
+            kwargs=KWARGS,
             daemon=True,
         )
         broadcast_thread.start()
