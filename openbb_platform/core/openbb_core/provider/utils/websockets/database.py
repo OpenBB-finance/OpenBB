@@ -366,9 +366,7 @@ class Database:
             raise OpenBBError(e) from e
 
     async def _deserialize_row(self, row, cursor) -> dict:
-        """
-        Deserialize a row from the SQLite database. Handles both single message column and multiple extracted fields.
-        """
+        """Deserialize a row from the SQLite database."""
         # pylint: disable=import-outside-toplevel
         import json
 
