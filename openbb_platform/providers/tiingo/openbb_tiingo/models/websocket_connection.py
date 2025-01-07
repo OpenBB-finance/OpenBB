@@ -184,21 +184,21 @@ class TiingoWebSocketData(WebSocketData):
     def _validate_date(cls, v):
         """Validate the date."""
         # pylint: disable=import-outside-toplevel
-        from pandas import to_datetime
-        from pytz import timezone
+        from pandas import to_datetime  # noqa
+        from pytz import timezone, UTC
 
         if isinstance(v, str):
             dt = to_datetime(v, utc=True).tz_convert(timezone("America/New_York"))
         else:
             try:
-                dt = datetime.fromtimestamp(v / 1000, timezone.utc)
+                dt = datetime.fromtimestamp(v / 1000, UTC)
                 dt = dt.astimezone(timezone("America/New_York"))
             except Exception:
                 if isinstance(v, (int, float)):
                     # Check if the timestamp is in nanoseconds and convert to seconds
                     if v > 1e12:
                         v = v / 1e9  # Convert nanoseconds to seconds
-                    dt = datetime.fromtimestamp(v, timezone.utc)
+                    dt = datetime.fromtimestamp(v, UTC)
                     dt = dt.astimezone(timezone("America/New_York"))
                 else:
                     dt = v
