@@ -366,8 +366,9 @@ class Database:
             raise OpenBBError(e) from e
 
     async def _deserialize_row(self, row, cursor) -> dict:
-        """Deserialize a row from the SQLite database.
-        Handles both single message column and multiple extracted fields."""
+        """
+        Deserialize a row from the SQLite database. Handles both single message column and multiple extracted fields.
+        """
         # pylint: disable=import-outside-toplevel
         import json
 
@@ -1072,9 +1073,7 @@ class DatabaseWriter:
 
 
 class BatchProcessor(threading.Thread):
-    """
-    This class is a thread intended for use as a subprocess and is called by `DatabaseWriter.start_writer()`.
-    """
+    """This class is a thread intended for use as a subprocess and is called by `DatabaseWriter.start_writer()`."""
 
     def __init__(
         self, database_writer: DatabaseWriter, num_workers=120, collection_time=0.25
