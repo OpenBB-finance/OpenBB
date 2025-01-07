@@ -40,7 +40,6 @@ app = FastAPI()
 
 CONNECTED_CLIENTS: set = set()
 MAIN_CLIENT = None
-STDIN_TASK = None
 LOGGER = get_logger("broadcast-server")
 
 

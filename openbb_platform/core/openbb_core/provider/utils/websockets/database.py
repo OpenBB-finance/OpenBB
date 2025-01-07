@@ -309,8 +309,8 @@ class Database:
                         count = await count_cursor.fetchone()
 
                         if count[0] > limit:
-                            self._at_limit = (
-                                True  # pylint: disable=attribute-defined-outside-init
+                            self._at_limit = (  # pylint: disable=attribute-defined-outside-init
+                                True
                             )
 
                         await count_cursor.close()
