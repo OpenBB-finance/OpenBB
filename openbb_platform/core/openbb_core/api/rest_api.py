@@ -88,6 +88,7 @@ if __name__ == "__main__":
     # pylint: disable=import-outside-toplevel
     import uvicorn
 
+    # This initializes the OpenBB environment variables so they can be read before uvicorn is run.
     Env()
     uvicorn_kwargs = system.python_settings.model_dump().get("uvicorn", {})
     uvicorn_reload = uvicorn_kwargs.pop("reload", None)

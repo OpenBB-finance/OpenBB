@@ -27,7 +27,10 @@ logger.setLevel(logging.INFO)
 
 
 FIRST_RUN = True
+
+# Adds the OpenBB Environment variables to the script process.
 Env()
+
 HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
 
 if not HOME:
