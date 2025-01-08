@@ -10,7 +10,7 @@ packages = [{ include = "openbb_core" }]
 [tool.poetry.dependencies]
 python = "^3.9"
 uvicorn = "^0.32.0"
-websockets = "^13.0"
+websockets = "^14.0"
 pandas = ">=1.5.3"
 html5lib = "^1.1"
 fastapi = "^0.115"

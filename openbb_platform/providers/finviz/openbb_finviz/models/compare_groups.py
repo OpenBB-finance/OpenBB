@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -20,18 +20,27 @@ GROUPS_CHOICES = sorted(list(GROUPS_DICT))
 class FinvizCompareGroupsQueryParams(CompareGroupsQueryParams):
     """Finviz Compare Groups Query Params."""
 
-    group: Union[GROUPS, None] = Field(
+    __json_schema_extra__ = {
+        "group": {
+            "multiple_items_allowed": False,
+            "choices": GROUPS_CHOICES,
+        },
+        "metric": {
+            "multiple_items_allowed": False,
+            "choices": ["performance", "valuation", "overview"],
+        },
+    }
+
+    group: GROUPS = Field(
         default="sector",
         description="US-listed stocks only."
-        + " When a sector is selected, it is broken down by industry."
-        + " The default is sector.",
-        json_schema_extra={"choices": GROUPS_CHOICES},  # type: ignore
+        + " When an individual sector is selected, it is broken down by industry."
+        + " The default is 'sector'.",
     )
-    metric: Union[METRICS, None] = Field(
+    metric: METRICS = Field(
         default="performance",
-        description="Select from: performance, valuation, overview."
-        + " The default is performance.",
-        json_schema_extra={"choices": ["performance", "valuation", "overview"]},
+        description="Statistical metric to return. Select from: ['performance', 'valuation', 'overview']"
+        + " The default is 'performance'.",
     )
 
 
@@ -66,6 +75,8 @@ class FinvizCompareGroupsData(CompareGroupsData):
         "float_short": "Float Short",
         "analyst_recommendation": "Recom",
     }
+
+    name: str = Field(description="Name or label of the group.")
 
     stocks: Optional[int] = Field(
         default=None,
