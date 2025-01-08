@@ -1,10 +1,15 @@
 """Deribit Fetcher Tests."""
 
+from datetime import date
 from unittest.mock import MagicMock, patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_core.provider.utils.helpers import run_async
+from openbb_deribit.models.futures_curve import DeribitFuturesCurveFetcher
+from openbb_deribit.models.futures_historical import DeribitFuturesHistoricalFetcher
+from openbb_deribit.models.futures_info import DeribitFuturesInfoFetcher
+from openbb_deribit.models.futures_instruments import DeribitFuturesInstrumentsFetcher
 from openbb_deribit.models.options_chains import (
     DeribitOptionsChainsData,
     DeribitOptionsChainsFetcher,
@@ -63,7 +68,7 @@ def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
-            None,
+            ("expired", None),
         ],
     }
 
@@ -97,3 +102,48 @@ async def test_deribit_options_chains_fetcher(credentials=test_credentials):
     ):
         result = await fetcher.fetch_data(params, {})
         assert isinstance(result, DeribitOptionsChainsData)
+
+
+@pytest.mark.record_http
+def test_deribit_futures_curve_fetcher(credentials=test_credentials):
+    """Test Deribit Futures Curve Fetcher."""
+    params = {"symbol": "BTC"}
+
+    fetcher = DeribitFuturesCurveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_deribit_futures_historical_fetcher(credentials=test_credentials):
+    """Test Deribit Futures Historical Fetcher."""
+    params = {
+        "symbol": "BTC-PERPETUAL",
+        "start_date": date(2024, 12, 1),
+        "end_date": date(2024, 12, 3),
+        "interval": "12h",
+    }
+
+    fetcher = DeribitFuturesHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_deribit_futures_instruments_fetcher(credentials=test_credentials):
+    """Test Deribit Futures Instruments Fetcher."""
+    params = {}
+
+    fetcher = DeribitFuturesInstrumentsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_deribit_futures_info_fetcher(credentials=test_credentials):
+    """Test Deribit Futures Info Fetcher."""
+    params = {"symbol": "BTC-PERPETUAL"}
+
+    fetcher = DeribitFuturesInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
