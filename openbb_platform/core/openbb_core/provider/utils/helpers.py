@@ -97,7 +97,30 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
 
 
 def get_python_request_settings() -> dict:
-    """Get the python settings."""
+    """
+    Get the python settings from the system_settings.json file.
+
+    They are read from the "http" key in the "python_settings" key in the system_settings.json file.
+
+    The configuration applies to both the requests and aiohttp libraries.
+
+    Available settings:
+    - cafile: Path to a CA certificate file.
+    - certfile: Path to a client certificate file.
+    - keyfile: Path to a client key file.
+    - password: Password for the client key file.  # aiohttp only
+    - verify_ssl: Verify SSL certificates.
+    - fingerprint: SSL fingerprint.  # aiohttp only
+    - proxy: Proxy URL.
+    - proxy_auth: Proxy authentication.  # aiohttp only
+    - proxy_headers: Proxy headers.  # aiohttp only
+    - timeout: Request timeout.
+    - auth: Basic authentication.
+    - headers: Request headers.
+    - cookies: Dictionary of session cookies.
+
+    Any additional keys supplied will be ignored.
+    """
     # pylint: disable=import-outside-toplevel
     from openbb_core.app.service.system_service import SystemService
 
@@ -147,68 +170,45 @@ def get_requests_session(**kwargs) -> "Session":
     _session: requests.Session = kwargs.pop("session", None) or requests.Session()
     _session.headers.update(headers)
 
-    if (
-        python_settings.get("cafile") is not None
-        and os.environ.get("REQUESTS_CA_BUNDLE") is not None
-    ):
-        _session.verify = (
-            combine_certificates(
-                python_settings["cafile"], os.environ.get("REQUESTS_CA_BUNDLE")
-            )
-            if python_settings["cafile"] != os.environ.get("REQUESTS_CA_BUNDLE")
-            else combine_certificates(python_settings["cafile"])
-        )
-    elif python_settings.get("cafile") is not None:
-        _session.verify = combine_certificates(python_settings["cafile"])
-    elif (
-        os.environ.get("REQUESTS_CA_BUNDLE") is not None
-        and python_settings.get("cafile") is None
-    ):
-        certs = os.environ.get("REQUESTS_CA_BUNDLE", "")
-        _session.verify = combine_certificates(certs)
-    elif python_settings.get("verify_ssl") is False:
+    if python_settings.get("verify_ssl") is False:
         _session.verify = False
+    else:
+        ca_file = python_settings.get("cafile")
+        requests_ca_bundle = os.environ.get("REQUESTS_CA_BUNDLE")
+        cert = ca_file or requests_ca_bundle
+        if cert:
+            bundle = requests_ca_bundle if requests_ca_bundle != cert else None
+            _session.verify = combine_certificates(cert, bundle)
 
-    if python_settings.get("certfile"):
-        _session.cert = (
-            (python_settings["certfile"], python_settings.get("keyfile", ""))  # type: ignore
-            if python_settings.get("keyfile")
-            else python_settings["certfile"]
-        )
+    if certfile := python_settings.get("certfile"):
+        keyfile = python_settings.get("keyfile")
+        _session.cert = (certfile, keyfile) if keyfile else certfile
 
-    if (
-        os.environ.get("HTTP_PROXY") or os.environ.get("HTTPS_PROXY")
-    ) and not python_settings.get("proxy"):
-        http = os.environ.get("HTTP_PROXY", os.environ.get("HTTPS_PROXY", ""))
-        https = os.environ.get("HTTPS_PROXY", os.environ.get("HTTP_PROXY", ""))
+    proxy = python_settings.get("proxy")
+    http_proxy = os.environ.get("HTTP_PROXY", os.environ.get("HTTPS_PROXY"))
+    https_proxy = os.environ.get("HTTPS_PROXY", os.environ.get("HTTP_PROXY"))
+
+    if http_proxy is not None and http_proxy == https_proxy:
+        https_proxy = None
+
+    if http_proxy or https_proxy or proxy:
         proxies: dict = {}
-        if http:
+        if http := http_proxy or https_proxy or proxy:
             proxies["http"] = http
-        if https:
+        if https := https_proxy or http_proxy or proxy:
             proxies["https"] = https
         _session.proxies = proxies
-    elif python_settings.get("proxy"):
-        _session.proxies = {
-            "http": python_settings["proxy"],
-            "https": python_settings["proxy"],
-        }
 
-    if python_settings.get("cookies"):
+    if cookies := python_settings.get("cookies"):
         _session.cookies = (
-            python_settings["cookies"]
-            if isinstance(
-                python_settings["cookies"], requests.cookies.RequestsCookieJar
-            )
-            else requests.cookies.cookiejar_from_dict(
-                python_settings.get("cookies", {})
-            )
+            cookies
+            if isinstance(cookies, requests.cookies.RequestsCookieJar)
+            else requests.cookies.cookiejar_from_dict(cookies)
         )
 
-    if python_settings.get("auth"):
+    if auth := python_settings.get("auth"):
         _session.auth = (
-            python_settings["auth"]
-            if isinstance(python_settings["auth"], (tuple, requests.auth.AuthBase))
-            else tuple(python_settings["auth"])
+            auth if isinstance(auth, (tuple, requests.auth.AuthBase)) else tuple(auth)
         )
 
     if kwargs:
@@ -242,20 +242,20 @@ async def get_async_requests_session(**kwargs) -> ClientSession:
     # The settings file will take precedence over the environment variables.
     python_settings = get_python_request_settings()
     _ = kwargs.pop("raise_for_status", None)
-    if (
-        os.environ.get("HTTP_PROXY")
-        or os.environ.get("HTTPS_PROXY")
-        or python_settings.get("proxy")
-        or python_settings.get("verify_ssl") is False
-    ):
-        python_settings["proxy"] = (
-            python_settings.get("proxy")
-            or os.environ.get("HTTP_PROXY")
-            or os.environ.get("HTTPS_PROXY")
-        )
 
-        python_settings["ssl"] = False
+    proxy = python_settings.get("proxy")
+    http_proxy = os.environ.get("HTTP_PROXY", os.environ.get("HTTPS_PROXY"))
+    https_proxy = os.environ.get("HTTPS_PROXY", os.environ.get("HTTP_PROXY"))
+
+    # aiohttp will attempt to upgrade the proxy to https.
+    if not proxy and http_proxy is not None and http_proxy == https_proxy:
+        python_settings["proxy"] = http_proxy.replace("https:", "http:")
+
+    # If a proxy is provided, or verify_ssl is False, we don't need to handle the certificate and create SSL context.
+    # This takes priority over the cafile.
+    if python_settings.get("proxy") or python_settings.get("verify_ssl") is False:
         python_settings["verify_ssl"] = None
+        python_settings["ssl"] = False
     elif (
         python_settings.get("certfile")
         or python_settings.get("cafile")
@@ -285,6 +285,7 @@ async def get_async_requests_session(**kwargs) -> ClientSession:
         if k in ["ssl", "verify_ssl", "fingerprint"] and v is not None
     }
 
+    # Merge the updated python_settings dict with the kwargs.
     if python_settings:
         kwargs.update(
             {k: v for k, v in python_settings.items() if not k.endswith("file")}
@@ -298,27 +299,26 @@ async def get_async_requests_session(**kwargs) -> ClientSession:
     conn_kwargs = {"connector": connector} if connector else {}
 
     # Add basic auth for proxies, if provided.
-    if kwargs.get("proxy_auth"):
-        p_auth = kwargs.pop("proxy_auth", [])
+    p_auth = kwargs.pop("proxy_auth", [])
+    if p_auth:
         conn_kwargs["proxy_auth"] = aiohttp.BasicAuth(
             *p_auth if isinstance(p_auth, (list, tuple)) else p_auth
         )
-
-    # Add basic auth for the server connection, if provided.
-    if kwargs.get("auth"):
-        s_auth = kwargs.pop("auth", [])
+    # Add basic auth for server, if provided.
+    s_auth = kwargs.pop("auth", [])
+    if s_auth:
         conn_kwargs["auth"] = aiohttp.BasicAuth(
             *s_auth if isinstance(s_auth, (list, tuple)) else s_auth
         )
-
-    if kwargs.get("cookies"):
-        _cookies = kwargs.pop("cookies", None)
+    # Add cookies to the session, if provided.
+    _cookies = kwargs.pop("cookies", None)
+    if _cookies:
         if isinstance(_cookies, dict):
             conn_kwargs["cookies"] = _cookies
         elif isinstance(_cookies, aiohttp.CookieJar):
             conn_kwargs["cookie_jar"] = _cookies
 
-    # Pass the remaining kwargs to the session
+    # Pass any remaining kwargs to the session
     for k, v in kwargs.items():
         if v is None:
             continue
