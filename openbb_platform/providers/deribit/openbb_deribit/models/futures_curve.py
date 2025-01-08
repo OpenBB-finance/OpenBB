@@ -45,7 +45,7 @@ class DeribitFuturesCurveQueryParams(FuturesCurveQueryParams):
     )
     hours_ago: Optional[Union[int, list[int], str]] = Field(
         default=None,
-        description="Compare the curve with the curve from the specified hours ago. Default is None.",
+        description="Compare the current curve with the specified number of hours ago. Default is None.",
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
