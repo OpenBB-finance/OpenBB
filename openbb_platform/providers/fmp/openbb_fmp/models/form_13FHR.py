@@ -18,6 +18,7 @@ from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_fmp.utils.helpers import create_url, response_callback
+from openbb_fmp.utils.parse_13f import date_to_quarter_end
 
 
 class FMPForm13FHRQueryParams(Form13FHRQueryParams):
@@ -97,6 +98,11 @@ class FMPForm13FHRFetcher(
             exclude=["symbol", "limit"],
         )
         dates = await amake_request(date_url, response_callback=response_callback, **kwargs)
+        if query.date:
+            date = date_to_quarter_end(str(query.date))
+            if date not in dates:
+                raise EmptyDataError(f"Data for Date {date} not found for cik {cik},please change the date")
+            dates = [date]
         if not dates:
             raise EmptyDataError("No data returned for the given symbol.")
         results: List[Dict] = []

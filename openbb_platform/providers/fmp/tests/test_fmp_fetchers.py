@@ -767,11 +767,12 @@ def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
 
 
 
-@pytest.mark.record_http
+# @pytest.mark.record_http
 def test_fmp_form_13f_fetcher(credentials=test_credentials):
     """Test FMP form 13f fetcher."""
     params = {
-        "symbol": "NVDA",
+        "symbol": "brk-a",
+        "date": date(2024, 9, 30),
         "limit": 1,
     }
     fetcher = FMPForm13FHRFetcher()
