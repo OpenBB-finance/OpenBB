@@ -767,7 +767,7 @@ def test_fmp_historical_market_cap_fetcher(credentials=test_credentials):
 
 
 
-# @pytest.mark.record_http
+@pytest.mark.record_http
 def test_fmp_form_13f_fetcher(credentials=test_credentials):
     """Test FMP form 13f fetcher."""
     params = {
