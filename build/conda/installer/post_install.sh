@@ -19,6 +19,8 @@ python -m pip install -U pip >>"$LOG_FILE" 2>&1
 
 pip install -U setuptools poetry >>"$LOG_FILE" 2>&1
 
+pip install poetry==1.8.5 >>"$LOG_FILE" 2>&1
+
 poetry config virtualenvs.path "$PREFIX/envs" --local >>"$LOG_FILE" 2>&1
 
 poetry config virtualenvs.create false --local >>"$LOG_FILE" 2>&1
