@@ -32,7 +32,6 @@ channels:
 
 condarc:
   {channels: [conda-forge],
-  default_channels: [conda-forge],
   allow_softlinks: false,
   auto_activate_base: false,
   always_copy: true,
