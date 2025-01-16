@@ -1,0 +1,528 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/get_instruments?currency=BTC&expired=false&kind=future
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2Y30/bMBDH/xc/B2Q7ju30DWgnDe0H4sfThKI0vW5emx/YDoMh/vdd2rIBJRoP
+        yLApeUrva5/P5498l96Q766ubFOQEeG7lETEgmuXnoy+3JDGmgIyU83gCuWpL7LWzboh8wsymudL
+        BxFZoIzivPWtBdRKU2Xe5jPI8rJuK3TE6C6NiHFZXnhzCWTkbYsTTeXwpYTKZ1Veopnsnx7sMHq4
+        94knnaN8ATYr6rI0zpm6IqMddEQpi4jfklZK8sCpv246pxYuwTrowoarxtjc44TMmxKcz8sGw1Ox
+        FKmkqyciRV1h+IXPnPkJd8F7Uyw2Br6Ly0yXNRrW27yn4ViMbpo7yIrWWqiK6/W2yIPIDCZMMKGk
+        xOUsPBVRwrUULF1F5MD7JaxmNmBN3aX7B8ACna6z/sRWy/wqW3Y/869dzMnGYi5aM1uv9zh76tG2
+        7uu4Z9gRD/Xtc+abDN6LdysLRTe0O7s/wtnJGIWLtvawbf6d3Mx5aBxSeX4bvQ6Y6hXAVIxSHRpM
+        mXaD+8DUKeOMD2C+GTBj1g/mmpEXhlLHjIqwUMYpProXSrwsFWe6F8oSo/w2UBmSSq7fTfYDUimo
+        4psiHraG91P5txo+UPkKVH7cOw5JZcyEDlzAY5oqmvZRybC8p5z3F/CByvBUqsOzkBU8YZQxHphK
+        gesmvVSmiWSSiYHKN0SlPJkchaRSa/wSD0wl9o6it4JzJbigQ1/5tqgcTw4CUinlHZSB+0o19JX/
+        DpVHk+OjyenZ3odAXMY8obGiz24t6cuAyRnVcd91mcR4W3KuVS+Y+NKAb/Pl8+FM6P8E53lEWve+
+        Wv/nzLhQiRSJ1Jx19s+tfySkYiWMzXyOCu+OFLNdgd9gfPsLcvm6kb0XAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '671'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:36 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-17JAN25
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2VRu3LDIBD8l6sVBhASlro8mqRImvQabJ1tEoQ0AjnJePzvOZSxbE/K273dPZYj
+        fITej8MGapCMQwYjhslFqI8QbYchmm6AWui8FFLpQgsuMyA0Iin6AT38jSEp9na3h7qqZMEZz8D1
+        XzRprYo0DaPdYLPZG78j7R1tKF5kcOjd1BGQ54xXuuIiF2ewmUJLBJOl0lguqO+j7b1xF+qUgfUt
+        fjdzBmWupCiYUgkOcSSRj403KQYe3h/vhH65f5UFne5MiBdVudKMTgoYo8NZtFBaUj10WWf9AjIt
+        kTI6swQLzkUpk0eqprE+IvVJbZZyJVTO0/L4eR3IWUGua1pqTLhiNJ9Lm4m1ba8k1dwt4bajX2ib
+        Fp094Pjz//GLq+n6ydMVuSz5jeuZEExhTi1O4dnf/LZeVZwn/G2Kt0Ql0u9N4clut1DLNESy9Uh7
+        W+MCnn4Boe+AJVwCAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '356'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:37 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-28FEB25
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2VSyW7DIBD9lzm7FmBjjI/pIvXUS+8WiUlCi7FlcJoqyr93IEriqNx424wenODL
+        D24aN9AAywlkMGk/2wDNCYLptQ+qH6GhoqgoKwUXtKIZIBo0OoZRO7hcfXTszW6PYkIqLnKegR1+
+        oJGSFuk2Tmaj281euR2an0hOZFlncBjs3CNAWc7jKevqCraz7yLBBRMov8FuCGZwyi64cwbGdfrY
+        pik4tWaU52UZYR8mdLnQOhUHwerz+YnVb68rxnF7q3y4unB1ytKyXodgdXItOZ5XGNkbd5/DBY+r
+        9ep4V1IuUkosqDUuaGwVO2W8YKIQST19L4KJqHLGMlijrFX+gZIsJiVmbbolUycGCdPje3Rtp605
+        6On3fwe3XNUPs8NNCiZTobfYKyFremlz9u/u4eFFLUkR8Y85PBKS8DISL2a7RYbjDwmY6zTqtsp6
+        ff4DhydV1GcCAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '353'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:37 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-10JAN25
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2VRy1LDMAz8F51Tj+3YsZ0bjwsc4MI94zZua0icTOwUmE7/HSVAmoGjdrVarXSG
+        19iFod9BCZxQyGBwcWwSlGdIvnUx2baHkqm8YFwoqZg2GSCaHCq63gX4LuOkOPrDEUpjaCEJzaDp
+        3rFSkikiM+gHv3PV7mjDAbUbSiineQanrhlbBHRBuMmZMGYBqzHWSAitlKDTwB84dMl3wTYr7pKB
+        D7X7qGYXdNWcSSLEBMc0oCqkKtjJCG5f7jaMPt48cYnLNzamq0qY2Si6lBo3ixZKUk407tb6sICF
+        0XO21l6djRFz+uk4lQ/J4UXxnpxTzCbo1Dy8rRyLgjCdwRa7KhvXjJ53mYmtr1eEmg0Q9y0+oq5q
+        1/iTGz7/p1+m2rYbA65REOny1dBfnBEmnMAzjvEhrB/OmeKUTfjzmP4QQuQTce/3ewwoeAYJ5waH
+        fXvbRHf5AqMF+TpfAgAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '357'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:37 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-26SEP25
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2VRS3PCIBD+L3uODBAgicc+Dj21M+09gwaVlpBMINaO43/vEqvG6XG/F8u3R/gM
+        nR/6NSyBEwoZDCaMLsLyCNG2JkTd9rBkRa4YF4UsWFllgGg06Oh64+E8huTY2e0OxRRVnMgMXPed
+        RqkkJTSDfrBrU6932m/RvUBMMlTtOze2CHBJKlYoySp1AesxNEgUiopzxB/su2g7r92MO2VgfWMO
+        9fQKLKuSM0mESHCIA7p8rL1OD8HDx+OCq/fnNy5xfadDvLgYVQXa8KVgYnRmct04pXLCygxa62+o
+        pGL6basPN7DkYopJFdXWR4O9YqssF0qIQtAkH77m0SInWO0KZbUOd4wsUvzErGwzZ86rImFbvEhT
+        N8bZvRl+/pdwzdVtN3rcJOfV1Og19kIwQo3ANsfw4ueX55xXkib8dYz3RM5klYgnu9ngSSgOEWO9
+        Qd1Gu2BOv3IS2hpoAgAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '357'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:37 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-27JUN25
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2VRTVPDIBD9L5xTBjYhIT2qFz3oRc8Z2tAWJSQTSK3T6X93obapetz3sW/n7ZG8
+        +96Nw5osCVBGMjJqP9lAlkcSTKd9UN1AlrzKSw5FJSou64wgGjQ6+kE7ch59dOzMdodiVpQ5UJER
+        23/GMQdI4zCatW7WO+W26F4wyiVARva9nToEZEFrKYXkBb+AzeRbJGRR5Tmj7Aq7PpjeKXvDnTJi
+        XKsPTUohy1oCF7QoIuzDiC4XGqdiELl7vV9A9fT2DALPt8qHiwtvZ1LEJK9DsDq5Zo4LQes8I51x
+        MwoCkqNThxkUpUgHx4oa44LGXrFVwCY5MJHk48ev2JJKXL1CXaP8TFGM1eKHWJn21lOnDCRMhx9p
+        m1Zbs9fj1/8SrmtV108uXoIfTe7r3gtTQnXuc/KP7vb3ADljZcRfpvCH4DVE4sFsNshIVAXc6zTq
+        Nsp6ffoGy3fWDmoCAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '356'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:37 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-26DEC25
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2VRu3KDMBD8l6uxRuiBgDJ2ilRp0jOykW05QjBIOMl4/O854dhhklK7t7u6vQuc
+        Qu/HYQc1MEIhg9GEyUWoLxBtZ0LU3QB1rniRM6FkoSqZAaLRoKIfjIfbMyTF0R6OOEyrsqKEZuD6
+        j/QsOWUEZcNod6bZHbU/oHpFSc6kyuDcu6lDgOekEDmOy+oONlNokRBSCDY7/sC+j7b32i24awbW
+        t+azmVOgrkqWSyJEgkMcUeVj43UKgqe39YoVm+c1k/h9p0O8q/DvTMqUFEyMzsyqBVdUhGXQWf8L
+        qkLM23X6kZ3PNsklNdRYHw3WGlOPSomK0TQ9vi+NS05KXHuLY40OSwo3TE4zs7XtUsRVCkbCdniQ
+        tmmNs2czfv3v4OGru37yMZV9O9HD9k5gmOFY5hRe/OLwijFOuUj46xT/EIwWidjY/T4x2FBEW29w
+        bq9dMNdvYSt3zWcCAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '356'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:37 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-PERPETUAL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2VSy27bMBD8F55lgcuHSPmWNDkUKJCgSM8CY9E2G4oyRNJpEeTfu2RSx06OO7Oz
+        OzvkC/kd57AcNmRNWEtJQxYbs09k/UKSm2xMZjqQNSjeARNKKsZ4QxBNFhXzwQbyVsai2Lvdnqx7
+        rSVtaUP8/IyVYrpWh8Vt7LDZm7BD7QoxzqEhx9nnCQHGOmip6noBoP7DQ45joUAxJaGOeSfCnNwc
+        jL9gXxviwmj/DHVXccJAtkIUOKYFdSENwZR15Prh2+r+9uf97cOvqx94hDcxnemEbCVeZlPytso+
+        KIlBITe5cAI7JXUxN5mP3b2idUYJaXAhWUwWcwWQPUNfrLYvT2eDObSdKl7feoej8RmZkhRQpXoF
+        nILWVHS6IY+lw8RzveiKh0o8uvHLMYi7CR9uHEbr3dEuf7/mdJpqpjmHYpcLEPRi7omCvhKbvCwl
+        oW0Oowu7argh79Wg8UfoFjjYlcT3yfF7uPxPWoi+4Hc5fSI6rgpx47ZbZDQendBDsNi3NT7a138K
+        i9jIvgIAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '406'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:37 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-28MAR25
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2VSyW7DIBD9lzm7CDDYxrculx6qSlXvFolJQouxZXCaKsq/d3CVxe1x3jJvZuAI
+        H6H347CGGjihkMFowuQi1EeItjMh6m6AmpV5wbgoZclZkQGi0aCjH4yH3zIkx85udyimTOYlkRm4
+        /iuVlMq5HEa7Ns16p/0W3XeUsIqKDPa9mzoEOFMkl5ghq/KMNlNokeFMMqYooRfc99H2Xrtb8pSB
+        9a05NHMQ1KpCigiR4BBHtPnYeJ2y4OH98Y5XL/dvXOIGTod4duH4OHCKCiZGZ2bXDVcyovIMOusv
+        OUqIebZOH65KPBdPW6cjNdZHg5fFuwpeFJVS5SwfP696qqQkafMV6hodFlQxDzQzK9sumDkZCdvh
+        o7RNa5zdm/H7/xEufXXXTx5HqSq66HrG8SMYgcecwrNfvH2uyqJK+OsU/xCKq0Q82c0GmYJlELGt
+        N6jbaBfM6QeRjc7xagIAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '358'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:37 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-31JAN25
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2VRy1LDIBT9l7tOmUBICNn52OhCN+4ztKEtSkgmkKrT6b97QRszOqw4554HlzO8
+        +sFN4w4aYCSHDCbtZxugOUMwvfZB9SM0VBQVZVyUglKeAaJBo2IYtYPvq4+KozkcoZFSMEHKDOzw
+        jreaypLkGYyT2el2d1TugNpNTnIuZAanwc49AlwQwfEUvL6C7ey7SDBeFnm0+IHdEMzglF1xlwyM
+        6/RHm1JiKqMl4TzCPkyocqF1KgbB7cvdpqCPN0+sxPJW+bCoJK1Tc69DsDqJfilZEMEy6I1bQFGJ
+        9LZeLck0z6uSRZO4nda4oHGluFDKRcWwbBqf3lbGFSMVzWCLY63ya0akNonYmm5NpATETY9f0bWd
+        tuakp8//719cVT/MDnvUIu1yMb3ilHDNcY+zf3DrH2eFrGoW8ec5/CFqwSNxb/Z7ZCROBbR1Guf2
+        ynp9+QJ/d3xeYAIAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '355'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 00:52:37 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

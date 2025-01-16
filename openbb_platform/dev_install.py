@@ -148,7 +148,7 @@ def install_platform_local(_extras: bool = False):
         extras_args = ["-E", "all"] if _extras else []
 
         subprocess.run(
-            CMD + ["lock", "--no-update"],
+            CMD + ["lock"],
             cwd=PLATFORM_PATH,
             check=True,
         )
@@ -193,7 +193,7 @@ def install_platform_cli():
         CMD = [sys.executable, "-m", "poetry"]
 
         subprocess.run(
-            CMD + ["lock", "--no-update"],
+            CMD + ["lock"],
             cwd=CLI_PATH,
             check=True,  # noqa: S603
         )
