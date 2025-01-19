@@ -202,7 +202,7 @@ class SecManagementDiscussionAnalysisFetcher(
         extracted_text = extract(
             filing_str,
             url=data["url"],
-            include_tables=query.include_tables,
+            include_tables=True,
             include_comments=False,
             include_formatting=False,
             include_images=True,
@@ -299,6 +299,16 @@ class SecManagementDiscussionAnalysisFetcher(
                 at_end = True
 
             if found_start and not at_end:
+                if (
+                    line.strip().endswith("|")
+                    and not line.strip().startswith("|")
+                    and len(line) > 1
+                ):
+                    line = (  # noqa
+                        "| " + line
+                        if len(line.split("|")) > 1
+                        else line.replace("|", "").strip()
+                    )
                 if (
                     line[0].isdigit()
                     or line[0] == "•"
@@ -416,7 +426,10 @@ class SecManagementDiscussionAnalysisFetcher(
                 or line.strip()[0].islower()
                 or line.strip().isnumeric()
                 or line.strip()[0] == "("
-                or line.strip().endswith(".")
+                or (
+                    line.strip().endswith((".", ":", ";", ",", "-", '"'))
+                    and not line.strip().isupper()
+                )
             ):
                 return False
 
@@ -473,9 +486,14 @@ class SecManagementDiscussionAnalysisFetcher(
             """Clean up document lines"""
             cleaned_lines: list = []
             i = 0
+            max_cols = 0
 
             while i < len(document):
                 current_line = document[i]
+
+                if query.include_tables is False and "|" in current_line:
+                    i += 1
+                    continue
 
                 # Detect table by empty header pattern
                 if (
@@ -524,6 +542,15 @@ class SecManagementDiscussionAnalysisFetcher(
 
                     i += 2  # Skip original header and separator
 
+                elif current_line.strip().startswith("!["):
+                    image_file = (
+                        current_line.split("]")[1].replace("(", "").replace(")", "")
+                    )
+                    base_url = data["url"].rsplit("/", 1)[0]
+                    image_url = f"{base_url}/{image_file}"
+                    cleaned_lines.append(f"![Graphic]({image_url})\n\n")
+                    i += 1
+
                 elif is_title_case(current_line):
                     cleaned_lines.append(
                         f"## **{current_line}**\n\n"
@@ -537,7 +564,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     # Check if this is a table row that needs padding
                     if "|" in current_line:
                         current_cols = count_columns_in_data_row(current_line)
-                        if current_cols != max_cols:
+                        if max_cols and max_cols > 0 and current_cols != max_cols:
                             padded_line = pad_row_columns(current_line, max_cols)
                             cleaned_lines.append(padded_line)
                         else:
