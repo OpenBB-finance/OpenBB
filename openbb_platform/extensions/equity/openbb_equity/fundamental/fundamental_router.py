@@ -477,3 +477,17 @@ async def trailing_dividend_yield(
 ) -> OBBject:
     """Get the 1 year trailing dividend yield for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ManagementDiscussionAnalysis",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "sec"})],
+)
+async def management_discussion_analysis(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the Management Discussion & Analysis section from the financial statements for a given company."""
+    return await OBBject.from_query(Query(**locals()))

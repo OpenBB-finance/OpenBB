@@ -15,6 +15,8 @@ aiosqlite = "^0.20.0"
 xmltodict = "^0.13.0"
 beautifulsoup4 = "^4.12"
 lxml = "^5.2.1"
+pytz = "^2021.3"
+trafilatura = "^2.0"
 
 [build-system]
 requires = ["poetry-core"]
