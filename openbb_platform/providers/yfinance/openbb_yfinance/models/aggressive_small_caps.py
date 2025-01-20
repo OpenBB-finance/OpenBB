@@ -46,12 +46,12 @@ class YFAggressiveSmallCapsFetcher(
     ) -> list[dict]:
         """Get data from YF."""
         # pylint: disable=import-outside-toplevel
-        from openbb_yfinance.utils.helpers import get_defined_screener
+        from openbb_yfinance.utils.helpers import get_custom_screener
 
         # The predefined screener doesn't match what yFinance has for the settings. We'll have to create our own.
         body = {
             "offset": 0,
-            "size": 100,
+            "size": 250,
             "sortField": "totalrevenues1yrgrowth.lasttwelvemonths",
             "sortType": "desc",
             "quoteType": "equity",
@@ -73,7 +73,7 @@ class YFAggressiveSmallCapsFetcher(
             "userId": "",
             "userIdType": "guid",
         }
-        return await get_defined_screener(body=body, limit=query.limit)
+        return await get_custom_screener(body=body, limit=query.limit)
 
     @staticmethod
     def transform_data(

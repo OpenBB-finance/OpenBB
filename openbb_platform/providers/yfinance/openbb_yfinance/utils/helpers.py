@@ -45,6 +45,112 @@ PREDEFINED_SCREENERS = [
     "top_mutual_funds",
 ]
 
+SCREENER_FIELDS = [
+    "symbol",
+    "shortName",
+    "regularMarketPrice",
+    "regularMarketChange",
+    "regularMarketChangePercent",
+    "regularMarketVolume",
+    "regularMarketOpen",
+    "regularMarketDayHigh",
+    "regularMarketDayLow",
+    "regularMarketPreviousClose",
+    "fiftyDayAverage",
+    "twoHundredDayAverage",
+    "fiftyTwoWeekHigh",
+    "fiftyTwoWeekLow",
+    "marketCap",
+    "sharesOutstanding",
+    "epsTrailingTwelveMonths",
+    "forwardPE",
+    "epsForward",
+    "bookValue",
+    "priceToBook",
+    "trailingAnnualDividendYield",
+    "currency",
+    "exchange",
+    "exchangeTimezoneName",
+    "earnings_date",
+]
+
+
+async def get_custom_screener(
+    body: dict[str, Any],
+    limit: Optional[int] = None,
+    region: str = "US",
+):
+    """Get a custom screener."""
+    # pylint: disable=import-outside-toplevel
+    import yfinance as yf  # noqa
+    from openbb_core.provider.utils.helpers import (
+        get_requests_session,
+        safe_fromtimestamp,
+    )
+    from pytz import timezone
+    from yfinance.data import YfData
+
+    session = get_requests_session()
+    params_dict = {
+        "corsDomain": "finance.yahoo.com",
+        "formatted": "false",
+        "lang": "en-US",
+        "region": region,
+    }
+    _data = YfData(session=session)
+    results: list = []
+    body = body.copy()
+    response = _data.post(
+        "https://query2.finance.yahoo.com/v1/finance/screener",
+        body=body,
+        user_agent_headers=_data.user_agent_headers,
+        params=params_dict,
+        proxy=session.proxies if session.proxies else None,
+    )
+    response.raise_for_status()
+    res = response.json()["finance"]["result"][0]
+
+    if not res.get("quotes"):
+        raise EmptyDataError("No data found for the predefined screener.")
+
+    results.extend(res["quotes"])
+    total_results = res["total"]
+    results.extend(res["quotes"])
+
+    while len(results) < total_results:
+        if limit is not None and len(results) >= limit:
+            break
+        offset = len(results)
+        body["offset"] = offset
+        res = _data.post(
+            "https://query2.finance.yahoo.com/v1/finance/screener",
+            body=body,
+            user_agent_headers=_data.user_agent_headers,
+            params=params_dict,
+            proxy=session.proxies if session.proxies else None,
+        )
+        if not res:
+            break
+        results.extend(res.get("quotes", []))
+
+    output: list = []
+
+    for item in results:
+        tz = item["exchangeTimezoneName"]
+        earnings_date = (
+            safe_fromtimestamp(item["earningsTimestamp"], timezone(tz)).strftime(  # type: ignore
+                "%Y-%m-%d %H:%M:%S%z"
+            )
+            if item.get("earningsTimestamp")
+            else None
+        )
+        item["earnings_date"] = earnings_date
+        result = {k: item.get(k, None) for k in SCREENER_FIELDS}
+        if result.get("regularMarketChange") and result.get("regularMarketVolume"):
+            output.append(result)
+
+    return output[:limit] if limit is not None else output
+
 
 async def get_defined_screener(
     name: Optional[str] = None,
@@ -65,61 +171,39 @@ async def get_defined_screener(
             f"Invalid predefined screener name: {name}\n    Valid names: {PREDEFINED_SCREENERS}"
         )
 
-    fields = [
-        "symbol",
-        "shortName",
-        "regularMarketPrice",
-        "regularMarketChange",
-        "regularMarketChangePercent",
-        "regularMarketVolume",
-        "regularMarketOpen",
-        "regularMarketDayHigh",
-        "regularMarketDayLow",
-        "regularMarketPreviousClose",
-        "fiftyDayAverage",
-        "twoHundredDayAverage",
-        "fiftyTwoWeekHigh",
-        "fiftyTwoWeekLow",
-        "marketCap",
-        "sharesOutstanding",
-        "epsTrailingTwelveMonths",
-        "forwardPE",
-        "epsForward",
-        "bookValue",
-        "priceToBook",
-        "trailingAnnualDividendYield",
-        "currency",
-        "exchange",
-        "exchangeTimezoneName",
-        "earnings_date",
-    ]
     results: list = []
     session = get_requests_session()
-    screener = yf.screener.Screener(
-        session=session, proxy=session.proxies if session.proxies else None
+
+    offset = 0
+
+    response = yf.screen(
+        name,
+        session=session,
+        proxy=session.proxies if session.proxies else None,
+        size=250,
+        offset=offset,
     )
 
-    if screener.response:
-        screener.response = None
+    if not response.get("quotes"):
+        raise EmptyDataError("No data found for the predefined screener.")
 
-    if body is not None:
-        screener.set_body(body)
-    else:
-        if not name:
-            raise ValueError("Name must be provided if body is not.")
-        screener.set_predefined_body(name)
-        screener.patch_body({"size": 100, "offset": 0})
-
-    res = screener.response
-    total_results = res["total"]
-    results.extend(res["quotes"])
+    results.extend(response["quotes"])
+    total_results = response["total"]
+    results.extend(response["quotes"])
 
     while len(results) < total_results:
         if limit is not None and len(results) >= limit:
             break
         offset = len(results)
-        screener.patch_body({"offset": offset})
-        res = screener.response
+        res = yf.screen(
+            name,
+            session=session,
+            proxy=session.proxies if session.proxies else None,
+            size=250,
+            offset=offset,
+        )
+        if not res:
+            break
         results.extend(res.get("quotes", []))
 
     output: list = []
@@ -134,7 +218,7 @@ async def get_defined_screener(
             else None
         )
         item["earnings_date"] = earnings_date
-        result = {k: item.get(k, None) for k in fields}
+        result = {k: item.get(k, None) for k in SCREENER_FIELDS}
         if result.get("regularMarketChange") and result.get("regularMarketVolume"):
             output.append(result)
 
