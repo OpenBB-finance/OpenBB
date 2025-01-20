@@ -206,7 +206,7 @@ class SecManagementDiscussionAnalysisFetcher(
             include_comments=False,
             include_formatting=False,
             include_images=True,
-            favor_precision=True,
+            favor_recall=True,
         )
 
         if not extracted_text:
@@ -282,10 +282,14 @@ class SecManagementDiscussionAnalysisFetcher(
                 annual_end = "statements of consolidated"
 
             if (
-                line.lower().startswith(starting_line.lower())
-                or line.lower().startswith(annual_start.lower())
+                line.replace("|", "").strip().lower().startswith(starting_line.lower())
+                or line.replace("|", "")
+                .strip()
+                .lower()
+                .startswith(annual_start.lower())
             ) and "management" in line.lower():
                 found_start = True
+                line = line.replace("|", " ").replace("  ", " ")  # noqa
 
             if (
                 found_start
@@ -297,18 +301,9 @@ class SecManagementDiscussionAnalysisFetcher(
                 )
             ):
                 at_end = True
+                line = line.replace("|", " ").replace("  ", " ")  # noqa
 
             if found_start and not at_end:
-                if (
-                    line.strip().endswith("|")
-                    and not line.strip().startswith("|")
-                    and len(line) > 1
-                ):
-                    line = (  # noqa
-                        "| " + line
-                        if len(line.split("|")) > 1
-                        else line.replace("|", "").strip()
-                    )
                 if (
                     line[0].isdigit()
                     or line[0] == "•"
@@ -316,19 +311,46 @@ class SecManagementDiscussionAnalysisFetcher(
                     and line[1] not in [".", " ", "\u0020"]
                     and line[1].isalpha()
                 ):
-                    line = line[0] + " " + line[1:]  # noqa
+                    word = line.split(" ")[0]
+                    if not word.replace(" ", "").isnumeric():
+                        line = line[0] + " " + line[1:]  # noqa
 
-                if "●" in line or ("•") in line:
+                if "●" in line or "•" in line:
                     line = (  # noqa
                         line.replace("|", "").replace("●", "-").replace("•", "-")
                     )
 
                 if "|" in line:
+                    first_word = line.split("|")[0].strip()
+                    if first_word.isupper() or "item" in first_word.lower():
+                        line = line.replace("|", " ").replace("  ", " ").strip()  # noqa
 
-                    if query.include_tables is False:
+                    if (
+                        line.endswith("|")
+                        and not line.startswith("|")
+                        and len(line) > 1
+                    ):
+                        line = (  # noqa
+                            "| " + line
+                            if len(line.split("|")) > 1
+                            else line.replace("|", "").strip()
+                        )
+                    elif (
+                        line.startswith("|")
+                        and not line.endswith("|")
+                        and len(line) > 1
+                        and len(line.split("|"))
+                    ):
+                        line = (  # noqa
+                            line + " |"
+                            if len(line.split("|")) > 1
+                            else line.replace("|", "").strip()
+                        )
+
+                    if query.include_tables is False and "|" in line:
                         continue
                     if "$" in line:
-                        line = line.replace("$ |", "").replace("| |", "|")
+                        line = line.replace("$ |", "").replace("| |", "|")  # noqa
                     if "|" not in previous_line and all(
                         [char == "|" for char in line.replace(" ", "")]
                     ):
@@ -389,6 +411,8 @@ class SecManagementDiscussionAnalysisFetcher(
                         new_lines.extend(
                             ["\n"] + wrap(line, width=query.wrap_length) + ["\n"]
                         )
+                    elif line.strip().startswith("-"):
+                        new_lines.extend([line] + ["\n"])
                     else:
                         new_lines.extend(wrap(line, width=query.wrap_length) + ["\n"])
                     previous_line = line
@@ -416,6 +440,10 @@ class SecManagementDiscussionAnalysisFetcher(
                 "by",
                 "from",
                 "versus",
+                "&",
+                "," "$",
+                "per",
+                "share",
             }
 
             # Basic checks
@@ -433,17 +461,33 @@ class SecManagementDiscussionAnalysisFetcher(
             ):
                 return False
 
-            words = line.strip().replace(".", "").split()
+            words = line.strip().split()
+
+            if (
+                words[0].isnumeric()
+                and words[-1].isnumeric()
+                and len(words) > 2
+                and words[1].isalpha()
+                and "." not in words[1]
+            ):
+                return True
 
             if (
                 all(
-                    word.replace("(", "").replace(")", "").replace("-", "").isupper()
+                    word.replace("(", "")
+                    .replace(")", "")
+                    .replace("-", "")
+                    .replace(",", "")
+                    .replace(".", "")
+                    .isupper()
                     for word in words
                 )
                 or str(words)
                 .replace("(", "")
                 .replace(")", "")
                 .replace("-", "")
+                .replace(",", "")
+                .replace(".", "")
                 .istitle()
             ):
                 return True
@@ -494,6 +538,12 @@ class SecManagementDiscussionAnalysisFetcher(
                 if query.include_tables is False and "|" in current_line:
                     i += 1
                     continue
+                elif (
+                    query.include_tables is False
+                    and "|" in current_line
+                    and "|" not in document[i - 1]
+                ):
+                    current_line = current_line.replace("|", "")
 
                 # Detect table by empty header pattern
                 if (
@@ -548,29 +598,65 @@ class SecManagementDiscussionAnalysisFetcher(
                     )
                     base_url = data["url"].rsplit("/", 1)[0]
                     image_url = f"{base_url}/{image_file}"
-                    cleaned_lines.append(f"![Graphic]({image_url})\n\n")
+                    cleaned_lines.append(f"![Graphic]({image_url})\n")
                     i += 1
 
                 elif is_title_case(current_line):
                     cleaned_lines.append(
-                        f"## **{current_line}**\n\n"
+                        f"## **{current_line.replace("*", "")}**\n"
                         if current_line.strip().startswith("Item")
                         or current_line.strip().isupper()
-                        else f"### **{current_line}**\n\n"
+                        else f"### **{current_line.replace("*", "")}**\n"
                     )
                     i += 1
 
                 else:
+                    if current_line.startswith("-") and "|" in current_line:
+                        current_line = current_line.replace("|", "")
                     # Check if this is a table row that needs padding
-                    if "|" in current_line:
+                    if (
+                        current_line.strip().startswith("-")
+                        and "|" not in current_line
+                        and "." in current_line
+                        and (
+                            document[i - 1].strip().endswith(", and")
+                            or document[i - 1].strip().endswith(" and")
+                        )
+                    ):
+                        clean_line = current_line.split(".")[0] + ".\n\n"
+                        if len(current_line.split(".")) > 1:
+                            remaining = ". ".join(current_line.split(".")[1:])
+                            clean_line += remaining + "\n"
+                        cleaned_lines.append(clean_line)
+                    elif current_line.strip().startswith("-") and (
+                        "|" not in current_line
+                        and not previous_line.strip().endswith(";")
+                        and not previous_line.strip().endswith(".")
+                        and not previous_line.strip().endswith(":")
+                        and current_line.strip()
+                        .replace("-", "")
+                        .replace(" ", "")
+                        .islower()
+                    ):
+                        old_line = cleaned_lines.pop(-1)
+                        if not old_line.strip("\n"):
+                            old_line = cleaned_lines.pop(-2)
+
+                        cleaned_lines.append(
+                            old_line.strip("\n")
+                            + " "
+                            + current_line.replace("-", "").strip()
+                        )
+
+                    elif "|" in current_line:
                         current_cols = count_columns_in_data_row(current_line)
                         if max_cols and max_cols > 0 and current_cols != max_cols:
                             padded_line = pad_row_columns(current_line, max_cols)
                             cleaned_lines.append(padded_line)
                         else:
                             cleaned_lines.append(current_line)
+                    # Not a table row, keep unchanged
                     else:
-                        # Not a table row, keep unchanged
                         cleaned_lines.append(current_line)
                     i += 1
 
