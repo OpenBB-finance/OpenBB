@@ -1,6 +1,6 @@
 """SEC Management & Discussion Model."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,too-many-branches,too-many-locals,too-many-statements
 
 from typing import Any, Optional
 
@@ -186,7 +186,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 "content": response,
             }
 
-    def transform_data(
+    def transform_data(  # noqa: PLR0912
         query: SecManagementDiscussionAnalysisQueryParams,
         data: dict,
         **kwargs: Any,
@@ -201,12 +201,10 @@ class SecManagementDiscussionAnalysisFetcher(
 
         extracted_text = extract(
             filing_str,
-            url=data["url"],
             include_tables=True,
-            include_comments=False,
+            include_comments=True,
             include_formatting=False,
             include_images=True,
-            favor_recall=True,
         )
 
         if not extracted_text:
@@ -441,9 +439,11 @@ class SecManagementDiscussionAnalysisFetcher(
                 "from",
                 "versus",
                 "&",
-                "," "$",
+                ",",
+                "$",
                 "per",
                 "share",
+                "compared",
             }
 
             # Basic checks
@@ -534,16 +534,26 @@ class SecManagementDiscussionAnalysisFetcher(
 
             while i < len(document):
                 current_line = document[i]
+                next_line = document[i + 1] if i + 1 < len(document) else ""
+                previous_line = document[i - 1] if i > 0 else ""
 
-                if query.include_tables is False and "|" in current_line:
-                    i += 1
-                    continue
-                elif (
+                if (
                     query.include_tables is False
                     and "|" in current_line
                     and "|" not in document[i - 1]
                 ):
                     current_line = current_line.replace("|", "")
+
+                if (
+                    "|" in current_line
+                    and "|" not in previous_line
+                    and "|:-" not in next_line
+                ):
+                    current_line = current_line.replace("|", "")
+
+                if query.include_tables is False and "|" in current_line:
+                    i += 1
+                    continue
 
                 # Detect table by empty header pattern
                 if (
@@ -598,21 +608,39 @@ class SecManagementDiscussionAnalysisFetcher(
                     )
                     base_url = data["url"].rsplit("/", 1)[0]
                     image_url = f"{base_url}/{image_file}"
-                    cleaned_lines.append(f"![Graphic]({image_url})\n")
+                    cleaned_lines.append(f"![Graphic]({image_url})")
                     i += 1
 
                 elif is_title_case(current_line):
                     cleaned_lines.append(
-                        f"## **{current_line.replace("*", "")}**\n"
+                        f"## **{current_line.strip().replace("*", "").rstrip()}**"
                         if current_line.strip().startswith("Item")
                         or current_line.strip().isupper()
-                        else f"### **{current_line.replace("*", "")}**\n"
+                        else f"### **{current_line.strip().replace("*", "").rstrip()}**"
                     )
                     i += 1
 
                 else:
-                    if current_line.startswith("-") and "|" in current_line:
+                    if current_line.strip().startswith("-"):
                         current_line = current_line.replace("|", "")
+                        if current_line.strip()[-1] not in (".", ";", ":") and (
+                            (
+                                next_line.replace("|", "").strip().islower()
+                                and next_line.replace("|", "").strip().endswith(".")
+                            )
+                            or not next_line.strip()
+                            and i + 2 < len(document)
+                            and document[i + 2].replace("|", "").strip().endswith(".")
+                        ):
+                            if not next_line.strip() and i + 2 <= len(document):
+                                next_line = document[i + 2].strip()
+
+                            current_line = (
+                                current_line + " " + next_line.replace("|", "").strip()
+                            )
+                            cleaned_lines.append(current_line)
+                            i += 2
+                            continue
                     # Check if this is a table row that needs padding
                     if (
                         current_line.strip().startswith("-")
@@ -630,9 +658,9 @@ class SecManagementDiscussionAnalysisFetcher(
                         cleaned_lines.append(clean_line)
                     elif current_line.strip().startswith("-") and (
                         "|" not in current_line
-                        and not previous_line.strip().endswith(";")
-                        and not previous_line.strip().endswith(".")
-                        and not previous_line.strip().endswith(":")
+                        and not previous_line.replace("|", "").strip().endswith(";")
+                        and not previous_line.replace("|", "").strip().endswith(".")
+                        and not previous_line.replace("|", "").strip().endswith(":")
                         and current_line.strip()
                         .replace("-", "")
                         .replace(" ", "")
