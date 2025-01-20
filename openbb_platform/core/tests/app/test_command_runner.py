@@ -26,13 +26,40 @@ from pydantic import BaseModel, ConfigDict
 # pylint: disable=W0613, W0621, W0102, W0212
 
 
+class MockAPIRoute:
+    """MockAPIRoute"""
+
+    def __init__(self, route):
+        """Initialize the mock API route."""
+        self.route = route
+        self.openapi_extra = {"no_validate": True}
+
+
+class MockExecutionContext:
+    """MockExecutionContext"""
+
+    _route_map = {"mock/route": "mock_func"}
+
+    def __init__(self, cmd_map, route, sys, user):
+        """Initialize the mock execution context."""
+        self.command_map = cmd_map
+        self.route = route
+        self.system_settings = sys
+        self.user_settings = user
+
+    @property
+    def api_route(self) -> str:
+        """Mock API route."""
+        return MockAPIRoute(self.route)
+
+
 @pytest.fixture()
 def execution_context():
     """Set up execution context."""
     sys = SystemSettings()
     user = UserSettings()
     cmd_map = CommandMap()
-    return ExecutionContext(cmd_map, "mock/route", sys, user)
+    return MockExecutionContext(cmd_map, "mock/route", sys, user)
 
 
 @pytest.fixture()
@@ -304,6 +331,7 @@ async def test_static_command_runner_run(
             self.results = results
             self.extra = {}
             self.extra["metadata"] = {"test": "test"}
+            self.provider = None
 
     mock_get_command.return_value = other_mock_func
     mock_execute_func.return_value = MockOBBject(results=[1, 2, 3, 4])
@@ -330,12 +358,7 @@ async def test_static_command_runner_execute_func(
 ):
     """Test execute_func."""
 
-    class MockOBBject:
-        """Mock OBBject"""
-
-        def __init__(self, results):
-            self.results = results
-            self.extra = {}
+    static_command_runner = StaticCommandRunner()
 
     mock_parameters_builder_build.return_value = {
         "a": 1,
@@ -346,10 +369,14 @@ async def test_static_command_runner_execute_func(
         "chart": True,
     }
     mock_logging_service.log.return_value = None
-    mock_command.return_value = MockOBBject(results=[1, 2, 3, 4])
+    mock_command.return_value = OBBject(
+        results=[1, 2, 3, 4],
+        provider="mock_provider",
+        accessors={"charting": Mock()},
+    )
     mock_chart.return_value = None
 
-    result = await StaticCommandRunner._execute_func(
+    result = await static_command_runner._execute_func(
         "mock/route", (1, 2, 3, 4), execution_context, mock_func, {"chart": True}
     )
 
@@ -369,6 +396,7 @@ def test_static_command_runner_chart():
             {"date": "1991", "value": 200},
             {"date": "1992", "value": 300},
         ],
+        provider="mock_provider",
         accessors={"charting": Mock()},
     )
     mock_obbject.charting.show = Mock()
@@ -385,9 +413,10 @@ async def test_static_command_runner_command():
     class MockOBBject:
         """Mock OBBject"""
 
-        def __init__(self, results):
+        def __init__(self, results, **kwargs):
             self.results = results
             self.extra = {}
+            self.provider = kwargs.get("provider_choices").provider
 
     class MockProviderChoices:
         """Mock ProviderChoices"""
@@ -396,7 +425,7 @@ async def test_static_command_runner_command():
             self.provider = provider
 
     def other_mock_func(**kwargs):
-        return MockOBBject(results=[1, 2, 3, 4])
+        return MockOBBject([1, 2, 3, 4], **kwargs)
 
     mock_provider_choices = MockProviderChoices(provider="mock_provider")
 
