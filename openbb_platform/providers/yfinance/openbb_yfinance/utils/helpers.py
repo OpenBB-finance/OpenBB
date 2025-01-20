@@ -82,7 +82,6 @@ async def get_custom_screener(
 ):
     """Get a custom screener."""
     # pylint: disable=import-outside-toplevel
-    import yfinance as yf  # noqa
     from openbb_core.provider.utils.helpers import (
         get_requests_session,
         safe_fromtimestamp,
