@@ -116,7 +116,10 @@ class YFinanceShareStatisticsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from yfinance import Ticker  # noqa
+        from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import get_requests_session
+        from yfinance import Ticker
 
         symbols = query.symbol.split(",")
         results = []
@@ -136,19 +139,27 @@ class YFinanceShareStatisticsFetcher(
             "institutionsFloatPercentHeld",
             "institutionsCount",
         ]
+        session = get_requests_session()
+        messages: list = []
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
-            result = {}
-            ticker = {}
+            result: dict = {}
+            ticker: dict = {}
             try:
-                _ticker = Ticker(symbol)
+                _ticker = Ticker(
+                    symbol,
+                    session=session,
+                    proxy=session.proxies if session.proxies else None,
+                )
                 ticker = _ticker.get_info()
                 major_holders = _ticker.get_major_holders(as_dict=True).get("Value")
                 if major_holders:
                     ticker.update(major_holders)  # type: ignore
             except Exception as e:
-                warn(f"Error getting data for {symbol}: {e}")
+                messages.append(
+                    f"Error getting data for {symbol} -> {e.__class__.__name__}: {e}"
+                )
             if ticker:
                 for field in fields:
                     if field in ticker:
@@ -159,6 +170,16 @@ class YFinanceShareStatisticsFetcher(
         tasks = [get_one(symbol) for symbol in symbols]
 
         await asyncio.gather(*tasks)
+
+        if not results and messages:
+            raise OpenBBError("\n".join(messages))
+
+        if not results and not messages:
+            raise EmptyDataError("No data was returned for the given symbol(s).")
+
+        if results and messages:
+            for message in messages:
+                warn(message)
 
         return results
 
