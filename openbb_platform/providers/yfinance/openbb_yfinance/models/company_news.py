@@ -59,13 +59,20 @@ class YFinanceCompanyNewsFetcher(
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import get_requests_session
         from yfinance import Ticker
 
         results: list = []
         symbols = query.symbol.split(",")  # type: ignore
+        session = get_requests_session()
 
         async def get_one(symbol):
-            data = Ticker(symbol).get_news(count=query.limit, tab="all")
+            data = Ticker(symbol, session=session).get_news(
+                count=query.limit,
+                tab="all",
+                proxy=session.proxies if session.proxies else None,
+            )
             for d in data:
                 new_content: dict = {}
                 content = d.get("content")
@@ -94,6 +101,9 @@ class YFinanceCompanyNewsFetcher(
         tasks = [get_one(symbol) for symbol in symbols]
 
         await asyncio.gather(*tasks)
+
+        if not results:
+            raise EmptyDataError("No data was returned for the given symbol(s)")
 
         return results
 

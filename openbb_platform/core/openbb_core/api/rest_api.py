@@ -85,6 +85,17 @@ AppLoader.add_exception_handlers(app)
 
 
 if __name__ == "__main__":
+    # pylint: disable=import-outside-toplevel
     import uvicorn
 
-    uvicorn.run("openbb_core.api.rest_api:app", reload=True)
+    # This initializes the OpenBB environment variables so they can be read before uvicorn is run.
+    Env()
+    uvicorn_kwargs = system.python_settings.model_dump().get("uvicorn", {})
+    uvicorn_reload = uvicorn_kwargs.pop("reload", None)
+
+    if uvicorn_reload is None or uvicorn_reload:
+        uvicorn_kwargs["reload"] = True
+
+    uvicorn_app = uvicorn_kwargs.pop("app", "openbb_core.api.rest_api:app")
+
+    uvicorn.run(uvicorn_app, **uvicorn_kwargs)
