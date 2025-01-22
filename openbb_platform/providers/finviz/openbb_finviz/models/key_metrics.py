@@ -116,9 +116,15 @@ class FinvizKeyMetricsFetcher(
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
+        from finvizfinance import util
         from finvizfinance.quote import finvizfinance
+        from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import get_requests_session
 
         results: List = []
+        messages: List = []
+        util.session = get_requests_session()
 
         def get_one(symbol) -> Dict:
             """Get the data for one symbol."""
@@ -262,10 +268,21 @@ class FinvizKeyMetricsFetcher(
             return result
 
         symbols = query.symbol.split(",")
+
         for symbol in symbols:
             result = get_one(symbol)
             if result is not None and result:
                 results.append(result)
+
+        if not results and messages:
+            raise OpenBBError("\n".join(messages))
+
+        if not results and not messages:
+            raise EmptyDataError("No data was returned for any symbol")
+
+        if results and messages:
+            for message in messages:
+                warn(message)
 
         return results
 

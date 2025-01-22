@@ -11,6 +11,8 @@ import sys
 import uvicorn
 from fastapi.responses import JSONResponse
 from openbb_core.api.rest_api import app
+from openbb_core.app.service.system_service import SystemService
+from openbb_core.env import Env
 
 from .utils.api import check_port, get_user_settings, get_widgets_json, parse_args
 
@@ -25,6 +27,9 @@ logger.setLevel(logging.INFO)
 
 
 FIRST_RUN = True
+
+# Adds the OpenBB Environment variables to the script process.
+Env()
 
 HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
 
@@ -44,6 +49,14 @@ build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
 dont_filter = kwargs.pop("no-filter", False)
 widget_exclude_filter: list = []
+
+uvicorn_settings = (
+    SystemService().system_settings.python_settings.model_dump().get("uvicorn", {})
+)
+
+for key, value in uvicorn_settings.items():
+    if key not in kwargs and key != "app" and value is not None:
+        kwargs[key] = value
 
 if not dont_filter and os.path.exists(WIDGET_SETTINGS):
     with open(WIDGET_SETTINGS) as f:

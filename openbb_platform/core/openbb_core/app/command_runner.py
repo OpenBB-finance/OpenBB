@@ -16,11 +16,13 @@ from openbb_core.app.model.abstract.warning import OpenBBWarning, cast_warning
 from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ExtraParams
+from openbb_core.app.static.package_builder import PathHandler
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
 from pydantic import BaseModel, ConfigDict, create_model
 
 if TYPE_CHECKING:
+    from fastapi.routing import APIRoute
     from openbb_core.app.model.system_settings import SystemSettings
     from openbb_core.app.model.user_settings import UserSettings
     from openbb_core.app.router import CommandMap
@@ -28,6 +30,9 @@ if TYPE_CHECKING:
 
 class ExecutionContext:
     """Execution context."""
+
+    # For checking if the command specifies no validation in the API Route
+    _route_map = PathHandler.build_route_map()
 
     def __init__(
         self,
@@ -41,6 +46,11 @@ class ExecutionContext:
         self.route = route
         self.system_settings = system_settings
         self.user_settings = user_settings
+
+    @property
+    def api_route(self) -> "APIRoute":
+        """API route."""
+        return self._route_map[self.route]
 
 
 class ParametersBuilder:
@@ -222,7 +232,12 @@ class StaticCommandRunner:
     ) -> OBBject:
         """Run a command and return the output."""
         obbject = await maybe_coroutine(func, **kwargs)
-        obbject.provider = getattr(kwargs.get("provider_choices"), "provider", None)
+        if isinstance(obbject, OBBject):
+            obbject.provider = getattr(
+                kwargs.get("provider_choices"),
+                "provider",
+                getattr(obbject, "provider", None),
+            )
         return obbject
 
     @classmethod
@@ -314,21 +329,49 @@ class StaticCommandRunner:
                 for name, default in model_headers.items() or {}
             } or None
 
+            validate = not execution_context.api_route.openapi_extra.get("no_validate")
             try:
                 obbject = await cls._command(func, kwargs)
+                # The output might be from a router command with 'no_validate=True'
+                # It might be of a different type than OBBject.
+                # In this case, we avoid accessing those attributes.
+                if isinstance(obbject, OBBject) or validate:
+                    if validate and not isinstance(obbject, OBBject):
+                        raise OpenBBError(
+                            TypeError(
+                                f"Expected OBBject instance at function output, got {type(obbject)} instead."
+                            )
+                        )
+                    # This section prepares the obbject to pass to the charting service.
+                    obbject._route = route  # pylint: disable=protected-access
+                    std_params = cls._extract_params(kwargs, "standard_params") or (
+                        kwargs if "data" in kwargs else {}
+                    )
+                    extra_params = cls._extract_params(kwargs, "extra_params")
+                    obbject._standard_params = (  # pylint: disable=protected-access
+                        std_params
+                    )
+                    obbject._extra_params = (  # pylint: disable=protected-access
+                        extra_params
+                    )
+                    if chart and obbject.results:
+                        cls._chart(obbject, **kwargs)
 
-                # This section prepares the obbject to pass to the charting service.
-                obbject._route = route  # pylint: disable=protected-access
-                std_params = cls._extract_params(kwargs, "standard_params") or (
-                    kwargs if "data" in kwargs else {}
-                )
-                extra_params = cls._extract_params(kwargs, "extra_params")
-                obbject._standard_params = (  # pylint: disable=protected-access
-                    std_params
-                )
-                obbject._extra_params = extra_params  # pylint: disable=protected-access
-                if chart and obbject.results:
-                    cls._chart(obbject, **kwargs)
+                if warning_list:
+                    if isinstance(obbject, OBBject):
+                        obbject.warnings = []
+                    for w in warning_list:
+                        if isinstance(obbject, OBBject):
+                            obbject.warnings.append(cast_warning(w))
+                        if user_settings.preferences.show_warnings:
+                            showwarning(
+                                message=w.message,
+                                category=w.category,
+                                filename=w.filename,
+                                lineno=w.lineno,
+                                file=w.file,
+                                line=w.line,
+                            )
             finally:
                 ls = LoggingService(system_settings, user_settings)
                 ls.log(
@@ -341,19 +384,6 @@ class StaticCommandRunner:
                     custom_headers=custom_headers,
                 )
 
-        if warning_list:
-            obbject.warnings = []
-            for w in warning_list:
-                obbject.warnings.append(cast_warning(w))
-                if user_settings.preferences.show_warnings:
-                    showwarning(
-                        message=w.message,
-                        category=w.category,
-                        filename=w.filename,
-                        lineno=w.lineno,
-                        file=w.file,
-                        line=w.line,
-                    )
         return obbject
 
     # pylint: disable=W0718
@@ -385,7 +415,9 @@ class StaticCommandRunner:
 
         duration = perf_counter_ns() - start_ns
 
-        if execution_context.user_settings.preferences.metadata:
+        if execution_context.user_settings.preferences.metadata and isinstance(
+            obbject, OBBject
+        ):
             try:
                 obbject.extra["metadata"] = Metadata(
                     arguments=kwargs,
