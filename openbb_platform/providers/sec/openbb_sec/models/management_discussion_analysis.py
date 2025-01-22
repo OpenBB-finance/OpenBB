@@ -206,8 +206,9 @@ class SecManagementDiscussionAnalysisFetcher(
             filing_str,
             include_tables=True,
             include_comments=True,
-            include_formatting=False,
+            include_formatting=True,
             include_images=True,
+            include_links=True,
         )
 
         if not extracted_text:
@@ -216,16 +217,21 @@ class SecManagementDiscussionAnalysisFetcher(
         def is_table_header(line: str) -> bool:
             """Check if line is a table header"""
             return (
-                all(
-                    not char.isnumeric()
-                    for char in line.replace("(", "")
-                    .replace(")", "")
-                    .replace(",", "")
-                    .replace(" ", "")
-                    .replace("|", "")
+                (
+                    all(
+                        not char.isnumeric()
+                        for char in line.replace("(", "")
+                        .replace(")", "")
+                        .replace(",", "")
+                        .replace(" ", "")
+                        .replace("|", "")
+                        .replace("/", "")
+                    )
+                    and line.replace("|", "").replace("-", "").strip() != ""
                 )
-                and line.replace("|", "").replace("-", "").strip() != ""
-            ) or line.replace("|", "").replace(" ", "").endswith(":")
+                or line.replace("|", "").replace(" ", "").endswith(":")
+                or line.replace("|", "").isupper()
+            )
 
         def insert_cell_dividers(line):
             cells = line.strip().split("|")
@@ -246,17 +252,25 @@ class SecManagementDiscussionAnalysisFetcher(
                 ):
                     # Remove the dash and insert a divider before it
                     new_cell = re.sub(r"[—\-–]+$", "", new_cell).strip() + " | —"
+
                 elif (
-                    re.search("[A-Za-z]", new_cell)
-                    and re.search("[0-9]", new_cell)
-                    and re.search(r"[A-Za-z]\s+[0-9]", new_cell)
+                    re.search(r"[A-Za-z]", new_cell)
+                    and re.search(
+                        r"[\d\(\)]", new_cell
+                    )  # Modified to include parentheses
+                    and re.search(
+                        r"[A-Za-z]\s+(\(?\d|\(\d+\))", new_cell
+                    )  # Modified pattern
                     and "thru" not in new_cell.lower()
                     and "through" not in new_cell.lower()
                     and "outstanding" not in new_cell.lower()
                 ):
-                    # Handle cases with spaces between letters and numbers
-                    new_cell = re.sub(r"(?<=[A-Za-z])\s+(?=[0-9])", " |", new_cell)
-                    new_cell = re.sub(r"(?<=[A-Za-z])(?=[0-9])", "|", new_cell)
+                    # Handle cases with spaces between letters and numbers/parenthesized numbers
+                    new_cell = re.sub(
+                        r"([A-Za-z])\s+(\(?\d|\(\d+\))", r"\1 |\2", new_cell
+                    )
+                    new_cell = re.sub(r"([A-Za-z])(\(?\d|\(\d+\))", r"\1|\2", new_cell)
+
                 # Insert divider between consecutive numbers
                 if (
                     re.search(
@@ -275,10 +289,10 @@ class SecManagementDiscussionAnalysisFetcher(
             return "|".join(new_cells)
 
         new_lines: list = []
-        starting_line = "Item 2."
-        annual_start = "Item 7."
+        starting_line = "Item 2"
+        annual_start = "Item 7"
         ending_line = "Item 6"
-        annual_end = "Item 8. "
+        annual_end = "Item 8"
         found_start = False
         at_end = False
         is_quarterly = data.get("report_type", "").endswith("Q")
@@ -386,9 +400,20 @@ class SecManagementDiscussionAnalysisFetcher(
                         continue
 
                     if "$" in line:
-                        line = line.replace("$ |", "").replace("| |", "|")  # noqa
-                    elif "%" in line:
-                        line = line.replace("% |", "").replace("| |", "|")  # noqa
+                        line = (
+                            line.replace("($) |", "")
+                            .replace("$ |", "")
+                            .replace("$", "")
+                            .replace("| |", "|")
+                        )  # noqa
+                    if "%" in line:
+                        line = (
+                            line.replace("(%) |", "")
+                            .replace("% |", "")
+                            .replace("%", "")
+                            .replace("| |", "|")
+                        )  # noqa
+                    line = line.replace("|)", ")").replace("(|", ")")  # noqa
 
                     if "|" not in previous_line and all(
                         char == "|" for char in line.replace(" ", "")
@@ -416,12 +441,18 @@ class SecManagementDiscussionAnalysisFetcher(
                                 line.replace(" | | ", " | ")
                                 .replace(" | |", " | ")
                                 .replace(" |  |", "")
+                                .replace("|)", ")")
                             )
                             if is_header:
                                 line = "| " + line  # noqa
                         else:
-                            line = line.replace("| $ | ", "").replace(  # noqa
-                                "| % |", ""
+                            line = (  # noqa
+                                line.replace("| ($) |", "")
+                                .replace("| $ | ", "")
+                                .replace("|$", "|")
+                                .replace("| (%) |", "")
+                                .replace("| % |", "")
+                                .replace("|%", "")
                             )
                             if not line.strip().startswith("|"):
                                 line = "| " + line  # noqa
@@ -710,6 +741,7 @@ class SecManagementDiscussionAnalysisFetcher(
                         )
 
                     elif "|" in current_line:
+                        current_line = current_line.replace("|)", ")")
                         if (
                             current_line in ("|  |", "| |", "|")
                             or "form 10-k" in current_line.replace("|", "").lower()
