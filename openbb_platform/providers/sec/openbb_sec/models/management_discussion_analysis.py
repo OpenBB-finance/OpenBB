@@ -1,6 +1,6 @@
 """SEC Management & Discussion Model."""
 
-# pylint: disable=unused-argument,too-many-branches,too-many-locals,too-many-statements
+# pylint: disable=unused-argument,too-many-branches,too-many-locals,too-many-statements,too-many-nested-blocks,too-many-boolean-expressions
 
 from typing import Any, Optional
 
@@ -146,6 +146,7 @@ class SecManagementDiscussionAnalysisFetcher(
             )
 
         url = target_filing.report_url
+        response = ""
 
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_financials"
@@ -186,6 +187,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 "content": response,
             }
 
+    @staticmethod
     def transform_data(  # noqa: PLR0912
         query: SecManagementDiscussionAnalysisQueryParams,
         data: dict,
@@ -211,16 +213,15 @@ class SecManagementDiscussionAnalysisFetcher(
             raise EmptyDataError("No text was extracted from the filing!")
 
         def is_table_header(line: str) -> bool:
+            """Check if line is a table header"""
             return (
                 all(
-                    [
-                        not char.isnumeric()
-                        for char in line.replace("(", "")
-                        .replace(")", "")
-                        .replace(",", "")
-                        .replace(" ", "")
-                        .replace("|", "")
-                    ]
+                    not char.isnumeric()
+                    for char in line.replace("(", "")
+                    .replace(")", "")
+                    .replace(",", "")
+                    .replace(" ", "")
+                    .replace("|", "")
                 )
                 and line.replace("|", "").replace("-", "").strip() != ""
             ) or line.replace("|", "").replace(" ", "").endswith(":")
@@ -386,10 +387,10 @@ class SecManagementDiscussionAnalysisFetcher(
                     if "$" in line:
                         line = line.replace("$ |", "").replace("| |", "|")  # noqa
                     elif "%" in line:
-                        line = line.replace("% |", "").replace("| |", "|")
+                        line = line.replace("% |", "").replace("| |", "|")  # noqa
 
                     if "|" not in previous_line and all(
-                        [char == "|" for char in line.replace(" ", "")]
+                        char == "|" for char in line.replace(" ", "")
                     ):
                         line = line + "\n" + line.replace(" ", ":------:")  # noqa
 
@@ -458,7 +459,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
         def is_title_case(line: str) -> bool:
             """Check if line follows financial document title case patterns"""
-            IGNORE_WORDS = {
+            ignore_words = [
                 "and",
                 "the",
                 "of",
@@ -477,7 +478,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 "per",
                 "share",
                 "compared",
-            }
+            ]
 
             # Basic checks
             if (
@@ -533,7 +534,7 @@ class SecManagementDiscussionAnalysisFetcher(
             # Check remaining words
             for i, word in enumerate(words[1:], 1):
                 # Skip common lowercase words unless first/last
-                if word.lower() in IGNORE_WORDS and i != len(words) - 1:
+                if word.lower() in ignore_words and i != len(words) - 1:
                     continue
 
                 # Allow numbers and abbreviations
@@ -548,7 +549,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
         def count_columns_in_data_row(data_row: str) -> int:
             """Count actual columns from first data row"""
-            return len([cell for cell in data_row.split("|")])
+            return len(list(data_row.split("|")))
 
         def pad_row_columns(row: str, target_cols: int) -> str:
             """Pad a table row with empty cells to match target column count"""
@@ -563,8 +564,7 @@ class SecManagementDiscussionAnalysisFetcher(
                         " " for _ in range(target_cols - current_cols - 2)
                     ]
                     return "|" + "|".join(cells)
-                else:
-                    cells = [" " for _ in range(target_cols - current_cols - 2)] + cells
+                cells = [" " for _ in range(target_cols - current_cols - 2)] + cells
             return "|".join(cells)
 
         def process_document(document: list[str]) -> list[str]:
