@@ -210,10 +210,34 @@ class SecManagementDiscussionAnalysisFetcher(
         if not extracted_text:
             raise EmptyDataError("No text was extracted from the filing!")
 
+        def is_table_header(line: str) -> bool:
+            return (
+                all(
+                    [
+                        not char.isnumeric()
+                        for char in line.replace("(", "")
+                        .replace(")", "")
+                        .replace(",", "")
+                        .replace(" ", "")
+                        .replace("|", "")
+                    ]
+                )
+                and line.replace("|", "").replace("-", "").strip() != ""
+            ) or line.replace("|", "").replace(" ", "").endswith(":")
+
         def insert_cell_dividers(line):
-            cells = line.split("|")
+            cells = line.strip().split("|")
             new_cells: list = []
             for cell in cells:
+                if (
+                    "par value" in cell.lower()
+                    or "shares" in cell.lower()
+                    or (" %-" in cell and "notes" in cell.lower())
+                ):
+                    new_cells.append(cell)
+                    continue
+                if "Form 10-" in cell:
+                    continue
                 new_cell = cell.strip()
                 if new_cell.endswith(("-", "—", "–")) and any(
                     c.isalpha() for c in new_cell
@@ -226,32 +250,33 @@ class SecManagementDiscussionAnalysisFetcher(
                     and re.search(r"[A-Za-z]\s+[0-9]", new_cell)
                     and "thru" not in new_cell.lower()
                     and "through" not in new_cell.lower()
+                    and "outstanding" not in new_cell.lower()
                 ):
                     # Handle cases with spaces between letters and numbers
                     new_cell = re.sub(r"(?<=[A-Za-z])\s+(?=[0-9])", " |", new_cell)
                     new_cell = re.sub(r"(?<=[A-Za-z])(?=[0-9])", "|", new_cell)
-
                 # Insert divider between consecutive numbers
                 if (
-                    re.search(r"(\(\d+\)|\d+)\s+(\(\d+\)|\d+)", new_cell)
+                    re.search(
+                        r"(\(\d+\.?\d*\)|\d+\.?\d*)\s+(\(\d+\.?\d*\)|\d+\.?\d*)",
+                        new_cell,
+                    )
                     and "percent" not in new_cell.lower()
                     and "versus" not in new_cell.lower()
                     and "thru" not in new_cell.lower()
                     and "through" not in new_cell.lower()
                 ):
                     new_cell = re.sub(
-                        r"(?<=(\)|[0-9]))\s+(?=(\(|[0-9]))", "|", new_cell
+                        r"(\(\d+\)|\d+(?:\.\d+)?)\s+(?=\(|\d)", r"\1|", new_cell
                     )
-
                 new_cells.append(new_cell)
-
             return "|".join(new_cells)
 
         new_lines: list = []
         starting_line = "Item 2."
         annual_start = "Item 7."
-        ending_line = "Item 6."
-        annual_end = "PART III"
+        ending_line = "Item 6"
+        annual_end = "Item 8. "
         found_start = False
         at_end = False
         is_quarterly = data.get("report_type", "").endswith("Q")
@@ -296,6 +321,10 @@ class SecManagementDiscussionAnalysisFetcher(
                     annual_end.lower() in line.lower()
                     and not is_quarterly
                     and len(new_lines) > 1
+                    and (
+                        "financial statements" in line.lower()
+                        or "statements of consilidated" in line.lower()
+                    )
                 )
             ):
                 at_end = True
@@ -347,31 +376,32 @@ class SecManagementDiscussionAnalysisFetcher(
 
                     if query.include_tables is False and "|" in line:
                         continue
+
+                    if (
+                        "page" in line.replace("|", "").lower()
+                        or "form 10-" in line.lower()
+                    ):
+                        continue
+
                     if "$" in line:
                         line = line.replace("$ |", "").replace("| |", "|")  # noqa
+                    elif "%" in line:
+                        line = line.replace("% |", "").replace("| |", "|")
+
                     if "|" not in previous_line and all(
                         [char == "|" for char in line.replace(" ", "")]
                     ):
                         line = line + "\n" + line.replace(" ", ":------:")  # noqa
 
                     else:
-                        is_header = (
-                            all(
-                                [
-                                    not char.isnumeric()
-                                    for char in line.replace("(", "")
-                                    .replace(")", "")
-                                    .replace(",", "")
-                                    .replace(" ", "")
-                                    .replace("|", "")
-                                ]
-                            )
-                            and line.replace("|", "").replace("-", "").strip() != ""
-                        )
+                        is_header = is_table_header(line)
                         is_multi_header = (
                             "months ended" in line.lower()
                             or "change" in line.lower()
-                            or "percent" in line.lower()
+                            or (
+                                "percent" in line.lower()
+                                and "total" not in line.lower()
+                            )
                         )
                         is_date = (
                             ", 20" in line
@@ -380,24 +410,27 @@ class SecManagementDiscussionAnalysisFetcher(
                             and "from" not in line.lower()
                         )
                         if is_header or is_date or is_multi_header:
-                            if is_date:
-                                line = line.replace(" | | ", " | ").replace(  # noqa
-                                    " | |", " | "
-                                )
-                            if is_multi_header or is_date:
+                            line = (  # noqa
+                                line.replace(" | | ", " | ")
+                                .replace(" | |", " | ")
+                                .replace(" |  |", "")
+                            )
+                            if is_header:
                                 line = "| " + line  # noqa
                         else:
                             line = line.replace("| $ | ", "").replace(  # noqa
                                 "| % |", ""
                             )
+                            if not line.strip().startswith("|"):
+                                line = "| " + line  # noqa
                             line = insert_cell_dividers(line)  # noqa
                             line = (  # noqa
                                 line.replace(" | | ", " | ")
-                                .replace(" | |", " | ")
+                                .replace(" | |", " |")
                                 .replace("||", "|")
                                 .replace("||", "|")
                                 .replace(" | | | ", " | ")
-                                .replace(" | | |", " | ")
+                                .replace(" | | |", "|")
                             )
                             if line[-1] != "|":
                                 line = line + "|"  # noqa
@@ -523,7 +556,15 @@ class SecManagementDiscussionAnalysisFetcher(
             current_cols = len(cells) - 2  # Exclude outer pipes
             if current_cols < target_cols:
                 # Add empty cells
-                cells = [" " for _ in range(target_cols - current_cols - 2)] + cells
+                if is_table_header(row) and row.replace("|", "").replace(
+                    " ", ""
+                ).endswith(":"):
+                    cells = [c for c in cells if c.strip()] + [
+                        " " for _ in range(target_cols - current_cols - 2)
+                    ]
+                    return "|" + "|".join(cells)
+                else:
+                    cells = [" " for _ in range(target_cols - current_cols - 2)] + cells
             return "|".join(cells)
 
         def process_document(document: list[str]) -> list[str]:
@@ -536,6 +577,9 @@ class SecManagementDiscussionAnalysisFetcher(
                 current_line = document[i]
                 next_line = document[i + 1] if i + 1 < len(document) else ""
                 previous_line = document[i - 1] if i > 0 else ""
+
+                if "| :-" in current_line:
+                    current_line = current_line.replace(" :- ", ":-")
 
                 if (
                     query.include_tables is False
@@ -565,7 +609,6 @@ class SecManagementDiscussionAnalysisFetcher(
 
                     table_i = i + 2
                     max_cols = 0
-                    table_rows: list = []
 
                     # First pass - find max columns
                     while table_i < len(document):
@@ -577,17 +620,6 @@ class SecManagementDiscussionAnalysisFetcher(
                             max_cols = max(max_cols, cols)
                         table_i += 1
 
-                    # Reset and process rows with correct padding
-                    table_i = i + 1
-                    while table_i < len(document):
-                        if "|" not in document[table_i]:
-                            break
-                        row = document[table_i].strip()
-                        if row and all(cell.strip() for cell in row.split("|")[1:-1]):
-                            padded_row = pad_row_columns(row, max_cols)
-                            table_rows.append(padded_row)
-                        table_i += 1
-
                     # Fix empty header row
                     header_line = (
                         "| " + " | ".join([" " for _ in range(max_cols)]) + " |"
@@ -596,7 +628,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
                     # Fix separator row
                     separator_line = (
-                        "| " + " | ".join([":------:" for _ in range(max_cols)]) + " |"
+                        "|" + "|".join([":------:" for _ in range(max_cols)]) + "|"
                     )
                     cleaned_lines.append(separator_line)
 
@@ -677,10 +709,16 @@ class SecManagementDiscussionAnalysisFetcher(
                         )
 
                     elif "|" in current_line:
+                        if (
+                            current_line in ("|  |", "| |", "|")
+                            or "form 10-k" in current_line.replace("|", "").lower()
+                        ):
+                            i += 1
+                            continue
                         current_cols = count_columns_in_data_row(current_line)
                         if max_cols and max_cols > 0 and current_cols != max_cols:
                             padded_line = pad_row_columns(current_line, max_cols)
-                            cleaned_lines.append(padded_line)
+                            cleaned_lines.append(padded_line.strip())
                         else:
                             cleaned_lines.append(current_line)
                     # Not a table row, keep unchanged
