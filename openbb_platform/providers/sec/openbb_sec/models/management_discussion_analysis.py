@@ -27,7 +27,8 @@ class SecManagementDiscussionAnalysisQueryParams(
         default=False,
         description="Return tables formatted as markdown in the text. Default is False."
         + " Tables may reveal 'missing' content,"
-        + " but will likely need some level of manual cleaning, post-request, to display properly.",
+        + " but will likely need some level of manual cleaning, post-request, to display properly."
+        + " In some cases, tables may not be recoverable due to the nature of the document.",
     )
     use_cache: bool = Field(
         default=True,
