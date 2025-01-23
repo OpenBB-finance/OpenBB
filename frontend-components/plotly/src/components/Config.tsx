@@ -67,6 +67,12 @@ export const ICONS = {
 };
 
 export const DARK_CHARTS_TEMPLATE = {
+  line: {
+    "up_color": "#0074D9",
+    "down_color": "#FF4136",
+    "color": "#111111",
+    "width": 1.5
+  },
   data: {
     candlestick: [
       {
@@ -92,18 +98,22 @@ export const DARK_CHARTS_TEMPLATE = {
     },
     autotypenumbers: "strict",
     colorway: [
-      "#ffed00",
-      "#ef7d00",
-      "#e4003a",
-      "#c13246",
-      "#822661",
-      "#48277c",
-      "#005ca9",
-      "#00aaff",
-      "#9b30d9",
-      "#af005f",
-      "#5f00af",
-      "#af87ff",
+      "#1f77b4",
+      "#ff7f0e",
+      "#2ca02c",
+      "#d62728",
+      "#9467bd",
+      "#8c564b",
+      "#e377c2",
+      "#bcbd22",
+      "#17becf",
+      "#aec7e8",
+      "#ffbb78",
+      "#ff9896",
+      "#c5b0d5",
+      "#f7b6d2",
+      "#dbdb8d",
+      "#9edae5"
     ],
     dragmode: "pan",
     font: {
@@ -119,10 +129,10 @@ export const DARK_CHARTS_TEMPLATE = {
     hovermode: "x",
     legend: {
       bgcolor: "rgba(0, 0, 0, 0)",
-      x: 0.01,
-      xanchor: "left",
+      x: 1,
+      xanchor: "right",
       y: 0.99,
-      yanchor: "top",
+      yanchor: "bottom",
       font: {
         size: 15,
       },
@@ -144,7 +154,9 @@ export const DARK_CHARTS_TEMPLATE = {
       tick0: 1,
       title: {
         standoff: 20,
+        text: "",
       },
+      gridcolor: "#283442",
       linecolor: "#F5EFF3",
       mirror: true,
       ticks: "outside",
@@ -158,8 +170,12 @@ export const DARK_CHARTS_TEMPLATE = {
       showline: true,
       side: "right",
       tick0: 0.5,
+      tickfont: {
+        size: 14,
+      },
       title: {
         standoff: 20,
+        text: "",
       },
       gridcolor: "#283442",
       linecolor: "#F5EFF3",
@@ -170,6 +186,12 @@ export const DARK_CHARTS_TEMPLATE = {
 };
 
 export const LIGHT_CHARTS_TEMPLATE = {
+  line: {
+    "up_color": "#0074D9",
+    "down_color": "#FF4136",
+    "color": "#111111",
+    "width": 1.5
+  },
   data: {
     barpolar: [
       {
@@ -537,20 +559,20 @@ export const LIGHT_CHARTS_TEMPLATE = {
     ],
     candlestick: [
       {
-        decreasing: {
-          fillcolor: "#c80000",
-          line: {
-            color: "#990000",
-          },
+        "decreasing": {
+            "fillcolor": "#e4003a",
+            "line": {
+                "color": "#e4003a"
+            }
         },
-        increasing: {
-          fillcolor: "#009600",
-          line: {
-            color: "#007500",
-          },
+        "increasing": {
+            "fillcolor": "#00ACFF",
+            "line": {
+                "color": "#00ACFF"
+            }
         },
-        type: "candlestick",
-      },
+        "type": "candlestick"
+      }
     ],
   },
   layout: {
@@ -607,18 +629,22 @@ export const LIGHT_CHARTS_TEMPLATE = {
       ],
     },
     colorway: [
-      "#254495",
-      "#c13246",
-      "#48277c",
-      "#e4003a",
-      "#ef7d00",
-      "#822661",
-      "#ffed00",
-      "#00aaff",
-      "#9b30d9",
-      "#af005f",
-      "#5f00af",
-      "#af87ff",
+      "#1f77b4",
+      "#ff7f0e",
+      "#2ca02c",
+      "#d62728",
+      "#9467bd",
+      "#8c564b",
+      "#e377c2",
+      "#bcbd22",
+      "#17becf",
+      "#aec7e8",
+      "#ffbb78",
+      "#ff9896",
+      "#c5b0d5",
+      "#f7b6d2",
+      "#dbdb8d",
+      "#9edae5"
     ],
     font: {
       color: "#2a3f5f",
@@ -638,8 +664,8 @@ export const LIGHT_CHARTS_TEMPLATE = {
     mapbox: {
       style: "light",
     },
-    paper_bgcolor: "white",
-    plot_bgcolor: "white",
+    paper_bgcolor: "#FFFFFF",
+    plot_bgcolor: "#FFFFFF",
     polar: {
       angularaxis: {
         gridcolor: "#EBF0F8",
@@ -710,47 +736,61 @@ export const LIGHT_CHARTS_TEMPLATE = {
     },
     xaxis: {
       automargin: true,
-      ticks: "outside",
-      zerolinewidth: 2,
+      autorange: true,
       rangeslider: {
-        visible: false,
+          visible: false
       },
       showgrid: true,
       showline: true,
       tickfont: {
-        size: 15,
+          size: 14
       },
-      title: {
-        standoff: 20,
-      },
-      mirror: true,
       zeroline: false,
-    },
-    yaxis: {
-      automargin: true,
-      ticks: "outside",
-      tickfont: {
-        size: 15,
-      },
-      zerolinewidth: 2,
-      fixedrange: false,
+      tick0: 1,
       title: {
-        standoff: 20,
+          standoff: 20,
+          font: {
+              size: 16
+          }
       },
-      nticks: 8,
-      showgrid: true,
-      showline: true,
-      side: "right",
+      gridcolor: "#283442",
+      linecolor: "#A9A9A9",
       mirror: true,
-      zeroline: false,
+      ticks: "outside"
+  },
+  yaxis: {
+    anchor: "x",
+    automargin: true,
+    fixedrange: false,
+    zeroline: false,
+    showgrid: true,
+    showline: true,
+    side: "right",
+    tick0: 0.5,
+    tickfont: {
+        size: 14
     },
+    title: {
+        standoff: 20,
+        font: {
+            size: 16
+        }
+    },
+    gridcolor: "rgba(128, 128, 128, 0.33)",
+    linecolor: "#A9A9A9",
+    mirror: true,
+    ticks: "outside"
+  },
     dragmode: "pan",
     legend: {
-      bgcolor: "rgba(0, 0, 0, 0)",
-      x: 1.03,
-      xanchor: "left",
-      y: 0.99,
-      yanchor: "top",
+      bgcolor: "rgba(255, 255, 255, 0)",
+      x: 1,
+      xanchor: "right",
+      y: 1.02,
+      yanchor: "bottom",
+      font: {
+          size: 12
+      }
     },
   },
 };
