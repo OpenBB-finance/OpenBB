@@ -1,6 +1,6 @@
 """FMP ETF Search Model."""
 
-# pylint: disable=unused-import
+# pylint: disable=unused-argument
 
 from typing import Any, Dict, List, Literal, Optional
 
