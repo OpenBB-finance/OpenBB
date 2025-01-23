@@ -206,7 +206,7 @@ class SecManagementDiscussionAnalysisFetcher(
             filing_str,
             include_tables=True,
             include_comments=True,
-            include_formatting=True,
+            include_formatting=False,
             include_images=True,
             include_links=True,
         )
@@ -225,9 +225,9 @@ class SecManagementDiscussionAnalysisFetcher(
                         .replace(",", "")
                         .replace(" ", "")
                         .replace("|", "")
-                        .replace("/", "")
                     )
                     and line.replace("|", "").replace("-", "").strip() != ""
+                    and "/" not in line
                 )
                 or line.replace("|", "").replace(" ", "").endswith(":")
                 or line.replace("|", "").isupper()
@@ -247,6 +247,10 @@ class SecManagementDiscussionAnalysisFetcher(
                 if "Form 10-" in cell:
                     continue
                 new_cell = cell.strip()
+
+                if "," in cell and cell.replace(",", "").isnumeric():
+                    cell = cell.replace(",", "")  # noqa
+
                 if new_cell.endswith(("-", "—", "–")) and any(
                     c.isalpha() for c in new_cell
                 ):
@@ -290,15 +294,19 @@ class SecManagementDiscussionAnalysisFetcher(
 
         new_lines: list = []
         starting_line = "Item 2"
+        ending_line = "Item 5"
         annual_start = "Item 7"
-        ending_line = "Item 6"
         annual_end = "Item 8"
         found_start = False
         at_end = False
         is_quarterly = data.get("report_type", "").endswith("Q")
         previous_line = ""
+        line_i = 0
+        extracted_lines = extracted_text.splitlines()
 
-        for line in extracted_text.splitlines():
+        for line in extracted_lines:
+            line_i += 1
+
             if (
                 not line.strip()
                 or line.startswith("Page ")
@@ -311,14 +319,12 @@ class SecManagementDiscussionAnalysisFetcher(
             if (
                 "Discussion and Analysis of Financial Condition and Results of Operations is presented in".lower()
                 in line.lower()
-            ):
-                annual_end = "PART IV"
-            elif (
+            ) or (
                 "see the information under" in line.lower()
                 and "discussion and analysis" in line.lower()
-                and is_quarterly is False
             ):
-                annual_end = "statements of consolidated"
+                annual_end = "REPORT OF INDEPENDENT REGISTERED PUBLIC ACCOUNTING FIRM"
+                ending_line = "Signature"
 
             if (
                 line.replace("|", "").strip().lower().startswith(starting_line.lower())
@@ -330,17 +336,21 @@ class SecManagementDiscussionAnalysisFetcher(
                 found_start = True
                 line = line.replace("|", " ").replace("  ", " ")  # noqa
 
-            if (
-                found_start
-                and (ending_line.lower() in line.lower() and "exhibits" in line.lower())
-                or (
-                    annual_end.lower() in line.lower()
-                    and not is_quarterly
-                    and len(new_lines) > 1
+            if found_start and (
+                (
+                    is_quarterly
                     and (
-                        "financial statements" in line.lower()
-                        or "statements of consilidated" in line.lower()
+                        ending_line.lower() in line.lower()
+                        or "exhibits" in line.lower()
                     )
+                )
+                or (
+                    is_quarterly is False
+                    and len(new_lines) > 1
+                    and line.replace("|", "")
+                    .strip()
+                    .lower()
+                    .startswith(annual_end.lower())
                 )
             ):
                 at_end = True
@@ -400,19 +410,21 @@ class SecManagementDiscussionAnalysisFetcher(
                         continue
 
                     if "$" in line:
-                        line = (
+                        line = (  # noqa
                             line.replace("($) |", "")
                             .replace("$ |", "")
                             .replace("$", "")
+                            .replace(",", "")
                             .replace("| |", "|")
-                        )  # noqa
+                        )
                     if "%" in line:
-                        line = (
+                        line = (  # noqa
                             line.replace("(%) |", "")
+                            .replace(" %", "")
                             .replace("% |", "")
                             .replace("%", "")
                             .replace("| |", "|")
-                        )  # noqa
+                        )
                     line = line.replace("|)", ")").replace("(|", ")")  # noqa
 
                     if "|" not in previous_line and all(
@@ -468,7 +480,7 @@ class SecManagementDiscussionAnalysisFetcher(
                             if line[-1] != "|":
                                 line = line + "|"  # noqa
 
-                    new_lines.append(line)
+                    new_lines.append(line.strip())
                     previous_line = line
                 else:
                     if "|" in previous_line:
@@ -491,6 +503,11 @@ class SecManagementDiscussionAnalysisFetcher(
 
         def is_title_case(line: str) -> bool:
             """Check if line follows financial document title case patterns"""
+            if line.strip().replace("|", "").lower().startswith("item") and (
+                line.strip().replace("|", "")[6] == "."
+                or line.strip().replace("|", "")[7] == "."
+            ):
+                return True
             ignore_words = [
                 "and",
                 "the",
@@ -521,7 +538,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 or line.strip().isnumeric()
                 or line.strip()[0] == "("
                 or (
-                    line.strip().endswith((".", ":", ";", ",", "-", '"'))
+                    line.strip().endswith((".", ";", ",", "-", '"'))
                     and not line.strip().isupper()
                 )
             ):
@@ -589,11 +606,11 @@ class SecManagementDiscussionAnalysisFetcher(
             current_cols = len(cells) - 2  # Exclude outer pipes
             if current_cols < target_cols:
                 # Add empty cells
-                if is_table_header(row) and row.replace("|", "").replace(
+                if is_table_header(row) or row.replace("|", "").replace(
                     " ", ""
                 ).endswith(":"):
-                    cells = [c for c in cells if c.strip()] + [
-                        " " for _ in range(target_cols - current_cols - 2)
+                    cells = [" " for _ in range(target_cols - current_cols - 2)] + [
+                        c for c in cells if c.strip()
                     ]
                     return "|" + "|".join(cells)
                 cells = [" " for _ in range(target_cols - current_cols - 2)] + cells
@@ -677,10 +694,14 @@ class SecManagementDiscussionAnalysisFetcher(
 
                 elif is_title_case(current_line):
                     cleaned_lines.append(
-                        f"## **{current_line.strip().replace("*", "").rstrip()}**"
+                        f"## {'' if '**' in current_line else '**'}"
+                        f"{current_line.strip()}"
+                        f"{'' if '**' in current_line else '**'}"
                         if current_line.strip().startswith("Item")
                         or current_line.strip().isupper()
-                        else f"### **{current_line.strip().replace("*", "").rstrip()}**"
+                        else f"### {'' if '**' in current_line else '**'}"
+                        f"{current_line.strip()}"
+                        f"{'' if '**' in current_line else '**'}"
                     )
                     i += 1
 
@@ -722,9 +743,9 @@ class SecManagementDiscussionAnalysisFetcher(
                         cleaned_lines.append(clean_line)
                     elif current_line.strip().startswith("-") and (
                         "|" not in current_line
-                        and not previous_line.replace("|", "").strip().endswith(";")
-                        and not previous_line.replace("|", "").strip().endswith(".")
-                        and not previous_line.replace("|", "").strip().endswith(":")
+                        and not previous_line.replace("|", "")
+                        .strip()
+                        .endswith((";", ".", ":"))
                         and current_line.strip()
                         .replace("-", "")
                         .replace(" ", "")
@@ -761,10 +782,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
             return cleaned_lines
 
-        document = "\n".join(new_lines)
-
-        cleaned_lines = process_document(document.split("\n"))
-
+        cleaned_lines = process_document(new_lines)
         data["content"] = "\n".join(cleaned_lines)
 
         return SecManagementDiscussionAnalysisData(**data)
