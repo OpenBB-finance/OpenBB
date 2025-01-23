@@ -1,5 +1,7 @@
 """FMP ETF Search Model."""
 
+# pylint: disable=unused-import
+
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
