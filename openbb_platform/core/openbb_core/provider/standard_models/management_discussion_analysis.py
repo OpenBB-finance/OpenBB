@@ -10,6 +10,8 @@ from pydantic import Field, field_validator
 
 
 class ManagementDiscussionAnalysisQueryParams(QueryParams):
+    """Management Discussion & Analysis Query Parameters."""
+
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     calendar_year: Optional[int] = Field(
         default=None,
