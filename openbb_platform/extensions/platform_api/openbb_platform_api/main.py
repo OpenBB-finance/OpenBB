@@ -87,8 +87,8 @@ TEMPLATES_PATH = (
 def get_templates():
     """Get the templates.json file."""
     if os.path.exists(TEMPLATES_PATH):
-        with open(TEMPLATES_PATH) as f:
-            templates = json.load(f)
+        with open(TEMPLATES_PATH) as templates_file:
+            templates = json.load(templates_file)
 
         if isinstance(templates, list):
             return JSONResponse(content=templates)
@@ -96,8 +96,8 @@ def get_templates():
             return JSONResponse(content=[templates])
 
     else:
-        with open(TEMPLATES_PATH, "w") as f:
-            json.dump([], f)
+        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
+            json.dump([], templates_file)
 
     return JSONResponse(content=[])
 
