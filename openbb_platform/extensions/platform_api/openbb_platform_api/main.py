@@ -74,6 +74,32 @@ current_settings = get_user_settings(login, CURRENT_USER_SETTINGS, USER_SETTINGS
 
 widgets_json = get_widgets_json(build, openapi, widget_exclude_filter)
 
+# A template file will be served from the OpenBBUserDataDirectory, if it exists.
+# If it doesn't exist, an empty list will be returned, and an empty file will be created.
+TEMPLATES_PATH = (
+    current_settings["preferences"].get("data_directory", HOME + "/OpenBBUserData")
+    + "/workspace_templates.json"
+)
+
+
+# If a custom implementation, you might want to override.
+@app.get("/templates.json")
+def get_templates():
+    """Get the templates.json file."""
+    if os.path.exists(TEMPLATES_PATH):
+        with open(TEMPLATES_PATH) as f:
+            templates = json.load(f)
+            if isinstance(templates, list):
+                return templates
+            elif isinstance(templates, dict):
+                return [templates]
+            else:
+                return []
+    else:
+        with open(TEMPLATES_PATH, "w") as f:
+            json.dump([], f)
+    return []
+
 
 @app.get("/")
 async def get_root():
