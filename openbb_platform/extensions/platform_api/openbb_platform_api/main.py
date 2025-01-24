@@ -89,16 +89,17 @@ def get_templates():
     if os.path.exists(TEMPLATES_PATH):
         with open(TEMPLATES_PATH) as f:
             templates = json.load(f)
-            if isinstance(templates, list):
-                return templates
-            elif isinstance(templates, dict):
-                return [templates]
-            else:
-                return []
+
+        if isinstance(templates, list):
+            return JSONResponse(content=templates)
+        if isinstance(templates, dict):
+            return JSONResponse(content=[templates])
+
     else:
         with open(TEMPLATES_PATH, "w") as f:
             json.dump([], f)
-    return []
+
+    return JSONResponse(content=[])
 
 
 @app.get("/")
