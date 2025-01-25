@@ -34,6 +34,11 @@ class SecManagementDiscussionAnalysisQueryParams(
         default=True,
         description="When True, the file will be cached for use later. Default is True.",
     )
+    raw_html: bool = Field(
+        default=False,
+        description="When True, the raw HTML content of the entire filing will be returned. Default is False."
+        + " Use this option to parse the document manually.",
+    )
 
 
 class SecManagementDiscussionAnalysisData(ManagementDiscussionAnalysisData):
@@ -199,6 +204,9 @@ class SecManagementDiscussionAnalysisFetcher(
         import re  # noqa
         from textwrap import wrap
         from trafilatura import extract
+
+        if query.raw_html is True:
+            return SecManagementDiscussionAnalysisData(**data)
 
         filing_str = data.get("content", "")
 
@@ -451,6 +459,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     previous_line = line
 
         if not new_lines:
+
             raise EmptyDataError(
                 "No content was found in the filing, likely a parsing error if the filing was a 10-K/Q!"
                 f" -> {data['url']}"
@@ -646,10 +655,10 @@ class SecManagementDiscussionAnalysisFetcher(
 
                 elif is_title_case(current_line):
                     cleaned_lines.append(
-                        f"## **{current_line.strip().replace("*", "").rstrip()}**"
+                        f"## **{current_line.strip().replace('*', '').rstrip()}**"
                         if current_line.strip().startswith("Item")
                         or current_line.strip().isupper()
-                        else f"### **{current_line.strip().replace("*", "").rstrip()}**"
+                        else f"### **{current_line.strip().replace('*', '').rstrip()}**"
                     )
                     i += 1
 
