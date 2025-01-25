@@ -1,14 +1,14 @@
 {
     "economy_survey_sloos_fred_obb": {
         "name": "SLOOS",
-        "headerTooltip": "Get Senior Loan Officers Opinion Survey.",
+        "description": "Get Senior Loan Officers Opinion Survey.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_sloos_fred_obb",
         "params": [
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -17,7 +17,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -26,7 +26,7 @@
             },
             {
                 "label": "Category",
-                "headerTooltip": "Category of survey response.",
+                "description": "Category of survey response.",
                 "optional": true,
                 "value": "spreads",
                 "type": "text",
@@ -77,7 +77,7 @@
             },
             {
                 "label": "Transform",
-                "headerTooltip": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
+                "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -178,14 +178,14 @@
     },
     "economy_survey_university_of_michigan_fred_obb": {
         "name": "University Of Michigan",
-        "headerTooltip": "Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.",
+        "description": "Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_university_of_michigan_fred_obb",
         "params": [
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -194,7 +194,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -203,7 +203,7 @@
             },
             {
                 "label": "Frequency",
-                "headerTooltip": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -222,7 +222,7 @@
             },
             {
                 "label": "Aggregation Method",
-                "headerTooltip": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -245,7 +245,7 @@
             },
             {
                 "label": "Transform",
-                "headerTooltip": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -337,14 +337,14 @@
     },
     "economy_survey_economic_conditions_chicago_fred_obb": {
         "name": "Economic Conditions Chicago",
-        "headerTooltip": "Get The Survey Of Economic Conditions For The Chicago Region.",
+        "description": "Get The Survey Of Economic Conditions For The Chicago Region.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_economic_conditions_chicago_fred_obb",
         "params": [
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -353,7 +353,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -362,7 +362,7 @@
             },
             {
                 "label": "Frequency",
-                "headerTooltip": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -381,7 +381,7 @@
             },
             {
                 "label": "Aggregation Method",
-                "headerTooltip": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -404,7 +404,7 @@
             },
             {
                 "label": "Transform",
-                "headerTooltip": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -543,14 +543,14 @@
     },
     "economy_survey_manufacturing_outlook_texas_fred_obb": {
         "name": "Manufacturing Outlook Texas",
-        "headerTooltip": "Get The Manufacturing Outlook Survey For The Texas Region.",
+        "description": "Get The Manufacturing Outlook Survey For The Texas Region.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_manufacturing_outlook_texas_fred_obb",
         "params": [
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -559,7 +559,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -568,7 +568,7 @@
             },
             {
                 "label": "Topic",
-                "headerTooltip": "The topic for the survey response. Multiple comma separated items allowed.",
+                "description": "The topic for the survey response. Multiple comma separated items allowed.",
                 "optional": true,
                 "value": "new_orders_growth",
                 "show": true,
@@ -636,7 +636,7 @@
             },
             {
                 "label": "Frequency",
-                "headerTooltip": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -655,7 +655,7 @@
             },
             {
                 "label": "Aggregation Method",
-                "headerTooltip": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -678,7 +678,7 @@
             },
             {
                 "label": "Transform",
-                "headerTooltip": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
+                "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -796,14 +796,14 @@
     },
     "economy_survey_nonfarm_payrolls_fred_obb": {
         "name": "Nonfarm Payrolls",
-        "headerTooltip": "Get Nonfarm Payrolls Survey.",
+        "description": "Get Nonfarm Payrolls Survey.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_nonfarm_payrolls_fred_obb",
         "params": [
             {
                 "label": "Date",
-                "headerTooltip": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed.",
+                "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed.",
                 "optional": true,
                 "value": null,
                 "type": "text",
@@ -813,7 +813,7 @@
             },
             {
                 "label": "Category",
-                "headerTooltip": "The category to query.",
+                "description": "The category to query.",
                 "optional": true,
                 "value": "employees_nsa",
                 "type": "text",
@@ -981,14 +981,14 @@
     },
     "economy_cpi_fred_obb": {
         "name": "CPI",
-        "headerTooltip": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
+        "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_cpi_fred_obb",
         "params": [
             {
                 "label": "Country",
-                "headerTooltip": "The country to get data. Multiple comma separated items allowed.",
+                "description": "The country to get data. Multiple comma separated items allowed.",
                 "optional": true,
                 "value": "united_states",
                 "type": "text",
@@ -1196,7 +1196,7 @@
             },
             {
                 "label": "Transform",
-                "headerTooltip": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
+                "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
                 "optional": true,
                 "value": "yoy",
                 "type": "text",
@@ -1219,7 +1219,7 @@
             },
             {
                 "label": "Frequency",
-                "headerTooltip": "The frequency of the data.",
+                "description": "The frequency of the data.",
                 "optional": true,
                 "value": "monthly",
                 "type": "text",
@@ -1242,7 +1242,7 @@
             },
             {
                 "label": "Harmonized",
-                "headerTooltip": "If true, returns harmonized data.",
+                "description": "If true, returns harmonized data.",
                 "optional": true,
                 "value": false,
                 "type": "boolean",
@@ -1251,7 +1251,7 @@
             },
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -1260,7 +1260,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -1316,14 +1316,14 @@
     },
     "economy_balance_of_payments_fred_obb": {
         "name": "Balance Of Payments",
-        "headerTooltip": "Balance of Payments Reports.",
+        "description": "Balance of Payments Reports.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_balance_of_payments_fred_obb",
         "params": [
             {
                 "label": "Country",
-                "headerTooltip": "The country to get data. Enter as a 3-letter ISO country code, default is USA.",
+                "description": "The country to get data. Enter as a 3-letter ISO country code, default is USA.",
                 "optional": true,
                 "value": "united_states",
                 "type": "text",
@@ -1526,7 +1526,7 @@
             },
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -1535,7 +1535,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -1725,14 +1725,14 @@
     },
     "economy_fred_search_fred_obb": {
         "name": "FRED Search",
-        "headerTooltip": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
+        "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_search_fred_obb",
         "params": [
             {
                 "label": "Query",
-                "headerTooltip": "The search word(s).",
+                "description": "The search word(s).",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -1740,7 +1740,7 @@
             },
             {
                 "label": "Is Release",
-                "headerTooltip": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True.",
+                "description": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True.",
                 "optional": true,
                 "value": false,
                 "type": "boolean",
@@ -1749,7 +1749,7 @@
             },
             {
                 "label": "Release ID",
-                "headerTooltip": "A specific release ID to target.",
+                "description": "A specific release ID to target.",
                 "optional": true,
                 "type": "text",
                 "show": true,
@@ -1757,7 +1757,7 @@
             },
             {
                 "label": "Limit",
-                "headerTooltip": "The number of data entries to return. (1-1000)",
+                "description": "The number of data entries to return. (1-1000)",
                 "optional": true,
                 "value": null,
                 "type": "number",
@@ -1766,7 +1766,7 @@
             },
             {
                 "label": "Offset",
-                "headerTooltip": "Offset the results in conjunction with limit.",
+                "description": "Offset the results in conjunction with limit.",
                 "optional": true,
                 "value": 0,
                 "type": "number",
@@ -1775,7 +1775,7 @@
             },
             {
                 "label": "Filter Variable",
-                "headerTooltip": "Filter by an attribute.",
+                "description": "Filter by an attribute.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -1798,7 +1798,7 @@
             },
             {
                 "label": "Filter Value",
-                "headerTooltip": "String value to filter the variable by.  Used in conjunction with filter_variable.",
+                "description": "String value to filter the variable by.  Used in conjunction with filter_variable.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -1806,7 +1806,7 @@
             },
             {
                 "label": "Tag Names",
-                "headerTooltip": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed.",
+                "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -1816,7 +1816,7 @@
             },
             {
                 "label": "Exclude Tag Names",
-                "headerTooltip": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed.",
+                "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -1826,7 +1826,7 @@
             },
             {
                 "label": "Series ID",
-                "headerTooltip": "A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas.",
+                "description": "A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas.",
                 "optional": true,
                 "type": "text",
                 "show": true,
@@ -2016,14 +2016,14 @@
     },
     "economy_fred_series_fred_obb": {
         "name": "FRED Series",
-        "headerTooltip": "Get data by series ID from FRED.",
+        "description": "Get data by series ID from FRED.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_series_fred_obb",
         "params": [
             {
                 "label": "Symbol",
-                "headerTooltip": "Symbol to get data for. Multiple comma separated items allowed.",
+                "description": "Symbol to get data for. Multiple comma separated items allowed.",
                 "optional": false,
                 "type": "text",
                 "show": true,
@@ -2032,7 +2032,7 @@
             },
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -2041,7 +2041,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -2050,7 +2050,7 @@
             },
             {
                 "label": "Limit",
-                "headerTooltip": "The number of data entries to return.",
+                "description": "The number of data entries to return.",
                 "optional": true,
                 "value": 100000,
                 "type": "number",
@@ -2059,7 +2059,7 @@
             },
             {
                 "label": "Frequency",
-                "headerTooltip": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
+                "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2126,7 +2126,7 @@
             },
             {
                 "label": "Aggregation Method",
-                "headerTooltip": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
                 "value": "eop",
                 "show": true,
@@ -2149,7 +2149,7 @@
             },
             {
                 "label": "Transform",
-                "headerTooltip": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2224,14 +2224,14 @@
     },
     "economy_fred_series_fred_obb_chart": {
         "name": "FRED Series (Chart)",
-        "headerTooltip": "Get data by series ID from FRED.",
+        "description": "Get data by series ID from FRED.",
         "category": "Economy",
         "searchCategory": "chart",
         "widgetId": "economy_fred_series_fred_obb_chart",
         "params": [
             {
                 "label": "Symbol",
-                "headerTooltip": "Symbol to get data for. Multiple comma separated items allowed.",
+                "description": "Symbol to get data for. Multiple comma separated items allowed.",
                 "optional": false,
                 "type": "text",
                 "show": true,
@@ -2240,7 +2240,7 @@
             },
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -2249,7 +2249,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -2258,7 +2258,7 @@
             },
             {
                 "label": "Limit",
-                "headerTooltip": "The number of data entries to return.",
+                "description": "The number of data entries to return.",
                 "optional": true,
                 "value": 100000,
                 "type": "number",
@@ -2267,7 +2267,7 @@
             },
             {
                 "label": "Frequency",
-                "headerTooltip": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
+                "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2334,7 +2334,7 @@
             },
             {
                 "label": "Aggregation Method",
-                "headerTooltip": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
                 "value": "eop",
                 "show": true,
@@ -2357,7 +2357,7 @@
             },
             {
                 "label": "Transform",
-                "headerTooltip": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2406,7 +2406,7 @@
             {
                 "paramName": "chart",
                 "label": "Chart",
-                "headerTooltip": "Returns chart",
+                "description": "Returns chart",
                 "optional": true,
                 "value": true,
                 "type": "boolean",
@@ -2442,14 +2442,14 @@
     },
     "economy_fred_release_table_fred_obb": {
         "name": "FRED Release Table",
-        "headerTooltip": "Get economic release data by ID and/or element from FRED.",
+        "description": "Get economic release data by ID and/or element from FRED.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_release_table_fred_obb",
         "params": [
             {
                 "label": "Release ID",
-                "headerTooltip": "The ID of the release. Use `fred_search` to find releases.",
+                "description": "The ID of the release. Use `fred_search` to find releases.",
                 "optional": false,
                 "type": "text",
                 "show": true,
@@ -2457,7 +2457,7 @@
             },
             {
                 "label": "Element Id",
-                "headerTooltip": "The element ID of a specific table in the release.",
+                "description": "The element ID of a specific table in the release.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2465,7 +2465,7 @@
             },
             {
                 "label": "Date",
-                "headerTooltip": "A specific date to get data for. Multiple comma separated items allowed.",
+                "description": "A specific date to get data for. Multiple comma separated items allowed.",
                 "optional": true,
                 "value": null,
                 "type": "text",
@@ -2578,14 +2578,14 @@
     },
     "economy_fred_regional_fred_obb": {
         "name": "FRED Regional",
-        "headerTooltip": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
+        "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_regional_fred_obb",
         "params": [
             {
                 "label": "Symbol",
-                "headerTooltip": "Symbol to get data for.",
+                "description": "Symbol to get data for.",
                 "optional": false,
                 "type": "text",
                 "show": true,
@@ -2593,7 +2593,7 @@
             },
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -2602,7 +2602,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -2611,7 +2611,7 @@
             },
             {
                 "label": "Limit",
-                "headerTooltip": "The number of data entries to return.",
+                "description": "The number of data entries to return.",
                 "optional": true,
                 "value": 100000,
                 "type": "number",
@@ -2620,7 +2620,7 @@
             },
             {
                 "label": "Is Series Group",
-                "headerTooltip": "When True, the symbol provided is for a series_group, else it is for a series ID.",
+                "description": "When True, the symbol provided is for a series_group, else it is for a series ID.",
                 "optional": true,
                 "value": false,
                 "type": "boolean",
@@ -2629,7 +2629,7 @@
             },
             {
                 "label": "Region Type",
-                "headerTooltip": "The type of regional data. Parameter is only valid when `is_series_group` is True.",
+                "description": "The type of regional data. Parameter is only valid when `is_series_group` is True.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2672,7 +2672,7 @@
             },
             {
                 "label": "Season",
-                "headerTooltip": "The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True.",
+                "description": "The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True.",
                 "optional": true,
                 "value": "nsa",
                 "type": "text",
@@ -2695,7 +2695,7 @@
             },
             {
                 "label": "Units",
-                "headerTooltip": "The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True.",
+                "description": "The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2703,7 +2703,7 @@
             },
             {
                 "label": "Frequency",
-                "headerTooltip": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
+                "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2770,7 +2770,7 @@
             },
             {
                 "label": "Aggregation Method",
-                "headerTooltip": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
                 "value": "eop",
                 "show": true,
@@ -2793,7 +2793,7 @@
             },
             {
                 "label": "Transform",
-                "headerTooltip": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
+                "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2899,14 +2899,14 @@
     },
     "economy_retail_prices_fred_obb": {
         "name": "Retail Prices",
-        "headerTooltip": "Get retail prices for common items.",
+        "description": "Get retail prices for common items.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_retail_prices_fred_obb",
         "params": [
             {
                 "label": "Item",
-                "headerTooltip": "The item or basket of items to query.",
+                "description": "The item or basket of items to query.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -2914,7 +2914,7 @@
             },
             {
                 "label": "Country",
-                "headerTooltip": "The country to get data.",
+                "description": "The country to get data.",
                 "optional": true,
                 "value": "united_states",
                 "type": "text",
@@ -2923,7 +2923,7 @@
             },
             {
                 "label": "Start Date",
-                "headerTooltip": "Start date of the data, in YYYY-MM-DD format.",
+                "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -2932,7 +2932,7 @@
             },
             {
                 "label": "End Date",
-                "headerTooltip": "End date of the data, in YYYY-MM-DD format.",
+                "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
                 "value": null,
                 "type": "date",
@@ -2941,7 +2941,7 @@
             },
             {
                 "label": "Region",
-                "headerTooltip": "The region to get average price levels for.",
+                "description": "The region to get average price levels for.",
                 "optional": true,
                 "value": "all_city",
                 "type": "text",
@@ -2972,7 +2972,7 @@
             },
             {
                 "label": "Frequency",
-                "headerTooltip": "The frequency of the data.",
+                "description": "The frequency of the data.",
                 "optional": true,
                 "value": "monthly",
                 "type": "text",
@@ -2995,7 +2995,7 @@
             },
             {
                 "label": "Transform",
-                "headerTooltip": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
+                "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -3102,14 +3102,14 @@
     },
     "economy_pce_fred_obb": {
         "name": "PCE",
-        "headerTooltip": "Get Personal Consumption Expenditures (PCE) reports.",
+        "description": "Get Personal Consumption Expenditures (PCE) reports.",
         "category": "Economy",
         "searchCategory": "Economy",
         "widgetId": "economy_pce_fred_obb",
         "params": [
             {
                 "label": "Date",
-                "headerTooltip": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed.",
+                "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed.",
                 "optional": true,
                 "value": null,
                 "type": "text",
@@ -3119,7 +3119,7 @@
             },
             {
                 "label": "Category",
-                "headerTooltip": "The category to query.",
+                "description": "The category to query.",
                 "optional": true,
                 "value": "personal_income",
                 "type": "text",
@@ -3257,14 +3257,14 @@
     },
     "regulators_sec_cik_map_sec_obb": {
         "name": "CIK Map",
-        "headerTooltip": "Map a ticker symbol to a CIK number.",
+        "description": "Map a ticker symbol to a CIK number.",
         "category": "Regulators",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_cik_map_sec_obb",
         "params": [
             {
                 "label": "Symbol",
-                "headerTooltip": "Symbol to get data for.",
+                "description": "Symbol to get data for.",
                 "optional": false,
                 "type": "text",
                 "show": true,
@@ -3272,7 +3272,7 @@
             },
             {
                 "label": "Use Cache",
-                "headerTooltip": "Whether or not to use cache for the request, default is True.",
+                "description": "Whether or not to use cache for the request, default is True.",
                 "optional": true,
                 "value": true,
                 "type": "boolean",
@@ -3303,14 +3303,14 @@
     },
     "regulators_sec_institutions_search_sec_obb": {
         "name": "Institutions Search",
-        "headerTooltip": "Search SEC-regulated institutions by name and return a list of results with CIK numbers.",
+        "description": "Search SEC-regulated institutions by name and return a list of results with CIK numbers.",
         "category": "Regulators",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_institutions_search_sec_obb",
         "params": [
             {
                 "label": "Query",
-                "headerTooltip": "Search query.",
+                "description": "Search query.",
                 "optional": true,
                 "value": "",
                 "type": "text",
@@ -3319,7 +3319,7 @@
             },
             {
                 "label": "Use Cache",
-                "headerTooltip": "Whether or not to use cache.",
+                "description": "Whether or not to use cache.",
                 "optional": true,
                 "value": true,
                 "type": "boolean",
@@ -3367,14 +3367,14 @@
     },
     "regulators_sec_schema_files_sec_obb": {
         "name": "Schema Files",
-        "headerTooltip": "Use tool for navigating the directory of SEC XML schema files by year.",
+        "description": "Use tool for navigating the directory of SEC XML schema files by year.",
         "category": "Regulators",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_schema_files_sec_obb",
         "params": [
             {
                 "label": "Query",
-                "headerTooltip": "Search query.",
+                "description": "Search query.",
                 "optional": true,
                 "value": "",
                 "type": "text",
@@ -3383,7 +3383,7 @@
             },
             {
                 "label": "Use Cache",
-                "headerTooltip": "Whether or not to use cache.",
+                "description": "Whether or not to use cache.",
                 "optional": true,
                 "value": true,
                 "type": "boolean",
@@ -3392,7 +3392,7 @@
             },
             {
                 "label": "Url",
-                "headerTooltip": "Enter an optional URL path to fetch the next level.",
+                "description": "Enter an optional URL path to fetch the next level.",
                 "optional": true,
                 "value": null,
                 "show": true,
@@ -3422,14 +3422,14 @@
     },
     "regulators_sec_symbol_map_sec_obb": {
         "name": "Symbol Map",
-        "headerTooltip": "Map a CIK number to a ticker symbol, leading 0s can be omitted or included.",
+        "description": "Map a CIK number to a ticker symbol, leading 0s can be omitted or included.",
         "category": "Regulators",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_symbol_map_sec_obb",
         "params": [
             {
                 "label": "Query",
-                "headerTooltip": "Search query.",
+                "description": "Search query.",
                 "optional": false,
                 "value": null,
                 "type": "text",
@@ -3438,7 +3438,7 @@
             },
             {
                 "label": "Use Cache",
-                "headerTooltip": "Whether or not to use cache. If True, cache will store for seven days.",
+                "description": "Whether or not to use cache. If True, cache will store for seven days.",
                 "optional": true,
                 "value": true,
                 "type": "boolean",
@@ -3469,7 +3469,7 @@
     },
     "regulators_sec_rss_litigation_sec_obb": {
         "name": "RSS Litigation",
-        "headerTooltip": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
+        "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
         "category": "Regulators",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_rss_litigation_sec_obb",
@@ -3542,14 +3542,14 @@
     },
     "regulators_sec_sic_search_sec_obb": {
         "name": "SIC Search",
-        "headerTooltip": "Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.",
+        "description": "Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.",
         "category": "Regulators",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_sic_search_sec_obb",
         "params": [
             {
                 "label": "Query",
-                "headerTooltip": "Search query.",
+                "description": "Search query.",
                 "optional": true,
                 "value": "",
                 "type": "text",
@@ -3558,7 +3558,7 @@
             },
             {
                 "label": "Use Cache",
-                "headerTooltip": "Whether or not to use cache.",
+                "description": "Whether or not to use cache.",
                 "optional": true,
                 "value": true,
                 "type": "boolean",
