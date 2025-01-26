@@ -294,6 +294,10 @@ class ImfEconomicIndicatorsFetcher(
             by=["date", "parent", "symbol", "value"],
             ascending=[True, True, True, False],
         ).reset_index(drop=True)
+
+        df.loc[:, "title"] = df.symbol.apply(
+            lambda x: all_symbols.get(x, {}).get("title")
+        )
         records = df.replace({nan: None}).to_dict(orient="records")
 
         return [ImfEconomicIndicatorsData.model_validate(r) for r in records]
