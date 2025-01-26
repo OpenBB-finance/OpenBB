@@ -420,7 +420,7 @@ class SecManagementDiscussionAnalysisFetcher(
                                 and "from" not in line.lower()
                             ) or (
                                 "20" in line
-                                and all([len(d) == 4 for d in line.split("|") if d])
+                                and all(len(d) == 4 for d in line.split("|") if d)
                             )
                             if is_header or is_date or is_multi_header:
                                 line = (  # noqa
