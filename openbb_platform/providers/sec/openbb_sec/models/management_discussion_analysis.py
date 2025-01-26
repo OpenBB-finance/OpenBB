@@ -523,6 +523,7 @@ class SecManagementDiscussionAnalysisFetcher(
             # Basic checks
             if (
                 not line
+                or "![" in line
                 or not line.strip()
                 or len(line.strip()) < 4
                 or "|" in line
@@ -620,6 +621,13 @@ class SecManagementDiscussionAnalysisFetcher(
                 next_line = document[i + 1] if i + 1 < len(document) else ""
                 previous_line = document[i - 1] if i > 0 else ""
 
+                if current_line in ["--", "-", "|:------:|"]:
+                    if not next_line.strip():
+                        i += 2
+                        continue
+                    i += 1
+                    continue
+
                 if "| :-" in current_line:
                     current_line = current_line.replace(" :- ", ":-")
 
@@ -630,16 +638,28 @@ class SecManagementDiscussionAnalysisFetcher(
                 ):
                     current_line = current_line.replace("|", "")
 
+                if query.include_tables is False and "|" in current_line:
+                    i += 1
+                    continue
+
+                if current_line.startswith(" -"):
+                    current_line = current_line.replace(" -", "-")
+
                 if (
                     "|" in current_line
                     and "|" not in previous_line
                     and "|:-" not in next_line
-                ):
-                    current_line = current_line.replace("|", "")
+                ) and current_line.count("|") > 2:
+                    n_bars = current_line.replace(" |  | ", "|").count("|")
+                    inserted_line = ("|:------:" * (n_bars - 2)) + "|"
 
-                if query.include_tables is False and "|" in current_line:
-                    i += 1
-                    continue
+                    document.insert(
+                        i + 1,
+                        inserted_line.replace(":------:", "   ")[1:-2].strip(),
+                    )
+                    # document.insert(i + 2, current_line)
+                    document.insert(i + 2, inserted_line)
+                    current_line = current_line.replace("|", "").lstrip(" ") + "\n"
 
                 # Detect table by empty header pattern
                 if (
@@ -676,7 +696,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
                     i += 2  # Skip original header and separator
 
-                elif current_line.strip().startswith("!["):
+                elif "![" in current_line.strip():
                     image_file = (
                         current_line.split("]")[1].replace("(", "").replace(")", "")
                     )
