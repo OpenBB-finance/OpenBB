@@ -208,18 +208,7 @@ class SecManagementDiscussionAnalysisFetcher(
         if query.raw_html is True:
             return SecManagementDiscussionAnalysisData(**data)
 
-        filing_str = data.get("content", "")
-
-        extracted_text = extract(
-            filing_str,
-            include_tables=True,
-            include_comments=True,
-            include_formatting=False,
-            include_images=True,
-        )
-
-        if not extracted_text:
-            raise EmptyDataError("No text was extracted from the filing!")
+        is_quarterly = data.get("report_type", "").endswith("Q")
 
         def is_table_header(line: str) -> bool:
             """Check if line is a table header"""
@@ -271,7 +260,6 @@ class SecManagementDiscussionAnalysisFetcher(
                         r"(\(\d+\.?\d*\)|\d+\.?\d*)\s+(\(\d+\.?\d*\)|\d+\.?\d*)",
                         new_cell,
                     )
-                    and "percent" not in new_cell.lower()
                     and "versus" not in new_cell.lower()
                     and "thru" not in new_cell.lower()
                     and "through" not in new_cell.lower()
@@ -282,190 +270,226 @@ class SecManagementDiscussionAnalysisFetcher(
                 new_cells.append(new_cell)
             return "|".join(new_cells)
 
-        new_lines: list = []
-        starting_line = "Item 2."
-        annual_start = "Item 7."
-        ending_line = "Item 6"
-        annual_end = "Item 8. "
-        found_start = False
-        at_end = False
-        is_quarterly = data.get("report_type", "").endswith("Q")
-        previous_line = ""
+        def process_extracted_text(extracted_text: str) -> list:  # noqa: PLR0912
+            """Process extracted text"""
+            new_lines: list = []
+            starting_line = "Item 2."
+            annual_start = "Item 7."
+            ending_line = "Item 6"
+            annual_end = "Item 8. "
+            found_start = False
+            at_end = False
+            previous_line = ""
+            start_line_text = ""
 
-        for line in extracted_text.splitlines():
-            if (
-                not line.strip()
-                or line.startswith("Page ")
-                or line.startswith("Table of Contents")
-                or line.strip() == "|"
-                or (len(line) < 3 and line.isnumeric())
-            ):
-                continue
-
-            if (
-                "Discussion and Analysis of Financial Condition and Results of Operations is presented in".lower()
-                in line.lower()
-            ):
-                annual_end = "PART IV"
-            elif (
-                "see the information under" in line.lower()
-                and "discussion and analysis" in line.lower()
-                and is_quarterly is False
-            ):
-                annual_end = "statements of consolidated"
-
-            if (
-                line.replace("|", "").strip().lower().startswith(starting_line.lower())
-                or line.replace("|", "")
-                .strip()
-                .lower()
-                .startswith(annual_start.lower())
-            ) and "management" in line.lower():
-                found_start = True
-                line = line.replace("|", " ").replace("  ", " ")  # noqa
-
-            if (
-                found_start
-                and (ending_line.lower() in line.lower() and "exhibits" in line.lower())
-                or (
-                    annual_end.lower() in line.lower()
-                    and not is_quarterly
-                    and len(new_lines) > 1
-                    and (
-                        "financial statements" in line.lower()
-                        or "statements of consilidated" in line.lower()
-                    )
-                )
-            ):
-                at_end = True
-                line = line.replace("|", " ").replace("  ", " ")  # noqa
-
-            if found_start and not at_end:
+            for line in extracted_text.splitlines():
                 if (
-                    line[0].isdigit()
-                    or line[0] == "•"
-                    or line[0] == "●"
-                    and line[1] not in [".", " ", "\u0020"]
-                    and line[1].isalpha()
+                    not line.strip()
+                    or line.startswith("Page ")
+                    or line.startswith("Table of Contents")
+                    or line.strip() == "|"
+                    or (len(line) < 3 and line.isnumeric())
+                    or line == start_line_text
                 ):
-                    word = line.split(" ")[0]
-                    if not word.replace(" ", "").isnumeric():
-                        line = line[0] + " " + line[1:]  # noqa
+                    continue
 
-                if "●" in line or "•" in line:
-                    line = (  # noqa
-                        line.replace("|", "").replace("●", "-").replace("•", "-")
+                if (
+                    "Discussion and Analysis of Financial Condition and Results of Operations is presented in".lower()
+                    in line.lower()
+                ):
+                    annual_end = "PART IV"
+                elif (
+                    "see the information under" in line.lower()
+                    and "discussion and analysis" in line.lower()
+                ):
+                    annual_end = "statements of consolidated"
+                    ending_line = "statements of conslidated"
+
+                if (
+                    line.strip().lower().startswith(starting_line.lower())
+                    or line.strip().lower().startswith(annual_start.lower())
+                ) and "management" in line.lower():
+                    found_start = True
+                    start_line_text = line
+                    line = line.replace("|", " ").replace("  ", " ")  # noqa
+
+                if (
+                    found_start
+                    and (
+                        line.replace("|", "")
+                        .strip()
+                        .lower()
+                        .startswith(ending_line.lower())
+                        and is_quarterly
                     )
+                    or (
+                        annual_end.lower() in line.lower()
+                        and not is_quarterly
+                        and len(new_lines) > 1
+                        and (
+                            "financial statements" in line.lower()
+                            or "statements of consolidated" in line.lower()
+                        )
+                    )
+                ):
+                    at_end = True
+                    line = line.replace("|", " ").replace("  ", " ")  # noqa
 
-                if "|" in line:
-                    first_word = line.split("|")[0].strip()
-                    if first_word.isupper() or "item" in first_word.lower():
-                        line = line.replace("|", " ").replace("  ", " ").strip()  # noqa
-
+                if found_start and not at_end:
                     if (
-                        line.endswith("|")
-                        and not line.startswith("|")
-                        and len(line) > 1
+                        line[0].isdigit()
+                        or line[0] == "•"
+                        or line[0] == "●"
+                        and line[1] not in [".", " ", "\u0020"]
+                        and line[1].isalpha()
                     ):
+                        word = line.split(" ")[0]
+                        if not word.replace(" ", "").isnumeric():
+                            line = line[0] + " " + line[1:]  # noqa
+
+                    if "●" in line or "•" in line:
                         line = (  # noqa
-                            "| " + line
-                            if len(line.split("|")) > 1
-                            else line.replace("|", "").strip()
-                        )
-                    elif (
-                        line.startswith("|")
-                        and not line.endswith("|")
-                        and len(line) > 1
-                        and len(line.split("|"))
-                    ):
-                        line = (  # noqa
-                            line + " |"
-                            if len(line.split("|")) > 1
-                            else line.replace("|", "").strip()
+                            line.replace("|", "").replace("●", "-").replace("•", "-")
                         )
 
-                    if query.include_tables is False and "|" in line:
-                        continue
+                    if "|" in line:
+                        first_word = line.split("|")[0].strip()
+                        if first_word.isupper() or "item" in first_word.lower():
+                            line = (
+                                line.replace("|", " ").replace("  ", " ").strip()
+                            )  # noqa
 
-                    if (
-                        "page" in line.replace("|", "").lower()
-                        or "form 10-" in line.lower()
-                    ):
-                        continue
-
-                    if "$" in line:
-                        line = line.replace("$ |", "").replace("| |", "|")  # noqa
-                    elif "%" in line:
-                        line = line.replace("% |", "").replace("| |", "|")  # noqa
-
-                    if "|" not in previous_line and all(
-                        char == "|" for char in line.replace(" ", "")
-                    ):
-                        line = line + "\n" + line.replace(" ", ":------:")  # noqa
-
-                    else:
-                        is_header = is_table_header(line)
-                        is_multi_header = (
-                            "months ended" in line.lower()
-                            or "change" in line.lower()
-                            or (
-                                "percent" in line.lower()
-                                and "total" not in line.lower()
-                            )
-                        )
-                        is_date = (
-                            ", 20" in line
-                            and "through" not in line.lower()
-                            and "thru" not in line.lower()
-                            and "from" not in line.lower()
-                        )
-                        if is_header or is_date or is_multi_header:
+                        if (
+                            line.endswith("|")
+                            and not line.startswith("|")
+                            and len(line) > 1
+                        ):
                             line = (  # noqa
-                                line.replace(" | | ", " | ")
-                                .replace(" | |", " | ")
-                                .replace(" |  |", "")
+                                "| " + line
+                                if len(line.split("|")) > 1
+                                else line.replace("|", "").strip()
                             )
-                            if is_header:
-                                line = "| " + line  # noqa
+                        elif (
+                            line.startswith("|")
+                            and not line.endswith("|")
+                            and len(line) > 1
+                            and len(line.split("|"))
+                        ):
+                            line = (  # noqa
+                                line + " |"
+                                if len(line.split("|")) > 1
+                                else line.replace("|", "").strip()
+                            )
+
+                        if query.include_tables is False and "|" in line:
+                            continue
+
+                        if (
+                            "page" in line.replace("|", "").lower()
+                            or "form 10-" in line.lower()
+                        ):
+                            continue
+
+                        if "$" in line:
+                            line = line.replace("$ |", "").replace("| |", "|")  # noqa
+                        elif "%" in line:
+                            line = line.replace("% |", "").replace("| |", "|")  # noqa
+
+                        if "|" not in previous_line and all(
+                            char == "|" for char in line.replace(" ", "")
+                        ):
+                            line = line + "\n" + line.replace(" ", ":------:")  # noqa
+
                         else:
-                            line = line.replace("| $ | ", "").replace(  # noqa
-                                "| % |", ""
+                            is_header = is_table_header(line)
+                            is_multi_header = (
+                                "months ended" in line.lower()
+                                or "change" in line.lower()
+                                or line.strip().endswith(",")
                             )
-                            if not line.strip().startswith("|"):
-                                line = "| " + line  # noqa
-                            line = insert_cell_dividers(line)  # noqa
-                            line = (  # noqa
-                                line.replace(" | | ", " | ")
-                                .replace(" | |", " |")
-                                .replace("||", "|")
-                                .replace("||", "|")
-                                .replace(" | | | ", " | ")
-                                .replace(" | | |", "|")
+                            is_date = (
+                                ", 20" in line
+                                and "through" not in line.lower()
+                                and "thru" not in line.lower()
+                                and "from" not in line.lower()
+                            ) or (
+                                "20" in line
+                                and all([len(d) == 4 for d in line.split("|") if d])
                             )
-                            if line[-1] != "|":
-                                line = line + "|"  # noqa
+                            if is_header or is_date or is_multi_header:
+                                line = (  # noqa
+                                    line.replace(" | | ", " | ")
+                                    .replace(" | |", " | ")
+                                    .replace("| % |", "")
+                                    .replace("| $ |", "")
+                                )
+                                if is_header:
+                                    line = "| " + line  # noqa
+                                # line = insert_cell_dividers(line)  # noqa
+                            else:
+                                line = line.replace("| $ | ", "").replace(  # noqa
+                                    "| % |", ""
+                                )
+                                if not line.strip().startswith("|"):
+                                    line = "| " + line  # noqa
+                                line = insert_cell_dividers(line)  # noqa
+                                line = (  # noqa
+                                    line.replace(" | | ", " | ")
+                                    .replace(" | |", " |")
+                                    .replace("||", "|")
+                                    .replace("||", "|")
+                                    .replace(" | | | ", " | ")
+                                    .replace(" | | |", "|")
+                                )
+                                if line[-1] != "|":
+                                    line = line + "|"  # noqa
 
-                    new_lines.append(line)
-                    previous_line = line
-                else:
-                    if "|" in previous_line:
-                        new_lines.extend(
-                            ["\n"] + wrap(line, width=query.wrap_length) + ["\n"]
-                        )
-                    elif line.strip().startswith("-"):
-                        new_lines.extend([line] + ["\n"])
+                        new_lines.append(line)
+                        previous_line = line
                     else:
-                        new_lines.extend(wrap(line, width=query.wrap_length) + ["\n"])
-                    previous_line = line
+                        if "|" in previous_line:
+                            new_lines.extend(
+                                ["\n"] + wrap(line, width=query.wrap_length) + ["\n"]
+                            )
+                        elif line.strip().startswith("-"):
+                            new_lines.extend([line] + ["\n"])
+                        else:
+                            new_lines.extend(
+                                wrap(line, width=query.wrap_length) + ["\n"]
+                            )
+                        previous_line = line
+
+            return new_lines
+
+        # Do a first pass, and if extraction fails we can try a different strategy.
+
+        filing_str = data.get("content", "")
+
+        extracted_text = extract(
+            filing_str,
+            include_tables=True,
+            include_comments=True,
+            include_formatting=True,
+            include_images=True,
+            include_links=False,
+        )
+
+        if not extracted_text:
+            raise EmptyDataError("No text was extracted from the filing!")
+
+        new_lines = process_extracted_text(extracted_text)
 
         if not new_lines:
 
             raise EmptyDataError(
-                "No content was found in the filing, likely a parsing error if the filing was a 10-K/Q!"
+                "No content was found in the filing, likely a parsing error from unreachable content."
                 f" -> {data['url']}"
-                " -> Please report this issue to the OpenBB team. The content can be analyzed by inspecing"
-                " the output of `SecManagementDiscussionAnalysisFetcher.aextract_data`"
+                " -> The content can be analyzed by inspecting"
+                " the output of `SecManagementDiscussionAnalysisFetcher.aextract_data`,"
+                " or by setting `raw_html=True` in the query."
             )
+
+        # Second pass - clean up document
 
         def is_title_case(line: str) -> bool:
             """Check if line follows financial document title case patterns"""
@@ -494,6 +518,7 @@ class SecManagementDiscussionAnalysisFetcher(
             if (
                 not line
                 or not line.strip()
+                or len(line.strip()) < 4
                 or "|" in line
                 or line.strip()[0].islower()
                 or line.strip().isnumeric()
@@ -740,7 +765,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
         document = "\n".join(new_lines)
 
-        cleaned_lines = process_document(document.split("\n"))
+        cleaned_lines = process_document(document.splitlines())
 
         data["content"] = "\n".join(cleaned_lines)
 
