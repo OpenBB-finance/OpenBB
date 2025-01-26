@@ -320,8 +320,8 @@ class SecManagementDiscussionAnalysisFetcher(
                     .startswith(annual_start.lower())
                 ) and "management" in line.lower():
                     found_start = True
+                    line = line.replace("|", "")  # noqa
                     start_line_text = line
-                    line = line.replace("|", " ").replace("  ", " ")  # noqa
 
                 if (
                     found_start
@@ -361,9 +361,9 @@ class SecManagementDiscussionAnalysisFetcher(
                     if "|" in line:
                         first_word = line.split("|")[0].strip()
                         if first_word.isupper() or "item" in first_word.lower():
-                            line = (
+                            line = (  # noqa
                                 line.replace("|", " ").replace("  ", " ").strip()
-                            )  # noqa
+                            )
 
                         if (
                             line.endswith("|")
