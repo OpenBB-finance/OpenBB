@@ -290,6 +290,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     or line.strip() == "|"
                     or (len(line) < 3 and line.isnumeric())
                     or line == start_line_text
+                    or line.strip().replace("_", "").replace("**", "") == ""
                 ):
                     continue
 
@@ -301,13 +302,22 @@ class SecManagementDiscussionAnalysisFetcher(
                 elif (
                     "see the information under" in line.lower()
                     and "discussion and analysis" in line.lower()
+                ) and (
+                    (is_quarterly and "10-K" not in line)
+                    or (not is_quarterly and "10-Q" not in line)
                 ):
                     annual_end = "statements of consolidated"
                     ending_line = "statements of conslidated"
 
                 if (
-                    line.strip().lower().startswith(starting_line.lower())
-                    or line.strip().lower().startswith(annual_start.lower())
+                    line.replace("|", "")
+                    .strip()
+                    .lower()
+                    .startswith(starting_line.lower())
+                    or line.replace("|", "")
+                    .strip()
+                    .lower()
+                    .startswith(annual_start.lower())
                 ) and "management" in line.lower():
                     found_start = True
                     start_line_text = line
@@ -325,13 +335,9 @@ class SecManagementDiscussionAnalysisFetcher(
                     or (
                         annual_end.lower() in line.lower()
                         and not is_quarterly
-                        and len(new_lines) > 1
-                        and (
-                            "financial statements" in line.lower()
-                            or "statements of consolidated" in line.lower()
-                        )
+                        and len(new_lines) > 20
                     )
-                ):
+                ) or line.replace("|", "").strip().lower().startswith("signatures"):
                     at_end = True
                     line = line.replace("|", " ").replace("  ", " ")  # noqa
 
@@ -520,6 +526,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 or not line.strip()
                 or len(line.strip()) < 4
                 or "|" in line
+                or line.strip().endswith('."')
                 or line.strip()[0].islower()
                 or line.strip().isnumeric()
                 or line.strip()[0] == "("
