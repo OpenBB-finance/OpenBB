@@ -17,7 +17,7 @@
 
 The first financial Platform that is free and fully open source.
 
-Offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
+The OpenBB Platform offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
 
 Sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
 
@@ -31,7 +31,7 @@ If you are looking for our **FREE** AI-powered Research and Analytics Workspace,
   </div>
 </a>
 
-We also have an open source AI financial analyst agent that can access all the data within OpenBB, and that repo can be found [here](https://github.com/OpenBB-finance/openbb-agents).
+We also have an open source AI financial analyst agent that can access all of the data within OpenBB, and that repo can be found [here](https://github.com/OpenBB-finance/openbb-agents).
 
 ---
 
@@ -59,15 +59,13 @@ Please find more about the installation process in the [OpenBB Documentation](ht
 
 ### OpenBB Platform CLI installation
 
-The OpenBB Platform CLI is a command-line interface that allows you to access the OpenBB Platform directly from your terminal.
+The OpenBB Platform CLI is a command-line interface that allows you to access the OpenBB Platform directly from your command line.
 
 It can be installed by running `pip install openbb-cli`
 
 or by cloning the repository directly with  `git clone https://github.com/OpenBB-finance/OpenBB.git`.
 
 Please find more about the installation process in the [OpenBB Documentation](https://docs.openbb.co/cli/installation).
-
-> The OpenBB Platform CLI offers an alternative to the former [OpenBB Terminal](https://github.com/OpenBB-finance/LegacyTerminal) as it has the same look and feel while offering the functionalities and extendability of the OpenBB Platform.
 
 ## 2. Contributing
 
@@ -106,11 +104,12 @@ The data contained in the OpenBB Platform is not necessarily accurate.
 OpenBB and any provider of the data contained in this website will not accept liability for any loss or damage as a result of your trading, or your reliance on the information displayed.
 
 All names, logos, and brands of third parties that may be referenced in our sites, products or documentation are trademarks of their respective owners. Unless otherwise specified, OpenBB and its products and services are not endorsed by, sponsored by, or affiliated with these third parties.
+
 Our use of these names, logos, and brands is for identification purposes only, and does not imply any such endorsement, sponsorship, or affiliation.
 
 ## 5. Contacts
 
-If you have any questions about the terminal or anything OpenBB, feel free to email us at `support@openbb.co`
+If you have any questions about the form or anything OpenBB, feel free to email us at `support@openbb.co`
 
 If you want to say hi, or are interested in partnering with us, feel free to reach us at `hello@openbb.co`
 
