@@ -469,7 +469,6 @@ class SecManagementDiscussionAnalysisFetcher(
                                 )
                                 if is_header:
                                     line = "| " + line  # noqa
-                                # line = insert_cell_dividers(line)  # noqa
                             else:
                                 line = line.replace("| $ | ", "").replace(  # noqa
                                     "| % |", ""
@@ -505,7 +504,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
             return new_lines
 
-        # Do a first pass, and if extraction fails we can try a different strategy.
+        # Do a first pass, and if extraction fails we can identify where the problem originates.
 
         filing_str = data.get("content", "")
 
@@ -733,7 +732,6 @@ class SecManagementDiscussionAnalysisFetcher(
                         i + 1,
                         inserted_line.replace(":------:", "   ").strip()[1:-2],
                     )
-                    # document.insert(i + 2, current_line)
                     document.insert(i + 2, inserted_line)
                     current_line = current_line.replace("|", "").lstrip(" ") + "\n"
 
