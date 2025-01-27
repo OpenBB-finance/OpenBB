@@ -696,7 +696,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     current_line = current_line.replace("|", "")
 
                 if current_line.startswith(" -"):
-                    current_line = current_line.replace(" -", "-")
+                    current_line = "- " + current_line[2:]
 
                 if (
                     current_line.replace("|", "").strip().startswith("-")
