@@ -213,16 +213,20 @@ class SecManagementDiscussionAnalysisFetcher(
         def is_table_header(line: str) -> bool:
             """Check if line is a table header"""
             return (
-                all(
-                    not char.isnumeric()
-                    for char in line.replace("(", "")
-                    .replace(")", "")
-                    .replace(",", "")
-                    .replace(" ", "")
-                    .replace("|", "")
+                (
+                    all(
+                        not char.isnumeric()
+                        for char in line.replace("(", "")
+                        .replace(")", "")
+                        .replace(",", "")
+                        .replace(" ", "")
+                        .replace("|", "")
+                    )
+                    and line.replace("|", "").replace("-", "").strip() != ""
                 )
-                and line.replace("|", "").replace("-", "").strip() != ""
-            ) or line.replace("|", "").replace(" ", "").endswith(":")
+                or line.replace("|", "").replace(" ", "").endswith(":")
+                or "of dollars" in line.lower()
+            )
 
         def insert_cell_dividers(line):
             cells = line.strip().split("|")
@@ -236,6 +240,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     or "of dollars" in cell.lower()
                     or "year" in cell.lower()
                     or "scenario" in cell.lower()
+                    or cell.strip().endswith(",")
                 ):
                     new_cells.append(cell)
                     continue
@@ -633,9 +638,15 @@ class SecManagementDiscussionAnalysisFetcher(
             current_cols = len(cells) - 2  # Exclude outer pipes
             if current_cols < target_cols:
                 # Add empty cells
-                if is_table_header(row) and row.replace("|", "").replace(
-                    " ", ""
-                ).endswith(":"):
+                if (
+                    is_table_header(row)
+                    and row.replace("|", "").replace(" ", "").endswith(":")
+                    or (
+                        row.replace("|", "").replace(" ", "").endswith(")")
+                        and row.replace("|", "").replace(" ", "")[0].isalpha()
+                        and len(row.split("|")) < 3
+                    )
+                ):
                     cells = [c for c in cells if c.strip()] + [
                         " " for _ in range(target_cols - current_cols - 2)
                     ]
@@ -693,6 +704,15 @@ class SecManagementDiscussionAnalysisFetcher(
                     and current_line[1] != " "
                 ):
                     current_line = current_line.replace("|", "").replace("-", "- ")
+
+                if (
+                    "|" in current_line
+                    and "|" in previous_line
+                    and "|" in next_line
+                    and current_line.replace(" ", "").replace("|", "") == ""
+                ):
+                    i += 1
+                    continue
 
                 if query.include_tables is False and "|" in current_line:
                     i += 1
