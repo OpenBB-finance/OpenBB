@@ -149,7 +149,7 @@ class YFinanceEquityScreenerFetcher(
     ) -> list[dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
-        from openbb_yfinance.utils.helpers import get_defined_screener
+        from openbb_yfinance.utils.helpers import get_custom_screener
 
         operands: list = []
 
@@ -230,7 +230,7 @@ class YFinanceEquityScreenerFetcher(
             "userIdType": "guid",
         }
 
-        response = await get_defined_screener(
+        response = await get_custom_screener(
             body=payload,
             limit=query.limit if query.limit and query.limit not in (0, None) else None,
         )

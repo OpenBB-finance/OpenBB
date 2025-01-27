@@ -11,6 +11,8 @@ import sys
 import uvicorn
 from fastapi.responses import JSONResponse
 from openbb_core.api.rest_api import app
+from openbb_core.app.service.system_service import SystemService
+from openbb_core.env import Env
 
 from .utils.api import check_port, get_user_settings, get_widgets_json, parse_args
 
@@ -25,6 +27,9 @@ logger.setLevel(logging.INFO)
 
 
 FIRST_RUN = True
+
+# Adds the OpenBB Environment variables to the script process.
+Env()
 
 HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
 
@@ -45,6 +50,14 @@ login = kwargs.pop("login", False)
 dont_filter = kwargs.pop("no-filter", False)
 widget_exclude_filter: list = []
 
+uvicorn_settings = (
+    SystemService().system_settings.python_settings.model_dump().get("uvicorn", {})
+)
+
+for key, value in uvicorn_settings.items():
+    if key not in kwargs and key != "app" and value is not None:
+        kwargs[key] = value
+
 if not dont_filter and os.path.exists(WIDGET_SETTINGS):
     with open(WIDGET_SETTINGS) as f:
         try:
@@ -60,6 +73,33 @@ openapi = app.openapi()
 current_settings = get_user_settings(login, CURRENT_USER_SETTINGS, USER_SETTINGS_COPY)
 
 widgets_json = get_widgets_json(build, openapi, widget_exclude_filter)
+
+# A template file will be served from the OpenBBUserDataDirectory, if it exists.
+# If it doesn't exist, an empty list will be returned, and an empty file will be created.
+TEMPLATES_PATH = (
+    current_settings["preferences"].get("data_directory", HOME + "/OpenBBUserData")
+    + "/workspace_templates.json"
+)
+
+
+# If a custom implementation, you might want to override.
+@app.get("/templates.json")
+def get_templates():
+    """Get the templates.json file."""
+    if os.path.exists(TEMPLATES_PATH):
+        with open(TEMPLATES_PATH) as templates_file:
+            templates = json.load(templates_file)
+
+        if isinstance(templates, list):
+            return JSONResponse(content=templates)
+        if isinstance(templates, dict):
+            return JSONResponse(content=[templates])
+
+    else:
+        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
+            json.dump([], templates_file)
+
+    return JSONResponse(content=[])
 
 
 @app.get("/")
