@@ -232,6 +232,10 @@ class SecManagementDiscussionAnalysisFetcher(
                     "par value" in cell.lower()
                     or "shares" in cell.lower()
                     or (" %-" in cell and "notes" in cell.lower())
+                    or "as of" in cell.lower()
+                    or "of dollars" in cell.lower()
+                    or "year" in cell.lower()
+                    or "scenario" in cell.lower()
                 ):
                     new_cells.append(cell)
                     continue
@@ -250,6 +254,12 @@ class SecManagementDiscussionAnalysisFetcher(
                     and "thru" not in new_cell.lower()
                     and "through" not in new_cell.lower()
                     and "outstanding" not in new_cell.lower()
+                    and "Tier" not in new_cell
+                    and "/" not in new_cell
+                    and "%" not in new_cell
+                    and "in" not in new_cell
+                    and "year" not in new_cell
+                    and "scenario" not in new_cell
                 ):
                     # Handle cases with spaces between letters and numbers
                     new_cell = re.sub(r"(?<=[A-Za-z])\s+(?=[0-9])", " |", new_cell)
@@ -285,11 +295,11 @@ class SecManagementDiscussionAnalysisFetcher(
             for line in extracted_text.splitlines():
                 if (
                     not line.strip()
-                    or line.startswith("Page ")
-                    or line.startswith("Table of Contents")
-                    or line.strip() == "|"
+                    or line.replace("|", "")
+                    .strip()
+                    .startswith(("Page ", "Table of Contents"))
+                    or line.strip() in ("|", start_line_text)
                     or (len(line) < 3 and line.isnumeric())
-                    or line == start_line_text
                     or line.strip().replace("_", "").replace("**", "") == ""
                 ):
                     continue
@@ -310,15 +320,32 @@ class SecManagementDiscussionAnalysisFetcher(
                     ending_line = "statements of conslidated"
 
                 if (
-                    line.replace("|", "")
-                    .strip()
-                    .lower()
-                    .startswith(starting_line.lower())
-                    or line.replace("|", "")
-                    .strip()
-                    .lower()
-                    .startswith(annual_start.lower())
-                ) and "management" in line.lower():
+                    (
+                        line.replace("|", "")
+                        .strip()
+                        .lower()
+                        .startswith(
+                            (
+                                starting_line.lower(),
+                                annual_start.lower(),
+                            )
+                        )
+                        and "management" in line.lower()
+                    )
+                    or (
+                        line.replace("|", "")
+                        .lstrip(" ")
+                        .lower()
+                        .startswith("the following is management")
+                        and "discussion and analysis of" in line.lower()
+                    )
+                    or (
+                        line.endswith(
+                            " “Management’s Discussion and Analysis of Financial Condition and Results of Operations” "
+                            "below."
+                        )
+                    )
+                ):
                     found_start = True
                     line = line.replace("|", "")  # noqa
                     start_line_text = line
@@ -357,6 +384,12 @@ class SecManagementDiscussionAnalysisFetcher(
                         line = (  # noqa
                             line.replace("|", "").replace("●", "-").replace("•", "-")
                         )
+
+                    if (
+                        line.replace("|", "").strip().startswith("-")
+                        and line.strip()[1] != " "
+                    ):
+                        line = "- " + line[1:]  # noqa
 
                     if "|" in line:
                         first_word = line.split("|")[0].strip()
@@ -525,7 +558,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 not line
                 or "![" in line
                 or not line.strip()
-                or len(line.strip()) < 4
+                or len(line.strip()) < 8
                 or "|" in line
                 or line.strip().endswith('."')
                 or line.strip()[0].islower()
@@ -610,7 +643,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 cells = [" " for _ in range(target_cols - current_cols - 2)] + cells
             return "|".join(cells)
 
-        def process_document(document: list[str]) -> list[str]:
+        def process_document(document: list[str]) -> list[str]:  # noqa: PLR0912
             """Clean up document lines"""
             cleaned_lines: list = []
             i = 0
@@ -619,10 +652,24 @@ class SecManagementDiscussionAnalysisFetcher(
             while i < len(document):
                 current_line = document[i]
                 next_line = document[i + 1] if i + 1 < len(document) else ""
+
+                if next_line.replace("**", "").strip() == "AND RESULTS OF OPERATIONS":
+                    current_line = (
+                        "**"
+                        + current_line.replace("**", "").replace("\n", "").strip()
+                        + " "
+                        + "AND RESULTS OF OPERATIONS"
+                        + "**"
+                    )
+                    _ = document.pop(i + 1)
+                    cleaned_lines.append(current_line)
+                    i += 1
+                    continue
+
                 previous_line = document[i - 1] if i > 0 else ""
 
-                if current_line in ["--", "-", "|:------:|"]:
-                    if not next_line.strip():
+                if current_line.strip() in ("--", "-", "|:------:|", "||", "|  |"):
+                    if not next_line.strip() or next_line == current_line:
                         i += 2
                         continue
                     i += 1
@@ -638,12 +685,21 @@ class SecManagementDiscussionAnalysisFetcher(
                 ):
                     current_line = current_line.replace("|", "")
 
+                if current_line.startswith(" -"):
+                    current_line = current_line.replace(" -", "-")
+
+                if (
+                    current_line.replace("|", "").strip().startswith("-")
+                    and current_line[1] != " "
+                ):
+                    current_line = current_line.replace("|", "").replace("-", "- ")
+
                 if query.include_tables is False and "|" in current_line:
                     i += 1
                     continue
 
-                if current_line.startswith(" -"):
-                    current_line = current_line.replace(" -", "-")
+                # Fix table header row with missing dividers.
+                # We can't fix all tables, but this helps with some.
 
                 if (
                     "|" in current_line
@@ -655,7 +711,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
                     document.insert(
                         i + 1,
-                        inserted_line.replace(":------:", "   ")[1:-2].strip(),
+                        inserted_line.replace(":------:", "   ").strip()[1:-2],
                     )
                     # document.insert(i + 2, current_line)
                     document.insert(i + 2, inserted_line)
@@ -752,9 +808,9 @@ class SecManagementDiscussionAnalysisFetcher(
                         cleaned_lines.append(clean_line)
                     elif current_line.strip().startswith("-") and (
                         "|" not in current_line
-                        and not previous_line.replace("|", "").strip().endswith(";")
-                        and not previous_line.replace("|", "").strip().endswith(".")
-                        and not previous_line.replace("|", "").strip().endswith(":")
+                        and not previous_line.replace("|", "")
+                        .strip()
+                        .endswith((";", ".", ":"))
                         and current_line.strip()
                         .replace("-", "")
                         .replace(" ", "")
