@@ -5,7 +5,10 @@ from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from pydantic import Field, field_validator
 
 
@@ -36,7 +39,7 @@ class ManagementDiscussionAnalysisQueryParams(QueryParams):
 class ManagementDiscussionAnalysisData(Data):
     """Management Discussion & Analysis Data."""
 
-    symbol: str = Field(description="The symbol of the company.")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     calendar_year: int = Field(description="The calendar year of the report.")
     calendar_period: int = Field(description="The calendar period of the report.")
     period_ending: Optional[dateType] = Field(

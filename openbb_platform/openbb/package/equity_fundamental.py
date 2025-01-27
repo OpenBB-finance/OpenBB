@@ -2846,7 +2846,7 @@ class ROUTER_equity_fundamental(Container):
         ManagementDiscussionAnalysis
         ----------------------------
         symbol : str
-            The symbol of the company.
+            Symbol representing the entity requested in the data.
         calendar_year : int
             The calendar year of the report.
         calendar_period : int
@@ -2865,9 +2865,9 @@ class ROUTER_equity_fundamental(Container):
         >>> # Get the Management Discussion & Analysis section by calendar year and period.
         >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec')
         >>> # Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.
-        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', fiscal_year=2020, fiscal_period=4, provider='sec', include_tables=True)
+        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', include_tables=True)
         >>> # Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.
-        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', fiscal_year=2020, fiscal_period=4, provider='sec', raw_html=True)
+        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', raw_html=True)
         """  # noqa: E501
 
         return self._run(

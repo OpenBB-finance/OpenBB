@@ -26652,7 +26652,7 @@
                 "message": null
             },
             "description": "Get the Management Discussion & Analysis section from the financial statements for a given company.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')\n# Get the Management Discussion & Analysis section by calendar year and period.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec')\n# Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', fiscal_year=2020, fiscal_period=4, provider='sec', include_tables=True)\n# Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', fiscal_year=2020, fiscal_period=4, provider='sec', raw_html=True)\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')\n# Get the Management Discussion & Analysis section by calendar year and period.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec')\n# Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', include_tables=True)\n# Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', raw_html=True)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -26749,7 +26749,7 @@
                     {
                         "name": "symbol",
                         "type": "str",
-                        "description": "The symbol of the company.",
+                        "description": "Symbol representing the entity requested in the data.",
                         "default": "",
                         "optional": false,
                         "choices": null

@@ -496,8 +496,8 @@ async def trailing_dividend_yield(
             description="Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.",
             parameters={
                 "symbol": "AAPL",
-                "fiscal_year": 2020,
-                "fiscal_period": 4,
+                "calendar_year": 2020,
+                "calendar_period": 4,
                 "provider": "sec",
                 "include_tables": True,
             },
@@ -507,8 +507,8 @@ async def trailing_dividend_yield(
             + " Use this for custom parsing or to access the entire HTML filing.",
             parameters={
                 "symbol": "AAPL",
-                "fiscal_year": 2020,
-                "fiscal_period": 4,
+                "calendar_year": 2020,
+                "calendar_period": 4,
                 "provider": "sec",
                 "raw_html": True,
             },
