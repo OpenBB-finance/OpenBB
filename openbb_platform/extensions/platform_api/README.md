@@ -94,3 +94,16 @@ openbb-api --no-build
 ```
 
 If you would like to construct this file manually for a custom backend configuration, save the file in the path above.
+
+
+### Location of `templates.json`
+
+> ~/OpenBBUserData/workspace_templates.json
+
+The OpenBB Workspace allows you to export the current dashboard layout - when it is a custom backend - as a template.
+
+To export the layout, right-click on the dashboard and select, "Export Template".
+
+A JSON dictionary will be exported. Insert the contents of the export into "~/OpenBBUserData/workspace_templates.json" by pasting between the JSON list markers, [ ].
+
+If there is more than one, add a comma to the closing curly brace, }.
