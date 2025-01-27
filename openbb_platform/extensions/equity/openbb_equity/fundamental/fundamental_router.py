@@ -481,7 +481,39 @@ async def trailing_dividend_yield(
 
 @router.command(
     model="ManagementDiscussionAnalysis",
-    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "sec"})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "sec"}),
+        APIEx(
+            description="Get the Management Discussion & Analysis section by calendar year and period.",
+            parameters={
+                "symbol": "AAPL",
+                "calendar_year": 2020,
+                "calendar_period": 4,
+                "provider": "sec",
+            },
+        ),
+        APIEx(
+            description="Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.",
+            parameters={
+                "symbol": "AAPL",
+                "fiscal_year": 2020,
+                "fiscal_period": 4,
+                "provider": "sec",
+                "include_tables": True,
+            },
+        ),
+        APIEx(
+            description="Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is."
+            + " Use this for custom parsing or to access the entire HTML filing.",
+            parameters={
+                "symbol": "AAPL",
+                "fiscal_year": 2020,
+                "fiscal_period": 4,
+                "provider": "sec",
+                "raw_html": True,
+            },
+        ),
+    ],
 )
 async def management_discussion_analysis(
     cc: CommandContext,

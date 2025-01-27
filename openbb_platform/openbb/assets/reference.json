@@ -1434,7 +1434,7 @@
                     },
                     {
                         "name": "counter_currencies",
-                        "type": "Union[List[str], str]",
+                        "type": "Union[str, List[str]]",
                         "description": "An optional list of counter currency symbols to filter for. None returns all.",
                         "default": null,
                         "optional": true,
@@ -2007,8 +2007,16 @@
                         "choices": null
                     },
                     {
+                        "name": "contract_size",
+                        "type": "List[Union[int, float]]",
+                        "description": "Number of underlying units per contract.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "open_interest",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Open interest on the contract.",
                         "default": "",
                         "optional": true,
@@ -2016,7 +2024,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": true,
@@ -2040,7 +2048,7 @@
                     },
                     {
                         "name": "last_trade_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Last trade size of the option.",
                         "default": "",
                         "optional": true,
@@ -2072,7 +2080,7 @@
                     },
                     {
                         "name": "bid_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Bid size for the option.",
                         "default": "",
                         "optional": true,
@@ -2104,7 +2112,7 @@
                     },
                     {
                         "name": "ask_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Ask size for the option.",
                         "default": "",
                         "optional": true,
@@ -2216,7 +2224,7 @@
                     },
                     {
                         "name": "close_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing trade size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -2240,7 +2248,7 @@
                     },
                     {
                         "name": "close_bid_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing bid size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -2264,7 +2272,7 @@
                     },
                     {
                         "name": "close_ask_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing ask size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -12190,7 +12198,7 @@
                     },
                     {
                         "name": "analyst_ids",
-                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "type": "Union[Union[str, List[str]], List[Union[str, List[str]]]]",
                         "description": "Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
@@ -12198,7 +12206,7 @@
                     },
                     {
                         "name": "firm_ids",
-                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "type": "Union[Union[str, List[str]], List[Union[str, List[str]]]]",
                         "description": "Comma-separated list of firm IDs. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
@@ -12206,7 +12214,7 @@
                     },
                     {
                         "name": "fields",
-                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "type": "Union[Union[str, List[str]], List[Union[str, List[str]]]]",
                         "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
@@ -26637,6 +26645,160 @@
                 "tiingo": []
             },
             "model": "TrailingDividendYield"
+        },
+        "/equity/fundamental/management_discussion_analysis": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the Management Discussion & Analysis section from the financial statements for a given company.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')\n# Get the Management Discussion & Analysis section by calendar year and period.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec')\n# Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', fiscal_year=2020, fiscal_period=4, provider='sec', include_tables=True)\n# Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', fiscal_year=2020, fiscal_period=4, provider='sec', raw_html=True)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol to get data for.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "Calendar year of the report. By default, is the current year. If the calendar period is not provided, but the calendar year is, it will return the annual report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "int",
+                        "description": "Calendar period of the report. By default, is the most recent report available for the symbol. If no calendar year and no calendar period are provided, it will return the most recent report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "wrap_length",
+                        "type": "int",
+                        "description": "The length to wrap the extracted text, excluding tables. Default is 120.",
+                        "default": 120,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "include_tables",
+                        "type": "bool",
+                        "description": "Return tables formatted as markdown in the text. Default is False. Tables may reveal 'missing' content, but will likely need some level of manual cleaning, post-request, to display properly. In some cases, tables may not be recoverable due to the nature of the document.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "When True, the file will be cached for use later. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "raw_html",
+                        "type": "bool",
+                        "description": "When True, the raw HTML content of the entire filing will be returned. Default is False. Use this option to parse the document manually.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ManagementDiscussionAnalysis]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "The symbol of the company.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "The calendar year of the report.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "int",
+                        "description": "The calendar period of the report.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "The end date of the reporting period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "content",
+                        "type": "str",
+                        "description": "The content of the management discussion and analysis.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "The URL of the filing from which the data was extracted.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "ManagementDiscussionAnalysis"
         },
         "/equity/ownership/major_holders": {
             "deprecated": {
@@ -41109,8 +41271,8 @@
                         "name": "source",
                         "type": "str",
                         "description": "Source of the news article",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
                 ]
