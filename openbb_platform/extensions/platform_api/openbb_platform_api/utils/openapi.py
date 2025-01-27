@@ -474,7 +474,7 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
                 for word in header_name.split(" ")
             ]
         )
-        column_def["description"] = prop.get(
+        column_def["headerTooltip"] = prop.get(
             "description", prop.get("title", key.title())
         )
         column_def["cellDataType"] = cell_data_type
