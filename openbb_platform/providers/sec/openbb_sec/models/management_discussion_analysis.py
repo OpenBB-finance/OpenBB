@@ -300,8 +300,10 @@ class SecManagementDiscussionAnalysisFetcher(
             at_end = False
             previous_line = ""
             start_line_text = ""
+            line_i = 0
 
             for line in extracted_text.splitlines():
+                line_i += 1
                 if (
                     not line.strip()
                     or line.replace("|", "")
@@ -360,8 +362,25 @@ class SecManagementDiscussionAnalysisFetcher(
                         .strip()
                         .lower()
                         .endswith(
-                            "management’s discussion and analysis of financial condition and results of operations"
+                            "discussion and analysis of financial condition and results of operations"
                         )
+                    )
+                    # Section may be in a nested table.
+                    or (
+                        line.replace("*", "")
+                        .replace("|", "")
+                        .strip()
+                        .lower()
+                        .startswith("item")
+                        and line.replace("*", "")
+                        .replace("|", "")
+                        .replace(".", "")
+                        .rstrip(" ")
+                        .lower()
+                        .endswith(
+                            "discussion and analysis of financial condition and results of operations"
+                        )
+                        and line_i > 200
                     )
                 ):
                     line = line.replace("|", "").replace("*", "")  # noqa
@@ -534,7 +553,7 @@ class SecManagementDiscussionAnalysisFetcher(
             filing_str,
             include_tables=True,
             include_comments=True,
-            include_formatting=False,
+            include_formatting=True,
             include_images=True,
             include_links=False,
         )
