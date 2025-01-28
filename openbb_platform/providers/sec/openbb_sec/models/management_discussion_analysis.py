@@ -402,6 +402,10 @@ class SecManagementDiscussionAnalysisFetcher(
                         .lower()
                         .endswith("financial condition")
                     )
+                    or (
+                        line.replace("|", "").replace(".", "").strip()
+                        == "Management’s Discussion and Analysis of Financial Condition and Results of Operations"
+                    )
                 ):
                     line = line.replace("|", "").replace("*", "")  # noqa
                     if line.strip(" ")[-1].isnumeric():
