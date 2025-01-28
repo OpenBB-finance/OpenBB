@@ -223,6 +223,7 @@ class SecManagementDiscussionAnalysisFetcher(
                         .replace("|", "")
                     )
                     and line.replace("|", "").replace("-", "").strip() != ""
+                    and "/" not in line
                 )
                 or line.replace("|", "").replace(" ", "").endswith(":")
                 or "of dollars" in line.lower()
@@ -232,6 +233,7 @@ class SecManagementDiscussionAnalysisFetcher(
             cells = line.strip().split("|")
             new_cells: list = []
             for cell in cells:
+                cell = cell.replace("$", "").replace(" % ", "").replace("%", "")  # noqa
                 if (
                     "par value" in cell.lower()
                     or "shares" in cell.lower()
@@ -260,8 +262,8 @@ class SecManagementDiscussionAnalysisFetcher(
                     and "through" not in new_cell.lower()
                     and "outstanding" not in new_cell.lower()
                     and "Tier" not in new_cell
-                    and "/" not in new_cell
                     and "%" not in new_cell
+                    and "$" not in new_cell
                     and "in" not in new_cell
                     and "year" not in new_cell
                     and "scenario" not in new_cell
@@ -282,6 +284,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     new_cell = re.sub(
                         r"(\(\d+\)|\d+(?:\.\d+)?)\s+(?=\(|\d)", r"\1|", new_cell
                     )
+
                 new_cells.append(new_cell)
             return "|".join(new_cells)
 
@@ -350,9 +353,27 @@ class SecManagementDiscussionAnalysisFetcher(
                             "below."
                         )
                     )
+                    or (
+                        line.replace("*", "")
+                        .strip()
+                        .lower()
+                        .startswith(
+                            "item 2 — management’s discussion and analysis"
+                            " of financial condition and results of operations"
+                        )
+                    )
+                    or (
+                        line.replace("*", "")
+                        .strip()
+                        .lower()
+                        .startswith(
+                            "item 2. management’s discussion and analysis"
+                            " of financial condition and results of operations"
+                        )
+                    )
                 ):
                     found_start = True
-                    line = line.replace("|", "")  # noqa
+                    line = line.replace("|", "").replace("*", "")  # noqa
                     start_line_text = line
 
                 if (
@@ -385,9 +406,12 @@ class SecManagementDiscussionAnalysisFetcher(
                         if not word.replace(" ", "").isnumeric():
                             line = line[0] + " " + line[1:]  # noqa
 
-                    if "●" in line or "•" in line:
+                    if "●" in line or "•" in line or "◦" in line:
                         line = (  # noqa
-                            line.replace("|", "").replace("●", "-").replace("•", "-")
+                            line.replace("|", "")
+                            .replace("●", "-")
+                            .replace("•", "-")
+                            .replace("◦", "-")
                         )
 
                     if (
@@ -467,11 +491,13 @@ class SecManagementDiscussionAnalysisFetcher(
                                     .replace("| % |", "")
                                     .replace("| $ |", "")
                                 )
-                                if is_header:
+                                if is_header or is_date:
                                     line = "| " + line  # noqa
                             else:
-                                line = line.replace("| $ | ", "").replace(  # noqa
-                                    "| % |", ""
+                                line = (  # noqa
+                                    line.replace("| $ | ", "")
+                                    .replace("| % |", "")
+                                    .replace("   ", "|")
                                 )
                                 if not line.strip().startswith("|"):
                                     line = "| " + line  # noqa
@@ -512,7 +538,7 @@ class SecManagementDiscussionAnalysisFetcher(
             filing_str,
             include_tables=True,
             include_comments=True,
-            include_formatting=True,
+            include_formatting=False,
             include_images=True,
             include_links=False,
         )
@@ -564,7 +590,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 or not line.strip()
                 or len(line.strip()) < 8
                 or "|" in line
-                or line.strip().endswith('."')
+                or line.strip().endswith(('."', ".”"))
                 or line.strip()[0].islower()
                 or line.strip().isnumeric()
                 or line.strip()[0] == "("
@@ -572,6 +598,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     line.strip().endswith((".", ":", ";", ",", "-", '"'))
                     and not line.strip().isupper()
                 )
+                or (line.strip()[0].isdigit() and line.strip()[2:4] == "of")
             ):
                 return False
 
@@ -629,12 +656,13 @@ class SecManagementDiscussionAnalysisFetcher(
 
         def count_columns_in_data_row(data_row: str) -> int:
             """Count actual columns from first data row"""
-            return len(list(data_row.split("|")))
+            return len(list(data_row.split("|"))) - 2
 
         def pad_row_columns(row: str, target_cols: int) -> str:
             """Pad a table row with empty cells to match target column count"""
             cells = row.split("|")
             current_cols = len(cells) - 2  # Exclude outer pipes
+
             if current_cols < target_cols:
                 # Add empty cells
                 if (
@@ -651,6 +679,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     ]
                     return "|" + "|".join(cells)
                 cells = [" " for _ in range(target_cols - current_cols - 2)] + cells
+
             return "|".join(cells)
 
         def process_document(document: list[str]) -> list[str]:  # noqa: PLR0912
@@ -708,6 +737,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     "|" in current_line
                     and "|" in previous_line
                     and "|" in next_line
+                    and "|:-" not in next_line
                     and current_line.replace(" ", "").replace("|", "") == ""
                 ):
                     i += 1
@@ -717,7 +747,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     i += 1
                     continue
 
-                # Fix table header row with missing dividers.
+                # Fix table header rows with missing dividers.
                 # We can't fix all tables, but this helps with some.
 
                 if (
@@ -734,6 +764,19 @@ class SecManagementDiscussionAnalysisFetcher(
                     )
                     document.insert(i + 2, inserted_line)
                     current_line = current_line.replace("|", "").lstrip(" ") + "\n"
+
+                elif (
+                    "|:-" in current_line
+                    and "|" not in previous_line
+                    and "|" in next_line
+                ):
+                    inserted_line = current_line.replace("-", "").replace("::", "   ")
+
+                    if previous_line.strip():
+                        inserted_line = "\n" + inserted_line
+
+                    document.insert(i - 1, inserted_line)
+                    cleaned_lines.append(inserted_line)
 
                 # Detect table by empty header pattern
                 if (
@@ -787,7 +830,6 @@ class SecManagementDiscussionAnalysisFetcher(
                         else f"### **{current_line.strip().replace('*', '').rstrip()}**"
                     )
                     i += 1
-
                 else:
                     if current_line.strip().startswith("-"):
                         current_line = current_line.replace("|", "")
@@ -810,6 +852,7 @@ class SecManagementDiscussionAnalysisFetcher(
                             i += 2
                             continue
                     # Check if this is a table row that needs padding
+                    current_line = current_line.replace(")  (", ")|(")
                     if (
                         current_line.strip().startswith("-")
                         and "|" not in current_line
@@ -845,6 +888,9 @@ class SecManagementDiscussionAnalysisFetcher(
                         )
 
                     elif "|" in current_line:
+                        current_line = current_line.replace("|)|", ")|").replace(
+                            "| | (Dollars in ", "| (Dollars in "
+                        )
                         if (
                             current_line in ("|  |", "| |", "|")
                             or "form 10-k" in current_line.replace("|", "").lower()
