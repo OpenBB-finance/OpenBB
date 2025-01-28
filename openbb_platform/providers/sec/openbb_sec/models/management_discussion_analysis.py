@@ -494,10 +494,22 @@ class SecManagementDiscussionAnalysisFetcher(
                         line.replace("|", "").replace(" ", "").strip().endswith(")")
                     ):
                         line = line.replace("|", "").replace(" ", "").strip()  # noqa
-                        next_line = extracted_lines[line_i + 1]
+                        next_line = (
+                            extracted_lines[line_i + 1]
+                            if line_i + 1 < len(extracted_lines)
+                            else ""
+                        )
                         if not next_line.replace("|", "").replace(" ", "").strip():
-                            next_line = extracted_lines[line_i + 2]
-                            _ = extracted_lines.pop(line_i + 1)
+                            next_line = (
+                                extracted_lines[line_i + 2]
+                                if line_i + 2 < len(extracted_lines)
+                                else ""
+                            )
+                            _ = (
+                                extracted_lines.pop(line_i + 1)
+                                if line_i + 1 < len(extracted_lines)
+                                else ""
+                            )
                         if (
                             next_line.replace("|", "")
                             .replace(" ", "")
@@ -806,7 +818,15 @@ class SecManagementDiscussionAnalysisFetcher(
 
                 previous_line = document[i - 1] if i > 0 else ""
 
-                if current_line in ["| | o |", "|  |", "| o |", "| |", "||", "*", "-"]:
+                if current_line.strip() in [
+                    "| | o |",
+                    "|  |",
+                    "| o |",
+                    "| |",
+                    "||",
+                    "*",
+                    "-",
+                ]:
                     if not next_line.strip() or next_line == current_line:
                         i += 2
                         continue
@@ -863,10 +883,6 @@ class SecManagementDiscussionAnalysisFetcher(
                     ).strip()
                     i = new_i
                     previous_line = document[i - 1]
-
-                current_line = (
-                    current_line.replace("**", "").replace("###", "").replace("##", "")
-                )
 
                 if (
                     current_line.replace("|", "").strip().startswith("-")
