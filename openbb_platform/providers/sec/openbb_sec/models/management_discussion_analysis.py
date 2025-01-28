@@ -410,12 +410,22 @@ class SecManagementDiscussionAnalysisFetcher(
                     )
                     or (
                         line
-                        == "2. MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS"
+                        in [
+                            "2. MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+                            "7. MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+                        ]
                     )
                     or (
                         line.replace("|", "").strip()
                         == "Management's Discussion and Analysis"
                         and line_i > 300
+                    )
+                    or (
+                        line.replace("|", "")
+                        .strip()
+                        .startswith(
+                            "The following discussion and analysis of the financial condition and results of operations"
+                        )
                     )
                 ):
                     line = line.replace("|", "").replace("*", "")  # noqa
