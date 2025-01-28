@@ -304,6 +304,7 @@ class SecManagementDiscussionAnalysisFetcher(
             extracted_lines = extracted_text.splitlines()
 
             for line in extracted_lines:
+
                 line_i += 1
                 if (
                     not line.strip()
@@ -332,6 +333,16 @@ class SecManagementDiscussionAnalysisFetcher(
                     ending_line = "statements of conslidated"
 
                 if (
+                    "discussion and analysis of financial condition and results of operations"
+                    in line.lower()
+                    and line.startswith("Item")
+                    and line_i > 300
+                ):
+                    found_start = True
+                    at_end = False
+                    start_line_text = line
+
+                elif (
                     (
                         line.strip()
                         .lower()
@@ -422,10 +433,12 @@ class SecManagementDiscussionAnalysisFetcher(
                         line = "Management’s Discussion and Analysis of Financial Condition and Results of Operations"  # noqa
                         _ = extracted_lines.pop(line_i + 1)
                     found_start = True
+                    at_end = False
                     start_line_text = line
 
                 if (
                     found_start
+                    and line_i > 300
                     and (
                         line.replace("|", "")
                         .strip()
@@ -588,7 +601,7 @@ class SecManagementDiscussionAnalysisFetcher(
             filing_str,
             include_tables=True,
             include_comments=True,
-            include_formatting=True,
+            include_formatting=False,
             include_images=True,
             include_links=False,
         )
