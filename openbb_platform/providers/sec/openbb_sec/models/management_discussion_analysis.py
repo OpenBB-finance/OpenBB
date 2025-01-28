@@ -382,6 +382,11 @@ class SecManagementDiscussionAnalysisFetcher(
                         )
                         and line_i > 200
                     )
+                    or (
+                        line.replace("*", "").replace("|", "").strip().lower()
+                        == "financial review"
+                        and line_i > 200
+                    )
                 ):
                     line = line.replace("|", "").replace("*", "")  # noqa
                     if line.strip(" ")[-1].isnumeric():
