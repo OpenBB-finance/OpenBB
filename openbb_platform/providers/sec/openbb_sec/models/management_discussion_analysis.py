@@ -467,6 +467,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
                     if (
                         line.replace("|", "").strip().startswith("-")
+                        and len(line.strip()) > 1
                         and line.strip()[1] != " "
                     ):
                         line = "- " + line[1:]  # noqa
@@ -475,6 +476,29 @@ class SecManagementDiscussionAnalysisFetcher(
                         line = (  # noqa
                             line.replace("|", "").replace("  ", " ").strip() + "\n"
                         )
+
+                    if line.replace("|", "").replace(" ", "").strip().startswith(
+                        "("
+                    ) and (
+                        line.replace("|", "").replace(" ", "").strip().endswith(")")
+                    ):
+                        line = line.replace("|", "").replace(" ", "").strip()  # noqa
+                        next_line = extracted_lines[line_i + 1]
+                        if not next_line.replace("|", "").replace(" ", "").strip():
+                            next_line = extracted_lines[line_i + 2]
+                            _ = extracted_lines.pop(line_i + 1)
+                        if (
+                            next_line.replace("|", "")
+                            .replace(" ", "")
+                            .strip()
+                            .endswith((",", ";", ".", "\n"))
+                        ):
+                            line = (  # noqa
+                                line.replace("|", "").replace(" ", "").strip()
+                                + " "
+                                + next_line.replace("|", "").strip()
+                            )
+                            _ = extracted_lines.pop(line_i + 1)
 
                     if "|" in line:
                         first_word = line.split("|")[0].strip()
