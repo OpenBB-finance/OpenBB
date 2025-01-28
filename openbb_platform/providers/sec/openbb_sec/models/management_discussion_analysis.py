@@ -301,8 +301,9 @@ class SecManagementDiscussionAnalysisFetcher(
             previous_line = ""
             start_line_text = ""
             line_i = 0
+            extracted_lines = extracted_text.splitlines()
 
-            for line in extracted_text.splitlines():
+            for line in extracted_lines:
                 line_i += 1
                 if (
                     not line.strip()
@@ -387,10 +388,35 @@ class SecManagementDiscussionAnalysisFetcher(
                         == "financial review"
                         and line_i > 200
                     )
+                    or (
+                        line.replace("*", "")
+                        .replace("|", "")
+                        .replace(".", "")
+                        .strip()
+                        .lower()
+                        .endswith("discussion and analysis")
+                        and extracted_lines[line_i + 1]
+                        .replace("|", "")
+                        .replace(".", "")
+                        .strip()
+                        .lower()
+                        .endswith("financial condition")
+                    )
                 ):
                     line = line.replace("|", "").replace("*", "")  # noqa
                     if line.strip(" ")[-1].isnumeric():
                         continue
+
+                    if (
+                        extracted_lines[line_i + 1]
+                        .replace("*", "")
+                        .replace(".", "")
+                        .strip()
+                        .lower()
+                        .endswith("financial condition")
+                    ):
+                        line = "Management’s Discussion and Analysis of Financial Condition and Results of Operations"  # noqa
+                        _ = extracted_lines.pop(line_i + 1)
                     found_start = True
                     start_line_text = line
 
