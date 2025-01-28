@@ -363,12 +363,13 @@ class SecManagementDiscussionAnalysisFetcher(
                         )
                     )
                     or (
-                        line.replace("*", "")
+                        line.replace("*", "").strip().lower().startswith("item")
+                        and line.replace("*", "")
+                        .replace(".", "")
                         .strip()
                         .lower()
-                        .startswith(
-                            "item 2. management’s discussion and analysis"
-                            " of financial condition and results of operations"
+                        .endswith(
+                            "management’s discussion and analysis of financial condition and results of operations"
                         )
                     )
                 ):
@@ -482,7 +483,9 @@ class SecManagementDiscussionAnalysisFetcher(
                                 and "from" not in line.lower()
                             ) or (
                                 "20" in line
-                                and all(len(d) == 4 for d in line.split("|") if d)
+                                and all(
+                                    len(d.strip()) == 4 for d in line.split("|") if d
+                                )
                             )
                             if is_header or is_date or is_multi_header:
                                 line = (  # noqa
@@ -491,7 +494,7 @@ class SecManagementDiscussionAnalysisFetcher(
                                     .replace("| % |", "")
                                     .replace("| $ |", "")
                                 )
-                                if is_header or is_date:
+                                if is_header:
                                     line = "| " + line  # noqa
                             else:
                                 line = (  # noqa
@@ -672,6 +675,9 @@ class SecManagementDiscussionAnalysisFetcher(
                         row.replace("|", "").replace(" ", "").endswith(")")
                         and row.replace("|", "").replace(" ", "")[0].isalpha()
                         and len(row.split("|")) < 3
+                    )
+                    and not (
+                        "20" in row and all(len(d) == 4 for d in row.split("|") if d)
                     )
                 ):
                     cells = [c for c in cells if c.strip()] + [
