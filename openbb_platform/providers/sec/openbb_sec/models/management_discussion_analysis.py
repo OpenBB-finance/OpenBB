@@ -457,13 +457,24 @@ class SecManagementDiscussionAnalysisFetcher(
                         if not word.replace(" ", "").isnumeric():
                             line = line[0] + " " + line[1:]  # noqa
 
-                    if "●" in line or "•" in line or "◦" in line:
+                    if "●" in line or "•" in line or "◦" in line or "| o |" in line:
                         line = (  # noqa
                             line.replace("|", "")
                             .replace("●", "-")
                             .replace("•", "-")
                             .replace("◦", "-")
+                            .replace("| o |", "-")
                         )
+                    if (
+                        "|" in line
+                        and len(line.replace("|", "").replace(" ", "").strip()) > 1
+                        and line.replace("|", "").replace(" ", "").strip()[0].isalpha()
+                        and (
+                            line.replace("|", "").replace(" ", "").strip()[-1]
+                            in (".", ",", ";")
+                        )
+                    ):
+                        line = line.replace("|", "").strip()  # noqa
 
                     if (
                         line.replace("|", "").strip().startswith("-")
@@ -594,6 +605,9 @@ class SecManagementDiscussionAnalysisFetcher(
                                 )
                                 if line[-1] != "|":
                                     line = line + "|"  # noqa
+
+                        if line in ["| | o |", "|  |", "| o |", "| |", "||"]:
+                            continue
 
                         new_lines.append(line)
                         previous_line = line
@@ -792,12 +806,23 @@ class SecManagementDiscussionAnalysisFetcher(
 
                 previous_line = document[i - 1] if i > 0 else ""
 
+                if current_line in ["| | o |", "|  |", "| o |", "| |", "||", "*", "-"]:
+                    if not next_line.strip() or next_line == current_line:
+                        i += 2
+                        continue
+                    else:
+                        i += 1
+                        continue
+
                 if current_line.strip() in ("--", "-", "|:------:|", "||", "|  |"):
                     if not next_line.strip() or next_line == current_line:
                         i += 2
                         continue
                     i += 1
                     continue
+
+                if "|" in current_line and not next_line.replace("|", "").strip():
+                    current_line = current_line.replace("|", "").strip()
 
                 if "| :-" in current_line:
                     current_line = current_line.replace(" :- ", ":-")
@@ -811,6 +836,37 @@ class SecManagementDiscussionAnalysisFetcher(
 
                 if current_line.startswith(" -"):
                     current_line = "- " + current_line[2:]
+
+                if (
+                    current_line.startswith("(")
+                    and current_line.endswith(")")
+                    and len(current_line) < 4
+                ):
+                    dead_line = True
+                    new_i = i
+                    while dead_line is True:
+                        new_i += 1
+                        next_line = document[new_i]
+                        if next_line.replace("|", "").strip():
+                            dead_line = False
+                            break
+
+                    next_line = next_line.replace("|", "").rstrip()
+
+                    if document[new_i + 1].replace("|", "").rstrip() == next_line:
+                        _ = document.pop(new_i + 1)
+
+                    current_line = (
+                        current_line
+                        + " "
+                        + next_line.replace("|", "").strip().rstrip(" ")
+                    ).strip()
+                    i = new_i
+                    previous_line = document[i - 1]
+
+                current_line = (
+                    current_line.replace("**", "").replace("###", "").replace("##", "")
+                )
 
                 if (
                     current_line.replace("|", "").strip().startswith("-")
