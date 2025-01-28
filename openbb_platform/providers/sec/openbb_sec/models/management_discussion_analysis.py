@@ -242,6 +242,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     or "of dollars" in cell.lower()
                     or "year" in cell.lower()
                     or "scenario" in cell.lower()
+                    or " to " in cell.lower()
                     or cell.strip().endswith(",")
                 ):
                     new_cells.append(cell)
@@ -329,8 +330,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
                 if (
                     (
-                        line.replace("|", "")
-                        .strip()
+                        line.strip()
                         .lower()
                         .startswith(
                             (
@@ -354,15 +354,6 @@ class SecManagementDiscussionAnalysisFetcher(
                         )
                     )
                     or (
-                        line.replace("*", "")
-                        .strip()
-                        .lower()
-                        .startswith(
-                            "item 2 — management’s discussion and analysis"
-                            " of financial condition and results of operations"
-                        )
-                    )
-                    or (
                         line.replace("*", "").strip().lower().startswith("item")
                         and line.replace("*", "")
                         .replace(".", "")
@@ -373,8 +364,10 @@ class SecManagementDiscussionAnalysisFetcher(
                         )
                     )
                 ):
-                    found_start = True
                     line = line.replace("|", "").replace("*", "")  # noqa
+                    if line.strip(" ")[-1].isnumeric():
+                        continue
+                    found_start = True
                     start_line_text = line
 
                 if (
