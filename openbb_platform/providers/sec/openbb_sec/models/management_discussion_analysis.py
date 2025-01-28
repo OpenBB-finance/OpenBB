@@ -408,6 +408,15 @@ class SecManagementDiscussionAnalysisFetcher(
                         line.replace("|", "").replace(".", "").strip()
                         == "Management’s Discussion and Analysis of Financial Condition and Results of Operations"
                     )
+                    or (
+                        line
+                        == "2. MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS"
+                    )
+                    or (
+                        line.replace("|", "").strip()
+                        == "Management's Discussion and Analysis"
+                        and line_i > 300
+                    )
                 ):
                     line = line.replace("|", "").replace("*", "")  # noqa
                     if line.strip(" ")[-1].isnumeric():
@@ -457,24 +466,13 @@ class SecManagementDiscussionAnalysisFetcher(
                         if not word.replace(" ", "").isnumeric():
                             line = line[0] + " " + line[1:]  # noqa
 
-                    if "●" in line or "•" in line or "◦" in line or "| o |" in line:
+                    if "●" in line or "•" in line or "◦" in line:
                         line = (  # noqa
                             line.replace("|", "")
                             .replace("●", "-")
                             .replace("•", "-")
                             .replace("◦", "-")
-                            .replace("| o |", "-")
                         )
-                    if (
-                        "|" in line
-                        and len(line.replace("|", "").replace(" ", "").strip()) > 1
-                        and line.replace("|", "").replace(" ", "").strip()[0].isalpha()
-                        and (
-                            line.replace("|", "").replace(" ", "").strip()[-1]
-                            in (".", ",", ";")
-                        )
-                    ):
-                        line = line.replace("|", "").strip()  # noqa
 
                     if (
                         line.replace("|", "").strip().startswith("-")
@@ -488,10 +486,12 @@ class SecManagementDiscussionAnalysisFetcher(
                             line.replace("|", "").replace("  ", " ").strip() + "\n"
                         )
 
-                    if line.replace("|", "").replace(" ", "").strip().startswith(
-                        "("
-                    ) and (
-                        line.replace("|", "").replace(" ", "").strip().endswith(")")
+                    if (
+                        line.replace("|", "").replace(" ", "").strip().startswith("(")
+                        and (
+                            line.replace("|", "").replace(" ", "").strip().endswith(")")
+                        )
+                        and line.count("|") < 3
                     ):
                         line = line.replace("|", "").replace(" ", "").strip()  # noqa
                         next_line = (
@@ -505,11 +505,8 @@ class SecManagementDiscussionAnalysisFetcher(
                                 if line_i + 2 < len(extracted_lines)
                                 else ""
                             )
-                            _ = (
-                                extracted_lines.pop(line_i + 1)
-                                if line_i + 1 < len(extracted_lines)
-                                else ""
-                            )
+                            if line_i + 1 < len(extracted_lines):
+                                _ = extracted_lines.pop(line_i + 1)
                         if (
                             next_line.replace("|", "")
                             .replace(" ", "")
@@ -617,9 +614,6 @@ class SecManagementDiscussionAnalysisFetcher(
                                 )
                                 if line[-1] != "|":
                                     line = line + "|"  # noqa
-
-                        if line in ["| | o |", "|  |", "| o |", "| |", "||"]:
-                            continue
 
                         new_lines.append(line)
                         previous_line = line
@@ -818,31 +812,12 @@ class SecManagementDiscussionAnalysisFetcher(
 
                 previous_line = document[i - 1] if i > 0 else ""
 
-                if current_line.strip() in [
-                    "| | o |",
-                    "|  |",
-                    "| o |",
-                    "| |",
-                    "||",
-                    "*",
-                    "-",
-                ]:
-                    if not next_line.strip() or next_line == current_line:
-                        i += 2
-                        continue
-                    else:
-                        i += 1
-                        continue
-
                 if current_line.strip() in ("--", "-", "|:------:|", "||", "|  |"):
                     if not next_line.strip() or next_line == current_line:
                         i += 2
                         continue
                     i += 1
                     continue
-
-                if "|" in current_line and not next_line.replace("|", "").strip():
-                    current_line = current_line.replace("|", "").strip()
 
                 if "| :-" in current_line:
                     current_line = current_line.replace(" :- ", ":-")
