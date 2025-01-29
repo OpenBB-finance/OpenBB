@@ -243,6 +243,8 @@ class SecManagementDiscussionAnalysisFetcher(
                     or "year" in cell.lower()
                     or "scenario" in cell.lower()
                     or " to " in cell.lower()
+                    or "section" in cell.lower()
+                    or "title" in cell.lower()
                     or cell.strip().endswith(",")
                 ):
                     new_cells.append(cell)
@@ -289,8 +291,12 @@ class SecManagementDiscussionAnalysisFetcher(
                 new_cells.append(new_cell)
             return "|".join(new_cells)
 
-        def process_extracted_text(extracted_text: str) -> list:  # noqa: PLR0912
+        def process_extracted_text(  # noqa: PLR0912
+            extracted_text: str, is_inscriptus: bool
+        ) -> list:
             """Process extracted text"""
+
+            print("using inscriptis", is_inscriptus)
             new_lines: list = []
             starting_line = "Item 2."
             annual_start = "Item 7."
@@ -395,7 +401,12 @@ class SecManagementDiscussionAnalysisFetcher(
                         .strip()
                         .lower()
                         .endswith(
-                            ("discussion and analysis", "discussion and analysis of")
+                            (
+                                "discussion and analysis",
+                                "discussion and analysis of",
+                                "analysis of financial",
+                                "of financial condition",
+                            )
                         )
                         and extracted_lines[line_i + 1]
                         .replace("|", "")
@@ -413,6 +424,19 @@ class SecManagementDiscussionAnalysisFetcher(
                         in [
                             "2. MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
                             "7. MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+                            "Items 2. and 3. Management’s Discussion and Analysis of Financial Condition and "
+                            "Results of Operations; Quantitative and Qualitative Disclosures about Market Risk",
+                            "MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS |",
+                            "Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations.",  # noqa
+                            "Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations.",  # noqa
+                            "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+                            "Management's Discussion and Analysis of Financial Condition and Results of Operations",
+                            "MANAGEMENT’S DISCUSSION AND ANALYSIS OF THE FINANCIAL CONDITION AND RESULTS OF",
+                            "MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+                            "Part I. Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations",  # noqa
+                            "| Item 2. | |",
+                            "| Item 7. | |",
+                            "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (“MD&A”)",  # noqa
                         ]
                     )
                     or (
@@ -475,6 +499,10 @@ class SecManagementDiscussionAnalysisFetcher(
                         word = line.split(" ")[0]
                         if not word.replace(" ", "").isnumeric():
                             line = line[0] + " " + line[1:]  # noqa
+
+                    if "▪" in line:
+                        line = line.replace("▪", "").replace("|", "").strip()  # noqa
+                        line = "- " + line  # noqa
 
                     if "●" in line or "•" in line or "◦" in line:
                         line = (  # noqa
@@ -625,8 +653,21 @@ class SecManagementDiscussionAnalysisFetcher(
                                 if line[-1] != "|":
                                     line = line + "|"  # noqa
 
-                        new_lines.append(line)
-                        previous_line = line
+                        if is_inscriptus is True:
+                            line = (  # noqa
+                                line.replace("||||", "|")
+                                .replace("|||", "|")
+                                .replace("  ", " ")
+                                .replace("|          |", "")
+                                .replace("    ", "")
+                                .replace("|  |", "")
+                                .replace(" | |", "")
+                                .replace("| |", "")
+                            )
+
+                        if line not in ["||", "|  |"]:
+                            new_lines.append(line)
+                            previous_line = line
                     else:
                         if "|" in previous_line:
                             new_lines.extend(
@@ -658,17 +699,44 @@ class SecManagementDiscussionAnalysisFetcher(
         if not extracted_text:
             raise EmptyDataError("No text was extracted from the filing!")
 
-        new_lines = process_extracted_text(extracted_text)
+        new_lines = process_extracted_text(extracted_text, False)
 
         if not new_lines:
+            from inscriptis import get_text
+            from inscriptis.model.config import ParserConfig
 
-            raise EmptyDataError(
-                "No content was found in the filing, likely a parsing error from unreachable content."
-                f" -> {data['url']}"
-                " -> The content can be analyzed by inspecting"
-                " the output of `SecManagementDiscussionAnalysisFetcher.aextract_data`,"
-                " or by setting `raw_html=True` in the query."
+            extracted_text = get_text(
+                filing_str,
+                config=ParserConfig(
+                    table_cell_separator="|",
+                ),
             )
+            extracted_lines = []
+            for line in extracted_text.splitlines(keepends=True):
+                extracted_lines.append(
+                    line.strip()
+                    .replace(" , ", ", ")
+                    .replace(" . ", ". ")
+                    .replace(" .", ".")
+                    .replace(" ’ ", "'")
+                    .replace(" ' ", "'")
+                    .replace("“  ", "“")
+                    .replace("  ”", "”")
+                    .replace("o f", "of")
+                    .replace("a n", "an")
+                    .replace("in crease", "increase")
+                )
+            # query.include_tables = False
+            new_lines = process_extracted_text("\n".join(extracted_lines), True)
+
+            if not new_lines:
+                raise EmptyDataError(
+                    "No content was found in the filing, likely a parsing error from unreachable content."
+                    f" -> {data['url']}"
+                    " -> The content can be analyzed by inspecting"
+                    " the output of `SecManagementDiscussionAnalysisFetcher.aextract_data`,"
+                    " or by setting `raw_html=True` in the query."
+                )
 
         # Second pass - clean up document
 
@@ -711,6 +779,11 @@ class SecManagementDiscussionAnalysisFetcher(
                     and not line.strip().isupper()
                 )
                 or (line.strip()[0].isdigit() and line.strip()[2:4] == "of")
+                or (
+                    " " not in line.strip()
+                    and "." not in line
+                    and not line.strip().isalpha()
+                )
             ):
                 return False
 
@@ -805,6 +878,33 @@ class SecManagementDiscussionAnalysisFetcher(
 
             while i < len(document):
                 current_line = document[i]
+                if "![" in current_line:
+                    image_file = (
+                        current_line.split("]")[1].replace("(", "").replace(")", "")
+                    )
+                    base_url = data["url"].rsplit("/", 1)[0]
+                    image_url = f"{base_url}/{image_file}"
+                    cleaned_lines.append(f"![Graphic]({image_url})")
+                    i += 1
+                    continue
+
+                if current_line.strip() == "| | o |":
+                    i += 1
+                    current_line = "- " + document[i].replace("|", "").strip()
+                    cleaned_lines.append(current_line)
+                    i += 1
+                    continue
+                if current_line.strip() == ":------:":
+                    i += 1
+                    continue
+                if current_line.count("|") < 3:
+                    current_line = (
+                        current_line.replace("|", "").replace(":------:", "").strip()
+                    )
+                    cleaned_lines.append(current_line)
+                    i += 1
+                    continue
+
                 next_line = document[i + 1] if i + 1 < len(document) else ""
 
                 if next_line.replace("**", "").strip() == "AND RESULTS OF OPERATIONS":
@@ -822,7 +922,14 @@ class SecManagementDiscussionAnalysisFetcher(
 
                 previous_line = document[i - 1] if i > 0 else ""
 
-                if current_line.strip() in ("--", "-", "|:------:|", "||", "|  |"):
+                if current_line.strip() in (
+                    "--",
+                    "-",
+                    "|:------:|",
+                    "||",
+                    "|  |",
+                    ":------:",
+                ):
                     if not next_line.strip() or next_line == current_line:
                         i += 2
                         continue
@@ -843,10 +950,11 @@ class SecManagementDiscussionAnalysisFetcher(
                     current_line = "- " + current_line[2:]
 
                 if (
-                    current_line.startswith("(")
-                    and current_line.endswith(")")
+                    current_line.startswith(("(", "["))
+                    and current_line.endswith((")", "]"))
                     and len(current_line) < 4
                 ):
+                    current_line = current_line.replace("[", "(").replace("]", ")")
                     dead_line = True
                     new_i = i
                     while dead_line is True:
@@ -859,7 +967,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     next_line = next_line.replace("|", "").rstrip()
 
                     if document[new_i + 1].replace("|", "").rstrip() == next_line:
-                        _ = document.pop(new_i + 1)
+                        new_i += 1
 
                     current_line = (
                         current_line
@@ -954,15 +1062,6 @@ class SecManagementDiscussionAnalysisFetcher(
                     cleaned_lines.append(separator_line)
 
                     i += 2  # Skip original header and separator
-
-                elif "![" in current_line.strip():
-                    image_file = (
-                        current_line.split("]")[1].replace("(", "").replace(")", "")
-                    )
-                    base_url = data["url"].rsplit("/", 1)[0]
-                    image_url = f"{base_url}/{image_file}"
-                    cleaned_lines.append(f"![Graphic]({image_url})")
-                    i += 1
 
                 elif is_title_case(current_line):
                     cleaned_lines.append(
