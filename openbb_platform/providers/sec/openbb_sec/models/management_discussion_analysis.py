@@ -694,6 +694,7 @@ class SecManagementDiscussionAnalysisFetcher(
                                     .replace(" | |", " | ")
                                     .replace("| % |", "")
                                     .replace("| $ |", "")
+                                    .replace("|$ |", "")
                                 )
                                 if is_header:
                                     line = "| " + line  # noqa
@@ -702,6 +703,7 @@ class SecManagementDiscussionAnalysisFetcher(
                                     line.replace("| $ | ", "")
                                     .replace("| % |", "")
                                     .replace("   ", "|")
+                                    .replace("|$ |", "")
                                 )
                                 if not line.strip().startswith("|"):
                                     line = "| " + line  # noqa
@@ -769,14 +771,21 @@ class SecManagementDiscussionAnalysisFetcher(
                                 line.replace("||||", "|")
                                 .replace("|||", "|")
                                 .replace("|          |", "")
+                                .replace("| | |", "|")
+                                .replace("| |", "|")
                                 .replace("    ", "")
                                 .replace("||", "|")
                                 .replace("|%|", "")
                                 .replace("|%  |", "")
                                 .replace("|$|", "")
+                                .replace("|$ |", "")
                                 .replace("|)", ")")
                                 .replace("  )", ")")
                                 .replace(" )", ")")
+                                .replace("| | |", "|")
+                                .replace("|  |", "|")
+                                .replace(" | | ", "|")
+                                .replace("| |", "|")
                             )
                             if (
                                 "months ended" in line.lower()
@@ -885,7 +894,14 @@ class SecManagementDiscussionAnalysisFetcher(
 
         def is_title_case(line: str) -> bool:
             """Check if line follows financial document title case patterns"""
-            if line.strip().startswith("-") or line.strip().endswith("."):
+            if (
+                line.strip().startswith("-")
+                or line.strip().endswith(".")
+                or line.strip().endswith(",")
+                or "“" in line
+                or line.endswith("-")
+                or line.lower().endswith("ended")
+            ):
                 return False
 
             if line.istitle() and not line.endswith(".") and not line.startswith("-"):
@@ -901,6 +917,8 @@ class SecManagementDiscussionAnalysisFetcher(
             if (
                 "|" not in line
                 and line.strip().isupper()
+                and len(line.strip()) > 1
+                and line[-1].isalpha()
                 or line.strip().startswith("Item")
                 or line.strip().startswith("ITEM")
             ):
@@ -969,6 +987,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     "|" in document[i - 1]
                     and i - 1 > 1
                     and i + 1 <= len(document)
+                    and i + 1 < len(document)
                     and "|" in document[i + 1]
                 ) and (
                     current_line == "" or current_line.replace("|", "").strip() == ""
@@ -1349,8 +1368,16 @@ class SecManagementDiscussionAnalysisFetcher(
         i = 0
         for line in cleaned_lines:
             i += 1
-
-            if "|" not in line and "#" not in line and is_title_case(line):
+            line = line.replace(  # noqa
+                "(amountsinmillions,exceptpershare,share,percentagesandwarehousecountdata) ",
+                "",
+            )
+            if (
+                "|" not in line
+                and "#" not in line
+                and is_title_case(line)
+                and "|" not in cleaned_lines[i - 1]
+            ):
                 if "." in line and " " not in line:
                     continue
                 finished_lines.append(
