@@ -66,6 +66,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
     from .openapi import (
         TO_CAPS_STRINGS,
         data_schema_to_columns_defs,
+        get_data_schema_for_widget,
         get_query_schema_for_widget,
     )
 
@@ -85,6 +86,9 @@ def build_json(openapi: dict, widget_exclude_filter: list):
 
         # Prepare the query schema of the widget
         query_schema, has_chart = get_query_schema_for_widget(openapi, route)
+        response_schema = get_data_schema_for_widget() or route_api[method][
+            "responses"
+        ]["200"]["content"]["application/json"].get("schema", {})
 
         # Extract providers from the query schema
         providers: list = []
@@ -150,7 +154,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 "endpoint": route.replace("/api", "api"),
                 "gridData": {"w": 45, "h": 15},
                 "data": {
-                    "dataKey": "results",
+                    "dataKey": "results" if response_schema else "",
                     "table": {
                         "showAll": True,
                     },
@@ -200,7 +204,9 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 widget_config_chart["gridData"]["h"] = 20
                 widget_config_chart["gridData"]["w"] = 50
                 widget_config_chart["defaultViz"] = "chart"
-                widget_config_chart["data"]["dataKey"] = "chart.content"
+                widget_config_chart["data"]["dataKey"] = (
+                    "chart.content" if response_schema else ""
+                )
                 if widget_config_chart["widgetId"] not in widget_exclude_filter:
                     widgets_json[widget_config_chart["widgetId"]] = widget_config_chart
 
