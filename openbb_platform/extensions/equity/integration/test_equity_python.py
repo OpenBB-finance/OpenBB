@@ -2063,6 +2063,7 @@ def test_equity_ownership_government_trades(params, obb):
                 "include_tables": False,
                 "use_cache": True,
                 "raw_html": False,
+                "strategy": "trafilatura",
                 "provider": "sec",
             }
         ),

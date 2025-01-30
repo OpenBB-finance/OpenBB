@@ -2203,6 +2203,7 @@ def test_equity_ownership_government_trades(params, headers):
                 "include_tables": False,
                 "use_cache": True,
                 "raw_html": False,
+                "strategy": "trafilatura",
                 "provider": "sec",
             }
         ),
