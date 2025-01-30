@@ -270,6 +270,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     or "section" in cell.lower()
                     or "title" in cell.lower()
                     or "adverse currency fluctuation" in cell.lower()
+                    or "vs" in cell.lower()
                     or cell.strip().endswith(",")
                 ):
                     new_cells.append(cell)
@@ -458,9 +459,12 @@ class SecManagementDiscussionAnalysisFetcher(
                             "MANAGEMENT’S DISCUSSION AND ANALYSIS OF THE FINANCIAL CONDITION AND RESULTS OF",
                             "MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
                             "Part I. Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations",  # noqa
+                            "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (“MD&A”)",  # noqa
+                            "ITEM 7 – MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (MD&A)",  # noqa
+                            "ITEM 2 – MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (MD&A)",  # noqa
+                            "Part II. Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",  # noqa
                             "| Item 2. | |",
                             "| Item 7. | |",
-                            "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (“MD&A”)",  # noqa
                         ]
                     )
                     or line.startswith(
@@ -527,6 +531,7 @@ class SecManagementDiscussionAnalysisFetcher(
                         "Item 8—Financial Statements and Supplementary Data"
                     )
                     or line.strip().startswith("MANAGEMENT AND AUDITOR’S REPORTS")
+                    or line == "EXHIBIT INDEX"
                 ):
                     at_end = True
                     line = line.replace("|", " ").replace("  ", " ")  # noqa
@@ -789,6 +794,9 @@ class SecManagementDiscussionAnalysisFetcher(
                             line = line.replace(".   ", ".\n\n")  # noqa
                         elif is_inscriptis is True and ".  " in line:
                             line = line.replace(".  ", ".\n\n")  # noqa
+
+                        if " ." in line:
+                            line = line.replace(" .", ".")  # noqa
 
                         if "|" in previous_line:
                             new_lines.extend(
@@ -1065,6 +1073,12 @@ class SecManagementDiscussionAnalysisFetcher(
                         current_line = "|" + current_line
 
                     if (
+                        current_line.strip().startswith("|:-")
+                        and current_line[-1] != "|"
+                    ):
+                        current_line = current_line + "|"
+
+                    if (
                         "in the preceding table" in current_line.lower()
                         or "in the table above" in current_line.lower()
                         or "the following tables present" in current_line.lower()
@@ -1164,6 +1178,9 @@ class SecManagementDiscussionAnalysisFetcher(
                 if "| :-" in current_line:
                     current_line = current_line.replace(" :- ", ":-")
 
+                if "|:-" in current_line and not current_line.strip().endswith("|"):
+                    current_line = current_line + "|"
+
                 if (
                     not current_line.strip()
                     and "|" in document[i - 1]
@@ -1260,6 +1277,11 @@ class SecManagementDiscussionAnalysisFetcher(
                     document.insert(i - 1, inserted_line)
                     cleaned_lines.append(inserted_line)
 
+                if current_line.startswith("|:-") and not current_line.strip().endswith(
+                    "|"
+                ):
+                    current_line = current_line + "|"
+
                 # Detect table by empty header pattern
                 if (
                     i + 2 < len(document)
@@ -1269,7 +1291,6 @@ class SecManagementDiscussionAnalysisFetcher(
                 ):
                     table_i = i + 2
                     max_cols = 0
-
                     # First pass - find max columns
                     while table_i < len(document):
                         if "|" not in document[table_i]:
@@ -1295,10 +1316,10 @@ class SecManagementDiscussionAnalysisFetcher(
                     i += 2  # Skip original header and separator
                 elif is_title_case(current_line):
                     cleaned_lines.append(
-                        f"## **{current_line.strip().replace('*', '').rstrip()}**"
+                        f"## **{current_line.strip().replace('*', '').rstrip()}**\n\n"
                         if current_line.strip().startswith("Item")
                         or current_line.strip().isupper()
-                        else f"### **{current_line.strip().replace('*', '').rstrip()}**"
+                        else f"### **{current_line.strip().replace('*', '').rstrip()}**\n\n"
                     )
                     i += 1
                 else:
@@ -1338,6 +1359,9 @@ class SecManagementDiscussionAnalysisFetcher(
                             remaining = ". ".join(current_line.split(".")[1:])
                             clean_line += remaining + "\n"
                         cleaned_lines.append(clean_line)
+                        i += 1
+                        continue
+
                     elif current_line.strip().startswith("-") and (
                         "|" not in current_line
                         and not previous_line.replace("|", "")
