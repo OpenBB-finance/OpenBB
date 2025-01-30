@@ -85,10 +85,10 @@ class SecManagementDiscussionAnalysisFetcher(
 
         # Get the company filings to find the URL.
 
-        if query.symbol == "BLK":
+        if query.symbol == "BLK" or query.symbol.isnumeric():
             filings = await SecCompanyFilingsFetcher.fetch_data(
                 {
-                    "cik": "0001364742",
+                    "cik": "0001364742" if query.symbol == "BLK" else query.symbol,
                     "form_type": "10-K,10-Q",
                     "use_cache": query.use_cache,
                 },
