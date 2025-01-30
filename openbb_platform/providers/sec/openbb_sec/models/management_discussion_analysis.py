@@ -672,6 +672,7 @@ class SecManagementDiscussionAnalysisFetcher(
                             is_header = is_table_header(line)
                             is_multi_header = (
                                 "months ended" in line.lower()
+                                or "year ended" in line.lower()
                                 or "quarter ended" in line.lower()
                                 or "change" in line.lower()
                                 or line.strip().endswith(",")
@@ -779,6 +780,7 @@ class SecManagementDiscussionAnalysisFetcher(
                             )
                             if (
                                 "months ended" in line.lower()
+                                or "year ended" in line.lower()
                                 or "quarter ended" in line.lower()
                                 or "weeks ended" in line.lower()
                                 and "|" not in line
@@ -883,113 +885,44 @@ class SecManagementDiscussionAnalysisFetcher(
 
         def is_title_case(line: str) -> bool:
             """Check if line follows financial document title case patterns"""
-            ignore_words = [
-                "and",
-                "the",
-                "of",
-                "in",
-                "to",
-                "for",
-                "with",
-                "on",
-                "at",
-                "by",
-                "from",
-                "versus",
-                "&",
-                ",",
-                "$",
-                "per",
-                "share",
-                "compared",
-            ]
+            if line.strip().startswith("-") or line.strip().endswith("."):
+                return False
 
-            if (
-                line.strip().lower().startswith("item")
-                and "|" not in line
-                or line.strip().lower().startswith("part ")
-                and "|" not in line
-            ) or (line.strip().isupper() and "|" not in line):
+            if line.istitle() and not line.endswith(".") and not line.startswith("-"):
                 return True
 
-            if line.istitle() and "|" not in line:
-                return True
-
-            # Basic checks
             if (
-                not line
-                or "![" in line
-                or not line.strip()
-                or len(line.strip()) < 8
-                or "|" in line
-                or line.strip().endswith(('."', ".”"))
-                or line.strip()[0].islower()
-                or line.strip().isnumeric()
-                or line.strip()[0] == "("
-                or (
-                    line.strip().endswith((".", ":", ";", ",", "-", '"'))
-                    and not line.strip().isupper()
-                )
-                or (line.strip()[0].isdigit() and line.strip()[2:4] == "of")
-                or (
-                    " " not in line.strip()
-                    and "." not in line
-                    and not line.strip().isalpha()
-                )
+                line.strip().endswith(",")
+                or line.strip().startswith("-")
+                or line.strip().endswith(".")
             ):
                 return False
 
-            words = line.strip().split()
-
             if (
-                words[0].isnumeric()
-                and words[-1].isnumeric()
-                and len(words) > 2
-                and words[1].isalpha()
-                and "." not in words[1]
+                "|" not in line
+                and line.strip().isupper()
+                or line.strip().startswith("Item")
+                or line.strip().startswith("ITEM")
             ):
                 return True
 
-            if (
-                all(
-                    word.replace("(", "")
-                    .replace(")", "")
-                    .replace("-", "")
-                    .replace(",", "")
-                    .replace(".", "")
-                    .isupper()
-                    for word in words
-                )
-                or str(words)
-                .replace("(", "")
+            return (
+                line.replace("(", "")
                 .replace(")", "")
-                .replace("-", "")
                 .replace(",", "")
-                .replace(".", "")
-                .istitle()
-            ):
-                return True
-
-            if len(words) < 2 and (
-                str(words).isnumeric() or str(words).startswith("(")
-            ):
-                return False
-
-            # Check remaining words
-            for i, word in enumerate(words[1:], 1):
-                # Skip common lowercase words unless first/last
-                if word.lower() in ignore_words and i != len(words) - 1:
-                    continue
-
-                # Allow numbers and abbreviations
-                if word.isupper() or word[0].isdigit():
-                    continue
-
-                # Other words should be capitalized
-                if not word[0].isupper():
-                    return False
-
-            return True
+                .replace(" and ", " And ")
+                .replace(" of ", " Of ")
+                .replace(" the ", " The ")
+                .replace(" vs ", " VS ")
+                .replace(" in ", " In ")
+                .replace(" to ", " To ")
+                .replace(" for ", " For ")
+                .replace(" with ", " With ")
+                .replace(" on ", " On ")
+                .replace(" at ", " At ")
+                .replace(" from ", " From ")
+                .replace(" by ", " By ")
+            ).istitle()
 
         def count_columns_in_data_row(data_row: str) -> int:
             """Count actual columns from first data row"""
@@ -1323,14 +1256,6 @@ class SecManagementDiscussionAnalysisFetcher(
                     cleaned_lines.append(separator_line)
 
                     i += 2  # Skip original header and separator
-                elif is_title_case(current_line):
-                    cleaned_lines.append(
-                        f"## **{current_line.strip().replace('*', '').rstrip()}**\n\n"
-                        if current_line.strip().startswith("Item")
-                        or current_line.strip().isupper()
-                        else f"### **{current_line.strip().replace('*', '').rstrip()}**\n\n"
-                    )
-                    i += 1
                 else:
                     if current_line.strip().startswith("-"):
                         current_line = current_line.replace("|", "")
@@ -1407,6 +1332,7 @@ class SecManagementDiscussionAnalysisFetcher(
                             cleaned_lines.append(padded_line.strip())
                         else:
                             cleaned_lines.append(current_line)
+
                     # Not a table row, keep unchanged
                     else:
                         cleaned_lines.append(current_line)
@@ -1418,6 +1344,23 @@ class SecManagementDiscussionAnalysisFetcher(
 
         cleaned_lines = process_document(document.splitlines(), is_inscriptis)
 
-        data["content"] = "\n".join(cleaned_lines)
+        finished_lines: list = []
+
+        i = 0
+        for line in cleaned_lines:
+            i += 1
+
+            if "|" not in line and "#" not in line and is_title_case(line):
+                if "." in line and " " not in line:
+                    continue
+                finished_lines.append(
+                    f"## **{line.strip().replace('*', '').rstrip()}**"
+                    if line.strip().startswith("Item") or line.strip().isupper()
+                    else f"### **{line.strip().replace('*', '').rstrip()}**"
+                )
+            else:
+                finished_lines.append(line)
+
+        data["content"] = "\n".join(finished_lines)
 
         return SecManagementDiscussionAnalysisData(**data)
