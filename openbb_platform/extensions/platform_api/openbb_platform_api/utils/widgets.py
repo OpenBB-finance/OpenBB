@@ -66,7 +66,6 @@ def build_json(openapi: dict, widget_exclude_filter: list):
     from .openapi import (
         TO_CAPS_STRINGS,
         data_schema_to_columns_defs,
-        get_data_schema_for_widget,
         get_query_schema_for_widget,
     )
 
@@ -86,9 +85,9 @@ def build_json(openapi: dict, widget_exclude_filter: list):
 
         # Prepare the query schema of the widget
         query_schema, has_chart = get_query_schema_for_widget(openapi, route)
-        response_schema = get_data_schema_for_widget() or route_api[method][
-            "responses"
-        ]["200"]["content"]["application/json"].get("schema", {})
+        response_schema = route_api[method]["responses"]["200"]["content"][
+            "application/json"
+        ].get("schema", {})
 
         # Extract providers from the query schema
         providers: list = []
