@@ -469,7 +469,7 @@ class SecManagementDiscussionAnalysisFetcher(
                             "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (“MD&A”)",  # noqa
                             "ITEM 7 – MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (MD&A)",  # noqa
                             "ITEM 2 – MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (MD&A)",  # noqa
-                            "Part II. Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",  # noqa
+                            "Part II. Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",  # noqa  # pylint: disable=line-too-long
                             "| Item 2. | |",
                             "| Item 7. | |",
                         ]
@@ -1315,7 +1315,7 @@ class SecManagementDiscussionAnalysisFetcher(
                         i += 1
                         continue
 
-                    elif current_line.strip().startswith("-") and (
+                    if current_line.strip().startswith("-") and (
                         "|" not in current_line
                         and not previous_line.replace("|", "")
                         .strip()
