@@ -222,6 +222,7 @@ class SecManagementDiscussionAnalysisFetcher(
         from inscriptis.model.config import ParserConfig
         from textwrap import wrap
         from trafilatura import extract
+        from warnings import warn
 
         if query.raw_html is True:
             return SecManagementDiscussionAnalysisData(**data)
@@ -298,9 +299,13 @@ class SecManagementDiscussionAnalysisFetcher(
                     and "scenario" not in new_cell
                 ):
                     # Handle cases with spaces between letters and numbers
-                    new_cell = re.sub(r"(?<=[A-Za-z])\s+(?=[0-9])", " |", new_cell)
-                    new_cell = re.sub(r"(?<=[A-Za-z])(?=[0-9])", "|", new_cell)
-                # Insert divider between consecutive numbers
+                    new_cell = re.sub(
+                        r"(?<=[A-Za-z])\s+(?=[0-9])(?!\([a-zA-Z])", " |", new_cell
+                    )
+                    new_cell = re.sub(
+                        r"(?<=[A-Za-z])(?=[0-9])(?!\([a-zA-Z])", "|", new_cell
+                    )
+                # Insert divider between consecutive numbers, excluding number(letter)
                 if (
                     re.search(
                         r"(\(\d+\.?\d*\)|\d+\.?\d*)\s+(\(\d+\.?\d*\)|\d+\.?\d*)",
@@ -309,11 +314,13 @@ class SecManagementDiscussionAnalysisFetcher(
                     and "versus" not in new_cell.lower()
                     and "thru" not in new_cell.lower()
                     and "through" not in new_cell.lower()
+                    and not re.search(r"\d+\.?\d*\([a-zA-Z]\)", new_cell)
                 ):
                     new_cell = re.sub(
-                        r"(\(\d+\)|\d+(?:\.\d+)?)\s+(?=\(|\d)", r"\1|", new_cell
+                        r"(\(\d+\)|\d+(?:\.\d+)?)\s+(?=\(|\d)(?!\([a-zA-Z])",
+                        r"\1|",
+                        new_cell,
                     )
-
                 new_cells.append(new_cell)
             return "|".join(new_cells)
 
@@ -856,6 +863,7 @@ class SecManagementDiscussionAnalysisFetcher(
             new_lines = process_extracted_text(extracted_text, False)
 
             if not new_lines:
+                warn("Trafilatura extraction failed, trying Inscriptis.")
                 new_lines = try_inscriptis(filing_str)
                 is_inscriptis = True
 
