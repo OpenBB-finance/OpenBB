@@ -857,6 +857,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
             if not new_lines:
                 new_lines = try_inscriptis(filing_str)
+                is_inscriptis = True
 
         else:
             new_lines = try_inscriptis(filing_str)
