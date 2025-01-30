@@ -1380,11 +1380,12 @@ class SecManagementDiscussionAnalysisFetcher(
             ):
                 if "." in line and " " not in line:
                     continue
-                finished_lines.append(
-                    f"## **{line.strip().replace('*', '').rstrip()}**"
-                    if line.strip().startswith("Item") or line.strip().isupper()
-                    else f"### **{line.strip().replace('*', '').rstrip()}**"
-                )
+                if len(finished_lines) > 1 and "|" not in finished_lines[-1]:
+                    finished_lines.append(
+                        f"## **{line.strip().replace('*', '').rstrip()}**"
+                        if line.strip().startswith("Item") or line.strip().isupper()
+                        else f"### **{line.strip().replace('*', '').rstrip()}**"
+                    )
             else:
                 finished_lines.append(line)
 
