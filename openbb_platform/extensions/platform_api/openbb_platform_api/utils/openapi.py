@@ -349,7 +349,13 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                 # Get the reference to the schema from the successful response
                 response_ref = details["responses"]["200"]["content"][
                     "application/json"
-                ]["schema"]["$ref"]
+                ].get("schema", {}).get("$ref") or details["responses"]["200"][
+                    "content"
+                ][
+                    "application/json"
+                ].get(
+                    "schema", ""
+                )
                 # Extract the schema name from the reference
                 schema_name = response_ref.split("/")[-1]
                 # Fetch and return the schema from components
