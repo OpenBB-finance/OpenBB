@@ -514,6 +514,12 @@ async def trailing_dividend_yield(
             },
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "type": "markdown",
+            "data": {"dataKey": "results.content", "columnsDefs": []},
+        }
+    },
 )
 async def management_discussion_analysis(
     cc: CommandContext,
