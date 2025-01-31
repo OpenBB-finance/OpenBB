@@ -632,28 +632,6 @@ function Chart({
       if (theme !== "dark") {
         setChangeTheme(true);
       }
-
-      const traceTypes = originalData.data.map(
-        (trace) => trace.type === "candlestick",
-      );
-      if (
-        (originalData.data[0]?.x !== undefined &&
-          originalData.data[0]?.x.length <= 1000) ||
-        !traceTypes.includes(true)
-      )
-        return;
-      setModal({
-        name: "alertDialog",
-        data: {
-          title: "Warning",
-          content: `Data has been truncated to 1000 points for performance reasons.
-						Please use the zoom tool to see more data.`,
-        },
-      });
-      const new_figure = CreateDataXrange(originalData);
-      setPlotData(new_figure);
-      setDateSliced(true);
-      setAutoScaling(true);
     }
   }, [plotLoaded]);
 
