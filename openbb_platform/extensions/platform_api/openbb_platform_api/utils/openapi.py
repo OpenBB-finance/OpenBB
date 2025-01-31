@@ -354,9 +354,16 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                 ][
                     "application/json"
                 ].get(
-                    "schema", ""
+                    "schema"
                 )
-                if response_ref:
+
+                if isinstance(response_ref, dict) and "type" in response_ref:
+                    response_ref = response_ref["type"]
+
+                if (
+                    response_ref
+                    and response_ref in openapi_json["components"]["schemas"]
+                ):
                     # Extract the schema name from the reference
                     schema_name = response_ref.split("/")[-1]
                     # Fetch and return the schema from components
@@ -365,6 +372,8 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                         .get("properties", {})
                         .get("results", {})
                     )
+                elif response_ref:
+                    return response_ref
 
     # Return None if the schema is not found
     return None
