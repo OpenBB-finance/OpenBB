@@ -360,20 +360,19 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                 if isinstance(response_ref, dict) and "type" in response_ref:
                     response_ref = response_ref["type"]
 
-                if (
-                    response_ref
-                    and response_ref in openapi_json["components"]["schemas"]
-                ):
+                if response_ref:
                     # Extract the schema name from the reference
                     schema_name = response_ref.split("/")[-1]
                     # Fetch and return the schema from components
-                    return (
-                        openapi_json["components"]["schemas"][schema_name]
-                        .get("properties", {})
-                        .get("results", {})
-                    )
-                if response_ref:
-                    return response_ref
+                    if (
+                        schema_name
+                        and schema_name in openapi_json["components"]["schemas"]
+                    ):
+                        return (
+                            openapi_json["components"]["schemas"][schema_name]
+                            .get("properties", {})
+                            .get("results", {})
+                        )
 
     # Return None if the schema is not found
     return None
