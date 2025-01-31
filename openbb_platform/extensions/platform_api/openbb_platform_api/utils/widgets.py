@@ -82,7 +82,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
         route_api = openapi["paths"][route]
         method = list(route_api)[0]
         widget_id = route_api[method]["operationId"]
-
+        widget_config_dict = route_api[method].get("widget_config", {})
         # Prepare the query schema of the widget
         query_schema, has_chart = get_query_schema_for_widget(openapi, route)
         response_schema = route_api[method]["responses"]["200"]["content"][
@@ -177,6 +177,10 @@ def build_json(openapi: dict, widget_exclude_filter: list):
 
             if columns_defs:
                 widget_config["data"]["table"]["columnsDefs"] = columns_defs
+
+            # Update the widget configuration with the supplied configurations in @router.command
+            if widget_config_dict:
+                widget_config.update(widget_config_dict)
 
             # Add the widget configuration to the widgets.json
             if widget_config["widgetId"] not in widget_exclude_filter:
