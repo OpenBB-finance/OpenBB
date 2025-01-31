@@ -356,14 +356,15 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                 ].get(
                     "schema", ""
                 )
-                # Extract the schema name from the reference
-                schema_name = response_ref.split("/")[-1]
-                # Fetch and return the schema from components
-                return (
-                    openapi_json["components"]["schemas"][schema_name]
-                    .get("properties", {})
-                    .get("results", {})
-                )
+                if response_ref:
+                    # Extract the schema name from the reference
+                    schema_name = response_ref.split("/")[-1]
+                    # Fetch and return the schema from components
+                    return (
+                        openapi_json["components"]["schemas"][schema_name]
+                        .get("properties", {})
+                        .get("results", {})
+                    )
 
     # Return None if the schema is not found
     return None
@@ -377,7 +378,7 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
 
     result_schema_ref = get_data_schema_for_widget(openapi_json, operation_id)
     # Check if 'anyOf' is in the result_schema_ref and handle the nested structure
-    if "anyOf" in result_schema_ref:
+    if result_schema_ref and "anyOf" in result_schema_ref:
         for item in result_schema_ref["anyOf"]:
             # When there are multiple providers a 'oneOf' is used
             if "items" in item and "oneOf" in item["items"]:
@@ -397,7 +398,7 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
     schemas = [
         openapi_json["components"]["schemas"][ref]
         for ref in schema_refs
-        if ref in openapi_json["components"]["schemas"]
+        if ref and ref in openapi_json["components"]["schemas"]
     ]
 
     # Proceed with finding common keys and generating column definitions
