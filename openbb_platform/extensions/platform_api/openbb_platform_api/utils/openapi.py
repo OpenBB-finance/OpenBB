@@ -372,7 +372,7 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                         .get("properties", {})
                         .get("results", {})
                     )
-                elif response_ref:
+                if response_ref:
                     return response_ref
 
     # Return None if the schema is not found
