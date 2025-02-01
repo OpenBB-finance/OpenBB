@@ -1,7 +1,7 @@
 """Management Discussion & Analysis Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
+from typing import Literal, Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -21,9 +21,7 @@ class ManagementDiscussionAnalysisQueryParams(QueryParams):
         description="Calendar year of the report. By default, is the current year."
         + " If the calendar period is not provided, but the calendar year is, it will return the annual report.",
     )
-    calendar_period: Optional[int] = Field(
-        gt=0,
-        le=4,
+    calendar_period: Optional[Literal["Q1", "Q2", "Q3", "Q4"]] = Field(
         default=None,
         description="Calendar period of the report. By default, is the most recent report available for the symbol."
         + " If no calendar year and no calendar period are provided, it will return the most recent report.",

@@ -129,7 +129,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 calendar_period = to_datetime("today").quarter
             elif query.calendar_year and query.calendar_period:
                 calendar_year = query.calendar_year
-                calendar_period = query.calendar_period
+                calendar_period = int(query.calendar_period[1])
             elif query.calendar_year:
                 calendar_year = query.calendar_year
                 calendar_period = 1

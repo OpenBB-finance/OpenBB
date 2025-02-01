@@ -488,7 +488,7 @@ async def trailing_dividend_yield(
             parameters={
                 "symbol": "AAPL",
                 "calendar_year": 2020,
-                "calendar_period": 4,
+                "calendar_period": "Q4",
                 "provider": "sec",
             },
         ),
@@ -497,7 +497,7 @@ async def trailing_dividend_yield(
             parameters={
                 "symbol": "AAPL",
                 "calendar_year": 2020,
-                "calendar_period": 4,
+                "calendar_period": "Q4",
                 "provider": "sec",
                 "include_tables": True,
             },
@@ -508,7 +508,7 @@ async def trailing_dividend_yield(
             parameters={
                 "symbol": "AAPL",
                 "calendar_year": 2020,
-                "calendar_period": 4,
+                "calendar_period": "Q4",
                 "provider": "sec",
                 "raw_html": True,
             },
@@ -518,6 +518,9 @@ async def trailing_dividend_yield(
         "widget_config": {
             "type": "markdown",
             "data": {"dataKey": "results.content", "columnsDefs": []},
+            "staleTime": 86400000,
+            "refetchInterval": 86400000,
+            "source": "SEC",
         }
     },
 )
