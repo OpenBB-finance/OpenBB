@@ -197,7 +197,7 @@ def test_sec_management_discussion_analysis_fetcher(credentials=test_credentials
     params = {
         "symbol": "AAPL",
         "calendar_year": 2024,
-        "calendar_period": 2,
+        "calendar_period": "Q2",
         "wrap_length": 120,
         "include_tables": False,
         "use_cache": False,
