@@ -985,7 +985,7 @@
         "subCategory": "Survey"
     },
     "economy_cpi_fred_obb": {
-        "name": "CPI",
+        "name": "Cpi",
         "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
         "category": "Economy",
         "type": "table",
@@ -1318,7 +1318,8 @@
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "CPI"
     },
     "economy_balance_of_payments_fred_obb": {
         "name": "Balance Of Payments",
@@ -1728,10 +1729,11 @@
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "Balance Of Payments"
     },
     "economy_fred_search_fred_obb": {
-        "name": "FRED Search",
+        "name": "Fred Search",
         "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
         "category": "Economy",
         "type": "table",
@@ -2020,10 +2022,11 @@
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "FRED Search"
     },
     "economy_fred_series_fred_obb": {
-        "name": "FRED Series",
+        "name": "Fred Series",
         "description": "Get data by series ID from FRED.",
         "category": "Economy",
         "type": "table",
@@ -2229,10 +2232,11 @@
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "FRED Series"
     },
     "economy_fred_series_fred_obb_chart": {
-        "name": "FRED Series (Chart)",
+        "name": "Fred Series (Chart)",
         "description": "Get data by series ID from FRED.",
         "category": "Economy",
         "type": "table",
@@ -2448,10 +2452,11 @@
         "source": [
             "FRED"
         ],
+        "subCategory": "FRED Series",
         "defaultViz": "chart"
     },
     "economy_fred_release_table_fred_obb": {
-        "name": "FRED Release Table",
+        "name": "Fred Release Table",
         "description": "Get economic release data by ID and/or element from FRED.",
         "category": "Economy",
         "type": "table",
@@ -2585,10 +2590,11 @@
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "FRED Release Table"
     },
     "economy_fred_regional_fred_obb": {
-        "name": "FRED Regional",
+        "name": "Fred Regional",
         "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
         "category": "Economy",
         "type": "table",
@@ -2907,7 +2913,8 @@
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "FRED Regional"
     },
     "economy_retail_prices_fred_obb": {
         "name": "Retail Prices",
@@ -3111,10 +3118,11 @@
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "Retail Prices"
     },
     "economy_pce_fred_obb": {
-        "name": "PCE",
+        "name": "Pce",
         "description": "Get Personal Consumption Expenditures (PCE) reports.",
         "category": "Economy",
         "type": "table",
@@ -3267,7 +3275,8 @@
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "PCE"
     },
     "regulators_sec_cik_map_sec_obb": {
         "name": "CIK Map",
