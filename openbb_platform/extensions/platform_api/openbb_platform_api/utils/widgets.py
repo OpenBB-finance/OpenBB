@@ -223,10 +223,10 @@ def build_json(openapi: dict, widget_exclude_filter: list):
             columns_defs = data_schema_to_columns_defs(openapi, widget_id, provider)
             _cats = [
                 r
-                for r in route.split("/")[1:-1]
-                if r != "api" and r[0].lower() != "v" and not r[1:].isdigit()
+                for r in route.split("/")
+                if r and r != "api" and r[0].lower() != "v" and not r[1:].isdigit()
             ]
-            category = _cats[0].title()
+            category = _cats[0].title() if _cats else ""
             category = category.replace("Fixedincome", "Fixed Income")
             subcat = (
                 _cats[1].title().replace("_", " ")
@@ -290,9 +290,9 @@ def build_json(openapi: dict, widget_exclude_filter: list):
             widget_config = {
                 "name": f"{name}" if name else route_api["get"].get("summary"),
                 "description": route_api["get"].get("description", ""),
-                "category": category,
+                "category": category.replace("_", " ").title(),
                 "type": widget_type,
-                "searchCategory": category,
+                "searchCategory": category.replace("_", " ").title(),
                 "widgetId": f"{widget_id}_{provider}_obb",
                 "params": modified_query_schema,
                 "endpoint": route.replace("/api", "api"),

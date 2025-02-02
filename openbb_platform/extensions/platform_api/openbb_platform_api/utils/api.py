@@ -273,7 +273,10 @@ def import_app(app_path: str):
     """Import the FastAPI app instance from a local file."""
     # pylint: disable=import-outside-toplevel
     from fastapi import FastAPI  # noqa
+    from fastapi.middleware.cors import CORSMiddleware
     from importlib import util
+    from openbb_core.api.app_loader import AppLoader
+    from openbb_core.api.rest_api import system
 
     if not Path(app_path).exists():
         raise FileNotFoundError(f"Error: The app file '{app_path}' does not exist")
@@ -296,6 +299,14 @@ def import_app(app_path: str):
         )
 
     app = module.app
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=system.api_settings.cors.allow_origins,
+        allow_methods=system.api_settings.cors.allow_methods,
+        allow_headers=system.api_settings.cors.allow_headers,
+    )
+    AppLoader.add_openapi_tags(app)
+    AppLoader.add_exception_handlers(app)
 
     return app
 
