@@ -24,7 +24,8 @@ Launcher specific arguments:
     --login                         Login to the OpenBB Platform.
     --exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
     --no-filter                     Do not filter out widgets in widget_settings.json file.
-    --widgets-path                  Absolute path to the widgets.json file. Default is ~/envs/{env}/assets/widgets.json. Only valid when --editable true.
+    --widgets-path                  Absolute path to the widgets.json file. Default is ~/envs/{env}/assets/widgets.json. Supplying this sets --editable true.
+    --templates-path                Absolute path to the workspace_templates.json file. Default is ~/OpenBBUserData/workspace_templates.json.
 
 
 The FastAPI app instance can be imported to another script, modified, and launched by using the --app argument.
@@ -330,5 +331,8 @@ def parse_args():
         if not Path(_app_path).exists():
             raise FileNotFoundError(f"Error: The app file '{_app_path}' does not exist")
         _kwargs["app"] = import_app(_app_path)
+
+    if _kwargs.get("widgets_path"):
+        _kwargs["editable"] = True
 
     return _kwargs

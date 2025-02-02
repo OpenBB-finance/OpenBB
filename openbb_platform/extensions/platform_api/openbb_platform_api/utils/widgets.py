@@ -185,7 +185,15 @@ def build_json(openapi: dict, widget_exclude_filter: list):
 
         route_api = openapi["paths"][route]
         method = list(route_api)[0]
-        widget_id = route_api[method].get("operationId", "")
+        widget_id = (
+            (
+                route[1:].replace("/", "_")
+                if route[0] == "/"
+                else route.replace("/", "_")
+            )
+            .replace("api_", "")
+            .replace("v1_", "")
+        )
 
         if widget_id in widget_exclude_filter:
             continue

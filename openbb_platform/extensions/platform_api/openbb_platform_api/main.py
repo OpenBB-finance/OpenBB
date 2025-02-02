@@ -54,6 +54,7 @@ if _app:
 
 EDITABLE = kwargs.pop("editable", None) is True
 WIDGETS_PATH = kwargs.pop("widgets_path", None)
+TEMPLATES_PATH = kwargs.pop("templates_path", None)
 build = kwargs.pop("build", True)
 build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
@@ -91,8 +92,12 @@ widgets_json = get_widgets_json(
 # A template file will be served from the OpenBBUserDataDirectory, if it exists.
 # If it doesn't exist, an empty list will be returned, and an empty file will be created.
 TEMPLATES_PATH = (
-    current_settings["preferences"].get("data_directory", HOME + "/OpenBBUserData")
-    + "/workspace_templates.json"
+    TEMPLATES_PATH + "/workspace_templates.json"
+    if TEMPLATES_PATH
+    else (
+        current_settings["preferences"].get("data_directory", HOME + "/OpenBBUserData")
+        + "/workspace_templates.json"
+    )
 )
 
 
