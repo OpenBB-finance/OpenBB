@@ -7,12 +7,13 @@ from typing import Union
 def deep_merge_configs(
     base: dict,
     update: dict,
-    match_keys: Union[str, tuple, list] = [
-        "paramName",
-        "field",
-    ],
+    match_keys: Union[str, tuple, list, None] = None,
 ) -> dict:
     """Deep merge two nested dictionaries."""
+
+    if match_keys is None:
+        match_keys = ["paramName", "field"]
+
     if isinstance(match_keys, str):
         match_keys = (match_keys,)
 
