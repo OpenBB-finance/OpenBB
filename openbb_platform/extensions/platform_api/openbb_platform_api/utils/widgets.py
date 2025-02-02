@@ -7,7 +7,7 @@ from typing import Union
 def deep_merge_configs(
     base: dict,
     update: dict,
-    match_keys: Union[str, tuple[str, ...], list[str]] = [
+    match_keys: Union[str, tuple, list] = [
         "paramName",
         "field",
     ],
