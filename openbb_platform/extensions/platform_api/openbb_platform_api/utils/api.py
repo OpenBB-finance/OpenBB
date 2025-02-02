@@ -278,16 +278,22 @@ def import_app(app_path: str):
         raise FileNotFoundError(f"Error: The app file '{app_path}' does not exist")
 
     spec = util.spec_from_file_location("app", app_path)
-    module = util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    if spec is None:
+        raise RuntimeError(f"Failed to load the file specs for '{app_path}'")
+
+    module = util.module_from_spec(spec)  # type: ignore
+    spec.loader.exec_module(module)  # type: ignore
+
     if not hasattr(module, "app"):
         raise AttributeError(
             f"Error: The app file '{app_path}' does not contain an 'app' instance"
         )
+
     if not isinstance(module.app, FastAPI):
         raise TypeError(
             f"Error: The app instance in '{app_path}' is not an instance of FastAPI"
         )
+
     app = module.app
 
     return app
