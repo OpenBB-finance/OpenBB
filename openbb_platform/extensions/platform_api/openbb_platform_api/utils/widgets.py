@@ -170,9 +170,16 @@ def build_json(openapi: dict, widget_exclude_filter: list):
     for route in routes:
         skip = False
         for starred in starred_list:
-            if route.startswith(starred.replace("*", "")):
+            if route.startswith(
+                starred.replace("*", "")
+                .replace("[", "")
+                .replace("]", "")
+                .replace('"', "")
+                .replace("'", "")
+            ):
                 skip = True
                 break
+
         if skip is True:
             continue
 

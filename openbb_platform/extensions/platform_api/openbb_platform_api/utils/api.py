@@ -315,11 +315,7 @@ def parse_args():
                 value = args[i + 1]
                 if isinstance(value, str) and value.lower() in ["false", "true"]:
                     _kwargs[key] = value.lower() == "true"
-                elif (
-                    isinstance(value, str)
-                    and value.startswith("'")
-                    and value.endswith("'")
-                ):
+                elif key == "exclude":
                     _kwargs[key] = json.loads(value)
                 else:
                     _kwargs[key] = value
