@@ -213,11 +213,15 @@ def build_json(openapi: dict, widget_exclude_filter: list):
 
         for provider in providers:
             columns_defs = data_schema_to_columns_defs(openapi, widget_id, provider)
-            _cat = route.split("v1/")[-1]
-            _cats = _cat.split("/")
+            _cat = route.split("/")[-1]
+            _cats = route.split("/")[1:-1]
             category = _cats[0].title()
             category = category.replace("Fixedincome", "Fixed Income")
-            subcat = _cats[1].title().replace("_", " ") if len(_cats) > 2 else None
+            subcat = (
+                _cats[1].title().replace("_", " ")
+                if len(_cats) > 2
+                else _cats[1].replace("_", " ").title() if len(_cats) > 1 else None
+            )
             name = (
                 widget_id.replace("fixedincome", "fixed income")
                 .replace("_", " ")
