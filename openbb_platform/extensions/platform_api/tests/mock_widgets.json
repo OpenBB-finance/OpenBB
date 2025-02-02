@@ -3,6 +3,7 @@
         "name": "SLOOS",
         "description": "Get Senior Loan Officers Opinion Survey.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_sloos_fred_obb",
         "params": [
@@ -180,6 +181,7 @@
         "name": "University Of Michigan",
         "description": "Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_university_of_michigan_fred_obb",
         "params": [
@@ -339,6 +341,7 @@
         "name": "Economic Conditions Chicago",
         "description": "Get The Survey Of Economic Conditions For The Chicago Region.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_economic_conditions_chicago_fred_obb",
         "params": [
@@ -545,6 +548,7 @@
         "name": "Manufacturing Outlook Texas",
         "description": "Get The Manufacturing Outlook Survey For The Texas Region.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_manufacturing_outlook_texas_fred_obb",
         "params": [
@@ -798,6 +802,7 @@
         "name": "Nonfarm Payrolls",
         "description": "Get Nonfarm Payrolls Survey.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_nonfarm_payrolls_fred_obb",
         "params": [
@@ -983,6 +988,7 @@
         "name": "CPI",
         "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_cpi_fred_obb",
         "params": [
@@ -1318,6 +1324,7 @@
         "name": "Balance Of Payments",
         "description": "Balance of Payments Reports.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_balance_of_payments_fred_obb",
         "params": [
@@ -1727,6 +1734,7 @@
         "name": "FRED Search",
         "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_search_fred_obb",
         "params": [
@@ -2018,6 +2026,7 @@
         "name": "FRED Series",
         "description": "Get data by series ID from FRED.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_series_fred_obb",
         "params": [
@@ -2226,6 +2235,7 @@
         "name": "FRED Series (Chart)",
         "description": "Get data by series ID from FRED.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "chart",
         "widgetId": "economy_fred_series_fred_obb_chart",
         "params": [
@@ -2444,6 +2454,7 @@
         "name": "FRED Release Table",
         "description": "Get economic release data by ID and/or element from FRED.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_release_table_fred_obb",
         "params": [
@@ -2580,6 +2591,7 @@
         "name": "FRED Regional",
         "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_regional_fred_obb",
         "params": [
@@ -2901,6 +2913,7 @@
         "name": "Retail Prices",
         "description": "Get retail prices for common items.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_retail_prices_fred_obb",
         "params": [
@@ -3104,6 +3117,7 @@
         "name": "PCE",
         "description": "Get Personal Consumption Expenditures (PCE) reports.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_pce_fred_obb",
         "params": [
@@ -3259,6 +3273,7 @@
         "name": "CIK Map",
         "description": "Map a ticker symbol to a CIK number.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_cik_map_sec_obb",
         "params": [
@@ -3305,6 +3320,7 @@
         "name": "Institutions Search",
         "description": "Search SEC-regulated institutions by name and return a list of results with CIK numbers.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_institutions_search_sec_obb",
         "params": [
@@ -3369,6 +3385,7 @@
         "name": "Schema Files",
         "description": "Use tool for navigating the directory of SEC XML schema files by year.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_schema_files_sec_obb",
         "params": [
@@ -3424,6 +3441,7 @@
         "name": "Symbol Map",
         "description": "Map a CIK number to a ticker symbol, leading 0s can be omitted or included.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_symbol_map_sec_obb",
         "params": [
@@ -3471,6 +3489,7 @@
         "name": "RSS Litigation",
         "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_rss_litigation_sec_obb",
         "params": [
@@ -3544,6 +3563,7 @@
         "name": "SIC Search",
         "description": "Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_sic_search_sec_obb",
         "params": [
