@@ -477,3 +477,58 @@ async def trailing_dividend_yield(
 ) -> OBBject:
     """Get the 1 year trailing dividend yield for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ManagementDiscussionAnalysis",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "sec"}),
+        APIEx(
+            description="Get the Management Discussion & Analysis section by calendar year and period.",
+            parameters={
+                "symbol": "AAPL",
+                "calendar_year": 2020,
+                "calendar_period": "Q4",
+                "provider": "sec",
+            },
+        ),
+        APIEx(
+            description="Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.",
+            parameters={
+                "symbol": "AAPL",
+                "calendar_year": 2020,
+                "calendar_period": "Q4",
+                "provider": "sec",
+                "include_tables": True,
+            },
+        ),
+        APIEx(
+            description="Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is."
+            + " Use this for custom parsing or to access the entire HTML filing.",
+            parameters={
+                "symbol": "AAPL",
+                "calendar_year": 2020,
+                "calendar_period": "Q4",
+                "provider": "sec",
+                "raw_html": True,
+            },
+        ),
+    ],
+    openapi_extra={
+        "widget_config": {
+            "type": "markdown",
+            "data": {"dataKey": "results.content", "columnsDefs": []},
+            "staleTime": 86400000,
+            "refetchInterval": 86400000,
+            "source": "SEC",
+        }
+    },
+)
+async def management_discussion_analysis(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the Management Discussion & Analysis section from the financial statements for a given company."""
+    return await OBBject.from_query(Query(**locals()))

@@ -2049,3 +2049,30 @@ def test_equity_ownership_government_trades(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL",
+                "calendar_year": 2024,
+                "calendar_period": "Q2",
+                "wrap_length": 120,
+                "include_tables": False,
+                "use_cache": True,
+                "raw_html": False,
+                "strategy": "trafilatura",
+                "provider": "sec",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_management_discussion_analysis(params, obb):
+    """Test the equity fundamental management discussion analysis endpoint."""
+    result = obb.equity.fundamental.management_discussion_analysis(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results.content) > 0
