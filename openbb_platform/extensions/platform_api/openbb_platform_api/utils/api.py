@@ -18,7 +18,7 @@ Serve the OpenBB Platform API.
 Launcher specific arguments:
 
     --app                           Absolute path to the Python file with the target FastAPI instance. Default is the installed OpenBB Platform API.
-    --editable                      Define with 'true' to make widgets.json an editable file that can be modified during runtime. Default is 'false'.
+    --editable                      Flag to make widgets.json an editable file that can be modified during runtime. Default is 'false'.
     --build                         If the file already exists, changes prompt action to overwrite/append/ignore. Only valid when --editable true.
     --no-build                      Do not build the widgets.json file. Use this flag to load an existing widgets.json file without checking for updates.
     --login                         Login to the OpenBB Platform.

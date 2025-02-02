@@ -7,6 +7,7 @@ import json
 import logging
 import os
 import sys
+from pathlib import Path
 
 import uvicorn
 from fastapi.responses import JSONResponse
@@ -92,7 +93,9 @@ widgets_json = get_widgets_json(
 # A template file will be served from the OpenBBUserDataDirectory, if it exists.
 # If it doesn't exist, an empty list will be returned, and an empty file will be created.
 TEMPLATES_PATH = (
-    TEMPLATES_PATH + "/workspace_templates.json"
+    TEMPLATES_PATH
+    + f"{'/' if TEMPLATES_PATH[-1] != '/' else ''}"
+    + "workspace_templates.json"
     if TEMPLATES_PATH
     else (
         current_settings["preferences"].get("data_directory", HOME + "/OpenBBUserData")
@@ -115,6 +118,9 @@ def get_templates():
             return JSONResponse(content=[templates])
 
     else:
+        if not Path(TEMPLATES_PATH).parent.exists():
+            Path(TEMPLATES_PATH).parent.mkdir(parents=True, exist_ok=True)
+
         with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
             json.dump([], templates_file)
 
@@ -141,7 +147,9 @@ async def get_widgets():
         return JSONResponse(content=widgets_json)
     if EDITABLE:
         return JSONResponse(
-            content=get_widgets_json(False, openapi, widget_exclude_filter)
+            content=get_widgets_json(
+                False, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH
+            )
         )
     return JSONResponse(content=widgets_json)
 
