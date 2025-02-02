@@ -1,6 +1,6 @@
 """OpenBB Platform API.
 
-Launch script and widgets builder for the OpenBB Terminal Custom Backend.
+Launch script and widgets builder for the OpenBB Workspace Custom Backend.
 """
 
 import json
@@ -41,14 +41,24 @@ USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backu
 
 # Widget filtering is optional and can be used to exclude widgets from the widgets.json file
 # You can generate this filter on OpenBB Hub: https://my.openbb.co/app/platform/widgets
+# Alternatively, you can supply a JSON-encoded list of API paths to ignore.
 WIDGET_SETTINGS = os.path.join(HOME, ".openbb_platform", "widget_settings.json")
 
 kwargs = parse_args()
+
+_app = kwargs.pop("app", None)
+
+if _app:
+    app = _app
+
+
+EDITABLE = kwargs.pop("editable", None) is True
+WIDGETS_PATH = kwargs.pop("widgets_path", None)
 build = kwargs.pop("build", True)
 build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
 dont_filter = kwargs.pop("no-filter", False)
-widget_exclude_filter: list = []
+widget_exclude_filter: list = kwargs.pop("exclude", [])
 
 uvicorn_settings = (
     SystemService().system_settings.python_settings.model_dump().get("uvicorn", {})
@@ -61,7 +71,9 @@ for key, value in uvicorn_settings.items():
 if not dont_filter and os.path.exists(WIDGET_SETTINGS):
     with open(WIDGET_SETTINGS) as f:
         try:
-            widget_exclude_filter = json.load(f)["exclude"]
+            widget_exclude_filter_json = json.load(f)["exclude"]
+            if isinstance(widget_exclude_filter_json, list):
+                widget_exclude_filter.extend(widget_exclude_filter_json)
         except json.JSONDecodeError as e:
             logger.info("Error loading widget filter settings -> %s", e)
 
@@ -72,7 +84,9 @@ openapi = app.openapi()
 # but we need to call the function to update, login, and/or identify the settings file.
 current_settings = get_user_settings(login, CURRENT_USER_SETTINGS, USER_SETTINGS_COPY)
 
-widgets_json = get_widgets_json(build, openapi, widget_exclude_filter)
+widgets_json = get_widgets_json(
+    build, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH
+)
 
 # A template file will be served from the OpenBBUserDataDirectory, if it exists.
 # If it doesn't exist, an empty list will be returned, and an empty file will be created.
@@ -108,19 +122,23 @@ async def get_root():
     return JSONResponse(
         content="Welcome to the OpenBB Platform API."
         + " Learn how to connect to Pro in https://docs.openbb.co/pro/custom-backend,"
-        + " or see the API documentation here: /docs"
+        + " and see the API documentation here: /docs, or, /redoc"
     )
 
 
 @app.get("/widgets.json")
 async def get_widgets():
-    """Widgets configuration file for the OpenBB Terminal Pro."""
+    """Widgets configuration file for the OpenBB Workspace."""
     # This allows us to serve an edited widgets.json file without reloading the server.
     global FIRST_RUN  # noqa PLW0603  # pylint: disable=global-statement
     if FIRST_RUN is True:
         FIRST_RUN = False
         return JSONResponse(content=widgets_json)
-    return JSONResponse(content=get_widgets_json(False, openapi, widget_exclude_filter))
+    if EDITABLE:
+        return JSONResponse(
+            content=get_widgets_json(False, openapi, widget_exclude_filter)
+        )
+    return JSONResponse(content=widgets_json)
 
 
 def launch_api(**_kwargs):  # noqa PRL0912
@@ -162,7 +180,7 @@ def launch_api(**_kwargs):  # noqa PRL0912
     try:
         package_name = __package__
         logger.info(
-            "\nTo access this data from OpenBB Terminal, use the link displayed after the application startup completes."
+            "\nTo access this data from OpenBB Workspace, use the link displayed after the application startup completes."
             "\nChrome is the recommended browser. Other browsers may conflict or require additional configuration."
             "\nDocumentation is available at /docs."
         )
