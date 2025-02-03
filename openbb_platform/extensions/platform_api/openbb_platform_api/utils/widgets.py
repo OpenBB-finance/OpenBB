@@ -217,7 +217,11 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 providers = item["available_providers"]
 
         if not providers:
-            providers = ["custom"]
+            providers = [
+                d.get("schema", {}).get("default")
+                for d in route_api[method]["parameters"]
+                if d.get("name") == "provider"
+            ] or ["custom"]
 
         for provider in providers:
             columns_defs = data_schema_to_columns_defs(openapi, widget_id, provider)
@@ -255,6 +259,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 "tmx": "TMX",
                 "ecb": "ECB",
                 "econdb": "EconDB",
+                "eia": "EIA",
                 "fmp": "FMP",
                 "oecd": "OECD",
                 "finra": "FINRA",
