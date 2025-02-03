@@ -375,9 +375,8 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                         )
                         if props and "results" in props:
                             return props["results"]
-                        elif props:
-                            return props
-
+                        else:
+                            return openapi_json["components"]["schemas"][schema_name]
     # Return None if the schema is not found
     return None
 
