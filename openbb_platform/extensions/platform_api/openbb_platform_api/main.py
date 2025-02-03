@@ -7,7 +7,7 @@ import json
 import logging
 import os
 import sys
-
+import pathlib
 import uvicorn
 from fastapi.responses import JSONResponse
 from openbb_core.api.rest_api import app
@@ -15,6 +15,7 @@ from openbb_core.app.service.system_service import SystemService
 from openbb_core.env import Env
 
 from .utils.api import check_port, get_user_settings, get_widgets_json, parse_args
+# from openbb_platform_api.utils.api import check_port, get_user_settings, get_widgets_json, parse_args  # if running from the same package
 
 logger = logging.getLogger("openbb_platform_api")
 logger.setLevel(logging.INFO)
@@ -42,6 +43,10 @@ USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backu
 # Widget filtering is optional and can be used to exclude widgets from the widgets.json file
 # You can generate this filter on OpenBB Hub: https://my.openbb.co/app/platform/widgets
 WIDGET_SETTINGS = os.path.join(HOME, ".openbb_platform", "widget_settings.json")
+
+# Get the default templates.json
+CURRENT_DIR = pathlib.Path(__file__).parent
+DEFAULT_TEMPLATES = CURRENT_DIR / "templates.json"
 
 kwargs = parse_args()
 build = kwargs.pop("build", True)
@@ -96,8 +101,18 @@ def get_templates():
             return JSONResponse(content=[templates])
 
     else:
+         # Try to get default templates from the package first
+        default_content = []
+        if os.path.exists(DEFAULT_TEMPLATES):
+            try:
+                with open(DEFAULT_TEMPLATES, "r", encoding="utf-8") as default_file:
+                    default_content = json.load(default_file)
+            except json.JSONDecodeError:
+                pass  # If default file is invalid, fall back to empty list
+
+        # Create user templates file with default content
         with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
-            json.dump([], templates_file)
+            json.dump(default_content, templates_file)
 
     return JSONResponse(content=[])
 
@@ -167,6 +182,7 @@ def launch_api(**_kwargs):  # noqa PRL0912
             "\nDocumentation is available at /docs."
         )
         uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
+        # uvicorn.run(app, host=host, port=port, **_kwargs) # if running from the same package
     finally:
         # If user_settings_copy.json exists, then restore the original settings.
         if os.path.exists(USER_SETTINGS_COPY):
