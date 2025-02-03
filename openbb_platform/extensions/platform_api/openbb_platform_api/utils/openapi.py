@@ -64,13 +64,11 @@ def extract_providers(params: list[dict]) -> list[str]:
         List of provider options.
     """
     provider_params = [p for p in params if p["name"] == "provider"]
-
     if provider_params:
-        return provider_params[0].get("schema", {}).get("enum", [])
-
-    for p in params:
-        if p["name"] == "provider":
-            return p.get("schema", {}).get("default", [])
+        if provider_params[0].get("schema", {}).get("enum"):
+            return provider_params[0]["schema"]["enum"]
+        if provider_params[0].get("schema", {}).get("default"):
+            return [str(provider_params[0]["schema"]["default"])]
     return []
 
 
