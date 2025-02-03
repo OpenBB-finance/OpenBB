@@ -370,11 +370,13 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                     if schema_name and schema_name in openapi_json.get(
                         "components", {}
                     ).get("schemas", {}):
-                        return (
-                            openapi_json["components"]["schemas"][schema_name]
-                            .get("properties", {})
-                            .get("results", {})
+                        props = openapi_json["components"]["schemas"][schema_name].get(
+                            "properties", {}
                         )
+                        if props and "results" in props:
+                            return props["results"]
+                        elif props:
+                            return props
 
     # Return None if the schema is not found
     return None
