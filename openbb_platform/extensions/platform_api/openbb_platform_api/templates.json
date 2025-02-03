@@ -1,0 +1,105 @@
+[
+    {
+      "name": "Basic IMF Template",
+      "img": "https://www.imf.org/-/media/Images/IMF/About/Factsheets/2022/Hero/imf-logo.ashx",
+      "description": "Global economic and financial data, including GDP, inflation, trade, and fiscal balances (WEO), financial stability risks (GFSR), and public debt (GFS, QPSD). It tracks exchange rates, interest rates, and money supply (IFS), balance of payments and trade flows (BOPS, DOTS), and banking sector health (FSIs).",
+      "allowCustomization": true,
+      "tabs": {
+        "": {
+          "id": "",
+          "name": "",
+          "layout": [
+            {
+              "i": "economy_available_indicators_imf_obb",
+              "x": 0,
+              "y": 0,
+              "w": 40,
+              "h": 10
+            },
+            {
+              "i": "economy_indicators_imf_obb",
+              "x": 0,
+              "y": 10,
+              "w": 40,
+              "h": 15
+            }
+          ]
+        }
+      },
+      "groups": []
+    },
+    {
+      "name": "Basic FRED Template",
+      "img_light": "https://www.ajcottleappraisers.com/wp-content/uploads/2024/03/fred.png",
+      "img_dark": "data:image/png;base64,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",
+      "description": "FRED (Federal Reserve Economic Data) offers U.S. and global economic data, including GDP, inflation (CPI, PCE), unemployment, and consumer spending. It tracks interest rates, money supply (M1, M2), stock indices, bond yields, exchange rates, housing prices (Case-Shiller), mortgage rates, and trade balances. Industry data covers manufacturing, energy, and real estate.",
+      "authentication": "Get your FRED API KEY at https://fred.stlouisfed.org/docs/api/api_key.html",
+      "allowCustomization": true,
+      "tabs": {
+        "": {
+          "id": "",
+          "name": "",
+          "layout": [
+            {
+              "i": "economy_fred_series_fred_obb",
+              "x": 0,
+              "y": 8,
+              "w": 40,
+              "h": 15,
+              "params": {
+                "symbol": "UNRATE",
+                "start_date": "2018-02-01"
+              }
+            },
+            {
+              "i": "economy_fred_search_custom_obb",
+              "x": 0,
+              "y": 0,
+              "w": 40,
+              "h": 8
+            }
+          ]
+        }
+      },
+      "groups": []
+    },
+    {
+      "name": "Basic BLS Template",
+      "img": "https://tigadvisors.com/wp-content/uploads/2022/01/BLS.jpg",
+      "description": "The Bureau of Labor Statistics (BLS) provides U.S. economic data on employment, unemployment, wages, and productivity. Key datasets include the Consumer Price Index (CPI) for inflation, Producer Price Index (PPI) for wholesale prices, and Employment Situation Report for job market trends. It tracks wages (CES, QCEW), job openings (JOLTS), productivity (BLS Productivity), and workplace injuries (SOII). Industry and regional data are also available.",
+      "authentication": "Get your BLS API KEY at https://www.bls.gov/developers/home.htm",
+      "allowCustomization": true,
+      "tabs": {
+        "": {
+          "id": "",
+          "name": "",
+          "layout": [
+            {
+              "i": "economy_survey_bls_search_custom_obb",
+              "x": 0,
+              "y": 0,
+              "w": 40,
+              "h": 8,
+              "params": {
+                "query": "total nonfarm",
+                "category": "nfp"
+              }
+            },
+            {
+              "i": "economy_survey_bls_series_custom_obb",
+              "x": 0,
+              "y": 8,
+              "w": 40,
+              "h": 18,
+              "params": {
+                "symbol": "CES0000000001",
+                "start_date": "2016-02-01",
+                "calculations": "false"
+              }
+            }
+          ]
+        }
+      },
+      "groups": []
+    }
+]
