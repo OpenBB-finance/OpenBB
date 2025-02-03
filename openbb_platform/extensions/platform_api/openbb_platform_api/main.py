@@ -108,14 +108,28 @@ TEMPLATES_PATH = (
 @app.get("/templates.json")
 def get_templates():
     """Get the templates.json file."""
+    new_templates: list = []
+
     if os.path.exists(TEMPLATES_PATH):
         with open(TEMPLATES_PATH) as templates_file:
             templates = json.load(templates_file)
 
-        if isinstance(templates, list):
-            return JSONResponse(content=templates)
         if isinstance(templates, dict):
-            return JSONResponse(content=[templates])
+            templates = [templates]
+
+        for template in templates:
+            if _id := template.get("id"):
+                if _id in widgets_json:
+                    new_templates.append(template)
+            elif _tabs := template.get("tabs"):
+                for k, v in _tabs.items():
+                    if v.get("layout", []) and all(
+                        item.get("i") in widgets_json for item in v.get("layout")
+                    ):
+                        new_templates.append(template)
+
+        if new_templates:
+            return JSONResponse(content=new_templates)
 
     else:
         if not Path(TEMPLATES_PATH).parent.exists():
