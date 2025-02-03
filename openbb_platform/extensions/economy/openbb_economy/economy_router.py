@@ -117,7 +117,24 @@ async def balance_of_payments(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FredSearch", examples=[APIEx(parameters={"provider": "fred"})])
+@router.command(
+    model="FredSearch",
+    examples=[APIEx(parameters={"provider": "fred"})],
+    openapi_extra={
+        "widget_config": {
+            "params": [
+                {
+                    "paramName": "query",
+                    "value": "pce",
+                },
+                {
+                    "paramName": "tags",
+                    "value": "pce;inflation",
+                },
+            ]
+        }
+    },
+)
 async def fred_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -145,6 +162,28 @@ async def fred_search(
             parameters={"symbol": "CBBTCUSD", "transform": "pc1", "provider": "fred"},
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "params": [
+                {
+                    "paramName": "symbol",
+                    "value": "RPI,PCE,PCENOW",
+                },
+                {
+                    "paramName": "transform",
+                    "value": "pc1",
+                },
+                {
+                    "paramName": "start_date",
+                    "value": "2010-01-01",
+                },
+                {
+                    "paramName": "frequency",
+                    "value": "q",
+                },
+            ]
+        }
+    },
 )
 async def fred_series(
     cc: CommandContext,
@@ -172,6 +211,16 @@ async def fred_series(
             parameters={"release_id": "50", "element_id": "4881", "provider": "fred"},
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "params": [
+                {
+                    "paramName": "release_id",
+                    "value": "52",
+                },
+            ]
+        }
+    },
 )
 async def fred_release_table(
     cc: CommandContext,
@@ -771,6 +820,24 @@ async def port_volume(
             },
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "params": [
+                {
+                    "paramName": "country",
+                    "value": "us",
+                },
+                {
+                    "paramName": "counterpart",
+                    "value": "canada,mexico",
+                },
+                {
+                    "paramName": "direction",
+                    "value": "all",
+                },
+            ]
+        }
+    },
 )
 async def direction_of_trade(
     cc: CommandContext,

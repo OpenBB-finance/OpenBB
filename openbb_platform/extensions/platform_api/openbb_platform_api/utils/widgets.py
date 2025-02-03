@@ -297,6 +297,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 "widgetId": f"{widget_id}_{provider}_obb",
                 "params": modified_query_schema,
                 "endpoint": route.replace("/api", "api"),
+                "runButton": True,
                 "gridData": {"w": 45, "h": 15},
                 "data": {
                     "dataKey": data_key,

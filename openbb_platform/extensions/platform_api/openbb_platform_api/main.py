@@ -56,6 +56,12 @@ if _app:
 EDITABLE = kwargs.pop("editable", None) is True
 WIDGETS_PATH = kwargs.pop("widgets_path", None)
 TEMPLATES_PATH = kwargs.pop("templates_path", None)
+DEFAULT_TEMPLATES_PATH = (
+    Path(__file__)
+    .absolute()
+    .parent.joinpath("assets")
+    .joinpath("default_templates.json")
+)
 build = kwargs.pop("build", True)
 build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
@@ -104,43 +110,6 @@ TEMPLATES_PATH = (
 )
 
 
-# If a custom implementation, you might want to override.
-@app.get("/templates.json")
-def get_templates():
-    """Get the templates.json file."""
-    new_templates: list = []
-
-    if os.path.exists(TEMPLATES_PATH):
-        with open(TEMPLATES_PATH) as templates_file:
-            templates = json.load(templates_file)
-
-        if isinstance(templates, dict):
-            templates = [templates]
-
-        for template in templates:
-            if _id := template.get("id"):
-                if _id in widgets_json:
-                    new_templates.append(template)
-            elif _tabs := template.get("tabs"):
-                for k, v in _tabs.items():
-                    if v.get("layout", []) and all(
-                        item.get("i") in widgets_json for item in v.get("layout")
-                    ):
-                        new_templates.append(template)
-
-        if new_templates:
-            return JSONResponse(content=new_templates)
-
-    else:
-        if not Path(TEMPLATES_PATH).parent.exists():
-            Path(TEMPLATES_PATH).parent.mkdir(parents=True, exist_ok=True)
-
-        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
-            json.dump([], templates_file)
-
-    return JSONResponse(content=[])
-
-
 @app.get("/")
 async def get_root():
     """Root response and welcome message."""
@@ -166,6 +135,62 @@ async def get_widgets():
             )
         )
     return JSONResponse(content=widgets_json)
+
+
+# If a custom implementation, you might want to override.
+@app.get("/templates.json")
+async def get_templates():
+    """Get the templates.json file."""
+    new_templates: list = []
+
+    widgets = await get_widgets()
+
+    if os.path.exists(DEFAULT_TEMPLATES_PATH):
+        with open(DEFAULT_TEMPLATES_PATH) as f:
+            default_templates = json.load(f)
+
+    if os.path.exists(TEMPLATES_PATH):
+        with open(TEMPLATES_PATH) as templates_file:
+            templates = json.load(templates_file)
+
+        if isinstance(templates, dict):
+            templates = [templates]
+
+        templates.extend(default_templates)
+
+        for template in templates:
+            if _id := template.get("id"):
+                if _id in widgets and template not in new_templates:
+                    new_templates.append(template)
+                    continue
+            elif template.get("layout") or template.get("tabs"):
+                if _tabs := template.get("tabs"):
+                    for k, v in _tabs.items():
+                        if v.get("layout", []) and all(
+                            item.get("i") in widgets_json for item in v.get("layout")
+                        ):
+                            new_templates.append(template)
+                            break
+                elif (
+                    template.get("layout")
+                    and all(
+                        item.get("i") in widgets_json for item in template["layout"]
+                    )
+                    and template not in new_templates
+                ):
+                    new_templates.append(template)
+
+        if new_templates:
+            return JSONResponse(content=new_templates)
+
+    else:
+        if not Path(TEMPLATES_PATH).parent.exists():
+            Path(TEMPLATES_PATH).parent.mkdir(parents=True, exist_ok=True)
+
+        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
+            json.dump(default_templates, templates_file)
+
+    return JSONResponse(content=[])
 
 
 def launch_api(**_kwargs):  # noqa PRL0912
