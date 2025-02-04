@@ -77,9 +77,9 @@ for key, value in uvicorn_settings.items():
         kwargs[key] = value
 
 if not dont_filter and os.path.exists(WIDGET_SETTINGS):
-    with open(WIDGET_SETTINGS) as f:
+    with open(WIDGET_SETTINGS) as widget_settings_file:
         try:
-            widget_exclude_filter_json = json.load(f)["exclude"]
+            widget_exclude_filter_json = json.load(widget_settings_file)["exclude"]
             if isinstance(widget_exclude_filter_json, list):
                 widget_exclude_filter.extend(widget_exclude_filter_json)
         except json.JSONDecodeError as e:
@@ -171,7 +171,7 @@ async def get_templates():
                     continue
             elif template.get("layout") or template.get("tabs"):
                 if _tabs := template.get("tabs"):
-                    for k, v in _tabs.items():
+                    for v in _tabs.values():
                         if v.get("layout", []) and all(
                             item.get("i") in widgets_json for item in v.get("layout")
                         ):

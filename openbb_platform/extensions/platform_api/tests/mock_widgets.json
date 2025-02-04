@@ -126,6 +126,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/sloos",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -295,6 +296,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/university_of_michigan",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -455,6 +457,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/economic_conditions_chicago",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -730,6 +733,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/manufacturing_outlook_texas",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -902,6 +906,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/nonfarm_payrolls",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -1280,6 +1285,7 @@
             }
         ],
         "endpoint": "api/v1/economy/cpi",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -1557,6 +1563,7 @@
             }
         ],
         "endpoint": "api/v1/economy/balance_of_payments",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -1849,6 +1856,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_search",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -2209,6 +2217,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_series",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -2428,6 +2437,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_series",
+        "runButton": true,
         "gridData": {
             "w": 50,
             "h": 20
@@ -2496,6 +2506,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_release_table",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -2859,6 +2870,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_regional",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3063,6 +3075,7 @@
             }
         ],
         "endpoint": "api/v1/economy/retail_prices",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3189,6 +3202,7 @@
             }
         ],
         "endpoint": "api/v1/economy/pce",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3310,6 +3324,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/cik_map",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3358,6 +3373,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/institutions_search",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3431,6 +3447,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/schema_files",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3479,6 +3496,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/symbol_map",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3509,6 +3527,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/rss_litigation",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3601,6 +3620,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/sic_search",
+        "runButton": true,
         "gridData": {
             "w": 45,
             "h": 15
