@@ -88,7 +88,7 @@ Any value from the [`widgets.json`](https://docs.openbb.co/terminal/custom-backe
 
 ```python
 from openbb_platform_api.main import app
-from typing import Literal, Optional
+
 
 @app.get("/hello",
     openapi_extra={
@@ -118,7 +118,6 @@ Columns, by default, are presented in the order of insertion.
 
 ```python
 from openbb_platform_api.main import app
-from typing import Literal, Optional
 from openbb_core.provider.abstract.data import Data  # Inherit this instead of pydantic.BaseModel to represent 1 row of data.
 from pydantic import Field
 
