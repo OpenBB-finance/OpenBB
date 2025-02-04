@@ -142,8 +142,14 @@ async def get_widgets():
 async def get_templates():
     """Get the templates.json file."""
     new_templates: list = []
-
+    default_templates: list = []
     widgets = await get_widgets()
+
+    if not Path(TEMPLATES_PATH).parent.exists():
+        Path(TEMPLATES_PATH).parent.mkdir(parents=True, exist_ok=True)
+
+    with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
+        json.dump([], templates_file)
 
     if os.path.exists(DEFAULT_TEMPLATES_PATH):
         with open(DEFAULT_TEMPLATES_PATH) as f:
@@ -182,13 +188,6 @@ async def get_templates():
 
         if new_templates:
             return JSONResponse(content=new_templates)
-
-    else:
-        if not Path(TEMPLATES_PATH).parent.exists():
-            Path(TEMPLATES_PATH).parent.mkdir(parents=True, exist_ok=True)
-
-        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
-            json.dump(default_templates, templates_file)
 
     return JSONResponse(content=[])
 
