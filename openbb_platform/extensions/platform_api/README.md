@@ -1,6 +1,6 @@
 # OpenBB Platform API Meta Package
 
-This package is responsible for launching and configuring an OpenBB Platform environment, or FastAPI instance, to use as a OpenBB Workspace custom backend.
+This package is responsible for launching and configuring an OpenBB Platform environment, or FastAPI instance, to use as an OpenBB Workspace custom backend.
 
 ## Installation
 
