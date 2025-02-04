@@ -296,7 +296,11 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 "searchCategory": category.replace("_", " ").title(),
                 "widgetId": f"{widget_id}_{provider}_obb",
                 "params": modified_query_schema,
-                "endpoint": route.replace("/api", "api"),
+                "endpoint": (
+                    route.replace("/api", "api")
+                    if "/api" in route
+                    else route[1:] if route[0] == "/" else route
+                ),
                 "runButton": True,
                 "gridData": {"w": 45, "h": 15},
                 "data": {
