@@ -66,9 +66,9 @@
           {
             "i": "economy_fred_release_table_fred_obb",
             "x": 0,
-            "y": 0,
+            "y": 10,
             "w": 40,
-            "h": 25,
+            "h": 12,
             "state": {
               "params": {
                 "release_id": "52"
@@ -76,6 +76,88 @@
               "chartView": {
                 "enabled": false,
                 "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "name"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "economy_fred_search_fred_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 8,
+            "state": {
+              "params": {
+                "search_type": "release"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "observation_start",
+                      "observation_end",
+                      "frequency",
+                      "units",
+                      "seasonal_adjustment",
+                      "seasonal_adjustment_short",
+                      "realtime_start",
+                      "realtime_end",
+                      "notes"
+                    ]
+                  },
+                  "focusedCell": {
+                    "colId": "series_id",
+                    "rowIndex": 4,
+                    "rowPinned": null
+                  },
+                  "scroll": {
+                    "top": 0,
+                    "left": 12938.6357421875
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "economy_fred_release_table_fred_obb",
+            "x": 0,
+            "y": 22,
+            "w": 38,
+            "h": 13,
+            "state": {
+              "params": {
+                "release_id": "27",
+                "element_id": "1240127"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date",
+                      "symbol",
+                      "name",
+                      "value"
+                    ],
+                    "rightColIds": []
+                  }
+                }
               }
             }
           }
@@ -171,6 +253,51 @@
               "chartView": {
                 "enabled": false,
                 "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
+      "cpi": {
+        "id": "cpi",
+        "name": "CPI",
+        "layout": [
+          {
+            "i": "economy_cpi_fred_obb",
+            "x": 0,
+            "y": 2,
+            "w": 28,
+            "h": 18,
+            "state": {
+              "params": {
+                "country": [
+                  "australia",
+                  "denmark"
+                ],
+                "frequency": "quarter",
+                "start_date": "2010-01-01"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "sort": {
+                    "sortModel": [
+                      {
+                        "colId": "date",
+                        "sort": "desc"
+                      }
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  }
+                }
               }
             }
           }
