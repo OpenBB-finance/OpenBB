@@ -348,17 +348,22 @@ def get_data_schema_for_widget(openapi_json, operation_id):
     # Find the route and method for the given operationId
     for _, methods in openapi_json["paths"].items():
         for _, details in methods.items():
-            if details.get("operationId") == operation_id:
+
+            if (
+                schema := details.get("responses", {})
+                .get("200", {})
+                .get("content", {})
+                .get("application/json", {})
+                .get("schema", {})
+            ):
                 # Get the reference to the schema from the successful response
-                response_ref = details["responses"]["200"]["content"][
-                    "application/json"
-                ].get("schema", {}).get("$ref") or details["responses"]["200"][
-                    "content"
-                ][
-                    "application/json"
-                ].get(
-                    "schema"
-                )
+
+                if "items" in schema:
+                    response_ref = schema["items"].get("$ref")
+                else:
+                    response_ref = schema.get("$ref") or details["responses"]["200"][
+                        "content"
+                    ]["application/json"].get("schema")
 
                 if isinstance(response_ref, dict) and "type" in response_ref:
                     response_ref = response_ref["type"]
@@ -376,7 +381,7 @@ def get_data_schema_for_widget(openapi_json, operation_id):
                         if props and "results" in props:
                             return props["results"]
 
-                        return openapi_json["components"]["schemas"][schema_name]
+                    return openapi_json["components"]["schemas"][schema_name]
     # Return None if the schema is not found
     return None
 
@@ -411,6 +416,9 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
         for ref in schema_refs
         if ref and ref in openapi_json["components"]["schemas"]
     ]
+
+    if not schemas and result_schema_ref and "properties" in result_schema_ref:
+        schemas.append(result_schema_ref)
 
     # Proceed with finding common keys and generating column definitions
     if not schemas:
