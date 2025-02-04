@@ -117,10 +117,7 @@ async def balance_of_payments(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(
-    model="FredSearch",
-    examples=[APIEx(parameters={"provider": "fred"})],
-)
+@router.command(model="FredSearch", examples=[APIEx(parameters={"provider": "fred"})])
 async def fred_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
