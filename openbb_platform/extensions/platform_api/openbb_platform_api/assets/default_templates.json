@@ -201,6 +201,51 @@
           }
         ]
       },
+      "cpi": {
+        "id": "cpi",
+        "name": "CPI",
+        "layout": [
+          {
+            "i": "economy_cpi_fred_obb",
+            "x": 0,
+            "y": 2,
+            "w": 28,
+            "h": 18,
+            "state": {
+              "params": {
+                "country": [
+                  "australia",
+                  "denmark"
+                ],
+                "frequency": "quarter",
+                "start_date": "2010-01-01"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "sort": {
+                    "sortModel": [
+                      {
+                        "colId": "date",
+                        "sort": "desc"
+                      }
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
       "NonFarmPayroll": {
         "id": "NonFarmPayroll",
         "name": "Nonfarm Payrolls",
@@ -253,51 +298,6 @@
               "chartView": {
                 "enabled": false,
                 "chartType": "line"
-              }
-            }
-          }
-        ]
-      },
-      "cpi": {
-        "id": "cpi",
-        "name": "CPI",
-        "layout": [
-          {
-            "i": "economy_cpi_fred_obb",
-            "x": 0,
-            "y": 2,
-            "w": 28,
-            "h": 18,
-            "state": {
-              "params": {
-                "country": [
-                  "australia",
-                  "denmark"
-                ],
-                "frequency": "quarter",
-                "start_date": "2010-01-01"
-              },
-              "chartView": {
-                "enabled": false,
-                "chartType": "line"
-              },
-              "columnState": {
-                "default_": {
-                  "sort": {
-                    "sortModel": [
-                      {
-                        "colId": "date",
-                        "sort": "desc"
-                      }
-                    ]
-                  },
-                  "columnPinning": {
-                    "leftColIds": [
-                      "date"
-                    ],
-                    "rightColIds": []
-                  }
-                }
               }
             }
           }
