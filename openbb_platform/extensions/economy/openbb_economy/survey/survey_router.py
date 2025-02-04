@@ -21,20 +21,6 @@ router = Router(prefix="/survey")
     examples=[
         APIEx(parameters={"provider": "bls", "symbol": "CES0000000001"}),
     ],
-    openapi_extra={
-        "widget_config": {
-            "params": [
-                {
-                    "paramName": "symbol",
-                    "value": "CES0000000001",
-                },
-                {
-                    "paramName": "start_date",
-                    "value": "2016-02-01",
-                },
-            ]
-        }
-    },
 )
 async def bls_series(
     cc: CommandContext,
@@ -64,20 +50,6 @@ async def bls_series(
             },
         ),
     ],
-    openapi_extra={
-        "widget_config": {
-            "params": [
-                {
-                    "paramName": "include_extras",
-                    "value": True,
-                },
-                {
-                    "paramName": "category",
-                    "value": "nfp",
-                },
-            ]
-        }
-    },
 )
 async def bls_search(
     cc: CommandContext,
