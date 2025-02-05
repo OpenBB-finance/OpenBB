@@ -148,8 +148,8 @@ async def get_templates():
     if not Path(TEMPLATES_PATH).parent.exists():
         Path(TEMPLATES_PATH).parent.mkdir(parents=True, exist_ok=True)
 
-    with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
-        json.dump([], templates_file)
+        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
+            json.dump([], templates_file)
 
     if os.path.exists(DEFAULT_TEMPLATES_PATH):
         with open(DEFAULT_TEMPLATES_PATH) as f:
