@@ -353,7 +353,6 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: Optional[str] 
         for path, methods in openapi_json["paths"].items():
             for _method, details in methods.items():
                 if details.get("operationId") == operation_id:
-                    # Get the reference to the schema from the successful response
                     route = path
                     break
 
