@@ -26,6 +26,7 @@ Launcher specific arguments:
     --no-filter                     Do not filter out widgets in widget_settings.json file.
     --widgets-path                  Absolute path to the widgets.json file. Default is ~/envs/{env}/assets/widgets.json. Supplying this sets --editable true.
     --templates-path                Absolute path to the workspace_templates.json file. Default is ~/OpenBBUserData/workspace_templates.json.
+    --copilots-path                 Absolute path to the copilots.json file. Including this will add the /copilots endpoint to the API.
 
 
 The FastAPI app instance can be imported to another script, modified, and launched by using the --app argument.
@@ -34,14 +35,10 @@ Imported with:
 
 >>> from openbb_platform_api.main import app
 >>>
->>> @app.get(
->>>     openapi_extra={"widget_config": {"type": "markdown", "params": []}},
->>> )
->>>> async def hello(
->>>>     input: str = "Hello",
->>>> ) -> str:
+>>> @app.get()
+>>> async def hello(input: str = "Hello") -> str:
 >>>     '''Widget description created by doctring.'''
->>>     return "Hello from OpenBB!"
+>>>     return f"You entered: {input]"
 
 Launched with:
 
@@ -336,6 +333,15 @@ def parse_args():
 
     if isinstance(_kwargs.get("exclude"), str):
         _kwargs["exclude"] = [_kwargs["exclude"]]
+
+    if _kwargs.get("copilots-path"):
+        _copilots_path = _kwargs.pop("copilots-path", None)
+        if not Path(_copilots_path).exists():
+            raise FileNotFoundError(
+                f"Error: The copilots file '{_copilots_path}' does not exist"
+            )
+            with open(_copilots_path, encoding="utf-8") as f:
+                _kwargs["copilots"] = json.load(f)
 
     if _kwargs.get("app"):
         _app_path = _kwargs.pop("app", None)

@@ -62,6 +62,7 @@ DEFAULT_TEMPLATES_PATH = (
     .parent.joinpath("assets")
     .joinpath("default_templates.json")
 )
+COPILOTS = kwargs.pop("copilots", None)
 build = kwargs.pop("build", True)
 build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
@@ -190,6 +191,14 @@ async def get_templates():
             return JSONResponse(content=new_templates)
 
     return JSONResponse(content=[])
+
+
+if COPILOTS:
+
+    @app.get("/copilots.json")
+    async def get_copilots():
+        """Get the copilots.json file."""
+        return JSONResponse(content=COPILOTS)
 
 
 def launch_api(**_kwargs):  # noqa PRL0912

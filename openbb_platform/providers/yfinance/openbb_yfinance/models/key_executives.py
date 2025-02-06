@@ -34,6 +34,10 @@ class YFinanceKeyExecutivesData(KeyExecutivesData):
         default=None,
         description="Value of shares not exercised.",
     )
+    fiscal_year: Optional[int] = Field(
+        default=None,
+        description="Fiscal year of the pay.",
+    )
 
 
 class YFinanceKeyExecutivesFetcher(

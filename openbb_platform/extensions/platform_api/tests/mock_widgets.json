@@ -126,7 +126,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/sloos",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -296,7 +296,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/university_of_michigan",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -316,29 +316,20 @@
                         "chartDataType": "category"
                     },
                     {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "field": "consumer_sentiment",
+                        "headerName": "Consumer Sentiment",
+                        "headerTooltip": "Index of the results of the University of Michigan's monthly Survey of Consumers, which is used to estimate future spending and saving.  (1966:Q1=100).",
                         "cellDataType": "number",
                         "chartDataType": "series"
                     },
                     {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "field": "inflation_expectation",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Inflation Expectation",
+                        "headerTooltip": "Median expected price change next 12 months, Surveys of Consumers.",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
                     }
                 ]
             }
@@ -466,7 +457,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/economic_conditions_chicago",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -486,29 +477,67 @@
                         "chartDataType": "category"
                     },
                     {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "field": "activity_index",
+                        "headerName": "Activity Index",
+                        "headerTooltip": "Activity Index.",
                         "cellDataType": "number",
                         "chartDataType": "series"
                     },
                     {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "field": "one_year_outlook",
+                        "headerName": "One Year Outlook",
+                        "headerTooltip": "One Year Outlook Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "manufacturing_activity",
+                        "headerName": "Manufacturing Activity",
+                        "headerTooltip": "Manufacturing Activity Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "non_manufacturing_activity",
+                        "headerName": "Non Manufacturing Activity",
+                        "headerTooltip": "Non-Manufacturing Activity Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "capital_expenditures_expectations",
+                        "headerName": "Capital Expenditures Expectations",
+                        "headerTooltip": "Capital Expenditures Expectations Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "hiring_expectations",
+                        "headerName": "Hiring Expectations",
+                        "headerTooltip": "Hiring Expectations Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "current_hiring",
+                        "headerName": "Current Hiring",
+                        "headerTooltip": "Current Hiring Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "labor_costs",
+                        "headerName": "Labor Costs",
+                        "headerTooltip": "Labor Costs Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "non_labor_costs",
+                        "headerName": "Non Labor Costs",
+                        "headerTooltip": "Non-Labor Costs Index.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
                     }
                 ]
             }
@@ -704,7 +733,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/manufacturing_outlook_texas",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -724,29 +753,46 @@
                         "chartDataType": "category"
                     },
                     {
-                        "field": "symbol",
-                        "pinned": "left",
+                        "field": "topic",
                         "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
+                        "headerName": "Topic",
+                        "headerTooltip": "Topic of the survey response.",
                         "cellDataType": "text",
                         "chartDataType": "category"
                     },
                     {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "field": "diffusion_index",
+                        "headerName": "Diffusion Index",
+                        "headerTooltip": "Diffusion Index.",
                         "cellDataType": "number",
                         "chartDataType": "series"
                     },
                     {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "field": "percent_reporting_increase",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Percent Reporting Increase",
+                        "headerTooltip": "Percent of respondents reporting an increase over the last month.",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "percent_reporting_decrease",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Percent Reporting Decrease",
+                        "headerTooltip": "Percent of respondents reporting a decrease over the last month.",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "percent_reporting_no_change",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Percent Reporting No Change",
+                        "headerTooltip": "Percent of respondents reporting no change over the last month.",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
                     }
                 ]
             }
@@ -860,7 +906,7 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/nonfarm_payrolls",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -891,18 +937,49 @@
                     {
                         "field": "value",
                         "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "headerTooltip": "",
                         "cellDataType": "number",
                         "chartDataType": "series"
                     },
                     {
-                        "field": "title",
+                        "field": "name",
                         "pinned": "left",
                         "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
+                        "headerName": "Name",
+                        "headerTooltip": "The name of the series.",
                         "cellDataType": "text",
                         "chartDataType": "category"
+                    },
+                    {
+                        "field": "element_id",
+                        "formatterFn": null,
+                        "headerName": "Element ID",
+                        "headerTooltip": "The element id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "parent_id",
+                        "formatterFn": null,
+                        "headerName": "Parent ID",
+                        "headerTooltip": "The parent id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "children",
+                        "formatterFn": null,
+                        "headerName": "Children",
+                        "headerTooltip": "The element_id of each child, as a comma-separated string.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "level",
+                        "headerName": "Level",
+                        "headerTooltip": "The indentation level of the element.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
                     }
                 ]
             }
@@ -1208,7 +1285,7 @@
             }
         ],
         "endpoint": "api/v1/economy/cpi",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -1228,29 +1305,19 @@
                         "chartDataType": "category"
                     },
                     {
-                        "field": "symbol",
-                        "pinned": "left",
+                        "field": "country",
                         "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
+                        "headerName": "Country",
+                        "headerTooltip": "Country",
                         "cellDataType": "text",
                         "chartDataType": "category"
                     },
                     {
                         "field": "value",
                         "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "headerTooltip": "CPI index value or period change.",
                         "cellDataType": "number",
                         "chartDataType": "series"
-                    },
-                    {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
                     }
                 ]
             }
@@ -1496,7 +1563,7 @@
             }
         ],
         "endpoint": "api/v1/economy/balance_of_payments",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -1507,38 +1574,162 @@
                 "showAll": true,
                 "columnsDefs": [
                     {
-                        "field": "date",
-                        "pinned": "left",
+                        "field": "period",
                         "formatterFn": null,
-                        "headerName": "Date",
-                        "headerTooltip": "The date of the data.",
+                        "headerName": "Period",
+                        "headerTooltip": "The date representing the beginning of the reporting period.",
                         "cellDataType": "date",
                         "chartDataType": "category"
                     },
                     {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "field": "balance_percent_of_gdp",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Balance Percent Of GDP",
+                        "headerTooltip": "Current Account Balance as Percent of GDP",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
                     },
                     {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "field": "balance_total",
+                        "headerName": "Balance Total",
+                        "headerTooltip": "Current Account Total Balance (USD)",
                         "cellDataType": "number",
                         "chartDataType": "series"
                     },
                     {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "field": "balance_total_services",
+                        "headerName": "Balance Total Services",
+                        "headerTooltip": "Current Account Total Services Balance (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "balance_total_secondary_income",
+                        "headerName": "Balance Total Secondary Income",
+                        "headerTooltip": "Current Account Total Secondary Income Balance (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "balance_total_goods",
+                        "headerName": "Balance Total Goods",
+                        "headerTooltip": "Current Account Total Goods Balance (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "balance_total_primary_income",
+                        "headerName": "Balance Total Primary Income",
+                        "headerTooltip": "Current Account Total Primary Income Balance (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_services_percent_of_goods_and_services",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Credits Services Percent Of Goods And Services",
+                        "headerTooltip": "Current Account Credits Services as Percent of Goods and Services",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "credits_services_percent_of_current_account",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Credits Services Percent Of Current Account",
+                        "headerTooltip": "Current Account Credits Services as Percent of Current Account",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "credits_total_services",
+                        "headerName": "Credits Total Services",
+                        "headerTooltip": "Current Account Credits Total Services (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_total_goods",
+                        "headerName": "Credits Total Goods",
+                        "headerTooltip": "Current Account Credits Total Goods (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_total_primary_income",
+                        "headerName": "Credits Total Primary Income",
+                        "headerTooltip": "Current Account Credits Total Primary Income (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_total_secondary_income",
+                        "headerName": "Credits Total Secondary Income",
+                        "headerTooltip": "Current Account Credits Total Secondary Income (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "credits_total",
+                        "headerName": "Credits Total",
+                        "headerTooltip": "Current Account Credits Total (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_services_percent_of_goods_and_services",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Debits Services Percent Of Goods And Services",
+                        "headerTooltip": "Current Account Debits Services as Percent of Goods and Services",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "debits_services_percent_of_current_account",
+                        "formatterFn": "normalizedPercent",
+                        "headerName": "Debits Services Percent Of Current Account",
+                        "headerTooltip": "Current Account Debits Services as Percent of Current Account",
+                        "cellDataType": "number",
+                        "chartDataType": "series",
+                        "renderFn": "greenRed"
+                    },
+                    {
+                        "field": "debits_total_services",
+                        "headerName": "Debits Total Services",
+                        "headerTooltip": "Current Account Debits Total Services (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_total_goods",
+                        "headerName": "Debits Total Goods",
+                        "headerTooltip": "Current Account Debits Total Goods (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_total_primary_income",
+                        "headerName": "Debits Total Primary Income",
+                        "headerTooltip": "Current Account Debits Total Primary Income (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_total",
+                        "headerName": "Debits Total",
+                        "headerTooltip": "Current Account Debits Total (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "debits_total_secondary_income",
+                        "headerName": "Debits Total Secondary Income",
+                        "headerTooltip": "Current Account Debits Total Secondary Income (USD)",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
                     }
                 ]
             }
@@ -1665,7 +1856,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_search",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -1676,38 +1867,163 @@
                 "showAll": true,
                 "columnsDefs": [
                     {
-                        "field": "date",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Date",
-                        "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "field": "release_id",
+                        "headerName": "Release ID",
+                        "headerTooltip": "The release ID for queries.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
                     },
                     {
-                        "field": "symbol",
+                        "field": "series_id",
                         "pinned": "left",
                         "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
+                        "headerName": "Series ID",
+                        "headerTooltip": "The series ID for the item in the release.",
                         "cellDataType": "text",
                         "chartDataType": "category"
                     },
                     {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "field": "name",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Name",
+                        "headerTooltip": "The name of the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
                     },
                     {
                         "field": "title",
                         "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Title",
-                        "headerTooltip": "Survey title.",
+                        "headerTooltip": "The title of the series.",
                         "cellDataType": "text",
                         "chartDataType": "category"
+                    },
+                    {
+                        "field": "observation_start",
+                        "formatterFn": null,
+                        "headerName": "Observation Start",
+                        "headerTooltip": "The date of the first observation in the series.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "observation_end",
+                        "formatterFn": null,
+                        "headerName": "Observation End",
+                        "headerTooltip": "The date of the last observation in the series.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "frequency",
+                        "formatterFn": null,
+                        "headerName": "Frequency",
+                        "headerTooltip": "The frequency of the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "frequency_short",
+                        "formatterFn": null,
+                        "headerName": "Frequency Short",
+                        "headerTooltip": "Short form of the data frequency.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "units",
+                        "formatterFn": null,
+                        "headerName": "Units",
+                        "headerTooltip": "The units of the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "units_short",
+                        "formatterFn": null,
+                        "headerName": "Units Short",
+                        "headerTooltip": "Short form of the data units.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "seasonal_adjustment",
+                        "formatterFn": null,
+                        "headerName": "Seasonal Adjustment",
+                        "headerTooltip": "The seasonal adjustment of the data.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "seasonal_adjustment_short",
+                        "formatterFn": null,
+                        "headerName": "Seasonal Adjustment Short",
+                        "headerTooltip": "Short form of the data seasonal adjustment.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "last_updated",
+                        "formatterFn": null,
+                        "headerName": "Last Updated",
+                        "headerTooltip": "The datetime of the last update to the data.",
+                        "cellDataType": "date",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "notes",
+                        "formatterFn": null,
+                        "headerName": "Notes",
+                        "headerTooltip": "Description of the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "press_release",
+                        "formatterFn": null,
+                        "headerName": "Press Release",
+                        "headerTooltip": "If the release is a press release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "url",
+                        "formatterFn": null,
+                        "headerName": "Url",
+                        "headerTooltip": "URL to the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "popularity",
+                        "headerName": "Popularity",
+                        "headerTooltip": "Popularity of the series",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "group_popularity",
+                        "headerName": "Group Popularity",
+                        "headerTooltip": "Group popularity of the release",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "region_type",
+                        "formatterFn": null,
+                        "headerName": "Region Type",
+                        "headerTooltip": "The region type of the series.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "series_group",
+                        "headerName": "Series Group",
+                        "headerTooltip": "The series group ID of the series. This value is used to query for regional data.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
                     }
                 ]
             }
@@ -1901,7 +2217,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_series",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -1918,31 +2234,6 @@
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
                         "cellDataType": "date",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
-                    },
-                    {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
                         "chartDataType": "category"
                     }
                 ]
@@ -2146,7 +2437,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_series",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 50,
             "h": 20
@@ -2163,31 +2454,6 @@
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
                         "cellDataType": "date",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
-                    },
-                    {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
                         "chartDataType": "category"
                     }
                 ]
@@ -2240,7 +2506,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_release_table",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -2260,6 +2526,52 @@
                         "chartDataType": "category"
                     },
                     {
+                        "field": "level",
+                        "headerName": "Level",
+                        "headerTooltip": "The indentation level of the element.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "element_type",
+                        "formatterFn": null,
+                        "headerName": "Element Type",
+                        "headerTooltip": "The type of the element.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "line",
+                        "headerName": "Line",
+                        "headerTooltip": "The line number of the element.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "element_id",
+                        "formatterFn": null,
+                        "headerName": "Element ID",
+                        "headerTooltip": "The element id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "parent_id",
+                        "formatterFn": null,
+                        "headerName": "Parent ID",
+                        "headerTooltip": "The parent id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "children",
+                        "formatterFn": null,
+                        "headerName": "Children",
+                        "headerTooltip": "The element_id of each child, as a comma-separated string.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
                         "field": "symbol",
                         "pinned": "left",
                         "formatterFn": null,
@@ -2269,20 +2581,20 @@
                         "chartDataType": "category"
                     },
                     {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
-                    },
-                    {
-                        "field": "title",
+                        "field": "name",
                         "pinned": "left",
                         "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
+                        "headerName": "Name",
+                        "headerTooltip": "The name of the series.",
                         "cellDataType": "text",
                         "chartDataType": "category"
+                    },
+                    {
+                        "field": "value",
+                        "headerName": "Value",
+                        "headerTooltip": "The reported value of the series.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
                     }
                 ]
             }
@@ -2558,7 +2870,7 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_regional",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -2578,27 +2890,33 @@
                         "chartDataType": "category"
                     },
                     {
-                        "field": "symbol",
-                        "pinned": "left",
+                        "field": "region",
                         "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
+                        "headerName": "Region",
+                        "headerTooltip": "The name of the region.",
                         "cellDataType": "text",
                         "chartDataType": "category"
                     },
                     {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "field": "code",
+                        "headerName": "Code",
+                        "headerTooltip": "The code of the region.",
                         "cellDataType": "number",
                         "chartDataType": "series"
                     },
                     {
-                        "field": "title",
+                        "field": "value",
+                        "headerName": "Value",
+                        "headerTooltip": "The obersvation value. The units are defined in the search results by series ID.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "series_id",
                         "pinned": "left",
                         "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
+                        "headerName": "Series ID",
+                        "headerTooltip": "The individual series ID for the region.",
                         "cellDataType": "text",
                         "chartDataType": "category"
                     }
@@ -2757,7 +3075,7 @@
             }
         ],
         "endpoint": "api/v1/economy/retail_prices",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -2786,20 +3104,27 @@
                         "chartDataType": "category"
                     },
                     {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
-                    },
-                    {
-                        "field": "title",
-                        "pinned": "left",
+                        "field": "country",
                         "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
+                        "headerName": "Country",
+                        "headerTooltip": "",
                         "cellDataType": "text",
                         "chartDataType": "category"
+                    },
+                    {
+                        "field": "description",
+                        "formatterFn": null,
+                        "headerName": "Description",
+                        "headerTooltip": "Description of the item.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "value",
+                        "headerName": "Value",
+                        "headerTooltip": "Price, or change in price, per unit.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
                     }
                 ]
             }
@@ -2877,7 +3202,7 @@
             }
         ],
         "endpoint": "api/v1/economy/pce",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -2908,18 +3233,56 @@
                     {
                         "field": "value",
                         "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "headerTooltip": "",
                         "cellDataType": "number",
                         "chartDataType": "series"
                     },
                     {
-                        "field": "title",
+                        "field": "name",
                         "pinned": "left",
                         "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
+                        "headerName": "Name",
+                        "headerTooltip": "The name of the series.",
                         "cellDataType": "text",
                         "chartDataType": "category"
+                    },
+                    {
+                        "field": "element_id",
+                        "formatterFn": null,
+                        "headerName": "Element ID",
+                        "headerTooltip": "The element id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "parent_id",
+                        "formatterFn": null,
+                        "headerName": "Parent ID",
+                        "headerTooltip": "The parent id in the parent/child relationship.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "children",
+                        "formatterFn": null,
+                        "headerName": "Children",
+                        "headerTooltip": "The element_id of each child, as a comma-separated string.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "level",
+                        "headerName": "Level",
+                        "headerTooltip": "The indentation level of the element.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
+                    },
+                    {
+                        "field": "line",
+                        "headerName": "Line",
+                        "headerTooltip": "The line number of the series in the table.",
+                        "cellDataType": "number",
+                        "chartDataType": "series"
                     }
                 ]
             }
@@ -2961,7 +3324,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/cik_map",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -2969,43 +3332,7 @@
         "data": {
             "dataKey": "results",
             "table": {
-                "showAll": true,
-                "columnsDefs": [
-                    {
-                        "field": "date",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Date",
-                        "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
-                    },
-                    {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    }
-                ]
+                "showAll": true
             }
         },
         "source": [
@@ -3046,7 +3373,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/institutions_search",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3057,38 +3384,19 @@
                 "showAll": true,
                 "columnsDefs": [
                     {
-                        "field": "date",
-                        "pinned": "left",
+                        "field": "institution",
                         "formatterFn": null,
-                        "headerName": "Date",
-                        "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
+                        "headerName": "Institution",
+                        "headerTooltip": "The name of the institution.",
                         "cellDataType": "text",
                         "chartDataType": "category"
                     },
                     {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "field": "cik_number",
+                        "headerName": "CIK Number",
+                        "headerTooltip": "Central Index Key (CIK)",
                         "cellDataType": "number",
                         "chartDataType": "series"
-                    },
-                    {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
                     }
                 ]
             }
@@ -3139,7 +3447,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/schema_files",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3147,43 +3455,7 @@
         "data": {
             "dataKey": "results",
             "table": {
-                "showAll": true,
-                "columnsDefs": [
-                    {
-                        "field": "date",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Date",
-                        "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
-                    },
-                    {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    }
-                ]
+                "showAll": true
             }
         },
         "source": [
@@ -3224,7 +3496,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/symbol_map",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3232,43 +3504,7 @@
         "data": {
             "dataKey": "results",
             "table": {
-                "showAll": true,
-                "columnsDefs": [
-                    {
-                        "field": "date",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Date",
-                        "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
-                    },
-                    {
-                        "field": "title",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    }
-                ]
+                "showAll": true
             }
         },
         "source": [
@@ -3291,7 +3527,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/rss_litigation",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3306,32 +3542,40 @@
                         "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Date",
-                        "headerTooltip": "The date of the data.",
+                        "headerTooltip": "The date of publication.",
                         "cellDataType": "date",
                         "chartDataType": "category"
-                    },
-                    {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
                     },
                     {
                         "field": "title",
                         "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Title",
-                        "headerTooltip": "Survey title.",
+                        "headerTooltip": "The title of the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "summary",
+                        "formatterFn": null,
+                        "headerName": "Summary",
+                        "headerTooltip": "Short summary of the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "id",
+                        "formatterFn": null,
+                        "headerName": "ID",
+                        "headerTooltip": "The identifier associated with the release.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "link",
+                        "formatterFn": null,
+                        "headerName": "Link",
+                        "headerTooltip": "URL to the release.",
                         "cellDataType": "text",
                         "chartDataType": "category"
                     }
@@ -3376,7 +3620,7 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/sic_search",
-        "runButton": true,
+        "runButton": false,
         "gridData": {
             "w": 45,
             "h": 15
@@ -3387,36 +3631,25 @@
                 "showAll": true,
                 "columnsDefs": [
                     {
-                        "field": "date",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Date",
-                        "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "symbol",
-                        "pinned": "left",
-                        "formatterFn": null,
-                        "headerName": "Symbol",
-                        "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
-                    },
-                    {
-                        "field": "value",
-                        "headerName": "Value",
-                        "headerTooltip": "Survey value.",
+                        "field": "sic_code",
+                        "headerName": "SIC Code",
+                        "headerTooltip": "Sector Industrial Code (SIC)",
                         "cellDataType": "number",
                         "chartDataType": "series"
                     },
                     {
-                        "field": "title",
-                        "pinned": "left",
+                        "field": "industry_title",
                         "formatterFn": null,
-                        "headerName": "Title",
-                        "headerTooltip": "Survey title.",
+                        "headerName": "Industry Title",
+                        "headerTooltip": "Industry title.",
+                        "cellDataType": "text",
+                        "chartDataType": "category"
+                    },
+                    {
+                        "field": "office",
+                        "formatterFn": null,
+                        "headerName": "Office",
+                        "headerTooltip": "Reporting office within the Corporate Finance Office",
                         "cellDataType": "text",
                         "chartDataType": "category"
                     }

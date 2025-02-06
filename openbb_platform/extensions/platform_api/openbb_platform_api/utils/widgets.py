@@ -220,7 +220,9 @@ def build_json(openapi: dict, widget_exclude_filter: list):
             providers = ["custom"]
 
         for provider in providers:
-            columns_defs = data_schema_to_columns_defs(openapi, widget_id, provider)
+            columns_defs = data_schema_to_columns_defs(
+                openapi, widget_id, provider, route
+            )
             _cats = [
                 r
                 for r in route.split("/")
@@ -301,7 +303,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                     if "/api" in route
                     else route[1:] if route[0] == "/" else route
                 ),
-                "runButton": True,
+                "runButton": False,
                 "gridData": {"w": 45, "h": 15},
                 "data": {
                     "dataKey": data_key,
