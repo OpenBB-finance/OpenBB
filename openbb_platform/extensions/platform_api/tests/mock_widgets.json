@@ -2482,7 +2482,7 @@
                 "paramName": "release_id"
             },
             {
-                "label": "Element Id",
+                "label": "Element ID",
                 "description": "The element ID of a specific table in the release.",
                 "optional": true,
                 "value": null,
