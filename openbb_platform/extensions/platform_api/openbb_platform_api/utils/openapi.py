@@ -226,6 +226,9 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
     if is_provider_specific:
         p["available_providers"] = list(available_providers)
 
+    if title := p_schema.get("title", ""):
+        p["label"] = title
+
     return p
 
 
