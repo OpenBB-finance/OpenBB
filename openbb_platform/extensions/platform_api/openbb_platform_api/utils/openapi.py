@@ -293,6 +293,9 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
     p = set_parameter_options(p, p_schema, providers)
     p = set_parameter_type(p, p_schema)
 
+    if _widget_config := p_schema.get("x-widget_config", {}):
+        p.update(_widget_config)
+
     return p
 
 
@@ -545,6 +548,9 @@ def data_schema_to_columns_defs(
 
         if "date" in column_def["headerTooltip"].lower():
             column_def["cellDataType"] = "date"
+
+        if _widget_config := prop.get("x-widget_config", {}):
+            column_def.update(_widget_config)
 
         column_defs.append(column_def)
 
