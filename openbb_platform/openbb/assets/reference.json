@@ -11371,6 +11371,135 @@
             },
             "model": "CalendarSplits"
         },
+        "/equity/calendar/events": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get historical and upcoming company events, such as Investor Day, Conference Call, Earnings Release.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.calendar.events(provider='fmp')\n# Get company events calendar for specific dates.\nobb.equity.calendar.events(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CalendarEvents]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fmp']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data. The date of the event.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the symbol is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "time",
+                        "type": "str",
+                        "description": "The estimated time of the event, local to the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "timing",
+                        "type": "str",
+                        "description": "The timing of the event - e.g. before, during, or after market hours.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "The title of the event.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "The URL to the press release for the announcement.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "announcement_date",
+                        "type": "date",
+                        "description": "The date when the event was announced.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "CalendarEvents"
+        },
         "/equity/calendar/earnings": {
             "deprecated": {
                 "flag": null,
@@ -26652,7 +26781,7 @@
                 "message": null
             },
             "description": "Get the Management Discussion & Analysis section from the financial statements for a given company.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')\n# Get the Management Discussion & Analysis section by calendar year and period.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec')\n# Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', include_tables=True)\n# Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', raw_html=True)\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')\n# Get the Management Discussion & Analysis section by calendar year and period.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec')\n# Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', include_tables=True)\n# Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', raw_html=True)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -26673,7 +26802,7 @@
                     },
                     {
                         "name": "calendar_period",
-                        "type": "int",
+                        "type": "Literal['Q1', 'Q2', 'Q3', 'Q4']",
                         "description": "Calendar period of the report. By default, is the most recent report available for the symbol. If no calendar year and no calendar period are provided, it will return the most recent report.",
                         "default": null,
                         "optional": true,
@@ -26681,6 +26810,14 @@
                     }
                 ],
                 "sec": [
+                    {
+                        "name": "strategy",
+                        "type": "Literal['inscriptis', 'trafilatura']",
+                        "description": "The strategy to use for extracting the text. Default is 'trafilatura'.",
+                        "default": "trafilatura",
+                        "optional": true,
+                        "choices": null
+                    },
                     {
                         "name": "wrap_length",
                         "type": "int",
