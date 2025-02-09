@@ -1,5 +1,7 @@
 """FMP Company Events Calendar Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import date as dateType
 from typing import Any, Optional
 
