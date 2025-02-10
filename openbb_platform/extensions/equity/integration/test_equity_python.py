@@ -2076,3 +2076,24 @@ def test_equity_fundamental_management_discussion_analysis(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results.content) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2024-01-07",
+                "end_date": "2024-01-10",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_calendar_events(params, obb):
+    """Test the equity calendar events endpoint."""
+    result = obb.equity.calendar_events(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

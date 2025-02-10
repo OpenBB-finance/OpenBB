@@ -93,6 +93,30 @@ async def splits(
 
 
 @router.command(
+    model="CalendarEvents",
+    examples=[
+        APIEx(parameters={"provider": "fmp"}),
+        APIEx(
+            description="Get company events calendar for specific dates.",
+            parameters={
+                "start_date": "2024-02-01",
+                "end_date": "2024-02-07",
+                "provider": "fmp",
+            },
+        ),
+    ],
+)
+async def events(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get historical and upcoming company events, such as Investor Day, Conference Call, Earnings Release."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="CalendarEarnings",
     examples=[
         APIEx(parameters={"provider": "fmp"}),
