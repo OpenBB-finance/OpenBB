@@ -1,5 +1,7 @@
 """OpenAPI parsing Utils."""
 
+from typing import Optional
+
 from openbb_core.provider.utils.helpers import to_snake_case
 
 TO_CAPS_STRINGS = [
@@ -65,7 +67,10 @@ def extract_providers(params: list[dict]) -> list[str]:
     """
     provider_params = [p for p in params if p["name"] == "provider"]
     if provider_params:
-        return provider_params[0].get("schema", {}).get("enum", [])
+        if provider_params[0].get("schema", {}).get("enum"):
+            return provider_params[0]["schema"]["enum"]
+        if provider_params[0].get("schema", {}).get("default"):
+            return [str(provider_params[0]["schema"]["default"])]
     return []
 
 
@@ -221,6 +226,9 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
     if is_provider_specific:
         p["available_providers"] = list(available_providers)
 
+    if (title := p_schema.get("title", "")) and title not in providers:
+        p["label"] = title
+
     return p
 
 
@@ -288,6 +296,9 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
     p = set_parameter_options(p, p_schema, providers)
     p = set_parameter_type(p, p_schema)
 
+    if _widget_config := p_schema.get("x-widget_config", {}):
+        p.update(_widget_config)
+
     return p
 
 
@@ -331,7 +342,7 @@ def get_query_schema_for_widget(
     return route_params, has_chart
 
 
-def get_data_schema_for_widget(openapi_json, operation_id):
+def get_data_schema_for_widget(openapi_json, operation_id, route: Optional[str] = None):
     """
     Get the data schema for a widget based on its operationId.
 
@@ -343,48 +354,62 @@ def get_data_schema_for_widget(openapi_json, operation_id):
         dict: The schema dictionary for the widget's data.
     """
     # Find the route and method for the given operationId
-    for _, methods in openapi_json["paths"].items():
-        for _, details in methods.items():
-            if details.get("operationId") == operation_id:
-                # Get the reference to the schema from the successful response
-                response_ref = details["responses"]["200"]["content"][
-                    "application/json"
-                ].get("schema", {}).get("$ref") or details["responses"]["200"][
-                    "content"
-                ][
-                    "application/json"
-                ].get(
-                    "schema"
+
+    if not route:
+        for path, methods in openapi_json["paths"].items():
+            for _method, details in methods.items():
+                if details.get("operationId") == operation_id:
+                    route = path
+                    break
+
+    _route = openapi_json["paths"].get(route, {}).get("get", {})
+
+    if (
+        schema := _route.get("responses", {})
+        .get("200", {})
+        .get("content", {})
+        .get("application/json", {})
+        .get("schema", {})
+    ):
+        # Get the reference to the schema from the successful response
+
+        if "items" in schema:
+            response_ref = schema["items"].get("$ref")
+        else:
+            response_ref = schema.get("$ref") or _route["responses"]["200"]["content"][
+                "application/json"
+            ].get("schema")
+
+        if isinstance(response_ref, dict) and "type" in response_ref:
+            response_ref = response_ref["type"]
+
+        if response_ref:
+            # Extract the schema name from the reference
+            schema_name = response_ref.split("/")[-1]
+            # Fetch and return the schema from components
+            if schema_name and schema_name in openapi_json.get("components", {}).get(
+                "schemas", {}
+            ):
+                props = openapi_json["components"]["schemas"][schema_name].get(
+                    "properties", {}
                 )
+                if props and "results" in props:
+                    return props["results"]
 
-                if isinstance(response_ref, dict) and "type" in response_ref:
-                    response_ref = response_ref["type"]
-
-                if response_ref:
-                    # Extract the schema name from the reference
-                    schema_name = response_ref.split("/")[-1]
-                    # Fetch and return the schema from components
-                    if (
-                        schema_name
-                        and schema_name in openapi_json["components"]["schemas"]
-                    ):
-                        return (
-                            openapi_json["components"]["schemas"][schema_name]
-                            .get("properties", {})
-                            .get("results", {})
-                        )
-
+            return openapi_json["components"]["schemas"].get(schema_name, schema_name)
     # Return None if the schema is not found
     return None
 
 
-def data_schema_to_columns_defs(openapi_json, operation_id, provider):
+def data_schema_to_columns_defs(  # noqa: PLR0912
+    openapi_json, operation_id, provider, route: Optional[str] = None
+):
     """Convert data schema to column definitions for the widget."""
-
     # Initialize an empty list to hold the schema references
     schema_refs: list = []
 
-    result_schema_ref = get_data_schema_for_widget(openapi_json, operation_id)
+    result_schema_ref = get_data_schema_for_widget(openapi_json, operation_id, route)
+
     # Check if 'anyOf' is in the result_schema_ref and handle the nested structure
     if result_schema_ref and "anyOf" in result_schema_ref:
         for item in result_schema_ref["anyOf"]:
@@ -408,6 +433,9 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
         for ref in schema_refs
         if ref and ref in openapi_json["components"]["schemas"]
     ]
+
+    if not schemas and result_schema_ref and "properties" in result_schema_ref:
+        schemas.append(result_schema_ref)
 
     # Proceed with finding common keys and generating column definitions
     if not schemas:
@@ -517,9 +545,15 @@ def data_schema_to_columns_defs(openapi_json, operation_id, provider):
                 column_def["headerName"].upper() if k != "symbol" else "Symbol"
             )
 
-        if k in ["fiscal_year", "year"]:
+        if k in ["fiscal_year", "year", "year_born"]:
             column_def["cellDataType"] = "number"
             column_def["formatterFn"] = "none"
+
+        if "date" in column_def["headerTooltip"].lower():
+            column_def["cellDataType"] = "date"
+
+        if _widget_config := prop.get("x-widget_config", {}):
+            column_def.update(_widget_config)
 
         column_defs.append(column_def)
 
