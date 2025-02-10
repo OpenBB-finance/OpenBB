@@ -521,7 +521,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     _start_date = start_date
     intraday = False
     if interval in ["60m", "1h"]:
-        period = "2y" if period in ["5y", "10y"] else period
+        period = "2y" if period in ["5y", "10y", "max"] else period
         _start_date = None
         intraday = True
 
@@ -543,7 +543,6 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     if session.proxies:
         kwargs["proxy"] = session.proxies
     try:
-        print(interval)
         data = yf.download(
             tickers=symbol,
             start=_start_date,
