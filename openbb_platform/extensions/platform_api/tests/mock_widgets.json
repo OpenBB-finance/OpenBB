@@ -2248,7 +2248,7 @@
         "name": "Fred Series (Chart)",
         "description": "Get data by series ID from FRED.",
         "category": "Economy",
-        "type": "table",
+        "type": "chart",
         "searchCategory": "chart",
         "widgetId": "economy_fred_series_fred_obb_chart",
         "params": [
