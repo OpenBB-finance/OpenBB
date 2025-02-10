@@ -344,6 +344,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
 
             if has_chart:
                 widget_config_chart = deepcopy(widget_config)
+                widget_config_chart["type"] = "chart"
                 widget_config_chart["name"] = widget_config_chart["name"] + " (Chart)"
                 widget_config_chart["widgetId"] = (
                     f"{widget_config_chart['widgetId']}_chart"
