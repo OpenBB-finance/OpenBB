@@ -405,7 +405,7 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: Optional[str] 
     return None
 
 
-def data_schema_to_columns_defs(  # noqa: PLR0912
+def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-branches
     openapi_json, operation_id, provider, route: Optional[str] = None
 ):
     """Convert data schema to column definitions for the widget."""
