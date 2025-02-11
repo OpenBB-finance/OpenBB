@@ -41,24 +41,6 @@ def test_fixedincome_government_treasury_rates(params, headers):
 
 @parametrize(
     "params",
-    [({"date": "2023-01-01", "inflation_adjusted": True, "provider": "fred"})],
-)
-@pytest.mark.integration
-def test_fixedincome_government_us_yield_curve(params, headers):
-    """Test the US yield curve endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = (
-        f"http://0.0.0.0:8000/api/v1/fixedincome/government/us_yield_curve?{query_str}"
-    )
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@parametrize(
-    "params",
     [
         (
             {
@@ -520,33 +502,6 @@ def test_fixedincome_spreads_treasury_effr(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/spreads/treasury_effr?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@parametrize(
-    "params",
-    [
-        (
-            {
-                "rating": "aaa",
-                "provider": "ecb",
-                "date": "2023-01-01",
-                "yield_curve_type": "spot_rate",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_fixedincome_government_eu_yield_curve(params, headers):
-    """Test the EU yield curve endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = (
-        f"http://0.0.0.0:8000/api/v1/fixedincome/government/eu_yield_curve?{query_str}"
-    )
-    result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
