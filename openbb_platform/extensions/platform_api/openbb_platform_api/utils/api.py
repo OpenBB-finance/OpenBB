@@ -340,8 +340,8 @@ def parse_args():
             raise FileNotFoundError(
                 f"Error: The copilots file '{_copilots_path}' does not exist"
             )
-            with open(_copilots_path, encoding="utf-8") as f:
-                _kwargs["copilots"] = json.load(f)
+        with open(_copilots_path, encoding="utf-8") as f:
+            _kwargs["copilots"] = json.load(f)
 
     if _kwargs.get("app"):
         _app_path = _kwargs.pop("app", None)
