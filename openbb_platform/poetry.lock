@@ -2141,15 +2141,15 @@ openbb-core = ">=1.4.0,<2.0.0"
 
 [[package]]
 name = "openbb-fixedincome"
-version = "1.4.0"
+version = "1.4.1"
 description = "Fixed income extension for OpenBB"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
 files = [
-    {file = "openbb_fixedincome-1.4.0-py3-none-any.whl", hash = "sha256:bd9683ac6d66b4a9cd3b0923e96175752ef7925e69ccfd4e6f4e715fad01b52f"},
-    {file = "openbb_fixedincome-1.4.0.tar.gz", hash = "sha256:626d65d9aa288bd4db10e808c24bddd737c3fa36b8c8e8f5462cb8f947d15a86"},
+    {file = "openbb_fixedincome-1.4.1-py3-none-any.whl", hash = "sha256:5c076a04bd77ba7a2e622c319255259fb447b2ce34d08419ebf2c6380e155336"},
+    {file = "openbb_fixedincome-1.4.1.tar.gz", hash = "sha256:7f1825b92bd6fe100363a2c6f5ee47f23d6617db24db28ed182ce08ccd447d37"},
 ]
 
 [package.dependencies]
@@ -4494,4 +4494,4 @@ wsj = ["openbb-wsj"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<3.13"
-content-hash = "8c97bee090d707e03d4c60fc1cb423091ec4e7c3f31c61bc96cc6201c11ee1c5"
+content-hash = "839a0dbd464af812510f2ec177aeeb9377d33f04162760139b30bd271a716746"

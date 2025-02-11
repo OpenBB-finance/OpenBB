@@ -13,7 +13,7 @@
                 "economy@1.4.0",
                 "equity@1.4.0",
                 "etf@1.4.0",
-                "fixedincome@1.4.0",
+                "fixedincome@1.4.1",
                 "index@1.4.0",
                 "news@1.4.0",
                 "regulators@1.4.0"
@@ -38324,86 +38324,6 @@
                 "fred": []
             },
             "model": "YieldCurve"
-        },
-        "/fixedincome/government/us_yield_curve": {
-            "deprecated": {
-                "flag": true,
-                "message": "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4."
-            },
-            "description": "US Yield Curve. Get United States yield curve.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.us_yield_curve(provider='fred')\nobb.fixedincome.government.us_yield_curve(inflation_adjusted=True, provider='fred')\n```\n\n",
-            "parameters": {
-                "standard": [
-                    {
-                        "name": "date",
-                        "type": "Union[date, str]",
-                        "description": "A specific date to get data for. Defaults to the most recent FRED entry.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "inflation_adjusted",
-                        "type": "bool",
-                        "description": "Get inflation adjusted rates.",
-                        "default": false,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "fred": []
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "List[USYieldCurve]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['fred']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[List[Warning_]]",
-                        "description": "List of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "Dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [
-                    {
-                        "name": "maturity",
-                        "type": "float",
-                        "description": "Maturity of the treasury rate in years.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "rate",
-                        "type": "float",
-                        "description": "Associated rate given in decimal form (0.05 is 5%)",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ],
-                "fred": []
-            },
-            "model": "USYieldCurve"
         },
         "/fixedincome/government/treasury_rates": {
             "deprecated": {

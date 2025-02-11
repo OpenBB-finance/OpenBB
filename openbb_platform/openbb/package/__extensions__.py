@@ -28,7 +28,7 @@ Extensions:
     - economy@1.4.0
     - equity@1.4.0
     - etf@1.4.0
-    - fixedincome@1.4.0
+    - fixedincome@1.4.1
     - index@1.4.0
     - news@1.4.0
     - regulators@1.4.0
