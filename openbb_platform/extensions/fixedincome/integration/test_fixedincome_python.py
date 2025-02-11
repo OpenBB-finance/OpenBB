@@ -36,21 +36,6 @@ def test_fixedincome_government_treasury_rates(params, obb):
 @parametrize(
     "params",
     [
-        ({"date": "2023-01-01", "inflation_adjusted": True, "provider": "fred"}),
-    ],
-)
-@pytest.mark.integration
-def test_fixedincome_government_us_yield_curve(params, obb):
-    """Test the US yield curve endpoint."""
-    result = obb.fixedincome.government.us_yield_curve(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@parametrize(
-    "params",
-    [
         (
             {
                 "start_date": "2023-01-01",
@@ -479,30 +464,6 @@ def test_fixedincome_spreads_treasury_effr(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.spreads.treasury_effr(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@parametrize(
-    "params",
-    [
-        (
-            {
-                "rating": "aaa",
-                "provider": "ecb",
-                "date": "2023-01-01",
-                "yield_curve_type": "spot_rate",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_fixedincome_government_eu_yield_curve(params, obb):
-    """Test the EU yield curve endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.fixedincome.government.eu_yield_curve(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

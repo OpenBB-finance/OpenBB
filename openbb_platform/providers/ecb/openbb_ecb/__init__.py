@@ -3,7 +3,6 @@
 from openbb_core.provider.abstract.provider import Provider
 from openbb_ecb.models.balance_of_payments import ECBBalanceOfPaymentsFetcher
 from openbb_ecb.models.currency_reference_rates import ECBCurrencyReferenceRatesFetcher
-from openbb_ecb.models.eu_yield_curve import ECBEUYieldCurveFetcher
 from openbb_ecb.models.yield_curve import ECBYieldCurveFetcher
 
 ecb_provider = Provider(
@@ -15,7 +14,6 @@ Statistical publications and dashboards offer a compilation of key data on selec
     fetcher_dict={
         "BalanceOfPayments": ECBBalanceOfPaymentsFetcher,
         "CurrencyReferenceRates": ECBCurrencyReferenceRatesFetcher,
-        "EUYieldCurve": ECBEUYieldCurveFetcher,
         "YieldCurve": ECBYieldCurveFetcher,
     },
     repr_name="European Central Bank (ECB)",
