@@ -969,11 +969,11 @@ class ROUTER_equity_estimates(Container):
             Importance level to filter by. Uses Greater Than or Equal To the importance indicated (provider: benzinga)
         action : Optional[Literal['downgrades', 'maintains', 'reinstates', 'reiterates', 'upgrades', 'assumes', 'initiates', 'terminates', 'removes', 'suspends', 'firm_dissolved']]
             Filter by a specific action_company. (provider: benzinga)
-        analyst_ids : Optional[Union[List[str], str]]
+        analyst_ids : Optional[Union[str, List[str]]]
             Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple comma separated items allowed. (provider: benzinga)
-        firm_ids : Optional[Union[List[str], str]]
+        firm_ids : Optional[Union[str, List[str]]]
             Comma-separated list of firm IDs. Multiple comma separated items allowed. (provider: benzinga)
-        fields : Optional[Union[List[str], str]]
+        fields : Optional[Union[str, List[str]]]
             Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. (provider: benzinga)
         with_grade : bool
             Include upgrades and downgrades in the response. (provider: fmp)
