@@ -225,10 +225,6 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
 
     if is_provider_specific:
         p["available_providers"] = list(available_providers)
-
-    if (title := p_schema.get("title", "")) and title not in providers:
-        p["label"] = title
-
     return p
 
 
@@ -295,6 +291,14 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
     p["value"] = p_schema.get("default", None)
     p = set_parameter_options(p, p_schema, providers)
     p = set_parameter_type(p, p_schema)
+
+    if title := p_schema.get("title", ""):
+        p["label"] = (
+            p.get("parameter_name", "").replace("_", " ").title()
+            if ("," in title and title.replace(",", "").islower())
+            or title.lower() in providers
+            else title
+        )
 
     if _widget_config := p_schema.get("x-widget_config", {}):
         p.update(_widget_config)
