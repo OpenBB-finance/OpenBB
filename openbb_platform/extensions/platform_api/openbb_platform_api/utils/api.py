@@ -14,7 +14,6 @@ from .widgets import build_json
 LAUNCH_SCRIPT_DESCRIPTION = """
 Serve the OpenBB Platform API.
 
-
 Launcher specific arguments:
 
     --app                           Absolute path to the Python file with the target FastAPI instance. Default is the installed OpenBB Platform API.
@@ -43,7 +42,6 @@ Imported with:
 Launched with:
 
 >>> openbb-api --app /path/to/some_file.py
-
 
 All other arguments will be passed to uvicorn. Here are the most common ones:
 
@@ -340,8 +338,8 @@ def parse_args():
             raise FileNotFoundError(
                 f"Error: The copilots file '{_copilots_path}' does not exist"
             )
-            with open(_copilots_path, encoding="utf-8") as f:
-                _kwargs["copilots"] = json.load(f)
+        with open(_copilots_path, encoding="utf-8") as f:
+            _kwargs["copilots"] = json.load(f)
 
     if _kwargs.get("app"):
         _app_path = _kwargs.pop("app", None)
@@ -349,7 +347,7 @@ def parse_args():
             raise FileNotFoundError(f"Error: The app file '{_app_path}' does not exist")
         _kwargs["app"] = import_app(_app_path)
 
-    if _kwargs.get("widgets_path"):
+    if _kwargs.get("widgets-path"):
         _kwargs["editable"] = True
 
     return _kwargs
