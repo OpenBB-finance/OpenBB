@@ -172,11 +172,11 @@ async function DynamicLoad({
     );
 
     if (XDATA.length === 0) return figure;
-    // We get the xaxis range, if no event is passed, we get the last 2000 points
+    // We get the xaxis range, if no event is passed, we get the last 1000 points
     const xaxis_range = event
       ? [event["xaxis.range[0]"], event["xaxis.range[1]"]]
       : [
-          XDATA[0]?.x[XDATA[0].x.length - 2000],
+          XDATA[0]?.x[XDATA[0].x.length - 1000],
           XDATA[0]?.x[XDATA[0].x.length - 1],
         ];
 
@@ -503,12 +503,12 @@ function Chart({
           .setAttribute("viewBox", changeIcon.viewBox);
 
         const volumeColorsDark = {
-          "#009600": "#00ACFF",
-          "#c80000": "#e4003a",
+          "#00ACFF0": "#00ACFF",
+          "#e4003a": "#e4003a",
         };
         const volumeColorsLight = {
-          "#e4003a": "#c80000",
-          "#00ACFF": "#009600",
+          "#e4003a": "#e4003a",
+          "#00ACFF": "#00ACFF",
         };
 
         const volumeColors = darkmode ? volumeColorsDark : volumeColorsLight;
@@ -632,28 +632,6 @@ function Chart({
       if (theme !== "dark") {
         setChangeTheme(true);
       }
-
-      const traceTypes = originalData.data.map(
-        (trace) => trace.type === "candlestick",
-      );
-      if (
-        (originalData.data[0]?.x !== undefined &&
-          originalData.data[0]?.x.length <= 2000) ||
-        !traceTypes.includes(true)
-      )
-        return;
-      setModal({
-        name: "alertDialog",
-        data: {
-          title: "Warning",
-          content: `Data has been truncated to 2000 points for performance reasons.
-						Please use the zoom tool to see more data.`,
-        },
-      });
-      const new_figure = CreateDataXrange(originalData);
-      setPlotData(new_figure);
-      setDateSliced(true);
-      setAutoScaling(true);
     }
   }, [plotLoaded]);
 

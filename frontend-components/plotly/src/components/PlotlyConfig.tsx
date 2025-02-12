@@ -47,6 +47,18 @@ export function PlotConfig({
     responsive: true,
     displaylogo: false,
     displayModeBar: true,
+    edits: {
+      legendPosition: true,
+      legendText: true,
+      annotationPosition: true,
+      annotationTail: true,
+      annotationText: true,
+      colorbarPosition: true,
+      shapePosition: true,
+    },
+    showAxisDragHandles: true,
+    showTips: false,
+    setBackground: "transparent",
     modeBarButtonsToRemove: ["lasso2d", "select2d", "downloadImage"],
     modeBarButtons: [
       [

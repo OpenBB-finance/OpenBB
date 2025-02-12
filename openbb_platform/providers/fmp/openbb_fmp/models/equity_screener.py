@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fmp.utils.definitions import EXCHANGES, SECTORS
+from openbb_fmp.utils.definitions import EXCHANGES, SECTORS, Exchanges, Sectors
 from pydantic import Field
 
 
@@ -30,6 +30,17 @@ class FMPEquityScreenerQueryParams(EquityScreenerQueryParams):
         "dividend_max": "dividendLowerThan",
         "is_active": "isActivelyTrading",
         "is_etf": "isEtf",
+    }
+
+    __json_schema_extra__ = {
+        "exchange": {
+            "multiple_items_allowed": False,
+            "choices": EXCHANGES,
+        },
+        "sector": {
+            "multiple_items_allowed": False,
+            "choices": SECTORS,
+        },
     }
 
     mktcap_min: Optional[int] = Field(
@@ -79,12 +90,12 @@ class FMPEquityScreenerQueryParams(EquityScreenerQueryParams):
         default=True,
         description="If false, returns only inactive tickers.",
     )
-    sector: Optional[SECTORS] = Field(default=None, description="Filter by sector.")
+    sector: Optional[Sectors] = Field(default=None, description="Filter by sector.")
     industry: Optional[str] = Field(default=None, description="Filter by industry.")
     country: Optional[str] = Field(
         default=None, description="Filter by country, as a two-letter country code."
     )
-    exchange: Optional[EXCHANGES] = Field(
+    exchange: Optional[Exchanges] = Field(
         default=None, description="Filter by exchange."
     )
     limit: Optional[int] = Field(
@@ -179,6 +190,7 @@ class FMPEquityScreenerFetcher(
             query=_query,
             exclude=["query", "is_symbol", "industry"],
         ).replace(" ", "%20")
+
         return await get_data(url, **kwargs)  # type: ignore
 
     @staticmethod

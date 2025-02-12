@@ -45,6 +45,111 @@ PREDEFINED_SCREENERS = [
     "top_mutual_funds",
 ]
 
+SCREENER_FIELDS = [
+    "symbol",
+    "shortName",
+    "regularMarketPrice",
+    "regularMarketChange",
+    "regularMarketChangePercent",
+    "regularMarketVolume",
+    "regularMarketOpen",
+    "regularMarketDayHigh",
+    "regularMarketDayLow",
+    "regularMarketPreviousClose",
+    "fiftyDayAverage",
+    "twoHundredDayAverage",
+    "fiftyTwoWeekHigh",
+    "fiftyTwoWeekLow",
+    "marketCap",
+    "sharesOutstanding",
+    "epsTrailingTwelveMonths",
+    "forwardPE",
+    "epsForward",
+    "bookValue",
+    "priceToBook",
+    "trailingAnnualDividendYield",
+    "currency",
+    "exchange",
+    "exchangeTimezoneName",
+    "earnings_date",
+]
+
+
+async def get_custom_screener(
+    body: dict[str, Any],
+    limit: Optional[int] = None,
+    region: str = "US",
+):
+    """Get a custom screener."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import (
+        get_requests_session,
+        safe_fromtimestamp,
+    )
+    from pytz import timezone
+    from yfinance.data import YfData
+
+    session = get_requests_session()
+    params_dict = {
+        "corsDomain": "finance.yahoo.com",
+        "formatted": "false",
+        "lang": "en-US",
+        "region": region,
+    }
+    _data = YfData(session=session)
+    results: list = []
+    body = body.copy()
+    response = _data.post(
+        "https://query2.finance.yahoo.com/v1/finance/screener",
+        body=body,
+        user_agent_headers=_data.user_agent_headers,
+        params=params_dict,
+        proxy=session.proxies if session.proxies else None,
+    )
+    response.raise_for_status()
+    res = response.json()["finance"]["result"][0]
+
+    if not res.get("quotes"):
+        raise EmptyDataError("No data found for the predefined screener.")
+
+    results.extend(res["quotes"])
+    total_results = res["total"]
+
+    while len(results) < total_results:
+        if limit is not None and len(results) >= limit:
+            break
+        offset = len(results)
+        body["offset"] = offset
+        response = _data.post(
+            "https://query2.finance.yahoo.com/v1/finance/screener",
+            body=body,
+            user_agent_headers=_data.user_agent_headers,
+            params=params_dict,
+            proxy=session.proxies if session.proxies else None,
+        )
+        if not res:
+            break
+        res = response.json()["finance"]["result"][0]
+        results.extend(res.get("quotes", []))
+
+    output: list = []
+
+    for item in results:
+        tz = item["exchangeTimezoneName"]
+        earnings_date = (
+            safe_fromtimestamp(item["earningsTimestamp"], timezone(tz)).strftime(  # type: ignore
+                "%Y-%m-%d %H:%M:%S%z"
+            )
+            if item.get("earningsTimestamp")
+            else None
+        )
+        item["earnings_date"] = earnings_date
+        result = {k: item.get(k, None) for k in SCREENER_FIELDS}
+        if result.get("regularMarketChange") and result.get("regularMarketVolume"):
+            output.append(result)
+
+    return output[:limit] if limit is not None else output
+
 
 async def get_defined_screener(
     name: Optional[str] = None,
@@ -54,7 +159,10 @@ async def get_defined_screener(
     """Get a predefined screener."""
     # pylint: disable=import-outside-toplevel
     import yfinance as yf  # noqa
-    from openbb_core.provider.utils.helpers import safe_fromtimestamp
+    from openbb_core.provider.utils.helpers import (
+        get_requests_session,
+        safe_fromtimestamp,
+    )
     from pytz import timezone
 
     if name and name not in PREDEFINED_SCREENERS:
@@ -62,58 +170,38 @@ async def get_defined_screener(
             f"Invalid predefined screener name: {name}\n    Valid names: {PREDEFINED_SCREENERS}"
         )
 
-    fields = [
-        "symbol",
-        "shortName",
-        "regularMarketPrice",
-        "regularMarketChange",
-        "regularMarketChangePercent",
-        "regularMarketVolume",
-        "regularMarketOpen",
-        "regularMarketDayHigh",
-        "regularMarketDayLow",
-        "regularMarketPreviousClose",
-        "fiftyDayAverage",
-        "twoHundredDayAverage",
-        "fiftyTwoWeekHigh",
-        "fiftyTwoWeekLow",
-        "marketCap",
-        "sharesOutstanding",
-        "epsTrailingTwelveMonths",
-        "forwardPE",
-        "epsForward",
-        "bookValue",
-        "priceToBook",
-        "trailingAnnualDividendYield",
-        "currency",
-        "exchange",
-        "exchangeTimezoneName",
-        "earnings_date",
-    ]
     results: list = []
-    screener = yf.screener.Screener()
+    session = get_requests_session()
 
-    if screener.response:
-        screener.response = None
+    offset = 0
 
-    if body is not None:
-        screener.set_body(body)
-    else:
-        if not name:
-            raise ValueError("Name must be provided if body is not.")
-        screener.set_predefined_body(name)
-        screener.patch_body({"size": 100, "offset": 0})
+    response = yf.screen(
+        name,
+        session=session,
+        proxy=session.proxies if session.proxies else None,
+        size=250,
+        offset=offset,
+    )
 
-    res = screener.response
-    total_results = res["total"]
-    results.extend(res["quotes"])
+    if not response.get("quotes"):
+        raise EmptyDataError("No data found for the predefined screener.")
+
+    total_results = response["total"]
+    results.extend(response["quotes"])
 
     while len(results) < total_results:
         if limit is not None and len(results) >= limit:
             break
         offset = len(results)
-        screener.patch_body({"offset": offset})
-        res = screener.response
+        res = yf.screen(
+            name,
+            session=session,
+            proxy=session.proxies if session.proxies else None,
+            size=250,
+            offset=offset,
+        )
+        if not res:
+            break
         results.extend(res.get("quotes", []))
 
     output: list = []
@@ -121,14 +209,14 @@ async def get_defined_screener(
     for item in results:
         tz = item["exchangeTimezoneName"]
         earnings_date = (
-            safe_fromtimestamp(item["earningsTimestamp"], timezone(tz)).strftime(
+            safe_fromtimestamp(item["earningsTimestamp"], timezone(tz)).strftime(  # type: ignore
                 "%Y-%m-%d %H:%M:%S%z"
             )
             if item.get("earningsTimestamp")
             else None
         )
         item["earnings_date"] = earnings_date
-        result = {k: item.get(k, None) for k in fields}
+        result = {k: item.get(k, None) for k in SCREENER_FIELDS}
         if result.get("regularMarketChange") and result.get("regularMarketVolume"):
             output.append(result)
 
@@ -151,16 +239,20 @@ def get_futures_data() -> "DataFrame":
     return read_csv(Path(__file__).resolve().parent / "futures.csv")
 
 
-def get_futures_symbols(symbol: str) -> List:
+def get_futures_symbols(symbol: str) -> list:
     """Get the list of futures symbols from the continuation symbol."""
     # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import get_requests_session
     from yfinance.data import YfData
 
     _symbol = symbol.upper() + "%3DF"
     URL = f"https://query2.finance.yahoo.com/v10/finance/quoteSummary/{_symbol}"
     params = {"modules": "futuresChain"}
-    response: Dict = YfData(session=None).get_raw_json(url=URL, params=params)
-    futures_symbols: List = []
+    response: Dict = YfData(session=get_requests_session()).get_raw_json(
+        url=URL, params=params
+    )
+    futures_symbols: list = []
+
     if "quoteSummary" in response:
         result = response["quoteSummary"].get("result", [])
         if not result:
@@ -168,6 +260,7 @@ def get_futures_symbols(symbol: str) -> List:
         futures = result[0].get("futuresChain", {})
         if futures:
             futures_symbols = futures.get("futures", [])
+
     return futures_symbols
 
 
@@ -420,8 +513,9 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     # pylint: disable=import-outside-toplevel
     from datetime import datetime  # noqa
     from dateutil.relativedelta import relativedelta
-    import yfinance as yf
+    from openbb_core.provider.utils.helpers import get_requests_session
     from pandas import DataFrame, concat, to_datetime
+    import yfinance as yf
 
     symbol = symbol.upper()
     _start_date = start_date
@@ -443,8 +537,11 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
         intraday = True
 
     if adjusted is False:
-        kwargs = dict(auto_adjust=False, back_adjust=False, period=period)
+        kwargs.update(dict(auto_adjust=False, back_adjust=False, period=period))
 
+    session = kwargs.pop("session", None) or get_requests_session()
+    if session.proxies:
+        kwargs["proxy"] = session.proxies
     try:
         data = yf.download(
             tickers=symbol,
@@ -460,6 +557,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
             rounding=rounding,
             group_by=group_by,
             threads=False,
+            session=session,
             **kwargs,
         )
         if hasattr(data.index, "tz") and data.index.tz is not None:

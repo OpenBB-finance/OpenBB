@@ -1,7 +1,7 @@
 # If you will be using this as a template for your own package, please change the values accordingly.
 [tool.poetry]
 name = "openbb_platform_installer"  # Change this to your package name
-version = "1.0.0"  # Change this to your package version
+version = "1.0.2"  # Change this to your package version
 description = "A meta package for installing the OpenBB Platform: Investment research for everyone, anywhere."  # Change this to your description
 authors = ["OpenBB <hello@openbb.co>"]  # Change this to your name and email
 license = "AGPL-3.0-only"  # This license must be compatible with the OpenBB license

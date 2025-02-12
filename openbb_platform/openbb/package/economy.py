@@ -70,6 +70,8 @@ class ROUTER_economy(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, imf.
         use_cache : bool
             Whether to use cache or not, by default is True The cache of indicator symbols will persist for one week. (provider: econdb)
+        query : Optional[str]
+            The query string to search through the available indicators. Use semicolons to separate multiple terms. Multiple comma separated items allowed. (provider: imf)
 
         Returns
         -------
@@ -115,12 +117,18 @@ class ROUTER_economy(Container):
             The last date of the data. (provider: econdb)
         last_insert_timestamp : Optional[datetime]
             The time of the last update. Data is typically reported with a lag. (provider: econdb)
+        dataset : Optional[str]
+            The IMF dataset associated with the symbol. (provider: imf)
         table : Optional[str]
             The name of the table associated with the symbol. (provider: imf)
         level : Optional[int]
             The indentation level of the data, relative to the table and symbol_root (provider: imf)
-        order : Optional[int]
+        order : Optional[Union[int, float]]
             Order of the data, relative to the table. (provider: imf)
+        children : Optional[str]
+            The symbol of the child data, if any. (provider: imf)
+        unit : Optional[str]
+            The unit of the data. (provider: imf)
 
         Examples
         --------
@@ -140,6 +148,9 @@ class ROUTER_economy(Container):
                 },
                 standard_params={},
                 extra_params=kwargs,
+                info={
+                    "query": {"imf": {"multiple_items_allowed": True, "choices": None}}
+                },
             )
         )
 
@@ -1120,7 +1131,6 @@ class ROUTER_economy(Container):
                                 "czech_republic",
                                 "denmark",
                                 "estonia",
-                                "euro_area",
                                 "finland",
                                 "france",
                                 "germany",
@@ -1418,6 +1428,7 @@ class ROUTER_economy(Container):
                                 "dominica",
                                 "dominican_republic",
                                 "east_germany",
+                                "eastern_caribbean_currency_union",
                                 "ecuador",
                                 "egypt",
                                 "el_salvador",
@@ -1671,6 +1682,7 @@ class ROUTER_economy(Container):
                                 "dominica",
                                 "dominican_republic",
                                 "east_germany",
+                                "eastern_caribbean_currency_union",
                                 "ecuador",
                                 "egypt",
                                 "el_salvador",
@@ -2946,99 +2958,114 @@ class ROUTER_economy(Container):
     ) -> OBBject:
         """Get economic indicators by country and indicator.
 
-        Parameters
-        ----------
-        country : Union[str, None, List[Optional[str]]]
-            The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb, imf.
-        start_date : Union[date, None, str]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[date, None, str]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['econdb', 'imf']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, imf.
-        symbol : Optional[str]
-            Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Use `available_indicators()` to get a list of available symbols. Multiple comma separated items allowed. (provider: econdb);
-            Symbol to get data for. Use `available_indicators()` to get the list of available symbols. Use 'IRFCL' to get all the data from the set of indicators. Complete tables are available only by single country, and are keyed as described below. The default is 'irfcl_top_lines'. Available presets not listed in `available_indicators()` are:
-
-                'IRFCL': All the data from the set of indicators. Not compatible with multiple countries.
-                'irfcl_top_lines': The default, top line items from the IRFCL data. Compatible with multiple countries.
-                'reserve_assets_and_other_fx_assets': Table I of the IRFCL data. Not compatible with multiple countries.
-                'predetermined_drains_on_fx_assets': Table II of the IRFCL data. Not compatible with multiple countries.
-                'contingent_drains_fx_assets': Table III of the IRFCL data. Not compatible with multiple countries.
-                'memorandum_items': The memorandum items table of the IRFCL data. Not compatible with multiple countries.
-                'gold_reserves': Gold reserves as value in USD and Fine Troy Ounces. Compatible with multiple countries.
-                'derivative_assets': Net derivative assets as value in USD. Compatible with multipile countries.
-             Multiple comma separated items allowed. (provider: imf)
-        transform : Optional[Literal['toya', 'tpop', 'tusd', 'tpgp']]
-            The transformation to apply to the data, default is None.
-
-            tpop: Change from previous period
-            toya: Change from one year ago
-            tusd: Values as US dollars
-            tpgp: Values as a percent of GDP
-
-            Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.
-            This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.
-            `tusd` should only be used where values are currencies. (provider: econdb)
-        frequency : Literal['annual', 'quarter', 'month']
-            The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'. (provider: econdb);
-            Frequency of the data. (provider: imf)
-        use_cache : bool
-            If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
-
-        Returns
-        -------
-        OBBject
-            results : List[EconomicIndicators]
-                Serializable results.
+            Parameters
+            ----------
+            country : Union[str, None, List[Optional[str]]]
+                The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb, imf.
+            start_date : Union[date, None, str]
+                Start date of the data, in YYYY-MM-DD format.
+            end_date : Union[date, None, str]
+                End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['econdb', 'imf']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+                The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, imf.
+            symbol : Optional[str]
+                Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Use `available_indicators()` to get a list of available symbols. Multiple comma separated items allowed. (provider: econdb);
+                Symbol to get data for. Use `available_indicators()` to get the list of available symbols. Use 'IRFCL' to get all the data from International Reserves & Foreign Currency Liquidity indicators. Use 'core_fsi' to get the core Financial Soundness Indicators. Use 'core_fsi_underlying' to include underlying data for the core Financial Soundness Indicators. Complete tables are available only by single country, and are keyed as described below. The default is 'irfcl_top_lines'. Available presets not listed in `available_indicators()` are:
 
-        EconomicIndicators
-        ------------------
-        date : date
-            The date of the data.
-        symbol_root : Optional[str]
-            The root symbol for the indicator (e.g. GDP).
-        symbol : Optional[str]
-            Symbol representing the entity requested in the data.
-        country : Optional[str]
-            The country represented by the data.
-        value : Optional[Union[int, float]]
+                    'IRFCL': All the data from the set of indicators. Not compatible with multiple countries.
+                    'irfcl_top_lines': The default, top line items from the IRFCL data. Compatible with multiple countries.
+                    'reserve_assets_and_other_fx_assets': Table I of the IRFCL data. Not compatible with multiple countries.
+                    'predetermined_drains_on_fx_assets': Table II of the IRFCL data. Not compatible with multiple countries.
+                    'contingent_drains_fx_assets': Table III of the IRFCL data. Not compatible with multiple countries.
+                    'memorandum_items': The memorandum items table of the IRFCL data. Not compatible with multiple countries.
+                    'gold_reserves': Gold reserves as value in USD and Fine Troy Ounces. Compatible with multiple countries.
+                    'derivative_assets': Net derivative assets as value in USD. Compatible with multipile countries.
+                    'fsi_core': The core Financial Soundness Indicators. Compatible with multiple countries.
+                    'fsi_core_underlying': The core FSIs underlying series data. Not compatible with country='all'.
+                    'fsi_encouraged_set': The encouraged set of Financial Soundness Indicators. Not compatible with country='all'.
+                    'fsi_other': The other Financial Soundness Indicators. Not compatible with country='all'.
+                    'fsi_balance_sheets': Data categorized as Balance Sheets and Income Statements. Not compatible with country='all'.
+                    'fsi_all': All the Financial Soundness Indicators. Not compatible with multiple countries.
+                 Multiple comma separated items allowed. (provider: imf)
+            transform : Optional[Literal['toya', 'tpop', 'tusd', 'tpgp']]
+                The transformation to apply to the data, default is None.
 
-        scale : Optional[str]
-            The scale of the value. (provider: imf)
-        table : Optional[str]
-            The name of the table associated with the symbol. (provider: imf)
-        level : Optional[int]
-            The indentation level of the data, relative to the table and symbol_root (provider: imf)
-        order : Optional[int]
-            Order of the data, relative to the table. (provider: imf)
-        reference_sector : Optional[str]
-            The reference sector for the data. (provider: imf)
-        title : Optional[str]
-            The title of the series associated with the symbol. (provider: imf)
+                tpop: Change from previous period
+                toya: Change from one year ago
+                tusd: Values as US dollars
+                tpgp: Values as a percent of GDP
 
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.economy.indicators(provider='econdb', symbol='PCOCO')
-        >>> # Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.
-        >>> obb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')
-        >>> # Use the `main` symbol to get the group of main indicators for a country.
-        >>> obb.economy.indicators(provider='econdb', symbol='main', country='eu')
-        >>> # When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'. Use 'IRFCL' to get all the data from the set of indicators.
-        >>> obb.economy.indicators(provider='imf')
-        >>> # When the provider is 'imf', complete tables are returned by using a 'preset'. Refer to the function's docstring for descriptions of each preset. When no country is supplied, the data is returned for all countries.
-        >>> obb.economy.indicators(provider='imf', symbol='gold_reserves')
-        >>> # When the provider is 'imf', multiple countries and symbols can be supplied. Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.
-        >>> obb.economy.indicators(provider='imf', symbol='RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO', country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency='annual')
+                Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.
+                This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.
+                `tusd` should only be used where values are currencies. (provider: econdb)
+            frequency : Literal['annual', 'quarter', 'month']
+                The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'. (provider: econdb);
+                Frequency of the data, default is 'quarter'. (provider: imf)
+            use_cache : bool
+                If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
+
+            Returns
+            -------
+            OBBject
+                results : List[EconomicIndicators]
+                    Serializable results.
+                provider : Optional[Literal['econdb', 'imf']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra : Dict[str, Any]
+                    Extra info.
+
+            EconomicIndicators
+            ------------------
+            date : date
+                The date of the data.
+            symbol_root : Optional[str]
+                The root symbol for the indicator (e.g. GDP).
+            symbol : Optional[str]
+                Symbol representing the entity requested in the data.
+            country : Optional[str]
+                The country represented by the data.
+            value : Optional[Union[int, float]]
+
+            unit : Optional[str]
+                The unit of the value. (provider: imf)
+            scale : Optional[str]
+                The scale of the value. (provider: imf)
+            table : Optional[str]
+                The name of the table associated with the symbol. (provider: imf)
+            level : Optional[int]
+                The indentation level of the data, relative to the table and symbol_root (provider: imf)
+            order : Optional[Union[int, float]]
+                Order of the data, relative to the table. (provider: imf)
+            reference_sector : Optional[str]
+                The reference sector for the data. (provider: imf)
+            title : Optional[str]
+                The title of the series associated with the symbol. (provider: imf)
+
+            Examples
+            --------
+            >>> from openbb import obb
+            >>> obb.economy.indicators(provider='econdb', symbol='PCOCO')
+            >>> # Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.
+            >>> obb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')
+            >>> # Use the `main` symbol to get the group of main indicators for a country.
+            >>> obb.economy.indicators(provider='econdb', symbol='main', country='eu')
+            >>> # When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'. Use 'IRFCL' to get all the data from the set of indicators.
+            >>> obb.economy.indicators(provider='imf')
+            >>> # When the provider is 'imf', complete tables are returned by using a 'preset'. Refer to the function's docstring for descriptions of each preset. When no country is supplied, the data is returned for all countries.
+            >>> obb.economy.indicators(provider='imf', symbol='gold_reserves')
+            >>> # When the provider is 'imf', multiple countries and symbols can be supplied. Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.
+            >>> obb.economy.indicators(provider='imf', symbol='RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO', country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency='annual')
+            >>> # When the provider is 'imf', additional presets return the core Financial Soundness Indicators.
+        'fsi_core' -  Core FSIs
+        'fsi_encouraged_set' - Encouraged Set of FSIs,
+        'fsi_core_underlying' - Underlying data for the Core FSIs.
+        'fsi_other' - Additional/Other FSIs that are not in the Core or Encouraged Set.
+        'fsi_all' - all FSI data for a single country.
+            >>> obb.economy.indicators(provider='imf', symbol='fsi_encouraged_set', country='us,fr,gb', start_date='2022-01-01', end_date='2023-12-31', frequency='annual')
         """  # noqa: E501
 
         return self._run(
@@ -4164,6 +4191,72 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={
+                    "item": {
+                        "fred": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "beverages",
+                                "cereals",
+                                "dairy",
+                                "fuel",
+                                "meats",
+                                "produce",
+                                "bacon",
+                                "bananas",
+                                "beans",
+                                "beef",
+                                "beer",
+                                "bread",
+                                "butter",
+                                "cheese",
+                                "chicken",
+                                "chops",
+                                "coffee",
+                                "cookies",
+                                "corn",
+                                "diesel",
+                                "eggs",
+                                "electricity",
+                                "flour",
+                                "gas",
+                                "gasoline",
+                                "grapefruit",
+                                "groud_beef",
+                                "ham",
+                                "ice_cream",
+                                "lemons",
+                                "lettuce",
+                                "malt_beverages",
+                                "milk",
+                                "oil",
+                                "orange_juice",
+                                "oranges",
+                                "potato_chips",
+                                "potatoes",
+                                "pork",
+                                "rice",
+                                "soft_drinks",
+                                "spaghetti",
+                                "steak",
+                                "strawberries",
+                                "sugar",
+                                "tomatoes",
+                                "unleaded",
+                                "usda",
+                                "vodka",
+                                "wine",
+                                "yogurt",
+                            ],
+                        }
+                    },
+                    "country": {
+                        "fred": {
+                            "multiple_items_allowed": False,
+                            "choices": ["united_states"],
+                        }
+                    },
+                },
             )
         )
 

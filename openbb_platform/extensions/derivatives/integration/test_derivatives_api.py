@@ -46,6 +46,7 @@ def headers():
         ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
         ({"provider": "tradier", "symbol": "AAPL"}),
         ({"provider": "yfinance", "symbol": "AAPL"}),
+        ({"provider": "deribit", "symbol": "BTC"}),
         (
             {
                 "provider": "tmx",
@@ -112,6 +113,15 @@ def test_derivatives_options_unusual(params, headers):
                 "expiration": "2025-12",
             }
         ),
+        (
+            {
+                "provider": "deribit",
+                "interval": "1d",
+                "symbol": "BTC,ETH",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -143,6 +153,7 @@ def test_derivatives_futures_historical(params, headers):
                 "date": "2024-06-25",
             }
         ),
+        ({"provider": "deribit", "date": None, "symbol": "BTC", "hours_ago": 12}),
     ],
 )
 @pytest.mark.integration
@@ -163,7 +174,9 @@ def test_derivatives_futures_curve(params, headers):
         ({"provider": "intrinio", "date": None, "only_traded": True}),
     ],
 )
-@pytest.mark.integration
+@pytest.mark.skip(
+    reason="This test is skipped because the download is excessively large."
+)
 def test_derivatives_options_snapshots(params, headers):
     """Test the options snapshots endpoint."""
     params = {p: v for p, v in params.items() if v}
@@ -171,5 +184,41 @@ def test_derivatives_options_snapshots(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/derivatives/options/snapshots?{query_str}"
     result = requests.get(url, headers=headers, timeout=60)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"provider": "deribit"}),
+    ],
+)
+@pytest.mark.integration
+def test_derivatives_futures_instruments(params, headers):
+    """Test the futures instruments endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/instruments?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"provider": "deribit", "symbol": "ETH-PERPETUAL"}),
+    ],
+)
+@pytest.mark.integration
+def test_derivatives_futures_info(params, headers):
+    """Test the futures info endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/info?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

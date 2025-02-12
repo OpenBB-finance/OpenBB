@@ -11,6 +11,9 @@ from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
+from openbb_sec.models.management_discussion_analysis import (
+    SecManagementDiscussionAnalysisFetcher,
+)
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.sic_search import SecSicSearchFetcher
@@ -33,6 +36,7 @@ sec_provider = Provider(
         "InsiderTrading": SecInsiderTradingFetcher,
         "InstitutionsSearch": SecInstitutionsSearchFetcher,
         "LatestFinancialReports": SecLatestFinancialReportsFetcher,
+        "ManagementDiscussionAnalysis": SecManagementDiscussionAnalysisFetcher,
         "RssLitigation": SecRssLitigationFetcher,
         "SchemaFiles": SecSchemaFilesFetcher,
         "SicSearch": SecSicSearchFetcher,

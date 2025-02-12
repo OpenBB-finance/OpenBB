@@ -329,6 +329,71 @@ class ROUTER_equity(Container):
                 },
                 standard_params={},
                 extra_params=kwargs,
+                info={
+                    "market": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "amex",
+                                "ams",
+                                "ase",
+                                "asx",
+                                "ath",
+                                "bme",
+                                "bru",
+                                "bud",
+                                "bue",
+                                "cai",
+                                "cnq",
+                                "cph",
+                                "dfm",
+                                "doh",
+                                "etf",
+                                "euronext",
+                                "hel",
+                                "hkse",
+                                "ice",
+                                "iob",
+                                "ist",
+                                "jkt",
+                                "jnb",
+                                "jpx",
+                                "kls",
+                                "koe",
+                                "ksc",
+                                "kuw",
+                                "lse",
+                                "mex",
+                                "mutual_fund",
+                                "nasdaq",
+                                "neo",
+                                "nse",
+                                "nyse",
+                                "nze",
+                                "osl",
+                                "otc",
+                                "pnk",
+                                "pra",
+                                "ris",
+                                "sao",
+                                "sau",
+                                "set",
+                                "sgo",
+                                "shh",
+                                "shz",
+                                "six",
+                                "sto",
+                                "tai",
+                                "tlv",
+                                "tsx",
+                                "two",
+                                "vie",
+                                "wse",
+                                "xetra",
+                            ],
+                        }
+                    }
+                },
             )
         )
 
@@ -588,7 +653,7 @@ class ROUTER_equity(Container):
             If true, returns only ETFs. (provider: fmp)
         is_active : Optional[bool]
             If false, returns only inactive tickers. (provider: fmp)
-        sector : Optional[Union[Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates'], Literal['basic_materials', 'communication_services', 'consumer_cyclical', 'consumer_defensive', 'energy', 'financial_services', 'healthcare', 'industrials', 'real_estate', 'technology', 'utilities']]]
+        sector : Optional[Union[Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services'], Literal['basic_materials', 'communication_services', 'consumer_cyclical', 'consumer_defensive', 'energy', 'financial_services', 'healthcare', 'industrials', 'real_estate', 'technology', 'utilities']]]
             Filter by sector. (provider: fmp, yfinance)
         industry : Optional[str]
             Filter by industry. (provider: fmp, yfinance)
@@ -704,6 +769,25 @@ class ROUTER_equity(Container):
                 extra_params=kwargs,
                 info={
                     "sector": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "consumer_cyclical",
+                                "energy",
+                                "technology",
+                                "industrials",
+                                "financial_services",
+                                "basic_materials",
+                                "communication_services",
+                                "consumer_defensive",
+                                "healthcare",
+                                "real_estate",
+                                "utilities",
+                                "industrial_goods",
+                                "financial",
+                                "services",
+                            ],
+                        },
                         "yfinance": {
                             "multiple_items_allowed": False,
                             "choices": [
@@ -719,7 +803,7 @@ class ROUTER_equity(Container):
                                 "technology",
                                 "utilities",
                             ],
-                        }
+                        },
                     },
                     "industry": {
                         "yfinance": {
@@ -937,6 +1021,67 @@ class ROUTER_equity(Container):
                         }
                     },
                     "exchange": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "amex",
+                                "ams",
+                                "ase",
+                                "asx",
+                                "ath",
+                                "bme",
+                                "bru",
+                                "bud",
+                                "bue",
+                                "cai",
+                                "cnq",
+                                "cph",
+                                "dfm",
+                                "doh",
+                                "etf",
+                                "euronext",
+                                "hel",
+                                "hkse",
+                                "ice",
+                                "iob",
+                                "ist",
+                                "jkt",
+                                "jnb",
+                                "jpx",
+                                "kls",
+                                "koe",
+                                "ksc",
+                                "kuw",
+                                "lse",
+                                "mex",
+                                "mutual_fund",
+                                "nasdaq",
+                                "neo",
+                                "nse",
+                                "nyse",
+                                "nze",
+                                "osl",
+                                "otc",
+                                "pnk",
+                                "pra",
+                                "ris",
+                                "sao",
+                                "sau",
+                                "set",
+                                "sgo",
+                                "shh",
+                                "shz",
+                                "six",
+                                "sto",
+                                "tai",
+                                "tlv",
+                                "tsx",
+                                "two",
+                                "vie",
+                                "wse",
+                                "xetra",
+                            ],
+                        },
                         "yfinance": {
                             "multiple_items_allowed": False,
                             "choices": [
@@ -1017,7 +1162,7 @@ class ROUTER_equity(Container):
                                 "vse",
                                 "wse",
                             ],
-                        }
+                        },
                     },
                 },
             )

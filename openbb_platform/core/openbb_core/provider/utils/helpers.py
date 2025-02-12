@@ -19,17 +19,16 @@ from typing import (
 )
 
 from anyio.from_thread import start_blocking_portal
-from typing_extensions import ParamSpec
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.utils.client import (
     ClientResponse,
     ClientSession,
     get_user_agent,
 )
+from typing_extensions import ParamSpec
 
 if TYPE_CHECKING:
-    from requests import Response  # pylint: disable=import-outside-toplevel
+    from requests import Response, Session  # pylint: disable=import-outside-toplevel
 
 T = TypeVar("T")
 P = ParamSpec("P")
@@ -97,6 +96,254 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
     return f"{querystring}" if querystring else ""
 
 
+def get_python_request_settings() -> dict:
+    """
+    Get the python settings from the system_settings.json file.
+
+    They are read from the "http" key in the "python_settings" key in the system_settings.json file.
+
+    The configuration applies to both the requests and aiohttp libraries.
+
+    Available settings:
+    - cafile: Path to a CA certificate file.
+    - certfile: Path to a client certificate file.
+    - keyfile: Path to a client key file.
+    - password: Password for the client key file.  # aiohttp only
+    - verify_ssl: Verify SSL certificates.
+    - fingerprint: SSL fingerprint.  # aiohttp only
+    - proxy: Proxy URL.
+    - proxy_auth: Proxy authentication.  # aiohttp only
+    - proxy_headers: Proxy headers.  # aiohttp only
+    - timeout: Request timeout.
+    - auth: Basic authentication.
+    - headers: Request headers.
+    - cookies: Dictionary of session cookies.
+
+    Any additional keys supplied will be ignored.
+    """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.service.system_service import SystemService
+
+    python_settings = SystemService().system_settings.python_settings.model_dump()
+    http_settings = python_settings.get("http", {})
+    allowed_keys = [
+        "cafile",
+        "certfile",
+        "keyfile",
+        "password",
+        "verify_ssl",
+        "fingerprint",
+        "proxy",
+        "proxy_auth",
+        "proxy_headers",
+        "timeout",
+        "auth",
+        "headers",
+        "cookies",
+    ]
+
+    return {
+        k: v for k, v in http_settings.items() if v is not None and k in allowed_keys
+    }
+
+
+def get_requests_session(**kwargs) -> "Session":
+    """Get a requests session object with the applied user settings or environment variables."""
+    # pylint: disable=import-outside-toplevel
+    import requests
+
+    # If a session is already provided, just return it.
+    if "session" in kwargs and isinstance(kwargs.get("session"), requests.Session):
+        return kwargs["session"]
+
+    # We want to add a user agent to the request, so check if there are any headers
+    # If there are headers, check if there is a user agent, if not add one.
+    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
+    python_settings = get_python_request_settings()
+    headers = kwargs.pop("headers", {})
+    headers.update(python_settings.pop("headers", {}))
+
+    if "User-Agent" not in headers:
+        headers["User-Agent"] = get_user_agent()
+
+    # Allow a custom session for caching, if desired
+    _session: requests.Session = kwargs.pop("session", None) or requests.Session()
+    _session.headers.update(headers)
+
+    if python_settings.get("verify_ssl") is False:
+        _session.verify = False
+    else:
+        ca_file = python_settings.get("cafile")
+        requests_ca_bundle = os.environ.get("REQUESTS_CA_BUNDLE")
+        cert = ca_file or requests_ca_bundle
+        if cert:
+            bundle = requests_ca_bundle if requests_ca_bundle != cert else None
+            _session.verify = combine_certificates(cert, bundle)
+
+    if certfile := python_settings.get("certfile"):
+        keyfile = python_settings.get("keyfile")
+        _session.cert = (certfile, keyfile) if keyfile else certfile
+
+    proxy = python_settings.get("proxy")
+    http_proxy = os.environ.get("HTTP_PROXY", os.environ.get("HTTPS_PROXY"))
+    https_proxy = os.environ.get("HTTPS_PROXY", os.environ.get("HTTP_PROXY"))
+
+    if http_proxy is not None and http_proxy == https_proxy:
+        https_proxy = None
+
+    if http_proxy or https_proxy or proxy:
+        proxies: dict = {}
+        if http := http_proxy or https_proxy or proxy:
+            proxies["http"] = http
+        if https := https_proxy or http_proxy or proxy:
+            proxies["https"] = https
+        _session.proxies = proxies
+
+    if cookies := python_settings.get("cookies"):
+        _session.cookies = (
+            cookies
+            if isinstance(cookies, requests.cookies.RequestsCookieJar)
+            else requests.cookies.cookiejar_from_dict(cookies)
+        )
+
+    if auth := python_settings.get("auth"):
+        _session.auth = (
+            auth if isinstance(auth, (tuple, requests.auth.AuthBase)) else tuple(auth)
+        )
+
+    if kwargs:
+        for key, value in kwargs.items():
+            try:
+                if hasattr(_session, key):
+                    if hasattr(getattr(_session, key, None), "update"):
+                        getattr(_session, key, {}).update(value)
+                    else:
+                        setattr(_session, key, value)
+            except AttributeError:
+                continue
+
+    _session.trust_env = False
+
+    return _session
+
+
+async def get_async_requests_session(**kwargs) -> ClientSession:
+    """Get an aiohttp session object with the applied user settings or environment variables."""
+    # pylint: disable=import-outside-toplevel
+    import aiohttp  # noqa
+    import atexit
+    import ssl
+
+    # If a session is already provided, just return it.
+    if "session" in kwargs and isinstance(kwargs.get("session"), ClientSession):
+        return kwargs["session"]
+    # Handle SSL settings and proxies
+    # We will accommodate the Requests environment variable for the CA bundle and HTTP Proxies, if provided.
+    # The settings file will take precedence over the environment variables.
+    python_settings = get_python_request_settings()
+    _ = kwargs.pop("raise_for_status", None)
+
+    proxy = python_settings.get("proxy")
+    http_proxy = os.environ.get("HTTP_PROXY", os.environ.get("HTTPS_PROXY"))
+    https_proxy = os.environ.get("HTTPS_PROXY", os.environ.get("HTTP_PROXY"))
+
+    # aiohttp will attempt to upgrade the proxy to https.
+    if not proxy and http_proxy is not None and http_proxy == https_proxy:
+        python_settings["proxy"] = http_proxy.replace("https:", "http:")
+
+    # If a proxy is provided, or verify_ssl is False, we don't need to handle the certificate and create SSL context.
+    # This takes priority over the cafile.
+    if python_settings.get("proxy") or python_settings.get("verify_ssl") is False:
+        python_settings["verify_ssl"] = None
+        python_settings["ssl"] = False
+    elif (
+        python_settings.get("certfile")
+        or python_settings.get("cafile")
+        or os.environ.get("REQUESTS_CA_BUNDLE")
+    ):
+        ca = python_settings.get("cafile") or os.environ.get("REQUESTS_CA_BUNDLE")
+        cert = python_settings.get("certfile")
+        key = python_settings.get("keyfile")
+        password = python_settings.get("password")
+        ssl_context = ssl.create_default_context()
+
+        if ca:
+            ssl_context.load_verify_locations(cafile=ca)
+
+        if cert:
+            ssl_context.load_cert_chain(
+                certfile=cert,
+                keyfile=key,
+                password=password,
+            )
+
+        python_settings["ssl"] = ssl_context
+
+    ssl_kwargs = {
+        k: v
+        for k, v in python_settings.items()
+        if k in ["ssl", "verify_ssl", "fingerprint"] and v is not None
+    }
+
+    # Merge the updated python_settings dict with the kwargs.
+    if python_settings:
+        kwargs.update(
+            {k: v for k, v in python_settings.items() if not k.endswith("file")}
+        )
+
+    # SSL settings get passed to the TCPConnector used by the session.
+    connector = kwargs.pop("connector", None) or (
+        aiohttp.TCPConnector(ttl_dns_cache=300, **ssl_kwargs) if ssl_kwargs else None
+    )
+
+    conn_kwargs = {"connector": connector} if connector else {}
+
+    # Add basic auth for proxies, if provided.
+    p_auth = kwargs.pop("proxy_auth", [])
+    if p_auth:
+        conn_kwargs["proxy_auth"] = aiohttp.BasicAuth(
+            *p_auth if isinstance(p_auth, (list, tuple)) else p_auth
+        )
+    # Add basic auth for server, if provided.
+    s_auth = kwargs.pop("auth", [])
+    if s_auth:
+        conn_kwargs["auth"] = aiohttp.BasicAuth(
+            *s_auth if isinstance(s_auth, (list, tuple)) else s_auth
+        )
+    # Add cookies to the session, if provided.
+    _cookies = kwargs.pop("cookies", None)
+    if _cookies:
+        if isinstance(_cookies, dict):
+            conn_kwargs["cookies"] = _cookies
+        elif isinstance(_cookies, aiohttp.CookieJar):
+            conn_kwargs["cookie_jar"] = _cookies
+
+    # Pass any remaining kwargs to the session
+    for k, v in kwargs.items():
+        if v is None:
+            continue
+        if k == "timeout":
+            conn_kwargs["timeout"] = (
+                v
+                if isinstance(v, aiohttp.ClientTimeout)
+                else aiohttp.ClientTimeout(total=v)
+            )
+        elif k not in ("ssl", "verify_ssl", "fingerprint") and k in python_settings:
+            conn_kwargs[k] = v
+
+    _session: ClientSession = ClientSession(**conn_kwargs)
+
+    def at_exit(session):
+        """Close the session at exit if it was orphaned."""
+        if not session.closed:
+            run_async(session.close)
+
+    # Register the session to close at exit
+    atexit.register(at_exit, _session)
+
+    return _session
+
+
 async def amake_request(
     url: str,
     method: Literal["GET", "POST"] = "GET",
@@ -138,7 +385,7 @@ async def amake_request(
     )
 
     with_session = kwargs.pop("with_session", "session" in kwargs)
-    session: ClientSession = kwargs.pop("session", ClientSession(trust_env=True))
+    session = kwargs.pop("session", await get_async_requests_session(**kwargs))
 
     try:
         response = await session.request(method, url, **kwargs)
@@ -175,13 +422,12 @@ async def amake_requests(
     Union[dict, List[dict]]
         Response json
     """
-    session: ClientSession = kwargs.pop("session", ClientSession(trust_env=True))
+    session = kwargs.pop("session", await get_async_requests_session(**kwargs))
     kwargs["response_callback"] = response_callback
-
     urls = urls if isinstance(urls, list) else [urls]
 
     try:
-        results = []
+        results: list = []
 
         for result in await asyncio.gather(
             *[amake_request(url, session=session, **kwargs) for url in urls],
@@ -203,6 +449,50 @@ async def amake_requests(
 
     finally:
         await session.close()
+
+
+def combine_certificates(cert: str, bundle: Optional[str] = None) -> str:
+    """Combine a certificate and a bundle into a single certificate file. Use the default bundle if none is provided."""
+    # pylint: disable=import-outside-toplevel
+    import atexit  # noqa
+    import certifi
+    import shutil
+    from pathlib import Path
+    from warnings import warn
+
+    if not Path(cert).exists():
+        raise FileNotFoundError(f"Certificate file '{cert}' not found")
+
+    if cert.split(".")[0].endswith("_combined"):
+        return cert
+
+    combined_cert = cert.split(".")[0] + "_combined." + cert.split(".")[1]
+
+    if Path(combined_cert).exists():
+        return combined_cert
+
+    if not bundle:
+        bundle = certifi.where()
+
+    try:
+        with open(combined_cert, "wb") as combined_cert_file:
+            # Write the default CA bundle to the combined certificate file
+            with open(bundle, "rb") as bundle_file:
+                shutil.copyfileobj(bundle_file, combined_cert_file)
+
+            # Write the custom CA certificate to the combined certificate file
+            with open(cert, "rb") as cert_file:
+                shutil.copyfileobj(cert_file, combined_cert_file)
+
+        # Register the combined certificate file for deletion
+        atexit.register(os.remove, combined_cert)
+
+        return combined_cert
+    except Exception as e:  # pylint: disable=broad-except
+        warn(
+            f"An error occurred while handling the certificates file -> {e.__class__.__name__}: {e}"
+        )
+        return cert
 
 
 def make_request(
@@ -229,22 +519,24 @@ def make_request(
     ValueError
         If invalid method is passed
     """
-    import requests  # pylint: disable=import-outside-toplevel
-
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
-
+    python_settings = get_python_request_settings()
     headers = kwargs.pop("headers", {})
+    headers.update(python_settings.pop("headers", {}))
     preferences = kwargs.pop("preferences", None)
+
     if preferences and "request_timeout" in preferences:
         timeout = preferences["request_timeout"] or timeout
+    elif "timeout" in python_settings:
+        timeout = python_settings["timeout"]
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
 
     # Allow a custom session for caching, if desired
-    _session = kwargs.pop("session", None) or requests
+    _session = kwargs.pop("session", get_requests_session(**kwargs))
 
     if method.upper() == "GET":
         return _session.get(

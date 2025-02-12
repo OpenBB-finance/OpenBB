@@ -1371,6 +1371,21 @@ class ROUTER_etf(Container):
                     "query": query,
                 },
                 extra_params=kwargs,
+                info={
+                    "exchange": {
+                        "fmp": {
+                            "multiple_items_allowed": False,
+                            "choices": [
+                                "AMEX",
+                                "NYSE",
+                                "NASDAQ",
+                                "ETF",
+                                "TSX",
+                                "EURONEXT",
+                            ],
+                        }
+                    }
+                },
             )
         )
 

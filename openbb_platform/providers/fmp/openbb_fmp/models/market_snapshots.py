@@ -17,7 +17,7 @@ from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsQueryParams,
 )
 from openbb_core.provider.utils.helpers import safe_fromtimestamp
-from openbb_fmp.utils.definitions import EXCHANGES
+from openbb_fmp.utils.definitions import EXCHANGES, Exchanges
 from openbb_fmp.utils.helpers import get_data
 from pydantic import Field, field_validator
 
@@ -28,7 +28,14 @@ class FMPMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote
     """
 
-    market: EXCHANGES = Field(
+    __json_schema_extra__ = {
+        "market": {
+            "multiple_items_allowed": False,
+            "choices": EXCHANGES,
+        }
+    }
+
+    market: Exchanges = Field(
         description="The market to fetch data for.", default="nasdaq"
     )
 
@@ -151,7 +158,7 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     @classmethod
     def validate_empty_strings(cls, v):
         """Validate the name."""
-        return v if v and v != " " and v != "''" else None
+        return v if v and v not in (" ", "''") else None
 
 
 class FMPMarketSnapshotsFetcher(

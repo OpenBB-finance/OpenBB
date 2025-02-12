@@ -7,6 +7,7 @@ from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
 from openbb_fmp.models.calendar_dividend import FMPCalendarDividendFetcher
 from openbb_fmp.models.calendar_earnings import FMPCalendarEarningsFetcher
+from openbb_fmp.models.calendar_events import FMPCalendarEventsFetcher
 from openbb_fmp.models.calendar_splits import FMPCalendarSplitsFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
@@ -41,6 +42,7 @@ from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFet
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forward_ebitda_estimates import FMPForwardEbitdaEstimatesFetcher
 from openbb_fmp.models.forward_eps_estimates import FMPForwardEpsEstimatesFetcher
+from openbb_fmp.models.government_trades import FMPGovernmentTradesFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
 from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
@@ -79,6 +81,7 @@ stock market information (news, currencies, and stock prices).""",
         "BalanceSheetGrowth": FMPBalanceSheetGrowthFetcher,
         "CalendarDividend": FMPCalendarDividendFetcher,
         "CalendarEarnings": FMPCalendarEarningsFetcher,
+        "CalendarEvents": FMPCalendarEventsFetcher,
         "CalendarSplits": FMPCalendarSplitsFetcher,
         "CashFlowStatement": FMPCashFlowStatementFetcher,
         "CashFlowStatementGrowth": FMPCashFlowStatementGrowthFetcher,
@@ -137,6 +140,7 @@ stock market information (news, currencies, and stock prices).""",
         "WorldNews": FMPWorldNewsFetcher,
         "EtfHistorical": FMPEquityHistoricalFetcher,
         "YieldCurve": FMPYieldCurveFetcher,
+        "GovernmentTrades": FMPGovernmentTradesFetcher,
     },
     repr_name="Financial Modeling Prep (FMP)",
     deprecated_credentials={"API_KEY_FINANCIALMODELINGPREP": "fmp_api_key"},

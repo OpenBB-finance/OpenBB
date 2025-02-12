@@ -1,27 +1,17 @@
 """IMF IRFCL Data Set Helpers."""
 
-from typing import Dict, List, Optional
+from typing import Optional
 
 
-def load_irfcl_symbols() -> Dict:
+def load_irfcl_symbols() -> dict:
     """Load IMF IRFCL symbols."""
     # pylint: disable=import-outside-toplevel
-    import json  # noqa
-    from json.decoder import JSONDecodeError
-    from pathlib import Path
-    from openbb_core.app.model.abstract.error import OpenBBError
+    from openbb_imf.utils.constants import load_symbols
 
-    try:
-        symbols_file = Path(__file__).parents[1].joinpath("assets", "imf_symbols.json")
-        with symbols_file.open(encoding="utf-8") as file:
-            symbols = json.load(file)
-    except (FileNotFoundError, JSONDecodeError) as e:
-        raise OpenBBError(f"Failed to load IMF IRFCL symbols: {e}") from e
-
-    return {k: v for k, v in symbols.items() if v["dataset"] == "IRFCL"}
+    return load_symbols("IRFCL")
 
 
-def load_country_map() -> Dict:
+def load_country_map() -> dict:
     """Load IMF IRFCL country map."""
     # pylint: disable=import-outside-toplevel
     import json  # noqa
@@ -47,7 +37,7 @@ def load_country_map() -> Dict:
     }
 
 
-def load_country_to_code_map() -> Dict:
+def load_country_to_code_map() -> dict:
     """Load a map of lowercase country name to 2-letter ISO symbol."""
     return {
         (
@@ -76,7 +66,7 @@ def validate_countries(countries) -> str:
     elif not isinstance(countries, list):
         raise OpenBBError("Invalid countries list.")
 
-    new_countries: List = []
+    new_countries: list = []
 
     if "all" in countries or "ALL" in countries:
         return "all"
@@ -118,7 +108,7 @@ def validate_symbols(symbols) -> str:
     if "IRFCL" in symbols or "all" in symbols:
         return "all"
 
-    new_symbols: List = []
+    new_symbols: list = []
 
     for symbol in symbols:
         if symbol in IRFCL_PRESET:
@@ -132,22 +122,18 @@ def validate_symbols(symbols) -> str:
 
 # We use this as a helper to allow future expansion of the supported IMF indicators.
 # Each database has its own nuances with URL construction and schemas.
-# In the future, we will check the supported symbols map and direct the call
-# to the appropriate dtatabase's function.
 
 
 # pylint: disable=too-many-branches,too-many-statements,too-many-locals
-async def _get_irfcl_data(**kwargs) -> List[Dict]:
+async def _get_irfcl_data(**kwargs) -> list[dict]:
     """Get IMF IRFCL data.
     This function is not intended to be called directly,
     but through the `ImfEconomicIndicatorsFetcher` class.
     """
     # pylint: disable=import-outside-toplevel
-    from aiohttp.client_exceptions import ContentTypeError  # noqa
-    from json.decoder import JSONDecodeError
-    from openbb_core.provider.utils.helpers import amake_request
     from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_imf.utils import constants
+    from openbb_imf.utils.helpers import get_data
     from pandas import to_datetime
     from pandas.tseries import offsets
 
@@ -167,8 +153,6 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
     if start_date:
         start_date = to_datetime(start_date)
         if frequency == "Q":
-            # offset = offsets.QuarterBegin(startingMonth=1)
-            # start_date = start_date + offset
             start_date = offsets.QuarterBegin(startingMonth=1).rollback(start_date)
         elif frequency == "A":
             start_date = offsets.YearBegin().rollback(start_date)
@@ -187,10 +171,10 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
         end_date = end_date.strftime("%Y-%m-%d")
 
     indicator = kwargs.get("symbol")
-    indicator = validate_symbols(indicator) if indicator else ""
-    indicator = "" if indicator == "all" else indicator
+    indicators = validate_symbols(indicator) if indicator else ""
+    indicators = "" if indicators == "all" else indicators
 
-    if not indicator and not countries:
+    if not indicators and not countries:
         raise OpenBBError("Country is required when returning the complete dataset.")
 
     date_range = (
@@ -199,31 +183,12 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
         else ""
     )
     base_url = "http://dataservices.imf.org/REST/SDMX_JSON.svc/"
-    key = f"CompactData/IRFCL/{frequency}.{countries}.{indicator}.{sector}"
+    key = f"CompactData/IRFCL/{frequency}.{countries}.{indicators}.{sector}"
     url = f"{base_url}{key}{date_range}"
 
-    try:
-        response = await amake_request(url, timeout=20)
-    except (JSONDecodeError, ContentTypeError) as e:
-        raise OpenBBError(
-            "Error fetching data; This might be rate-limiting. Try again later."
-        ) from e
+    series = await get_data(url)
 
-    if "ErrorDetails" in response:
-        raise OpenBBError(
-            f"{response['ErrorDetails'].get('Code')} -> {response['ErrorDetails'].get('Message')}"  # type: ignore
-        )
-
-    series = response.get("CompactData", {}).get("DataSet", {}).pop("Series", {})  # type: ignore
-
-    if not series:
-        raise OpenBBError(f"No time series data found -> {response}")
-
-    # If there is only one series, they ruturn a dict instead of a list.
-    if series and isinstance(series, dict):
-        series = [series]
-
-    data: List = []
+    data: list = []
     all_symbols = load_irfcl_symbols()
     country_map_dict = {
         v: k.replace("_", " ").title().replace("Ecb", "ECB")
@@ -248,13 +213,20 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
         _level: Optional[str] = None
         _table: Optional[str] = None
         _title: Optional[str] = None
+        _unit: Optional[str] = None
 
-        if _symbol in all_symbols:
-            _table = all_symbols.get(_symbol, {}).get("table")
-            _parent = all_symbols.get(_symbol, {}).get("parent", "")
-            _order = all_symbols.get(_symbol, {}).get("order", "")
-            _level = all_symbols.get(_symbol, {}).get("level", "")
-            _title = all_symbols.get(_symbol, {}).get("title", "")
+        if _symbol not in all_symbols:
+            continue
+
+        _table = all_symbols.get(_symbol, {}).get("table")
+        _parent = all_symbols.get(_symbol, {}).get("parent", "")
+        _order = all_symbols.get(_symbol, {}).get("order", "")
+        _level = all_symbols.get(_symbol, {}).get("level", "")
+        _title = all_symbols.get(_symbol, {}).get("title", "").replace(", ", " - ")
+        _unit = all_symbols.get(_symbol, {}).get("unit", "")
+
+        if _title:
+            _title = " - ".join(_title.split(", ")[:-1])
 
         _data = s.pop("Obs", [])
 
@@ -264,6 +236,7 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
         for d in _data:
             _date = d.pop("@TIME_PERIOD", None)
             val = d.pop("@OBS_VALUE", None)
+            _ = d.pop("@OBS_STATUS", None)
 
             if not val:
                 continue
@@ -294,6 +267,7 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
                     ),
                     "title": _title,
                     "value": float(val) if val else None,
+                    "unit": _unit,
                     "scale": meta.get("unit_mult"),
                 }.items()
                 if v
@@ -301,11 +275,9 @@ async def _get_irfcl_data(**kwargs) -> List[Dict]:
 
             if vals.get("value") and vals.get("date"):
                 d.update(vals)
-
-        if _data:
-            data.extend([d for d in _data if d])
+                data.append(d)
 
     if not data:
-        raise OpenBBError("No data found.")
+        raise OpenBBError(f"No data found for '{indicator}' in '{countries}'.")
 
     return data

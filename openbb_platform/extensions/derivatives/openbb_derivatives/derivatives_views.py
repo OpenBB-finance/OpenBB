@@ -17,6 +17,8 @@ class DerivativesViews:
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_historical import price_historical
 
+        kwargs.update({"candles": False, "same_axis": False})
+
         return price_historical(**kwargs)
 
     @staticmethod
@@ -76,7 +78,7 @@ class DerivativesViews:
         from openbb_core.provider.abstract.data import Data
         from pandas import DataFrame, to_datetime
 
-        data = kwargs.get("data", None)
+        data = kwargs.get("data")
         symbol = kwargs.get("standard_params", {}).get("symbol", "")
         df: DataFrame = DataFrame()
         if data:
@@ -107,7 +109,8 @@ class DerivativesViews:
 
         provider = kwargs.get("provider", "")
 
-        df["expiration"] = df["expiration"].apply(to_datetime).dt.strftime("%b-%Y")
+        if provider != "deribit":
+            df["expiration"] = df["expiration"].apply(to_datetime).dt.strftime("%b-%Y")
 
         if (
             provider == "cboe"
@@ -163,6 +166,15 @@ class DerivativesViews:
             if "date" in df.columns
             else ["Current"]
         )
+
+        if provider == "deribit" and "hours_ago" in df.columns:
+            dates = [
+                str(d) + " Hours Ago" if d > 0 else "Current"
+                for d in df["hours_ago"].unique().tolist()
+            ]
+            df.loc[:, "date"] = df["hours_ago"].apply(
+                lambda x: str(x) + " Hours Ago" if x > 0 else "Current"
+            )
         figure, color_count = create_fig(figure, df, dates, color_count)
 
         # Set the title for the chart
@@ -176,7 +188,7 @@ class DerivativesViews:
             )
             if len(dates) == 1 and dates[0] != "Current":
                 title = f"{title} for {dates[0]}"
-        elif provider == "yfinance":
+        else:
             title = f"{symbol.upper()} Futures Curve"
 
         # Use the supplied title, if any.

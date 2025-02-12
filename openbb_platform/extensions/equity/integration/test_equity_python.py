@@ -2017,3 +2017,83 @@ def test_equity_discovery_latest_financial_reports(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "chamber": "all",
+                "symbol": "AAPL",
+                "provider": "fmp",
+                "limit": None,
+            }
+        ),
+        (
+            {
+                "symbol": None,
+                "chamber": "all",
+                "limit": 300,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_ownership_government_trades(params, obb):
+    """Test the equity ownership government trades endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.ownership.government_trades(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL",
+                "calendar_year": 2024,
+                "calendar_period": "Q2",
+                "wrap_length": 120,
+                "include_tables": False,
+                "use_cache": True,
+                "raw_html": False,
+                "strategy": "trafilatura",
+                "provider": "sec",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_management_discussion_analysis(params, obb):
+    """Test the equity fundamental management discussion analysis endpoint."""
+    result = obb.equity.fundamental.management_discussion_analysis(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results.content) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2024-01-07",
+                "end_date": "2024-01-10",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_calendar_events(params, obb):
+    """Test the equity calendar events endpoint."""
+    result = obb.equity.calendar_events(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

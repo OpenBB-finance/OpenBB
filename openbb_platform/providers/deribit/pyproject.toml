@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "openbb-deribit"
+version = "1.0.0"
+description = "Deribit is a crypto-native derivatives exchange."
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_deribit" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openbb-core = "^1.4.0"
+async-lru = "^2.0.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+deribit = "openbb_deribit:deribit_provider"
