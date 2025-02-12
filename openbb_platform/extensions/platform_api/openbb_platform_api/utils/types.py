@@ -11,7 +11,9 @@ class OptionsEndpoint:
 
         class DynamicOptions:
             @classmethod
-            def __get_pydantic_core_schema__(cls, _source_type: Any, _handler: GetCoreSchemaHandler) -> CoreSchema:
+            def __get_pydantic_core_schema__(
+                cls, _source_type: Any, _handler: GetCoreSchemaHandler
+            ) -> CoreSchema:
                 return core_schema.literal_schema(values)
 
             @classmethod
