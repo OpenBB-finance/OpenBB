@@ -54,8 +54,8 @@ if _app:
 
 
 EDITABLE = kwargs.pop("editable", None) is True
-WIDGETS_PATH = kwargs.pop("widgets_path", None)
-TEMPLATES_PATH = kwargs.pop("templates_path", None)
+WIDGETS_PATH = kwargs.pop("widgets-path", None)
+TEMPLATES_PATH = kwargs.pop("templates-path", None)
 DEFAULT_TEMPLATES_PATH = (
     Path(__file__)
     .absolute()
@@ -115,9 +115,8 @@ TEMPLATES_PATH = (
 async def get_root():
     """Root response and welcome message."""
     return JSONResponse(
-        content="Welcome to the OpenBB Platform API."
-        + " Learn how to connect to Pro in https://docs.openbb.co/pro/custom-backend,"
-        + " and see the API documentation here: /docs, or, /redoc"
+        content="Welcome to the OpenBB Platform API and Custom Workspace Backend."
+        + " Learn how to connect to the OpenBB Workspace here: https://docs.openbb.co/pro/custom-backend,"
     )
 
 
@@ -242,7 +241,7 @@ def launch_api(**_kwargs):  # noqa PRL0912
         logger.info(
             "\nTo access this data from OpenBB Workspace, use the link displayed after the application startup completes."
             "\nChrome is the recommended browser. Other browsers may conflict or require additional configuration."
-            "\nDocumentation is available at /docs."
+            f"\n{f'Documentation is available at {app.docs_url}.' if app.docs_url else ''}"
         )
         uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
     finally:
