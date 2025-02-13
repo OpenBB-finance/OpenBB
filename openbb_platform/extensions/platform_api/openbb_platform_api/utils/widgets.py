@@ -304,7 +304,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                     else route[1:] if route[0] == "/" else route
                 ),
                 "runButton": False,
-                "gridData": {"w": 45, "h": 15},
+                "gridData": {"w": 40, "h": 15},
                 "data": {
                     "dataKey": data_key,
                     "table": {
@@ -338,6 +338,33 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                     widget_config_dict,
                 )
 
+            if widget_config.get("type") == "metric":
+                widget_config["gridData"]["w"] = (
+                    4
+                    if widget_config["gridData"].get("w") == 40
+                    and "gridData" not in widget_config_dict
+                    else widget_config["gridData"].get("w")
+                )
+                widget_config["gridData"]["h"] = (
+                    5
+                    if widget_config["gridData"].get("h") == 15
+                    and "gridData" not in widget_config_dict
+                    else widget_config["gridData"].get("h")
+                )
+            elif widget_config.get("type") == "pdf":
+                widget_config["gridData"]["w"] = (
+                    20
+                    if widget_config["gridData"].get("w") == 40
+                    and "gridData" not in widget_config_dict
+                    else widget_config["gridData"].get("w")
+                )
+                widget_config["gridData"]["h"] = (
+                    25
+                    if widget_config["gridData"].get("h") == 15
+                    and "gridData" not in widget_config_dict
+                    else widget_config["gridData"].get("h")
+                )
+
             # Add the widget configuration to the widgets.json
             if widget_config["widgetId"] not in widget_exclude_filter:
                 widgets_json[widget_config["widgetId"]] = widget_config
@@ -362,7 +389,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 )
                 widget_config_chart["searchCategory"] = "chart"
                 widget_config_chart["gridData"]["h"] = 20
-                widget_config_chart["gridData"]["w"] = 50
+                widget_config_chart["gridData"]["w"] = 40
                 widget_config_chart["defaultViz"] = "chart"
                 widget_config_chart["data"]["dataKey"] = (
                     "chart.content" if data_key else ""
