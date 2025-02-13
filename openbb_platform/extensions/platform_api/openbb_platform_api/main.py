@@ -238,11 +238,12 @@ def launch_api(**_kwargs):  # noqa PRL0912
 
     try:
         package_name = __package__
-        logger.info(
+        _msg = (
             "\nTo access this data from OpenBB Workspace, use the link displayed after the application startup completes."
             "\nChrome is the recommended browser. Other browsers may conflict or require additional configuration."
             f"\n{f'Documentation is available at {app.docs_url}.' if app.docs_url else ''}"
         )
+        logger.info(_msg)
         uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
     finally:
         # If user_settings_copy.json exists, then restore the original settings.
