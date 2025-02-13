@@ -286,7 +286,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
 
     if not str(app_path).startswith("/"):
         cwd = Path.cwd()
-        app_path = cwd.joinpath(app_path).resolve()
+        app_path = str(cwd.joinpath(app_path).resolve())
 
     if not Path(app_path).exists():
         raise FileNotFoundError(f"Error: The app file '{app_path}' does not exist")
@@ -305,7 +305,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
         )
 
     if (
-        isinstance(getattr(module, name, None), Callable)
+        getattr(module, name, None) is Callable
         and not isinstance(getattr(module, name, None), FastAPI)
         and not factory
     ):
@@ -315,15 +315,15 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
         factory = True
 
     if factory:
-        factory = getattr(module, name)
-        return_annotation = getattr(factory, "__annotations__", {}).get("return")
+        factory_func = getattr(module, name)
+        return_annotation = getattr(factory_func, "__annotations__", {}).get("return")
 
         if not return_annotation or return_annotation is not FastAPI:
             raise TypeError(
                 f"Factory function must return an instance of FastAPI, got {return_annotation} instead."
             )
 
-        app = factory()
+        app = factory_func()
     else:
         app = getattr(module, name)
 
