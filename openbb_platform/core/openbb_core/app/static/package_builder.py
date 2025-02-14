@@ -334,11 +334,11 @@ class ImportDefinition:
             hint_type_list.append(parameter.annotation)
 
         if return_type:
-            if not no_validate and not issubclass(return_type, OBBject):
-                raise ValueError("Return type must be an OBBject.")
             hint_type = (
                 get_args(get_type_hints(return_type)["results"])[0]
-                if "OBBject" in return_type.__class__.__name__
+                if hasattr(return_type, "__class__")
+                and hasattr(return_type.__class__, "__name__")
+                and "OBBject" in return_type.__class__.__name__
                 else return_type
             )
             hint_type_list.append(hint_type)
@@ -1690,7 +1690,7 @@ class ReferenceGenerator:
             # Adjust regex to correctly capture content inside brackets, including nested brackets
             content_inside_brackets = re.search(
                 r"OBBject\[\s*((?:[^\[\]]|\[[^\[\]]*\])*)\s*\]", return_type
-            )
+            ) or re.search(r"list\[\s*((?:[^\[\]]|\[[^\[\]]*\])*)\s*\]", return_type)
             return_type = (  # type: ignore
                 content_inside_brackets.group(1)
                 if content_inside_brackets is not None
@@ -1833,6 +1833,10 @@ class ReferenceGenerator:
                 # may not contain the "Parameters" and "Returns" sections. Hence, the
                 # endpoint function docstring is used instead.
                 docstring = getattr(route_func, "__doc__", "")
+
+                if not docstring:
+                    continue
+
                 description = docstring.split("Parameters")[0].strip()
                 # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
@@ -1847,9 +1851,27 @@ class ReferenceGenerator:
                         "description": "Unvalidated results object.",
                     }
                 else:
-                    reference[path]["returns"]["OBBject"] = (
-                        cls._get_post_method_returns_info(docstring)
-                    )
+                    returns_info = cls._get_post_method_returns_info(docstring)
+                    if returns_info and "OBBject" in returns_info[0]["type"]:
+                        reference[path]["returns"]["OBBject"] = returns_info
+                    else:
+                        r_info = returns_info[0] if returns_info else {}
+                        r_type = r_info.pop("type", "Any")
+                        r_info["name"] = None
+                        if len(returns_info) == 2:
+                            r_info = returns_info[1]
+                        elif len(returns_info) == 1:
+                            r_info["type"] = "Any"
+                        if r_type:
+                            if "[" in r_type:
+                                c_types = r_type.split("[")[1].split("]")[0]
+                                r_type = r_type.split("[")[0]
+                                r_info["type"] = (
+                                    "[" + c_types + "]" if c_types else "Any"
+                                )
+                            reference[path]["returns"][r_type] = r_info
+                        else:
+                            reference[path]["returns"] = returns_info
 
         return reference
 
