@@ -525,12 +525,6 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             "description", prop.get("title", key.title())
         )
         column_def["cellDataType"] = cell_data_type
-        column_def["chartDataType"] = (
-            "series"
-            if cell_data_type in ["number", "integer", "float"]
-            and column_def.get("pinned") != "left"
-            else "category"
-        )
         measurement = prop.get("x-unit_measurement")
 
         if measurement == "percent":
