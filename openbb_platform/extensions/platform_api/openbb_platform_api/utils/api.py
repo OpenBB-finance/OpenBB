@@ -347,6 +347,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
 def parse_args():
     """Parse the launch script command line arguments."""
     args = sys.argv[1:].copy()
+    cwd = Path.cwd()
     _kwargs: dict = {}
     for i, arg in enumerate(args):
         if arg == "--help":
@@ -373,6 +374,9 @@ def parse_args():
     if _kwargs.get("copilots-path"):
         _copilots_path = _kwargs.pop("copilots-path", None)
 
+        if not str(_copilots_path).startswith("/"):
+            _copilots_path = str(cwd.joinpath(_copilots_path).resolve())
+
         if not Path(_copilots_path).exists():
             raise FileNotFoundError(
                 f"Error: The copilots file '{_copilots_path}' does not exist"
@@ -398,7 +402,17 @@ def parse_args():
 
         _kwargs["app"] = import_app(_app_path, _name, _factory)
 
-    if _kwargs.get("widgets-path"):
+    if (widget_path := _kwargs.get("widgets-path")) and not str(widget_path).startswith(
+        "/"
+    ):
+        widget_path = str(cwd.joinpath(widget_path).resolve())
+        _kwargs["widgets-path"] = widget_path
         _kwargs["editable"] = True
+
+    if (template_path := _kwargs.get("templates-path")) and not str(
+        template_path
+    ).startswith("/"):
+        template_path = str(cwd.joinpath(template_path).resolve())
+        _kwargs["templates-path"] = template_path
 
     return _kwargs
