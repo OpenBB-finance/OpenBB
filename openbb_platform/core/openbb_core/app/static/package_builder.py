@@ -1857,7 +1857,7 @@ class ReferenceGenerator:
                     else:
                         r_info = returns_info[0] if returns_info else {}
                         r_type = r_info.pop("type", "Any")
-                        r_info["name"] = None
+                        r_info["name"] = None  # type: ignore
                         if len(returns_info) == 2:
                             r_info = returns_info[1]
                         elif len(returns_info) == 1:
