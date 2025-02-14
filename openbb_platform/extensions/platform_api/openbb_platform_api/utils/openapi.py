@@ -406,7 +406,11 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: Optional[str] 
 
 
 def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-branches
-    openapi_json, operation_id, provider, route: Optional[str] = None
+    openapi_json,
+    operation_id,
+    provider,
+    route: Optional[str] = None,
+    get_widget_config: bool = False,
 ):
     """Convert data schema to column definitions for the widget."""
     # Initialize an empty list to hold the schema references
@@ -458,6 +462,9 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             ) or (schema.get("description", "").lower().startswith("us government")):
                 target_schema = schema
                 break
+
+    if get_widget_config:
+        return target_schema.get("x-widget_config", {})
 
     keys = list(target_schema.get("properties", {}))
 

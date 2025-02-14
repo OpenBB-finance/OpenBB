@@ -314,6 +314,11 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 "source": [provider_name],
             }
 
+            if data_config := data_schema_to_columns_defs(
+                openapi, widget_id, provider, route, True
+            ):
+                widget_config["data"].update(data_config)
+
             if subcat:
                 subcat = " ".join(
                     [
