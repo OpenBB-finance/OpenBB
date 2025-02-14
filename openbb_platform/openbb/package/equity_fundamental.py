@@ -2657,6 +2657,8 @@ class ROUTER_equity_fundamental(Container):
             Value of shares exercised. (provider: yfinance)
         unexercised_value : Optional[int]
             Value of shares not exercised. (provider: yfinance)
+        fiscal_year : Optional[int]
+            Fiscal year of the pay. (provider: yfinance)
 
         Examples
         --------
@@ -2795,7 +2797,7 @@ class ROUTER_equity_fundamental(Container):
             ),
         ] = None,
         calendar_period: Annotated[
-            Optional[int],
+            Optional[Literal["Q1", "Q2", "Q3", "Q4"]],
             OpenBBField(
                 description="Calendar period of the report. By default, is the most recent report available for the symbol. If no calendar year and no calendar period are provided, it will return the most recent report."
             ),
@@ -2816,10 +2818,12 @@ class ROUTER_equity_fundamental(Container):
             Symbol to get data for.
         calendar_year : Optional[int]
             Calendar year of the report. By default, is the current year. If the calendar period is not provided, but the calendar year is, it will return the annual report.
-        calendar_period : Optional[int]
+        calendar_period : Optional[Literal['Q1', 'Q2', 'Q3', 'Q4']]
             Calendar period of the report. By default, is the most recent report available for the symbol. If no calendar year and no calendar period are provided, it will return the most recent report.
         provider : Optional[Literal['sec']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
+        strategy : Literal['inscriptis', 'trafilatura']
+            The strategy to use for extracting the text. Default is 'trafilatura'. (provider: sec)
         wrap_length : int
             The length to wrap the extracted text, excluding tables. Default is 120. (provider: sec)
         include_tables : bool
@@ -2863,11 +2867,11 @@ class ROUTER_equity_fundamental(Container):
         >>> from openbb import obb
         >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')
         >>> # Get the Management Discussion & Analysis section by calendar year and period.
-        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec')
+        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec')
         >>> # Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.
-        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', include_tables=True)
+        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', include_tables=True)
         >>> # Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.
-        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period=4, provider='sec', raw_html=True)
+        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', raw_html=True)
         """  # noqa: E501
 
         return self._run(

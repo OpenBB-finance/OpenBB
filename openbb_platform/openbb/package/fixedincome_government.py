@@ -2,22 +2,19 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
-from warnings import simplefilter, warn
 
-from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated, deprecated
+from typing_extensions import Annotated
 
 
 class ROUTER_fixedincome_government(Container):
     """/fixedincome/government
     tips_yields
     treasury_rates
-    us_yield_curve
     yield_curve
     """
 
@@ -239,95 +236,6 @@ class ROUTER_fixedincome_government(Container):
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
-                },
-                extra_params=kwargs,
-            )
-        )
-
-    @exception_handler
-    @validate
-    @deprecated(
-        "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4.",
-        category=OpenBBDeprecationWarning,
-    )
-    def us_yield_curve(
-        self,
-        date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(
-                description="A specific date to get data for. Defaults to the most recent FRED entry."
-            ),
-        ] = None,
-        inflation_adjusted: Annotated[
-            Optional[bool], OpenBBField(description="Get inflation adjusted rates.")
-        ] = False,
-        provider: Annotated[
-            Optional[Literal["fred"]],
-            OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
-            ),
-        ] = None,
-        **kwargs
-    ) -> OBBject:
-        """US Yield Curve. Get United States yield curve.
-
-        Parameters
-        ----------
-        date : Union[date, None, str]
-            A specific date to get data for. Defaults to the most recent FRED entry.
-        inflation_adjusted : Optional[bool]
-            Get inflation adjusted rates.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-
-        Returns
-        -------
-        OBBject
-            results : List[USYieldCurve]
-                Serializable results.
-            provider : Optional[Literal['fred']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
-
-        USYieldCurve
-        ------------
-        maturity : float
-            Maturity of the treasury rate in years.
-        rate : float
-            Associated rate given in decimal form (0.05 is 5%)
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.fixedincome.government.us_yield_curve(provider='fred')
-        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True, provider='fred')
-        """  # noqa: E501
-
-        simplefilter("always", DeprecationWarning)
-        warn(
-            "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4.",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
-
-        return self._run(
-            "/fixedincome/government/us_yield_curve",
-            **filter_inputs(
-                provider_choices={
-                    "provider": self._get_provider(
-                        provider,
-                        "fixedincome.government.us_yield_curve",
-                        ("fred",),
-                    )
-                },
-                standard_params={
-                    "date": date,
-                    "inflation_adjusted": inflation_adjusted,
                 },
                 extra_params=kwargs,
             )

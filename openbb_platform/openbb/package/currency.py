@@ -150,7 +150,7 @@ class ROUTER_currency(Container):
             ),
         ] = "indirect",
         counter_currencies: Annotated[
-            Union[List[str], str, None],
+            Union[str, List[str], None],
             OpenBBField(
                 description="An optional list of counter currency symbols to filter for. None returns all."
             ),
@@ -171,7 +171,7 @@ class ROUTER_currency(Container):
             The base currency symbol. Multiple comma separated items allowed for provider(s): fmp, polygon.
         quote_type : Literal['direct', 'indirect']
             Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.
-        counter_currencies : Union[List[str], str, None]
+        counter_currencies : Union[str, List[str], None]
             An optional list of counter currency symbols to filter for. None returns all.
         provider : Optional[Literal['fmp', 'polygon']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon.
