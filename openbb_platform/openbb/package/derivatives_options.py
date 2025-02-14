@@ -100,15 +100,17 @@ class ROUTER_derivatives_options(Container):
             Strike price of the contract.
         option_type : List[str]
             Call or Put.
-        open_interest : List[Optional[int]]
+        contract_size : List[Union[int, float]]
+            Number of underlying units per contract.
+        open_interest : List[Union[int, float]]
             Open interest on the contract.
-        volume : List[Optional[int]]
+        volume : List[Union[int, float]]
             The trading volume.
         theoretical_price : List[Optional[float]]
             Theoretical value of the option.
         last_trade_price : List[Optional[float]]
             Last trade price of the option.
-        last_trade_size : List[Optional[int]]
+        last_trade_size : List[Union[int, float]]
             Last trade size of the option.
         last_trade_time : List[Optional[datetime]]
             The timestamp of the last trade.
@@ -116,7 +118,7 @@ class ROUTER_derivatives_options(Container):
             Whether the last tick was up or down in price.
         bid : List[Optional[float]]
             Current bid price for the option.
-        bid_size : List[Optional[int]]
+        bid_size : List[Union[int, float]]
             Bid size for the option.
         bid_time : List[Optional[datetime]]
             The timestamp of the bid price.
@@ -124,7 +126,7 @@ class ROUTER_derivatives_options(Container):
             The exchange of the bid price.
         ask : List[Optional[float]]
             Current ask price for the option.
-        ask_size : List[Optional[int]]
+        ask_size : List[Union[int, float]]
             Ask size for the option.
         ask_time : List[Optional[datetime]]
             The timestamp of the ask price.
@@ -152,19 +154,19 @@ class ROUTER_derivatives_options(Container):
             The lowest ask price for the option that day.
         close : List[Optional[float]]
             The close price.
-        close_size : List[Optional[int]]
+        close_size : List[Union[int, float]]
             The closing trade size for the option that day.
         close_time : List[Optional[datetime]]
             The time of the closing price for the option that day.
         close_bid : List[Optional[float]]
             The closing bid price for the option that day.
-        close_bid_size : List[Optional[int]]
+        close_bid_size : List[Union[int, float]]
             The closing bid size for the option that day.
         close_bid_time : List[Optional[datetime]]
             The time of the bid closing price for the option that day.
         close_ask : List[Optional[float]]
             The closing ask price for the option that day.
-        close_ask_size : List[Optional[int]]
+        close_ask_size : List[Union[int, float]]
             The closing ask size for the option that day.
         close_ask_time : List[Optional[datetime]]
             The time of the ask closing price for the option that day.
