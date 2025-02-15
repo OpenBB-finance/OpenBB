@@ -1,6 +1,6 @@
 """Technical Analysis Helpers."""
 
-# pylint: disable=too-many-arguments, too-many-locals
+# pylint: disable=too-many-arguments,too-many-locals,too-many-positional-arguments
 
 from typing import TYPE_CHECKING, Any, List, Literal, Optional, Tuple, Union
 from warnings import warn
