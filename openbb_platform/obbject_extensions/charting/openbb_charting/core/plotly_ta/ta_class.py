@@ -532,7 +532,8 @@ class PlotlyTA(PltTA):
                 warnings.warn(f"[bold red]Error plotting {indicator}: {e}[/]")
                 continue
 
-        figure.update(fig_new)
+        # figure.update(fig_new, overwrite=True)
+        figure.show()
         for row in range(0, subplot_row + 1):
             figure.update_yaxes(
                 row=row,

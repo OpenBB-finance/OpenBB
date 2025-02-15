@@ -456,7 +456,7 @@ def calculate_cones(
         median.append(estimator.median())  # type: ignore
         top_q.append(estimator.quantile(quantiles[1]))  # type: ignore
         bottom_q.append(estimator.quantile(quantiles[0]))  # type: ignore
-        realized.append(estimator[-1])  # type: ignore
+        realized.append(estimator.iloc[-1])  # type: ignore
 
         allowed_windows.append(window)
 

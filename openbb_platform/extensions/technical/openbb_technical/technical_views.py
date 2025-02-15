@@ -386,7 +386,7 @@ class TechnicalViews:
                 mirror=True,
                 ticklen=0,
                 tickfont=dict(size=14),
-                titlefont=dict(size=16),
+                title=dict(font=dict(size=16)),
             ),
             xaxis=dict(
                 showgrid=True,
@@ -396,15 +396,16 @@ class TechnicalViews:
                 mirror=True,
                 ticklen=0,
                 tickfont=dict(size=14),
-                titlefont=dict(size=16),
+                title=dict(font=dict(size=16)),
                 hoverformat="",
             ),
             hoverlabel=dict(
                 font_size=12,
             ),
-            hovermode="x",
-            hoverdistance=50,
+            # hovermode="x",
+            # hoverdistance=50,
         )
+
         if kwargs.get("title") is not None:
             figure.set_title(str(kwargs.get("title")))
         content = figure.to_plotly_json()
