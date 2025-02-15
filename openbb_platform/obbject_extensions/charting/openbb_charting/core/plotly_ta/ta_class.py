@@ -1,6 +1,6 @@
 """Technical Analysis class for Plotly."""
 
-# pylint: disable=R0902,R0916,R0912  # type: ignore[index, assignment]
+# pylint: disable=R0902,R0916,R0912,R0917  # type: ignore[index, assignment]
 
 import importlib
 import inspect

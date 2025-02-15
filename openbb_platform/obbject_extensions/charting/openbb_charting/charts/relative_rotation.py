@@ -1,5 +1,7 @@
 """Relative Rotation Chart Helpers."""
 
+# pylint: disable=R0917
+
 from datetime import date as dateType
 from typing import TYPE_CHECKING, Literal, Optional
 from warnings import warn

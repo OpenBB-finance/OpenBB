@@ -1,6 +1,6 @@
 """Technical Analysis Router."""
 
-# pylint: disable=too-many-lines,unused-import,too-many-arguments
+# pylint: disable=too-many-lines,unused-import,too-many-arguments,too-many-positional-arguments
 
 from typing import Any, Dict, List, Literal, Optional
 
