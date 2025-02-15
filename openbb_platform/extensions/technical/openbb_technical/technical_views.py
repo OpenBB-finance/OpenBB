@@ -402,8 +402,6 @@ class TechnicalViews:
             hoverlabel=dict(
                 font_size=12,
             ),
-            # hovermode="x",
-            # hoverdistance=50,
         )
 
         if kwargs.get("title") is not None:
