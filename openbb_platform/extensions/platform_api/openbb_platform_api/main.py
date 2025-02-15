@@ -52,10 +52,11 @@ _app = kwargs.pop("app", None)
 if _app:
     app = _app
 
-
-EDITABLE = kwargs.pop("editable", None) is True
 WIDGETS_PATH = kwargs.pop("widgets-path", None)
 TEMPLATES_PATH = kwargs.pop("templates-path", None)
+EDITABLE = kwargs.pop("editable", None) is True or WIDGETS_PATH is not None
+
+
 DEFAULT_TEMPLATES_PATH = (
     Path(__file__)
     .absolute()
@@ -92,7 +93,6 @@ openapi = app.openapi()
 # We don't need the current settings,
 # but we need to call the function to update, login, and/or identify the settings file.
 current_settings = get_user_settings(login, CURRENT_USER_SETTINGS, USER_SETTINGS_COPY)
-
 widgets_json = get_widgets_json(
     build, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH
 )

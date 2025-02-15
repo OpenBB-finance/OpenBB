@@ -407,12 +407,14 @@ def parse_args():
     ):
         widget_path = str(cwd.joinpath(widget_path).resolve())
         _kwargs["widgets-path"] = widget_path
-        _kwargs["editable"] = True
 
     if (template_path := _kwargs.get("templates-path")) and not str(
         template_path
     ).startswith("/"):
         template_path = str(cwd.joinpath(template_path).resolve())
         _kwargs["templates-path"] = template_path
+
+    if _kwargs.get("widgets-path") and not _kwargs.get("editable"):
+        _kwargs["editable"] = True
 
     return _kwargs
