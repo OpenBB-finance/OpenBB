@@ -3226,7 +3226,15 @@
         "data": {
             "dataKey": "results",
             "table": {
-                "showAll": true
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "cik",
+                        "headerName": "CIK",
+                        "headerTooltip": "Central Index Key (CIK) for the requested entity.",
+                        "cellDataType": "text"
+                    }
+                ]
             }
         },
         "source": [
@@ -3347,7 +3355,16 @@
         "data": {
             "dataKey": "results",
             "table": {
-                "showAll": true
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "files",
+                        "formatterFn": null,
+                        "headerName": "Files",
+                        "headerTooltip": "Dictionary of URLs to SEC Schema Files",
+                        "cellDataType": "text"
+                    }
+                ]
             }
         },
         "source": [
@@ -3396,7 +3413,17 @@
         "data": {
             "dataKey": "results",
             "table": {
-                "showAll": true
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "symbol",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Symbol",
+                        "headerTooltip": "Symbol representing the entity requested in the data.",
+                        "cellDataType": "text"
+                    }
+                ]
             }
         },
         "source": [
