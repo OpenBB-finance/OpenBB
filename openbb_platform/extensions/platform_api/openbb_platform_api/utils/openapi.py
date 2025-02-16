@@ -434,6 +434,8 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             # When there's only one model there is no oneOf
             elif "items" in item and "$ref" in item["items"]:
                 schema_refs.append(item["items"]["$ref"].split("/")[-1])
+            elif "$ref" in item:
+                schema_refs.append(item["$ref"].split("/")[-1])
 
     # Fetch the schemas using the extracted references
     schemas = [
