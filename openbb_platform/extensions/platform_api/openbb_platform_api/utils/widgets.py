@@ -144,7 +144,9 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
             provider_value_widget_config[provider_value]
         ):
             _item = deep_merge_configs(
-                _item, provider_value_widget_config[provider_value]
+                _item,
+                provider_value_widget_config[provider_value],
+                ["paramName", "value"],
             )
 
         modified_query_schema.append(_item)
