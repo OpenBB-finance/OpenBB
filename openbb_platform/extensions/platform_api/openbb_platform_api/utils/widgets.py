@@ -93,6 +93,7 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
         # copy the item
         _item = deepcopy(item)
         provider_value_options: dict = {}
+        provider_value_widget_config: dict = {}
 
         # Exclude provider parameter. Those will be added last.
         if "parameter_name" in _item and _item["parameter_name"] == "provider":
@@ -132,6 +133,19 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
             _item.pop("available_providers")
 
         _item["paramName"] = _item.pop("parameter_name")
+
+        if _item["paramName"] in ["url", "cik", "lei", "cusip", "isin", "sedol"]:
+            _item["label"] = _item["paramName"].upper()
+
+        if "x-widget_config" in _item:
+            provider_value_widget_config = _item.pop("x-widget_config")
+
+        if provider_value in provider_value_widget_config and bool(
+            provider_value_widget_config[provider_value]
+        ):
+            _item = deep_merge_configs(
+                _item, provider_value_widget_config[provider_value]
+            )
 
         modified_query_schema.append(_item)
 
@@ -250,7 +264,6 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                     for word in name.split()
                 ]
             )
-
             modified_query_schema = modify_query_schema(query_schema, provider)
 
             provider_map = {

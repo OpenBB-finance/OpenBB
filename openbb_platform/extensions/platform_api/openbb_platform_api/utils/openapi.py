@@ -136,6 +136,7 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
         Updated parameter dictionary with options.
     """
     choices: dict[str, list[dict[str, str]]] = {}
+    widget_configs: dict[str, dict] = {}
     multiple_items_allowed_dict: dict = {}
     is_provider_specific = False
     available_providers: set = set()
@@ -150,6 +151,7 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
                 available_providers.add(provider)
             if provider in p_schema:
                 provider_choices = p_schema[provider].get("choices", [])
+                widget_configs[provider] = p_schema[provider].get("x-widget_config", {})
             elif len(providers) == 1 and "enum" in p_schema:
                 provider_choices = p_schema["enum"]
                 p_schema.pop("enum")
@@ -220,11 +222,18 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
             else:
                 choices[provider] = unique_general_choices
 
+        if provider in p_schema and p_schema[provider].get("x-widget_config"):
+            widget_configs[provider] = p_schema[provider].get("x-widget_config")
+
     p["options"] = choices
     p["multiple_items_allowed"] = multiple_items_allowed_dict
 
     if is_provider_specific:
         p["available_providers"] = list(available_providers)
+        p["x-widget_config"] = widget_configs
+    else:
+        p["x-widget_config"] = widget_configs.get(provider, {})
+
     return p
 
 
@@ -278,6 +287,7 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
                 "multiple_items_allowed", False
             ):
                 multiple_items_allowed_dict[_provider] = True
+
         p["multiple_items_allowed"] = multiple_items_allowed_dict
         if "Multiple comma separated items allowed" in p["description"]:
             p["description"] = (
@@ -285,11 +295,14 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
                 .split("Multiple comma separated items allowed")[0]
                 .strip()
             )
+
         return p
 
     p_schema = param.get("schema", {})
     p["value"] = p_schema.get("default", None)
+
     p = set_parameter_options(p, p_schema, providers)
+
     p = set_parameter_type(p, p_schema)
 
     if title := p_schema.get("title", ""):

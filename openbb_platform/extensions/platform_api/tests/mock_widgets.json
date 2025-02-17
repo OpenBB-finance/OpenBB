@@ -3333,7 +3333,7 @@
                 "paramName": "use_cache"
             },
             {
-                "label": "Url",
+                "label": "URL",
                 "description": "Enter an optional URL path to fetch the next level.",
                 "optional": true,
                 "value": null,
