@@ -574,6 +574,10 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             column_def["cellDataType"] = "date"
 
         if _widget_config := prop.get("x-widget_config", {}):
+
+            if _widget_config.get("exclude"):
+                continue
+
             column_def.update(_widget_config)
 
         column_defs.append(column_def)

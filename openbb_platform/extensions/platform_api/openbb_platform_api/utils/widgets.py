@@ -143,6 +143,10 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
         if provider_value in provider_value_widget_config and bool(
             provider_value_widget_config[provider_value]
         ):
+
+            if provider_value_widget_config[provider_value].get("exclude"):
+                continue
+
             _item = deep_merge_configs(
                 _item,
                 provider_value_widget_config[provider_value],
@@ -329,11 +333,6 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 "source": [provider_name],
             }
 
-            if data_config := data_schema_to_columns_defs(
-                openapi, widget_id, provider, route, True
-            ):
-                widget_config["data"].update(data_config)
-
             if subcat:
                 subcat = " ".join(
                     [
@@ -350,6 +349,14 @@ def build_json(openapi: dict, widget_exclude_filter: list):
 
             if columns_defs:
                 widget_config["data"]["table"]["columnsDefs"] = columns_defs
+
+            if data_config := data_schema_to_columns_defs(
+                openapi, widget_id, provider, route, True
+            ):
+                widget_config["data"] = deep_merge_configs(
+                    widget_config["data"],
+                    data_config,
+                )
 
             # Update the widget configuration with any supplied configurations in @router.command
             if widget_config_dict:
