@@ -161,3 +161,27 @@ def test_regulators_cftc_cot(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "url": "https://www.sec.gov/Archives/edgar/data/21344/000155278124000634/",
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_regulators_sec_filing_headers(params, obb):
+    """Test the SEC Filing Headers endpoint."""
+    from openbb_sec.models.sec_filing import SecFilingData
+
+    result = obb.regulators.sec.filing_headers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert isinstance(result.results, SecFilingData)
+    assert hasattr(result.results, "cover_page")

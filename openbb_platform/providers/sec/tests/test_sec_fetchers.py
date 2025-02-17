@@ -10,6 +10,7 @@ from openbb_sec.models.compare_company_facts import SecCompareCompanyFactsFetche
 from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
+from openbb_sec.models.sec_filing import SecFilingFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
@@ -205,5 +206,18 @@ def test_sec_management_discussion_analysis_fetcher(credentials=test_credentials
     }
 
     fetcher = SecManagementDiscussionAnalysisFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_filing_fetcher(credentials=test_credentials):
+    """Test the SEC Filing fetcher."""
+    params = {
+        "url": "https://www.sec.gov/Archives/edgar/data/21344/000155278124000634/",
+        "use_cache": False,
+    }
+
+    fetcher = SecFilingFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

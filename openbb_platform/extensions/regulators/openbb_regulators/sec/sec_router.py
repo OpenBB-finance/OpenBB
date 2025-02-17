@@ -16,6 +16,38 @@ router = Router(prefix="/sec")
 
 
 @router.command(
+    model="SecFiling",
+    examples=[
+        APIEx(
+            parameters={
+                "url": "https://www.sec.gov/Archives/edgar/data/317540/000119312524076556/d645509ddef14a.htm",
+                "provider": "sec",
+            }
+        )
+    ],
+    openapi_extra={
+        "widget_config": {
+            "description": "Get a list of all the documents associated with a filing, and their direct URLs.",
+            "gridData": {
+                "w": 30,
+                "h": 10,
+            },
+            "staleTime": 86400000,
+            "refetchInterval": 86400000,
+        }
+    },
+)
+async def filing_headers(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Download the index headers, and cover page if available, for any SEC filing."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="CikMap",
     examples=[APIEx(parameters={"symbol": "MSFT", "provider": "sec"})],
 )

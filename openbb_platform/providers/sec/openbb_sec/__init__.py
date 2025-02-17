@@ -16,6 +16,7 @@ from openbb_sec.models.management_discussion_analysis import (
 )
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
+from openbb_sec.models.sec_filing import SecFilingFetcher
 from openbb_sec.models.sic_search import SecSicSearchFetcher
 from openbb_sec.models.symbol_map import SecSymbolMapFetcher
 
@@ -39,6 +40,7 @@ sec_provider = Provider(
         "ManagementDiscussionAnalysis": SecManagementDiscussionAnalysisFetcher,
         "RssLitigation": SecRssLitigationFetcher,
         "SchemaFiles": SecSchemaFilesFetcher,
+        "SecFiling": SecFilingFetcher,
         "SicSearch": SecSicSearchFetcher,
         "SymbolMap": SecSymbolMapFetcher,
     },
