@@ -606,15 +606,51 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
                     }
 
             if not df.empty:
-
+                trading_symbols_df = df[
+                    df.iloc[:, 0]
+                    .astype(str)
+                    .str.lower()
+                    .isin(["trading symbol", "no trading symbol flag"])
+                ]
+                symbols_dict: dict = {}
                 trading_symbols = (
-                    df[df.iloc[:, 0].astype(str).str.lower() == "trading symbol"]
+                    trading_symbols_df.iloc[:, 1]
+                    .str.strip()
+                    .str.replace("true", "No Trading Symbol")
+                    .tolist()
+                )
+                symbol_names = (
+                    df[
+                        df.iloc[:, 0].astype(str).str.strip()
+                        == "Title of 12(b) Security"
+                    ]
                     .iloc[:, 1]
-                    .unique()
+                    .tolist()
+                )
+                exchange_names = (
+                    df[
+                        df.iloc[:, 0].astype(str).str.strip()
+                        == "Security Exchange Name"
+                    ]
+                    .iloc[:, 1]
+                    .fillna("No Exchange")
                     .tolist()
                 )
                 if trading_symbols:
-                    self._trading_symbols = sorted(trading_symbols)
+                    self._trading_symbols = sorted(
+                        [d for d in trading_symbols if d and d != "No Trading Symbol"]
+                    )
+                    symbols_dict = dict(zip(symbol_names, trading_symbols))
+                    exchanges_dict = dict(zip(symbol_names, exchange_names))
+                    symbols_list: list = []
+                    for k, v in symbols_dict.items():
+                        symbols_list.append(
+                            {
+                                "Title": k,
+                                "Symbol": v,
+                                "Exchange": exchanges_dict.get(k, "No Exchange"),
+                            }
+                        )
 
                 df.columns = [d[1] if isinstance(d, tuple) else d for d in df.columns]
                 df = df.iloc[:, :2].dropna(how="any")
@@ -624,6 +660,18 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
                 if not output.get("SIC") and self._sic:
                     output["SIC"] = self._sic
                     output["SIC Organization Name"] = self.sic_organization_name
+
+                for k, v in output.copy().items():
+                    if k in [
+                        "Title of 12(b) Security",
+                        "Trading Symbol",
+                        "Security Exchange Name",
+                        "No Trading Symbol Flag",
+                    ]:
+                        del output[k]
+
+                if symbols_list:
+                    output["12(b) Securities"] = symbols_list
 
                 self._cover_page = output
 
