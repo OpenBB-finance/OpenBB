@@ -1,6 +1,6 @@
 """SEC Filing Model."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,prop-decorator
 
 from datetime import date as dateType
 from typing import Any, Optional, Union
@@ -229,7 +229,7 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
 
     @computed_field(title="SIC Organization", description="SIC Organization Name.")
     @property
-    def sic_organization_name(self) -> str:
+    def sic_organization_name(self) -> Optional[str]:
         """Standard Industrial Classification Organization Name."""
         return self._sic_organization_name
 
@@ -441,12 +441,12 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
             def document_to_dict(doc):
                 """Convert the document section to a dictionary."""
                 doc_dict: dict = {}
-                doc_dict["type"] = re.search(r"<TYPE>(.*?)\n", doc).group(1).strip()
+                doc_dict["type"] = re.search(r"<TYPE>(.*?)\n", doc).group(1).strip()  # type: ignore
                 doc_dict["sequence"] = (
-                    re.search(r"<SEQUENCE>(.*?)\n", doc).group(1).strip()
+                    re.search(r"<SEQUENCE>(.*?)\n", doc).group(1).strip()  # type: ignore
                 )
                 doc_dict["filename"] = (
-                    re.search(r"<FILENAME>(.*?)\n", doc).group(1).strip()
+                    re.search(r"<FILENAME>(.*?)\n", doc).group(1).strip()  # type: ignore
                 )
                 description_match = re.search(r"<DESCRIPTION>(.*?)\n", doc)
 
