@@ -194,9 +194,10 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
 
     if general_choices:
         # Remove duplicates by converting list of dicts to a set of tuples and back to list of dicts
-        unique_general_choices = [
-            dict(t) for t in {tuple(d.items()) for d in general_choices}
-        ]
+        unique_general_choices = sorted(
+            [dict(t) for t in {tuple(d.items()) for d in general_choices}],
+            key=lambda x: x["label"],
+        )
         if not is_provider_specific:
             if len(providers) == 1:
                 choices[providers[0]] = unique_general_choices
