@@ -48,6 +48,7 @@ TO_CAPS_STRINGS = [
     "Id",
     "Ytd",
     "Yoy",
+    "Dte",
 ]
 
 
@@ -450,6 +451,12 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
                 schema_refs.append(item["items"]["$ref"].split("/")[-1])
             elif "$ref" in item:
                 schema_refs.append(item["$ref"].split("/")[-1])
+            elif "oneOf" in item:
+                for ref in item.get("oneOf", []):
+                    maybe_ref = ref.get("$ref").split("/")[-1]
+                    if maybe_ref.lower().startswith(provider):
+                        schema_refs.append(maybe_ref)
+                        break
 
     # Fetch the schemas using the extracted references
     schemas = [
@@ -475,7 +482,10 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
                 schema.get("description", "")
                 .lower()
                 .startswith(provider.lower().replace("tradingeconomics", "te"))
-            ) or (schema.get("description", "").lower().startswith("us government")):
+            ) or (
+                schema.get("description", "").lower().startswith("us government")
+                or (schema.get("description", "").lower().startswith(provider))
+            ):
                 target_schema = schema
                 break
 
@@ -490,7 +500,24 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         formatterFn = None
         prop = target_schema.get("properties", {}).get(key)
         # Handle prop types for both when there's a single prop type or multiple
-        if "anyOf" in prop:
+        if "items" in prop:
+            items = prop.pop("items", {})
+            items = items.get("anyOf", items)
+            prop["anyOf"] = items if isinstance(items, list) else [items]
+            types = [
+                sub_prop.get("type") for sub_prop in prop["anyOf"] if "type" in sub_prop
+            ]
+            if "number" in types or "integer" in types or "float" in types:
+                cell_data_type = "number"
+            elif "string" in types and any(
+                sub_prop.get("format") in ["date", "date-time"]
+                for sub_prop in prop["anyOf"]
+                if "format" in sub_prop
+            ):
+                cell_data_type = "date"
+            else:
+                cell_data_type = "text"
+        elif "anyOf" in prop:
             types = [
                 sub_prop.get("type") for sub_prop in prop["anyOf"] if "type" in sub_prop
             ]
@@ -533,6 +560,10 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             "title",
             "cusip",
             "isin",
+            "expiration",
+            "dte",
+            "strike",
+            "option_type",
         ]:
             column_def["pinned"] = "left"
 
@@ -573,6 +604,36 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         if "date" in column_def["headerTooltip"].lower():
             column_def["cellDataType"] = "date"
 
+        if (
+            route
+            and route.endswith("chains")
+            and column_def.get("field")
+            in [
+                "underlying_symbol",
+                "contract_symbol",
+                "underlying_price",
+                "contract_symbol",
+            ]
+        ):
+            column_def["hide"] = True
+
+        if column_def.get("field") in [
+            "implied_volatility",
+            "delta",
+            "gamma",
+            "theta",
+            "vega",
+            "rho",
+            "vega",
+            "charm",
+            "vanna",
+            "vomma",
+        ]:
+            column_def["formatterFn"] = "none"
+
+        if column_def.get("field") == "change":
+            column_def["renderFn"] = "greenRed"
+
         if _widget_config := prop.get("x-widget_config", {}):
 
             if _widget_config.get("exclude"):
@@ -581,5 +642,4 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             column_def.update(_widget_config)
 
         column_defs.append(column_def)
-
     return column_defs
