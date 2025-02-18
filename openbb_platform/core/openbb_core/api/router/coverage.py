@@ -39,7 +39,9 @@ async def get_commands_model_map(
             data_fields = data.get("fields", {})
 
             for field, field_info in query_fields.items():
-                attributes = field_info._attributes_set
+                attributes = (
+                    field_info._attributes_set  # pylint: disable=protected-access
+                )
                 if attributes.get("annotation"):
                     _annotation = str(attributes.get("annotation"))
                     attributes["annotation"] = _annotation
@@ -49,7 +51,9 @@ async def get_commands_model_map(
             new_command[provider]["QueryParams"]["docstring"] = query.get("docstring")
 
             for field, field_info in data_fields.items():
-                attributes = field_info._attributes_set
+                attributes = (
+                    field_info._attributes_set  # pylint: disable=protected-access
+                )
                 if attributes.get("annotation"):
                     _annotation = str(attributes.get("annotation"))
                     attributes["annotation"] = _annotation
@@ -80,6 +84,7 @@ async def get_commands_model_map(
         """Serialize the object."""
         if isinstance(obj, type):
             return str(obj)
+        return obj
 
     return json.loads(json.dumps(commands_map, default=serializer, indent=4))
 
