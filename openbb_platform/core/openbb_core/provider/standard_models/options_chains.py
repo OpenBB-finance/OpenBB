@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import TYPE_CHECKING, Any, List, Literal, Union
+from typing import List, Union
 
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -370,19 +370,3 @@ class OptionsChainsData(OptionsChainsProperties):
         records = [dict(zip(data.keys(), values)) for values in zip(*data.values())]
 
         return records
-
-    if TYPE_CHECKING:
-        # Ensure type checkers see the correct return type
-        def model_dump(
-            self,
-            *,
-            mode: Literal["json", "python"] | str = "python",
-            include: Any = None,
-            exclude: Any = None,
-            by_alias: bool = False,
-            exclude_unset: bool = True,
-            exclude_defaults: bool = False,
-            exclude_none: bool = True,
-            round_trip: bool = False,
-            warnings: bool = True,
-        ) -> str: ...
