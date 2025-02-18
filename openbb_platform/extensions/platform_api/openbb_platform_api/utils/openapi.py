@@ -618,7 +618,6 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             column_def["hide"] = True
 
         if column_def.get("field") in [
-            "implied_volatility",
             "delta",
             "gamma",
             "theta",
@@ -630,6 +629,15 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             "vomma",
         ]:
             column_def["formatterFn"] = "none"
+            if column_def["field"] in ["delta", "theta", "rho"]:
+                column_def["renderFn"] = "greenRed"
+
+        if (
+            route
+            and route.endswith("chains")
+            and column_def["field"] == "implied_volatility"
+        ):
+            column_def["formatterFn"] = "normalizedPercent"
 
         if column_def.get("field") == "change":
             column_def["renderFn"] = "greenRed"
