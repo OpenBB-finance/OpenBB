@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Union
+from typing import TYPE_CHECKING, Any, List, Literal, Union
 
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -12,7 +12,7 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.options_chains_properties import OptionsChainsProperties
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_serializer
 
 
 class OptionsChainsQueryParams(QueryParams):
@@ -351,3 +351,38 @@ class OptionsChainsData(OptionsChainsProperties):
         if isinstance(v[0], str):
             return [datetime.strptime(d, "%Y-%m-%d") if d else None for d in v]
         return v
+
+    @model_serializer
+    def model_serialize(self):
+        """Return the serialized data."""
+        data: dict = {}
+        for field in self.model_fields:
+            value = getattr(self, field)
+            if isinstance(value, list):
+                if value:  # Check if the list is not empty
+                    if isinstance(value[0], datetime):
+                        data[field] = [str(v) if v else None for v in value]
+                    else:
+                        data[field] = value
+            else:
+                data[field] = value
+
+        records = [dict(zip(data.keys(), values)) for values in zip(*data.values())]
+
+        return records
+
+    if TYPE_CHECKING:
+        # Ensure type checkers see the correct return type
+        def model_dump(
+            self,
+            *,
+            mode: Literal["json", "python"] | str = "python",
+            include: Any = None,
+            exclude: Any = None,
+            by_alias: bool = False,
+            exclude_unset: bool = True,
+            exclude_defaults: bool = False,
+            exclude_none: bool = True,
+            round_trip: bool = False,
+            warnings: bool = True,
+        ) -> str: ...
