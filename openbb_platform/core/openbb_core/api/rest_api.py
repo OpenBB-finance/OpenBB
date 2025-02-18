@@ -76,7 +76,7 @@ AppLoader.add_routers(
     routers=(
         [AuthService().router, router_system, router_coverage, router_commands]
         if Env().DEV_MODE
-        else [router_commands]
+        else [router_commands, router_coverage]
     ),
     prefix=system.api_settings.prefix,
 )
