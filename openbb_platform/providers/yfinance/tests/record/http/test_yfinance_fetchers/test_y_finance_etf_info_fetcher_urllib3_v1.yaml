@@ -15,28 +15,29 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
+        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
+        apeQpx8zG+RZgQgAAA==
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -54,21 +55,94 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1076'
+      - '1096'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 05:33:07 GMT
+      - Wed, 19 Feb 2025 05:08:33 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
-      - '6'
+      - '5'
       y-rid:
-      - 51423ltjhjn0k
+      - 1nvt3eljrapqh
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query1.finance.yahoo.com/v7/finance/quote?crumb=MOCK_CRUMB&formatted=false&symbols=QQQ
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAH1VW28aORT+K8jPZNb2XM0bCWwTaZMSYLuqqlXkMAcYZbCp7SGlUf57jz2Qckka
+        5YHx+Xyu33f8Qr432sEY7ForC6T3QgzYpnak9+2F1FItGrnAYwLq4t8J6aJ1UWmFB+ErXJ5u1x4x
+        nP6NJw4/BpVdvx0EyEQ3ZgZ3cuWBd9KW8ntnDLLuTKsVdEammoG/a6rFAox8rBHmTANdMmus06sA
+        6Ndg3JVW86oENfOOrm8+XROPMQZPtiGpQZtjU0tzK80TuC+6bnxYJjKRijg7MY8MbCrd2Kta+/LT
+        uIhY2iWPVdl+5F0i7ZP/LaIsD4ZJ9dP7oyyY2q+Mdsm8qevhj9kSm3Zc6qdbTGpeKalmlayv/pju
+        5zWoNlruQ2+wHQsYyKretoXEt1q5JelxUQgh4uQ9DKMDie55UqQJZT6zau6202f9H8DTP/r5KqSI
+        JfAs4uhFfIAYAQ5NIRVoFNM0TwUvjpHj1g9JWBzRvHPRwXgRJceg62qx3Ee8oFEWU0oT8RHmLSZC
+        KWUsy7I8zc8SJL025rkbbJ5P4thw4hvrThJOU085bFulFn2lGlkPqo0nVzmWzrcnjGCPGA1JL04j
+        logizj+6+LWCuvT9ojTmhaBJijHKU2OKU9u6cgyuMThsHvE4iQ+SmS4NQJhzC7Gkh6xEAvP3MHdy
+        cw5T4PrWgsOzOOJFTHkmhgwZO9NmrQ3W1585FDLav/3fJWttXcs/L0gsPY+F4Fku0hN6HpgZTyi2
+        GXaM92wPRF+BtcjHSy1NeYP1euavHh8KRos0LcjvG97XT632WumvAGUu/7qD54ev2jy9g5wstXE7
+        +HAyRcRi5T7P5xNwt1VdVxZmWpVY0wUraPjDdELeeKGxD7vf6NguRnqNZTnADOeytnBS6JkCOM8y
+        kbPThrS7KwjW08IeZHijNmBnunN/f9+ZGlxk3c4ESwTbYZhCrdXiIyDZpz1xgYlkNB7iv098bad7
+        BjxDvWkpgBWzNIqTpMiFz0HiDv/cOOukKhGJHBAx2/XjUeunL7JuwNM5R4onO6ngzui3qwTL4TxK
+        84Kfmd5WRxblghXsA8BB31AILOYZx8XrnvV1o0oD5WGspCi80rP0fcA+YsqiOCviJP8T7CAuo6mP
+        mgYtDH/gWrWAuq50GOa+wVcSXyrOOOoDNZhwbMbaT3SqL7FPfgekFPcPw8Vnwxt2oxyYjax9x38T
+        dCCdHEAtt1Be4ualQacltC/Zjl4zs107PT07X0qLj9DoTYHe1/75m1fGunAFT+GY44Izmmd8N9aQ
+        9XUVttuhns/7kiQZE4eQPYVxbfqaTu/6SznKiYt3JeJ7xJkQuV/GR3YcztFCPjXuX480ziKaHLwe
+        p8Cw71sUjmG7etTYfoJqIa+4u8AYbUhP4ev7+voL0hg/h9AIAAA=
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=1, stale-while-revalidate=9
+      content-encoding:
+      - gzip
+      content-length:
+      - '1064'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 19 Feb 2025 05:08:33 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-quote-api--mtls-production-gq1.finance-k8s:4080/*
+      x-envoy-upstream-service-time:
+      - '3'
+      y-rid:
+      - 79jnjkljrapqh
     status:
       code: 200
       message: OK
@@ -90,7 +164,7 @@ interactions:
       string: '{"timeseries":{"result":[{"meta":{"symbol":["QQQ"],"type":["trailingPegRatio"]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -110,17 +184,17 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 24 Oct 2024 05:33:07 GMT
+      - Wed, 19 Feb 2025 05:08:33 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
       - '1'
       y-rid:
-      - 4fj8s21jhjn0k
+      - 3aq20d9jrapqh
     status:
       code: 200
       message: OK
