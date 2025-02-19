@@ -66,7 +66,7 @@ def correlation_matrix(
     corr = df.corr(method=method, numeric_only=True)
 
     # replace nan values with None to allow for json serialization
-    corr = corr.replace(np.NaN, None)
+    corr = corr.replace(np.nan, None)
 
     ret = []
     for k, v in corr.items():
