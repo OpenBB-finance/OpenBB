@@ -1,5 +1,7 @@
 """Relative Rotation Chart Helpers."""
 
+# pylint: disable=R0917
+
 from datetime import date as dateType
 from typing import TYPE_CHECKING, Literal, Optional
 from warnings import warn
@@ -109,9 +111,9 @@ def create_rrg_with_tails(
     symbols = ratios_data.columns.to_list()
 
     tail_dict = {"week": "W", "month": "M"}
-
     ratios_data.index = to_datetime(ratios_data.index)
     momentum_data.index = to_datetime(momentum_data.index)
+
     if tail_interval != "day":
         ratios_data = ratios_data.resample(tail_dict[tail_interval]).last()
         momentum_data = momentum_data.resample(tail_dict[tail_interval]).last()
@@ -136,8 +138,8 @@ def create_rrg_with_tails(
         name = symbol.upper().replace("^", "").replace(":US", "")
         # Create a trace for the line
         line_trace = go.Scattergl(
-            x=x_data[:-1],  # All but the last data point
-            y=y_data[:-1],  # All but the last data point
+            x=x_data.iloc[:-1],  # All but the last data point
+            y=y_data.iloc[:-1],  # All but the last data point
             mode="lines+markers",
             line=dict(
                 color=color_sequence[i % len(color_sequence)], width=2, dash="dash"

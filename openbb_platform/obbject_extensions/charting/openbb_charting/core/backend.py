@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from plotly.graph_objs import Figure
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.35.2.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-3.0.0.min.js"
 BACKEND = None
 
 try:
