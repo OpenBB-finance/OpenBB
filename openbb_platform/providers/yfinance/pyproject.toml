@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-yfinance"
-version = "1.4.0"
+version = "1.4.1"
 description = "yfinance extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
