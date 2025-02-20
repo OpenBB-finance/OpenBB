@@ -211,6 +211,7 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
                     "multiple_items_allowed", False
                 )
 
+    provider: str = ""
     # Use general choices as fallback for providers without specific options
     for provider in available_providers:
         if provider not in choices:
@@ -233,8 +234,11 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
     if is_provider_specific:
         p["available_providers"] = list(available_providers)
         p["x-widget_config"] = widget_configs
+
     else:
-        p["x-widget_config"] = widget_configs.get(provider, {})
+        p["x-widget_config"] = p["x-widget_config"] = (
+            widget_configs.get(provider, {}) if provider else widget_configs
+        )
 
     return p
 
