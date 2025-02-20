@@ -134,7 +134,14 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
 
         _item["paramName"] = _item.pop("parameter_name")
 
-        if _item["paramName"] in ["url", "cik", "lei", "cusip", "isin", "sedol"]:
+        if not _item.get("label") and _item["paramName"] in [
+            "url",
+            "cik",
+            "lei",
+            "cusip",
+            "isin",
+            "sedol",
+        ]:
             _item["label"] = _item["paramName"].upper()
 
         if "x-widget_config" in _item:
