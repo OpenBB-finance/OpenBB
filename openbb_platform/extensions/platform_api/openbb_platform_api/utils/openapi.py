@@ -142,6 +142,7 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
     is_provider_specific = False
     available_providers: set = set()
     unique_general_choices: list = []
+    provider: str = ""
 
     # Handle provider-specific choices
     for provider in providers:
@@ -211,7 +212,6 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
                     "multiple_items_allowed", False
                 )
 
-    provider: str = ""
     # Use general choices as fallback for providers without specific options
     for provider in available_providers:
         if provider not in choices:
