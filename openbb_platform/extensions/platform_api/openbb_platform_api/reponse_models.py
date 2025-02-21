@@ -84,7 +84,7 @@ class PdfResponseModel(Data):
             "title": "PDF Widget Response Model",
             "x-widget_config": {
                 "$.type": "pdf",
-                "refetchInterval": False,
+                "$.refetchInterval": False,
             },
         },
     )
