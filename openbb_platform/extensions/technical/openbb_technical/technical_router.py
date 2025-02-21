@@ -1,6 +1,6 @@
 """Technical Analysis Router."""
 
-# pylint: disable=too-many-lines,unused-import,too-many-arguments
+# pylint: disable=too-many-lines,unused-import,too-many-arguments,too-many-positional-arguments
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -812,17 +812,17 @@ def demark(
     Returns
     -------
     OBBject[List[Data]]
-        The calculated data.
+        The calculated data, with fields: [{index}, {target}, "up", "down"]
     """
     # pylint: disable=import-outside-toplevel
     import pandas_ta as ta  # noqa
+    from pandas import concat
 
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    _demark = ta.td_seq(
-        df_target[target], asint=asint, show_all=show_all, offset=offset
-    )
-    demark_df = df[[target]].reset_index().join(_demark)
+    _demark = ta.exhc(df_target[target], asint=asint, show_all=show_all, offset=offset)
+    demark_df = concat([df[[target]], _demark], axis=1).reset_index()
+    demark_df = demark_df.rename(columns={"EXHC_DNa": "down", "EXHC_UPa": "up"})
     results = df_to_basemodel(demark_df)
 
     return OBBject(results=results)
@@ -1847,7 +1847,6 @@ def cones(
         is_crypto=is_crypto,
         trading_periods=trading_periods,
     )
-
     results = df_to_basemodel(df_cones)
 
     return OBBject(results=results)

@@ -23,7 +23,7 @@
     "@tanstack/react-table": "^8.7.9",
     "dom-to-image": "^2.6.0",
     "nanoid": ">=3.3.8",
-    "plotly.js": "^2.35.2",
+    "plotly.js": "^3.0.0",
     "react": "^17.0.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
