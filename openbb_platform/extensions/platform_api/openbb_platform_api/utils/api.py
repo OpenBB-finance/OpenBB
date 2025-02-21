@@ -5,7 +5,7 @@ import os
 import socket
 import sys
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Optional
 
 from deepdiff import DeepDiff
 
@@ -305,9 +305,9 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
         )
 
     if (
-        getattr(module, name, None) is Callable
-        and not isinstance(getattr(module, name, None), FastAPI)
-        and not factory
+        hasattr(module, name)
+        and not isinstance(getattr(module, name), FastAPI)
+        and factory is False
     ):
         print(  # noqa: T201
             "\n\n[WARNING]   App factory detected. Using it, but please consider setting the --factory flag explicitly.\n"
