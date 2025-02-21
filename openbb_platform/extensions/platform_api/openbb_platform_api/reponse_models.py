@@ -62,7 +62,7 @@ class PdfResponseModel(Data):
     ------
     filename : str
         The filename of the PDF content.
-    content : str or bytes
+    content : bytes
         The PDF content to display in the PDF widget.
     url_reference : str
         The URL reference to the PDF
@@ -94,7 +94,7 @@ class PdfResponseModel(Data):
         description="The filename of the PDF content.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    content: Optional[Union[str, bytes]] = Field(
+    content: Optional[bytes] = Field(
         default=None,
         description="The PDF content to display in the PDF widget.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
@@ -122,13 +122,14 @@ class PdfResponseModel(Data):
     def model_serialize(self) -> dict:
         """Serialize the PDF content."""
         # pylint: disable=import-outside-toplevel
-        import base64
+        import base64  # noqa
+        from io import BytesIO
 
         file_reference = None
         pdf = None
 
         if self.content:
-            pdf = base64.b64encode(self.content).decode("utf-8")
+            pdf = base64.b64encode(BytesIO(self.content)).decode("utf-8")
         elif self.url_reference:
             file_reference = self.url_reference
 
