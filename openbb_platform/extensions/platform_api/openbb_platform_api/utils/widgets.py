@@ -88,6 +88,11 @@ def deep_merge_configs(
 
 def modify_query_schema(query_schema: list[dict], provider_value: str):
     """Modify query_schema and the description for the current provider."""
+    # pylint: disable=import-outside-toplevel
+    from .openapi import (
+        TO_CAPS_STRINGS,
+    )
+
     modified_query_schema: list = []
     for item in query_schema:
         # copy the item
@@ -143,6 +148,14 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
             "sedol",
         ]:
             _item["label"] = _item["paramName"].upper()
+
+        if _label := _item.get("label"):
+            _item["label"] = " ".join(
+                [
+                    (word.upper() if word in TO_CAPS_STRINGS else word)
+                    for word in _label.split()
+                ]
+            )
 
         if "x-widget_config" in _item:
             provider_value_widget_config = _item.pop("x-widget_config")

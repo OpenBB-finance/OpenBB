@@ -49,6 +49,11 @@ TO_CAPS_STRINGS = [
     "Ytd",
     "Yoy",
     "Dte",
+    "Url",
+    "Sedol",
+    "Isin",
+    "Figi",
+    "Cusip",
 ]
 
 

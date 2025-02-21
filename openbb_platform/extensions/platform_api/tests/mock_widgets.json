@@ -1921,7 +1921,7 @@
                     {
                         "field": "url",
                         "formatterFn": null,
-                        "headerName": "Url",
+                        "headerName": "URL",
                         "headerTooltip": "URL to the release.",
                         "cellDataType": "text"
                     },
