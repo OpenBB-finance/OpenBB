@@ -1,4 +1,4 @@
-"""OpenBB Workspace Reponse Models."""
+"""OpenBB Workspace Response Models."""
 
 from typing import Optional, Union
 
