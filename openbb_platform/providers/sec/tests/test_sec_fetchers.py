@@ -11,6 +11,7 @@ from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
+from openbb_sec.models.htm_file import SecHtmFileFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
@@ -219,5 +220,18 @@ def test_sec_filing_fetcher(credentials=test_credentials):
     }
 
     fetcher = SecFilingFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_htm_file_fetcher(credentials=test_credentials):
+    """Test the SEC HTM File fetcher."""
+    params = {
+        "url": "https://www.sec.gov/Archives/edgar/data/1990353/000110465925015513/tm256977d7_ex99-1.htm",
+        "use_cache": False,
+    }
+
+    fetcher = SecHtmFileFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

@@ -14,6 +14,7 @@ class ROUTER_regulators_sec(Container):
     """/regulators/sec
     cik_map
     filing_headers
+    htm_file
     institutions_search
     rss_litigation
     schema_files
@@ -171,6 +172,71 @@ class ROUTER_regulators_sec(Container):
                     "provider": self._get_provider(
                         provider,
                         "regulators.sec.filing_headers",
+                        ("sec",),
+                    )
+                },
+                standard_params={},
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def htm_file(
+        self,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Download a raw HTML object from the SEC website.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['sec']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
+        url : str
+            URL for the SEC filing. (provider: sec)
+        use_cache : bool
+            Cache the file for use later. Default is True. (provider: sec)
+
+        Returns
+        -------
+        OBBject
+            results : SecHtmFile
+                Serializable results.
+            provider : Optional[Literal['sec']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        SecHtmFile
+        ----------
+        url : Optional[str]
+            URL of the downloaded file. (provider: sec)
+        content : Optional[str]
+            Raw content of the HTM/HTML file. (provider: sec)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.regulators.sec.htm_file(url='https://www.sec.gov/Archives/edgar/data/1723690/000119312525030074/d866336dex991.htm', provider='sec')
+        """  # noqa: E501
+
+        return self._run(
+            "/regulators/sec/htm_file",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "regulators.sec.htm_file",
                         ("sec",),
                     )
                 },

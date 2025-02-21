@@ -185,3 +185,27 @@ def test_regulators_sec_filing_headers(params, obb):
     assert isinstance(result, OBBject)
     assert isinstance(result.results, SecFilingData)
     assert hasattr(result.results, "cover_page")
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "url": "https://www.sec.gov/Archives/edgar/data/1990353/000110465925015513/tm256977d7_ex99-1.htm",
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_regulators_sec_htm_file(params, obb):
+    """Test the SEC HTM File endpoint."""
+    from openbb_sec.models.htm_file import SecHtmFileData
+
+    result = obb.regulators.sec.htm_file(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert isinstance(result.results, SecHtmFileData)
+    assert hasattr(result.results, "content")

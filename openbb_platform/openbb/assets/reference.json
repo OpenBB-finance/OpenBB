@@ -41639,6 +41639,86 @@
             },
             "model": "SecFiling"
         },
+        "/regulators/sec/htm_file": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Download a raw HTML object from the SEC website.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.htm_file(url=https://www.sec.gov/Archives/edgar/data/1723690/000119312525030074/d866336dex991.htm, provider='sec')\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL for the SEC filing.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Cache the file for use later. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[SecHtmFile]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL of the downloaded file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "content",
+                        "type": "str",
+                        "description": "Raw content of the HTM/HTML file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "SecHtmFile"
+        },
         "/regulators/sec/cik_map": {
             "deprecated": {
                 "flag": null,
