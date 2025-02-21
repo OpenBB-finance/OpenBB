@@ -370,13 +370,32 @@ def build_json(openapi: dict, widget_exclude_filter: list):
             if columns_defs:
                 widget_config["data"]["table"]["columnsDefs"] = columns_defs
 
+            var_key: dict = {}
+
             if data_config := data_schema_to_columns_defs(
                 openapi, widget_id, provider, route, True
             ):
+                for key, value in data_config.copy().items():
+                    if key.startswith("$."):
+                        var_key[key] = value
+                        _ = data_config.pop(key)
+                        break
+
                 widget_config["data"] = deep_merge_configs(
                     widget_config["data"],
                     data_config,
                 )
+
+            if var_key:
+                for key, value in var_key.items():
+                    if (
+                        key.replace("$.", "") in widget_config_dict
+                        and key != "$.data"
+                        and "columnsDefs" not in key
+                    ):
+                        widget_config_dict.update({key.replace("$.", ""): value})
+                    else:
+                        widget_config_dict[key.replace("$.", "")] = value
 
             # Update the widget configuration with any supplied configurations in @router.command
             if widget_config_dict:
