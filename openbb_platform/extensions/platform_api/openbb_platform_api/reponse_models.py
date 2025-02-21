@@ -129,7 +129,7 @@ class PdfResponseModel(Data):
         pdf = None
 
         if self.content:
-            pdf = base64.b64encode(BytesIO(self.content)).decode("utf-8")
+            pdf = base64.b64encode(BytesIO(self.content).getvalue()).decode("utf-8")
         elif self.url_reference:
             file_reference = self.url_reference
 
