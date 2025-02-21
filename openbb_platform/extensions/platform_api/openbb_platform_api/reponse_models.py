@@ -48,7 +48,7 @@ class PdfResponseModel(Data):
         },
     )
 
-    filename: str = Field(
+    filename: Optional[str] = Field(
         default="",
         description="The filename of the PDF content.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
