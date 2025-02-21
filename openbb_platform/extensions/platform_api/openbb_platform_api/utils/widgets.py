@@ -183,7 +183,9 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
     return modified_query_schema
 
 
-def build_json(openapi: dict, widget_exclude_filter: list):
+def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches
+    openapi: dict, widget_exclude_filter: list
+):
     """Build the widgets.json file."""
     # pylint: disable=import-outside-toplevel
     from .openapi import (
