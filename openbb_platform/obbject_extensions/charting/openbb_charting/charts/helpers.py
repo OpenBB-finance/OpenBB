@@ -1,5 +1,7 @@
 """Helper functions for charting."""
 
+# pylint: disable=R0917
+
 from typing import TYPE_CHECKING, Callable, Dict, List, Type
 
 if TYPE_CHECKING:
