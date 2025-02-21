@@ -329,19 +329,12 @@ class StaticCommandRunner:
                 for name, default in model_headers.items() or {}
             } or None
 
-            validate = not execution_context.api_route.openapi_extra.get("no_validate")
             try:
                 obbject = await cls._command(func, kwargs)
                 # The output might be from a router command with 'no_validate=True'
                 # It might be of a different type than OBBject.
                 # In this case, we avoid accessing those attributes.
-                if isinstance(obbject, OBBject) or validate:
-                    if validate and not isinstance(obbject, OBBject):
-                        raise OpenBBError(
-                            TypeError(
-                                f"Expected OBBject instance at function output, got {type(obbject)} instead."
-                            )
-                        )
+                if isinstance(obbject, OBBject):
                     # This section prepares the obbject to pass to the charting service.
                     obbject._route = route  # pylint: disable=protected-access
                     std_params = cls._extract_params(kwargs, "standard_params") or (
