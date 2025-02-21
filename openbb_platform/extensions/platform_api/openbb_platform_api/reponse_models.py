@@ -1,6 +1,5 @@
 """OpenBB Workspace Reponse Models."""
 
-import base64
 from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
@@ -122,6 +121,8 @@ class PdfResponseModel(Data):
     @model_serializer
     def model_serialize(self) -> dict:
         """Serialize the PDF content."""
+        # pylint: disable=import-outside-toplevel
+        import base64
 
         file_reference = None
         pdf = None
