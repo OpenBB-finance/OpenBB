@@ -334,7 +334,7 @@ def test_platform2hub():
     assert user_settings.features_keys["polygon_api_key"] == "polygon"
     assert user_settings.features_keys["api_fred_key"] == "fred"
     assert user_settings.features_keys["benzinga_api_key"] == "benzinga"
-    assert "some_api_key" not in user_settings.features_keys
+    assert "some_api_key" in user_settings.features_keys
     assert "defaults" in user_settings.features_settings
 
 
