@@ -134,10 +134,9 @@ class PdfResponseModel(Data):
             file_reference = self.url_reference
 
         output = {
-            "data_format": {"data_type": "pdf"},
+            "data_format": {"data_type": "pdf", "filename": self.filename},
             "content": pdf,
             "url_reference": file_reference,
-            "filename": self.filename,
         }
 
         return {k: v for k, v in output.items() if v is not None}
