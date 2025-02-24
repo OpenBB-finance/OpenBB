@@ -269,6 +269,12 @@ class ProviderInterface(metaclass=SingletonMeta):
                         "choices": v.get("choices"),
                     }
 
+                if isinstance(v, dict) and v.get("x-widget_config"):
+                    if p not in choices:
+                        choices[p] = {"x-widget_config": v.get("x-widget_config")}
+                    else:
+                        choices[p]["x-widget_config"] = v.get("x-widget_config")
+
             if providers:
                 if provider_name:
                     additional_description += " Multiple comma separated items allowed."

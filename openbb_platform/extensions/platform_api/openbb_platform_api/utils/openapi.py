@@ -48,6 +48,12 @@ TO_CAPS_STRINGS = [
     "Id",
     "Ytd",
     "Yoy",
+    "Dte",
+    "Url",
+    "Sedol",
+    "Isin",
+    "Figi",
+    "Cusip",
 ]
 
 
@@ -136,10 +142,12 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
         Updated parameter dictionary with options.
     """
     choices: dict[str, list[dict[str, str]]] = {}
+    widget_configs: dict[str, dict] = {}
     multiple_items_allowed_dict: dict = {}
     is_provider_specific = False
     available_providers: set = set()
     unique_general_choices: list = []
+    provider: str = ""
 
     # Handle provider-specific choices
     for provider in providers:
@@ -150,6 +158,7 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
                 available_providers.add(provider)
             if provider in p_schema:
                 provider_choices = p_schema[provider].get("choices", [])
+                widget_configs[provider] = p_schema[provider].get("x-widget_config", {})
             elif len(providers) == 1 and "enum" in p_schema:
                 provider_choices = p_schema["enum"]
                 p_schema.pop("enum")
@@ -192,9 +201,10 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
 
     if general_choices:
         # Remove duplicates by converting list of dicts to a set of tuples and back to list of dicts
-        unique_general_choices = [
-            dict(t) for t in {tuple(d.items()) for d in general_choices}
-        ]
+        unique_general_choices = sorted(
+            [dict(t) for t in {tuple(d.items()) for d in general_choices}],
+            key=lambda x: x["label"],
+        )
         if not is_provider_specific:
             if len(providers) == 1:
                 choices[providers[0]] = unique_general_choices
@@ -220,11 +230,21 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
             else:
                 choices[provider] = unique_general_choices
 
+        if provider in p_schema and p_schema[provider].get("x-widget_config"):
+            widget_configs[provider] = p_schema[provider].get("x-widget_config")
+
     p["options"] = choices
     p["multiple_items_allowed"] = multiple_items_allowed_dict
 
     if is_provider_specific:
         p["available_providers"] = list(available_providers)
+        p["x-widget_config"] = widget_configs
+
+    else:
+        p["x-widget_config"] = p["x-widget_config"] = (
+            widget_configs.get(provider, {}) if provider else widget_configs
+        )
+
     return p
 
 
@@ -278,6 +298,7 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
                 "multiple_items_allowed", False
             ):
                 multiple_items_allowed_dict[_provider] = True
+
         p["multiple_items_allowed"] = multiple_items_allowed_dict
         if "Multiple comma separated items allowed" in p["description"]:
             p["description"] = (
@@ -285,11 +306,14 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
                 .split("Multiple comma separated items allowed")[0]
                 .strip()
             )
+
         return p
 
     p_schema = param.get("schema", {})
     p["value"] = p_schema.get("default", None)
+
     p = set_parameter_options(p, p_schema, providers)
+
     p = set_parameter_type(p, p_schema)
 
     if title := p_schema.get("title", ""):
@@ -406,7 +430,11 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: Optional[str] 
 
 
 def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-branches
-    openapi_json, operation_id, provider, route: Optional[str] = None
+    openapi_json,
+    operation_id,
+    provider,
+    route: Optional[str] = None,
+    get_widget_config: bool = False,
 ):
     """Convert data schema to column definitions for the widget."""
     # Initialize an empty list to hold the schema references
@@ -430,6 +458,14 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             # When there's only one model there is no oneOf
             elif "items" in item and "$ref" in item["items"]:
                 schema_refs.append(item["items"]["$ref"].split("/")[-1])
+            elif "$ref" in item:
+                schema_refs.append(item["$ref"].split("/")[-1])
+            elif "oneOf" in item:
+                for ref in item.get("oneOf", []):
+                    maybe_ref = ref.get("$ref").split("/")[-1]
+                    if maybe_ref.lower().startswith(provider):
+                        schema_refs.append(maybe_ref)
+                        break
 
     # Fetch the schemas using the extracted references
     schemas = [
@@ -455,9 +491,15 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
                 schema.get("description", "")
                 .lower()
                 .startswith(provider.lower().replace("tradingeconomics", "te"))
-            ) or (schema.get("description", "").lower().startswith("us government")):
+            ) or (
+                schema.get("description", "").lower().startswith("us government")
+                or (schema.get("description", "").lower().startswith(provider))
+            ):
                 target_schema = schema
                 break
+
+    if get_widget_config:
+        return target_schema.get("x-widget_config", {})
 
     keys = list(target_schema.get("properties", {}))
 
@@ -467,7 +509,24 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         formatterFn = None
         prop = target_schema.get("properties", {}).get(key)
         # Handle prop types for both when there's a single prop type or multiple
-        if "anyOf" in prop:
+        if "items" in prop:
+            items = prop.pop("items", {})
+            items = items.get("anyOf", items)
+            prop["anyOf"] = items if isinstance(items, list) else [items]
+            types = [
+                sub_prop.get("type") for sub_prop in prop["anyOf"] if "type" in sub_prop
+            ]
+            if "number" in types or "integer" in types or "float" in types:
+                cell_data_type = "number"
+            elif "string" in types and any(
+                sub_prop.get("format") in ["date", "date-time"]
+                for sub_prop in prop["anyOf"]
+                if "format" in sub_prop
+            ):
+                cell_data_type = "date"
+            else:
+                cell_data_type = "text"
+        elif "anyOf" in prop:
             types = [
                 sub_prop.get("type") for sub_prop in prop["anyOf"] if "type" in sub_prop
             ]
@@ -510,6 +569,10 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             "title",
             "cusip",
             "isin",
+            "expiration",
+            "dte",
+            "strike",
+            "option_type",
         ]:
             column_def["pinned"] = "left"
 
@@ -525,12 +588,6 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             "description", prop.get("title", key.title())
         )
         column_def["cellDataType"] = cell_data_type
-        column_def["chartDataType"] = (
-            "series"
-            if cell_data_type in ["number", "integer", "float"]
-            and column_def.get("pinned") != "left"
-            else "category"
-        )
         measurement = prop.get("x-unit_measurement")
 
         if measurement == "percent":
@@ -556,9 +613,50 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         if "date" in column_def["headerTooltip"].lower():
             column_def["cellDataType"] = "date"
 
+        if (
+            route
+            and route.endswith("chains")
+            and column_def.get("field")
+            in [
+                "underlying_symbol",
+                "contract_symbol",
+                "underlying_price",
+                "contract_symbol",
+            ]
+        ):
+            column_def["hide"] = True
+
+        if column_def.get("field") in [
+            "delta",
+            "gamma",
+            "theta",
+            "vega",
+            "rho",
+            "vega",
+            "charm",
+            "vanna",
+            "vomma",
+        ]:
+            column_def["formatterFn"] = "none"
+            if column_def["field"] in ["delta", "theta", "rho"]:
+                column_def["renderFn"] = "greenRed"
+
+        if (
+            route
+            and route.endswith("chains")
+            and column_def["field"] == "implied_volatility"
+        ):
+            column_def["formatterFn"] = "normalizedPercent"
+
+        if column_def.get("field") == "change":
+            column_def["renderFn"] = "greenRed"
+
         if _widget_config := prop.get("x-widget_config", {}):
+
+            if _widget_config.get("exclude"):
+                continue
+
             column_def.update(_widget_config)
 
         column_defs.append(column_def)
-
     return column_defs
