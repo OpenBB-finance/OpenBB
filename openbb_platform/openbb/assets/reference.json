@@ -41463,6 +41463,262 @@
             },
             "model": "CompanyNews"
         },
+        "/regulators/sec/filing_headers": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Download the index headers, and cover page if available, for any SEC filing.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.filing_headers(url=https://www.sec.gov/Archives/edgar/data/317540/000119312524076556/d645509ddef14a.htm, provider='sec')\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL for the SEC filing. The specific URL is not directly used or downloaded, but is used to generate the base URL for the filing. e.g. https://www.sec.gov/Archives/edgar/data/317540/000031754024000045/coke-20240731.htm and https://www.sec.gov/Archives/edgar/data/317540/000031754024000045/ are both valid URLs for the same filing.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Use cache for the index headers and cover page. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[SecFiling]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "base_url",
+                        "type": "str",
+                        "description": "Base URL of the filing.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the entity filing.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "cik",
+                        "type": "str",
+                        "description": "Central Index Key.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "trading_symbols",
+                        "type": "list",
+                        "description": "Trading symbols, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "sic",
+                        "type": "str",
+                        "description": "Standard Industrial Classification.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "sic_organization_name",
+                        "type": "str",
+                        "description": "SIC Organization Name.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "filing_date",
+                        "type": "date",
+                        "description": "Filing date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "Date of the ending period for the filing, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_year_end",
+                        "type": "str",
+                        "description": "Fiscal year end of the entity, if available. Format: MM-DD",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "document_type",
+                        "type": "str",
+                        "description": "Specific SEC filing type.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "has_cover_page",
+                        "type": "bool",
+                        "description": "True if the filing has a cover page.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "Description of attached content, mostly applicable to 8-K filings.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cover_page",
+                        "type": "dict",
+                        "description": "Cover page information, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "document_urls",
+                        "type": "list",
+                        "description": "List of files associated with the filing.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "SecFiling"
+        },
+        "/regulators/sec/htm_file": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Download a raw HTML object from the SEC website.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.htm_file(url=https://www.sec.gov/Archives/edgar/data/1723690/000119312525030074/d866336dex991.htm, provider='sec')\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL for the SEC filing.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Cache the file for use later. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[SecHtmFile]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL of the downloaded file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "content",
+                        "type": "str",
+                        "description": "Raw content of the HTM/HTML file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "SecHtmFile"
+        },
         "/regulators/sec/cik_map": {
             "deprecated": {
                 "flag": null,

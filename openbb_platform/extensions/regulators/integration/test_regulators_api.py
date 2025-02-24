@@ -179,3 +179,51 @@ def test_regulators_cftc_cot(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "url": "https://www.sec.gov/Archives/edgar/data/21344/000155278124000634/",
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_regulators_sec_filing_headers(params, headers):
+    """Test the SEC Filing headers endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/regulators/sec/filing_headers?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "url": "https://www.sec.gov/Archives/edgar/data/1990353/000110465925015513/tm256977d7_ex99-1.htm",
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_regulators_sec_htm_file(params, headers):
+    """Test the SEC HTM File endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/regulators/sec/htm_file?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
