@@ -52,10 +52,11 @@ _app = kwargs.pop("app", None)
 if _app:
     app = _app
 
+WIDGETS_PATH = kwargs.pop("widgets-path", None)
+TEMPLATES_PATH = kwargs.pop("templates-path", None)
+EDITABLE = kwargs.pop("editable", None) is True or WIDGETS_PATH is not None
 
-EDITABLE = kwargs.pop("editable", None) is True
-WIDGETS_PATH = kwargs.pop("widgets_path", None)
-TEMPLATES_PATH = kwargs.pop("templates_path", None)
+
 DEFAULT_TEMPLATES_PATH = (
     Path(__file__)
     .absolute()
@@ -92,7 +93,6 @@ openapi = app.openapi()
 # We don't need the current settings,
 # but we need to call the function to update, login, and/or identify the settings file.
 current_settings = get_user_settings(login, CURRENT_USER_SETTINGS, USER_SETTINGS_COPY)
-
 widgets_json = get_widgets_json(
     build, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH
 )
@@ -115,9 +115,8 @@ TEMPLATES_PATH = (
 async def get_root():
     """Root response and welcome message."""
     return JSONResponse(
-        content="Welcome to the OpenBB Platform API."
-        + " Learn how to connect to Pro in https://docs.openbb.co/pro/custom-backend,"
-        + " and see the API documentation here: /docs, or, /redoc"
+        content="Welcome to the OpenBB Platform API and Custom Workspace Backend."
+        + " Learn how to connect to the OpenBB Workspace here: https://docs.openbb.co/pro/custom-backend,"
     )
 
 
@@ -239,11 +238,12 @@ def launch_api(**_kwargs):  # noqa PRL0912
 
     try:
         package_name = __package__
-        logger.info(
+        _msg = (
             "\nTo access this data from OpenBB Workspace, use the link displayed after the application startup completes."
             "\nChrome is the recommended browser. Other browsers may conflict or require additional configuration."
-            "\nDocumentation is available at /docs."
+            f"\n{f'Documentation is available at {app.docs_url}.' if app.docs_url else ''}"
         )
+        logger.info(_msg)
         uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
     finally:
         # If user_settings_copy.json exists, then restore the original settings.

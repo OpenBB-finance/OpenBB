@@ -94,7 +94,7 @@ def mock_widgets_json():
                     "paramName": "use_cache",
                 },
                 {
-                    "label": "Url",
+                    "label": "URL",
                     "description": "Enter an optional URL path to fetch the next level.",
                     "optional": True,
                     "value": None,
