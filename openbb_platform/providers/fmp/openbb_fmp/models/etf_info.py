@@ -71,13 +71,13 @@ class FMPEtfInfoData(EtfInfoData):
 class FMPEtfInfoFetcher(
     Fetcher[
         FMPEtfInfoQueryParams,
-        List[FMPEtfInfoData],
+        list[FMPEtfInfoData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEtfInfoQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPEtfInfoQueryParams:
         """Transform the query."""
         return FMPEtfInfoQueryParams(**params)
 
@@ -113,7 +113,7 @@ class FMPEtfInfoFetcher(
     @staticmethod
     def transform_data(
         query: FMPEtfInfoQueryParams, data: list[dict], **kwargs: Any
-    ) -> List[FMPEtfInfoData]:
+    ) -> list[FMPEtfInfoData]:
         """Return the transformed data."""
         # Pop the nested dictionaries from the data returned by other endpoints.
         transformed: list[FMPEtfInfoData] = []
