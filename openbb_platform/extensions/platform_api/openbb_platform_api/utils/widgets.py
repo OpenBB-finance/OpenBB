@@ -88,11 +88,17 @@ def deep_merge_configs(
 
 def modify_query_schema(query_schema: list[dict], provider_value: str):
     """Modify query_schema and the description for the current provider."""
+    # pylint: disable=import-outside-toplevel
+    from .openapi import (
+        TO_CAPS_STRINGS,
+    )
+
     modified_query_schema: list = []
     for item in query_schema:
         # copy the item
         _item = deepcopy(item)
         provider_value_options: dict = {}
+        provider_value_widget_config: dict = {}
 
         # Exclude provider parameter. Those will be added last.
         if "parameter_name" in _item and _item["parameter_name"] == "provider":
@@ -133,6 +139,40 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
 
         _item["paramName"] = _item.pop("parameter_name")
 
+        if not _item.get("label") and _item["paramName"] in [
+            "url",
+            "cik",
+            "lei",
+            "cusip",
+            "isin",
+            "sedol",
+        ]:
+            _item["label"] = _item["paramName"].upper()
+
+        if _label := _item.get("label"):
+            _item["label"] = " ".join(
+                [
+                    (word.upper() if word in TO_CAPS_STRINGS else word)
+                    for word in _label.split()
+                ]
+            )
+
+        if "x-widget_config" in _item:
+            provider_value_widget_config = _item.pop("x-widget_config")
+
+        if provider_value in provider_value_widget_config and bool(
+            provider_value_widget_config[provider_value]
+        ):
+
+            if provider_value_widget_config[provider_value].get("exclude"):
+                continue
+
+            _item = deep_merge_configs(
+                _item,
+                provider_value_widget_config[provider_value],
+                ["paramName", "value"],
+            )
+
         modified_query_schema.append(_item)
 
     if provider_value != "custom":
@@ -143,7 +183,9 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
     return modified_query_schema
 
 
-def build_json(openapi: dict, widget_exclude_filter: list):
+def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches
+    openapi: dict, widget_exclude_filter: list
+):
     """Build the widgets.json file."""
     # pylint: disable=import-outside-toplevel
     from .openapi import (
@@ -250,7 +292,6 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                     for word in name.split()
                 ]
             )
-
             modified_query_schema = modify_query_schema(query_schema, provider)
 
             provider_map = {
@@ -304,7 +345,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                     else route[1:] if route[0] == "/" else route
                 ),
                 "runButton": False,
-                "gridData": {"w": 45, "h": 15},
+                "gridData": {"w": 40, "h": 15},
                 "data": {
                     "dataKey": data_key,
                     "table": {
@@ -331,11 +372,65 @@ def build_json(openapi: dict, widget_exclude_filter: list):
             if columns_defs:
                 widget_config["data"]["table"]["columnsDefs"] = columns_defs
 
+            var_key: dict = {}
+
+            if data_config := data_schema_to_columns_defs(
+                openapi, widget_id, provider, route, True
+            ):
+                for key, value in data_config.copy().items():
+                    if key.startswith("$."):
+                        var_key[key] = value
+                        _ = data_config.pop(key)
+                        break
+
+                widget_config["data"] = deep_merge_configs(
+                    widget_config["data"],
+                    data_config,
+                )
+
+            if var_key:
+                for key, value in var_key.items():
+                    if (
+                        key.replace("$.", "") in widget_config_dict
+                        and key != "$.data"
+                        and "columnsDefs" not in key
+                    ):
+                        widget_config_dict.update({key.replace("$.", ""): value})
+                    else:
+                        widget_config_dict[key.replace("$.", "")] = value
+
             # Update the widget configuration with any supplied configurations in @router.command
             if widget_config_dict:
                 widget_config = deep_merge_configs(
                     widget_config,
                     widget_config_dict,
+                )
+
+            if widget_config.get("type") == "metric":
+                widget_config["gridData"]["w"] = (
+                    4
+                    if widget_config["gridData"].get("w") == 40
+                    and "gridData" not in widget_config_dict
+                    else widget_config["gridData"].get("w")
+                )
+                widget_config["gridData"]["h"] = (
+                    5
+                    if widget_config["gridData"].get("h") == 15
+                    and "gridData" not in widget_config_dict
+                    else widget_config["gridData"].get("h")
+                )
+            elif widget_config.get("type") == "pdf":
+                widget_config["gridData"]["w"] = (
+                    20
+                    if widget_config["gridData"].get("w") == 40
+                    and "gridData" not in widget_config_dict
+                    else widget_config["gridData"].get("w")
+                )
+                widget_config["gridData"]["h"] = (
+                    25
+                    if widget_config["gridData"].get("h") == 15
+                    and "gridData" not in widget_config_dict
+                    else widget_config["gridData"].get("h")
                 )
 
             # Add the widget configuration to the widgets.json
@@ -362,7 +457,7 @@ def build_json(openapi: dict, widget_exclude_filter: list):
                 )
                 widget_config_chart["searchCategory"] = "chart"
                 widget_config_chart["gridData"]["h"] = 20
-                widget_config_chart["gridData"]["w"] = 50
+                widget_config_chart["gridData"]["w"] = 40
                 widget_config_chart["defaultViz"] = "chart"
                 widget_config_chart["data"]["dataKey"] = (
                     "chart.content" if data_key else ""
