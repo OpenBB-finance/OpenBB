@@ -118,6 +118,7 @@ class PdfResponseModel(Data):
     @classmethod
     def validate_model(cls, values) -> "PdfResponseModel":
         """Validate the PDF content."""
+        # pylint: disable=import-outside-toplevel
         import base64  # noqa
         from io import BytesIO
 
