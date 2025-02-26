@@ -1,6 +1,6 @@
 # OpenBB Platform API Launcher
 
-This package is responsible for launching and configuring an OpenBB Platform environment, or FastAPI instance, to use as an OpenBB Workspace custom backend.
+This package is responsible for launching and configuring an OpenBB Platform environment, or FastAPI instance, to use as an OpenBB Workspace [custom backend](https://docs.openbb.co/terminal/custom-backend).
 
 ## Installation
 
