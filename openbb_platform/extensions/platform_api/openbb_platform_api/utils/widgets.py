@@ -381,7 +381,6 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches
                     if key.startswith("$."):
                         var_key[key] = value
                         _ = data_config.pop(key)
-                        break
 
                 widget_config["data"] = deep_merge_configs(
                     widget_config["data"],
