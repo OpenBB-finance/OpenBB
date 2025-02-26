@@ -242,7 +242,7 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
         p["x-widget_config"] = widget_configs
 
     else:
-        p["x-widget_config"] = p["x-widget_config"] = (
+        p["x-widget_config"] = (
             widget_configs.get(provider, {}) if provider else widget_configs
         )
 
