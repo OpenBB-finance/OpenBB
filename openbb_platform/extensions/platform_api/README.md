@@ -156,7 +156,7 @@ async def hello() -> list:
 
 This widget displays a label, value, and optional delta.
 
-Create a metric widget, import the custom response model below and define it as a return type.
+To create a metric widget, import the custom response model below and define it as a return type.
 
 ```python
 from openbb_platform_api.response_models import MetricResponseModel
@@ -212,7 +212,7 @@ async def hello_date_range(start: datetime.date, end: datetime.date) -> list:
     return [{"Hello": "Row 1!"}, {"Hello": "Row 2!"}]
 ```
 
-This demonstrates how to define any of the basic widget parameter types in a no-frills way. If you just need something that works, it's an easy starting point.
+This demonstrates how to define any of the basic widget parameter types, in a no-frills way. If you just need something that works, it's an easy starting point.
 
 ```python
 @app.get("/hello_params")
@@ -235,7 +235,7 @@ async def hello_params(
 
 ### Annotated Query Params
 
-Adding helpful placeholder text and tooltips to our parameters requires annotating them. This will also help your code editors and improve the API documentation.
+Adding helpful placeholder text and tooltips to parameters requires annotating them. This will also help code editors and improve the API documentation.
 
 Additional settings, compatible with `widgets.json`, are defined in the `json_schema_extra` dictionary, under a key, `x-widget_config`
 
@@ -275,7 +275,7 @@ async def hello_annotated_params(
 
 The procedure for annotating the output is similar to the query parameters, and involves defining a response model.
 
-A response model is a Data model of Fields. We can create one by defining a new class that inherits from "Data", and then define each column as a "Field".
+A response model is a Data model of Fields. Create one by defining a new class that inherits from "Data", and then define each column as a "Field".
 
 ```python
 from openbb_platform_api.response_models import Data
