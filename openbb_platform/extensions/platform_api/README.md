@@ -368,15 +368,14 @@ async def open_pdf(
 ) -> PdfResponseModel:
     """Open a PDF document from a URL, or local file path."""
     # pylint: disable=import-outside-toplevel
-    import base64  # noqa
-    from pathlib import Path
+    from pathlib import Path  # noqa
     from openbb_core.provider.utils.errors import OpenBBError
     from openbb_core.provider.utils.helpers import get_requests_session
 
     if "://" not in url:
         file_path = Path(url)
         if not file_path.is_file():
-            raise ValueError(f"The file - {url} - does not exist.")
+            raise OpenBBError(f"The file - {url} - does not exist.")
         with open(file_path, "rb") as file:
             pdf = file.read()
     else:
