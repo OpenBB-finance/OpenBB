@@ -396,7 +396,7 @@ async def open_pdf(
 
 ### Custom Plotly Chart
 
-To define a chart widget, we just need to update the widget "type", then return the content from the `Figure.to_plotly_json()` method.
+To define a chart widget, update the widget "type" and return the content from the `Figure.to_plotly_json()` method.
 
 
 ```python
