@@ -54,6 +54,7 @@ TO_CAPS_STRINGS = [
     "Isin",
     "Figi",
     "Cusip",
+    "Pdf",
 ]
 
 
