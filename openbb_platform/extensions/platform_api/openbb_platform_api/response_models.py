@@ -3,7 +3,7 @@
 from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
-from pydantic import ConfigDict, Field, model_serializer, model_validator
+from pydantic import ConfigDict, Field, model_validator
 
 
 class MetricResponseModel(Data):
@@ -33,6 +33,8 @@ class MetricResponseModel(Data):
             "title": "Metric Widget Response Model",
             "x-widget_config": {
                 "$.type": "metric",
+                "$.category": "Metric",
+                "$.searchCategory": "Metric",
             },
         },
     )
@@ -81,11 +83,13 @@ class PdfResponseModel(Data):
     model_config = ConfigDict(
         extra="ignore",
         json_schema_extra={
-            "title": "PDF Widget Response Model",
             "x-widget_config": {
                 "$.type": "pdf",
                 "$.refetchInterval": False,
-            },
+                "$.category": "File",
+                "$.subCategory": "PDF",
+                "$.searchCategory": "File",
+            }
         },
     )
 
@@ -94,7 +98,7 @@ class PdfResponseModel(Data):
         description="The filename of the PDF content.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    content: Optional[bytes] = Field(
+    content: Optional[Union[str, bytes]] = Field(
         default=None,
         description="The PDF content to display in the PDF widget.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
@@ -104,39 +108,41 @@ class PdfResponseModel(Data):
         description="The URL reference to the PDF content.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
+    data_format: Optional[dict] = Field(
+        default=None,
+        description="Leave this field empty. This is populated by the model_validator.",
+        json_schema_extra={"x-widget_config": {"exclude": True}},
+    )
 
-    @model_validator(mode="before")
+    @model_validator(mode="after")
     @classmethod
-    def validate_model(cls, values):
+    def validate_model(cls, values) -> "PdfResponseModel":
         """Validate the PDF content."""
-
-        if not values.get("content") and not values.get("url_reference"):
-            raise ValueError("Either 'content' or 'url_reference' must be provided.")
-
-        if values.get("url_reference") and "://" not in values.get("url_reference"):
-            raise ValueError("Invalid URL reference provided")
-
-        return values
-
-    @model_serializer
-    def model_serialize(self) -> dict:
-        """Serialize the PDF content."""
-        # pylint: disable=import-outside-toplevel
         import base64  # noqa
         from io import BytesIO
 
-        file_reference = None
-        pdf = None
+        content = getattr(values, "content", None)
+        file_reference = getattr(values, "url_reference", None)
+        filename = getattr(values, "filename", "")
 
-        if self.content:
-            pdf = base64.b64encode(BytesIO(self.content).getvalue()).decode("utf-8")
-        elif self.url_reference:
-            file_reference = self.url_reference
+        if not content and not file_reference:
+            raise ValueError("Either 'content' or 'url_reference' must be provided.")
 
-        output = {
-            "data_format": {"data_type": "pdf", "filename": self.filename},
-            "content": pdf,
-            "url_reference": file_reference,
-        }
+        if file_reference and "://" not in file_reference:
+            raise ValueError("Invalid URL reference provided")
 
-        return {k: v for k, v in output.items() if v is not None}
+        if content:
+            pdf = (
+                base64.b64encode(BytesIO(content).getvalue()).decode("utf-8")
+                if isinstance(content, bytes)
+                else content
+            )
+
+        values.content = pdf
+        if file_reference:
+            values.url_reference = file_reference
+        elif hasattr(values, "url_reference"):
+            del values.url_reference
+        values.data_format = {"data_type": "pdf", "filename": filename}
+
+        return values

@@ -154,6 +154,7 @@
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "Survey value.",
                         "cellDataType": "number"
@@ -312,6 +313,7 @@
                     },
                     {
                         "field": "consumer_sentiment",
+                        "formatterFn": null,
                         "headerName": "Consumer Sentiment",
                         "headerTooltip": "Index of the results of the University of Michigan's monthly Survey of Consumers, which is used to estimate future spending and saving.  (1966:Q1=100).",
                         "cellDataType": "number"
@@ -470,54 +472,63 @@
                     },
                     {
                         "field": "activity_index",
+                        "formatterFn": null,
                         "headerName": "Activity Index",
                         "headerTooltip": "Activity Index.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "one_year_outlook",
+                        "formatterFn": null,
                         "headerName": "One Year Outlook",
                         "headerTooltip": "One Year Outlook Index.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "manufacturing_activity",
+                        "formatterFn": null,
                         "headerName": "Manufacturing Activity",
                         "headerTooltip": "Manufacturing Activity Index.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "non_manufacturing_activity",
+                        "formatterFn": null,
                         "headerName": "Non Manufacturing Activity",
                         "headerTooltip": "Non-Manufacturing Activity Index.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "capital_expenditures_expectations",
+                        "formatterFn": null,
                         "headerName": "Capital Expenditures Expectations",
                         "headerTooltip": "Capital Expenditures Expectations Index.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "hiring_expectations",
+                        "formatterFn": null,
                         "headerName": "Hiring Expectations",
                         "headerTooltip": "Hiring Expectations Index.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "current_hiring",
+                        "formatterFn": null,
                         "headerName": "Current Hiring",
                         "headerTooltip": "Current Hiring Index.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "labor_costs",
+                        "formatterFn": null,
                         "headerName": "Labor Costs",
                         "headerTooltip": "Labor Costs Index.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "non_labor_costs",
+                        "formatterFn": null,
                         "headerName": "Non Labor Costs",
                         "headerTooltip": "Non-Labor Costs Index.",
                         "cellDataType": "number"
@@ -743,6 +754,7 @@
                     },
                     {
                         "field": "diffusion_index",
+                        "formatterFn": null,
                         "headerName": "Diffusion Index",
                         "headerTooltip": "Diffusion Index.",
                         "cellDataType": "number"
@@ -911,6 +923,7 @@
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "",
                         "cellDataType": "number"
@@ -946,6 +959,7 @@
                     },
                     {
                         "field": "level",
+                        "formatterFn": "int",
                         "headerName": "Level",
                         "headerTooltip": "The indentation level of the element.",
                         "cellDataType": "number"
@@ -1281,6 +1295,7 @@
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "CPI index value or period change.",
                         "cellDataType": "number"
@@ -1556,30 +1571,35 @@
                     },
                     {
                         "field": "balance_total",
+                        "formatterFn": null,
                         "headerName": "Balance Total",
                         "headerTooltip": "Current Account Total Balance (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "balance_total_services",
+                        "formatterFn": null,
                         "headerName": "Balance Total Services",
                         "headerTooltip": "Current Account Total Services Balance (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "balance_total_secondary_income",
+                        "formatterFn": null,
                         "headerName": "Balance Total Secondary Income",
                         "headerTooltip": "Current Account Total Secondary Income Balance (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "balance_total_goods",
+                        "formatterFn": null,
                         "headerName": "Balance Total Goods",
                         "headerTooltip": "Current Account Total Goods Balance (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "balance_total_primary_income",
+                        "formatterFn": null,
                         "headerName": "Balance Total Primary Income",
                         "headerTooltip": "Current Account Total Primary Income Balance (USD)",
                         "cellDataType": "number"
@@ -1602,30 +1622,35 @@
                     },
                     {
                         "field": "credits_total_services",
+                        "formatterFn": null,
                         "headerName": "Credits Total Services",
                         "headerTooltip": "Current Account Credits Total Services (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "credits_total_goods",
+                        "formatterFn": null,
                         "headerName": "Credits Total Goods",
                         "headerTooltip": "Current Account Credits Total Goods (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "credits_total_primary_income",
+                        "formatterFn": null,
                         "headerName": "Credits Total Primary Income",
                         "headerTooltip": "Current Account Credits Total Primary Income (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "credits_total_secondary_income",
+                        "formatterFn": null,
                         "headerName": "Credits Total Secondary Income",
                         "headerTooltip": "Current Account Credits Total Secondary Income (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "credits_total",
+                        "formatterFn": null,
                         "headerName": "Credits Total",
                         "headerTooltip": "Current Account Credits Total (USD)",
                         "cellDataType": "number"
@@ -1648,30 +1673,35 @@
                     },
                     {
                         "field": "debits_total_services",
+                        "formatterFn": null,
                         "headerName": "Debits Total Services",
                         "headerTooltip": "Current Account Debits Total Services (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "debits_total_goods",
+                        "formatterFn": null,
                         "headerName": "Debits Total Goods",
                         "headerTooltip": "Current Account Debits Total Goods (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "debits_total_primary_income",
+                        "formatterFn": null,
                         "headerName": "Debits Total Primary Income",
                         "headerTooltip": "Current Account Debits Total Primary Income (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "debits_total",
+                        "formatterFn": null,
                         "headerName": "Debits Total",
                         "headerTooltip": "Current Account Debits Total (USD)",
                         "cellDataType": "number"
                     },
                     {
                         "field": "debits_total_secondary_income",
+                        "formatterFn": null,
                         "headerName": "Debits Total Secondary Income",
                         "headerTooltip": "Current Account Debits Total Secondary Income (USD)",
                         "cellDataType": "number"
@@ -1813,6 +1843,7 @@
                 "columnsDefs": [
                     {
                         "field": "release_id",
+                        "formatterFn": null,
                         "headerName": "Release ID",
                         "headerTooltip": "The release ID for queries.",
                         "cellDataType": "number"
@@ -1927,12 +1958,14 @@
                     },
                     {
                         "field": "popularity",
+                        "formatterFn": null,
                         "headerName": "Popularity",
                         "headerTooltip": "Popularity of the series",
                         "cellDataType": "number"
                     },
                     {
                         "field": "group_popularity",
+                        "formatterFn": null,
                         "headerName": "Group Popularity",
                         "headerTooltip": "Group popularity of the release",
                         "cellDataType": "number"
@@ -1946,6 +1979,7 @@
                     },
                     {
                         "field": "series_group",
+                        "formatterFn": null,
                         "headerName": "Series Group",
                         "headerTooltip": "The series group ID of the series. This value is used to query for regional data.",
                         "cellDataType": "number"
@@ -2449,6 +2483,7 @@
                     },
                     {
                         "field": "level",
+                        "formatterFn": null,
                         "headerName": "Level",
                         "headerTooltip": "The indentation level of the element.",
                         "cellDataType": "number"
@@ -2462,6 +2497,7 @@
                     },
                     {
                         "field": "line",
+                        "formatterFn": null,
                         "headerName": "Line",
                         "headerTooltip": "The line number of the element.",
                         "cellDataType": "number"
@@ -2505,6 +2541,7 @@
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "The reported value of the series.",
                         "cellDataType": "number"
@@ -2810,12 +2847,14 @@
                     },
                     {
                         "field": "code",
+                        "formatterFn": null,
                         "headerName": "Code",
                         "headerTooltip": "The code of the region.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "The obersvation value. The units are defined in the search results by series ID.",
                         "cellDataType": "number"
@@ -3025,6 +3064,7 @@
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "Price, or change in price, per unit.",
                         "cellDataType": "number"
@@ -3133,6 +3173,7 @@
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "",
                         "cellDataType": "number"
@@ -3168,12 +3209,14 @@
                     },
                     {
                         "field": "level",
+                        "formatterFn": "int",
                         "headerName": "Level",
                         "headerTooltip": "The indentation level of the element.",
                         "cellDataType": "number"
                     },
                     {
                         "field": "line",
+                        "formatterFn": "int",
                         "headerName": "Line",
                         "headerTooltip": "The line number of the series in the table.",
                         "cellDataType": "number"
@@ -3230,6 +3273,7 @@
                 "columnsDefs": [
                     {
                         "field": "cik",
+                        "formatterFn": null,
                         "headerName": "CIK",
                         "headerTooltip": "Central Index Key (CIK) for the requested entity.",
                         "cellDataType": "text"
@@ -3294,6 +3338,7 @@
                     },
                     {
                         "field": "cik_number",
+                        "formatterFn": null,
                         "headerName": "CIK Number",
                         "headerTooltip": "Central Index Key (CIK)",
                         "cellDataType": "number"
@@ -3546,6 +3591,7 @@
                 "columnsDefs": [
                     {
                         "field": "sic_code",
+                        "formatterFn": "int",
                         "headerName": "SIC Code",
                         "headerTooltip": "Sector Industrial Code (SIC)",
                         "cellDataType": "number"
