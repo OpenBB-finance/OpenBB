@@ -380,11 +380,10 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches
                 for key, value in data_config.copy().items():
                     if key.startswith("$."):
                         var_key[key] = value
-                        _ = data_config.pop(key)
 
                 widget_config["data"] = deep_merge_configs(
                     widget_config["data"],
-                    data_config,
+                    {k: v for k, v in data_config.items() if not k.startswith("$.")},
                 )
 
             if var_key:

@@ -511,7 +511,7 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         prop = target_schema.get("properties", {}).get(key)
         # Handle prop types for both when there's a single prop type or multiple
         if "items" in prop:
-            items = prop.pop("items", {})
+            items = prop.get("items", {})
             items = items.get("anyOf", items)
             prop["anyOf"] = items if isinstance(items, list) else [items]
             types = [
