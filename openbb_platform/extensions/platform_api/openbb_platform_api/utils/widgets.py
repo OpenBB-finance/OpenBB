@@ -161,7 +161,10 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
             provider_value_widget_config = _item.pop("x-widget_config")
             _item.update(provider_value_widget_config)
 
-        if provider_value in provider_value_widget_config:
+        if (
+            provider_value_widget_config
+            and provider_value in provider_value_widget_config
+        ):
 
             if provider_value_widget_config[provider_value].get("exclude"):
                 continue

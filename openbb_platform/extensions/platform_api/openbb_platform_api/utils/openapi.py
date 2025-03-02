@@ -159,7 +159,8 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
                 available_providers.add(provider)
             if provider in p_schema:
                 provider_choices = p_schema[provider].get("choices", [])
-                widget_configs[provider] = p_schema[provider].get("x-widget_config", {})
+                if widget_def := p_schema[provider].get("x-widget_config"):
+                    widget_configs[provider] = widget_def
             elif len(providers) == 1 and "enum" in p_schema:
                 provider_choices = p_schema["enum"]
                 p_schema.pop("enum")
