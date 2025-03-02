@@ -308,13 +308,14 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
                 .strip()
             )
 
+        if widget_config := param["schema"].get("x-widget_config", {}):
+            p["x-widget_config"] = widget_config
+
         return p
 
     p_schema = param.get("schema", {})
     p["value"] = p_schema.get("default", None)
-
     p = set_parameter_options(p, p_schema, providers)
-
     p = set_parameter_type(p, p_schema)
 
     if title := p_schema.get("title", ""):
@@ -356,7 +357,8 @@ def get_query_schema_for_widget(
     params = command.get("parameters", [])
     route_params: list[dict] = []
     providers: list[str] = extract_providers(params)
-
+    if not providers:
+        providers = ["custom"]
     for param in params:
         if param["name"] in ["sort", "order"]:
             continue
@@ -365,7 +367,8 @@ def get_query_schema_for_widget(
             continue
 
         p = process_parameter(param, providers)
-        p["show"] = True
+        if "show" not in p:
+            p["show"] = True
         route_params.append(p)
 
     return route_params, has_chart

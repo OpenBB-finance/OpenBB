@@ -278,7 +278,8 @@ def get_widgets_json(
 def import_app(app_path: str, name: str = "app", factory: bool = False):
     """Import the FastAPI app instance from a local file."""
     # pylint: disable=import-outside-toplevel
-    from fastapi import FastAPI  # noqa
+    import sys  # noqa
+    from fastapi import FastAPI
     from fastapi.middleware.cors import CORSMiddleware
     from importlib import util
     from openbb_core.api.app_loader import AppLoader
@@ -291,12 +292,14 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
     if not Path(app_path).exists():
         raise FileNotFoundError(f"Error: The app file '{app_path}' does not exist")
 
-    spec = util.spec_from_file_location("app", app_path)
+    spec_name = os.path.basename(app_path).split(".")[0]
+    spec = util.spec_from_file_location(spec_name, app_path)
 
     if spec is None:
         raise RuntimeError(f"Failed to load the file specs for '{app_path}'")
 
     module = util.module_from_spec(spec)  # type: ignore
+    sys.modules[spec_name] = module  # type: ignore
     spec.loader.exec_module(module)  # type: ignore
 
     if not hasattr(module, name):
