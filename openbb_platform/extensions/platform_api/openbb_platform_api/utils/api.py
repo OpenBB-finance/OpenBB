@@ -278,8 +278,7 @@ def get_widgets_json(
 def import_app(app_path: str, name: str = "app", factory: bool = False):
     """Import the FastAPI app instance from a local file."""
     # pylint: disable=import-outside-toplevel
-    import sys  # noqa
-    from fastapi import FastAPI
+    from fastapi import FastAPI  # noqa
     from fastapi.middleware.cors import CORSMiddleware
     from importlib import util
     from openbb_core.api.app_loader import AppLoader
