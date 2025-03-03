@@ -374,6 +374,9 @@ def parse_args():
     if _kwargs.get("copilots-path"):
         _copilots_path = _kwargs.pop("copilots-path", None)
 
+        if not str(_copilots_path).endswith("copilots.json"):
+            _copilots_path = f"{_copilots_path}{'' if _copilots_path.endswith('/') else '/'}copilots.json"
+
         if not str(_copilots_path).startswith("/"):
             _copilots_path = str(cwd.joinpath(_copilots_path).resolve())
 

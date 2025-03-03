@@ -54,6 +54,7 @@ TO_CAPS_STRINGS = [
     "Isin",
     "Figi",
     "Cusip",
+    "Pdf",
 ]
 
 
@@ -241,7 +242,7 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
         p["x-widget_config"] = widget_configs
 
     else:
-        p["x-widget_config"] = p["x-widget_config"] = (
+        p["x-widget_config"] = (
             widget_configs.get(provider, {}) if provider else widget_configs
         )
 
@@ -597,8 +598,6 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
                 else "percent"
             )
             column_def["renderFn"] = "greenRed"
-        elif cell_data_type == "number":
-            del column_def["formatterFn"]
 
         if k in ["cik", "isin", "figi", "cusip", "sedol", "symbol"]:
             column_def["cellDataType"] = "text"
