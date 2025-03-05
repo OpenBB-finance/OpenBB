@@ -159,7 +159,8 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
                 available_providers.add(provider)
             if provider in p_schema:
                 provider_choices = p_schema[provider].get("choices", [])
-                widget_configs[provider] = p_schema[provider].get("x-widget_config", {})
+                if widget_def := p_schema[provider].get("x-widget_config"):
+                    widget_configs[provider] = widget_def
             elif len(providers) == 1 and "enum" in p_schema:
                 provider_choices = p_schema["enum"]
                 p_schema.pop("enum")
@@ -308,13 +309,14 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
                 .strip()
             )
 
+        if widget_config := param["schema"].get("x-widget_config", {}):
+            p["x-widget_config"] = widget_config
+
         return p
 
     p_schema = param.get("schema", {})
     p["value"] = p_schema.get("default", None)
-
     p = set_parameter_options(p, p_schema, providers)
-
     p = set_parameter_type(p, p_schema)
 
     if title := p_schema.get("title", ""):
@@ -356,7 +358,8 @@ def get_query_schema_for_widget(
     params = command.get("parameters", [])
     route_params: list[dict] = []
     providers: list[str] = extract_providers(params)
-
+    if not providers:
+        providers = ["custom"]
     for param in params:
         if param["name"] in ["sort", "order"]:
             continue
@@ -365,7 +368,8 @@ def get_query_schema_for_widget(
             continue
 
         p = process_parameter(param, providers)
-        p["show"] = True
+        if "show" not in p:
+            p["show"] = True
         route_params.append(p)
 
     return route_params, has_chart
@@ -511,7 +515,7 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         prop = target_schema.get("properties", {}).get(key)
         # Handle prop types for both when there's a single prop type or multiple
         if "items" in prop:
-            items = prop.pop("items", {})
+            items = prop.get("items", {})
             items = items.get("anyOf", items)
             prop["anyOf"] = items if isinstance(items, list) else [items]
             types = [

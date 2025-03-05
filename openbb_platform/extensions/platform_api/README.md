@@ -167,6 +167,8 @@ async def hello_metric() -> MetricResponseModel:
     return MetricResponseModel(label="Good Vibes Score", value=100, delta="1%")
 ```
 
+This type of widget can be created as an array of MetricResponseModels. Adjust the response to be a `list[MetricRespnoseModel]`
+
 ### Query Parameters
 
 Function arguments will populate as widget parameters.

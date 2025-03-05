@@ -291,12 +291,14 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
     if not Path(app_path).exists():
         raise FileNotFoundError(f"Error: The app file '{app_path}' does not exist")
 
-    spec = util.spec_from_file_location("app", app_path)
+    spec_name = os.path.basename(app_path).split(".")[0]
+    spec = util.spec_from_file_location(spec_name, app_path)
 
     if spec is None:
         raise RuntimeError(f"Failed to load the file specs for '{app_path}'")
 
     module = util.module_from_spec(spec)  # type: ignore
+    sys.modules[spec_name] = module  # type: ignore
     spec.loader.exec_module(module)  # type: ignore
 
     if not hasattr(module, name):
