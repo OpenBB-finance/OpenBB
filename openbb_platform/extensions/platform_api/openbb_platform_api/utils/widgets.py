@@ -159,9 +159,11 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
 
         if "x-widget_config" in _item:
             provider_value_widget_config = _item.pop("x-widget_config")
+            _item.update(provider_value_widget_config)
 
-        if provider_value in provider_value_widget_config and bool(
-            provider_value_widget_config[provider_value]
+        if (
+            provider_value_widget_config
+            and provider_value in provider_value_widget_config
         ):
 
             if provider_value_widget_config[provider_value].get("exclude"):
@@ -380,11 +382,10 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches
                 for key, value in data_config.copy().items():
                     if key.startswith("$."):
                         var_key[key] = value
-                        _ = data_config.pop(key)
 
                 widget_config["data"] = deep_merge_configs(
                     widget_config["data"],
-                    data_config,
+                    {k: v for k, v in data_config.items() if not k.startswith("$.")},
                 )
 
             if var_key:
