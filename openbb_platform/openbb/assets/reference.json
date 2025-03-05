@@ -1,9 +1,9 @@
 {
-    "openbb": "4.4.0",
+    "openbb": "4.4.1",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.4.0",
+        "core": "1.4.2",
         "extensions": {
             "openbb_core_extension": [
                 "commodity@1.3.0",
@@ -13,10 +13,10 @@
                 "economy@1.4.0",
                 "equity@1.4.0",
                 "etf@1.4.0",
-                "fixedincome@1.4.1",
+                "fixedincome@1.4.2",
                 "index@1.4.0",
                 "news@1.4.0",
-                "regulators@1.4.0"
+                "regulators@1.4.1"
             ],
             "openbb_provider_extension": [
                 "benzinga@1.4.0",
@@ -24,17 +24,17 @@
                 "cftc@1.1.0",
                 "econdb@1.3.0",
                 "federal_reserve@1.4.0",
-                "fmp@1.4.0",
-                "fred@1.4.0",
+                "fmp@1.4.1",
+                "fred@1.4.1",
                 "imf@1.1.0",
                 "intrinio@1.4.0",
                 "oecd@1.4.0",
                 "polygon@1.4.0",
-                "sec@1.4.0",
+                "sec@1.4.1",
                 "tiingo@1.4.0",
                 "tradingeconomics@1.4.0",
                 "us_eia@1.1.0",
-                "yfinance@1.4.0"
+                "yfinance@1.4.1"
             ],
             "openbb_obbject_extension": []
         }
@@ -5686,7 +5686,56 @@
                         "description": "The country to get data. Enter as a 3-letter ISO country code, default is USA.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": "argentina,australia,austria,belgium,brazil,canada,chile,china,colombia,costa_rica,czechia,denmark,estonia,finland,france,germany,greece,hungary,iceland,india,indonesia,ireland,israel,italy,japan,korea,latvia,lithuania,luxembourg,mexico,netherlands,new_zealand,norway,poland,portugal,russia,saudi_arabia,slovak_republic,slovenia,south_africa,spain,sweden,switzerland,turkey,united_kingdom,united_states,g7,g20"
+                        "choices": [
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "china",
+                            "colombia",
+                            "costa_rica",
+                            "czechia",
+                            "denmark",
+                            "estonia",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "poland",
+                            "portugal",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "g7",
+                            "g20"
+                        ]
                     },
                     {
                         "name": "start_date",
@@ -11705,7 +11754,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Copmare reported company facts and fundamental data points.",
+            "description": "Compare reported company facts and fundamental data points.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.compare.company_facts(provider='sec')\nobb.equity.compare.company_facts(provider='sec', fact='PaymentsForRepurchaseOfCommonStock', year=2023)\nobb.equity.compare.company_facts(provider='sec', symbol='NVDA,AAPL,AMZN,MSFT,GOOG,SMCI', fact='RevenueFromContractWithCustomerExcludingAssessedTax', year=2024)\n```\n\n",
             "parameters": {
                 "standard": [
