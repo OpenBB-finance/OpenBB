@@ -100,5 +100,5 @@ async def company_facts(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Copmare reported company facts and fundamental data points."""
+    """Compare reported company facts and fundamental data points."""
     return await OBBject.from_query(Query(**locals()))

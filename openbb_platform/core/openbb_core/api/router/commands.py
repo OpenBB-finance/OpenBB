@@ -247,9 +247,10 @@ def build_api_wrapper(
         execute = partial(command_runner.run, path, user_settings)
         output = await execute(*args, **kwargs)
 
-        if no_validate is True:
-            return output
-        return validate_output(output)
+        if isinstance(output, OBBject) and not no_validate:
+            return validate_output(output)
+
+        return output
 
     return wrapper
 

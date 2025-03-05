@@ -1,6 +1,6 @@
 """Technical Analysis class for Plotly."""
 
-# pylint: disable=R0902,R0916,R0912  # type: ignore[index, assignment]
+# pylint: disable=R0902,R0916,R0912,R0917  # type: ignore[index, assignment]
 
 import importlib
 import inspect
@@ -532,7 +532,6 @@ class PlotlyTA(PltTA):
                 warnings.warn(f"[bold red]Error plotting {indicator}: {e}[/]")
                 continue
 
-        figure.update(fig_new)
         for row in range(0, subplot_row + 1):
             figure.update_yaxes(
                 row=row,

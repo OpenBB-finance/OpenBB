@@ -28,11 +28,17 @@ from pydantic import Field, field_validator
 class FredBalanceOfPaymentsQueryParams(BalanceOfPaymentsQueryParams):
     """FRED Balance Of Payments Query Parameters."""
 
+    __json_schema_extra__ = {
+        "country": {
+            "multiple_items_allowed": False,
+            "choices": list(BOP_COUNTRIES),
+        }
+    }
+
     country: BOP_COUNTRY_CHOICES = Field(
         default="united_states",
         description=QUERY_DESCRIPTIONS.get("country", "")
         + " Enter as a 3-letter ISO country code, default is USA.",
-        json_schema_extra={"choices": ",".join(list(BOP_COUNTRIES))},
     )
     start_date: Optional[dateType] = Field(
         default=None,

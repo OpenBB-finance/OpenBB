@@ -1,9 +1,12 @@
 """Credentials model and its utilities."""
 
+import json
 import traceback
 import warnings
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.provider_interface import ProviderInterface
@@ -37,7 +40,7 @@ class CredentialsLoader:
 
     credentials: Dict[str, List[str]] = {}
 
-    def format_credentials(self) -> Dict[str, Tuple[object, None]]:
+    def format_credentials(self, additional: dict) -> Dict[str, Tuple[object, None]]:
         """Prepare credentials map to be used in the Credentials model."""
         formatted: Dict[str, Tuple[object, None]] = {}
         for c_origin, c_list in self.credentials.items():
@@ -51,6 +54,15 @@ class CredentialsLoader:
                 formatted[c_name] = (
                     Optional[OBBSecretStr],
                     Field(default=None, description=c_origin, alias=c_name.upper()),
+                )
+
+        if additional:
+            for key, value in additional.items():
+                if key in formatted:
+                    continue
+                formatted[key] = (
+                    Optional[OBBSecretStr],
+                    Field(default=value, description=key, alias=key.upper()),
                 )
 
         return dict(sorted(formatted.items()))
@@ -85,10 +97,19 @@ class CredentialsLoader:
         # We load providers first to give them priority choosing credential names
         self.from_providers()
         self.from_obbject()
+        path = Path(USER_SETTINGS_PATH)
+        additional: dict = {}
+
+        if path.exists():
+            with open(USER_SETTINGS_PATH, encoding="utf-8") as f:
+                data = json.load(f)
+                if "credentials" in data:
+                    additional = data["credentials"]
+
         model = create_model(
             "Credentials",
             __config__=ConfigDict(validate_assignment=True, populate_by_name=True),
-            **self.format_credentials(),  # type: ignore
+            **self.format_credentials(additional),  # type: ignore
         )
         model.origins = self.credentials
         return model
@@ -99,6 +120,8 @@ _Credentials = CredentialsLoader().load()
 
 class Credentials(_Credentials):  # type: ignore
     """Credentials model used to store provider credentials."""
+
+    model_config = ConfigDict(extra="allow")
 
     def __repr__(self) -> str:
         """Define the string representation of the credentials."""
