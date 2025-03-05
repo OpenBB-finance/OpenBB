@@ -322,6 +322,22 @@ files = [
 dev = ["backports.zoneinfo ; python_version < \"3.9\"", "freezegun (>=1.0,<2.0)", "jinja2 (>=3.0)", "pytest (>=6.0)", "pytest-cov", "pytz", "setuptools", "tzdata ; sys_platform == \"win32\""]
 
 [[package]]
+name = "babel"
+version = "2.17.0"
+description = "Internationalization utilities"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
+files = [
+    {file = "babel-2.17.0-py3-none-any.whl", hash = "sha256:4d0b53093fdfb4b21c92b5213dba5a1b23885afa8383709427046b21c366e5f2"},
+    {file = "babel-2.17.0.tar.gz", hash = "sha256:0c54cffb19f690cdcc52a3b50bcbf71e07a808d1c80d549f2459b9d2cf0afb9d"},
+]
+
+[package.extras]
+dev = ["backports.zoneinfo", "freezegun (>=1.0,<2.0)", "jinja2 (>=3.0)", "pytest (>=6.0)", "pytest-cov", "pytz", "setuptools", "tzdata"]
+
+[[package]]
 name = "backoff"
 version = "2.2.1"
 description = "Function decoration for backoff and retry"
@@ -1050,6 +1066,31 @@ urllib3 = ">=1.26,<3"
 all = ["htmldate[dev]", "htmldate[speed]"]
 dev = ["black", "flake8", "mypy", "pytest", "pytest-cov", "types-dateparser", "types-lxml", "types-python-dateutil", "types-urllib3"]
 speed = ["backports-datetime-fromisoformat ; python_version < \"3.11\"", "faust-cchardet (>=2.1.19)", "urllib3[brotli]"]
+
+[[package]]
+name = "htmldate"
+version = "1.9.3"
+description = "Fast and robust extraction of original and updated publication dates from URLs and web pages."
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
+files = [
+    {file = "htmldate-1.9.3-py3-none-any.whl", hash = "sha256:3fadc422cf3c10a5cdb5e1b914daf37ec7270400a80a1b37e2673ff84faaaff8"},
+    {file = "htmldate-1.9.3.tar.gz", hash = "sha256:ac0caf4628c3ded4042011e2d60dc68dfb314c77b106587dd307a80d77e708e9"},
+]
+
+[package.dependencies]
+charset_normalizer = ">=3.4.0"
+dateparser = ">=1.1.2"
+lxml = {version = ">=5.3.0,<6", markers = "platform_system != \"Darwin\" or python_version > \"3.8\""}
+python-dateutil = ">=2.9.0.post0"
+urllib3 = ">=1.26,<3"
+
+[package.extras]
+all = ["htmldate[dev]", "htmldate[speed]"]
+dev = ["black", "flake8", "mypy", "pytest", "pytest-cov", "types-dateparser", "types-lxml", "types-python-dateutil", "types-urllib3"]
+speed = ["backports-datetime-fromisoformat", "faust-cchardet (>=2.1.19)", "urllib3[brotli]"]
 
 [[package]]
 name = "idna"
