@@ -54,7 +54,6 @@ The app instance name can be defined by either the --name argument, or by refere
 
 A name must be set when using the factory flag.
 
-
 All other arguments will be passed to uvicorn. Here are the most common ones:
 
     --host TEXT                     Host IP address or hostname.
