@@ -114,14 +114,13 @@ async def get_custom_screener(
 
     results.extend(res["quotes"])
     total_results = res["total"]
-    results.extend(res["quotes"])
 
     while len(results) < total_results:
         if limit is not None and len(results) >= limit:
             break
         offset = len(results)
         body["offset"] = offset
-        res = _data.post(
+        response = _data.post(
             "https://query2.finance.yahoo.com/v1/finance/screener",
             body=body,
             user_agent_headers=_data.user_agent_headers,
@@ -130,6 +129,7 @@ async def get_custom_screener(
         )
         if not res:
             break
+        res = response.json()["finance"]["result"][0]
         results.extend(res.get("quotes", []))
 
     output: list = []
@@ -186,7 +186,6 @@ async def get_defined_screener(
     if not response.get("quotes"):
         raise EmptyDataError("No data found for the predefined screener.")
 
-    results.extend(response["quotes"])
     total_results = response["total"]
     results.extend(response["quotes"])
 

@@ -70,7 +70,7 @@ function App() {
             globals.old_margin = { ...margin };
             if (margin.t !== undefined && margin.t > 40) margin.t = 40;
 
-            if (data.cmd === "/stocks/candle") margin.r -= 50;
+            if (data.cmd === "/equity/price/historical") margin.r -= 50;
           }
       });
     }
@@ -85,7 +85,7 @@ function App() {
       }
     });
 
-    const title = data.layout?.title?.text || "Interactive Chart";
+    const title = data.layout?.title?.text || "OpenBB Platform";
     globals.title = title;
     return {
       data: data,

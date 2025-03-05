@@ -1,5 +1,7 @@
 """FMP ETF Search Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -12,6 +14,13 @@ from pydantic import Field
 
 class FMPEtfSearchQueryParams(EtfSearchQueryParams):
     """FMP ETF Search Query."""
+
+    __json_schema_extra__ = {
+        "exchange": {
+            "multiple_items_allowed": False,
+            "choices": ["AMEX", "NYSE", "NASDAQ", "ETF", "TSX", "EURONEXT"],
+        }
+    }
 
     exchange: Optional[Literal["AMEX", "NYSE", "NASDAQ", "ETF", "TSX", "EURONEXT"]] = (
         Field(

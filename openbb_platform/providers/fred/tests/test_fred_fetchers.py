@@ -55,9 +55,6 @@ from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
 from openbb_fred.models.tips_yields import FredTipsYieldsFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
 from openbb_fred.models.university_of_michigan import FredUofMichiganFetcher
-from openbb_fred.models.us_yield_curve import (
-    FREDYieldCurveFetcher as FREDUSYieldCurveFetcher,
-)
 from openbb_fred.models.yield_curve import FREDYieldCurveFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -82,16 +79,6 @@ def test_fredcpi_fetcher(credentials=test_credentials):
     params = {"country": "portugal,spain"}
 
     fetcher = FREDConsumerPriceIndexFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_fred_us_yield_curve_fetcher(credentials=test_credentials):
-    """Test FREDUSYieldCurveFetcher."""
-    params = {"date": datetime.date(2024, 6, 20)}
-
-    fetcher = FREDUSYieldCurveFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

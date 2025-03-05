@@ -207,25 +207,26 @@ frequency_dict = {
 class FredRetailPricesQueryParams(RetailPricesQueryParams):
     """FRED Retail Prices Query Parameters."""
 
+    __json_schema_extra__ = {
+        "item": {"multiple_items_allowed": False, "choices": ALL_ITEMS},
+        "country": {"multiple_items_allowed": False, "choices": ["united_states"]},
+    }
+
     item: AllItems = Field(
         default="fuel",
         description="The item or basket of items to query.",
-        json_schema_extra={"choices": ALL_ITEMS},
     )
     country: Literal["united_states"] = Field(
         default="united_states",
         description=QUERY_DESCRIPTIONS.get("country", ""),
-        json_schema_extra={"choices": "united_states"},
     )
     region: Regions = Field(
         default="all_city",
         description="The region to get average price levels for.",
-        json_schema_extra={"choices": REGIONS},
     )
     frequency: Literal["annual", "quarter", "monthly"] = Field(
         default="monthly",
         description=QUERY_DESCRIPTIONS.get("frequency"),
-        json_schema_extra={"choices": ["annual", "quarter", "monthly"]},
     )
     transform: Union[
         None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
@@ -243,9 +244,6 @@ class FredRetailPricesQueryParams(RetailPricesQueryParams):
             cca = Continuously Compounded Annual Rate of Change
             log = Natural Log
         """,
-        json_schema_extra={
-            "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-        },
     )
 
     @field_validator("item", mode="before", check_fields=False)

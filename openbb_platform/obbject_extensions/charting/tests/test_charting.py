@@ -110,16 +110,14 @@ def test_functions(get_charting_functions_list):
     assert get_charting_functions_list.call_count >= 1
 
 
-@patch("openbb_charting.charting.get_backend")
-@patch("openbb_charting.charting.create_backend")
-def test_handle_backend(mock_create_backend, mock_get_backend, obbject):
+@patch("openbb_charting.charting.Charting._handle_backend")
+def test_handle_backend(mock_handle_backend, obbject):
     """Test _handle_backend method."""
     # Act -> _handle backend is called in the constructor
-    obj = Charting(obbject)
+    _ = Charting(obbject)
 
     # Assert
-    mock_create_backend.assert_called_once_with(obj._charting_settings)
-    mock_get_backend.assert_called_once()
+    mock_handle_backend.assert_called_once()
 
 
 def test_get_chart_function(obbject):

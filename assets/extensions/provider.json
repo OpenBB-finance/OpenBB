@@ -68,6 +68,15 @@
         "instructions": "Credentials are not required, but your IP address may be subject to throttling limits.\n    API requests made using an application token are not throttled.\n    Create an account here: https://evergreen.data.socrata.com/signup\n    and then generate the app_token by signing in with the credentials\n    here: https://publicreporting.cftc.gov/profile/edit/developer_settings."
     },
     {
+        "packageName": "openbb-deribit",
+        "optional": true,
+        "reprName": "Deribit Public Data",
+        "description": "Unofficial Python client for public data published by Deribit.",
+        "credentials": [],
+        "website": "https://deribit.com/",
+        "instructions": "This provider does not require any credentials and is not meant for trading."
+    },
+    {
         "packageName": "openbb-ecb",
         "optional": true,
         "reprName": "European Central Bank (ECB)",

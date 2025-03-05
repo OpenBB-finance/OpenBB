@@ -160,11 +160,14 @@ class ExtensionLoader(metaclass=SingletonMeta):
             # pylint: disable=import-outside-toplevel
             from openbb_core.provider.abstract.provider import Provider
 
-            return {
-                ep.name: entry
-                for ep in eps
-                if isinstance((entry := ep.load()), Provider)
-            }
+            entries: dict = {}
+            for ep in eps:
+                try:
+                    if isinstance((entry := ep.load()), Provider):
+                        entries[ep.name] = entry
+                except ModuleNotFoundError:
+                    continue
+            return entries
 
         func = {
             OpenBBGroups.obbject: load_obbject,

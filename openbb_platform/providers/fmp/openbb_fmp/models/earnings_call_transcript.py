@@ -10,7 +10,6 @@ from openbb_core.provider.standard_models.earnings_call_transcript import (
     EarningsCallTranscriptData,
     EarningsCallTranscriptQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_requests
 from pydantic import field_validator
 
 
@@ -56,6 +55,9 @@ class FMPEarningsCallTranscriptFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
         years = query.year.split(",") if isinstance(query.year, str) else [query.year]
@@ -68,12 +70,14 @@ class FMPEarningsCallTranscriptFetcher(
             )
             return url
 
-        urls: List = []
+        results: list = []
         for symbol in symbols:
             for year in years:
-                urls.append(generate_url(symbol, year))
+                response = await get_data(generate_url(symbol, year), **kwargs)
+                if isinstance(response, list):
+                    results.extend(response)
 
-        return await amake_requests(urls, **kwargs)  # type: ignore
+        return results
 
     @staticmethod
     def transform_data(
