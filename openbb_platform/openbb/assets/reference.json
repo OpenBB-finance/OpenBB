@@ -1,40 +1,40 @@
 {
-    "openbb": "4.3.5",
+    "openbb": "4.4.0",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.3.7",
+        "core": "1.4.0",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.2.6",
-                "crypto@1.3.5",
-                "currency@1.3.5",
-                "derivatives@1.3.5",
-                "economy@1.3.5",
-                "equity@1.3.5",
-                "etf@1.3.5",
-                "fixedincome@1.3.5",
-                "index@1.3.5",
-                "news@1.3.5",
-                "regulators@1.3.5"
+                "commodity@1.3.0",
+                "crypto@1.4.0",
+                "currency@1.4.0",
+                "derivatives@1.4.0",
+                "economy@1.4.0",
+                "equity@1.4.0",
+                "etf@1.4.0",
+                "fixedincome@1.4.1",
+                "index@1.4.0",
+                "news@1.4.0",
+                "regulators@1.4.0"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.3.5",
-                "bls@1.0.3",
-                "cftc@1.0.3",
-                "econdb@1.2.5",
-                "federal_reserve@1.3.5",
-                "fmp@1.3.5",
-                "fred@1.3.5",
-                "imf@1.0.2",
-                "intrinio@1.3.5",
-                "oecd@1.3.5",
-                "polygon@1.3.5",
-                "sec@1.3.5",
-                "tiingo@1.3.5",
-                "tradingeconomics@1.3.5",
-                "us_eia@1.0.0",
-                "yfinance@1.3.6"
+                "benzinga@1.4.0",
+                "bls@1.1.0",
+                "cftc@1.1.0",
+                "econdb@1.3.0",
+                "federal_reserve@1.4.0",
+                "fmp@1.4.0",
+                "fred@1.4.0",
+                "imf@1.1.0",
+                "intrinio@1.4.0",
+                "oecd@1.4.0",
+                "polygon@1.4.0",
+                "sec@1.4.0",
+                "tiingo@1.4.0",
+                "tradingeconomics@1.4.0",
+                "us_eia@1.1.0",
+                "yfinance@1.4.0"
             ],
             "openbb_obbject_extension": []
         }
@@ -1434,7 +1434,7 @@
                     },
                     {
                         "name": "counter_currencies",
-                        "type": "Union[List[str], str]",
+                        "type": "Union[str, List[str]]",
                         "description": "An optional list of counter currency symbols to filter for. None returns all.",
                         "default": null,
                         "optional": true,
@@ -2007,8 +2007,16 @@
                         "choices": null
                     },
                     {
+                        "name": "contract_size",
+                        "type": "List[Union[int, float]]",
+                        "description": "Number of underlying units per contract.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "open_interest",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Open interest on the contract.",
                         "default": "",
                         "optional": true,
@@ -2016,7 +2024,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The trading volume.",
                         "default": "",
                         "optional": true,
@@ -2040,7 +2048,7 @@
                     },
                     {
                         "name": "last_trade_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Last trade size of the option.",
                         "default": "",
                         "optional": true,
@@ -2072,7 +2080,7 @@
                     },
                     {
                         "name": "bid_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Bid size for the option.",
                         "default": "",
                         "optional": true,
@@ -2104,7 +2112,7 @@
                     },
                     {
                         "name": "ask_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "Ask size for the option.",
                         "default": "",
                         "optional": true,
@@ -2216,7 +2224,7 @@
                     },
                     {
                         "name": "close_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing trade size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -2240,7 +2248,7 @@
                     },
                     {
                         "name": "close_bid_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing bid size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -2264,7 +2272,7 @@
                     },
                     {
                         "name": "close_ask_size",
-                        "type": "List[int]",
+                        "type": "List[Union[int, float]]",
                         "description": "The closing ask size for the option that day.",
                         "default": "",
                         "optional": true,
@@ -5456,7 +5464,7 @@
                 "fred": [
                     {
                         "name": "country",
-                        "type": "str",
+                        "type": "Union[Literal['australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'croatia', 'cyprus', 'czech_republic', 'denmark', 'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'malta', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'romania', 'russian_federation', 'slovak_republic', 'slovakia', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states'], str]",
                         "description": "The country to get data.",
                         "default": "united_states",
                         "optional": true,
@@ -9342,40 +9350,6 @@
                         "description": "The item or basket of items to query.",
                         "default": null,
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "country",
-                        "type": "str",
-                        "description": "The country to get data.",
-                        "default": "united_states",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "start_date",
-                        "type": "Union[date, str]",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "fred": [
-                    {
-                        "name": "item",
-                        "type": "Literal['beverages', 'cereals', 'dairy', 'fuel', 'produce', 'meats', 'bacon', 'bananas', 'beans', 'beef', 'beer', 'bread', 'butter', 'cheese', 'chicken', 'chops', 'coffee', 'cookies', 'corn', 'diesel', 'eggs', 'electricity', 'flour', 'gas', 'gasoline', 'grapefruit', 'ground_beef', 'ham', 'ice_cream', 'lemons', 'lettuce', 'malt_beverages', 'milk', 'oil', 'orange_juice', 'oranges', 'pork', 'potato_chips', 'potatoes', 'rice', 'soft_drinks', 'spaghetti', 'steak', 'strawberries', 'sugar', 'tomatoes', 'unleaded', 'usda', 'vodka', 'wine', 'yogurt']",
-                        "description": "The item or basket of items to query.",
-                        "default": "fuel",
-                        "optional": true,
                         "choices": [
                             "beverages",
                             "cereals",
@@ -9432,11 +9406,47 @@
                     },
                     {
                         "name": "country",
+                        "type": "str",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": [
+                            "united_states"
+                        ]
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "item",
+                        "type": "Literal['beverages', 'cereals', 'dairy', 'fuel', 'produce', 'meats', 'bacon', 'bananas', 'beans', 'beef', 'beer', 'bread', 'butter', 'cheese', 'chicken', 'chops', 'coffee', 'cookies', 'corn', 'diesel', 'eggs', 'electricity', 'flour', 'gas', 'gasoline', 'grapefruit', 'ground_beef', 'ham', 'ice_cream', 'lemons', 'lettuce', 'malt_beverages', 'milk', 'oil', 'orange_juice', 'oranges', 'pork', 'potato_chips', 'potatoes', 'rice', 'soft_drinks', 'spaghetti', 'steak', 'strawberries', 'sugar', 'tomatoes', 'unleaded', 'usda', 'vodka', 'wine', 'yogurt']",
+                        "description": "The item or basket of items to query.",
+                        "default": "fuel",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
                         "type": "Literal['united_states']",
                         "description": "The country to get data.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": "united_states"
+                        "choices": null
                     },
                     {
                         "name": "region",
@@ -9444,13 +9454,7 @@
                         "description": "The region to get average price levels for.",
                         "default": "all_city",
                         "optional": true,
-                        "choices": [
-                            "all_city",
-                            "northeast",
-                            "midwest",
-                            "south",
-                            "west"
-                        ]
+                        "choices": null
                     },
                     {
                         "name": "frequency",
@@ -9458,11 +9462,7 @@
                         "description": "The frequency of the data.",
                         "default": "monthly",
                         "optional": true,
-                        "choices": [
-                            "annual",
-                            "quarter",
-                            "monthly"
-                        ]
+                        "choices": null
                     },
                     {
                         "name": "transform",
@@ -9470,16 +9470,7 @@
                         "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                         "default": null,
                         "optional": true,
-                        "choices": [
-                            "chg",
-                            "ch1",
-                            "pch",
-                            "pc1",
-                            "pca",
-                            "cch",
-                            "cca",
-                            "log"
-                        ]
+                        "choices": null
                     }
                 ]
             },
@@ -11363,6 +11354,135 @@
             },
             "model": "CalendarSplits"
         },
+        "/equity/calendar/events": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get historical and upcoming company events, such as Investor Day, Conference Call, Earnings Release.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.calendar.events(provider='fmp')\n# Get company events calendar for specific dates.\nobb.equity.calendar.events(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CalendarEvents]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fmp']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data. The date of the event.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "exchange",
+                        "type": "str",
+                        "description": "Exchange where the symbol is listed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "time",
+                        "type": "str",
+                        "description": "The estimated time of the event, local to the exchange.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "timing",
+                        "type": "str",
+                        "description": "The timing of the event - e.g. before, during, or after market hours.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "The title of the event.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "The URL to the press release for the announcement.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "announcement_date",
+                        "type": "date",
+                        "description": "The date when the event was announced.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "CalendarEvents"
+        },
         "/equity/calendar/earnings": {
             "deprecated": {
                 "flag": null,
@@ -12190,7 +12310,7 @@
                     },
                     {
                         "name": "analyst_ids",
-                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "type": "Union[Union[str, List[str]], List[Union[str, List[str]]]]",
                         "description": "Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
@@ -12198,7 +12318,7 @@
                     },
                     {
                         "name": "firm_ids",
-                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "type": "Union[Union[str, List[str]], List[Union[str, List[str]]]]",
                         "description": "Comma-separated list of firm IDs. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
@@ -12206,7 +12326,7 @@
                     },
                     {
                         "name": "fields",
-                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "type": "Union[Union[str, List[str]], List[Union[str, List[str]]]]",
                         "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
@@ -24646,6 +24766,14 @@
                         "default": null,
                         "optional": true,
                         "choices": null
+                    },
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "Fiscal year of the pay.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
                     }
                 ]
             },
@@ -26637,6 +26765,168 @@
                 "tiingo": []
             },
             "model": "TrailingDividendYield"
+        },
+        "/equity/fundamental/management_discussion_analysis": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the Management Discussion & Analysis section from the financial statements for a given company.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')\n# Get the Management Discussion & Analysis section by calendar year and period.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec')\n# Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', include_tables=True)\n# Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', raw_html=True)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol to get data for.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "Calendar year of the report. By default, is the current year. If the calendar period is not provided, but the calendar year is, it will return the annual report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "Literal['Q1', 'Q2', 'Q3', 'Q4']",
+                        "description": "Calendar period of the report. By default, is the most recent report available for the symbol. If no calendar year and no calendar period are provided, it will return the most recent report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "strategy",
+                        "type": "Literal['inscriptis', 'trafilatura']",
+                        "description": "The strategy to use for extracting the text. Default is 'trafilatura'.",
+                        "default": "trafilatura",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "wrap_length",
+                        "type": "int",
+                        "description": "The length to wrap the extracted text, excluding tables. Default is 120.",
+                        "default": 120,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "include_tables",
+                        "type": "bool",
+                        "description": "Return tables formatted as markdown in the text. Default is False. Tables may reveal 'missing' content, but will likely need some level of manual cleaning, post-request, to display properly. In some cases, tables may not be recoverable due to the nature of the document.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "When True, the file will be cached for use later. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "raw_html",
+                        "type": "bool",
+                        "description": "When True, the raw HTML content of the entire filing will be returned. Default is False. Use this option to parse the document manually.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ManagementDiscussionAnalysis]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "The calendar year of the report.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "int",
+                        "description": "The calendar period of the report.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "The end date of the reporting period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "content",
+                        "type": "str",
+                        "description": "The content of the management discussion and analysis.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "The URL of the filing from which the data was extracted.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "ManagementDiscussionAnalysis"
         },
         "/equity/ownership/major_holders": {
             "deprecated": {
@@ -30341,11 +30631,26 @@
                     },
                     {
                         "name": "sector",
-                        "type": "Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates']",
+                        "type": "Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services']",
                         "description": "Filter by sector.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "consumer_cyclical",
+                            "energy",
+                            "technology",
+                            "industrials",
+                            "financial_services",
+                            "basic_materials",
+                            "communication_services",
+                            "consumer_defensive",
+                            "healthcare",
+                            "real_estate",
+                            "utilities",
+                            "industrial_goods",
+                            "financial",
+                            "services"
+                        ]
                     },
                     {
                         "name": "industry",
@@ -30369,7 +30674,64 @@
                         "description": "Filter by exchange.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "amex",
+                            "ams",
+                            "ase",
+                            "asx",
+                            "ath",
+                            "bme",
+                            "bru",
+                            "bud",
+                            "bue",
+                            "cai",
+                            "cnq",
+                            "cph",
+                            "dfm",
+                            "doh",
+                            "etf",
+                            "euronext",
+                            "hel",
+                            "hkse",
+                            "ice",
+                            "iob",
+                            "ist",
+                            "jkt",
+                            "jnb",
+                            "jpx",
+                            "kls",
+                            "koe",
+                            "ksc",
+                            "kuw",
+                            "lse",
+                            "mex",
+                            "mutual_fund",
+                            "nasdaq",
+                            "neo",
+                            "nse",
+                            "nyse",
+                            "nze",
+                            "osl",
+                            "otc",
+                            "pnk",
+                            "pra",
+                            "ris",
+                            "sao",
+                            "sau",
+                            "set",
+                            "sgo",
+                            "shh",
+                            "shz",
+                            "six",
+                            "sto",
+                            "tai",
+                            "tlv",
+                            "tsx",
+                            "two",
+                            "vie",
+                            "wse",
+                            "xetra"
+                        ]
                     },
                     {
                         "name": "limit",
@@ -31673,7 +32035,64 @@
                         "description": "The market to fetch data for.",
                         "default": "nasdaq",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "amex",
+                            "ams",
+                            "ase",
+                            "asx",
+                            "ath",
+                            "bme",
+                            "bru",
+                            "bud",
+                            "bue",
+                            "cai",
+                            "cnq",
+                            "cph",
+                            "dfm",
+                            "doh",
+                            "etf",
+                            "euronext",
+                            "hel",
+                            "hkse",
+                            "ice",
+                            "iob",
+                            "ist",
+                            "jkt",
+                            "jnb",
+                            "jpx",
+                            "kls",
+                            "koe",
+                            "ksc",
+                            "kuw",
+                            "lse",
+                            "mex",
+                            "mutual_fund",
+                            "nasdaq",
+                            "neo",
+                            "nse",
+                            "nyse",
+                            "nze",
+                            "osl",
+                            "otc",
+                            "pnk",
+                            "pra",
+                            "ris",
+                            "sao",
+                            "sau",
+                            "set",
+                            "sgo",
+                            "shh",
+                            "shz",
+                            "six",
+                            "sto",
+                            "tai",
+                            "tlv",
+                            "tsx",
+                            "two",
+                            "vie",
+                            "wse",
+                            "xetra"
+                        ]
                     }
                 ],
                 "intrinio": [
@@ -32267,7 +32686,14 @@
                         "description": "The exchange code the ETF trades on.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "AMEX",
+                            "NYSE",
+                            "NASDAQ",
+                            "ETF",
+                            "TSX",
+                            "EURONEXT"
+                        ]
                     },
                     {
                         "name": "is_active",
@@ -37899,86 +38325,6 @@
             },
             "model": "YieldCurve"
         },
-        "/fixedincome/government/us_yield_curve": {
-            "deprecated": {
-                "flag": true,
-                "message": "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4."
-            },
-            "description": "US Yield Curve. Get United States yield curve.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.us_yield_curve(provider='fred')\nobb.fixedincome.government.us_yield_curve(inflation_adjusted=True, provider='fred')\n```\n\n",
-            "parameters": {
-                "standard": [
-                    {
-                        "name": "date",
-                        "type": "Union[date, str]",
-                        "description": "A specific date to get data for. Defaults to the most recent FRED entry.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "inflation_adjusted",
-                        "type": "bool",
-                        "description": "Get inflation adjusted rates.",
-                        "default": false,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "fred": []
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "List[USYieldCurve]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['fred']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[List[Warning_]]",
-                        "description": "List of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "Dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [
-                    {
-                        "name": "maturity",
-                        "type": "float",
-                        "description": "Maturity of the treasury rate in years.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "rate",
-                        "type": "float",
-                        "description": "Associated rate given in decimal form (0.05 is 5%)",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ],
-                "fred": []
-            },
-            "model": "USYieldCurve"
-        },
         "/fixedincome/government/treasury_rates": {
             "deprecated": {
                 "flag": null,
@@ -41109,13 +41455,269 @@
                         "name": "source",
                         "type": "str",
                         "description": "Source of the news article",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "CompanyNews"
+        },
+        "/regulators/sec/filing_headers": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Download the index headers, and cover page if available, for any SEC filing.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.filing_headers(url=https://www.sec.gov/Archives/edgar/data/317540/000119312524076556/d645509ddef14a.htm, provider='sec')\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL for the SEC filing. The specific URL is not directly used or downloaded, but is used to generate the base URL for the filing. e.g. https://www.sec.gov/Archives/edgar/data/317540/000031754024000045/coke-20240731.htm and https://www.sec.gov/Archives/edgar/data/317540/000031754024000045/ are both valid URLs for the same filing.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Use cache for the index headers and cover page. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[SecFiling]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "base_url",
+                        "type": "str",
+                        "description": "Base URL of the filing.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the entity filing.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "cik",
+                        "type": "str",
+                        "description": "Central Index Key.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "trading_symbols",
+                        "type": "list",
+                        "description": "Trading symbols, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "sic",
+                        "type": "str",
+                        "description": "Standard Industrial Classification.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "sic_organization_name",
+                        "type": "str",
+                        "description": "SIC Organization Name.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "filing_date",
+                        "type": "date",
+                        "description": "Filing date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "Date of the ending period for the filing, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_year_end",
+                        "type": "str",
+                        "description": "Fiscal year end of the entity, if available. Format: MM-DD",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "document_type",
+                        "type": "str",
+                        "description": "Specific SEC filing type.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "has_cover_page",
+                        "type": "bool",
+                        "description": "True if the filing has a cover page.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "Description of attached content, mostly applicable to 8-K filings.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cover_page",
+                        "type": "dict",
+                        "description": "Cover page information, if available.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "document_urls",
+                        "type": "list",
+                        "description": "List of files associated with the filing.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     }
                 ]
             },
-            "model": "CompanyNews"
+            "model": "SecFiling"
+        },
+        "/regulators/sec/htm_file": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Download a raw HTML object from the SEC website.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.htm_file(url=https://www.sec.gov/Archives/edgar/data/1723690/000119312525030074/d866336dex991.htm, provider='sec')\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL for the SEC filing.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Cache the file for use later. Default is True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[SecHtmFile]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [],
+                "sec": [
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL of the downloaded file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "content",
+                        "type": "str",
+                        "description": "Raw content of the HTM/HTML file.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "SecHtmFile"
         },
         "/regulators/sec/cik_map": {
             "deprecated": {

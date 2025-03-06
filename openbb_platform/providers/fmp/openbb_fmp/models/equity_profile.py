@@ -164,7 +164,9 @@ class FMPEquityProfileFetcher(
         """Return the transformed data."""
         results: List[FMPEquityProfileData] = []
         for d in data:
-            d["year_low"], d["year_high"] = d.get("range", "-").split("-")
+            d["year_low"], d["year_high"] = (
+                d.get("range", "-").split("-") if d.get("range") else (None, None)
+            )
 
             # Clear out fields that don't belong and can be had elsewhere.
             entries_to_remove = (

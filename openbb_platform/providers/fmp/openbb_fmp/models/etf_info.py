@@ -2,16 +2,13 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
-from typing import Any, Dict, List, Optional
-from warnings import warn
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_info import (
     EtfInfoData,
     EtfInfoQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request
 from pydantic import Field, field_validator
 
 
@@ -74,31 +71,37 @@ class FMPEtfInfoData(EtfInfoData):
 class FMPEtfInfoFetcher(
     Fetcher[
         FMPEtfInfoQueryParams,
-        List[FMPEtfInfoData],
+        list[FMPEtfInfoData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEtfInfoQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPEtfInfoQueryParams:
         """Transform the query."""
         return FMPEtfInfoQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPEtfInfoQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_fmp.utils.helpers import response_callback
+        from warnings import warn
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
-        results: List = []
+        results: list = []
 
         async def get_one(symbol):
             """Get one symbol."""
             url = f"https://financialmodelingprep.com/api/v4/etf-info?symbol={symbol}&apikey={api_key}"
-            response = await amake_request(url)
+            response = await amake_request(url, response_callback=response_callback)
             if not response:
                 warn(f"No results found for {symbol}.")
             results.extend(response)
@@ -109,11 +112,11 @@ class FMPEtfInfoFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPEtfInfoQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPEtfInfoData]:
+        query: FMPEtfInfoQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPEtfInfoData]:
         """Return the transformed data."""
         # Pop the nested dictionaries from the data returned by other endpoints.
-        transformed: List[FMPEtfInfoData] = []
+        transformed: list[FMPEtfInfoData] = []
         for d in data:
             if d.get("sectorsList"):
                 d.pop("sectorsList")

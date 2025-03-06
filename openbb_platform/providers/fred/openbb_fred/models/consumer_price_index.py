@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -14,7 +14,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import check_item
 from openbb_fred.models.series import FredSeriesFetcher
-from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, all_cpi_options
+from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, CpiCountries, all_cpi_options
 from pydantic import Field, field_validator
 
 
@@ -28,7 +28,7 @@ class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
         },
     }
 
-    country: str = Field(
+    country: Union[CpiCountries, str] = Field(
         description=QUERY_DESCRIPTIONS.get("country"),
         default="united_states",
     )

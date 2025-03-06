@@ -15,6 +15,7 @@ class ROUTER_equity_calendar(Container):
     """/equity/calendar
     dividend
     earnings
+    events
     ipo
     splits
     """
@@ -197,6 +198,96 @@ class ROUTER_equity_calendar(Container):
                     "provider": self._get_provider(
                         provider,
                         "equity.calendar.earnings",
+                        ("fmp",),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def events(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get historical and upcoming company events, such as Investor Day, Conference Call, Earnings Release.
+
+        Parameters
+        ----------
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fmp']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+
+        Returns
+        -------
+        OBBject
+            results : List[CalendarEvents]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        CalendarEvents
+        --------------
+        date : date
+            The date of the data. The date of the event.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        exchange : Optional[str]
+            Exchange where the symbol is listed. (provider: fmp)
+        time : Optional[str]
+            The estimated time of the event, local to the exchange. (provider: fmp)
+        timing : Optional[str]
+            The timing of the event - e.g. before, during, or after market hours. (provider: fmp)
+        description : Optional[str]
+            The title of the event. (provider: fmp)
+        url : Optional[str]
+            The URL to the press release for the announcement. (provider: fmp)
+        announcement_date : Optional[date]
+            The date when the event was announced. (provider: fmp)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.calendar.events(provider='fmp')
+        >>> # Get company events calendar for specific dates.
+        >>> obb.equity.calendar.events(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/calendar/events",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.calendar.events",
                         ("fmp",),
                     )
                 },

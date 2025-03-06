@@ -3,6 +3,7 @@
         "name": "SLOOS",
         "description": "Get Senior Loan Officers Opinion Survey.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_sloos_fred_obb",
         "params": [
@@ -125,8 +126,9 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/sloos",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -140,8 +142,7 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "symbol",
@@ -149,15 +150,14 @@
                         "formatterFn": null,
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "Survey value.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "title",
@@ -165,8 +165,7 @@
                         "formatterFn": null,
                         "headerName": "Title",
                         "headerTooltip": "Survey title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     }
                 ]
             }
@@ -180,6 +179,7 @@
         "name": "University Of Michigan",
         "description": "Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_university_of_michigan_fred_obb",
         "params": [
@@ -293,8 +293,9 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/university_of_michigan",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -308,15 +309,14 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "consumer_sentiment",
+                        "formatterFn": null,
                         "headerName": "Consumer Sentiment",
                         "headerTooltip": "Index of the results of the University of Michigan's monthly Survey of Consumers, which is used to estimate future spending and saving.  (1966:Q1=100).",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "inflation_expectation",
@@ -324,7 +324,6 @@
                         "headerName": "Inflation Expectation",
                         "headerTooltip": "Median expected price change next 12 months, Surveys of Consumers.",
                         "cellDataType": "number",
-                        "chartDataType": "series",
                         "renderFn": "greenRed"
                     }
                 ]
@@ -339,6 +338,7 @@
         "name": "Economic Conditions Chicago",
         "description": "Get The Survey Of Economic Conditions For The Chicago Region.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_economic_conditions_chicago_fred_obb",
         "params": [
@@ -452,8 +452,9 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/economic_conditions_chicago",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -467,71 +468,70 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "activity_index",
+                        "formatterFn": null,
                         "headerName": "Activity Index",
                         "headerTooltip": "Activity Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "one_year_outlook",
+                        "formatterFn": null,
                         "headerName": "One Year Outlook",
                         "headerTooltip": "One Year Outlook Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "manufacturing_activity",
+                        "formatterFn": null,
                         "headerName": "Manufacturing Activity",
                         "headerTooltip": "Manufacturing Activity Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "non_manufacturing_activity",
+                        "formatterFn": null,
                         "headerName": "Non Manufacturing Activity",
                         "headerTooltip": "Non-Manufacturing Activity Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "capital_expenditures_expectations",
+                        "formatterFn": null,
                         "headerName": "Capital Expenditures Expectations",
                         "headerTooltip": "Capital Expenditures Expectations Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "hiring_expectations",
+                        "formatterFn": null,
                         "headerName": "Hiring Expectations",
                         "headerTooltip": "Hiring Expectations Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "current_hiring",
+                        "formatterFn": null,
                         "headerName": "Current Hiring",
                         "headerTooltip": "Current Hiring Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "labor_costs",
+                        "formatterFn": null,
                         "headerName": "Labor Costs",
                         "headerTooltip": "Labor Costs Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "non_labor_costs",
+                        "formatterFn": null,
                         "headerName": "Non Labor Costs",
                         "headerTooltip": "Non-Labor Costs Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     }
                 ]
             }
@@ -545,6 +545,7 @@
         "name": "Manufacturing Outlook Texas",
         "description": "Get The Manufacturing Outlook Survey For The Texas Region.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_manufacturing_outlook_texas_fred_obb",
         "params": [
@@ -726,8 +727,9 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/manufacturing_outlook_texas",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -741,23 +743,21 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "topic",
                         "formatterFn": null,
                         "headerName": "Topic",
                         "headerTooltip": "Topic of the survey response.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "diffusion_index",
+                        "formatterFn": null,
                         "headerName": "Diffusion Index",
                         "headerTooltip": "Diffusion Index.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "percent_reporting_increase",
@@ -765,7 +765,6 @@
                         "headerName": "Percent Reporting Increase",
                         "headerTooltip": "Percent of respondents reporting an increase over the last month.",
                         "cellDataType": "number",
-                        "chartDataType": "series",
                         "renderFn": "greenRed"
                     },
                     {
@@ -774,7 +773,6 @@
                         "headerName": "Percent Reporting Decrease",
                         "headerTooltip": "Percent of respondents reporting a decrease over the last month.",
                         "cellDataType": "number",
-                        "chartDataType": "series",
                         "renderFn": "greenRed"
                     },
                     {
@@ -783,7 +781,6 @@
                         "headerName": "Percent Reporting No Change",
                         "headerTooltip": "Percent of respondents reporting no change over the last month.",
                         "cellDataType": "number",
-                        "chartDataType": "series",
                         "renderFn": "greenRed"
                     }
                 ]
@@ -798,6 +795,7 @@
         "name": "Nonfarm Payrolls",
         "description": "Get Nonfarm Payrolls Survey.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_nonfarm_payrolls_fred_obb",
         "params": [
@@ -897,8 +895,9 @@
             }
         ],
         "endpoint": "api/v1/economy/survey/nonfarm_payrolls",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -912,8 +911,7 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "symbol",
@@ -921,15 +919,14 @@
                         "formatterFn": null,
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "name",
@@ -937,39 +934,35 @@
                         "formatterFn": null,
                         "headerName": "Name",
                         "headerTooltip": "The name of the series.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "element_id",
                         "formatterFn": null,
                         "headerName": "Element ID",
                         "headerTooltip": "The element id in the parent/child relationship.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "parent_id",
                         "formatterFn": null,
                         "headerName": "Parent ID",
                         "headerTooltip": "The parent id in the parent/child relationship.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "children",
                         "formatterFn": null,
                         "headerName": "Children",
                         "headerTooltip": "The element_id of each child, as a comma-separated string.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "level",
+                        "formatterFn": "int",
                         "headerName": "Level",
                         "headerTooltip": "The indentation level of the element.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     }
                 ]
             }
@@ -980,9 +973,10 @@
         "subCategory": "Survey"
     },
     "economy_cpi_fred_obb": {
-        "name": "CPI",
+        "name": "Cpi",
         "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_cpi_fred_obb",
         "params": [
@@ -1274,8 +1268,9 @@
             }
         ],
         "endpoint": "api/v1/economy/cpi",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -1289,35 +1284,35 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "country",
                         "formatterFn": null,
                         "headerName": "Country",
                         "headerTooltip": "Country",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "CPI index value or period change.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     }
                 ]
             }
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "CPI"
     },
     "economy_balance_of_payments_fred_obb": {
         "name": "Balance Of Payments",
         "description": "Balance of Payments Reports.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_balance_of_payments_fred_obb",
         "params": [
@@ -1549,8 +1544,9 @@
             }
         ],
         "endpoint": "api/v1/economy/balance_of_payments",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -1563,8 +1559,7 @@
                         "formatterFn": null,
                         "headerName": "Period",
                         "headerTooltip": "The date representing the beginning of the reporting period.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "balance_percent_of_gdp",
@@ -1572,43 +1567,42 @@
                         "headerName": "Balance Percent Of GDP",
                         "headerTooltip": "Current Account Balance as Percent of GDP",
                         "cellDataType": "number",
-                        "chartDataType": "series",
                         "renderFn": "greenRed"
                     },
                     {
                         "field": "balance_total",
+                        "formatterFn": null,
                         "headerName": "Balance Total",
                         "headerTooltip": "Current Account Total Balance (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "balance_total_services",
+                        "formatterFn": null,
                         "headerName": "Balance Total Services",
                         "headerTooltip": "Current Account Total Services Balance (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "balance_total_secondary_income",
+                        "formatterFn": null,
                         "headerName": "Balance Total Secondary Income",
                         "headerTooltip": "Current Account Total Secondary Income Balance (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "balance_total_goods",
+                        "formatterFn": null,
                         "headerName": "Balance Total Goods",
                         "headerTooltip": "Current Account Total Goods Balance (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "balance_total_primary_income",
+                        "formatterFn": null,
                         "headerName": "Balance Total Primary Income",
                         "headerTooltip": "Current Account Total Primary Income Balance (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "credits_services_percent_of_goods_and_services",
@@ -1616,7 +1610,6 @@
                         "headerName": "Credits Services Percent Of Goods And Services",
                         "headerTooltip": "Current Account Credits Services as Percent of Goods and Services",
                         "cellDataType": "number",
-                        "chartDataType": "series",
                         "renderFn": "greenRed"
                     },
                     {
@@ -1625,43 +1618,42 @@
                         "headerName": "Credits Services Percent Of Current Account",
                         "headerTooltip": "Current Account Credits Services as Percent of Current Account",
                         "cellDataType": "number",
-                        "chartDataType": "series",
                         "renderFn": "greenRed"
                     },
                     {
                         "field": "credits_total_services",
+                        "formatterFn": null,
                         "headerName": "Credits Total Services",
                         "headerTooltip": "Current Account Credits Total Services (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "credits_total_goods",
+                        "formatterFn": null,
                         "headerName": "Credits Total Goods",
                         "headerTooltip": "Current Account Credits Total Goods (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "credits_total_primary_income",
+                        "formatterFn": null,
                         "headerName": "Credits Total Primary Income",
                         "headerTooltip": "Current Account Credits Total Primary Income (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "credits_total_secondary_income",
+                        "formatterFn": null,
                         "headerName": "Credits Total Secondary Income",
                         "headerTooltip": "Current Account Credits Total Secondary Income (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "credits_total",
+                        "formatterFn": null,
                         "headerName": "Credits Total",
                         "headerTooltip": "Current Account Credits Total (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "debits_services_percent_of_goods_and_services",
@@ -1669,7 +1661,6 @@
                         "headerName": "Debits Services Percent Of Goods And Services",
                         "headerTooltip": "Current Account Debits Services as Percent of Goods and Services",
                         "cellDataType": "number",
-                        "chartDataType": "series",
                         "renderFn": "greenRed"
                     },
                     {
@@ -1678,55 +1669,56 @@
                         "headerName": "Debits Services Percent Of Current Account",
                         "headerTooltip": "Current Account Debits Services as Percent of Current Account",
                         "cellDataType": "number",
-                        "chartDataType": "series",
                         "renderFn": "greenRed"
                     },
                     {
                         "field": "debits_total_services",
+                        "formatterFn": null,
                         "headerName": "Debits Total Services",
                         "headerTooltip": "Current Account Debits Total Services (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "debits_total_goods",
+                        "formatterFn": null,
                         "headerName": "Debits Total Goods",
                         "headerTooltip": "Current Account Debits Total Goods (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "debits_total_primary_income",
+                        "formatterFn": null,
                         "headerName": "Debits Total Primary Income",
                         "headerTooltip": "Current Account Debits Total Primary Income (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "debits_total",
+                        "formatterFn": null,
                         "headerName": "Debits Total",
                         "headerTooltip": "Current Account Debits Total (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "debits_total_secondary_income",
+                        "formatterFn": null,
                         "headerName": "Debits Total Secondary Income",
                         "headerTooltip": "Current Account Debits Total Secondary Income (USD)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     }
                 ]
             }
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "Balance Of Payments"
     },
     "economy_fred_search_fred_obb": {
-        "name": "FRED Search",
+        "name": "Fred Search",
         "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_search_fred_obb",
         "params": [
@@ -1839,8 +1831,9 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_search",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -1850,10 +1843,10 @@
                 "columnsDefs": [
                     {
                         "field": "release_id",
+                        "formatterFn": null,
                         "headerName": "Release ID",
                         "headerTooltip": "The release ID for queries.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "series_id",
@@ -1861,8 +1854,7 @@
                         "formatterFn": null,
                         "headerName": "Series ID",
                         "headerTooltip": "The series ID for the item in the release.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "name",
@@ -1870,8 +1862,7 @@
                         "formatterFn": null,
                         "headerName": "Name",
                         "headerTooltip": "The name of the release.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "title",
@@ -1879,145 +1870,133 @@
                         "formatterFn": null,
                         "headerName": "Title",
                         "headerTooltip": "The title of the series.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "observation_start",
                         "formatterFn": null,
                         "headerName": "Observation Start",
                         "headerTooltip": "The date of the first observation in the series.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "observation_end",
                         "formatterFn": null,
                         "headerName": "Observation End",
                         "headerTooltip": "The date of the last observation in the series.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "frequency",
                         "formatterFn": null,
                         "headerName": "Frequency",
                         "headerTooltip": "The frequency of the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "frequency_short",
                         "formatterFn": null,
                         "headerName": "Frequency Short",
                         "headerTooltip": "Short form of the data frequency.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "units",
                         "formatterFn": null,
                         "headerName": "Units",
                         "headerTooltip": "The units of the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "units_short",
                         "formatterFn": null,
                         "headerName": "Units Short",
                         "headerTooltip": "Short form of the data units.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "seasonal_adjustment",
                         "formatterFn": null,
                         "headerName": "Seasonal Adjustment",
                         "headerTooltip": "The seasonal adjustment of the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "seasonal_adjustment_short",
                         "formatterFn": null,
                         "headerName": "Seasonal Adjustment Short",
                         "headerTooltip": "Short form of the data seasonal adjustment.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "last_updated",
                         "formatterFn": null,
                         "headerName": "Last Updated",
                         "headerTooltip": "The datetime of the last update to the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "notes",
                         "formatterFn": null,
                         "headerName": "Notes",
                         "headerTooltip": "Description of the release.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "press_release",
                         "formatterFn": null,
                         "headerName": "Press Release",
                         "headerTooltip": "If the release is a press release.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "url",
                         "formatterFn": null,
-                        "headerName": "Url",
+                        "headerName": "URL",
                         "headerTooltip": "URL to the release.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "popularity",
+                        "formatterFn": null,
                         "headerName": "Popularity",
                         "headerTooltip": "Popularity of the series",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "group_popularity",
+                        "formatterFn": null,
                         "headerName": "Group Popularity",
                         "headerTooltip": "Group popularity of the release",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "region_type",
                         "formatterFn": null,
                         "headerName": "Region Type",
                         "headerTooltip": "The region type of the series.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "series_group",
+                        "formatterFn": null,
                         "headerName": "Series Group",
                         "headerTooltip": "The series group ID of the series. This value is used to query for regional data.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     }
                 ]
             }
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "FRED Search"
     },
     "economy_fred_series_fred_obb": {
-        "name": "FRED Series",
+        "name": "Fred Series",
         "description": "Get data by series ID from FRED.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_series_fred_obb",
         "params": [
@@ -2197,8 +2176,9 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_series",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -2212,20 +2192,21 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     }
                 ]
             }
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "FRED Series"
     },
     "economy_fred_series_fred_obb_chart": {
-        "name": "FRED Series (Chart)",
+        "name": "Fred Series (Chart)",
         "description": "Get data by series ID from FRED.",
         "category": "Economy",
+        "type": "chart",
         "searchCategory": "chart",
         "widgetId": "economy_fred_series_fred_obb_chart",
         "params": [
@@ -2414,8 +2395,9 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_series",
+        "runButton": false,
         "gridData": {
-            "w": 50,
+            "w": 40,
             "h": 20
         },
         "data": {
@@ -2429,8 +2411,7 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     }
                 ]
             }
@@ -2438,12 +2419,14 @@
         "source": [
             "FRED"
         ],
+        "subCategory": "FRED Series",
         "defaultViz": "chart"
     },
     "economy_fred_release_table_fred_obb": {
-        "name": "FRED Release Table",
+        "name": "Fred Release Table",
         "description": "Get economic release data by ID and/or element from FRED.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_release_table_fred_obb",
         "params": [
@@ -2456,7 +2439,7 @@
                 "paramName": "release_id"
             },
             {
-                "label": "Element Id",
+                "label": "Element ID",
                 "description": "The element ID of a specific table in the release.",
                 "optional": true,
                 "value": null,
@@ -2480,8 +2463,9 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_release_table",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -2495,54 +2479,49 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "level",
+                        "formatterFn": null,
                         "headerName": "Level",
                         "headerTooltip": "The indentation level of the element.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "element_type",
                         "formatterFn": null,
                         "headerName": "Element Type",
                         "headerTooltip": "The type of the element.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "line",
+                        "formatterFn": null,
                         "headerName": "Line",
                         "headerTooltip": "The line number of the element.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "element_id",
                         "formatterFn": null,
                         "headerName": "Element ID",
                         "headerTooltip": "The element id in the parent/child relationship.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "parent_id",
                         "formatterFn": null,
                         "headerName": "Parent ID",
                         "headerTooltip": "The parent id in the parent/child relationship.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "children",
                         "formatterFn": null,
                         "headerName": "Children",
                         "headerTooltip": "The element_id of each child, as a comma-separated string.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "symbol",
@@ -2550,8 +2529,7 @@
                         "formatterFn": null,
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "name",
@@ -2559,27 +2537,28 @@
                         "formatterFn": null,
                         "headerName": "Name",
                         "headerTooltip": "The name of the series.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "The reported value of the series.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     }
                 ]
             }
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "FRED Release Table"
     },
     "economy_fred_regional_fred_obb": {
-        "name": "FRED Regional",
+        "name": "Fred Regional",
         "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_regional_fred_obb",
         "params": [
@@ -2841,8 +2820,9 @@
             }
         ],
         "endpoint": "api/v1/economy/fred_regional",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -2856,30 +2836,28 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "region",
                         "formatterFn": null,
                         "headerName": "Region",
                         "headerTooltip": "The name of the region.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "code",
+                        "formatterFn": null,
                         "headerName": "Code",
                         "headerTooltip": "The code of the region.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "The obersvation value. The units are defined in the search results by series ID.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "series_id",
@@ -2887,20 +2865,21 @@
                         "formatterFn": null,
                         "headerName": "Series ID",
                         "headerTooltip": "The individual series ID for the region.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     }
                 ]
             }
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "FRED Regional"
     },
     "economy_retail_prices_fred_obb": {
         "name": "Retail Prices",
         "description": "Get retail prices for common items.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_retail_prices_fred_obb",
         "params": [
@@ -3043,8 +3022,9 @@
             }
         ],
         "endpoint": "api/v1/economy/retail_prices",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -3058,8 +3038,7 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "symbol",
@@ -3067,43 +3046,42 @@
                         "formatterFn": null,
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "country",
                         "formatterFn": null,
                         "headerName": "Country",
                         "headerTooltip": "",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "description",
                         "formatterFn": null,
                         "headerName": "Description",
                         "headerTooltip": "Description of the item.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "Price, or change in price, per unit.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     }
                 ]
             }
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "Retail Prices"
     },
     "economy_pce_fred_obb": {
-        "name": "PCE",
+        "name": "Pce",
         "description": "Get Personal Consumption Expenditures (PCE) reports.",
         "category": "Economy",
+        "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_pce_fred_obb",
         "params": [
@@ -3167,8 +3145,9 @@
             }
         ],
         "endpoint": "api/v1/economy/pce",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -3182,8 +3161,7 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of the data.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "symbol",
@@ -3191,15 +3169,14 @@
                         "formatterFn": null,
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "value",
+                        "formatterFn": null,
                         "headerName": "Value",
                         "headerTooltip": "",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "name",
@@ -3207,58 +3184,56 @@
                         "formatterFn": null,
                         "headerName": "Name",
                         "headerTooltip": "The name of the series.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "element_id",
                         "formatterFn": null,
                         "headerName": "Element ID",
                         "headerTooltip": "The element id in the parent/child relationship.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "parent_id",
                         "formatterFn": null,
                         "headerName": "Parent ID",
                         "headerTooltip": "The parent id in the parent/child relationship.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "children",
                         "formatterFn": null,
                         "headerName": "Children",
                         "headerTooltip": "The element_id of each child, as a comma-separated string.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "level",
+                        "formatterFn": "int",
                         "headerName": "Level",
                         "headerTooltip": "The indentation level of the element.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "line",
+                        "formatterFn": "int",
                         "headerName": "Line",
                         "headerTooltip": "The line number of the series in the table.",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     }
                 ]
             }
         },
         "source": [
             "FRED"
-        ]
+        ],
+        "subCategory": "PCE"
     },
     "regulators_sec_cik_map_sec_obb": {
         "name": "CIK Map",
         "description": "Map a ticker symbol to a CIK number.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_cik_map_sec_obb",
         "params": [
@@ -3286,14 +3261,24 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/cik_map",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
             "dataKey": "results",
             "table": {
-                "showAll": true
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "cik",
+                        "formatterFn": null,
+                        "headerName": "CIK",
+                        "headerTooltip": "Central Index Key (CIK) for the requested entity.",
+                        "cellDataType": "text"
+                    }
+                ]
             }
         },
         "source": [
@@ -3305,6 +3290,7 @@
         "name": "Institutions Search",
         "description": "Search SEC-regulated institutions by name and return a list of results with CIK numbers.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_institutions_search_sec_obb",
         "params": [
@@ -3333,8 +3319,9 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/institutions_search",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -3347,15 +3334,14 @@
                         "formatterFn": null,
                         "headerName": "Institution",
                         "headerTooltip": "The name of the institution.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "cik_number",
+                        "formatterFn": null,
                         "headerName": "CIK Number",
                         "headerTooltip": "Central Index Key (CIK)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     }
                 ]
             }
@@ -3369,6 +3355,7 @@
         "name": "Schema Files",
         "description": "Use tool for navigating the directory of SEC XML schema files by year.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_schema_files_sec_obb",
         "params": [
@@ -3391,7 +3378,7 @@
                 "paramName": "use_cache"
             },
             {
-                "label": "Url",
+                "label": "URL",
                 "description": "Enter an optional URL path to fetch the next level.",
                 "optional": true,
                 "value": null,
@@ -3405,14 +3392,24 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/schema_files",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
             "dataKey": "results",
             "table": {
-                "showAll": true
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "files",
+                        "formatterFn": null,
+                        "headerName": "Files",
+                        "headerTooltip": "Dictionary of URLs to SEC Schema Files",
+                        "cellDataType": "text"
+                    }
+                ]
             }
         },
         "source": [
@@ -3424,6 +3421,7 @@
         "name": "Symbol Map",
         "description": "Map a CIK number to a ticker symbol, leading 0s can be omitted or included.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_symbol_map_sec_obb",
         "params": [
@@ -3452,14 +3450,25 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/symbol_map",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
             "dataKey": "results",
             "table": {
-                "showAll": true
+                "showAll": true,
+                "columnsDefs": [
+                    {
+                        "field": "symbol",
+                        "pinned": "left",
+                        "formatterFn": null,
+                        "headerName": "Symbol",
+                        "headerTooltip": "Symbol representing the entity requested in the data.",
+                        "cellDataType": "text"
+                    }
+                ]
             }
         },
         "source": [
@@ -3471,6 +3480,7 @@
         "name": "RSS Litigation",
         "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_rss_litigation_sec_obb",
         "params": [
@@ -3481,8 +3491,9 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/rss_litigation",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -3496,8 +3507,7 @@
                         "formatterFn": null,
                         "headerName": "Date",
                         "headerTooltip": "The date of publication.",
-                        "cellDataType": "date",
-                        "chartDataType": "category"
+                        "cellDataType": "date"
                     },
                     {
                         "field": "title",
@@ -3505,32 +3515,28 @@
                         "formatterFn": null,
                         "headerName": "Title",
                         "headerTooltip": "The title of the release.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "summary",
                         "formatterFn": null,
                         "headerName": "Summary",
                         "headerTooltip": "Short summary of the release.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "id",
                         "formatterFn": null,
                         "headerName": "ID",
                         "headerTooltip": "The identifier associated with the release.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "link",
                         "formatterFn": null,
                         "headerName": "Link",
                         "headerTooltip": "URL to the release.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     }
                 ]
             }
@@ -3544,6 +3550,7 @@
         "name": "SIC Search",
         "description": "Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.",
         "category": "Regulators",
+        "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_sic_search_sec_obb",
         "params": [
@@ -3572,8 +3579,9 @@
             }
         ],
         "endpoint": "api/v1/regulators/sec/sic_search",
+        "runButton": false,
         "gridData": {
-            "w": 45,
+            "w": 40,
             "h": 15
         },
         "data": {
@@ -3583,26 +3591,24 @@
                 "columnsDefs": [
                     {
                         "field": "sic_code",
+                        "formatterFn": "int",
                         "headerName": "SIC Code",
                         "headerTooltip": "Sector Industrial Code (SIC)",
-                        "cellDataType": "number",
-                        "chartDataType": "series"
+                        "cellDataType": "number"
                     },
                     {
                         "field": "industry_title",
                         "formatterFn": null,
                         "headerName": "Industry Title",
                         "headerTooltip": "Industry title.",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     },
                     {
                         "field": "office",
                         "formatterFn": null,
                         "headerName": "Office",
                         "headerTooltip": "Reporting office within the Corporate Finance Office",
-                        "cellDataType": "text",
-                        "chartDataType": "category"
+                        "cellDataType": "text"
                     }
                 ]
             }

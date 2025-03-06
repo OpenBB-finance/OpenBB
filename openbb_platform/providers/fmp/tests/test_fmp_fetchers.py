@@ -14,6 +14,7 @@ from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
 from openbb_fmp.models.calendar_dividend import FMPCalendarDividendFetcher
 from openbb_fmp.models.calendar_earnings import FMPCalendarEarningsFetcher
+from openbb_fmp.models.calendar_events import FMPCalendarEventsFetcher
 from openbb_fmp.models.calendar_splits import FMPCalendarSplitsFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
@@ -919,5 +920,17 @@ def test_fmp_government_trades_fetcher(credentials=test_credentials):
         "limit": 1,
     }
     fetcher = FMPGovernmentTradesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_calendar_events_fetcher(credentials=test_credentials):
+    """Test FMP calendar events fetcher."""
+    params = {
+        "start_date": date(2025, 1, 7),
+        "end_date": date(2025, 1, 10),
+    }
+    fetcher = FMPCalendarEventsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

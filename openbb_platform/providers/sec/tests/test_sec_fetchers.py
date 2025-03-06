@@ -11,11 +11,16 @@ from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
+from openbb_sec.models.htm_file import SecHtmFileFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
+from openbb_sec.models.management_discussion_analysis import (
+    SecManagementDiscussionAnalysisFetcher,
+)
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
+from openbb_sec.models.sec_filing import SecFilingFetcher
 from openbb_sec.models.sic_search import SecSicSearchFetcher
 from openbb_sec.models.symbol_map import SecSymbolMapFetcher
 
@@ -184,5 +189,49 @@ def test_sec_insider_trading_fetcher(credentials=test_credentials):
     }
 
     fetcher = SecInsiderTradingFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_management_discussion_analysis_fetcher(credentials=test_credentials):
+    """Test the SEC Management Discussion Analysis fetcher."""
+    params = {
+        "symbol": "AAPL",
+        "calendar_year": 2024,
+        "calendar_period": "Q2",
+        "wrap_length": 120,
+        "include_tables": False,
+        "use_cache": False,
+        "raw_html": False,
+    }
+
+    fetcher = SecManagementDiscussionAnalysisFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_filing_fetcher(credentials=test_credentials):
+    """Test the SEC Filing fetcher."""
+    params = {
+        "url": "https://www.sec.gov/Archives/edgar/data/21344/000155278124000634/",
+        "use_cache": False,
+    }
+
+    fetcher = SecFilingFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_htm_file_fetcher(credentials=test_credentials):
+    """Test the SEC HTM File fetcher."""
+    params = {
+        "url": "https://www.sec.gov/Archives/edgar/data/1990353/000110465925015513/tm256977d7_ex99-1.htm",
+        "use_cache": False,
+    }
+
+    fetcher = SecHtmFileFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

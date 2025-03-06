@@ -29,6 +29,7 @@ class ROUTER_equity_fundamental(Container):
     latest_attributes
     management
     management_compensation
+    management_discussion_analysis
     metrics
     multiples
     ratios
@@ -2656,6 +2657,8 @@ class ROUTER_equity_fundamental(Container):
             Value of shares exercised. (provider: yfinance)
         unexercised_value : Optional[int]
             Value of shares not exercised. (provider: yfinance)
+        fiscal_year : Optional[int]
+            Fiscal year of the pay. (provider: yfinance)
 
         Examples
         --------
@@ -2779,6 +2782,114 @@ class ROUTER_equity_fundamental(Container):
                 info={
                     "symbol": {"fmp": {"multiple_items_allowed": True, "choices": None}}
                 },
+            )
+        )
+
+    @exception_handler
+    @validate
+    def management_discussion_analysis(
+        self,
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
+        calendar_year: Annotated[
+            Optional[int],
+            OpenBBField(
+                description="Calendar year of the report. By default, is the current year. If the calendar period is not provided, but the calendar year is, it will return the annual report."
+            ),
+        ] = None,
+        calendar_period: Annotated[
+            Optional[Literal["Q1", "Q2", "Q3", "Q4"]],
+            OpenBBField(
+                description="Calendar period of the report. By default, is the most recent report available for the symbol. If no calendar year and no calendar period are provided, it will return the most recent report."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get the Management Discussion & Analysis section from the financial statements for a given company.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        calendar_year : Optional[int]
+            Calendar year of the report. By default, is the current year. If the calendar period is not provided, but the calendar year is, it will return the annual report.
+        calendar_period : Optional[Literal['Q1', 'Q2', 'Q3', 'Q4']]
+            Calendar period of the report. By default, is the most recent report available for the symbol. If no calendar year and no calendar period are provided, it will return the most recent report.
+        provider : Optional[Literal['sec']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
+        strategy : Literal['inscriptis', 'trafilatura']
+            The strategy to use for extracting the text. Default is 'trafilatura'. (provider: sec)
+        wrap_length : int
+            The length to wrap the extracted text, excluding tables. Default is 120. (provider: sec)
+        include_tables : bool
+            Return tables formatted as markdown in the text. Default is False. Tables may reveal 'missing' content, but will likely need some level of manual cleaning, post-request, to display properly. In some cases, tables may not be recoverable due to the nature of the document. (provider: sec)
+        use_cache : bool
+            When True, the file will be cached for use later. Default is True. (provider: sec)
+        raw_html : bool
+            When True, the raw HTML content of the entire filing will be returned. Default is False. Use this option to parse the document manually. (provider: sec)
+
+        Returns
+        -------
+        OBBject
+            results : ManagementDiscussionAnalysis
+                Serializable results.
+            provider : Optional[Literal['sec']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        ManagementDiscussionAnalysis
+        ----------------------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        calendar_year : int
+            The calendar year of the report.
+        calendar_period : int
+            The calendar period of the report.
+        period_ending : Optional[date]
+            The end date of the reporting period.
+        content : str
+            The content of the management discussion and analysis.
+        url : Optional[str]
+            The URL of the filing from which the data was extracted. (provider: sec)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')
+        >>> # Get the Management Discussion & Analysis section by calendar year and period.
+        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec')
+        >>> # Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.
+        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', include_tables=True)
+        >>> # Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.
+        >>> obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', raw_html=True)
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/fundamental/management_discussion_analysis",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "equity.fundamental.management_discussion_analysis",
+                        ("sec",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                    "calendar_year": calendar_year,
+                    "calendar_period": calendar_period,
+                },
+                extra_params=kwargs,
             )
         )
 

@@ -106,7 +106,7 @@ jobs:
           xcrun stapler staple OpenBB-Platform-MacOSX-arm64.pkg
 
       - name: Save Build Artifact PKG
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: OpenBBM1.pkg
           path: OpenBB-Platform-MacOSX-arm64.pkg
@@ -208,7 +208,7 @@ jobs:
           xcrun stapler staple OpenBB-Platform-MacOSX-x86_64.pkg
 
       - name: Save Build Artifact PKG
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: OpenBBIntel.pkg
           path: OpenBB-Platform-MacOSX-x86_64.pkg
