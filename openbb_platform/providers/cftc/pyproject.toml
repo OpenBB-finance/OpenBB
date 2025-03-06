@@ -9,7 +9,7 @@ packages = [{ include = "openbb_cftc" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openbb-core = "^1.4.0"
+openbb-core = "^1.4.2"
 
 [build-system]
 requires = ["poetry-core"]

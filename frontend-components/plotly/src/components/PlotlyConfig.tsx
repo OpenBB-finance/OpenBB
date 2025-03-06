@@ -50,13 +50,8 @@ export function PlotConfig({
     edits: {
       legendPosition: true,
       legendText: true,
-      annotationPosition: true,
-      annotationTail: true,
-      annotationText: true,
       colorbarPosition: true,
-      shapePosition: true,
     },
-    showAxisDragHandles: true,
     showTips: false,
     setBackground: "transparent",
     modeBarButtonsToRemove: ["lasso2d", "select2d", "downloadImage"],

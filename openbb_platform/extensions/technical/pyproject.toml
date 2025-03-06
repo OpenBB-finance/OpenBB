@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-technical"
-version = "1.4.0"
+version = "1.4.1"
 description = "Technical Analysis extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -8,13 +8,10 @@ readme = "README.md"
 packages = [{ include = "openbb_technical" }]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"  # scipy forces python <4.0 explicitly
-openbb-core = "^1.4.0"
-scipy = "^1.10.1"
-statsmodels = "^0.14.0"
-scikit-learn = "^1.5.0"
-pandas-ta = "^0.3.14b"
-numpy = "^1"  # pin until pandas-ta is updated to support numpy 2.0
+python = ">=3.9,<3.13"
+openbb-core = "^1.4.2"
+pandas-ta-openbb = "^0.4.20"
+scikit-learn = "^1.6.0"
 
 [build-system]
 requires = ["poetry-core"]

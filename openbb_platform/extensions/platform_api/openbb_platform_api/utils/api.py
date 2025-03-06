@@ -18,6 +18,8 @@ Serve the OpenBB Platform API.
 Launcher specific arguments:
 
     --app                           Absolute path to the Python file with the target FastAPI instance. Default is the installed OpenBB Platform API.
+    --name                          Name of the FastAPI instance in the app file. Default is 'app'.
+    --factory                       Flag to indicate if the app name is a factory function. Default is 'false'.
     --editable                      Flag to make widgets.json an editable file that can be modified during runtime. Default is 'false'.
     --build                         If the file already exists, changes prompt action to overwrite/append/ignore. Only valid when --editable true.
     --no-build                      Do not build the widgets.json file. Use this flag to load an existing widgets.json file without checking for updates.
@@ -31,6 +33,8 @@ Launcher specific arguments:
 
 The FastAPI app instance can be imported to another script, modified, and launched by using the --app argument.
 
+If the path to the app file is not absolute, it will be resolved relative to the current working directory.
+
 Imported with:
 
 >>> from openbb_platform_api.main import app
@@ -38,12 +42,17 @@ Imported with:
 >>> @app.get()
 >>> async def hello(input: str = "Hello") -> str:
 >>>     '''Widget description created by doctring.'''
->>>     return f"You entered: {input]"
+>>>     return f"You entered: {input}"
 
 Launched with:
 
 >>> openbb-api --app /path/to/some_file.py
 
+The app instance name can be defined by either the --name argument, or by referencing the module name, for example:
+
+>>> openbb-api --app some_file.py:main --factory
+
+A name must be set when using the factory flag.
 
 All other arguments will be passed to uvicorn. Here are the most common ones:
 
@@ -266,7 +275,7 @@ def get_widgets_json(
     return _widgets_json
 
 
-def import_app(app_path: str):
+def import_app(app_path: str, name: str = "app", factory: bool = False):
     """Import the FastAPI app instance from a local file."""
     # pylint: disable=import-outside-toplevel
     from fastapi import FastAPI  # noqa
@@ -275,34 +284,63 @@ def import_app(app_path: str):
     from openbb_core.api.app_loader import AppLoader
     from openbb_core.api.rest_api import system
 
+    if not str(app_path).startswith("/"):
+        cwd = Path.cwd()
+        app_path = str(cwd.joinpath(app_path).resolve())
+
     if not Path(app_path).exists():
         raise FileNotFoundError(f"Error: The app file '{app_path}' does not exist")
 
-    spec = util.spec_from_file_location("app", app_path)
+    spec_name = os.path.basename(app_path).split(".")[0]
+    spec = util.spec_from_file_location(spec_name, app_path)
+
     if spec is None:
         raise RuntimeError(f"Failed to load the file specs for '{app_path}'")
 
     module = util.module_from_spec(spec)  # type: ignore
+    sys.modules[spec_name] = module  # type: ignore
     spec.loader.exec_module(module)  # type: ignore
 
-    if not hasattr(module, "app"):
+    if not hasattr(module, name):
         raise AttributeError(
-            f"Error: The app file '{app_path}' does not contain an 'app' instance"
+            f"Error: The app file '{app_path}' does not contain an '{name}' instance"
         )
 
-    if not isinstance(module.app, FastAPI):
+    if (
+        hasattr(module, name)
+        and not isinstance(getattr(module, name), FastAPI)
+        and factory is False
+    ):
+        print(  # noqa: T201
+            "\n\n[WARNING]   App factory detected. Using it, but please consider setting the --factory flag explicitly.\n"
+        )
+        factory = True
+
+    if factory:
+        factory_func = getattr(module, name)
+        return_annotation = getattr(factory_func, "__annotations__", {}).get("return")
+
+        if not return_annotation or return_annotation is not FastAPI:
+            raise TypeError(
+                f"Factory function must return an instance of FastAPI, got {return_annotation} instead."
+            )
+
+        app = factory_func()
+    else:
+        app = getattr(module, name)
+
+    if not isinstance(app, FastAPI):
         raise TypeError(
-            f"Error: The app instance in '{app_path}' is not an instance of FastAPI"
+            f"Error: The {name} instance in '{app_path}' is not an instance of FastAPI"
         )
 
-    app = module.app
     app.add_middleware(
         CORSMiddleware,
         allow_origins=system.api_settings.cors.allow_origins,
         allow_methods=system.api_settings.cors.allow_methods,
         allow_headers=system.api_settings.cors.allow_headers,
     )
-    AppLoader.add_openapi_tags(app)
+
     AppLoader.add_exception_handlers(app)
 
     return app
@@ -311,6 +349,7 @@ def import_app(app_path: str):
 def parse_args():
     """Parse the launch script command line arguments."""
     args = sys.argv[1:].copy()
+    cwd = Path.cwd()
     _kwargs: dict = {}
     for i, arg in enumerate(args):
         if arg == "--help":
@@ -336,20 +375,51 @@ def parse_args():
 
     if _kwargs.get("copilots-path"):
         _copilots_path = _kwargs.pop("copilots-path", None)
+
+        if not str(_copilots_path).endswith("copilots.json"):
+            _copilots_path = f"{_copilots_path}{'' if _copilots_path.endswith('/') else '/'}copilots.json"
+
+        if not str(_copilots_path).startswith("/"):
+            _copilots_path = str(cwd.joinpath(_copilots_path).resolve())
+
         if not Path(_copilots_path).exists():
             raise FileNotFoundError(
                 f"Error: The copilots file '{_copilots_path}' does not exist"
             )
+
         with open(_copilots_path, encoding="utf-8") as f:
             _kwargs["copilots"] = json.load(f)
 
     if _kwargs.get("app"):
         _app_path = _kwargs.pop("app", None)
-        if not Path(_app_path).exists():
-            raise FileNotFoundError(f"Error: The app file '{_app_path}' does not exist")
-        _kwargs["app"] = import_app(_app_path)
+        _name = _kwargs.pop("name", "app")
+        _factory = _kwargs.pop("factory", False)
 
-    if _kwargs.get("widgets_path"):
+        if ":" in _app_path:
+            _app_path, module_name = _app_path.split(":")
+            _app_path = _app_path if _app_path.endswith(".py") else f"{_app_path}.py"
+            _name = module_name if module_name else _name
+
+        if _factory and not _name:
+            raise ValueError(
+                "Error: The factory function name must be provided to the --name parameter when the factory flag is set."
+            )
+
+        _kwargs["app"] = import_app(_app_path, _name, _factory)
+
+    if (widget_path := _kwargs.get("widgets-path")) and not str(widget_path).startswith(
+        "/"
+    ):
+        widget_path = str(cwd.joinpath(widget_path).resolve())
+        _kwargs["widgets-path"] = widget_path
+
+    if (template_path := _kwargs.get("templates-path")) and not str(
+        template_path
+    ).startswith("/"):
+        template_path = str(cwd.joinpath(template_path).resolve())
+        _kwargs["templates-path"] = template_path
+
+    if _kwargs.get("widgets-path") and not _kwargs.get("editable"):
         _kwargs["editable"] = True
 
     return _kwargs
