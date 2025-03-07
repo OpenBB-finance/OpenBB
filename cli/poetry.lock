@@ -322,6 +322,22 @@ files = [
 dev = ["backports.zoneinfo ; python_version < \"3.9\"", "freezegun (>=1.0,<2.0)", "jinja2 (>=3.0)", "pytest (>=6.0)", "pytest-cov", "pytz", "setuptools", "tzdata ; sys_platform == \"win32\""]
 
 [[package]]
+name = "babel"
+version = "2.17.0"
+description = "Internationalization utilities"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
+files = [
+    {file = "babel-2.17.0-py3-none-any.whl", hash = "sha256:4d0b53093fdfb4b21c92b5213dba5a1b23885afa8383709427046b21c366e5f2"},
+    {file = "babel-2.17.0.tar.gz", hash = "sha256:0c54cffb19f690cdcc52a3b50bcbf71e07a808d1c80d549f2459b9d2cf0afb9d"},
+]
+
+[package.extras]
+dev = ["backports.zoneinfo", "freezegun (>=1.0,<2.0)", "jinja2 (>=3.0)", "pytest (>=6.0)", "pytest-cov", "pytz", "setuptools", "tzdata"]
+
+[[package]]
 name = "backoff"
 version = "2.2.1"
 description = "Function decoration for backoff and retry"
@@ -1052,6 +1068,31 @@ dev = ["black", "flake8", "mypy", "pytest", "pytest-cov", "types-dateparser", "t
 speed = ["backports-datetime-fromisoformat ; python_version < \"3.11\"", "faust-cchardet (>=2.1.19)", "urllib3[brotli]"]
 
 [[package]]
+name = "htmldate"
+version = "1.9.3"
+description = "Fast and robust extraction of original and updated publication dates from URLs and web pages."
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
+files = [
+    {file = "htmldate-1.9.3-py3-none-any.whl", hash = "sha256:3fadc422cf3c10a5cdb5e1b914daf37ec7270400a80a1b37e2673ff84faaaff8"},
+    {file = "htmldate-1.9.3.tar.gz", hash = "sha256:ac0caf4628c3ded4042011e2d60dc68dfb314c77b106587dd307a80d77e708e9"},
+]
+
+[package.dependencies]
+charset_normalizer = ">=3.4.0"
+dateparser = ">=1.1.2"
+lxml = {version = ">=5.3.0,<6", markers = "platform_system != \"Darwin\" or python_version > \"3.8\""}
+python-dateutil = ">=2.9.0.post0"
+urllib3 = ">=1.26,<3"
+
+[package.extras]
+all = ["htmldate[dev]", "htmldate[speed]"]
+dev = ["black", "flake8", "mypy", "pytest", "pytest-cov", "types-dateparser", "types-lxml", "types-python-dateutil", "types-urllib3"]
+speed = ["backports-datetime-fromisoformat", "faust-cchardet (>=2.1.19)", "urllib3[brotli]"]
+
+[[package]]
 name = "idna"
 version = "3.10"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -1236,6 +1277,7 @@ python-versions = "*"
 groups = ["main"]
 files = [
     {file = "jusText-3.0.1-py2.py3-none-any.whl", hash = "sha256:e0fb882dd7285415709f4b7466aed23d6b98b7b89404c36e8a2e730facfed02b"},
+    {file = "justext-3.0.1-py2.py3-none-any.whl", hash = "sha256:0a5225c5cd7c5a124fec7bfa9a55110a73135e8b58ce784470af67d051ac9fd3"},
     {file = "justext-3.0.1.tar.gz", hash = "sha256:b6ed2fb6c5d21618e2e34b2295c4edfc0bcece3bd549ed5c8ef5a8d20f0b3451"},
 ]
 
@@ -2000,14 +2042,14 @@ files = [
 
 [[package]]
 name = "openbb"
-version = "4.4.0"
+version = "4.4.1"
 description = "Investment research for everyone, anywhere."
 optional = false
 python-versions = "<3.13,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb-4.4.0-py3-none-any.whl", hash = "sha256:5fcaaddf2a06a068a1f7ccd9b3e56ec6d74eb51c020ca10b80fa691a1c2216ac"},
-    {file = "openbb-4.4.0.tar.gz", hash = "sha256:848aac4f3db0d7a6bc87d9487e9632daca0aa7114ede078767cc558585381332"},
+    {file = "openbb-4.4.1-py3-none-any.whl", hash = "sha256:85481c7bea09f8a79905551f1c6b02549a6992c0a1ea97a645aae9c7a1843cec"},
+    {file = "openbb-4.4.1.tar.gz", hash = "sha256:03f653e25b34248d36a04ed8ac2db636f8147b359dff7ac6110583158d3163bc"},
 ]
 
 [package.dependencies]
@@ -2017,25 +2059,25 @@ openbb-biztoc = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra =
 openbb-bls = ">=1.1.0,<2.0.0"
 openbb-cboe = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"cboe\" or extra == \"all\""}
 openbb-cftc = ">=1.1.0,<2.0.0"
-openbb-charting = {version = ">=2.3.0,<3.0.0", optional = true, markers = "extra == \"charting\" or extra == \"all\""}
+openbb-charting = {version = ">=2.3.2,<3.0.0", optional = true, markers = "extra == \"charting\" or extra == \"all\""}
 openbb-commodity = ">=1.3.0,<2.0.0"
-openbb-core = ">=1.4.0,<2.0.0"
+openbb-core = ">=1.4.2,<2.0.0"
 openbb-crypto = ">=1.4.0,<2.0.0"
 openbb-currency = ">=1.4.0,<2.0.0"
 openbb-deribit = {version = ">=1.0.0,<2.0.0", optional = true, markers = "extra == \"all\""}
 openbb-derivatives = ">=1.4.0,<2.0.0"
-openbb-ecb = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"ecb\" or extra == \"all\""}
+openbb-ecb = {version = ">=1.4.1,<2.0.0", optional = true, markers = "extra == \"ecb\" or extra == \"all\""}
 openbb-econdb = ">=1.3.0,<2.0.0"
-openbb-econometrics = {version = ">=1.5.0,<2.0.0", optional = true, markers = "extra == \"econometrics\" or extra == \"all\""}
+openbb-econometrics = {version = ">=1.5.1,<2.0.0", optional = true, markers = "extra == \"econometrics\" or extra == \"all\""}
 openbb-economy = ">=1.4.0,<2.0.0"
 openbb-equity = ">=1.4.0,<2.0.0"
 openbb-etf = ">=1.4.0,<2.0.0"
 openbb-federal-reserve = ">=1.4.0,<2.0.0"
 openbb-finra = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"finra\" or extra == \"all\""}
 openbb-finviz = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"finviz\" or extra == \"all\""}
-openbb-fixedincome = ">=1.4.0,<2.0.0"
-openbb-fmp = ">=1.4.0,<2.0.0"
-openbb-fred = ">=1.4.0,<2.0.0"
+openbb-fixedincome = ">=1.4.2,<2.0.0"
+openbb-fmp = ">=1.4.1,<2.0.0"
+openbb-fred = ">=1.4.1,<2.0.0"
 openbb-government-us = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"government-us\" or extra == \"all\""}
 openbb-imf = ">=1.1.0,<2.0.0"
 openbb-index = ">=1.4.0,<2.0.0"
@@ -2044,39 +2086,39 @@ openbb-multpl = {version = ">=1.1.0,<2.0.0", optional = true, markers = "extra =
 openbb-nasdaq = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"nasdaq\" or extra == \"all\""}
 openbb-news = ">=1.4.0,<2.0.0"
 openbb-oecd = ">=1.4.0,<2.0.0"
-openbb-platform-api = ">=1.1.2,<2.0.0"
+openbb-platform-api = ">=1.1.4,<2.0.0"
 openbb-polygon = ">=1.4.0,<2.0.0"
-openbb-quantitative = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"quantitative\" or extra == \"all\""}
-openbb-regulators = ">=1.4.0,<2.0.0"
-openbb-sec = ">=1.4.0,<2.0.0"
+openbb-quantitative = {version = ">=1.4.1,<2.0.0", optional = true, markers = "extra == \"quantitative\" or extra == \"all\""}
+openbb-regulators = ">=1.4.1,<2.0.0"
+openbb-sec = ">=1.4.1,<2.0.0"
 openbb-seeking-alpha = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"seeking-alpha\" or extra == \"all\""}
 openbb-stockgrid = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"stockgrid\" or extra == \"all\""}
-openbb-technical = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"technical\" or extra == \"all\""}
+openbb-technical = {version = ">=1.4.1,<2.0.0", optional = true, markers = "extra == \"technical\" or extra == \"all\""}
 openbb-tiingo = ">=1.4.0,<2.0.0"
 openbb-tmx = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"tmx\" or extra == \"all\""}
 openbb-tradier = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"tradier\" or extra == \"all\""}
 openbb-tradingeconomics = ">=1.4.0,<2.0.0"
 openbb-us-eia = ">=1.1.0,<2.0.0"
 openbb-wsj = {version = ">=1.4.0,<2.0.0", optional = true, markers = "extra == \"wsj\" or extra == \"all\""}
-openbb-yfinance = ">=1.4.0,<2.0.0"
+openbb-yfinance = ">=1.4.1,<2.0.0"
 
 [package.extras]
-all = ["openbb-alpha-vantage (>=1.4.0,<2.0.0)", "openbb-biztoc (>=1.4.0,<2.0.0)", "openbb-cboe (>=1.4.0,<2.0.0)", "openbb-charting (>=2.3.0,<3.0.0)", "openbb-deribit (>=1.0.0,<2.0.0)", "openbb-ecb (>=1.4.0,<2.0.0)", "openbb-econometrics (>=1.5.0,<2.0.0)", "openbb-finra (>=1.4.0,<2.0.0)", "openbb-finviz (>=1.3.0,<2.0.0)", "openbb-government-us (>=1.4.0,<2.0.0)", "openbb-multpl (>=1.1.0,<2.0.0)", "openbb-nasdaq (>=1.4.0,<2.0.0)", "openbb-quantitative (>=1.4.0,<2.0.0)", "openbb-seeking-alpha (>=1.4.0,<2.0.0)", "openbb-stockgrid (>=1.4.0,<2.0.0)", "openbb-technical (>=1.4.0,<2.0.0)", "openbb-tmx (>=1.3.0,<2.0.0)", "openbb-tradier (>=1.3.0,<2.0.0)", "openbb-wsj (>=1.4.0,<2.0.0)"]
+all = ["openbb-alpha-vantage (>=1.4.0,<2.0.0)", "openbb-biztoc (>=1.4.0,<2.0.0)", "openbb-cboe (>=1.4.0,<2.0.0)", "openbb-charting (>=2.3.2,<3.0.0)", "openbb-deribit (>=1.0.0,<2.0.0)", "openbb-ecb (>=1.4.1,<2.0.0)", "openbb-econometrics (>=1.5.1,<2.0.0)", "openbb-finra (>=1.4.0,<2.0.0)", "openbb-finviz (>=1.3.0,<2.0.0)", "openbb-government-us (>=1.4.0,<2.0.0)", "openbb-multpl (>=1.1.0,<2.0.0)", "openbb-nasdaq (>=1.4.0,<2.0.0)", "openbb-quantitative (>=1.4.1,<2.0.0)", "openbb-seeking-alpha (>=1.4.0,<2.0.0)", "openbb-stockgrid (>=1.4.0,<2.0.0)", "openbb-technical (>=1.4.1,<2.0.0)", "openbb-tmx (>=1.3.0,<2.0.0)", "openbb-tradier (>=1.3.0,<2.0.0)", "openbb-wsj (>=1.4.0,<2.0.0)"]
 alpha-vantage = ["openbb-alpha-vantage (>=1.4.0,<2.0.0)"]
 biztoc = ["openbb-biztoc (>=1.4.0,<2.0.0)"]
 cboe = ["openbb-cboe (>=1.4.0,<2.0.0)"]
-charting = ["openbb-charting (>=2.3.0,<3.0.0)"]
-ecb = ["openbb-ecb (>=1.4.0,<2.0.0)"]
-econometrics = ["openbb-econometrics (>=1.5.0,<2.0.0)"]
+charting = ["openbb-charting (>=2.3.2,<3.0.0)"]
+ecb = ["openbb-ecb (>=1.4.1,<2.0.0)"]
+econometrics = ["openbb-econometrics (>=1.5.1,<2.0.0)"]
 finra = ["openbb-finra (>=1.4.0,<2.0.0)"]
 finviz = ["openbb-finviz (>=1.3.0,<2.0.0)"]
 government-us = ["openbb-government-us (>=1.4.0,<2.0.0)"]
 multpl = ["openbb-multpl (>=1.1.0,<2.0.0)"]
 nasdaq = ["openbb-nasdaq (>=1.4.0,<2.0.0)"]
-quantitative = ["openbb-quantitative (>=1.4.0,<2.0.0)"]
+quantitative = ["openbb-quantitative (>=1.4.1,<2.0.0)"]
 seeking-alpha = ["openbb-seeking-alpha (>=1.4.0,<2.0.0)"]
 stockgrid = ["openbb-stockgrid (>=1.4.0,<2.0.0)"]
-technical = ["openbb-technical (>=1.4.0,<2.0.0)"]
+technical = ["openbb-technical (>=1.4.1,<2.0.0)"]
 tmx = ["openbb-tmx (>=1.3.0,<2.0.0)"]
 tradier = ["openbb-tradier (>=1.3.0,<2.0.0)"]
 wsj = ["openbb-wsj (>=1.4.0,<2.0.0)"]
@@ -2175,21 +2217,21 @@ openbb-core = ">=1.4.0,<2.0.0"
 
 [[package]]
 name = "openbb-charting"
-version = "2.3.1"
+version = "2.3.2"
 description = "Charting extension for OpenBB"
 optional = false
 python-versions = "<3.13,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_charting-2.3.1-py3-none-any.whl", hash = "sha256:258f766946ec4623995066572d4c1f40f91316669410e14cc62d8341c4481651"},
-    {file = "openbb_charting-2.3.1.tar.gz", hash = "sha256:db5e1fb89c463edd542ea8685fdc7c1979fa12b94cbe2738dba1fe14cdbce0df"},
+    {file = "openbb_charting-2.3.2-py3-none-any.whl", hash = "sha256:4ba365ac4de8bdbc519f3a315ce0a044bd974bcfd6f7fe33f29a1fb5dc78f03a"},
+    {file = "openbb_charting-2.3.2.tar.gz", hash = "sha256:b5a3e9cb4f1c2630c40e39a70973a7bd263eac219e9d3c910ec250d7a83866ad"},
 ]
 
 [package.dependencies]
 nbformat = ">=5.10.0,<6.0.0"
 openbb-core = ">=1.4.0,<2.0.0"
 pandas-ta-openbb = ">=0.4.20,<0.5.0"
-plotly = ">=6.0.0,<7.0.0"
+plotly = ">=5.24.1,<6.0.0"
 
 [package.extras]
 pywry = ["pywry (>=0.6.2,<0.7.0)"]
@@ -2211,14 +2253,14 @@ openbb-core = ">=1.4.0,<2.0.0"
 
 [[package]]
 name = "openbb-core"
-version = "1.4.0"
+version = "1.4.2"
 description = "OpenBB package with core functionality."
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_core-1.4.0-py3-none-any.whl", hash = "sha256:a8f7e63a4b0e642e0d68055ead1ce6ea94867094d4550b6c5de128c33069e3a1"},
-    {file = "openbb_core-1.4.0.tar.gz", hash = "sha256:50fa9746c461db392c927136bb2ade38cf130a28b1b101db0cb3802f1e03e3bf"},
+    {file = "openbb_core-1.4.2-py3-none-any.whl", hash = "sha256:d84a182943305feca10ed76ae3f04f58f2ecd6483e0ac432750dfd7c353662ae"},
+    {file = "openbb_core-1.4.2.tar.gz", hash = "sha256:27e5e71e2115f47d26494808fca101fbd4c6727b1848462fe9f9ff844f96468c"},
 ]
 
 [package.dependencies]
@@ -2301,18 +2343,18 @@ openbb-core = ">=1.4.0,<2.0.0"
 
 [[package]]
 name = "openbb-ecb"
-version = "1.4.0"
+version = "1.4.1"
 description = "ECB extension for OpenBB"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_ecb-1.4.0-py3-none-any.whl", hash = "sha256:c6f9b30cdb5380606f82849296f6a00e5ccf1bdef7cbc583668b7b5b49bec037"},
-    {file = "openbb_ecb-1.4.0.tar.gz", hash = "sha256:4359e1dd82dffb4a86320a309dfcc071b5908085f6e0b675d88ecad2d0d18c1a"},
+    {file = "openbb_ecb-1.4.1-py3-none-any.whl", hash = "sha256:6f31a9f392a4f78fc6ec0290de0432e4c63fa8b753f912c8682850e839a896f2"},
+    {file = "openbb_ecb-1.4.1.tar.gz", hash = "sha256:80f09a9514f681f1eeb78bde4081df460da48ca5b33eaef4e0f862694462b0af"},
 ]
 
 [package.dependencies]
-openbb-core = ">=1.4.0,<2.0.0"
+openbb-core = ">=1.4.2,<2.0.0"
 xmltodict = ">=0.13.0,<0.14.0"
 
 [[package]]
@@ -2443,48 +2485,48 @@ openbb-core = ">=1.4.0,<2.0.0"
 
 [[package]]
 name = "openbb-fixedincome"
-version = "1.4.1"
+version = "1.4.2"
 description = "Fixed income extension for OpenBB"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_fixedincome-1.4.1-py3-none-any.whl", hash = "sha256:5c076a04bd77ba7a2e622c319255259fb447b2ce34d08419ebf2c6380e155336"},
-    {file = "openbb_fixedincome-1.4.1.tar.gz", hash = "sha256:7f1825b92bd6fe100363a2c6f5ee47f23d6617db24db28ed182ce08ccd447d37"},
+    {file = "openbb_fixedincome-1.4.2-py3-none-any.whl", hash = "sha256:4fcf97a8183d907e89ce5fe8858b6002043811b99444efa5379c94dad3a49256"},
+    {file = "openbb_fixedincome-1.4.2.tar.gz", hash = "sha256:5d289de1469c69bb6b97fbac7891cda6d4d743b61733c6e8b30138930b214bfe"},
 ]
 
 [package.dependencies]
-openbb-core = ">=1.4.0,<2.0.0"
+openbb-core = ">=1.4.2,<2.0.0"
 
 [[package]]
 name = "openbb-fmp"
-version = "1.4.0"
+version = "1.4.1"
 description = "FMP extension for OpenBB"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_fmp-1.4.0-py3-none-any.whl", hash = "sha256:5c80124714b26ad058049fd1cc5b3437b5ff93c7894b63cbc8eb8f7134a063ce"},
-    {file = "openbb_fmp-1.4.0.tar.gz", hash = "sha256:b99ef57bac0c5538b1ac03b0c3a957f633582a27a8a3eb1e3cc94dc426d243cc"},
+    {file = "openbb_fmp-1.4.1-py3-none-any.whl", hash = "sha256:2b3d5e4151cff784310a38323b4697ff706ce3062a63eac3bc9c5cfcc0fb47ba"},
+    {file = "openbb_fmp-1.4.1.tar.gz", hash = "sha256:4bbb21a0b87148579e6d462a7c7d62d3a63a0d5a0bdb9c68132fce609774e7c9"},
 ]
 
 [package.dependencies]
-openbb-core = ">=1.4.0,<2.0.0"
+openbb-core = ">=1.4.2,<2.0.0"
 
 [[package]]
 name = "openbb-fred"
-version = "1.4.0"
+version = "1.4.1"
 description = "FRED extension for OpenBB"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_fred-1.4.0-py3-none-any.whl", hash = "sha256:2ed1ca9f8409d081c09bced8d92745cce6a305aae8686eccf38a3c887dc01fe8"},
-    {file = "openbb_fred-1.4.0.tar.gz", hash = "sha256:8b3f4e13e5ac040f37e0d41dc3e92c0f44f5e5d4ae6f58f3e9f14f01c3a28d51"},
+    {file = "openbb_fred-1.4.1-py3-none-any.whl", hash = "sha256:300ec0ea213b44a9b3fbc4a097a0c07975b2dfa65f3d8f4dd8553cd046b9c910"},
+    {file = "openbb_fred-1.4.1.tar.gz", hash = "sha256:d9eeb26f10f94480774cf41dfd2b099a7e0a6adc3adaa46a37d6df0592bb31b3"},
 ]
 
 [package.dependencies]
-openbb-core = ">=1.4.0,<2.0.0"
+openbb-core = ">=1.4.2,<2.0.0"
 
 [[package]]
 name = "openbb-government-us"
@@ -2614,14 +2656,14 @@ urllib3 = ">1.26.16"
 
 [[package]]
 name = "openbb-platform-api"
-version = "1.1.2"
+version = "1.1.4"
 description = "OpenBB Platform API: Launch script and widgets builder for the OpenBB Platform API and Workspace Backend Connector."
 optional = false
 python-versions = "<3.13,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_platform_api-1.1.2-py3-none-any.whl", hash = "sha256:05304c1a263a67d65a97655c7ba3efb8e5bb347d17c2edf5ff2df3ce228fb232"},
-    {file = "openbb_platform_api-1.1.2.tar.gz", hash = "sha256:724496d645dfa48c09689e3707dff47d163950c68773efafb485466d860d378f"},
+    {file = "openbb_platform_api-1.1.4-py3-none-any.whl", hash = "sha256:21a5633ee8411b476a16bcf5e18488914a189e7cfbc1a77e1406594a660a950d"},
+    {file = "openbb_platform_api-1.1.4.tar.gz", hash = "sha256:7501cef5ab6eaa41b3454f8cb87a2db1988ec6ef3d045bd4cb1f70955fabbca1"},
 ]
 
 [package.dependencies]
@@ -2661,29 +2703,29 @@ pandas-ta-openbb = ">=0.4.20,<0.5.0"
 
 [[package]]
 name = "openbb-regulators"
-version = "1.4.0"
+version = "1.4.1"
 description = "Markets and Agency Regulators extension for OpenBB"
 optional = false
 python-versions = "<3.13,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_regulators-1.4.0-py3-none-any.whl", hash = "sha256:3aacd0e55b87361ccb3537425c9d6d3005c980691988ecb979b4f4cc7eaaff8c"},
-    {file = "openbb_regulators-1.4.0.tar.gz", hash = "sha256:0975beebca56a8b4afb4fa2bf9851ee7ec04915c43ffbf51fffbd06c8f86758b"},
+    {file = "openbb_regulators-1.4.1-py3-none-any.whl", hash = "sha256:eed74538662123d834b8e068d187002708475512e594c4fc7d2d5da658c11314"},
+    {file = "openbb_regulators-1.4.1.tar.gz", hash = "sha256:92a3b5fb4552014d7640a6fecac693ab1746138dfee08812c1f73aa0aa501156"},
 ]
 
 [package.dependencies]
-openbb-core = ">=1.4.0,<2.0.0"
+openbb-core = ">=1.4.2,<2.0.0"
 
 [[package]]
 name = "openbb-sec"
-version = "1.4.0"
+version = "1.4.1"
 description = "SEC extension for OpenBB"
 optional = false
 python-versions = "<3.13,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_sec-1.4.0-py3-none-any.whl", hash = "sha256:aeb546978995274a327a2c2db9ead9b606ab10079c2c4956e3d1f79f0d030d48"},
-    {file = "openbb_sec-1.4.0.tar.gz", hash = "sha256:d2869c697b018d2b3bfa31baf04b63394403947e5c2fbabacb781a79c0cc9fa3"},
+    {file = "openbb_sec-1.4.1-py3-none-any.whl", hash = "sha256:368fec40f4baa398b7dd9144fc90f1d10f18412238b1003a563fbf3bb67060eb"},
+    {file = "openbb_sec-1.4.1.tar.gz", hash = "sha256:6392c85ccb902df83a1efc32e298fcc4ff8ee9fd3ce602aba94e1f34ce58f7cb"},
 ]
 
 [package.dependencies]
@@ -2692,7 +2734,7 @@ aiosqlite = ">=0.20.0,<0.21.0"
 beautifulsoup4 = ">=4.12,<5.0"
 inscriptis = ">=2.5.3,<3.0.0"
 lxml = ">=5.2.1,<6.0.0"
-openbb-core = ">=1.4.0,<2.0.0"
+openbb-core = ">=1.4.2,<2.0.0"
 trafilatura = ">=2.0,<3.0"
 xmltodict = ">=0.13.0,<0.14.0"
 
@@ -2843,19 +2885,19 @@ openbb-core = ">=1.4.0,<2.0.0"
 
 [[package]]
 name = "openbb-yfinance"
-version = "1.4.0"
+version = "1.4.1"
 description = "yfinance extension for OpenBB"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "openbb_yfinance-1.4.0-py3-none-any.whl", hash = "sha256:58d8db7953153dec14585028ee461f9266e1e4aadc241631ea07667bbb983d6f"},
-    {file = "openbb_yfinance-1.4.0.tar.gz", hash = "sha256:c5d5c8f612d315837b52b869c2b4dd30c453b53b74975f3ff0588230ff5c27cb"},
+    {file = "openbb_yfinance-1.4.1-py3-none-any.whl", hash = "sha256:73969a117ffd1c0c68b088d02ea9a284bcecd1b5d3f185555183a7ffbc4b87ec"},
+    {file = "openbb_yfinance-1.4.1.tar.gz", hash = "sha256:4aed5f64bb7c55d5a1955dc5962b9389fa7bec006c755ba21c8809f452f9c2e4"},
 ]
 
 [package.dependencies]
 openbb-core = ">=1.4.0,<2.0.0"
-yfinance = ">=0.2.52,<0.3.0"
+yfinance = ">=0.2.54,<0.3.0"
 
 [[package]]
 name = "openpyxl"
@@ -4321,6 +4363,22 @@ develop = ["colorama", "cython (>=3.0.10)", "cython (>=3.0.10,<4)", "flake8", "i
 docs = ["ipykernel", "jupyter-client", "matplotlib", "nbconvert", "nbformat", "numpydoc", "pandas-datareader", "sphinx"]
 
 [[package]]
+name = "tenacity"
+version = "9.0.0"
+description = "Retry code until it succeeds"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "tenacity-9.0.0-py3-none-any.whl", hash = "sha256:93de0c98785b27fcf659856aa9f54bfbd399e29969b0621bc7f762bd441b4539"},
+    {file = "tenacity-9.0.0.tar.gz", hash = "sha256:807f37ca97d62aa361264d497b0e31e92b8027044942bfa756160d908320d73b"},
+]
+
+[package.extras]
+doc = ["reno", "sphinx"]
+test = ["pytest", "tornado (>=4.5)", "typeguard"]
+
+[[package]]
 name = "threadpoolctl"
 version = "3.5.0"
 description = "threadpoolctl"
@@ -4915,4 +4973,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9,<3.13"
-content-hash = "1d708fd6821cc28f1215c7c3c9552a0bb6675e4a91289c5abea7563e3dcf35b5"
+content-hash = "d725de2b70f9fb99f1b3fa79ad4db218cd7ef7a57ef2b1eafc94ed36f19cc847"

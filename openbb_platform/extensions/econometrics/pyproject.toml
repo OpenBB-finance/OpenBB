@@ -9,7 +9,7 @@ packages = [{ include = "openbb_econometrics" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"  # scipy forces python <4.0 explicitly
-openbb-core = "^1.4.0"
+openbb-core = "^1.4.2"
 pandas-ta-openbb = "^0.4.20"
 arch = "^7.2"
 linearmodels = "^6"
