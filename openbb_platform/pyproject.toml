@@ -81,6 +81,7 @@ stockgrid = ["openbb-stockgrid"]
 technical = ["openbb-technical"]
 tmx = ["openbb-tmx"]
 tradier = ["openbb-tradier"]
+websockets = ["openbb-websockets"]
 wsj = ["openbb-wsj"]
 
 
@@ -103,6 +104,7 @@ all = [
     "openbb-technical",
     "openbb-tmx",
     "openbb-tradier",
+    "openbb-websockets",
     "openbb-wsj",
 ]
 
