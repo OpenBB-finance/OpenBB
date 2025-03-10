@@ -493,22 +493,22 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches
             if columns_defs:
                 widget_config["data"]["table"]["columnsDefs"] = columns_defs
 
-            var_key: dict = {}
+            data_var_key: dict = {}
 
             if data_config := data_schema_to_columns_defs(
                 openapi, widget_id, provider, route, True
             ):
                 for key, value in data_config.copy().items():
                     if key.startswith("$."):
-                        var_key[key] = value
+                        data_var_key[key] = value
 
                 widget_config["data"] = deep_merge_configs(
                     widget_config["data"],
                     {k: v for k, v in data_config.items() if not k.startswith("$.")},
                 )
 
-            if var_key:
-                for key, value in var_key.items():
+            if data_var_key:
+                for key, value in data_var_key.items():
                     if (
                         key.replace("$.", "") in widget_config_dict
                         and key != "$.data"

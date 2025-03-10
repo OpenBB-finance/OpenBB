@@ -699,7 +699,10 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
 
 
 def post_query_schema_for_widget(
-    openapi_json, operation_id, route: str = None, target_schema: str = None
+    openapi_json,
+    operation_id,
+    route: Optional[str] = None,
+    target_schema: Optional[str] = None,
 ):
     """
     Get the POST query schema for a widget based on its operationId.
@@ -717,6 +720,9 @@ def post_query_schema_for_widget(
     new_params: dict = {}
 
     def set_param(k, v):
+        """Set the parameter."""
+        nonlocal new_params
+
         new_params[k]: dict = {}
         new_params[k]["name"] = k
         new_params[k]["type"] = (
