@@ -418,6 +418,110 @@ async def hello_chart() -> dict:
     return fig.to_plotly_json()
 ```
 
+### Form Submit Widget
+
+When submitted, Workspace makes a POST request to the endpoint.
+
+If the POST function returns a 200 status code, the widget associated with the GET function is refreshed.
+
+The results of the GET function does not have to correspond with the parameters and results of the POST function.
+
+For example, the response to submitting a form can be a Markdown widget with a custom message.
+
+The entry in `widgets.json` will be automatically created if the conditions below are met:
+
+- GET and POST methods must share the same API route.
+- POST method takes 1 positional argument, a sub-class of Pydantic BaseModel.
+  - Create a model, like annotated table fields, defining all inputs to the form.
+
+#### Example
+
+The code below creates a widget with a form as the input, and an output table of all submitted forms, as processed through the `IntakeForm` model.
+
+```python
+import uuid
+from datetime import date as dateType
+from typing import Literal, Union
+
+# from fastapi import FastAPI
+from openbb_platform_api.query_models import FormData
+from openbb_platform_api.response_models import Data
+from pydantic import ConfigDict, Field
+
+# app = FastAPI()
+
+AccountTypes = Literal["General Fund", "Separately Managed", "Private Equity", "Family Office"]
+
+class GeneralIntake(FormData):
+    """Submit a form via POST request."""
+
+    date_created: dateType = Field(
+        title="Created On", default_factory=dateType.today
+    )
+    first_name: str = Field(title="First Name")
+    last_name: str = Field(title="Last Name")
+    email: str = Field(title="Contact Email")
+    dob: dateType = Field(
+        title="Date Of Birth",
+    )
+    account_types: Union[AccountTypes, list[AccountTypes]] = Field(
+        title="Type Of Account",
+        json_schema_extra={
+            "x-widget_config": {"multiSelect": True},
+        },
+    )
+    submit: bool = Field(
+        default=True,
+        title="Submit",
+        type="button",  # This creates a button, when pressed the parameter is sent as True
+    )
+
+
+class IntakeForm(Data):
+    """Submission Records."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    contacted: bool = Field(
+        title="Contacted",
+        default=False,
+    )
+    date_created: dateType = Field(
+        title="Created On",
+    )
+    first_name: str = Field(title="First Name")
+    last_name: str = Field(title="Last Name")
+    email: str = Field(title="Contact Email")
+    dob: dateType = Field(
+        title="Date Of Birth",
+    )
+    account_types: Union[AccountTypes, list[AccountTypes]] = Field(
+        title="Account Interest",
+    )
+    unique_id: uuid.UUID = Field(
+        title="Unique ID",
+        default_factory=uuid.uuid4,
+    )
+
+
+INTAKE_FORMS: list[IntakeForm] = []
+
+
+@app.post("/general_intake")
+async def general_intake_post(data: GeneralIntake) -> bool:
+    global INTAKE_FORMS
+    try:
+        INTAKE_FORMS.append(IntakeForm(**data.model_dump()))
+        return True
+    except Exception as e:
+        raise e from e
+
+
+@app.get("/general_intake")
+async def general_intake() -> list[IntakeForm]:
+    return INTAKE_FORMS
+```
+
 ## Widget Config
 
 Any value from the [`widgets.json`](https://docs.openbb.co/terminal/custom-backend/widgets-json-reference) structure can be passed into the `@app` decorator by including an `openapi_extra` dictionary with the key, `"widget_config"`.
