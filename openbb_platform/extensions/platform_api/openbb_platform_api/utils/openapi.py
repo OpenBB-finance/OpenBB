@@ -759,8 +759,11 @@ def post_query_schema_for_widget(
                     and "date" not in param_types
                     else (
                         "date"
-                        if isinstance(param_types, dict)
-                        and "date" in param_types.get("format", "")  # type: ignore  # noqa: E1101
+                        if any(
+                            "date" in sub_prop.get("format", "")
+                            for sub_prop in v["anyOf"]
+                            if isinstance(sub_prop, dict)
+                        )
                         else "text"
                     )
                 )
