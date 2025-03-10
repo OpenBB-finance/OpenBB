@@ -723,7 +723,7 @@ def post_query_schema_for_widget(
         """Set the parameter."""
         nonlocal new_params
 
-        new_params[k]: dict = {}
+        new_params[k] = {}
         new_params[k]["name"] = k
         new_params[k]["type"] = (
             "text"
