@@ -760,7 +760,7 @@ def post_query_schema_for_widget(
                     else (
                         "date"
                         if isinstance(param_types, dict)
-                        and "date" in param_types.get("format", "")  # type: ignore
+                        and "date" in param_types.get("format", "")  # type: ignore  # noqa: E1101
                         else "text"
                     )
                 )
