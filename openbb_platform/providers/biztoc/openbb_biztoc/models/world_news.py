@@ -52,7 +52,11 @@ class BiztocWorldNewsData(WorldNewsData):
         # pylint: disable=import-outside-toplevel
         from pandas import to_datetime
 
-        return to_datetime(v).strftime("%Y-%m-%d %H:%M:%S")
+        return (
+            to_datetime(v, utc=True)
+            .tz_convert("America/New_York")
+            .strftime("%Y-%m-%d %H:%M:%S%z")
+        )
 
     @field_validator("title")
     @classmethod
@@ -129,24 +133,9 @@ class BiztocWorldNewsFetcher(
             )
         else:
             url1 = base_url + "news/latest"
-            url2 = base_url + "news/topics"
             response = await amake_request(
                 url1, headers=headers, response_callback=response_callback
             )
-            response2 = await amake_request(
-                url2, headers=headers, response_callback=response_callback
-            )
-            if response2:
-                for topic in response2:
-                    stories = topic.get("stories", [])
-                    if stories:
-                        response.extend(  # type: ignore
-                            {
-                                "text" if k == "body_preview" else k: v
-                                for k, v in story.items()
-                            }
-                            for story in stories
-                        )
 
         return response  # type: ignore
 
