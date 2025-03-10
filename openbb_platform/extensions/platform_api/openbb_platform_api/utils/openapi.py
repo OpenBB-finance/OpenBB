@@ -124,7 +124,9 @@ def set_parameter_type(p: dict, p_schema: dict):
     return p
 
 
-def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict:
+def set_parameter_options(  # pylint: disable=too-many-branches
+    p: dict, p_schema: dict, providers: list[str]
+) -> dict:
     """
     Set options for the parameter based on the schema.
 
@@ -758,7 +760,7 @@ def post_query_schema_for_widget(
                     else (
                         "date"
                         if isinstance(param_types, dict)
-                        and "date" in param_types.get("format", "")
+                        and "date" in param_types.get("format", "")  # type: ignore
                         else "text"
                     )
                 )
@@ -829,7 +831,7 @@ def post_query_schema_for_widget(
             route_params: list[dict] = []
             providers = ["custom"]
 
-            for param in new_params:
+            for param in list(new_params):
                 p = process_parameter(new_params[param], providers)
                 route_params.append(p)
 
