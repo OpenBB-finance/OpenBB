@@ -6,6 +6,7 @@ from openbb_platform_api.utils.openapi import (
     data_schema_to_columns_defs,
     get_data_schema_for_widget,
     get_query_schema_for_widget,
+    post_query_schema_for_widget,
 )
 
 # pylint: disable=redefined-outer-name
@@ -32,6 +33,7 @@ def mock_openapi_json():
                     "description": "Source of the data.",
                     "optional": True,
                     "type": "text",
+                    "value": None,
                     "available_providers": ["fred"],
                     "show": True,
                 },
@@ -138,6 +140,7 @@ def mock_openapi_json():
                     "description": "Source of the data.",
                     "optional": True,
                     "type": "text",
+                    "value": None,
                     "available_providers": ["fred"],
                     "show": True,
                 },
@@ -147,6 +150,7 @@ def mock_openapi_json():
                     "description": "Symbol to get data for.",
                     "optional": False,
                     "type": "text",
+                    "value": None,
                     "multiple_items_allowed": {"fred": True},
                     "show": True,
                 },
@@ -240,6 +244,7 @@ def mock_openapi_json():
                     },
                     "multiple_items_allowed": {},
                     "available_providers": ["fred"],
+                    "type": "text",
                     "show": True,
                     "x-widget_config": {},
                 },
@@ -265,6 +270,7 @@ def mock_openapi_json():
                     },
                     "multiple_items_allowed": {},
                     "available_providers": ["fred"],
+                    "type": "text",
                     "show": True,
                     "x-widget_config": {},
                 },
@@ -306,6 +312,7 @@ def mock_openapi_json():
                     },
                     "multiple_items_allowed": {},
                     "available_providers": ["fred"],
+                    "type": "text",
                     "show": True,
                     "x-widget_config": {},
                 },
@@ -321,9 +328,10 @@ def mock_openapi_json():
                     "label": "Provider",
                     "description": "Source of the data.",
                     "optional": True,
-                    "type": "text",
                     "available_providers": ["sec"],
                     "show": True,
+                    "type": "text",
+                    "value": None,
                 },
                 {
                     "parameter_name": "query",
@@ -360,8 +368,9 @@ def mock_openapi_json():
                     "options": {"sec": []},
                     "multiple_items_allowed": {},
                     "available_providers": ["sec"],
-                    "x-widget_config": {},
+                    "type": "text",
                     "show": True,
+                    "x-widget_config": {},
                 },
             ],
             False,
@@ -388,6 +397,17 @@ def test_get_query_schema_for_widget(
 def test_get_data_schema_for_widget(mock_openapi_json, openapi_operation_id):
     schema = get_data_schema_for_widget(mock_openapi_json, openapi_operation_id)
     assert schema is not None
+
+
+@pytest.mark.parametrize(
+    "openapi_operation_id",
+    [
+        "form_submit_form_submit_post",
+    ],
+)
+def test_post_query_schema_for_widget(mock_openapi_json, openapi_operation_id):
+    schema = post_query_schema_for_widget(mock_openapi_json, openapi_operation_id)
+    assert schema
 
 
 @pytest.mark.parametrize(
