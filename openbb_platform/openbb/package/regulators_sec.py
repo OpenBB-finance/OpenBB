@@ -177,6 +177,7 @@ class ROUTER_regulators_sec(Container):
                 },
                 standard_params={},
                 extra_params=kwargs,
+                info={"url": {"sec": {"x-widget_config": {"label": "Filing URL"}}}},
             )
         )
 

@@ -43,7 +43,7 @@ class ROUTER_equity_compare(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Copmare reported company facts and fundamental data points.
+        """Compare reported company facts and fundamental data points.
 
         Parameters
         ----------

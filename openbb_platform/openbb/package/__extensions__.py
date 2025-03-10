@@ -28,27 +28,27 @@ Extensions:
     - economy@1.4.0
     - equity@1.4.0
     - etf@1.4.0
-    - fixedincome@1.4.1
+    - fixedincome@1.4.2
     - index@1.4.0
     - news@1.4.0
-    - regulators@1.4.0
+    - regulators@1.4.1
 
     - benzinga@1.4.0
     - bls@1.1.0
     - cftc@1.1.0
     - econdb@1.3.0
     - federal_reserve@1.4.0
-    - fmp@1.4.0
-    - fred@1.4.0
+    - fmp@1.4.1
+    - fred@1.4.1
     - imf@1.1.0
     - intrinio@1.4.0
     - oecd@1.4.0
     - polygon@1.4.0
-    - sec@1.4.0
+    - sec@1.4.1
     - tiingo@1.4.0
     - tradingeconomics@1.4.0
     - us_eia@1.1.0
-    - yfinance@1.4.0    """
+    - yfinance@1.4.1    """
     # fmt: on
 
     def __repr__(self) -> str:
