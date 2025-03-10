@@ -522,6 +522,8 @@ async def general_intake() -> list[IntakeForm]:
     return INTAKE_FORMS
 ```
 
+<img width="1552" alt="Screenshot 2025-03-09 at 9 51 47 PM" src="https://github.com/user-attachments/assets/16bb3844-ea43-44c8-ae44-67159b0b70e4" />
+
 ## Widget Config
 
 Any value from the [`widgets.json`](https://docs.openbb.co/terminal/custom-backend/widgets-json-reference) structure can be passed into the `@app` decorator by including an `openapi_extra` dictionary with the key, `"widget_config"`.
