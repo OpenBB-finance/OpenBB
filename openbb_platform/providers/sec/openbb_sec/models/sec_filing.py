@@ -547,6 +547,7 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
         # pylint: disable=import-outside-toplevel
         from pandas import MultiIndex, to_datetime
 
+        symbols_list: list = []
         try:
             response = self.download_file(self._cover_page_url, True, self._use_cache)
             if not response:
@@ -642,7 +643,7 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
                     )
                     symbols_dict = dict(zip(symbol_names, trading_symbols))
                     exchanges_dict = dict(zip(symbol_names, exchange_names))
-                    symbols_list: list = []
+
                     for k, v in symbols_dict.items():
                         symbols_list.append(
                             {
