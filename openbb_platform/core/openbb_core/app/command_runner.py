@@ -301,6 +301,8 @@ class StaticCommandRunner:
 
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
+        raised_warnings: list = []
+        custom_headers: Optional[dict[str, Any]] = None
 
         try:
             with catch_warnings(record=True) as warning_list:
