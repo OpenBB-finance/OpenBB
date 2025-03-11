@@ -109,7 +109,7 @@ def set_parameter_type(p: dict, p_schema: dict):
     ):
         p["type"] = "boolean"
 
-    if "date" in p["parameter_name"]:
+    if p["parameter_name"] == "date" or "_date" in p["parameter_name"]:
         p["type"] = "date"
 
     if "timeframe" in p["parameter_name"]:
@@ -118,7 +118,7 @@ def set_parameter_type(p: dict, p_schema: dict):
     if p["parameter_name"] == "limit":
         p["type"] = "number"
 
-    if p.get("type") in ("array", "list") or isinstance(p.get("type"), list):
+    if p.get("type") in ("array", "list") or isinstance(p.get("type"), (list, dict)):
         p["type"] = "text"
 
     return p
