@@ -211,7 +211,6 @@ def get_widgets_json(
     widgets_path: Optional[str] = None,
 ):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
-
     if editable is True:
         if widgets_path is None:
             python_path = Path(sys.executable)
@@ -276,58 +275,82 @@ def get_widgets_json(
 
 
 def import_app(app_path: str, name: str = "app", factory: bool = False):
-    """Import the FastAPI app instance from a local file."""
+    """Import the FastAPI app instance from a local file or module."""
     # pylint: disable=import-outside-toplevel
     from fastapi import FastAPI  # noqa
     from fastapi.middleware.cors import CORSMiddleware
-    from importlib import util
+    from importlib import import_module, util
     from openbb_core.api.app_loader import AppLoader
     from openbb_core.api.rest_api import system
 
-    if not str(app_path).startswith("/"):
-        cwd = Path.cwd()
-        app_path = str(cwd.joinpath(app_path).resolve())
+    def _load_module_from_file_path(file_path: str):
+        spec_name = os.path.basename(file_path).split(".")[0]
+        spec = util.spec_from_file_location(spec_name, file_path)
 
-    if not Path(app_path).exists():
-        raise FileNotFoundError(f"Error: The app file '{app_path}' does not exist")
+        if spec is None:
+            raise RuntimeError(f"Failed to load the file specs for '{file_path}'")
 
-    spec_name = os.path.basename(app_path).split(".")[0]
-    spec = util.spec_from_file_location(spec_name, app_path)
+        module = util.module_from_spec(spec)  # type: ignore
+        sys.modules[spec_name] = module  # type: ignore
+        spec.loader.exec_module(module)  # type: ignore
+        return module
 
-    if spec is None:
-        raise RuntimeError(f"Failed to load the file specs for '{app_path}'")
+    # Case 1: Module path with colon notation (e.g., "my_app.main:app" or "main:app")
+    if ":" in app_path:
+        module_path, name = app_path.split(":")
+        try:  # First try to import as a module
+            module = import_module(module_path)
+        except ImportError:  # If module import fails, try to load as a local file
+            if not module_path.endswith(".py"):
+                module_path += ".py"
 
-    module = util.module_from_spec(spec)  # type: ignore
-    sys.modules[spec_name] = module  # type: ignore
-    spec.loader.exec_module(module)  # type: ignore
+            if not str(module_path).startswith("/"):
+                cwd = Path.cwd()
+                file_path = str(cwd.joinpath(module_path).resolve())
+            else:
+                file_path = module_path
+
+            if not Path(file_path).exists():
+                raise FileNotFoundError(  # pylint: disable=raise-missing-from
+                    f"Error: Neither module '{module_path}' could be imported nor file '{file_path}' exists"
+                )
+
+            module = _load_module_from_file_path(file_path)
+
+    # Case 2: File path (e.g., "main.py" or "my_app/main.py")
+    else:
+        if not str(app_path).startswith("/"):
+            cwd = Path.cwd()
+            app_path = str(cwd.joinpath(app_path).resolve())
+
+        if not Path(app_path).exists():
+            raise FileNotFoundError(f"Error: The app file '{app_path}' does not exist")
+
+        module = _load_module_from_file_path(app_path)
 
     if not hasattr(module, name):
         raise AttributeError(
             f"Error: The app file '{app_path}' does not contain an '{name}' instance"
         )
 
-    if (
-        hasattr(module, name)
-        and not isinstance(getattr(module, name), FastAPI)
-        and factory is False
-    ):
-        print(  # noqa: T201
-            "\n\n[WARNING]   App factory detected. Using it, but please consider setting the --factory flag explicitly.\n"
-        )
-        factory = True
+    app_or_factory = getattr(module, name)
 
-    if factory:
-        factory_func = getattr(module, name)
-        return_annotation = getattr(factory_func, "__annotations__", {}).get("return")
-
-        if not return_annotation or return_annotation is not FastAPI:
-            raise TypeError(
-                f"Factory function must return an instance of FastAPI, got {return_annotation} instead."
+    # Here we use the same approach as uvicorn to handle factory functions.
+    # This prevents us from relying on explicit type annotations.
+    # See: https://github.com/encode/uvicorn/blob/master/uvicorn/config.py
+    try:
+        app = app_or_factory()
+        if not factory:
+            print(  # noqa: T201
+                "\n\n[WARNING]   "
+                "App factory detected. Using it, but please consider setting the --factory flag explicitly.\n"
             )
-
-        app = factory_func()
-    else:
-        app = getattr(module, name)
+    except TypeError:
+        if factory:
+            raise TypeError(  # pylint: disable=raise-missing-from
+                f"Error: The {name} instance in '{app_path}' appears not to be a callable factory function"
+            )
+        app = app_or_factory
 
     if not isinstance(app, FastAPI):
         raise TypeError(
@@ -396,15 +419,13 @@ def parse_args():
         _factory = _kwargs.pop("factory", False)
 
         if ":" in _app_path:
-            _app_path, module_name = _app_path.split(":")
-            _app_path = _app_path if _app_path.endswith(".py") else f"{_app_path}.py"
-            _name = module_name if module_name else _name
+            _app_instance_name = _app_path.split(":")[-1]
+            _name = _app_instance_name if _app_instance_name else _name
 
         if _factory and not _name:
             raise ValueError(
                 "Error: The factory function name must be provided to the --name parameter when the factory flag is set."
             )
-
         _kwargs["app"] = import_app(_app_path, _name, _factory)
 
     if (widget_path := _kwargs.get("widgets-path")) and not str(widget_path).startswith(
