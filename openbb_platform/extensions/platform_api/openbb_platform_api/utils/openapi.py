@@ -408,7 +408,9 @@ def get_query_schema_for_widget(
         p = process_parameter(param, providers)
         if "show" not in p:
             p["show"] = True
-        route_params.append(p)
+
+        if not p.get("exclude") and not p.get("x-widget_config", {}).get("exclude"):
+            route_params.append(p)
 
     return route_params, has_chart
 
@@ -839,7 +841,10 @@ def post_query_schema_for_widget(
 
             for param in list(new_params):
                 p = process_parameter(new_params[param], providers)
-                route_params.append(p)
+                if not p.get("exclude") and not p.get("x-widget_config", {}).get(
+                    "exclude"
+                ):
+                    route_params.append(p)
 
             return route_params
 
