@@ -29,7 +29,7 @@ def load_historical_fomc_documents() -> list:
     # pylint: disable=import-outside-toplevel
     import json
 
-    historical_docs: dict = {}
+    historical_docs: list = []
     historical_docs_path = __file__.replace(
         "utils/fomc_documents.py", "assets/historical_releases.json"
     )
@@ -155,7 +155,7 @@ def get_fomc_documents_by_year(
             The URL of the document
     """
     filtered_docs: list[dict] = []
-    choice_types = list(FomcDocumentType.__args__)
+    choice_types = list(getattr(FomcDocumentType, "__args__", ()))
 
     if year and year < 1959:
         raise ValueError("Year must be from 1959.")
