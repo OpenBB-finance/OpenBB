@@ -109,7 +109,7 @@ def get_current_fomc_documents() -> list:
 def get_fomc_documents_by_year(
     year: Optional[int] = None,
     document_type: Optional[FomcDocumentType] = None,
-    pdf_only: bool = True,
+    pdf_only: bool = False,
 ) -> list[dict]:
     """
     Get a list of FOMC documents by year and document type.
@@ -187,6 +187,8 @@ def get_fomc_documents_by_year(
     for doc in docs:
         doc_year = int(doc["date"].split("-")[0])
         if year and doc_year != year:
+            continue
+        if pdf_only is True and doc["doc_format"] != "pdf":
             continue
         if document_type in ("all", doc["doc_type"]):
             filtered_docs.append(doc)

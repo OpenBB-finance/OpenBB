@@ -34,7 +34,7 @@ class PlatformController(BaseController):
 
     CHOICES_GENERATION = True
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-positional-arguments
         self,
         name: str,
         parent_path: List[str],
