@@ -174,6 +174,9 @@ class PlatformController(BaseController):
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
+                        if isinstance(obbject, list):
+                            obbject = OBBject(results=obbject)
+
                         if isinstance(obbject, OBBject):
                             if (
                                 session.max_obbjects_exceeded()
