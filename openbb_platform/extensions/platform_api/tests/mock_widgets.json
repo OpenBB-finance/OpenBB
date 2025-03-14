@@ -3639,110 +3639,110 @@
         "searchCategory": "Form Submit",
         "widgetId": "form_submit_custom_obb",
         "params": [
-          {
-            "label": "Some Param",
-            "description": "",
-            "optional": true,
-            "type": "text",
-            "value": "",
-            "show": true,
-            "paramName": "some_param"
-          },
-          {
-            "type": "form",
-            "paramName": "",
-            "label": "Submit Form",
-            "description": "Submit a form via POST request.",
-            "endpoint": "form_submit",
-            "inputParams": [
-              {
-                "label": "Record Opened Date",
-                "description": "",
-                "optional": true,
-                "type": "date",
-                "value": null,
-                "paramName": "date"
-              },
-              {
-                "label": "Record ID",
-                "description": "",
-                "optional": true,
-                "type": "number",
-                "value": null,
-                "paramName": "record_id"
-              },
-              {
-                "label": "First Name",
+            {
+                "label": "Some Param",
                 "description": "",
                 "optional": true,
                 "type": "text",
-                "value": null,
-                "paramName": "first_name"
-              },
-              {
-                "label": "Last Name",
-                "description": "",
-                "optional": true,
-                "type": "text",
-                "value": null,
-                "paramName": "last_name"
-              },
-              {
-                "label": "Symptoms",
-                "description": "",
-                "optional": true,
-                "type": "text",
-                "value": null,
-                "multiSelect": true,
-                "options": [
-                  {
-                    "label": "dizzy",
-                    "value": "dizzy"
-                  },
-                  {
-                    "label": "hungry",
-                    "value": "hungry"
-                  },
-                  {
-                    "label": "sleepy",
-                    "value": "sleepy"
-                  }
-                ],
-                "paramName": "symptoms"
-              },
-              {
-                "label": "Diagnosis",
-                "description": "",
-                "optional": true,
-                "type": "text",
-                "value": null,
-                "paramName": "diagnosis"
-              },
-              {
-                "label": "Add Record",
-                "description": "",
-                "optional": true,
-                "type": "button",
-                "value": true,
-                "paramName": "add_record"
-              }
-            ]
-          }
+                "value": "",
+                "show": true,
+                "paramName": "some_param"
+            },
+            {
+                "type": "form",
+                "paramName": "",
+                "label": "Submit Form",
+                "description": "Submit a form via POST request.",
+                "endpoint": "form_submit",
+                "inputParams": [
+                    {
+                        "label": "Record Opened Date",
+                        "description": "",
+                        "optional": true,
+                        "type": "date",
+                        "value": null,
+                        "paramName": "date"
+                    },
+                    {
+                        "label": "Record ID",
+                        "description": "",
+                        "optional": true,
+                        "type": "number",
+                        "value": null,
+                        "paramName": "record_id"
+                    },
+                    {
+                        "label": "First Name",
+                        "description": "",
+                        "optional": true,
+                        "type": "text",
+                        "value": null,
+                        "paramName": "first_name"
+                    },
+                    {
+                        "label": "Last Name",
+                        "description": "",
+                        "optional": true,
+                        "type": "text",
+                        "value": null,
+                        "paramName": "last_name"
+                    },
+                    {
+                        "label": "Symptoms",
+                        "description": "",
+                        "optional": true,
+                        "type": "text",
+                        "value": null,
+                        "multiSelect": true,
+                        "options": [
+                            {
+                                "label": "dizzy",
+                                "value": "dizzy"
+                            },
+                            {
+                                "label": "hungry",
+                                "value": "hungry"
+                            },
+                            {
+                                "label": "sleepy",
+                                "value": "sleepy"
+                            }
+                        ],
+                        "paramName": "symptoms"
+                    },
+                    {
+                        "label": "Diagnosis",
+                        "description": "",
+                        "optional": true,
+                        "type": "text",
+                        "value": null,
+                        "paramName": "diagnosis"
+                    },
+                    {
+                        "label": "Add Record",
+                        "description": "",
+                        "optional": true,
+                        "type": "button",
+                        "value": true,
+                        "paramName": "add_record"
+                    }
+                ]
+            }
         ],
         "endpoint": "form_submit",
         "runButton": false,
         "gridData": {
-          "w": 40,
-          "h": 15
+            "w": 40,
+            "h": 15
         },
         "data": {
-          "dataKey": "",
-          "table": {
-            "showAll": true
-          }
+            "dataKey": "",
+            "table": {
+                "showAll": true
+            }
         },
         "source": [
-          "Custom"
+            "Custom"
         ]
     }
 }

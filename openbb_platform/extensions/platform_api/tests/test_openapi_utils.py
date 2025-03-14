@@ -42,7 +42,9 @@ def mock_openapi_json():
                     "label": "Country",
                     "description": "The country to get data. Enter as a 3-letter ISO country code, default is USA.",
                     "optional": True,
+                    "type": "text",
                     "value": "united_states",
+                    "multiple_items_allowed": {},
                     "options": {
                         "fred": [
                             {"label": "argentina", "value": "argentina"},
@@ -95,37 +97,32 @@ def mock_openapi_json():
                             {"label": "g20", "value": "g20"},
                         ]
                     },
-                    "multiple_items_allowed": {},
-                    "available_providers": ["fred"],
-                    "type": "text",
-                    "show": True,
                     "x-widget_config": {},
+                    "show": True,
                 },
                 {
                     "parameter_name": "start_date",
                     "label": "Start Date",
                     "description": "Start date of the data, in YYYY-MM-DD format.",
                     "optional": True,
-                    "value": None,
-                    "options": {"fred": []},
-                    "multiple_items_allowed": {},
-                    "available_providers": ["fred"],
                     "type": "date",
-                    "show": True,
+                    "value": None,
+                    "multiple_items_allowed": {},
+                    "options": {"fred": []},
                     "x-widget_config": {},
+                    "show": True,
                 },
                 {
                     "parameter_name": "end_date",
                     "label": "End Date",
                     "description": "End date of the data, in YYYY-MM-DD format.",
                     "optional": True,
-                    "value": None,
-                    "options": {"fred": []},
-                    "multiple_items_allowed": {},
-                    "available_providers": ["fred"],
                     "type": "date",
-                    "show": True,
+                    "value": None,
+                    "multiple_items_allowed": {},
+                    "options": {"fred": []},
                     "x-widget_config": {},
+                    "show": True,
                 },
             ],
             False,
@@ -159,71 +156,45 @@ def mock_openapi_json():
                     "label": "Start Date",
                     "description": "Start date of the data, in YYYY-MM-DD format.",
                     "optional": True,
-                    "value": None,
-                    "options": {"fred": []},
-                    "multiple_items_allowed": {},
-                    "available_providers": ["fred"],
                     "type": "date",
-                    "show": True,
+                    "value": None,
+                    "multiple_items_allowed": {},
+                    "options": {"fred": []},
                     "x-widget_config": {},
+                    "show": True,
                 },
                 {
                     "parameter_name": "end_date",
                     "label": "End Date",
                     "description": "End date of the data, in YYYY-MM-DD format.",
                     "optional": True,
-                    "value": None,
-                    "options": {"fred": []},
-                    "multiple_items_allowed": {},
-                    "available_providers": ["fred"],
                     "type": "date",
-                    "show": True,
+                    "value": None,
+                    "multiple_items_allowed": {},
+                    "options": {"fred": []},
                     "x-widget_config": {},
+                    "show": True,
                 },
                 {
                     "parameter_name": "limit",
                     "label": "Limit",
                     "description": "The number of data entries to return.",
                     "optional": True,
-                    "value": 100000,
-                    "options": {"fred": []},
-                    "multiple_items_allowed": {},
-                    "available_providers": ["fred"],
                     "type": "number",
-                    "show": True,
+                    "value": 100000,
+                    "multiple_items_allowed": {},
+                    "options": {"fred": []},
                     "x-widget_config": {},
+                    "show": True,
                 },
                 {
                     "parameter_name": "frequency",
                     "label": "Frequency",
-                    "description": "Frequency aggregation to convert high frequency data to lower frequency."
-                    + "\n        "
-                    + "\n    None = No change"
-                    + "\n        "
-                    + "\n    a = Annual\n        "
-                    + "\n    q = Quarterly\n        "
-                    + "\n    m = Monthly\n        "
-                    + "\n    w = Weekly\n        "
-                    + "\n    d = Daily\n        "
-                    + "\n    wef = Weekly, Ending Friday"
-                    + "\n        "
-                    + "\n    weth = Weekly, Ending Thursday"
-                    + "\n        "
-                    + "\n    wew = Weekly, Ending Wednesday"
-                    + "\n        "
-                    + "\n    wetu = Weekly, Ending Tuesday"
-                    + "\n        "
-                    + "\n    wem = Weekly, Ending Monday"
-                    + "\n        "
-                    + "\n    wesu = Weekly, Ending Sunday"
-                    + "\n        "
-                    + "\n    wesa = Weekly, Ending Saturday"
-                    + "\n        "
-                    + "\n    bwew = Biweekly, Ending Wednesday"
-                    + "\n        "
-                    + "\n    bwem = Biweekly, Ending Monday",
+                    "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                     "optional": True,
+                    "type": "text",
                     "value": None,
+                    "multiple_items_allowed": {},
                     "options": {
                         "fred": [
                             {"label": "a", "value": "a"},
@@ -242,25 +213,17 @@ def mock_openapi_json():
                             {"label": "bwem", "value": "bwem"},
                         ]
                     },
-                    "multiple_items_allowed": {},
-                    "available_providers": ["fred"],
-                    "type": "text",
-                    "show": True,
                     "x-widget_config": {},
+                    "show": True,
                 },
                 {
                     "parameter_name": "aggregation_method",
                     "label": "Aggregation Method",
-                    "description": "A key that indicates the aggregation method used for frequency aggregation."
-                    + "\n        This parameter has no affect if the frequency parameter is not set."
-                    + "\n        "
-                    + "\n    avg = Average"
-                    + "\n        "
-                    + "\n    sum = Sum"
-                    + "\n        "
-                    + "\n    eop = End of Period",
+                    "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                     "optional": True,
+                    "type": "text",
                     "value": "eop",
+                    "multiple_items_allowed": {},
                     "options": {
                         "fred": [
                             {"label": "avg", "value": "avg"},
@@ -268,36 +231,17 @@ def mock_openapi_json():
                             {"label": "eop", "value": "eop"},
                         ]
                     },
-                    "multiple_items_allowed": {},
-                    "available_providers": ["fred"],
-                    "type": "text",
-                    "show": True,
                     "x-widget_config": {},
+                    "show": True,
                 },
                 {
                     "parameter_name": "transform",
                     "label": "Transform",
-                    "description": "Transformation type"
-                    + "\n        "
-                    + "\n    None = No transformation"
-                    + "\n        "
-                    + "\n    chg = Change"
-                    + "\n        "
-                    + "\n    ch1 = Change from Year Ago"
-                    + "\n        "
-                    + "\n    pch = Percent Change"
-                    + "\n        "
-                    + "\n    pc1 = Percent Change from Year Ago"
-                    + "\n        "
-                    + "\n    pca = Compounded Annual Rate of Change"
-                    + "\n        "
-                    + "\n    cch = Continuously Compounded Rate of Change"
-                    + "\n        "
-                    + "\n    cca = Continuously Compounded Annual Rate of Change"
-                    + "\n        "
-                    + "\n    log = Natural Log",
+                    "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                     "optional": True,
+                    "type": "text",
                     "value": None,
+                    "multiple_items_allowed": {},
                     "options": {
                         "fred": [
                             {"label": "chg", "value": "chg"},
@@ -310,11 +254,8 @@ def mock_openapi_json():
                             {"label": "log", "value": "log"},
                         ]
                     },
-                    "multiple_items_allowed": {},
-                    "available_providers": ["fred"],
-                    "type": "text",
-                    "show": True,
                     "x-widget_config": {},
+                    "show": True,
                 },
             ],
             True,
@@ -328,34 +269,32 @@ def mock_openapi_json():
                     "label": "Provider",
                     "description": "Source of the data.",
                     "optional": True,
-                    "available_providers": ["sec"],
-                    "show": True,
                     "type": "text",
                     "value": None,
+                    "available_providers": ["sec"],
+                    "show": True,
                 },
                 {
                     "parameter_name": "query",
                     "label": "Query",
                     "description": "Search query.",
                     "optional": True,
-                    "value": "",
-                    "options": {"sec": []},
-                    "multiple_items_allowed": {},
-                    "available_providers": ["sec"],
                     "type": "text",
-                    "show": True,
+                    "value": "",
+                    "multiple_items_allowed": {},
+                    "options": {"sec": []},
                     "x-widget_config": {},
+                    "show": True,
                 },
                 {
                     "parameter_name": "use_cache",
                     "label": "Use Cache",
                     "description": "Whether or not to use cache.",
                     "optional": True,
-                    "value": True,
-                    "options": {"sec": []},
-                    "multiple_items_allowed": {},
-                    "available_providers": ["sec"],
                     "type": "boolean",
+                    "value": True,
+                    "multiple_items_allowed": {},
+                    "options": {"sec": []},
                     "x-widget_config": {},
                     "show": True,
                 },
@@ -364,13 +303,12 @@ def mock_openapi_json():
                     "label": "Url",
                     "description": "Enter an optional URL path to fetch the next level.",
                     "optional": True,
-                    "value": None,
-                    "options": {"sec": []},
-                    "multiple_items_allowed": {},
-                    "available_providers": ["sec"],
                     "type": "text",
-                    "show": True,
+                    "value": None,
+                    "multiple_items_allowed": {},
+                    "options": {"sec": []},
                     "x-widget_config": {},
+                    "show": True,
                 },
             ],
             False,
