@@ -91,7 +91,7 @@ def get_current_fomc_documents() -> list:
             if "fomcpresconf" in date:
                 file_type = "press_conference"
 
-            file_format = file_url.split(".")[-1]
+            file_format = file_url.rsplit(".", maxsplit=1)[-1]
             data_releases.append(
                 {
                     "date": new_date,
@@ -188,6 +188,6 @@ def get_fomc_documents_by_year(
         doc_year = int(doc["date"].split("-")[0])
         if year and doc_year != year:
             continue
-        if document_type == "all" or doc["doc_type"] == document_type:
+        if document_type in ("all", doc["doc_type"]):
             filtered_docs.append(doc)
     return filtered_docs
