@@ -22,7 +22,7 @@ class Preferences(BaseModel):
         validate_default=True,
     )
     request_timeout: PositiveInt = 60
-    show_warnings: bool = True
+    show_warnings: bool = False
     table_style: Literal["dark", "light"] = "dark"
     user_styles_directory: str = str(Path.home() / "OpenBBUserData" / "styles" / "user")
 

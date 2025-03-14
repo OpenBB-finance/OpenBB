@@ -301,35 +301,37 @@ class StaticCommandRunner:
 
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
+        raised_warnings: list = []
+        custom_headers: Optional[dict[str, Any]] = None
 
-        with catch_warnings(record=True) as warning_list:
-            # If we're on Jupyter we need to pop here because we will lose "chart" after
-            # ParametersBuilder.build. This needs to be fixed in a way that chart is
-            # added to the function signature and shared for jupyter and api
-            # We can check in the router decorator if the given function has a chart
-            # in the charting extension then we add it there. This way we can remove
-            # the chart parameter from the commands.py and package_builder, it will be
-            # added to the function signature in the router decorator
-            chart = kwargs.pop("chart", False)
+        try:
+            with catch_warnings(record=True) as warning_list:
+                # If we're on Jupyter we need to pop here because we will lose "chart" after
+                # ParametersBuilder.build. This needs to be fixed in a way that chart is
+                # added to the function signature and shared for jupyter and api
+                # We can check in the router decorator if the given function has a chart
+                # in the charting extension then we add it there. This way we can remove
+                # the chart parameter from the commands.py and package_builder, it will be
+                # added to the function signature in the router decorator
+                chart = kwargs.pop("chart", False)
 
-            kwargs = ParametersBuilder.build(
-                args=args,
-                execution_context=execution_context,
-                func=func,
-                kwargs=kwargs,
-            )
+                kwargs = ParametersBuilder.build(
+                    args=args,
+                    execution_context=execution_context,
+                    func=func,
+                    kwargs=kwargs,
+                )
 
-            # If we're on the api we need to remove "chart" here because the parameter is added on
-            # commands.py and the function signature does not expect "chart"
-            kwargs.pop("chart", None)
-            # We also pop custom headers
-            model_headers = system_settings.api_settings.custom_headers or {}
-            custom_headers = {
-                name: kwargs.pop(name.replace("-", "_"), default)
-                for name, default in model_headers.items() or {}
-            } or None
+                # If we're on the api we need to remove "chart" here because the parameter is added on
+                # commands.py and the function signature does not expect "chart"
+                kwargs.pop("chart", None)
+                # We also pop custom headers
+                model_headers = system_settings.api_settings.custom_headers or {}
+                custom_headers = {
+                    name: kwargs.pop(name.replace("-", "_"), default)
+                    for name, default in model_headers.items() or {}
+                } or None
 
-            try:
                 obbject = await cls._command(func, kwargs)
                 # The output might be from a router command with 'no_validate=True'
                 # It might be of a different type than OBBject.
@@ -350,32 +352,33 @@ class StaticCommandRunner:
                     if chart and obbject.results:
                         cls._chart(obbject, **kwargs)
 
-                if warning_list:
+                raised_warnings = warning_list if warning_list else []
+        finally:
+            if raised_warnings:
+                if isinstance(obbject, OBBject):
+                    obbject.warnings = []
+                for w in raised_warnings:
                     if isinstance(obbject, OBBject):
-                        obbject.warnings = []
-                    for w in warning_list:
-                        if isinstance(obbject, OBBject):
-                            obbject.warnings.append(cast_warning(w))
-                        if user_settings.preferences.show_warnings:
-                            showwarning(
-                                message=w.message,
-                                category=w.category,
-                                filename=w.filename,
-                                lineno=w.lineno,
-                                file=w.file,
-                                line=w.line,
-                            )
-            finally:
-                ls = LoggingService(system_settings, user_settings)
-                ls.log(
-                    user_settings=user_settings,
-                    system_settings=system_settings,
-                    route=route,
-                    func=func,
-                    kwargs=kwargs,
-                    exec_info=exc_info(),
-                    custom_headers=custom_headers,
-                )
+                        obbject.warnings.append(cast_warning(w))
+                    if user_settings.preferences.show_warnings:
+                        showwarning(
+                            message=w.message,
+                            category=w.category,
+                            filename=w.filename,
+                            lineno=w.lineno,
+                            file=w.file,
+                            line=w.line,
+                        )
+            ls = LoggingService(system_settings, user_settings)
+            ls.log(
+                user_settings=user_settings,
+                system_settings=system_settings,
+                route=route,
+                func=func,
+                kwargs=kwargs,
+                exec_info=exc_info(),
+                custom_headers=custom_headers,
+            )
 
         return obbject
 
