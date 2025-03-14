@@ -162,8 +162,9 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
             )
 
         if "x-widget_config" in _item:
-            provider_value_widget_config = _item.pop("x-widget_config")
-            _item.update(provider_value_widget_config)
+            provider_value_widget_config[
+                provider_value if provider_value else "custom"
+            ] = _item.pop("x-widget_config", {})
 
         if (
             provider_value_widget_config
@@ -282,7 +283,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             columns_defs = (
                 data_schema_to_columns_defs(openapi, widget_id, provider, route)
                 if widget_config_dict.get("type")
-                in ["multi_file_viewer", "pdf", "metric"]
+                not in ["multi_file_viewer", "pdf", "metric"]
                 else []
             )
             _cats = [

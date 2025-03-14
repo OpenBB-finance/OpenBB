@@ -253,7 +253,7 @@ def set_parameter_options(  # pylint: disable=too-many-branches
     if choices:
         p["options"] = choices
 
-    if is_provider_specific:
+    if is_provider_specific and len(available_providers) > 1:
         p["available_providers"] = list(available_providers)
         p["x-widget_config"] = widget_configs
 
@@ -300,9 +300,6 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
     p["type"] = param.get("type", "text")
     p["value"] = param.get("value")
 
-    if x_widget_config := param.get("x-widget_config", {}):
-        p["x-widget_config"] = x_widget_config
-
     if param_name == "provider":
         p["type"] = "text"
         p["label"] = "Provider"
@@ -338,6 +335,9 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
 
         return p
 
+    if x_widget_config := param.get("x-widget_config", {}):
+        p["x-widget_config"] = x_widget_config
+
     p_schema = param.get("schema", {}) or param
     p["value"] = p_schema.get("default", None)
 
@@ -368,6 +368,10 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
         )
 
     if _widget_config := p_schema.get("x-widget_config", {}):
+        for provider in providers:
+            if provider in _widget_config:
+                _widget_config = _widget_config[provider]
+                break
         p.update(_widget_config)
 
     return p
