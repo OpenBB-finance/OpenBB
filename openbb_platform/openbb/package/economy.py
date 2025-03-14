@@ -24,6 +24,7 @@ class ROUTER_economy(Container):
     cpi
     direction_of_trade
     export_destinations
+    fomc_documents
     fred_regional
     fred_release_table
     fred_search
@@ -2010,6 +2011,250 @@ class ROUTER_economy(Container):
                     "country": {
                         "econdb": {"multiple_items_allowed": True, "choices": None}
                     }
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
+    def fomc_documents(
+        self,
+        provider: Annotated[
+            Optional[Literal["federal_reserve"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get FOMC documents by year and document type.
+        Optionally, download the file directly from the Federal Reserve's website.
+
+        Source: https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm
+        Source: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
+
+        This function does not return the typical OBBject response.
+
+        The response is `list[dict[str, str]]` of FOMC documents and their URLs.
+
+        Each dictionary entry has keys: `date`, `url`, `doc_type`, and `doc_format`.
+
+        If `as_choices` is True, the response is a list of valid Workspace parameter choices.
+        Keys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.
+
+        If `url` was provided, the response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.
+
+
+        Parameters
+        ----------
+        provider : Optional[Literal['federal_reserve']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
+        year : Optional[int]
+            The year of FOMC documents to retrieve. If None, all years since 1959 are returned. (provider: federal_reserve)
+        document_type : Optional[str]
+            Filter by document type. Default is all. Choose from: all, monetary_policy, minutes, projections, materials, press_release, press_conference, conference_call, agenda, transcript, speaker_key, beige_book, teal_book, green_book, blue_book, red_book (provider: federal_reserve)
+        pdf_only : bool
+            Whether to return as a list with only the PDF documents. Default is False. (provider: federal_reserve)
+        as_choices : bool
+            Whether to return cast as a list of valid Workspace parameter choices. Leave as False for typical use. (provider: federal_reserve)
+        url : Optional[str]
+            Download a document from the supplied URL. When provided, all other parameters are ignored. Content is returned as a base64 encoded string. (provider: federal_reserve)
+
+        Returns
+        -------
+        OBBject
+            results : FomcDocuments
+                Serializable results.
+            provider : Optional[Literal['federal_reserve']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        FomcDocuments
+        -------------
+        content : Optional[Any]
+            The content of request results. If `url` was provided, the content is a dictionary with keys `filename` and `content`. Otherwise, it is a list of dictionaries with a mapping of FOMC documents to URLs. The endpoint response will not be an OBBject.results object, but the content directly. (provider: federal_reserve)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.fomc_documents(provider='federal_reserve')
+        >>> # Filter all documents by year.
+        >>> obb.economy.fomc_documents(provider='federal_reserve', year=2022)
+        >>> # Filter all documents by year and document type.
+        >>> obb.economy.fomc_documents(provider='federal_reserve', year=2022, document_type='minutes')
+        >>> # The `url` parameter will override all other parameters to download the document. The response will be a dictionary with keys `filename`, `content`, and `data_format`. PDF content will be a base64 encoded string of the document.
+        >>> obb.economy.fomc_documents(provider='federal_reserve', url='https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20220126.pdf')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/fomc_documents",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.fomc_documents",
+                        ("federal_reserve",),
+                    )
+                },
+                standard_params={},
+                extra_params=kwargs,
+                info={
+                    "year": {
+                        "federal_reserve": {
+                            "x-widget_config": {
+                                "type": "number",
+                                "value": None,
+                                "options": [
+                                    {"label": "All Years", "value": None},
+                                    {"label": "2025", "value": 2025},
+                                    {"label": "2024", "value": 2024},
+                                    {"label": "2023", "value": 2023},
+                                    {"label": "2022", "value": 2022},
+                                    {"label": "2021", "value": 2021},
+                                    {"label": "2020", "value": 2020},
+                                    {"label": "2019", "value": 2019},
+                                    {"label": "2018", "value": 2018},
+                                    {"label": "2017", "value": 2017},
+                                    {"label": "2016", "value": 2016},
+                                    {"label": "2015", "value": 2015},
+                                    {"label": "2014", "value": 2014},
+                                    {"label": "2013", "value": 2013},
+                                    {"label": "2012", "value": 2012},
+                                    {"label": "2011", "value": 2011},
+                                    {"label": "2010", "value": 2010},
+                                    {"label": "2009", "value": 2009},
+                                    {"label": "2008", "value": 2008},
+                                    {"label": "2007", "value": 2007},
+                                    {"label": "2006", "value": 2006},
+                                    {"label": "2005", "value": 2005},
+                                    {"label": "2004", "value": 2004},
+                                    {"label": "2003", "value": 2003},
+                                    {"label": "2002", "value": 2002},
+                                    {"label": "2001", "value": 2001},
+                                    {"label": "2000", "value": 2000},
+                                    {"label": "1999", "value": 1999},
+                                    {"label": "1998", "value": 1998},
+                                    {"label": "1997", "value": 1997},
+                                    {"label": "1996", "value": 1996},
+                                    {"label": "1995", "value": 1995},
+                                    {"label": "1994", "value": 1994},
+                                    {"label": "1993", "value": 1993},
+                                    {"label": "1992", "value": 1992},
+                                    {"label": "1991", "value": 1991},
+                                    {"label": "1990", "value": 1990},
+                                    {"label": "1989", "value": 1989},
+                                    {"label": "1988", "value": 1988},
+                                    {"label": "1987", "value": 1987},
+                                    {"label": "1986", "value": 1986},
+                                    {"label": "1985", "value": 1985},
+                                    {"label": "1984", "value": 1984},
+                                    {"label": "1983", "value": 1983},
+                                    {"label": "1982", "value": 1982},
+                                    {"label": "1981", "value": 1981},
+                                    {"label": "1980", "value": 1980},
+                                    {"label": "1979", "value": 1979},
+                                    {"label": "1978", "value": 1978},
+                                    {"label": "1977", "value": 1977},
+                                    {"label": "1976", "value": 1976},
+                                    {"label": "1975", "value": 1975},
+                                    {"label": "1974", "value": 1974},
+                                    {"label": "1973", "value": 1973},
+                                    {"label": "1972", "value": 1972},
+                                    {"label": "1971", "value": 1971},
+                                    {"label": "1970", "value": 1970},
+                                    {"label": "1969", "value": 1969},
+                                    {"label": "1968", "value": 1968},
+                                    {"label": "1967", "value": 1967},
+                                    {"label": "1966", "value": 1966},
+                                    {"label": "1965", "value": 1965},
+                                    {"label": "1964", "value": 1964},
+                                    {"label": "1963", "value": 1963},
+                                    {"label": "1962", "value": 1962},
+                                    {"label": "1961", "value": 1961},
+                                    {"label": "1960", "value": 1960},
+                                    {"label": "1959", "value": 1959},
+                                ],
+                            }
+                        }
+                    },
+                    "document_type": {
+                        "federal_reserve": {
+                            "x-widget_config": {
+                                "type": "text",
+                                "value": None,
+                                "options": [
+                                    {"label": "All Documents", "value": None},
+                                    {
+                                        "label": "Monetary Policy",
+                                        "value": "monetary_policy",
+                                    },
+                                    {"label": "Minutes", "value": "minutes"},
+                                    {"label": "Projections", "value": "projections"},
+                                    {"label": "Materials", "value": "materials"},
+                                    {
+                                        "label": "Press Release",
+                                        "value": "press_release",
+                                    },
+                                    {
+                                        "label": "Press Conference",
+                                        "value": "press_conference",
+                                    },
+                                    {
+                                        "label": "Conference Call",
+                                        "value": "conference_call",
+                                    },
+                                    {"label": "Agenda", "value": "agenda"},
+                                    {"label": "Transcript", "value": "transcript"},
+                                    {"label": "Speaker Key", "value": "speaker_key"},
+                                    {"label": "Beige Book", "value": "beige_book"},
+                                    {"label": "Teal Book", "value": "teal_book"},
+                                    {"label": "Green Book", "value": "green_book"},
+                                    {"label": "Blue Book", "value": "blue_book"},
+                                    {"label": "Red Book", "value": "red_book"},
+                                ],
+                            }
+                        }
+                    },
+                    "pdf_only": {
+                        "federal_reserve": {
+                            "x-widget_config": {
+                                "value": True,
+                                "type": "boolean",
+                                "show": False,
+                            }
+                        }
+                    },
+                    "as_choices": {
+                        "federal_reserve": {
+                            "x-widget_config": {
+                                "value": True,
+                                "type": "boolean",
+                                "show": False,
+                            }
+                        }
+                    },
+                    "url": {
+                        "federal_reserve": {
+                            "x-widget_config": {
+                                "type": "endpoint",
+                                "paramName": "url",
+                                "optionsEndpoint": "api/v1/economy/fomc_documents",
+                                "optionsParams": {
+                                    "document_type": "$document_type",
+                                    "year": "$year",
+                                    "pdf_only": True,
+                                    "as_choices": True,
+                                    "provider": "federal_reserve",
+                                },
+                                "show": False,
+                            }
+                        }
+                    },
                 },
             )
         )
