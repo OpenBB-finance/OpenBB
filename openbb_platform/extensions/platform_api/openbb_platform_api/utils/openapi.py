@@ -58,6 +58,7 @@ TO_CAPS_STRINGS = [
     "Otm",
     "Atm",
     "Itm",
+    "Fomc",
 ]
 
 
@@ -456,7 +457,7 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: Optional[str] 
         if isinstance(response_ref, dict) and "type" in response_ref:
             response_ref = response_ref["type"]
 
-        if response_ref:
+        if response_ref and isinstance(response_ref, str):
             # Extract the schema name from the reference
             schema_name = response_ref.split("/")[-1]
             # Fetch and return the schema from components

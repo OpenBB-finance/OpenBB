@@ -278,8 +278,12 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             providers = ["custom"]
 
         for provider in providers:
-            columns_defs = data_schema_to_columns_defs(
-                openapi, widget_id, provider, route
+
+            columns_defs = (
+                data_schema_to_columns_defs(openapi, widget_id, provider, route)
+                if widget_config_dict.get("type")
+                in ["multi_file_viewer", "pdf", "metric"]
+                else []
             )
             _cats = [
                 r
