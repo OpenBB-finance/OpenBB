@@ -5,6 +5,7 @@ from openbb_platform_api.utils.api import (
     check_port,
     get_user_settings,
     get_widgets_json,
+    import_app,
     parse_args,
 )
 
@@ -49,8 +50,9 @@ def test_get_user_settings_no_login():
 
 
 def test_get_widgets_json_no_build():
-    with patch("builtins.open", mock_open(read_data="{}")), patch(
-        "os.path.exists", return_value=True
+    with (
+        patch("builtins.open", mock_open(read_data="{}")),
+        patch("os.path.exists", return_value=True),
     ):
         widgets_json = get_widgets_json(
             _build=False, _openapi={}, widget_exclude_filter=[]
@@ -72,6 +74,108 @@ def test_parse_args():
     with patch("sys.argv", ["script.py", "--flag"]):
         args = parse_args()
         assert args == {"flag": True}
+
+
+def test_import_module_app():
+    # pylint: disable=import-outside-toplevel
+    from fastapi import FastAPI as RealFastAPI
+
+    class MockFastAPI(RealFastAPI):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.add_middleware = MagicMock()
+
+    with (
+        patch("importlib.import_module") as mock_import,
+        patch("fastapi.FastAPI", new=MockFastAPI),
+        patch("openbb_core.app.service.system_service.SystemService") as mock_system,
+        patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+        patch("openbb_core.app.model.credentials.CredentialsLoader.load"),
+        patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+    ):
+
+        # Mock system settings
+        mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+        mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+        mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+        # Rest of test setup...
+        mock_module = MagicMock()
+        mock_module.app = MockFastAPI()
+        mock_import.return_value = mock_module
+
+        result = import_app("my_module:app", "app", False)
+        assert isinstance(result, MockFastAPI)
+
+
+@pytest.mark.skip("Not working yet. Asking for a fix. Mocking is messed up.")
+def test_import_file_app():
+    # pylint: disable=import-outside-toplevel
+    from fastapi import FastAPI as RealFastAPI
+
+    class MockFastAPI(RealFastAPI):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.add_middleware = MagicMock()
+
+    with (
+        patch("importlib.import_module") as mock_import,
+        patch("pathlib.Path.exists", return_value=True),
+        patch("fastapi.FastAPI", new=MockFastAPI),
+        patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+        patch(
+            "openbb_core.app.model.credentials.CredentialsLoader.load",
+            return_value=MagicMock(),
+        ),
+        patch("openbb_core.app.service.system_service.SystemService") as mock_system,
+        patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+    ):
+        # Configure system settings mock
+        mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+        mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+        mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+        mock_import.side_effect = ImportError
+        mock_module = MagicMock()
+        mock_module.app = MockFastAPI()
+
+        result = import_app("main.py", "app", False)
+        assert isinstance(result, MockFastAPI)
+
+
+def test_import_factory_app():
+    # pylint: disable=import-outside-toplevel
+    from fastapi import FastAPI as RealFastAPI
+
+    class MockFastAPI(RealFastAPI):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.add_middleware = MagicMock()
+
+    with (
+        patch("importlib.import_module") as mock_import,
+        patch("fastapi.FastAPI", new=MockFastAPI),
+        patch("openbb_core.app.service.system_service.SystemService") as mock_system,
+        patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+        patch(
+            "openbb_core.app.model.credentials.CredentialsLoader.load",
+            return_value=MagicMock(),
+        ),
+        patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+    ):
+        # Configure system settings mock
+        mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+        mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+        mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+        mock_module = MagicMock()
+        factory = MagicMock(return_value=MockFastAPI())
+        mock_module.factory_func = factory
+        mock_import.return_value = mock_module
+
+        result = import_app("main:factory_func", "factory_func", True)
+        factory.assert_called_once()
+        assert isinstance(result, MockFastAPI)
 
 
 if __name__ == "__main__":
