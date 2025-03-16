@@ -174,6 +174,7 @@ class ParametersBuilder:
                 ... if p.default is Parameter.empty else p.default,
             )
             for n, p in sig.parameters.items()
+            if "Depends" not in str(p)
         }
         # We allow extra fields to return with model with 'cc: CommandContext'
         config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
@@ -321,7 +322,7 @@ class StaticCommandRunner:
                     func=func,
                     kwargs=kwargs,
                 )
-
+                kwargs = kwargs if kwargs is not None else {}
                 # If we're on the api we need to remove "chart" here because the parameter is added on
                 # commands.py and the function signature does not expect "chart"
                 kwargs.pop("chart", None)
