@@ -454,7 +454,7 @@ class ImportDefinition:
                 code += "\n)"
                 code += "\n"
 
-        return code
+        return code + "\n"
 
 
 class ClassDefinition:
@@ -578,7 +578,6 @@ class MethodDefinition:
         if field.default is Ellipsis:
             return None
 
-        # Handle nested default objects (like Query)
         if hasattr(field, "default") and hasattr(field.default, "default"):
             default_val = field.default.default
             if default_val is PydanticUndefined:
@@ -586,7 +585,6 @@ class MethodDefinition:
             if default_val is Ellipsis:
                 return None
             return default_val
-
         return field.default
 
     @staticmethod
