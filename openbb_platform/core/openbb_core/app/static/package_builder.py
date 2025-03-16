@@ -420,7 +420,11 @@ class ImportDefinition:
                 # Extract only the base type name without generic parameters
                 if hasattr(hint_type, "__origin__"):
                     # This is a generic type like List[...] or Dict[...]
-                    type_name = hint_type.__origin__.__name__
+                    type_name = (
+                        hint_type.__origin__.__name__
+                        if hasattr(hint_type.__origin__, "__name__")
+                        else str(hint_type.__origin__)
+                    )
                 else:
                     # Extract the base name before any square brackets
                     raw_type_name = getattr(
@@ -445,7 +449,7 @@ class ImportDefinition:
                 code += f"\nfrom {module} import ("
                 for type_name in sorted(types):
                     code += f"\n    {type_name},"
-                code += "\n)"
+                code += "\n)\n"
 
         return code
 
