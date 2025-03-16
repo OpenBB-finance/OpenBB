@@ -451,7 +451,8 @@ class ImportDefinition:
                 code += f"\nfrom {module} import ("
                 for type_name in sorted(types):
                     code += f"\n    {type_name},"
-                code += "\n)\n"
+                code += "\n)"
+                code += "\n"
 
         return code
 
@@ -569,15 +570,24 @@ class MethodDefinition:
     @staticmethod
     def get_default(field: FieldInfo):
         """Get the default value of the field."""
-        field_default = getattr(field, "default", None)
-        if field_default is None or field_default is PydanticUndefined:
+        # First check if field has a default attribute at all
+        if not hasattr(field, "default"):
             return Parameter.empty
 
-        default_default = getattr(field_default, "default", None)
-        if default_default is PydanticUndefined or default_default is Ellipsis:
-            return Parameter.empty
+        # Check for Ellipsis directly in field.default
+        if field.default is Ellipsis:
+            return None
 
-        return default_default
+        # Handle nested default objects (like Query)
+        if hasattr(field, "default") and hasattr(field.default, "default"):
+            default_val = field.default.default
+            if default_val is PydanticUndefined:
+                return Parameter.empty
+            if default_val is Ellipsis:
+                return None
+            return default_val
+
+        return field.default
 
     @staticmethod
     def get_extra(field: FieldInfo) -> dict:
@@ -629,16 +639,6 @@ class MethodDefinition:
             od[k] = params[k]
 
         return od
-
-    @staticmethod
-    def extract_query_default(param):
-        """Extract the default value from a Query parameter."""
-        if hasattr(param, "default") and hasattr(param.default, "default"):
-            default_val = param.default.default
-            if default_val is PydanticUndefined or default_val is Ellipsis:
-                return Parameter.empty
-            return default_val
-        return param.default
 
     @staticmethod
     def format_params(
@@ -720,7 +720,7 @@ class MethodDefinition:
                     name=name,
                     kind=param.kind,
                     annotation=updated_type,
-                    default=MethodDefinition.extract_query_default(param),
+                    default=MethodDefinition.get_default(param),
                 )
                 if param.kind == Parameter.VAR_KEYWORD:
                     var_kw.append(name)
