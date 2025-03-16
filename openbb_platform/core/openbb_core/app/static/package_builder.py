@@ -301,6 +301,8 @@ class ImportDefinition:
         """Filter the hint type list."""
         new_hint_type_list = []
         for hint_type in hint_type_list:
+            if "Depends" in str(hint_type):
+                continue
             if hint_type != _empty and (
                 (
                     hasattr(hint_type, "__module__")
