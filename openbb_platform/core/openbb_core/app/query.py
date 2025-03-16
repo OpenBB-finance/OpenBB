@@ -26,7 +26,8 @@ class Query:
     ) -> None:
         """Initialize Query class."""
         self.cc = cc
-        self.provider = str(provider_choices.provider)
+        original = asdict(provider_choices)
+        self.provider = original.get("provider")
         self.standard_params = standard_params
         self.extra_params = extra_params
         self.name = self.standard_params.__class__.__name__

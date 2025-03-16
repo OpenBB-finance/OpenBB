@@ -174,7 +174,6 @@ class ParametersBuilder:
                 ... if p.default is Parameter.empty else p.default,
             )
             for n, p in sig.parameters.items()
-            if "Depends" not in str(p)
         }
         # We allow extra fields to return with model with 'cc: CommandContext'
         config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
