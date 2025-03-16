@@ -428,7 +428,9 @@ class ImportDefinition:
                 else:
                     # Extract the base name before any square brackets
                     raw_type_name = getattr(
-                        hint_type, "__name__", str(hint_type).split(".")[-1]
+                        hint_type,
+                        "__name__",
+                        str(hint_type).rsplit(".", maxsplit=1)[-1],
                     )
                     type_name = (
                         raw_type_name.split("[")[0]
