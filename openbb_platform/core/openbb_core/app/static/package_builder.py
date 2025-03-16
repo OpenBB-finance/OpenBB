@@ -399,6 +399,7 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         code += "\nfrom openbb_core.app.model.field import OpenBBField"
+
         module_list = [
             hint_type.__module__ if hasattr(hint_type, "__module__") else hint_type
             for hint_type in hint_type_list
@@ -409,6 +410,42 @@ class ImportDefinition:
         code += "\n"
         for module in module_list:
             code += f"import {module}\n"
+
+        # Group types by module and capture the return types for the imports.
+        module_types: dict = {}
+        for hint_type in hint_type_list:
+            if hasattr(hint_type, "__module__") and hint_type.__module__ != "builtins":
+                module = hint_type.__module__
+
+                # Extract only the base type name without generic parameters
+                if hasattr(hint_type, "__origin__"):
+                    # This is a generic type like List[...] or Dict[...]
+                    type_name = hint_type.__origin__.__name__
+                else:
+                    # Extract the base name before any square brackets
+                    raw_type_name = getattr(
+                        hint_type, "__name__", str(hint_type).split(".")[-1]
+                    )
+                    type_name = (
+                        raw_type_name.split("[")[0]
+                        if "[" in raw_type_name
+                        else raw_type_name
+                    )
+
+                if module not in module_types:
+                    module_types[module] = set()
+                module_types[module].add(type_name)
+
+        # Generate from-import statements for modules with specific types
+        for module, types in sorted(module_types.items()):
+            if len(types) == 1:
+                type_name = next(iter(types))
+                code += f"\nfrom {module} import {type_name}"
+            else:
+                code += f"\nfrom {module} import ("
+                for type_name in sorted(types):
+                    code += f"\n    {type_name},"
+                code += "\n)"
 
         return code
 
@@ -588,6 +625,16 @@ class MethodDefinition:
         return od
 
     @staticmethod
+    def extract_query_default(param):
+        """Extract the default value from a Query parameter."""
+        if hasattr(param, "default") and hasattr(param.default, "default"):
+            default_val = param.default.default
+            if default_val is PydanticUndefined or default_val is Ellipsis:
+                return Parameter.empty
+            return default_val
+        return param.default
+
+    @staticmethod
     def format_params(
         path: str, parameter_map: Dict[str, Parameter]
     ) -> OrderedDict[str, Parameter]:
@@ -667,12 +714,26 @@ class MethodDefinition:
                     name=name,
                     kind=param.kind,
                     annotation=updated_type,
-                    default=param.default,
+                    default=MethodDefinition.extract_query_default(param),
                 )
                 if param.kind == Parameter.VAR_KEYWORD:
                     var_kw.append(name)
 
-        return MethodDefinition.reorder_params(params=formatted, var_kw=var_kw)
+        required_params = OrderedDict()
+        optional_params = OrderedDict()
+
+        for name, param in formatted.items():
+            if param.default == Parameter.empty:
+                required_params[name] = param
+            else:
+                optional_params[name] = param
+
+        # Combine them in the correct order
+        ordered_params = OrderedDict(
+            list(required_params.items()) + list(optional_params.items())
+        )
+
+        return MethodDefinition.reorder_params(params=ordered_params, var_kw=var_kw)
 
     @staticmethod
     def add_field_custom_annotations(
