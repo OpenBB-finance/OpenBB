@@ -1126,7 +1126,11 @@ class MethodDefinition:
                                 param_type = param_dict[param_value][0]
                                 try:
                                     # Try to evaluate the type
-                                    annotation = eval(param_type)  # noqa: S307
+                                    annotation = (
+                                        eval(  # noqa: S307  # pylint: disable=eval-used
+                                            param_type
+                                        )
+                                    )
                                 except (NameError, SyntaxError):
                                     annotation = Any
 
@@ -1134,7 +1138,9 @@ class MethodDefinition:
                                 default_str = param_dict[param_value][1]
                                 try:
                                     default = (
-                                        eval(default_str)  # noqa: S307
+                                        eval(  # noqa: S307  # pylint: disable=eval-used
+                                            default_str
+                                        )
                                         if default_str
                                         else None
                                     )
