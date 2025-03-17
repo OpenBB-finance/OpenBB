@@ -950,6 +950,9 @@ class MethodDefinition:
         formatted_params: Optional[OrderedDict[str, Parameter]] = None,
     ):
         """Build the command method implementation."""
+        if formatted_params is None:
+            formatted_params = OrderedDict()
+
         sig = signature(func)
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
