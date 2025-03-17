@@ -991,8 +991,16 @@ class MethodDefinition:
         code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
         code += "            **filter_inputs(\n"
+
+        # Check if we already have a kwargs parameter (VAR_KEYWORD) in formatted_params
+        has_kwargs = any(
+            param.kind == Parameter.VAR_KEYWORD for param in formatted_params.values()
+        )
+        has_extra_params = False
+
         for name, param in parameter_map.items():
             if name == "extra_params":
+                has_extra_params = True
                 fields = (
                     param.annotation.__args__[0].__dataclass_fields__
                     if hasattr(param.annotation, "__args__")
@@ -1031,6 +1039,10 @@ class MethodDefinition:
 
         if MethodDefinition.is_data_processing_function(path):
             code += "                data_processing=True,\n"
+
+        # Add kwargs parameter
+        if has_kwargs and not has_extra_params:
+            code += "                **kwargs,\n"
 
         code += "            )\n"
         code += "        )\n"
@@ -1141,6 +1153,20 @@ class MethodDefinition:
                 parameter_map[name] = param
 
         formatted_params = cls.format_params(path=path, parameter_map=parameter_map)
+
+        has_var_kwargs = any(
+            param.kind == Parameter.VAR_KEYWORD for param in formatted_params.values()
+        )
+
+        # If not, add **kwargs to formatted_params
+        if not has_var_kwargs:
+            formatted_params["kwargs"] = Parameter(
+                name="kwargs",
+                kind=Parameter.VAR_KEYWORD,
+                annotation=Any,
+                default=Parameter.empty,
+            )
+
         code = cls.build_command_method_signature(
             func_name=func_name,
             formatted_params=formatted_params,
