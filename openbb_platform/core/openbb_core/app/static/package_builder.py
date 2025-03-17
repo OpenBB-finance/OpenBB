@@ -64,9 +64,9 @@ DataProcessingSupportedTypes = TypeVar(
     list,
     dict,
     "DataFrame",
-    List["DataFrame"],
+    list["DataFrame"],
     "Series",
-    List["Series"],
+    list["Series"],
     "ndarray",
     "Data",
 )
@@ -301,8 +301,6 @@ class ImportDefinition:
         """Filter the hint type list."""
         new_hint_type_list = []
         for hint_type in hint_type_list:
-            if "Depends" in str(hint_type):
-                continue
             if hint_type != _empty and (
                 (
                     hasattr(hint_type, "__module__")
@@ -334,6 +332,14 @@ class ImportDefinition:
 
         for parameter in parameter_map.values():
             hint_type_list.append(parameter.annotation)
+
+            # Extract dependencies from Annotated metadata
+            if isinstance(parameter.annotation, _AnnotatedAlias):
+                for meta in parameter.annotation.__metadata__:
+                    # Check if this is a Depends object
+                    if hasattr(meta, "dependency"):
+                        # Add the dependency function to hint_type_list
+                        hint_type_list.append(meta.dependency)
 
         if return_type:
             hint_type = (
@@ -391,7 +397,7 @@ class ImportDefinition:
         code += "\nfrom pydantic import BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
-        code += "\nfrom typing import TYPE_CHECKING, ForwardRef, List, Dict, Union, Optional, Literal, Any"
+        code += "\nfrom typing import TYPE_CHECKING, ForwardRef, Union, Optional, Literal, Any"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         code += "\nfrom warnings import warn, simplefilter"
         code += "\nfrom typing_extensions import Annotated, deprecated"
@@ -399,6 +405,7 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         code += "\nfrom openbb_core.app.model.field import OpenBBField"
+        code += "\nfrom fastapi import Depends"
 
         module_list = [
             hint_type.__module__ if hasattr(hint_type, "__module__") else hint_type
@@ -438,6 +445,12 @@ class ImportDefinition:
                         else raw_type_name
                     )
 
+                # Skip built-in types when adding to typing module
+                if (
+                    module == "typing" and type_name in dir(__builtins__)
+                ) or type_name in ["Dict", "List"]:
+                    continue
+
                 if module not in module_types:
                     module_types[module] = set()
                 module_types[module].add(type_name)
@@ -448,11 +461,27 @@ class ImportDefinition:
                 type_name = next(iter(types))
                 code += f"\nfrom {module} import {type_name}"
             else:
-                code += f"\nfrom {module} import ("
-                for type_name in sorted(types):
-                    code += f"\n    {type_name},"
-                code += "\n)"
-                code += "\n"
+                import_types = [
+                    d
+                    for d in sorted(types)
+                    if d
+                    not in [
+                        "Dict",
+                        "List",
+                        "int",
+                        "float",
+                        "str",
+                        "dict",
+                        "list",
+                        "set",
+                    ]
+                ]
+                if import_types:
+                    code += f"\nfrom {module} import ("
+                    for type_name in import_types:
+                        code += f"\n    {type_name},"
+                    code += "\n)"
+                    code += "\n"
 
         return code + "\n"
 
@@ -666,8 +695,13 @@ class MethodDefinition:
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
                 var_kw.append(name)
             elif name == "provider_choices":
-                fields = param.annotation.__args__[0].__dataclass_fields__
-                field = fields["provider"]
+                if param.annotation != Parameter.empty and hasattr(
+                    param.annotation, "__args__"
+                ):
+                    fields = param.annotation.__args__[0].__dataclass_fields__
+                    field = fields["provider"]
+                else:
+                    continue
                 type_ = getattr(field, "type")
                 default_priority = getattr(type_, "__args__")
                 formatted["provider"] = Parameter(
@@ -685,7 +719,8 @@ class MethodDefinition:
                     ],
                     default=None,
                 )
-            elif MethodDefinition.is_annotated_dc(param.annotation):
+
+            if MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 for field_name, field in fields.items():
                     type_ = MethodDefinition.get_type(field)
@@ -702,6 +737,32 @@ class MethodDefinition:
                         annotation=updated_type,
                         default=default,
                     )
+
+            elif isinstance(param.annotation, _AnnotatedAlias):
+                # THIS IS THE PROBLEMATIC CHECK - It's filtering out PositiveInt and similar types
+                # Specifically look for Depends dependency rather than any annotation
+                has_depends = any(
+                    hasattr(meta, "dependency")
+                    for meta in param.annotation.__metadata__
+                )
+                if has_depends:
+                    continue
+
+                # If not a dependency, process it as a normal parameter
+                new_type = MethodDefinition.get_expanded_type(name)
+                updated_type = (
+                    param.annotation
+                    if new_type is ...
+                    else Union[param.annotation, new_type]
+                )
+
+                formatted[name] = Parameter(
+                    name=name,
+                    kind=param.kind,
+                    annotation=updated_type,
+                    default=MethodDefinition.get_default(param),
+                )
+
             else:
                 new_type = MethodDefinition.get_expanded_type(name)
                 if hasattr(new_type, "__constraints__"):
@@ -794,6 +855,7 @@ class MethodDefinition:
         func_params = func_params.replace("ForwardRef('DataFrame')", "DataFrame")
         func_params = func_params.replace("ForwardRef('Series')", "Series")
         func_params = func_params.replace("ForwardRef('ndarray')", "ndarray")
+        func_params = func_params.replace("Dict", "dict").replace("List", "list")
         return func_params
 
     @staticmethod
@@ -882,12 +944,34 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def build_command_method_body(path: str, func: Callable):
+    def build_command_method_body(
+        path: str,
+        func: Callable,
+        formatted_params: Optional[OrderedDict[str, Parameter]] = None,
+    ):
         """Build the command method implementation."""
         sig = signature(func)
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
+
+        # Extract dependencies without disrupting other code paths
+        dependency_calls = []
+        dependency_names = set()
+
+        # Process dependencies
+        for name, param in parameter_map.items():
+            if isinstance(param.annotation, _AnnotatedAlias):
+                for meta in param.annotation.__metadata__:
+                    if hasattr(meta, "dependency") and meta.dependency is not None:
+                        dependency_func = meta.dependency
+                        func_name = dependency_func.__name__
+                        dependency_calls.append(f"        {name} = {func_name}()")
+                        dependency_names.add(name)
+
         code = ""
+
+        if dependency_calls:
+            code += "\n".join(dependency_calls) + "\n\n"
 
         if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
             parameter_map["chart"] = Parameter(
@@ -909,7 +993,11 @@ class MethodDefinition:
         code += "            **filter_inputs(\n"
         for name, param in parameter_map.items():
             if name == "extra_params":
-                fields = param.annotation.__args__[0].__dataclass_fields__
+                fields = (
+                    param.annotation.__args__[0].__dataclass_fields__
+                    if hasattr(param.annotation, "__args__")
+                    else param.annotation
+                )
                 values = {k: k for k in fields}
                 for k in values:
                     if extra := MethodDefinition.get_extra(fields[k]):
@@ -987,6 +1075,71 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
 
+        # Get the function source code and extract filter_inputs parameters
+        additional_params = {}
+        if hasattr(func, "__code__"):
+            try:
+                func_source = inspect.getsource(func)
+
+                # First, find the filter_inputs block to extract parameter names
+                filter_inputs_match = re.search(
+                    r"filter_inputs\(\s*(.*?)\s*\)", func_source, re.DOTALL
+                )
+                if filter_inputs_match:
+                    filter_inputs_text = filter_inputs_match.group(1)
+                    filter_params = re.findall(r"(\w+)=(\w+)", filter_inputs_text)
+
+                    # Then look for parameter definitions in function body
+                    # Find parameters defined with types in comments or actual code
+                    param_defs = re.findall(
+                        r"(\w+)\s*:\s*(\w+)(?:\s*=\s*([^,\n]+))?", func_source
+                    )
+                    param_dict = {
+                        name: (typ, default) for name, typ, default in param_defs
+                    }
+
+                    # Add missing parameters preserving types when available
+                    for param_name, param_value in filter_params:
+                        if (
+                            param_name != param_value
+                            and param_value not in parameter_map
+                            and param_value not in ["True", "False", "None"]
+                        ):
+
+                            # Use type from param_dict if available, otherwise Any
+                            if param_value in param_dict:
+                                param_type = param_dict[param_value][0]
+                                try:
+                                    # Try to evaluate the type
+                                    annotation = eval(param_type)
+                                except (NameError, SyntaxError):
+                                    annotation = Any
+
+                                # Get default if available
+                                default_str = param_dict[param_value][1]
+                                try:
+                                    default = eval(default_str) if default_str else None
+                                except (NameError, SyntaxError):
+                                    default = None
+                            else:
+                                annotation = Any
+                                default = None
+
+                            # Add parameter with preserved type/default
+                            additional_params[param_value] = Parameter(
+                                name=param_value,
+                                kind=Parameter.POSITIONAL_OR_KEYWORD,
+                                annotation=annotation,
+                                default=default,
+                            )
+            except (OSError, TypeError):
+                pass
+
+        # Add missing parameters to parameter_map
+        for name, param in additional_params.items():
+            if name not in parameter_map:
+                parameter_map[name] = param
+
         formatted_params = cls.format_params(path=path, parameter_map=parameter_map)
         code = cls.build_command_method_signature(
             func_name=func_name,
@@ -1003,7 +1156,9 @@ class MethodDefinition:
             examples=examples,
         )
 
-        code += cls.build_command_method_body(path=path, func=func)
+        code += cls.build_command_method_body(
+            path=path, func=func, formatted_params=formatted_params
+        )
 
         return code
 
@@ -1363,7 +1518,8 @@ class DocstringGenerator:
         [List, Dict, Tuple], M -> "Union[List[M], Dict[str, M], Tuple[M]]"
         """
         if s := [
-            f"Dict[str, {model}]" if i == "Dict" else f"{i}[{model}]" for i in items
+            f"{i}[str, {model}]" if i.lower() == "dict" else f"{i}[{model}]"
+            for i in items
         ]:
             return f"Union[{', '.join(s)}]" if len(s) > 1 else s[0]
         return model
@@ -1646,7 +1802,7 @@ class ReferenceGenerator:
         obbject_list = [
             {
                 "name": "results",
-                "type": f"List[{model}]",
+                "type": f"list[{model}]",
                 "description": "Serializable results.",
             },
             {
@@ -1656,7 +1812,7 @@ class ReferenceGenerator:
             },
             {
                 "name": "warnings",
-                "type": "Optional[List[Warning_]]",
+                "type": "Optional[list[Warning_]]",
                 "description": "List of warnings.",
             },
             {
@@ -1666,7 +1822,7 @@ class ReferenceGenerator:
             },
             {
                 "name": "extra",
-                "type": "Dict[str, Any]",
+                "type": "dict[str, Any]",
                 "description": "Extra info.",
             },
         ]
