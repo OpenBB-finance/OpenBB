@@ -1126,14 +1126,18 @@ class MethodDefinition:
                                 param_type = param_dict[param_value][0]
                                 try:
                                     # Try to evaluate the type
-                                    annotation = eval(param_type)
+                                    annotation = eval(param_type)  # noqa: S307
                                 except (NameError, SyntaxError):
                                     annotation = Any
 
                                 # Get default if available
                                 default_str = param_dict[param_value][1]
                                 try:
-                                    default = eval(default_str) if default_str else None
+                                    default = (
+                                        eval(default_str)  # noqa: S307
+                                        if default_str
+                                        else None
+                                    )
                                 except (NameError, SyntaxError):
                                     default = None
                             else:
