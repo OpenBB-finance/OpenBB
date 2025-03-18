@@ -55,6 +55,10 @@ TO_CAPS_STRINGS = [
     "Figi",
     "Cusip",
     "Pdf",
+    "Otm",
+    "Atm",
+    "Itm",
+    "Fomc",
 ]
 
 
@@ -109,7 +113,7 @@ def set_parameter_type(p: dict, p_schema: dict):
     ):
         p["type"] = "boolean"
 
-    if "date" in p["parameter_name"]:
+    if p["parameter_name"] == "date" or "_date" in p["parameter_name"]:
         p["type"] = "date"
 
     if "timeframe" in p["parameter_name"]:
@@ -118,13 +122,15 @@ def set_parameter_type(p: dict, p_schema: dict):
     if p["parameter_name"] == "limit":
         p["type"] = "number"
 
-    if p.get("type") in ("array", "list") or isinstance(p.get("type"), list):
+    if p.get("type") in ("array", "list") or isinstance(p.get("type"), (list, dict)):
         p["type"] = "text"
 
     return p
 
 
-def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict:
+def set_parameter_options(  # pylint: disable=too-many-branches
+    p: dict, p_schema: dict, providers: list[str]
+) -> dict:
     """
     Set options for the parameter based on the schema.
 
@@ -142,7 +148,11 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
     Dict
         Updated parameter dictionary with options.
     """
-    choices: dict[str, list[dict[str, str]]] = {}
+    choices: dict[str, list[dict[str, str]]] = (
+        p.get("options", {})
+        if p.get("options")
+        else p_schema.get("options", {}) if p_schema.get("options") else {}
+    )
     widget_configs: dict[str, dict] = {}
     multiple_items_allowed_dict: dict = {}
     is_provider_specific = False
@@ -164,6 +174,7 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
             elif len(providers) == 1 and "enum" in p_schema:
                 provider_choices = p_schema["enum"]
                 p_schema.pop("enum")
+
             if provider_choices:
                 choices[provider] = [
                     {"label": str(c), "value": c} for c in provider_choices
@@ -175,7 +186,9 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
 
     # Check title for provider-specific information
     if "title" in p_schema:
-        title_providers = set(p_schema["title"].split(","))
+        title_providers = (
+            set(p_schema["title"].split(",")) if p_schema.get("title") else set()
+        )
         if title_providers.intersection(providers):
             is_provider_specific = True
             available_providers.update(title_providers)
@@ -235,10 +248,12 @@ def set_parameter_options(p: dict, p_schema: dict, providers: list[str]) -> dict
         if provider in p_schema and p_schema[provider].get("x-widget_config"):
             widget_configs[provider] = p_schema[provider].get("x-widget_config")
 
-    p["options"] = choices
     p["multiple_items_allowed"] = multiple_items_allowed_dict
 
-    if is_provider_specific:
+    if choices:
+        p["options"] = choices
+
+    if is_provider_specific and len(available_providers) > 1:
         p["available_providers"] = list(available_providers)
         p["x-widget_config"] = widget_configs
 
@@ -273,11 +288,17 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
         param_name.replace("_", " ").replace("fixedincome", "fixed income").title()
     )
     p["description"] = (
-        (param.get("description", param_name).split(" (provider:")[0].strip())
-        .split("Multiple comma separated items allowed")[0]
-        .strip()
+        (
+            (param.get("description", param_name).split(" (provider:")[0].strip())
+            .split("Multiple comma separated items allowed")[0]
+            .strip()
+        )
+        if param.get("description")
+        else ""
     )
     p["optional"] = param.get("required", False) is False
+    p["type"] = param.get("type", "text")
+    p["value"] = param.get("value")
 
     if param_name == "provider":
         p["type"] = "text"
@@ -314,12 +335,31 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
 
         return p
 
-    p_schema = param.get("schema", {})
+    if x_widget_config := param.get("x-widget_config", {}):
+        p["x-widget_config"] = x_widget_config
+
+    p_schema = param.get("schema", {}) or param
     p["value"] = p_schema.get("default", None)
+
+    custom = (
+        param.get("options", {}).get("custom", [])
+        if "options" in param and "custom" in param["options"]
+        else []
+    )
+
+    if custom:
+        p["options"] = {"custom": custom}
+
     p = set_parameter_options(p, p_schema, providers)
     p = set_parameter_type(p, p_schema)
 
+    if "options" not in p:
+        p["options"] = []
+        if p_schema.get("options", []):
+            p["options"] = p_schema["options"]
+
     if title := p_schema.get("title", ""):
+
         p["label"] = (
             p.get("parameter_name", "").replace("_", " ").title()
             if ("," in title and title.replace(",", "").islower())
@@ -328,6 +368,10 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
         )
 
     if _widget_config := p_schema.get("x-widget_config", {}):
+        for provider in providers:
+            if provider in _widget_config:
+                _widget_config = _widget_config[provider]
+                break
         p.update(_widget_config)
 
     return p
@@ -353,8 +397,7 @@ def get_query_schema_for_widget(
     """
     has_chart = False
     command = openapi_json["paths"][command_route]
-    schema_method = list(command)[0]
-    command = command[schema_method]
+    command = command.get("get", {})
     params = command.get("parameters", [])
     route_params: list[dict] = []
     providers: list[str] = extract_providers(params)
@@ -370,7 +413,9 @@ def get_query_schema_for_widget(
         p = process_parameter(param, providers)
         if "show" not in p:
             p["show"] = True
-        route_params.append(p)
+
+        if not p.get("exclude") and not p.get("x-widget_config", {}).get("exclude"):
+            route_params.append(p)
 
     return route_params, has_chart
 
@@ -416,7 +461,7 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: Optional[str] 
         if isinstance(response_ref, dict) and "type" in response_ref:
             response_ref = response_ref["type"]
 
-        if response_ref:
+        if response_ref and isinstance(response_ref, str):
             # Extract the schema name from the reference
             schema_name = response_ref.split("/")[-1]
             # Fetch and return the schema from components
@@ -586,7 +631,7 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         column_def["headerName"] = " ".join(
             [
                 (word.upper() if word in TO_CAPS_STRINGS else word)
-                for word in header_name.split(" ")
+                for word in header_name.replace("_", " ").split(" ")
             ]
         )
         column_def["headerTooltip"] = prop.get(
@@ -663,3 +708,150 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
 
         column_defs.append(column_def)
     return column_defs
+
+
+def post_query_schema_for_widget(
+    openapi_json,
+    operation_id,
+    route: Optional[str] = None,
+    target_schema: Optional[str] = None,
+):
+    """
+    Get the POST query schema for a widget based on its operationId.
+
+    Args:
+        openapi (dict): The OpenAPI specification as a dictionary.
+        operation_id (str): The operationId of the widget.
+        route (str): The route of the widget, if any.
+        target_schema (str): The target schema to extract, if any.
+
+    Returns:
+        list[dict]: The schema dictionary for the widget's data.
+    """
+
+    new_params: dict = {}
+
+    def set_param(k, v):
+        """Set the parameter."""
+        nonlocal new_params
+
+        new_params[k] = {}
+        new_params[k]["name"] = k
+        new_params[k]["type"] = (
+            "text"
+            if v.get("type") == "object"
+            else "date" if "date" in v.get("format", "") else v.get("type", "text")
+        )
+        new_params[k]["title"] = v.get("title")
+        new_params[k]["description"] = v.get("description")
+        new_params[k]["default"] = v.get("default")
+        new_params[k]["x-widget_config"] = v.get("x-widget_config", {})
+        choices: list = (
+            [{"label": c, "value": c} for c in v.get("choices", []) if c]
+            if v.get("choices")
+            else []
+        )
+
+        if isinstance(v, dict) and "anyOf" in v:
+            param_types = []
+            for item in v["anyOf"]:
+                if "type" in item and item.get("type") != "null":
+                    param_types.append(item["type"])
+                if "enum" in item:
+                    choices.extend({"label": c, "value": c} for c in item["enum"])
+
+            if param_types:
+                new_params[k]["type"] = (
+                    "number"
+                    if "number" in param_types
+                    or "integer" in param_types
+                    and "string" not in param_types
+                    and "date" not in param_types
+                    else (
+                        "date"
+                        if any(
+                            "date" in sub_prop.get("format", "")
+                            for sub_prop in v["anyOf"]
+                            if isinstance(sub_prop, dict)
+                        )
+                        else "text"
+                    )
+                )
+            else:
+                new_params[k]["type"] = (
+                    "text"
+                    if v.get("type") == "object"
+                    else (
+                        "date"
+                        if "date" in v.get("format", "")
+                        else v.get("type", "text")
+                    )
+                )
+        elif isinstance(v, dict) and "enum" in v:
+            choices.extend({"label": c, "value": c} for c in v["enum"] if c)
+
+        if choices:
+            new_params[k]["options"] = {"custom": choices}
+
+    if not route:
+        for path, methods in openapi_json["paths"].items():
+            for _method, details in methods.items():
+                if details.get("operationId") == operation_id:
+                    route = path
+                    break
+
+    _route = openapi_json["paths"].get(route, {}).get("post", {})
+
+    if (
+        schema := _route.get("requestBody", {})
+        .get("content", {})
+        .get("application/json", {})
+        .get("schema", {})
+    ):
+        # Get the reference to the schema for the request body.
+
+        param_ref = (
+            schema["items"].get("$ref")
+            if "items" in schema
+            else schema.get("$ref") or schema
+        )
+
+        if isinstance(param_ref, dict) and "type" in param_ref:
+            param_ref = param_ref["type"]
+
+        if param_ref:
+            # Extract the schema name from the reference
+            schema_name = param_ref.split("/")[-1]
+            schema = openapi_json["components"]["schemas"].get(schema_name, schema_name)
+            props = schema.get("properties", {})
+
+            for k, v in props.items():
+                if target_schema and target_schema != k:
+                    continue
+                if nested_schema := v.get("$ref"):
+                    nested_schema_name = nested_schema.split("/")[-1]
+                    nested_schema = openapi_json["components"]["schemas"].get(
+                        nested_schema_name, {}
+                    )
+                    for nested_k, nested_v in nested_schema.get(
+                        "properties", {}
+                    ).items():
+                        set_param(nested_k, nested_v)
+
+                else:
+                    set_param(k, v)
+
+            route_params: list[dict] = []
+            providers = ["custom"]
+
+            for param in list(new_params):
+                p = process_parameter(new_params[param], providers)
+                if not p.get("exclude") and not p.get("x-widget_config", {}).get(
+                    "exclude"
+                ):
+                    route_params.append(p)
+
+            return route_params
+
+    # Return None if the schema is not found
+    return None
