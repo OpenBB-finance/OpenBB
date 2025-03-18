@@ -5,6 +5,7 @@ import builtins
 import inspect
 import re
 import shutil
+import sys
 from dataclasses import Field as DCField
 from functools import partial
 from inspect import Parameter, _empty, isclass, signature
@@ -1764,9 +1765,23 @@ class ReferenceGenerator:
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
             field_type = field_info.annotation
             is_required = field_info.is_required()
-            field_type = DocstringGenerator.get_field_type(
+            field_type_str = DocstringGenerator.get_field_type(
                 field_type, is_required, "website"
             )
+
+            # Handle case where field_type_str contains ", optional" suffix
+            if ", optional" in field_type_str:
+                field_type_str = field_type_str.replace(", optional", "")
+                is_required = False
+
+            # Extract metadata from Annotated types
+            field_metadata = {}
+            if hasattr(field_type, "__metadata__"):
+                for meta in field_type.__metadata__:
+                    if hasattr(meta, "description"):
+                        field_metadata["description"] = meta.description
+                    if hasattr(meta, "choices"):
+                        field_metadata["choices"] = meta.choices
 
             cleaned_description = (
                 str(field_info.description)
@@ -1796,19 +1811,19 @@ class ReferenceGenerator:
                     )
                     # Manually setting to List[<field_type>] for multiple items
                     # Should be removed if TYPE_EXPANSION is updated to include this
-                    field_type = f"Union[{field_type}, List[{field_type}]]"
+                    field_type_str = f"Union[{field_type_str}, List[{field_type_str}]]"
             elif field in expanded_types:
                 expanded_type = DocstringGenerator.get_field_type(
                     expanded_types[field], is_required, "website"
                 )
-                field_type = f"Union[{field_type}, {expanded_type}]"
+                field_type_str = f"Union[{field_type_str}, {expanded_type}]"
 
             default_value = "" if field_info.default is PydanticUndefined else field_info.default  # fmt: skip
 
             provider_field_params.append(
                 {
                     "name": field,
-                    "type": field_type,
+                    "type": field_type_str,
                     "description": cleaned_description,
                     "default": default_value,
                     "optional": not is_required,
@@ -1882,10 +1897,19 @@ class ReferenceGenerator:
         Returns
         -------
         List[Dict[str, str]]
-            List of dictionaries containing the name,type, description, default
+            List of dictionaries containing the name, type, description, default
             and optionality of each parameter.
         """
         parameters_list = []
+
+        # Extract only the Parameters section (between "Parameters" and "Returns")
+        params_section = ""
+        if "Parameters" in docstring and "Returns" in docstring:
+            params_section = docstring.split("Parameters")[1].split("Returns")[0]
+        elif "Parameters" in docstring:
+            params_section = docstring.split("Parameters")[1]
+        else:
+            return parameters_list  # No parameters section found
 
         # Define a regex pattern to match parameter blocks
         # This pattern looks for a parameter name followed by " : ", then captures the type and description
@@ -1893,8 +1917,8 @@ class ReferenceGenerator:
             r"\n\s*(?P<name>\w+)\s*:\s*(?P<type>[^\n]+?)(?:\s*=\s*(?P<default>[^\n]+))?\n\s*(?P<description>[^\n]+)"
         )
 
-        # Find all matches in the docstring
-        matches = pattern.finditer(docstring)
+        # Find all matches in the parameters section only
+        matches = pattern.finditer(params_section)
 
         if matches:
             # Iterate over the matches to extract details
@@ -1902,19 +1926,32 @@ class ReferenceGenerator:
                 # Extract named groups as a dictionary
                 param_info = match.groupdict()
 
-                # Determine if the parameter is optional
-                is_optional = "Optional" in param_info["type"]
+                # Clean up and process the type string
+                param_type = param_info["type"].strip()
+
+                # Check for ", optional" in type and handle appropriately
+                is_optional = "Optional" in param_type or ", optional" in param_type
+                if ", optional" in param_type:
+                    param_type = param_type.replace(", optional", "")
 
                 # If no default value is captured, set it to an empty string
                 default_value = (
                     param_info["default"] if param_info["default"] is not None else ""
                 )
-
+                param_type = (
+                    str(param_type)
+                    .replace("openbb_core.provider.abstract.data.Data", "Data")
+                    .replace("List", "list")
+                    .replace("Dict", "dict")
+                    .replace("NoneType", "None")
+                )
                 # Create a new dictionary with fields in the desired order
                 param_dict = {
                     "name": param_info["name"],
-                    "type": param_info["type"],
-                    "description": param_info["description"],
+                    "type": ReferenceGenerator._clean_string_values(param_type),
+                    "description": ReferenceGenerator._clean_string_values(
+                        param_info["description"]
+                    ),
                     "default": default_value,
                     "optional": is_optional,
                 }
@@ -1923,6 +1960,172 @@ class ReferenceGenerator:
                 parameters_list.append(param_dict)
 
         return parameters_list
+
+    @staticmethod
+    def _clean_string_values(value: Any) -> Any:
+        """Convert double quotes in string values to single quotes and fix type references.
+
+        Parameters
+        ----------
+        value : Any
+            The value to clean
+
+        Returns
+        -------
+        Any
+            The cleaned value
+        """
+        if isinstance(value, str):
+            # Fix fully qualified Data type references
+            value = re.sub(
+                r"List\[openbb_core\.provider\.abstract\.data\.Data\]",
+                "list[Data]",
+                value,
+            )
+            value = re.sub(
+                r"openbb_core\.provider\.abstract\.data\.Data", "Data", value
+            )
+
+            # Handle Literal types specifically
+            if (
+                "Literal[" in value
+                and "]" in value
+                and "'" not in value
+                and '"' not in value
+            ):
+                # Extract the content between Literal[ and ]
+                start_idx = value.find("Literal[") + len("Literal[")
+                end_idx = value.rfind("]")
+                if start_idx < end_idx:
+                    content = value[start_idx:end_idx]
+                    # Add single quotes around each value
+                    values = [f"'{v.strip()}'" for v in content.split(",")]
+                    # Reconstruct the Literal type
+                    return f"Literal[{', '.join(values)}]"
+
+            # Replace capitalized Dict with lowercase dict
+            value = re.sub(r"\bDict\b", "dict", value)
+
+            # Replace capitalized List with lowercase list
+            value = re.sub(r"\bList\b", "list", value)
+
+            # Replace double quotes with single quotes for other strings
+            return value.replace('"', "'")
+        elif isinstance(value, dict):
+            return {
+                k: ReferenceGenerator._clean_string_values(v) for k, v in value.items()
+            }
+        elif isinstance(value, list):
+            return [ReferenceGenerator._clean_string_values(item) for item in value]
+        else:
+            return value
+
+    def _get_function_signature_info(func: Callable) -> List[Dict[str, Any]]:
+        """Extract parameter information directly from function signature."""
+        params_info = []
+        sig = signature(func)
+
+        for name, param in sig.parameters.items():
+            # Skip 'self' and context parameters
+            if name in ["self", "cc"]:
+                continue
+
+            # Skip parameters with dependency injections through annotations
+            if isinstance(param.annotation, _AnnotatedAlias) and any(
+                hasattr(meta, "dependency") for meta in param.annotation.__metadata__
+            ):
+                continue
+
+            # Skip parameters with Depends in default values
+            if param.default is not Parameter.empty:
+                default_str = str(param.default)
+                if "Depends" in default_str:
+                    continue
+
+            param_type = param.annotation
+            is_optional = False
+            description = ""
+            choices = None
+            default = param.default if param.default is not Parameter.empty else None
+            json_extra = None
+
+            # Check if type is optional
+            if (
+                hasattr(param_type, "__origin__")
+                and param_type.__origin__ is Union
+                and (type(None) in param_type.__args__ or None in param_type.__args__)
+            ):
+                # Check if None or NoneType is in the union
+                is_optional = True
+                # Extract the actual type (excluding None)
+                non_none_args = [
+                    arg
+                    for arg in param_type.__args__
+                    if arg is not type(None) and arg is not None
+                ]
+                if len(non_none_args) == 1:
+                    param_type = non_none_args[0]
+
+            # Process Annotated types to extract metadata
+            if isinstance(param_type, _AnnotatedAlias):
+                base_type = param_type.__args__[0]
+                for meta in param_type.__metadata__:
+                    if hasattr(meta, "description"):
+                        description = meta.description
+                    if hasattr(meta, "choices"):
+                        choices = meta.choices
+                    if hasattr(meta, "default"):
+                        default = meta.default
+                    if hasattr(meta, "json_schema_extra"):
+                        json_extra = meta.json_schema_extra
+                # Set the actual type to the base type
+                param_type = base_type
+
+            # Handle Query objects passed as parameters or default values.
+            if str(default.__class__).endswith("Query'>") or "Query" in str(
+                default.__class__
+            ):
+                param_type = (
+                    param_type.annotation
+                    if hasattr(param_type, "annotation")
+                    else str(param_type)
+                )
+                description = default.description
+                json_extra = default.json_schema_extra
+                default = (
+                    default.default
+                    if default.default
+                    not in [Parameter.empty, PydanticUndefined, Ellipsis]
+                    else None
+                )
+
+            # Convert type to string representation
+            type_str = str(param_type)
+            # Clean up type string
+            type_str = (
+                type_str.replace("<class '", "")
+                .replace("'>", "")
+                .replace("typing.", "")
+                .replace("NoneType", "None")
+            )
+
+            # Default value makes the parameter optional
+            if default is not None:
+                is_optional = True
+
+            params_info.append(
+                {
+                    "name": name,
+                    "type": ReferenceGenerator._clean_string_values(description),
+                    "description": ReferenceGenerator._clean_string_values(description),
+                    "default": ReferenceGenerator._clean_string_values(default),
+                    "optional": is_optional,
+                    "choices": choices,
+                    "json_schema_extra": json_extra if json_extra else None,
+                }
+            )
+
+        return params_info
 
     @staticmethod
     def _get_post_method_returns_info(docstring: str) -> List[Dict[str, str]]:
@@ -1970,7 +2173,9 @@ class ReferenceGenerator:
         return returns_list
 
     @classmethod
-    def get_paths(cls, route_map: Dict[str, BaseRoute]) -> Dict[str, Dict[str, Any]]:
+    def get_paths(  # noqa: PLR0912
+        cls, route_map: Dict[str, BaseRoute]
+    ) -> Dict[str, Dict[str, Any]]:
         """Get path reference data.
 
         The reference data is a dictionary containing the description, parameters,
@@ -2006,14 +2211,17 @@ class ReferenceGenerator:
                 "message": MethodDefinition.get_deprecation_message(path),
             }
             # Add endpoint examples
-            examples = openapi_extra.get("examples", [])
+            examples = openapi_extra.pop("examples", [])
             reference[path]["examples"] = cls._get_endpoint_examples(
                 path,
                 route_func,
                 examples,  # type: ignore
             )
-            validate_output = not cls.route_map[path].openapi_extra.get("no_validate")
+            validate_output = not openapi_extra.pop("no_validate", None)
             model_map = cls.pi.map.get(standard_model, {})
+            reference[path]["openapi_extra"] = {
+                k: v for k, v in openapi_extra.items() if v
+            }
 
             # Add data for the endpoints having a standard model
             if route_method == {"GET"} and model_map:
@@ -2075,7 +2283,6 @@ class ReferenceGenerator:
                                 ] = None
 
                 # Add endpoint returns data
-                # Currently only OBBject object is returned
                 if validate_output is False:
                     reference[path]["returns"]["Any"] = {
                         "description": "Unvalidated results object.",
@@ -2086,11 +2293,10 @@ class ReferenceGenerator:
                         cls._get_obbject_returns_fields(standard_model, providers)
                     )
             # Add data for the endpoints without a standard model (data processing endpoints)
-            elif (
-                route_method == {"POST"}
-                or "PUT" in str(route_method)
-                or "PATCH" in str(route_method)
-            ) or (route_method == {"GET"} and not model_map):
+            else:
+                # Get function signature information
+                sig_params = cls._get_function_signature_info(route_func)
+
                 # Non-model method's router `description` attribute is unreliable as it may or
                 # may not contain the "Parameters" and "Returns" sections. Hence, the
                 # endpoint function docstring is used instead.
@@ -2102,10 +2308,28 @@ class ReferenceGenerator:
                 description = docstring.split("Parameters")[0].strip()
                 # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
-                # Add endpoint parameters fields for non-model methods
-                reference[path]["parameters"]["standard"] = (
-                    cls._get_post_method_parameters_info(docstring)
-                )
+
+                # Combine signature parameters with docstring parameters
+                docstring_params = cls._get_post_method_parameters_info(docstring)
+
+                # Create a merged parameter list with signature info taking precedence
+                merged_params = {}
+                for param in docstring_params:
+                    merged_params[param["name"]] = param
+
+                for param in sig_params:
+                    name = param["name"]
+                    if name in merged_params:
+                        # Update existing param with signature info
+                        for key, value in param.items():
+                            if value and not (key == "description" and not value):
+                                merged_params[name][key] = value
+                    else:
+                        merged_params[name] = param
+
+                # Add endpoint parameters fields from the merged info
+                reference[path]["parameters"]["standard"] = list(merged_params.values())
+
                 # Add endpoint returns data
                 # If the endpoint is not validated, the return type is set to Any
                 if validate_output is False:
@@ -2113,29 +2337,372 @@ class ReferenceGenerator:
                         "description": "Unvalidated results object.",
                     }
                 else:
-                    returns_info = cls._get_post_method_returns_info(docstring)
-                    if returns_info and "OBBject" in returns_info[0]["type"]:
-                        reference[path]["returns"]["OBBject"] = returns_info
-                    else:
-                        r_info = returns_info[0] if returns_info else {}
-                        r_type = r_info.pop("type", "Any")
-                        r_info["name"] = None  # type: ignore
-                        if len(returns_info) == 2:
-                            r_info = returns_info[1]
-                        elif len(returns_info) == 1:
-                            r_info["type"] = "Any"
-                        if r_type:
-                            if "[" in r_type:
-                                c_types = r_type.split("[")[1].split("]")[0]
-                                r_type = r_type.split("[")[0]
-                                r_info["type"] = (
-                                    "[" + c_types + "]" if c_types else "Any"
+                    model_fields = []
+                    # First try to get from function signature
+
+                    returns_info = cls._extract_return_type(route_func)
+
+                    if not returns_info:
+                        # First try to get return info from docstring
+                        returns_info = cls._get_post_method_returns_info(docstring)
+
+                    returns_info = cls._extract_return_type(route_func)
+                    return_annotation = inspect.signature(route_func).return_annotation
+
+                    is_generic_obbject = (
+                        isinstance(returns_info, dict)
+                        and "OBBject" in returns_info
+                        and any(
+                            item.get("name") == "results" and "Data" in item.get("type")
+                            for item in returns_info.get("OBBject", [])
+                        )
+                    )
+
+                    # Set returns field directly
+                    reference[path]["returns"] = returns_info
+                    reference[path]["model"] = None
+                    reference[path]["data"] = {}
+
+                    if isinstance(returns_info, str) and "[" in returns_info:
+                        # Extract inner type from container type (e.g., "list[ModelName]")
+                        match = re.search(r"\[(.*?)\]", returns_info)
+                        if match:
+                            inner_type_name = match.group(1)
+                            # Try to find the actual model class
+                            for module_name in sys.modules:
+                                module = sys.modules[module_name]
+                                if hasattr(module, inner_type_name):
+                                    model_class = getattr(module, inner_type_name)
+                                    if hasattr(model_class, "model_fields"):
+                                        # Found the model class, extract its fields
+                                        model_fields = []
+                                        for (
+                                            field_name,
+                                            field,
+                                        ) in model_class.model_fields.items():
+                                            if field_name.startswith("_"):
+                                                continue
+
+                                            field_type = (
+                                                DocstringGenerator.get_field_type(
+                                                    field.annotation,
+                                                    not field.is_required(),
+                                                    "website",
+                                                )
+                                            )
+
+                                            model_fields.append(
+                                                {
+                                                    "name": field_name,
+                                                    "type": ReferenceGenerator._clean_string_values(
+                                                        field_type
+                                                    ),
+                                                    "description": (
+                                                        ReferenceGenerator._clean_string_values(
+                                                            field.description
+                                                        )
+                                                        if field.description
+                                                        else ""
+                                                    ),
+                                                    "default": (
+                                                        field.default
+                                                        if field.default
+                                                        and field.default
+                                                        != PydanticUndefined
+                                                        else ""
+                                                    ),
+                                                    "optional": not field.is_required(),
+                                                }
+                                            )
+
+                                        if model_fields:
+                                            list_match = re.search(
+                                                r"list\[(.*?)\]", returns_info
+                                            )
+                                            model_name = (
+                                                list_match.group(1)
+                                                if list_match
+                                                else returns_info
+                                            )
+
+                                            reference[path]["data"][
+                                                model_name
+                                            ] = model_fields
+                                        break
+                    # For Pydantic models, extract the fields
+                    elif (
+                        hasattr(return_annotation, "model_fields")
+                        and not is_generic_obbject
+                    ):
+                        for field_name, field in return_annotation.model_fields.items():
+                            # Skip private fields
+                            if field_name.startswith("_"):
+                                continue
+
+                            field_type = DocstringGenerator.get_field_type(
+                                field.annotation, not field.is_required(), "website"
+                            )
+
+                            model_fields.append(
+                                {
+                                    "name": field_name,
+                                    "type": field_type,
+                                    "description": (
+                                        field.description.replace('"', "'")
+                                        if field.description
+                                        else ""
+                                    ),
+                                    "default": (
+                                        field.default
+                                        if field.default
+                                        and field.default != PydanticUndefined
+                                        else ""
+                                    ),
+                                    "optional": field.is_required(),
+                                }
+                            )
+                    # For results field in OBBject returns, check for actual model type
+
+                    if isinstance(returns_info, dict) and "OBBject" in returns_info:
+                        # For OBBject returns, extract model name from results field type
+                        model_name = None
+                        for item in returns_info["OBBject"]:
+                            if item["name"] == "results":
+                                result_type = item["type"]
+                                # Extract model name from result type (e.g., "list[ModelName]" -> "ModelName")
+                                list_match = re.search(r"list\[(.*?)\]", result_type)
+                                model_name = (
+                                    list_match.group(1) if list_match else result_type
                                 )
-                            reference[path]["returns"][r_type] = r_info
-                        else:
-                            reference[path]["returns"] = returns_info
+
+                                # Don't add data fields for generic types like "Data" or if already in parameters
+                                if model_name and model_name != "Data":
+                                    # Try to find the actual model class
+                                    for module_name in sys.modules:
+                                        module = sys.modules[module_name]
+                                        if hasattr(module, model_name):
+                                            model_class = getattr(module, model_name)
+                                            if hasattr(model_class, "model_fields"):
+                                                # Found the model class, extract its fields
+                                                model_fields = []
+                                                for (
+                                                    field_name,
+                                                    field,
+                                                ) in model_class.model_fields.items():
+                                                    if field_name.startswith("_"):
+                                                        continue
+
+                                                    field_type = DocstringGenerator.get_field_type(
+                                                        field.annotation,
+                                                        not field.is_required(),
+                                                        "website",
+                                                    )
+
+                                                    model_fields.append(
+                                                        {
+                                                            "name": field_name,
+                                                            "type": field_type,
+                                                            "description": field.description
+                                                            or "",
+                                                            "default": (
+                                                                field.default
+                                                                if field.default
+                                                                != PydanticUndefined
+                                                                else ""
+                                                            ),
+                                                            "optional": not field.is_required(),
+                                                        }
+                                                    )
+
+                                                if model_fields:
+                                                    reference[path]["data"][
+                                                        model_name
+                                                    ] = model_fields
+                                                break
+                                break
+                    elif isinstance(returns_info, str):
+                        # For string return types like "list[YFinanceUdfSearchResult]"
+                        list_match = re.search(r"list\[(.*?)\]", returns_info)
+                        model_name = list_match.group(1) if list_match else returns_info
+
+                        # Skip basic types
+                        if model_name not in (
+                            "str",
+                            "int",
+                            "float",
+                            "bool",
+                            "Any",
+                            "dict",
+                        ):
+                            # Try to find the model class
+                            for module_name in sys.modules:
+                                module = sys.modules[module_name]
+                                if hasattr(module, model_name):
+                                    model_class = getattr(module, model_name)
+                                    if hasattr(model_class, "model_fields"):
+                                        # Found the model class, extract its fields
+                                        model_fields = []
+                                        for (
+                                            field_name,
+                                            field,
+                                        ) in model_class.model_fields.items():
+                                            if field_name.startswith("_"):
+                                                continue
+
+                                            field_type = (
+                                                DocstringGenerator.get_field_type(
+                                                    field.annotation,
+                                                    not field.is_required(),
+                                                    "website",
+                                                )
+                                            )
+
+                                            model_fields.append(
+                                                {
+                                                    "name": field_name,
+                                                    "type": field_type,
+                                                    "description": field.description
+                                                    or "",
+                                                    "default": (
+                                                        field.default
+                                                        if field.default
+                                                        != PydanticUndefined
+                                                        else ""
+                                                    ),
+                                                    "optional": not field.is_required(),
+                                                }
+                                            )
+
+                                        if model_fields:
+                                            reference[path]["data"][
+                                                model_name
+                                            ] = model_fields
+                                        break
+                    else:
+                        # For direct returns that aren't OBBject
+                        model_name = (
+                            return_annotation.__name__
+                            if hasattr(return_annotation, "__name__")
+                            else "Model"
+                        )
+                        reference[path]["data"] = (
+                            {model_name: model_fields} if model_fields else {}
+                        )
 
         return reference
+
+    @staticmethod
+    def _extract_return_type(func: Callable) -> Dict[str, Any]:
+        """Extract return type information from function."""
+        return_annotation = inspect.signature(func).return_annotation
+
+        # If no return annotation, or return annotation is inspect.Signature.empty
+        if return_annotation is inspect.Signature.empty:
+            return {"type": "Any"}
+
+        # Check if the return type is an OBBject
+        type_str = str(return_annotation)
+
+        if "OBBject" in type_str or (
+            hasattr(return_annotation, "__name__")
+            and "OBBject" in return_annotation.__name__
+        ):
+            # Extract the model name from docstring or type annotation
+            result_type = "list[Data]"  # Default fallback
+
+            # Try to extract from type annotation first (more reliable)
+            if hasattr(return_annotation, "__origin__") and hasattr(
+                return_annotation, "__args__"
+            ):
+                # For OBBject[SomeType]
+                inner_type = return_annotation.__args__[0]
+                if hasattr(inner_type, "__name__"):
+                    result_type = inner_type.__name__
+                elif hasattr(inner_type, "_name") and inner_type._name:
+                    result_type = inner_type._name
+
+            # If not found, try to extract from docstring
+            if result_type == "list[Data]":
+                docstring = inspect.getdoc(func) or ""
+                if "Returns" in docstring:
+                    returns_section = docstring.split("Returns")[1].split("\n\n")[0]
+                    # Look for model name in docstring
+                    patterns = [
+                        r"OBBject\[(.*?)\]",  # OBBject[Model]
+                        r"results : ([\w\d_]+)",  # results : Model
+                        r"Returns\s+-------\s+(\w+)",  # Direct return type
+                    ]
+
+                    for pattern in patterns:
+                        model_match = re.search(pattern, returns_section)
+                        if model_match:
+                            result_type = model_match.group(1)
+                            break
+
+            # Ensure result_type doesn't already have a container type
+            if "[" in result_type and "]" not in result_type:
+                result_type += "]"  # Add missing closing bracket
+
+            result_type = ReferenceGenerator._clean_string_values(result_type)
+            # Return the standard OBBject structure with correct result type
+            return {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": (
+                            result_type
+                            if "[" in result_type
+                            else f"list[{result_type}]"
+                        ),
+                        "description": "Serializable results.",
+                    },
+                    {"name": "provider", "type": None, "description": "Provider name."},
+                    {
+                        "name": "warnings",
+                        "type": "Optional[list[Warning_]]",
+                        "description": "List of warnings.",
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object.",
+                    },
+                    {
+                        "name": "extra",
+                        "type": "dict[str, Any]",
+                        "description": "Extra info.",
+                    },
+                ]
+            }
+
+        # Clean up return type string
+        type_str = (
+            type_str.replace("<class '", "")
+            .replace("'>", "")
+            .replace("typing.", "")
+            .replace("NoneType", "None")
+        )
+
+        # Basic types handling
+        basic_types = ["int", "str", "dict", "bool", "float", "None", "Any"]
+        if type_str.lower() in [t.lower() for t in basic_types]:
+            return type_str.lower()
+
+        # Check for container types with square brackets
+        container_match = re.search(r"(\w+)\[(.*?)\]", type_str)
+        if container_match:
+            container_type = container_match.group(1)
+            inner_type = container_match.group(2)
+
+            inner_type_name = (
+                inner_type.split(".")[-1] if "." in inner_type else inner_type
+            )
+
+            return f"{container_type}[{inner_type_name}]"
+
+        model_name = type_str.split(".")[-1] if "." in type_str else type_str
+
+        return model_name
 
     @classmethod
     def get_routers(cls, route_map: Dict[str, BaseRoute]) -> Dict[str, Dict[str, Any]]:
