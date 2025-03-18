@@ -6,7 +6,6 @@ import inspect
 import re
 import shutil
 import sys
-from dataclasses import Field as DCField
 from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
@@ -653,14 +652,27 @@ class MethodDefinition:
 
     @staticmethod
     def reorder_params(
-        params: Dict[str, Parameter], var_kw: Optional[List[str]] = None
+        params: Dict[str, Parameter],
+        var_kw: Optional[List[str]] = None,
+        for_docstring: bool = False,
     ) -> "OrderedDict[str, Parameter]":
-        """Reorder the params and make sure VAR_KEYWORD come after 'provider."""
+        """Reorder the params based on context.
+
+        For function signatures: provider is placed last (before VAR_KEYWORD)
+        For docstrings: provider is placed first
+        """
         formatted_keys = list(params.keys())
-        for k in ["provider"] + (var_kw or []):
-            if k in formatted_keys:
-                formatted_keys.remove(k)
-                formatted_keys.append(k)
+
+        if for_docstring and "provider" in formatted_keys:
+            # For docstrings: Place "provider" first
+            formatted_keys.remove("provider")
+            formatted_keys.insert(0, "provider")
+        else:
+            # For function signatures: Place "provider" and VAR_KEYWORD at the end
+            for k in ["provider"] + (var_kw or []):
+                if k in formatted_keys:
+                    formatted_keys.remove(k)
+                    formatted_keys.append(k)
 
         od: OrderedDict[str, Parameter] = OrderedDict()
         for k in formatted_keys:
@@ -721,7 +733,7 @@ class MethodDefinition:
                     default=None,
                 )
 
-            if MethodDefinition.is_annotated_dc(param.annotation):
+            elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 for field_name, field in fields.items():
                     type_ = MethodDefinition.get_type(field)
@@ -739,8 +751,7 @@ class MethodDefinition:
                         default=default,
                     )
 
-            elif isinstance(param.annotation, _AnnotatedAlias):
-                # THIS IS THE PROBLEMATIC CHECK - It's filtering out PositiveInt and similar types
+            if isinstance(param.annotation, _AnnotatedAlias):
                 # Specifically look for Depends dependency rather than any annotation
                 has_depends = any(
                     hasattr(meta, "dependency")
@@ -757,10 +768,20 @@ class MethodDefinition:
                     else Union[param.annotation, new_type]
                 )
 
+                metadata = getattr(param.annotation, "__metadata__", [])
+                description = (
+                    getattr(metadata[0], "description", "") if metadata else ""
+                )
+
                 formatted[name] = Parameter(
                     name=name,
                     kind=param.kind,
-                    annotation=updated_type,
+                    annotation=Annotated[
+                        updated_type,
+                        OpenBBField(
+                            description=description,
+                        ),
+                    ],
                     default=MethodDefinition.get_default(param),
                 )
 
@@ -776,10 +797,20 @@ class MethodDefinition:
                         else Union[param.annotation, new_type]
                     )
 
+                metadata = getattr(param.annotation, "__metadata__", [])
+                description = (
+                    getattr(metadata[0], "description", "") if metadata else ""
+                )
+
                 formatted[name] = Parameter(
                     name=name,
                     kind=param.kind,
-                    annotation=updated_type,
+                    annotation=Annotated[
+                        updated_type,
+                        OpenBBField(
+                            description=description,
+                        ),
+                    ],
                     default=MethodDefinition.get_default(param),
                 )
                 if param.kind == Parameter.VAR_KEYWORD:
@@ -806,38 +837,120 @@ class MethodDefinition:
         od: OrderedDict[str, Parameter], model_name: Optional[str] = None
     ):
         """Add the field custom description and choices to the param signature as annotations."""
-        if model_name:
-            available_fields: Dict[str, DCField] = (
-                ProviderInterface().params[model_name]["standard"].__dataclass_fields__
+        if not model_name:
+            return
+
+        provider_interface = ProviderInterface()
+
+        # Get fields from standard model
+        try:
+            available_fields = provider_interface.params[model_name][
+                "standard"
+            ].__dataclass_fields__
+            extra_fields = provider_interface.params[model_name][
+                "extra"
+            ].__dataclass_fields__
+        except (KeyError, AttributeError):
+            return
+
+        # Combined fields
+        all_fields: dict = {}
+        all_fields.update(available_fields)
+        all_fields.update(extra_fields)
+
+        for param, value in od.items():
+            if param not in all_fields:
+                continue
+
+            field_default = all_fields[param].default
+            extra = MethodDefinition.get_extra(all_fields[param])
+            choices = getattr(field_default, "json_schema_extra", {}).get("choices", [])
+            description = getattr(field_default, "description", "")
+
+            # Handle provider-specific choices and add them to the description
+            provider_specific: dict = {}
+            for provider, provider_info in extra.items():
+                if isinstance(provider_info, dict) and "choices" in provider_info:
+                    provider_specific[provider] = provider_info["choices"]
+
+            # Add provider-specific choices to description
+            if provider_specific:
+                # Add a clean break if needed
+                if not description.endswith("."):
+                    description += "."
+
+                # Add each provider's choices on a new line
+                for provider, provider_choices in provider_specific.items():
+                    if provider_choices:
+                        choices_str = ", ".join(f"'{c}'" for c in provider_choices)
+                        description += f"\nChoices for {provider}: {choices_str}"
+
+            # Handle multiple_items_allowed
+            multiple_items_providers: list = []
+            for provider, provider_info in extra.items():
+                if (
+                    isinstance(provider_info, dict)
+                    and provider_info.get("multiple_items_allowed")
+                    or (
+                        isinstance(provider_info, list)
+                        and "multiple_items_allowed" in provider_info
+                    )
+                ):
+                    multiple_items_providers.append(provider)
+
+            if multiple_items_providers:
+                if not description.endswith("."):
+                    description += "."
+                description += f"\nMultiple items supported by: {', '.join(multiple_items_providers)}"
+
+            # Process the field type - if it's a Union of many Literals, simplify to base type
+            field_type = all_fields[param].type
+            simplified_type = field_type
+
+            # If there are provider-specific choices, try to simplify the type
+            if (
+                provider_specific
+                and hasattr(field_type, "__origin__")
+                and field_type.__origin__ is Union
+            ):
+                # Check if all union members are Literals
+                all_literals = True
+                for arg in field_type.__args__:
+                    if not (hasattr(arg, "__origin__") and arg.__origin__ is Literal):
+                        all_literals = False
+                        break
+
+                if all_literals:
+                    # Find the base type of the literals (usually str or int)
+                    literal_types = set()
+                    for arg in field_type.__args__:
+                        for lit_val in arg.__args__:
+                            literal_types.add(type(lit_val))
+
+                    # If all literals are of the same type, use that type
+                    if len(literal_types) == 1:
+                        simplified_type = next(iter(literal_types))
+
+            # Create field with enhanced description and possibly simplified type
+            field_kwargs = {
+                "description": description,
+            }
+
+            if choices:
+                field_kwargs["choices"] = choices
+
+            new_value = value.replace(
+                annotation=Annotated[
+                    (
+                        simplified_type
+                        if simplified_type != field_type
+                        else value.annotation
+                    ),
+                    OpenBBField(**field_kwargs),
+                ],
             )
 
-            for param, value in od.items():
-                if param not in available_fields:
-                    continue
-
-                field_default = available_fields[param].default
-                choices = getattr(field_default, "json_schema_extra", {}).get(
-                    "choices", []
-                )
-                description = getattr(field_default, "description", "")
-
-                PartialParameter = partial(
-                    OpenBBField,
-                    description=description,
-                )
-
-                new_value = value.replace(
-                    annotation=Annotated[
-                        value.annotation,
-                        (
-                            PartialParameter(choices=choices)
-                            if choices
-                            else PartialParameter()
-                        ),
-                    ],
-                )
-
-                od[param] = new_value
+            od[param] = new_value
 
     @staticmethod
     def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
@@ -959,7 +1072,7 @@ class MethodDefinition:
         parameter_map.pop("cc", None)
 
         # Extract dependencies without disrupting other code paths
-        dependency_calls = []
+        dependency_calls: list = []
         dependency_names = set()
 
         # Process dependencies
@@ -1344,6 +1457,47 @@ class DocstringGenerator:
         def format_type(type_: str, char_limit: Optional[int] = None) -> str:
             """Format type in docstrings."""
             type_str = str(type_)
+
+            # Check if this is a complex union of literals (provider-specific choices)
+            if (
+                "Union[" in type_str
+                and "Literal[" in type_str
+                and type_str.count("Literal[") > 1
+            ):
+                # For complex Union with multiple Literals, simplify to the base type
+                base_types = set()
+
+                # Extract the base types from literals first
+                literal_pattern = r"Literal\['([^']+)'(?:,\s*'[^']+')*\]"
+                for match in re.finditer(literal_pattern, type_str):
+                    if match.group(1):
+                        try:
+                            val = match.group(1)
+                            if val.isdigit():
+                                base_types.add("int")
+                            elif val.isdecimal():
+                                base_types.add("float")
+                            else:
+                                base_types.add("str")
+                        except (IndexError, AttributeError):
+                            pass
+
+                # Also check for explicit types in the Union
+                if "str" in type_str.split("[")[0].split(", "):
+                    base_types.add("str")
+                if "int" in type_str.split("[")[0].split(", "):
+                    base_types.add("int")
+                if "float" in type_str.split("[")[0].split(", "):
+                    base_types.add("float")
+
+                # Use the base types instead of the complex Union[Literal[...]]
+                if base_types:
+                    if len(base_types) == 1:
+                        type_str = next(iter(base_types))
+                    else:
+                        type_str = f"Union[{', '.join(sorted(base_types))}]"
+
+            # Apply the standard formatting
             type_str = (
                 type_str.replace("<class '", "")
                 .replace("'>", "")
@@ -1353,16 +1507,100 @@ class DocstringGenerator:
                 .replace("datetime.date", "date")
                 .replace("datetime.datetime", "datetime")
             )
+
             if char_limit:
                 type_str = type_str[:char_limit] + (
                     "..." if len(str(type_str)) > char_limit else ""
                 )
             return type_str
 
-        def format_description(description: str) -> str:
+        def format_schema_description(description: str) -> str:
             """Format description in docstrings."""
             description = description.replace("\n", f"\n{create_indent(2)}")
             return description
+
+        def format_description(description: str) -> str:
+            """Format description in docstrings with proper indentation for provider choices."""
+            # Handle semicolon-separated provider descriptions
+            if ";" in description and "(provider:" in description:
+                parts = description.split(";")
+                formatted_parts = []
+
+                # Process the first part (main description)
+                first_part = parts[0].strip()
+
+                # Extract the first sentence from the first part
+                first_sentence = ""
+                remainder = ""
+                if "." in first_part:
+                    first_sentence, remainder = first_part.split(".", 1)
+                    first_sentence = first_sentence.strip()
+                    remainder = remainder.strip()
+
+                    # Add the first sentence to formatted_parts
+                    formatted_parts.append(first_sentence)
+
+                    # Add the remainder of the first part with indentation
+                    if remainder:
+                        formatted_parts.append(f"{create_indent(3)}{remainder}")
+                else:
+                    # If no period in the first part, just add it as is
+                    formatted_parts.append(first_part)
+
+                # Process subsequent parts (provider-specific descriptions)
+                for part in parts[1:]:
+                    part = part.strip()  # noqa: PLW2901
+
+                    # Check if this part starts with the same first sentence
+                    if first_sentence and part.startswith(first_sentence.rstrip(".")):
+                        # Skip the repeated sentence and add only what follows
+                        part_remainder = part[len(first_sentence.rstrip(".")) :].strip()
+                        if part_remainder.startswith("."):
+                            part_remainder = part_remainder[1:].strip()
+                        formatted_parts.append(f"{create_indent(3)}{part_remainder}")
+                    else:
+                        # No repetition, add the entire part with indentation
+                        formatted_parts.append(f"{create_indent(3)}{part.strip()}")
+
+                # Join all parts with semicolons
+                description = ";\n".join(formatted_parts)
+
+            # Handle provider-specific choices
+            if "\nChoices for " in description:
+                # Split into main description and provider choices part
+                parts = description.split("\nChoices for ")
+                main_desc = parts[0].rstrip()
+
+                if len(parts) > 1:
+                    formatted_lines = [main_desc]
+
+                    # Add each provider choice line with proper indentation
+                    for choice_line in parts[1:]:
+                        # Check if the line contains a newline character (due to word wrapping)
+                        if "\n" in choice_line:
+                            # Split the choice line at newlines
+                            choice_parts = choice_line.split("\n")
+                            # Add first part with "Choices for" prefix
+                            formatted_lines.append(
+                                f"{create_indent(3)}Choices for {choice_parts[0]}"
+                            )
+
+                            # Add remaining parts with proper indentation
+                            for part in choice_parts[1:]:
+                                if part.strip():  # Skip empty lines
+                                    formatted_lines.append(
+                                        f"{create_indent(4)}{part.strip()}"
+                                    )
+                        else:
+                            # No line breaks in this choice
+                            formatted_lines.append(
+                                f"{create_indent(3)}Choices for {choice_line}"
+                            )
+
+                    return "\n".join(formatted_lines)
+
+            # Standard behavior for other descriptions - add proper indentation to each line
+            return description.replace("\n", f"\n{create_indent(3)}")
 
         def get_param_info(parameter: Optional[Parameter]) -> Tuple[str, str]:
             """Get the parameter info."""
@@ -1385,9 +1623,18 @@ class DocstringGenerator:
         if "description" in sections:
             docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
             docstring += "\n\n"
+
+            provider_param = explicit_params.pop("provider", {})
+            chart_param = explicit_params.pop("chart", {})
         if "parameters" in sections:
             docstring += f"{create_indent(2)}Parameters\n"
             docstring += f"{create_indent(2)}----------\n"
+
+            if provider_param:
+                _, description = get_param_info(provider_param)
+                provider_param._annotation = str
+                docstring += f"{create_indent(2)}provider : str\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
 
             # Explicit parameters
             for param_name, param in explicit_params.items():
@@ -1404,13 +1651,96 @@ class DocstringGenerator:
                     if inspect.isclass(p_type)
                     else p_type
                 )
-
+                type_ = format_type(type_)
                 if "NoneType" in str(type_):
                     type_ = f"Optional[{type_}]".replace(", NoneType", "")
 
                 default = getattr(param, "default", "")
                 description = getattr(default, "description", "")
+
+                # Extract provider-specific choices directly from the provider interface
+                if hasattr(p_type, "__origin__") and p_type.__origin__ is Union:
+                    provider_choices = {}
+
+                    # Get the list of providers for this model directly from provider_interface.model_providers
+                    try:
+                        providers = list(
+                            cls.provider_interface.model_providers.get(model_name)
+                            .__dataclass_fields__.get("provider")
+                            .type.__args__
+                        )
+
+                        # For each provider, extract their specific choices for this parameter from the map
+                        for provider in providers:
+                            if provider == "openbb":
+                                continue
+                            try:
+                                # Directly get provider field info from the map structure
+                                provider_field_info = (
+                                    cls.provider_interface.map.get(model_name, {})
+                                    .get(provider, {})
+                                    .get("QueryParams", {})
+                                    .get("fields", {})
+                                    .get(param_name)
+                                )
+
+                                # If the field exists and has a Literal annotation
+                                if (
+                                    provider_field_info
+                                    and hasattr(provider_field_info, "annotation")
+                                    and hasattr(
+                                        provider_field_info.annotation, "__origin__"
+                                    )
+                                    and provider_field_info.annotation.__origin__
+                                    is Literal
+                                ):
+                                    # Extract literal values as provider choices
+                                    provider_choices[provider] = list(
+                                        provider_field_info.annotation.__args__
+                                    )
+                            except (KeyError, AttributeError):
+                                continue
+                    except (AttributeError, KeyError):
+                        pass
+
+                    # Add provider-specific choices to description
+                    for provider, choices in provider_choices.items():
+                        if choices:
+                            # Format choices with word wrapping for readability
+                            formatted_choices = []
+                            line_length = 0
+                            line_limit = 100  # Max line length
+
+                            for i, choice in enumerate(choices):
+                                choice_str = f"'{choice}'"
+
+                                # If adding this choice would exceed line limit, start a new line
+                                if (
+                                    line_length > 0
+                                    and line_length + len(choice_str) + 2 > line_limit
+                                ):
+                                    # End the current line
+                                    formatted_choices.append("\n")
+                                    line_length = 0
+
+                                # Add comma and space if not the first choice in the line
+                                if i > 0 and line_length > 0:
+                                    formatted_choices.append(", ")
+                                    line_length += 2
+
+                                formatted_choices.append(choice_str)
+                                line_length += len(choice_str)
+
+                            choices_str = "".join(formatted_choices)
+
+                            description += f"\nChoices for {provider}: {choices_str}"
+
                 docstring += f"{create_indent(2)}{param_name} : {type_}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
+
+            if chart_param:
+                _, description = get_param_info(chart_param)
+                docstring += f"{create_indent(2)}chart : bool\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"
 
         if "returns" in sections:
@@ -1430,7 +1760,7 @@ class DocstringGenerator:
                 field_type = cls.get_field_type(field.annotation, field.is_required())
                 description = getattr(field, "description", "")
                 docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
-                docstring += f"{create_indent(3)}{format_description(description)}\n"
+                docstring += f"{create_indent(3)}{format_schema_description(description.strip())}\n"
         return docstring
 
     @classmethod
