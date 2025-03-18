@@ -1900,7 +1900,7 @@ class ReferenceGenerator:
             List of dictionaries containing the name, type, description, default
             and optionality of each parameter.
         """
-        parameters_list = []
+        parameters_list: list = []
 
         # Extract only the Parameters section (between "Parameters" and "Returns")
         params_section = ""
@@ -2020,6 +2020,7 @@ class ReferenceGenerator:
         else:
             return value
 
+    @staticmethod
     def _get_function_signature_info(func: Callable) -> List[Dict[str, Any]]:
         """Extract parameter information directly from function signature."""
         params_info = []
@@ -2090,11 +2091,11 @@ class ReferenceGenerator:
                     if hasattr(param_type, "annotation")
                     else str(param_type)
                 )
-                description = default.description
-                json_extra = default.json_schema_extra
+                description = default.description  # type: ignore
+                json_extra = default.json_schema_extra  # type: ignore
                 default = (
-                    default.default
-                    if default.default
+                    default.default  # type: ignore
+                    if default.default  # type: ignore
                     not in [Parameter.empty, PydanticUndefined, Ellipsis]
                     else None
                 )
@@ -2128,7 +2129,7 @@ class ReferenceGenerator:
         return params_info
 
     @staticmethod
-    def _get_post_method_returns_info(docstring: str) -> List[Dict[str, str]]:
+    def _get_post_method_returns_info(docstring: str) -> dict:
         """Get the returns information for the POST method endpoints.
 
         Parameters
@@ -2142,7 +2143,7 @@ class ReferenceGenerator:
             Single element list having a dictionary containing the name, type,
             description of the return value
         """
-        returns_list = []
+        returns_dict: dict = {}
 
         # Define a regex pattern to match the Returns section
         # This pattern captures the model name inside "OBBject[]" and its description
@@ -2162,15 +2163,13 @@ class ReferenceGenerator:
                 else return_type
             )
 
-            returns_list = [
-                {
-                    "name": "results",
-                    "type": return_type,
-                    "description": description,
-                }
-            ]
+            returns_dict = {
+                "name": "results",
+                "type": return_type,
+                "description": description,
+            }
 
-        return returns_list
+        return returns_dict
 
     @classmethod
     def get_paths(  # noqa: PLR0912
@@ -2313,7 +2312,7 @@ class ReferenceGenerator:
                 docstring_params = cls._get_post_method_parameters_info(docstring)
 
                 # Create a merged parameter list with signature info taking precedence
-                merged_params = {}
+                merged_params: dict = {}
                 for param in docstring_params:
                     merged_params[param["name"]] = param
 
@@ -2337,16 +2336,14 @@ class ReferenceGenerator:
                         "description": "Unvalidated results object.",
                     }
                 else:
-                    model_fields = []
+                    model_fields: list = []
                     # First try to get from function signature
-
                     returns_info = cls._extract_return_type(route_func)
 
                     if not returns_info:
-                        # First try to get return info from docstring
+                        # Then try to get return info from docstring
                         returns_info = cls._get_post_method_returns_info(docstring)
 
-                    returns_info = cls._extract_return_type(route_func)
                     return_annotation = inspect.signature(route_func).return_annotation
 
                     is_generic_obbject = (
@@ -2592,7 +2589,7 @@ class ReferenceGenerator:
         return reference
 
     @staticmethod
-    def _extract_return_type(func: Callable) -> Dict[str, Any]:
+    def _extract_return_type(func: Callable) -> Union[str, dict]:
         """Extract return type information from function."""
         return_annotation = inspect.signature(func).return_annotation
 
@@ -2705,7 +2702,7 @@ class ReferenceGenerator:
         return model_name
 
     @classmethod
-    def get_routers(cls, route_map: Dict[str, BaseRoute]) -> Dict[str, Dict[str, Any]]:
+    def get_routers(cls, route_map: Dict[str, BaseRoute]) -> dict:
         """Get router reference data.
 
         Parameters
