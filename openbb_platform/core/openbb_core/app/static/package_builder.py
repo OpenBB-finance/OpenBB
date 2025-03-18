@@ -1,6 +1,6 @@
 """Package Builder Class."""
 
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements
 import builtins
 import inspect
 import re
@@ -2011,11 +2011,11 @@ class ReferenceGenerator:
 
             # Replace double quotes with single quotes for other strings
             return value.replace('"', "'")
-        elif isinstance(value, dict):
+        if isinstance(value, dict):
             return {
                 k: ReferenceGenerator._clean_string_values(v) for k, v in value.items()
             }
-        elif isinstance(value, list):
+        if isinstance(value, list):
             return [ReferenceGenerator._clean_string_values(item) for item in value]
         else:
             return value
@@ -2366,8 +2366,7 @@ class ReferenceGenerator:
                         if match:
                             inner_type_name = match.group(1)
                             # Try to find the actual model class
-                            for module_name in sys.modules:
-                                module = sys.modules[module_name]
+                            for module_name, module in sys.modules.items():
                                 if hasattr(module, inner_type_name):
                                     model_class = getattr(module, inner_type_name)
                                     if hasattr(model_class, "model_fields"):
@@ -2475,8 +2474,7 @@ class ReferenceGenerator:
                                 # Don't add data fields for generic types like "Data" or if already in parameters
                                 if model_name and model_name != "Data":
                                     # Try to find the actual model class
-                                    for module_name in sys.modules:
-                                        module = sys.modules[module_name]
+                                    for module_name, module in sys.modules.items():
                                         if hasattr(module, model_name):
                                             model_class = getattr(module, model_name)
                                             if hasattr(model_class, "model_fields"):
@@ -2532,8 +2530,7 @@ class ReferenceGenerator:
                             "dict",
                         ):
                             # Try to find the model class
-                            for module_name in sys.modules:
-                                module = sys.modules[module_name]
+                            for module_name, module in sys.modules.items():
                                 if hasattr(module, model_name):
                                     model_class = getattr(module, model_name)
                                     if hasattr(model_class, "model_fields"):
@@ -2697,7 +2694,9 @@ class ReferenceGenerator:
 
             return f"{container_type}[{inner_type_name}]"
 
-        model_name = type_str.split(".")[-1] if "." in type_str else type_str
+        model_name = (
+            type_str.rsplit(".", maxsplit=1)[-1] if "." in type_str else type_str
+        )
 
         return model_name
 
