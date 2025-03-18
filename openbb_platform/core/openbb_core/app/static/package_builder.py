@@ -2715,7 +2715,7 @@ class ReferenceGenerator:
             Dictionary containing the description for each router.
         """
         main_router = RouterLoader.from_extensions()
-        routers = {}
+        routers: dict = {}
         for path in route_map:
             path_parts = path.split("/")
             # We start at 2: ["/", "some_router"] "/some_router"
