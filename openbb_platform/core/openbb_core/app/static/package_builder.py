@@ -1617,7 +1617,7 @@ class DocstringGenerator:
             description = getattr(metadata[0], "description", "") if metadata else ""
             return type_, description  # type: ignore
 
-        provider_param: Union[Parameter, dict] = None
+        provider_param: Union[Parameter, dict] = {}
         chart_param: Union[Parameter, dict] = {}
 
         # Description summary
