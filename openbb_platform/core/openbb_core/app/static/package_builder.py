@@ -1481,11 +1481,11 @@ class DocstringGenerator:
                             pass
 
                 # Also check for explicit types in the Union
-                if "str" in type_str.split("[")[0].split(", "):
+                if "str" in type_str.split("[", maxsplit=1)[0].split(", "):
                     base_types.add("str")
-                if "int" in type_str.split("[")[0].split(", "):
+                if "int" in type_str.split("[", maxsplit=1)[0].split(", "):
                     base_types.add("int")
-                if "float" in type_str.split("[")[0].split(", "):
+                if "float" in type_str.split("[", maxsplit=1)[0].split(", "):
                     base_types.add("float")
 
                 # Use the base types instead of the complex Union[Literal[...]]
@@ -1633,7 +1633,7 @@ class DocstringGenerator:
 
             if provider_param:
                 _, description = get_param_info(provider_param)  # type: ignore
-                provider_param._annotation = str  # type: ignore
+                provider_param._annotation = str  # type: ignore  # pylint: disable=protected-access
                 docstring += f"{create_indent(2)}provider : str\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"
 
@@ -2807,7 +2807,7 @@ class ReferenceGenerator:
                                 if model_name and model_name != "Data":
                                     # Try to find the actual model class
                                     for (
-                                        module_name,
+                                        module_name,  # pylint: disable=unused-variable
                                         module,
                                     ) in sys.modules.items():  # noqa: W0612
                                         if hasattr(module, model_name):
