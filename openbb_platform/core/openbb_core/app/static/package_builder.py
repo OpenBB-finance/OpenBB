@@ -1617,6 +1617,9 @@ class DocstringGenerator:
             description = getattr(metadata[0], "description", "") if metadata else ""
             return type_, description  # type: ignore
 
+        provider_param: dict = {}
+        chart_param: dict = {}
+
         # Description summary
         if "description" in sections:
             docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
@@ -1747,7 +1750,9 @@ class DocstringGenerator:
             docstring += f"{create_indent(2)}Returns\n"
             docstring += f"{create_indent(2)}-------\n"
             providers, _ = get_param_info(explicit_params.get("provider"))
-            docstring += cls.get_OBBject_description(results_type, providers)
+            docstring += cls.get_OBBject_description(
+                results_type, ",".join(providers) if providers else None
+            )
 
             # Schema
             underline = "-" * len(model_name)
