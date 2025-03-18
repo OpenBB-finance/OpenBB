@@ -875,10 +875,6 @@ class MethodDefinition:
 
             # Add provider-specific choices to description
             if provider_specific:
-                # Add a clean break if needed
-                if not description.endswith("."):
-                    description += "."
-
                 # Add each provider's choices on a new line
                 for provider, provider_choices in provider_specific.items():
                     if provider_choices:
@@ -898,9 +894,11 @@ class MethodDefinition:
                 ):
                     multiple_items_providers.append(provider)
 
-            if multiple_items_providers:
-                if not description.endswith("."):
-                    description += "."
+            if (
+                multiple_items_providers
+                and "Multiple comma separated items allowed for provider(s)"
+                not in description
+            ):
                 description += f"\nMultiple items supported by: {', '.join(multiple_items_providers)}"
 
             # Process the field type - if it's a Union of many Literals, simplify to base type
