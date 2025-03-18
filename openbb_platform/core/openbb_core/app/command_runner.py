@@ -321,7 +321,7 @@ class StaticCommandRunner:
                     func=func,
                     kwargs=kwargs,
                 )
-
+                kwargs = kwargs if kwargs is not None else {}
                 # If we're on the api we need to remove "chart" here because the parameter is added on
                 # commands.py and the function signature does not expect "chart"
                 kwargs.pop("chart", None)

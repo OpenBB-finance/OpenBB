@@ -26,7 +26,8 @@ class Query:
     ) -> None:
         """Initialize Query class."""
         self.cc = cc
-        self.provider = str(provider_choices.provider)
+        original = asdict(provider_choices)
+        self.provider = original.get("provider")
         self.standard_params = standard_params
         self.extra_params = extra_params
         self.name = self.standard_params.__class__.__name__
@@ -66,7 +67,7 @@ class Query:
         """Execute the query."""
         standard_dict = asdict(self.standard_params)
         extra_dict = (
-            self.filter_extra_params(self.extra_params, self.provider)
+            self.filter_extra_params(self.extra_params, self.provider)  # type: ignore
             if self.extra_params
             else {}
         )
