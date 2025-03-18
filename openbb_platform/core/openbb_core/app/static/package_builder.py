@@ -2017,8 +2017,8 @@ class ReferenceGenerator:
             }
         if isinstance(value, list):
             return [ReferenceGenerator._clean_string_values(item) for item in value]
-        else:
-            return value
+
+        return value
 
     @staticmethod
     def _get_function_signature_info(func: Callable) -> List[Dict[str, Any]]:
@@ -2474,7 +2474,10 @@ class ReferenceGenerator:
                                 # Don't add data fields for generic types like "Data" or if already in parameters
                                 if model_name and model_name != "Data":
                                     # Try to find the actual model class
-                                    for module_name, module in sys.modules.items():
+                                    for (
+                                        module_name,
+                                        module,
+                                    ) in sys.modules.items():  # noqa: W0612
                                         if hasattr(module, model_name):
                                             model_class = getattr(module, model_name)
                                             if hasattr(model_class, "model_fields"):
