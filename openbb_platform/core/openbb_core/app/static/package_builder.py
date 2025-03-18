@@ -1617,23 +1617,23 @@ class DocstringGenerator:
             description = getattr(metadata[0], "description", "") if metadata else ""
             return type_, description  # type: ignore
 
-        provider_param: dict = {}
-        chart_param: dict = {}
+        provider_param: Union[Parameter, dict] = None
+        chart_param: Union[Parameter, dict] = {}
 
         # Description summary
         if "description" in sections:
             docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
             docstring += "\n\n"
 
-            provider_param = explicit_params.pop("provider", {})
-            chart_param = explicit_params.pop("chart", {})
+            provider_param = explicit_params.pop("provider", {})  # type: ignore
+            chart_param = explicit_params.pop("chart", {})  # type: ignore
         if "parameters" in sections:
             docstring += f"{create_indent(2)}Parameters\n"
             docstring += f"{create_indent(2)}----------\n"
 
             if provider_param:
-                _, description = get_param_info(provider_param)
-                provider_param._annotation = str
+                _, description = get_param_info(provider_param)  # type: ignore
+                provider_param._annotation = str  # type: ignore
                 docstring += f"{create_indent(2)}provider : str\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"
 
@@ -1740,7 +1740,7 @@ class DocstringGenerator:
                 docstring += f"{create_indent(3)}{format_description(description)}\n"
 
             if chart_param:
-                _, description = get_param_info(chart_param)
+                _, description = get_param_info(chart_param)  # type: ignore
                 docstring += f"{create_indent(2)}chart : bool\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"
 
@@ -1749,10 +1749,9 @@ class DocstringGenerator:
             docstring += "\n"
             docstring += f"{create_indent(2)}Returns\n"
             docstring += f"{create_indent(2)}-------\n"
-            providers, _ = get_param_info(explicit_params.get("provider"))
-            docstring += cls.get_OBBject_description(
-                results_type, ",".join(providers) if providers else None
-            )
+            _providers, _ = get_param_info(explicit_params.get("provider"))
+            if _providers:
+                docstring += cls.get_OBBject_description(results_type, _providers)
 
             # Schema
             underline = "-" * len(model_name)
