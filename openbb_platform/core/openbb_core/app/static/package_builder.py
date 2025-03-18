@@ -1,6 +1,6 @@
 """Package Builder Class."""
 
-# pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements
+# pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements,too-many-branches
 import builtins
 import inspect
 import re
@@ -2366,7 +2366,7 @@ class ReferenceGenerator:
                         if match:
                             inner_type_name = match.group(1)
                             # Try to find the actual model class
-                            for module_name, module in sys.modules.items():
+                            for module in sys.modules.values():
                                 if hasattr(module, inner_type_name):
                                     model_class = getattr(module, inner_type_name)
                                     if hasattr(model_class, "model_fields"):
