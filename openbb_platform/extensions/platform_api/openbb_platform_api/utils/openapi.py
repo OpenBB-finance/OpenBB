@@ -307,35 +307,23 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
         p["available_providers"] = providers
         return p
 
-    if param_name in ["symbol", "series_id", "release_id"]:
-        p["type"] = "text"
-        p["label"] = param_name.title().replace("_", " ").replace("Id", "ID")
+    multiple_items_allowed_dict: dict = {}
+    for _provider in providers:
+        if _provider in param["schema"] and param["schema"][_provider].get(
+            "multiple_items_allowed", False
+        ):
+            multiple_items_allowed_dict[_provider] = True
+
+    p["multiple_items_allowed"] = multiple_items_allowed_dict
+
+    if "Multiple comma separated items allowed" in p["description"]:
         p["description"] = (
-            p["description"]
-            .split("Multiple comma separated items allowed for provider(s)")[0]
-            .strip()
+            p["description"].split("Multiple comma separated items allowed")[0].strip()
         )
-        multiple_items_allowed_dict: dict = {}
-        for _provider in providers:
-            if _provider in param["schema"] and param["schema"][_provider].get(
-                "multiple_items_allowed", False
-            ):
-                multiple_items_allowed_dict[_provider] = True
 
-        p["multiple_items_allowed"] = multiple_items_allowed_dict
-        if "Multiple comma separated items allowed" in p["description"]:
-            p["description"] = (
-                p["description"]
-                .split("Multiple comma separated items allowed")[0]
-                .strip()
-            )
-
-        if widget_config := param["schema"].get("x-widget_config", {}):
-            p["x-widget_config"] = widget_config
-
-        return p
-
-    if x_widget_config := param.get("x-widget_config", {}):
+    if x_widget_config := param.get(
+        "x-widget_config", param.get("schema", {}.get("x-widget_config", {}))
+    ):
         p["x-widget_config"] = x_widget_config
 
     p_schema = param.get("schema", {}) or param
