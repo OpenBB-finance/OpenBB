@@ -1706,7 +1706,7 @@ class DocstringGenerator:
                     # Check if annotation is an Annotated type
                     if (
                         hasattr(param_annotation, "__origin__")
-                        and param_annotation.__origin__ is Annotated
+                        and param_annotation.__origin__ is Annotated  # type: ignore
                     ):
                         # Extract metadata from annotation
                         metadata = getattr(param_annotation, "__metadata__", [])
