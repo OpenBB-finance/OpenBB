@@ -198,8 +198,7 @@ class ArgparseTranslator:
             # Special handling for boolean literals
             if all(isinstance(choice, bool) for choice in choices):
                 return bool, ()
-            else:
-                param_type = type(choices[0])  # type: ignore
+            param_type = type(choices[0])  # type: ignore
 
         if type_origin is list:
             param_type = get_args(param_type)[0]
@@ -209,8 +208,7 @@ class ArgparseTranslator:
                 # Special handling for boolean literals in lists
                 if all(isinstance(choice, bool) for choice in choices):
                     return bool, ()
-                else:
-                    param_type = type(choices[0])  # type: ignore
+                param_type = type(choices[0])  # type: ignore
 
         if type_origin is Union:
             union_args = get_args(param_type)
@@ -228,10 +226,9 @@ class ArgparseTranslator:
                 # Check if all choices are boolean
                 if all(isinstance(choice, bool) for choice in literal_choices):
                     return bool, ()
-                else:
-                    # We have Literal types in the Union, use their choices
-                    choices = tuple(literal_choices)
-                    param_type = type(choices[0])  # type: ignore
+                # We have Literal types in the Union, use their choices
+                choices = tuple(literal_choices)
+                param_type = type(choices[0])  # type: ignore
             elif str in union_args:
                 param_type = str
 
@@ -248,8 +245,7 @@ class ArgparseTranslator:
                         # Special handling for boolean literals
                         if all(isinstance(choice, bool) for choice in choices):
                             return bool, ()
-                        else:
-                            param_type = type(choices[0])  # type: ignore
+                        param_type = type(choices[0])  # type: ignore
                 elif len(args) > 1:
                     # Handle Union with multiple types (not just Optional)
                     # Try to extract Literal types again from the filtered args
@@ -262,9 +258,8 @@ class ArgparseTranslator:
                         # Check if all choices are boolean
                         if all(isinstance(choice, bool) for choice in literal_choices):
                             return bool, ()
-                        else:
-                            choices = tuple(set(literal_choices))
-                            param_type = type(choices[0])  # type: ignore
+                        choices = tuple(set(literal_choices))
+                        param_type = type(choices[0])  # type: ignore
 
         # if there are custom choices, override
         custom_choices = self._get_argument_custom_choices(param)
