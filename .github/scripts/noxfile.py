@@ -39,10 +39,9 @@ def unit_test_cli(session):
         "python",
         str(PLATFORM_DIR / "dev_install.py"),
         "-e",
-        "--cli",
+        "all",
         external=True,
     )
-    session.run("openbb-build")
     session.install("pytest")
     session.install("pytest-cov")
     session.run("pytest", CLI_TESTS, f"--cov={CLI_DIR}")
