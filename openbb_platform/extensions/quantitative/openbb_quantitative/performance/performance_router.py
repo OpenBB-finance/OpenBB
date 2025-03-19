@@ -1,5 +1,7 @@
 """OpenBB Performance Extension router."""
 
+# pylint: disable=too-many-positional-arguments
+
 from typing import TYPE_CHECKING
 
 from openbb_core.app.model.example import APIEx, PythonEx
