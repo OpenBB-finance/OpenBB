@@ -308,9 +308,9 @@ class ImportDefinition:
                 continue
 
             # Only include types that have a module and are not builtins
-            if ((hasattr(hint_type, "__module__") and
-                hint_type.__module__ != "builtins") or
-                (isinstance(hint_type, str))):
+            if (
+                hasattr(hint_type, "__module__") and hint_type.__module__ != "builtins"
+            ) or (isinstance(hint_type, str)):
                 new_hint_type_list.append(hint_type)
 
         new_hint_type_list = list(set(new_hint_type_list))
@@ -454,7 +454,16 @@ class ImportDefinition:
                 # Skip built-in types when adding to typing module
                 if (
                     module == "typing" and type_name in dir(__builtins__)
-                ) or type_name in ["Dict", "List", "int", int, "float", float]:
+                ) or type_name in [
+                    "Dict",
+                    "List",
+                    "int",
+                    int,
+                    "float",
+                    float,
+                    str,
+                    "str",
+                ]:
                     continue
 
                 if module not in module_types:
