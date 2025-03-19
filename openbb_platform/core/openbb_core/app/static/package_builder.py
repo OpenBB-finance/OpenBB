@@ -719,6 +719,32 @@ class MethodDefinition:
         formatted: Dict[str, Parameter] = {}
         var_kw = []
         for name, param in parameter_map.items():
+            # Add special handling for FastAPI Query objects in default values
+            if (
+                hasattr(param.default, "__class__")
+                and "Query" in param.default.__class__.__name__
+            ):
+                query_obj = param.default
+                description = getattr(query_obj, "description", "") or ""
+                default_value = getattr(query_obj, "default", "")
+                formatted[name] = Parameter(
+                    name=name,
+                    kind=param.kind,
+                    annotation=Annotated[
+                        param.annotation,
+                        OpenBBField(
+                            description=description,
+                        ),
+                    ],
+                    default=(
+                        Parameter.empty
+                        if default_value is PydanticUndefined
+                        or default_value is Ellipsis
+                        else default_value
+                    ),
+                )
+                continue
+
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
                 var_kw.append(name)
@@ -959,7 +985,7 @@ class MethodDefinition:
                         if simplified_type != field_type
                         else value.annotation
                     ),
-                    OpenBBField(**field_kwargs),
+                    OpenBBField(description=description),
                 ],
             )
 
@@ -1455,7 +1481,7 @@ class DocstringGenerator:
         return ""
 
     @classmethod
-    def generate_model_docstring(  # pylint: disable=too-many-positional-arguments
+    def generate_model_docstring(  # noqa: PLR0912
         cls,
         model_name: str,
         summary: str,
@@ -1674,6 +1700,31 @@ class DocstringGenerator:
                 default = getattr(param, "default", "")
                 description = getattr(default, "description", "")
 
+                # If empty description, check for OpenBBField annotations in parameter's annotation
+                if not description and hasattr(param, "annotation"):
+                    param_annotation = getattr(param, "annotation", None)
+                    # Check if annotation is an Annotated type
+                    if (
+                        hasattr(param_annotation, "__origin__")
+                        and param_annotation.__origin__ is Annotated
+                    ):
+                        # Extract metadata from annotation
+                        metadata = getattr(param_annotation, "__metadata__", [])
+                        for meta in metadata:
+                            # Look for OpenBBField with description
+                            if hasattr(meta, "description") and meta.description:
+                                description = meta.description
+                                break
+
+                # If still no description but param default is a Query object, extract from there
+                if not description and hasattr(param, "default"):
+                    param_default = getattr(param, "default")
+                    if (
+                        hasattr(param_default, "__class__")
+                        and "Query" in param_default.__class__.__name__
+                    ):
+                        description = getattr(param_default, "description", "") or ""
+
                 # Extract provider-specific choices directly from the provider interface
                 if hasattr(p_type, "__origin__") and p_type.__origin__ is Union:
                     provider_choices = {}
@@ -1834,7 +1885,144 @@ class DocstringGenerator:
                     sections=sections,
                 )
         else:
-            doc = doc.replace("\n    ", f"\n{create_indent(2)}")
+            doc_parts = []
+            if doc:
+                if "\nParameters" in doc:
+                    doc_parts = doc.split("\nParameters")
+                    summary = doc_parts[0].strip()
+                elif "\nReturns" in doc:
+                    doc_parts = doc.split("\nReturns")
+                    summary = doc_parts[0].strip()
+                else:
+                    summary = doc.strip()
+            else:
+                summary = ""
+
+            # Format the summary
+            summary = summary.replace("\n    ", f"\n{create_indent(2)}")
+
+            sections = (
+                SystemService().system_settings.python_settings.docstring_sections
+            )
+            result_doc = summary
+            # Add parameters section if needed and not already in docstring
+            if (
+                formatted_params
+                and "parameters" in sections
+                and "Parameters" not in doc
+                and [p for p_name, p in formatted_params.items() if p_name != "kwargs"]
+            ):
+                param_section = (
+                    f"\n\n{create_indent(2)}Parameters\n{create_indent(2)}----------\n"
+                )
+
+                # Process each parameter
+                for param_name, param in formatted_params.items():
+                    if param_name == "kwargs":
+                        continue
+
+                    # Get parameter type and description
+                    annotation = getattr(param, "_annotation", None)
+                    if isinstance(annotation, _AnnotatedAlias):
+                        # Extract from OpenBBField annotations
+                        p_type = annotation.__args__[0]
+                        metadata = getattr(annotation, "__metadata__", [])
+                        description = (
+                            getattr(metadata[0], "description", "") if metadata else ""
+                        )
+                    else:
+                        p_type = annotation
+                        description = ""
+
+                    # Format the type
+                    type_str = cls.get_field_type(
+                        p_type, param.default is Parameter.empty
+                    )
+
+                    # Add parameter to docstring
+                    param_section += f"{create_indent(2)}{param_name} : {type_str}\n"
+                    param_section += f"{create_indent(3)}{description}\n"
+
+                result_doc += param_section
+
+            # Add returns section if needed and not already in docstring
+            if "returns" in sections and "Returns" not in doc:
+                # Returns
+                returns_section = (
+                    f"\n\n{create_indent(2)}Returns\n{create_indent(2)}-------\n"
+                )
+
+                # Extract return annotation directly from function signature
+                sig = inspect.signature(func)
+                return_annotation = sig.return_annotation
+
+                if return_annotation and return_annotation != inspect._empty:
+                    # Extract the type name properly
+                    if hasattr(return_annotation, "__name__"):
+                        type_name = return_annotation.__name__
+                    else:
+                        # Handle typing objects like List[str]
+                        type_name = str(return_annotation)
+
+                    # Clean up common typing format issues
+                    type_name = (
+                        type_name.replace("typing.", "")
+                        .replace("typing_extensions.", "")
+                        .replace("<class '", "")
+                        .replace("'>", "")
+                    )
+
+                    # Add return type to docstring
+                    returns_section += f"{create_indent(2)}{type_name}\n"
+
+                    # Check if this is a custom class (not a primitive type)
+                    primitive_types = {
+                        "int",
+                        "float",
+                        "str",
+                        "bool",
+                        "list",
+                        "dict",
+                        "tuple",
+                        "set",
+                    }
+                    is_primitive = type_name.lower() in primitive_types
+
+                    if not is_primitive:
+                        # Try to access model fields for Pydantic models
+                        try:
+                            if hasattr(return_annotation, "model_fields"):
+                                # It's a Pydantic v2 model
+                                fields = return_annotation.model_fields
+
+                                # Process each field in the model
+                                for field_name, field in fields.items():
+                                    # Get field type
+                                    field_type = cls.get_field_type(
+                                        field.annotation, field.is_required
+                                    )
+
+                                    # Get field description
+                                    description = (
+                                        getattr(field, "description", "") or ""
+                                    )
+
+                                    # Add field to docstring with proper indentation
+                                    returns_section += f"{create_indent(3)}{field_name} : {field_type}\n"
+                                    if description:
+                                        returns_section += (
+                                            f"{create_indent(4)}{description}\n"
+                                        )
+                        except (AttributeError, TypeError):
+                            pass
+                else:
+                    # Default case when no return annotation is available
+                    returns_section += f"{create_indent(2)}Any\n"
+
+                result_doc += returns_section
+                result_doc = result_doc.replace("\n    ", f"\n{create_indent(2)}")
+
+            doc = result_doc + "\n"
 
         if doc and examples and "examples" in sections:
             doc += cls.build_examples(
