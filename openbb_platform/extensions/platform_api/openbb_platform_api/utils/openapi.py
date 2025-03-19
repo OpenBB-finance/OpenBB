@@ -322,7 +322,7 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
         )
 
     if x_widget_config := param.get(
-        "x-widget_config", param.get("schema", {}.get("x-widget_config", {}))
+        "x-widget_config", param.get("schema", {}).get("x-widget_config", {})
     ):
         p["x-widget_config"] = x_widget_config
 
