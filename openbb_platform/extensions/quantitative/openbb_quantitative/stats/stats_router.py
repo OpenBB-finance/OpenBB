@@ -1,7 +1,5 @@
 """Rolling submenu of quantitative models for rolling statistics."""
 
-from typing import List
-
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
@@ -34,9 +32,9 @@ router = Router(prefix="/stats")
     ],
 )
 def skew(
-    data: List[Data],
+    data: list[Data],
     target: str,
-) -> OBBject[List[Data]]:
+) -> OBBject[list[Data]]:
     """Get the skew of the data set.
 
     Skew is a statistical measure that reveals the degree of asymmetry of a distribution around its mean.
@@ -47,14 +45,14 @@ def skew(
 
     Parameters
     ----------
-    data : List[Data]
+    data : list[Data]
         Time series data.
     target : str
         Target column name.
 
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[list[Data]]
         Rolling skew.
     """
     # pylint: disable=import-outside-toplevel
@@ -96,7 +94,7 @@ def skew(
         ),
     ],
 )
-def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
+def variance(data: list[Data], target: str) -> OBBject[list[Data]]:
     """Calculate the  variance of a target column.
 
     Variance measures the dispersion of a set of data points around their mean. It is a key metric for
@@ -104,14 +102,14 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         The time series data as a list of data points.
     target: str
         The name of the column for which to calculate variance.
 
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[list[Data]]
         An object containing the rolling variance values.
     """
     # pylint: disable=import-outside-toplevel
@@ -153,7 +151,7 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
         ),
     ],
 )
-def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
+def stdev(data: list[Data], target: str) -> OBBject[list[Data]]:
     """Calculate the rolling standard deviation of a target column.
 
     Standard deviation is a measure of the amount of variation or dispersion of a set of values.
@@ -162,14 +160,14 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         The time series data as a list of data points.
     target: str
         The name of the column for which to calculate standard deviation.
 
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[list[Data]]
         An object containing the rolling standard deviation values.
     """
     # pylint: disable=import-outside-toplevel
@@ -211,7 +209,7 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
         ),
     ],
 )
-def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
+def kurtosis(data: list[Data], target: str) -> OBBject[list[Data]]:
     """Calculate the rolling kurtosis of a target column.
 
     Kurtosis measures the "tailedness" of the probability distribution of a real-valued random variable.
@@ -221,14 +219,14 @@ def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         The time series data as a list of data points.
     target: str
         The name of the column for which to calculate kurtosis.
 
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[list[Data]]
         An object containing the kurtosis value
     """
     # pylint: disable=import-outside-toplevel
@@ -271,10 +269,10 @@ def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
     ],
 )
 def quantile(
-    data: List[Data],
+    data: list[Data],
     target: str,
     quantile_pct: NonNegativeFloat = 0.5,
-) -> OBBject[List[Data]]:
+) -> OBBject[list[Data]]:
     """Calculate the quantile of a target column at a specified quantile percentage.
 
     Quantiles are points dividing the range of a probability distribution into  intervals with equal probabilities,
@@ -282,7 +280,7 @@ def quantile(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         The time series data as a list of data points.
     target: str
         The name of the column for which to calculate the quantile.
@@ -291,7 +289,7 @@ def quantile(
 
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[list[Data]]
         An object containing the rolling quantile values with the median.
     """
     # pylint: disable=import-outside-toplevel
@@ -336,9 +334,9 @@ def quantile(
     ],
 )
 def mean(
-    data: List[Data],
+    data: list[Data],
     target: str,
-) -> OBBject[List[Data]]:
+) -> OBBject[list[Data]]:
     """Calculate the average of a target column.
 
     The rolling mean is a simple moving average that calculates the average of a target variable.
@@ -347,14 +345,14 @@ def mean(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         The time series data as a list of data points.
     target: str
         The name of the column for which to calculate the mean.
 
     Returns
     -------
-        OBBject[List[Data]]
+        OBBject[list[Data]]
             An object containing the mean value.
     """
     # pylint: disable=import-outside-toplevel
