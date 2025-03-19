@@ -219,7 +219,7 @@ class ArgparseTranslator:
                 return bool, ()
 
             # Check if Union contains Literal types and extract all choices
-            literal_choices = []
+            literal_choices: list = []
             for arg in union_args:
                 if get_origin(arg) is Literal:
                     literal_choices.extend(get_args(arg))
@@ -269,7 +269,7 @@ class ArgparseTranslator:
         # if there are custom choices, override
         custom_choices = self._get_argument_custom_choices(param)
         if custom_choices and param_type is not bool:
-            choices = custom_choices
+            choices = tuple(custom_choices)
 
         return param_type, choices
 
