@@ -1,6 +1,6 @@
 """Package Builder Class."""
 
-# pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements,too-many-branches
+# pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements,too-many-branches,too-many-positional-arguments
 import builtins
 import inspect
 import re
@@ -1481,7 +1481,7 @@ class DocstringGenerator:
         return ""
 
     @classmethod
-    def generate_model_docstring(  # noqa: PLR0912
+    def generate_model_docstring(  # noqa: PLR0912, PLR0917
         cls,
         model_name: str,
         summary: str,
@@ -1956,7 +1956,11 @@ class DocstringGenerator:
                 sig = inspect.signature(func)
                 return_annotation = sig.return_annotation
 
-                if return_annotation and return_annotation != inspect._empty:
+                if (
+                    return_annotation
+                    and return_annotation
+                    != inspect._empty  # pylint: disable=protected-access
+                ):
                     # Extract the type name properly
                     if hasattr(return_annotation, "__name__"):
                         type_name = return_annotation.__name__
