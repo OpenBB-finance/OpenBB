@@ -304,14 +304,15 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
         p["type"] = "text"
         p["label"] = "Provider"
         p["description"] = "Source of the data."
+        p["show"] = False
         p["available_providers"] = providers
         return p
 
     multiple_items_allowed_dict: dict = {}
     for _provider in providers:
-        if _provider in param["schema"] and param["schema"][_provider].get(
-            "multiple_items_allowed", False
-        ):
+        if param.get("schema", {}).get(_provider, {}).get(
+            "multiple_items_allowed"
+        ) and param["schema"][_provider].get("multiple_items_allowed"):
             multiple_items_allowed_dict[_provider] = True
 
     p["multiple_items_allowed"] = multiple_items_allowed_dict

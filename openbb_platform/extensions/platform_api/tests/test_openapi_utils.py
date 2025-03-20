@@ -34,8 +34,8 @@ def mock_openapi_json():
                     "optional": True,
                     "type": "text",
                     "value": None,
+                    "show": False,
                     "available_providers": ["fred"],
-                    "show": True,
                 },
                 {
                     "parameter_name": "country",
@@ -138,8 +138,8 @@ def mock_openapi_json():
                     "optional": True,
                     "type": "text",
                     "value": None,
+                    "show": False,
                     "available_providers": ["fred"],
-                    "show": True,
                 },
                 {
                     "parameter_name": "symbol",
@@ -149,6 +149,8 @@ def mock_openapi_json():
                     "type": "text",
                     "value": None,
                     "multiple_items_allowed": {"fred": True},
+                    "options": {"fred": []},
+                    "x-widget_config": {},
                     "show": True,
                 },
                 {
@@ -271,8 +273,8 @@ def mock_openapi_json():
                     "optional": True,
                     "type": "text",
                     "value": None,
+                    "show": False,
                     "available_providers": ["sec"],
-                    "show": True,
                 },
                 {
                     "parameter_name": "query",
