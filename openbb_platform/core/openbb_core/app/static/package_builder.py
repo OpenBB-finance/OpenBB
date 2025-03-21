@@ -2686,13 +2686,13 @@ class ReferenceGenerator:
 
                 # Fix: A parameter is optional if it has a default value OR if is_required=False
                 # Currently we're only checking is_required, which is incorrect
-                has_default = hasattr(default, "default") and default.default not in [
+                has_default = hasattr(default, "default") and default.default not in [  # type: ignore
                     Parameter.empty,
                     PydanticUndefined,
                     Ellipsis,
                 ]
                 is_optional = has_default or (
-                    hasattr(default, "is_required") and default.is_required is False
+                    hasattr(default, "is_required") and default.is_required is False  # type: ignore
                 )
 
                 default = (
