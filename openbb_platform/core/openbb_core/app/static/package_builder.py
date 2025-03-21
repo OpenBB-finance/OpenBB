@@ -2860,28 +2860,23 @@ class ReferenceGenerator:
                         standard_model, "Data", provider
                     )
 
-                    # Remove choices from 'standard' if choices for a parameter exist
-                    # for both standard and provider, and are the same
-                    standard = [
-                        {d["name"]: d["choices"]}
-                        for d in reference[path]["parameters"]["standard"]
-                        if d.get("choices")
-                    ]
-                    standard = standard[0] if standard else []  # type: ignore
-                    _provider = [
-                        {d["name"]: d["choices"]}
-                        for d in reference[path]["parameters"][provider]
-                        if d.get("choices")
-                    ]
-                    _provider = _provider[0] if _provider else []  # type: ignore
-                    if standard and _provider and standard == _provider:
-                        for i, d in enumerate(
-                            reference[path]["parameters"]["standard"]
+                    # Remove choices from standard parameters if they exist in provider-specific parameters
+                    provider_param_names = {
+                        p["name"] for p in reference[path]["parameters"][provider]
+                    }
+
+                    for i, param in enumerate(
+                        reference[path]["parameters"]["standard"]
+                    ):
+                        param_name = param.get("name")
+                        if (
+                            param_name in provider_param_names
+                            and param.get("choices") is not None
                         ):
-                            if d.get("name") in standard:
-                                reference[path]["parameters"]["standard"][i][
-                                    "choices"
-                                ] = None
+                            # This parameter has a provider-specific version, so remove choices from standard
+                            reference[path]["parameters"]["standard"][i][
+                                "choices"
+                            ] = None
 
                 # Add endpoint returns data
                 if validate_output is False:
