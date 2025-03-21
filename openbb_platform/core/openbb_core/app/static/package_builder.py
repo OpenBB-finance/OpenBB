@@ -719,7 +719,38 @@ class MethodDefinition:
         formatted: Dict[str, Parameter] = {}
         var_kw = []
         for name, param in parameter_map.items():
-            # Add special handling for FastAPI Query objects in default values
+            # Case 1: Handle Query objects inside Annotated
+            if isinstance(param.annotation, _AnnotatedAlias):
+                query_obj = None
+                # Look for Query object in the metadata
+                for meta in param.annotation.__metadata__:
+                    if (
+                        hasattr(meta, "__class__")
+                        and "Query" in meta.__class__.__name__
+                    ):
+                        query_obj = meta
+                        break
+                if query_obj:
+                    description = getattr(query_obj, "description", "") or ""
+                    default_value = getattr(query_obj, "default", Parameter.empty)
+                    if default_value is PydanticUndefined:
+                        default_value = Parameter.empty
+
+                    # Create a new annotation with OpenBBField containing the description
+                    formatted[name] = Parameter(
+                        name=name,
+                        kind=param.kind,
+                        annotation=Annotated[
+                            param.annotation.__args__[0],  # Get the original type
+                            OpenBBField(
+                                description=description,
+                            ),
+                        ],
+                        default=param.default,
+                    )
+                    continue
+
+            # Case 2: Handle Query objects as default values
             if (
                 hasattr(param.default, "__class__")
                 and "Query" in param.default.__class__.__name__
@@ -2583,7 +2614,9 @@ class ReferenceGenerator:
                     continue
 
             param_type = param.annotation
-            is_optional = False
+            is_optional = (
+                param.default is not Parameter.empty
+            )  # Parameter is optional if it has a default value
             description = ""
             choices = None
             default = param.default if param.default is not Parameter.empty else None
@@ -2606,7 +2639,7 @@ class ReferenceGenerator:
                 if len(non_none_args) == 1:
                     param_type = non_none_args[0]
 
-            # Process Annotated types to extract metadata
+            # In ReferenceGenerator._get_function_signature_info, modify the Annotated handling:
             if isinstance(param_type, _AnnotatedAlias):
                 base_type = param_type.__args__[0]
                 for meta in param_type.__metadata__:
@@ -2618,6 +2651,24 @@ class ReferenceGenerator:
                         default = meta.default
                     if hasattr(meta, "json_schema_extra"):
                         json_extra = meta.json_schema_extra
+
+                    # Add handling for Query objects inside Annotated metadata
+                    if (
+                        hasattr(meta, "__class__")
+                        and "Query" in meta.__class__.__name__
+                    ):
+                        description = getattr(meta, "description", "") or description
+                        json_extra = (
+                            getattr(meta, "json_schema_extra", {}) or json_extra
+                        )
+                        default_value = getattr(meta, "default", None)
+                        if default_value not in [
+                            Parameter.empty,
+                            PydanticUndefined,
+                            Ellipsis,
+                        ]:
+                            default = default_value
+
                 # Set the actual type to the base type
                 param_type = base_type
 
@@ -2632,6 +2683,18 @@ class ReferenceGenerator:
                 )
                 description = default.description  # type: ignore
                 json_extra = default.json_schema_extra  # type: ignore
+
+                # Fix: A parameter is optional if it has a default value OR if is_required=False
+                # Currently we're only checking is_required, which is incorrect
+                has_default = hasattr(default, "default") and default.default not in [
+                    Parameter.empty,
+                    PydanticUndefined,
+                    Ellipsis,
+                ]
+                is_optional = has_default or (
+                    hasattr(default, "is_required") and default.is_required is False
+                )
+
                 default = (
                     default.default  # type: ignore
                     if default.default  # type: ignore
@@ -2649,16 +2712,16 @@ class ReferenceGenerator:
                 .replace("NoneType", "None")
             )
 
-            # Default value makes the parameter optional
-            if default is not None:
-                is_optional = True
-
             params_info.append(
                 {
                     "name": name,
-                    "type": ReferenceGenerator._clean_string_values(description),
+                    "type": type_str,
                     "description": ReferenceGenerator._clean_string_values(description),
-                    "default": ReferenceGenerator._clean_string_values(default),
+                    "default": (
+                        None
+                        if default in (PydanticUndefined, Parameter.empty, Ellipsis)
+                        else ReferenceGenerator._clean_string_values(default)
+                    ),
                     "optional": is_optional,
                     "choices": choices,
                     "json_schema_extra": json_extra if json_extra else None,
