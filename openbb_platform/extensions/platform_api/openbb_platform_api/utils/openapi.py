@@ -128,7 +128,7 @@ def set_parameter_type(p: dict, p_schema: dict):
     return p
 
 
-def set_parameter_options(  # pylint: disable=too-many-branches
+def set_parameter_options(  # noqa: PLR0912  # pylint: disable=too-many-branches
     p: dict, p_schema: dict, providers: list[str]
 ) -> dict:
     """
@@ -160,9 +160,20 @@ def set_parameter_options(  # pylint: disable=too-many-branches
     unique_general_choices: list = []
     provider: str = ""
 
+    # Extract provider from title if present
+    title_provider = None
+    if (
+        "title" in p_schema
+        and p_schema["title"]
+        and p_schema["title"] != p.get("parameter_name")
+    ):
+        title_provider = p_schema["title"].lower()
+        is_provider_specific = True
+        available_providers.add(title_provider)
+
     # Handle provider-specific choices
     for provider in providers:
-        if (provider in p_schema) or (len(providers) == 1):
+        if provider in p_schema or (len(providers) == 1):
             is_provider_specific = True
             provider_choices: list = []
             if provider not in available_providers:
@@ -184,14 +195,28 @@ def set_parameter_options(  # pylint: disable=too-many-branches
             ):
                 multiple_items_allowed_dict[provider] = True
 
-    # Check title for provider-specific information
-    if "title" in p_schema:
-        title_providers = (
-            set(p_schema["title"].split(",")) if p_schema.get("title") else set()
+    # Handle title provider choices if present
+    if title_provider and "anyOf" in p_schema:
+        provider_choices = []
+        for sub_schema in p_schema["anyOf"]:
+            if "enum" in sub_schema:
+                provider_choices.extend(sub_schema["enum"])
+
+        if provider_choices:
+            choices[title_provider] = [
+                {"label": str(c), "value": c}
+                for c in provider_choices
+                if c not in ["null", None]
+            ]
+
+    # Check title for provider-specific information from description
+    if "description" in p_schema and "(provider:" in p_schema["description"]:
+        desc_provider = (
+            p_schema["description"].split("(provider:")[1].strip().rstrip(")")
         )
-        if title_providers.intersection(providers):
+        if desc_provider and desc_provider not in available_providers:
+            available_providers.add(desc_provider)
             is_provider_specific = True
-            available_providers.update(title_providers)
 
     # Handle general choices
     general_choices: list = []
@@ -203,7 +228,7 @@ def set_parameter_options(  # pylint: disable=too-many-branches
                 if c not in ["null", None]
             ]
         )
-    elif "anyOf" in p_schema:
+    elif "anyOf" in p_schema and not title_provider:
         for sub_schema in p_schema["anyOf"]:
             if "enum" in sub_schema:
                 general_choices.extend(
@@ -288,11 +313,9 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
         param_name.replace("_", " ").replace("fixedincome", "fixed income").title()
     )
     p["description"] = (
-        (
-            (param.get("description", param_name).split(" (provider:")[0].strip())
-            .split("Multiple comma separated items allowed")[0]
-            .strip()
-        )
+        (param.get("description", param_name).split(" (provider:")[0].strip())
+        .split("Multiple comma separated items allowed")[0]
+        .strip()
         if param.get("description")
         else ""
     )
@@ -300,6 +323,7 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
     p["type"] = param.get("type", "text")
     p["value"] = param.get("value")
 
+    # Special handling for provider parameter
     if param_name == "provider":
         p["type"] = "text"
         p["label"] = "Provider"
@@ -328,8 +352,41 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
         p["x-widget_config"] = x_widget_config
 
     p_schema = param.get("schema", {}) or param
+
+    # Initialize provider specificity tracking
+    provider_specific = False
+    available_providers_list = (
+        []
+    )  # Start with empty list - only add providers that match
+
+    # Extract providers from title
+    if p_schema.get("title"):
+        # Handle comma-separated list of providers in the title
+        if "," in p_schema["title"]:
+            title_providers = [p.strip().lower() for p in p_schema["title"].split(",")]
+            available_providers_list.extend(title_providers)
+            provider_specific = True
+        elif p_schema["title"].lower() in [p.lower() for p in providers]:
+            # Single provider in title
+            available_providers_list.append(p_schema["title"].lower())
+            provider_specific = True
+
+    # Extract providers from description
+    if "(provider:" in param.get("description", ""):
+        desc_parts = param["description"].split("(provider:")
+        for part in desc_parts[1:]:  # Skip the first part (before any provider mention)
+            desc_provider_text = part.split(")")[0].strip()
+            # Handle multiple providers separated by commas in description
+            for dp in desc_provider_text.split(","):
+                desc_provider = dp.strip().lower()
+                if desc_provider and desc_provider not in available_providers_list:
+                    available_providers_list.append(desc_provider)
+                    provider_specific = True
+
+    # Set value from schema
     p["value"] = p_schema.get("default", None)
 
+    # Handle custom options
     custom = (
         param.get("options", {}).get("custom", [])
         if "options" in param and "custom" in param["options"]
@@ -339,16 +396,18 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
     if custom:
         p["options"] = {"custom": custom}
 
+    # Process options and types
     p = set_parameter_options(p, p_schema, providers)
     p = set_parameter_type(p, p_schema)
 
+    # Set empty options list if not present
     if "options" not in p:
         p["options"] = []
         if p_schema.get("options", []):
             p["options"] = p_schema["options"]
 
+    # Handle title for label
     if title := p_schema.get("title", ""):
-
         p["label"] = (
             p.get("parameter_name", "").replace("_", " ").title()
             if ("," in title and title.replace(",", "").islower())
@@ -356,12 +415,30 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
             else title
         )
 
+    # Handle widget config
     if _widget_config := p_schema.get("x-widget_config", {}):
         for provider in providers:
             if provider in _widget_config:
                 _widget_config = _widget_config[provider]
                 break
         p.update(_widget_config)
+
+    # Check if this parameter is provider-specific and filter appropriately
+    if provider_specific and available_providers_list:
+        p["available_providers"] = available_providers_list
+
+        # Check if any of our current providers match the available providers for this parameter
+        valid_for_current_providers = False
+        for current_provider in providers:
+            if current_provider.lower() in [
+                p.lower() for p in available_providers_list
+            ]:
+                valid_for_current_providers = True
+                break
+
+        # If parameter is provider-specific but not valid for any of our current providers, skip it
+        if not valid_for_current_providers:
+            return None
 
     return p
 
