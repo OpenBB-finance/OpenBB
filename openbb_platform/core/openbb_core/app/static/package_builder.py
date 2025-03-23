@@ -1525,7 +1525,7 @@ class DocstringGenerator:
         sections: List[str],
     ) -> str:
         """Create the docstring for model."""
-        docstring: str = ""
+        docstring: str = "\n"
 
         def format_type(type_: str, char_limit: Optional[int] = None) -> str:
             """Format type in docstrings."""
@@ -2331,38 +2331,40 @@ class ReferenceGenerator:
 
     @classmethod
     def _get_provider_field_params(
-        cls,
-        model: str,
-        params_type: str,
-        provider: str = "openbb",
+        cls, model: str, params_type: str, provider: str = "openbb"
     ) -> List[Dict[str, Any]]:
-        """Get the fields of the given parameter type for the given provider of the standard_model.
-
-        Parameters
-        ----------
-        model : str
-            Model name to access the provider interface
-        params_type : str
-            Parameters to fetch data for (QueryParams or Data)
-        provider : str
-            Provider name. Defaults to "openbb".
-
-        Returns
-        -------
-        List[Dict[str, str]]
-            List of dictionaries containing the field name, type, description, default,
-            optional flag and standard flag for each provider.
-        """
+        """Get the fields of the given parameter type for the given provider of the standard_model."""
         provider_field_params = []
         expanded_types = MethodDefinition.TYPE_EXPANSION
         model_map = cls.pi.map[model]
 
-        # TODO: Change this to read the package data instead of pi.map directly
-        # We change some items (types, descriptions), so the reference.json
-        # does not reflect entirely the package code.
+        # First, check if the provider class itself has __json_schema_extra__
+        # This contains class-level schema information that applies to fields
+        class_schema_extra = {}
+        try:
+            # Get the actual provider class
+            provider_class = model_map[provider][params_type]["class"]
+            # Check for class-level __json_schema_extra__ attribute
+            if hasattr(provider_class, "__json_schema_extra__"):
+                class_schema_extra = provider_class.__json_schema_extra__
+        except (KeyError, AttributeError):
+            pass
 
         for field, field_info in model_map[provider][params_type]["fields"].items():
-            # Determine the field type, expanding it if necessary and if params_type is "Parameters"
+            # Start with class-level schema information for this field if it exists
+            extra = {}
+            choices = None
+            if field in class_schema_extra:
+                extra = class_schema_extra[field].copy()
+                choices = extra.get("choices")
+
+            # Then apply field-level schema extra (which takes precedence)
+            field_extra = field_info.json_schema_extra or {}
+            extra.update(field_extra)
+            if "choices" in field_extra:
+                choices = field_extra["choices"]
+
+            # Determine the field type, expanding it if necessary
             field_type = field_info.annotation
             is_required = field_info.is_required()
             field_type_str = DocstringGenerator.get_field_type(
@@ -2374,32 +2376,17 @@ class ReferenceGenerator:
                 field_type_str = field_type_str.replace(", optional", "")
                 is_required = False
 
-            # Extract metadata from Annotated types
-            field_metadata = {}
-            if hasattr(field_type, "__metadata__"):
-                for meta in field_type.__metadata__:
-                    if hasattr(meta, "description"):
-                        field_metadata["description"] = meta.description
-                    if hasattr(meta, "choices"):
-                        field_metadata["choices"] = meta.choices
-
-            cleaned_description = (
-                str(field_info.description)
-                .strip().replace('"', "'")
-            )  # fmt: skip
-
-            extra = field_info.json_schema_extra or {}
-            choices = extra.get("choices")
+            cleaned_description = str(field_info.description).strip().replace('"', "'")
 
             # Add information for the providers supporting multiple symbols
             if params_type == "QueryParams" and extra:
                 providers: List = []
-                for p, v in extra.items():  # type: ignore[union-attr]
+                for p, v in extra.items():
                     if isinstance(v, dict) and v.get("multiple_items_allowed"):
                         providers.append(p)
-                        choices = v.get("choices")  # type: ignore
+                        if "choices" in v:
+                            choices = v.get("choices")
                     elif isinstance(v, list) and "multiple_items_allowed" in v:
-                        # For backwards compatibility, before this was a list
                         providers.append(p)
                     elif isinstance(v, dict) and "choices" in v:
                         choices = v.get("choices")
@@ -2409,8 +2396,6 @@ class ReferenceGenerator:
                     cleaned_description += (
                         f" Multiple items allowed for provider(s): {multiple_items}."
                     )
-                    # Manually setting to List[<field_type>] for multiple items
-                    # Should be removed if TYPE_EXPANSION is updated to include this
                     field_type_str = f"Union[{field_type_str}, List[{field_type_str}]]"
             elif field in expanded_types:
                 expanded_type = DocstringGenerator.get_field_type(
@@ -2418,7 +2403,9 @@ class ReferenceGenerator:
                 )
                 field_type_str = f"Union[{field_type_str}, {expanded_type}]"
 
-            default_value = "" if field_info.default is PydanticUndefined else field_info.default  # fmt: skip
+            default_value = (
+                "" if field_info.default is PydanticUndefined else field_info.default
+            )
 
             provider_field_params.append(
                 {
