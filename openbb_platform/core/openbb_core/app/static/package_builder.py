@@ -1525,6 +1525,7 @@ class DocstringGenerator:
         sections: List[str],
     ) -> str:
         """Create the docstring for model."""
+        docstring: str = ""
 
         def format_type(type_: str, char_limit: Optional[int] = None) -> str:
             """Format type in docstrings."""
@@ -1722,10 +1723,12 @@ class DocstringGenerator:
         if "description" in sections:
             docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
             docstring += "\n\n"
+        else:
+            docstring += "\n\n"
 
+        if "parameters" in sections:
             provider_param = explicit_params.pop("provider", {})  # type: ignore
             chart_param = explicit_params.pop("chart", {})  # type: ignore
-        if "parameters" in sections:
             docstring += f"{create_indent(2)}Parameters\n"
             docstring += f"{create_indent(2)}----------\n"
 
