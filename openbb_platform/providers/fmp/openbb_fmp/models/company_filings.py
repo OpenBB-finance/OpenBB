@@ -1,7 +1,6 @@
 """FMP Company Filings Model."""
 
-import asyncio
-import math
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,9 +8,10 @@ from openbb_core.provider.standard_models.company_filings import (
     CompanyFilingsData,
     CompanyFilingsQueryParams,
 )
-from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request, get_querystring
-from openbb_fmp.utils.helpers import response_callback
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+)
+from pydantic import Field
 
 
 class FMPCompanyFilingsQueryParams(CompanyFilingsQueryParams):
@@ -21,6 +21,14 @@ class FMPCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     """
 
     __alias_dict__ = {"form_type": "type"}
+
+    form_type: Optional[str] = Field(
+        default=None, description="SEC form type to filter by."
+    )
+    limit: int = Field(
+        default=1000,
+        description="Number of results to return.",
+    )
 
 
 class FMPCompanyFilingsData(CompanyFilingsData):
@@ -33,6 +41,18 @@ class FMPCompanyFilingsData(CompanyFilingsData):
         "filing_url": "link",
         "report_url": "finalLink",
     }
+    filing_url: Optional[str] = Field(
+        default=None, description="URL to the filing page."
+    )
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
+    cik: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
+    )
+    accepted_date: Optional[datetime] = Field(
+        default=None, description="Accepted date of the filing."
+    )
 
 
 class FMPCompanyFilingsFetcher(
@@ -55,6 +75,13 @@ class FMPCompanyFilingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import math
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import amake_request, get_querystring
+        from openbb_fmp.utils.helpers import response_callback
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3/sec_filings"
@@ -68,7 +95,7 @@ class FMPCompanyFilingsFetcher(
             for page in range(pages)
         ]
 
-        results = []
+        results: list = []
 
         async def get_one(url):
             """Get the data from one URL."""

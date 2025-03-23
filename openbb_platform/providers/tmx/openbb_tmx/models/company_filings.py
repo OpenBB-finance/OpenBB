@@ -13,7 +13,7 @@ from openbb_core.provider.standard_models.company_filings import (
     CompanyFilingsData,
     CompanyFilingsQueryParams,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class TmxCompanyFilingsQueryParams(CompanyFilingsQueryParams):
@@ -27,6 +27,13 @@ class TmxCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         description="The end date to fetch.",
         default=None,
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def _validate_symbol(cls, v: str):
+        """Validate the symbol."""
+        if not v:
+            raise ValueError("Symbol is required for TMX.")
 
 
 class TmxCompanyFilingsData(CompanyFilingsData):
