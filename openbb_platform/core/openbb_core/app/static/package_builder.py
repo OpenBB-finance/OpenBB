@@ -936,7 +936,9 @@ class MethodDefinition:
 
             field_default = all_fields[param].default
             extra = MethodDefinition.get_extra(all_fields[param])
-            choices = getattr(field_default, "json_schema_extra", {}).get("choices", [])
+            choices = getattr(all_fields[param], "json_schema_extra", {}).get(
+                "choices", []
+            ) or extra.get("choices", [])
             description = getattr(field_default, "description", "")
 
             # Handle provider-specific choices and add them to the description
@@ -1607,16 +1609,8 @@ class DocstringGenerator:
                     first_sentence = first_sentence.strip()
                     remainder = remainder.strip()
 
-                    # Add the first sentence to formatted_parts
-                    formatted_parts.append(first_sentence)
-
-                    # Add the remainder of the first part with indentation
-                    if remainder:
-                        formatted_parts.append(f"{create_indent(3)}{remainder}")
-                else:
-                    # If no period in the first part, just add it as is
-                    formatted_parts.append(first_part)
-
+                formatted_parts.append(first_part)
+                parts.pop(1)
                 # Process subsequent parts (provider-specific descriptions)
                 for part in parts[1:]:
                     part = part.strip()  # noqa: PLW2901
@@ -1634,6 +1628,8 @@ class DocstringGenerator:
 
                 # Join all parts with semicolons
                 description = ";\n".join(formatted_parts)
+                if "Choices" not in description:
+                    return description
 
             # Handle provider-specific choices
             if "\nChoices for " in description:
@@ -1692,6 +1688,36 @@ class DocstringGenerator:
         provider_param: Union[Parameter, dict] = {}
         chart_param: Union[Parameter, dict] = {}
 
+        def process_param(param_name, param_type, description, kwarg_info=None):
+            """Process parameter info and add provider-specific choices info."""
+            formatted_description = description
+
+            # Check if we have provider-specific choices information for this parameter
+            if kwarg_info and param_name in kwarg_info:
+                param_info = kwarg_info[param_name]
+                for provider, details in param_info.items():
+                    if "choices" in details and details["choices"]:
+                        multiple_items = details.get("multiple_items_allowed", False)
+                        multiple_text = (
+                            " Multiple comma separated items allowed."
+                            if multiple_items
+                            else ""
+                        )
+
+                        # For parameters with many choices (like form_type for SEC)
+                        if len(details["choices"]) > 20:
+                            formatted_description += (
+                                f" (provider: {provider}){multiple_text}"
+                            )
+                        # For parameters with reasonable number of choices
+                        else:
+                            choices_str = ", ".join(
+                                [f"'{c}'" for c in details["choices"]]
+                            )
+                            formatted_description += f"\nChoices for {provider}: {choices_str}{multiple_text}"
+
+            return formatted_description
+
         # Description summary
         if "description" in sections:
             docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
@@ -1718,6 +1744,7 @@ class DocstringGenerator:
 
             # Kwargs
             for param_name, param in kwarg_params.items():
+                type_, description = get_param_info(param)
                 p_type = getattr(param, "type", "")
                 type_ = (
                     getattr(p_type, "__name__", "")
@@ -1847,8 +1874,8 @@ class DocstringGenerator:
             docstring += f"{create_indent(2)}Returns\n"
             docstring += f"{create_indent(2)}-------\n"
             _providers, _ = get_param_info(explicit_params.get("provider"))
-            if _providers:
-                docstring += cls.get_OBBject_description(results_type, _providers)
+
+            docstring += cls.get_OBBject_description(results_type, _providers)
 
             # Schema
             underline = "-" * len(model_name)
