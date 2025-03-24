@@ -83,8 +83,8 @@ class TmxEtfSectorsFetcher(
         target = DataFrame(data)
         try:
             target["weight"] = target["weight"] / 100
-        except KeyError:  # pylint: disable=raise-missing-from
-            raise EmptyDataError(
+        except KeyError:
+            raise EmptyDataError(  # pylint: disable=raise-missing-from
                 f"No sectors info found for ETF symbol: {query.symbol}."
             )
 
