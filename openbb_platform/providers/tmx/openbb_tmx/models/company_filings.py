@@ -34,6 +34,7 @@ class TmxCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         """Validate the symbol."""
         if not v:
             raise ValueError("Symbol is required for TMX.")
+        return v
 
 
 class TmxCompanyFilingsData(CompanyFilingsData):

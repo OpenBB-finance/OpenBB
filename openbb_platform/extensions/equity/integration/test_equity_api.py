@@ -955,8 +955,6 @@ def test_equity_fundamental_revenue_per_segment(params, headers):
                 "symbol": "IBM:US",
                 "start_date": "2023-09-30",
                 "end_date": "2023-12-31",
-                "limit": None,
-                "form_type": None,
             }
         ),
     ],
