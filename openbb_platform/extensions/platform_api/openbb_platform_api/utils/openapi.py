@@ -128,7 +128,7 @@ def set_parameter_type(p: dict, p_schema: dict):
     return p
 
 
-def set_parameter_options(  # pylint: disable=too-many-branches
+def set_parameter_options(  # noqa: PLR0912  # pylint: disable=too-many-branches
     p: dict, p_schema: dict, providers: list[str]
 ) -> dict:
     """
@@ -160,9 +160,25 @@ def set_parameter_options(  # pylint: disable=too-many-branches
     unique_general_choices: list = []
     provider: str = ""
 
+    # Extract provider from title if present
+    title_providers = []
+    if (
+        p_schema.get("title")
+        and p_schema["title"] != p.get("parameter_name")
+        and p_schema.get("title", "").islower()
+    ):
+        # Handle comma-separated providers in title field
+        for title_name in p_schema["title"].lower().split(","):
+            if title_name in [
+                prov.lower() for prov in providers
+            ]:  # Only actual providers
+                title_providers.append(title_name)
+                is_provider_specific = True
+                available_providers.add(title_name)
+
     # Handle provider-specific choices
     for provider in providers:
-        if (provider in p_schema) or (len(providers) == 1):
+        if provider in p_schema or (len(providers) == 1):
             is_provider_specific = True
             provider_choices: list = []
             if provider not in available_providers:
@@ -184,14 +200,50 @@ def set_parameter_options(  # pylint: disable=too-many-branches
             ):
                 multiple_items_allowed_dict[provider] = True
 
-    # Check title for provider-specific information
-    if "title" in p_schema:
-        title_providers = (
-            set(p_schema["title"].split(",")) if p_schema.get("title") else set()
+    # Handle title provider choices if present
+    if title_providers and "anyOf" in p_schema:
+        # If we have multiple providers in title and multiple enum lists in anyOf
+        # try to match them in order
+        if (
+            len(title_providers) > 1
+            and len([s for s in p_schema["anyOf"] if "enum" in s]) > 1
+        ):
+            for i, provider in enumerate(title_providers):
+                # Only process if this provider doesn't already have choices
+                if provider not in choices or not choices[provider]:
+                    # Try to match enum at the same position as the provider in the title
+                    enum_index = min(i, len(p_schema["anyOf"]) - 1)
+                    if "enum" in p_schema["anyOf"][enum_index]:
+                        provider_choices = p_schema["anyOf"][enum_index]["enum"]
+                        choices[provider] = [
+                            {"label": str(c), "value": c}
+                            for c in provider_choices
+                            if c not in ["null", None]
+                        ]
+        else:
+            # Existing code for single provider or multiple providers with one enum
+            all_provider_choices = []
+            for sub_schema in p_schema["anyOf"]:
+                if "enum" in sub_schema:
+                    all_provider_choices.extend(sub_schema["enum"])
+
+            if all_provider_choices:
+                for provider in title_providers:
+                    if provider not in choices or not choices[provider]:
+                        choices[provider] = [
+                            {"label": str(c), "value": c}
+                            for c in all_provider_choices
+                            if c not in ["null", None]
+                        ]
+
+    # Check title for provider-specific information from description
+    if p_schema.get("description") and "(provider:" in p_schema["description"]:
+        desc_provider = (
+            p_schema["description"].split("(provider:")[1].strip().rstrip(")")
         )
-        if title_providers.intersection(providers):
+        if desc_provider and desc_provider not in available_providers:
+            available_providers.add(desc_provider)
             is_provider_specific = True
-            available_providers.update(title_providers)
 
     # Handle general choices
     general_choices: list = []
@@ -203,7 +255,7 @@ def set_parameter_options(  # pylint: disable=too-many-branches
                 if c not in ["null", None]
             ]
         )
-    elif "anyOf" in p_schema:
+    elif "anyOf" in p_schema and not title_providers:
         for sub_schema in p_schema["anyOf"]:
             if "enum" in sub_schema:
                 general_choices.extend(
@@ -251,7 +303,12 @@ def set_parameter_options(  # pylint: disable=too-many-branches
     p["multiple_items_allowed"] = multiple_items_allowed_dict
 
     if choices:
-        p["options"] = choices
+        filtered_choices = {
+            provider: choice for provider, choice in choices.items() if choice
+        }
+        p["options"] = (
+            filtered_choices if filtered_choices else {provider: []} if provider else []
+        )
 
     if is_provider_specific and len(available_providers) > 1:
         p["available_providers"] = list(available_providers)
@@ -266,113 +323,146 @@ def set_parameter_options(  # pylint: disable=too-many-branches
 
 
 def process_parameter(param: dict, providers: list[str]) -> dict:
-    """
-    Process a single parameter and return the processed dictionary.
-
-    Parameters
-    ----------
-    param : Dict
-        Parameter dictionary.
-    providers : List[str]
-        List of provider options.
-
-    Returns
-    -------
-    Dict
-        Processed parameter dictionary.
-    """
+    """Process a single parameter and return the processed dictionary."""
     p: dict = {}
+    schema = param.get("schema", {})
+
     param_name = param["name"]
     p["parameter_name"] = param_name
     p["label"] = (
         param_name.replace("_", " ").replace("fixedincome", "fixed income").title()
     )
+
+    if not p.get("label") or p.get("label") == "":
+        p["label"] = schema.get("title") or param.get("title")
+
     p["description"] = (
-        (
-            (param.get("description", param_name).split(" (provider:")[0].strip())
-            .split("Multiple comma separated items allowed")[0]
-            .strip()
-        )
+        (param.get("description", param_name).split(" (provider:")[0].strip())
+        .split("Multiple comma separated items allowed")[0]
+        .strip()
         if param.get("description")
-        else ""
+        else (schema.get("description") or p.get("label"))
     )
     p["optional"] = param.get("required", False) is False
-    p["type"] = param.get("type", "text")
-    p["value"] = param.get("value")
 
+    # Set type first so we can use it for value determination
+    p["type"] = param.get("type", "text")
+
+    # Get default value from schema if present
+    default_value = param.get("default")
+
+    if default_value is None:
+        default_value = schema.get("default")
+
+    p["value"] = default_value if default_value is not None else param.get("value")
+
+    # Special handling for provider parameter
     if param_name == "provider":
         p["type"] = "text"
         p["label"] = "Provider"
         p["description"] = "Source of the data."
+        p["show"] = False
         p["available_providers"] = providers
+        p["value"] = None
         return p
 
-    if param_name in ["symbol", "series_id", "release_id"]:
-        p["type"] = "text"
-        p["label"] = param_name.title().replace("_", " ").replace("Id", "ID")
+    multiple_items_allowed_dict: dict = {}
+    for _provider in providers:
+        if param.get("schema", {}).get(_provider, {}).get(
+            "multiple_items_allowed"
+        ) and param["schema"][_provider].get("multiple_items_allowed"):
+            multiple_items_allowed_dict[_provider] = True
+
+    p["multiple_items_allowed"] = multiple_items_allowed_dict
+
+    # Safe check for description
+    if (
+        p.get("description")
+        and "Multiple comma separated items allowed" in p["description"]
+    ):
         p["description"] = (
-            p["description"]
-            .split("Multiple comma separated items allowed for provider(s)")[0]
-            .strip()
+            p["description"].split("Multiple comma separated items allowed")[0].strip()
         )
-        multiple_items_allowed_dict: dict = {}
-        for _provider in providers:
-            if _provider in param["schema"] and param["schema"][_provider].get(
-                "multiple_items_allowed", False
-            ):
-                multiple_items_allowed_dict[_provider] = True
 
-        p["multiple_items_allowed"] = multiple_items_allowed_dict
-        if "Multiple comma separated items allowed" in p["description"]:
-            p["description"] = (
-                p["description"]
-                .split("Multiple comma separated items allowed")[0]
-                .strip()
-            )
-
-        if widget_config := param["schema"].get("x-widget_config", {}):
-            p["x-widget_config"] = widget_config
-
-        return p
-
-    if x_widget_config := param.get("x-widget_config", {}):
+    if x_widget_config := param.get(
+        "x-widget_config", param.get("schema", {}).get("x-widget_config", {})
+    ):
         p["x-widget_config"] = x_widget_config
 
     p_schema = param.get("schema", {}) or param
-    p["value"] = p_schema.get("default", None)
 
-    custom = (
-        param.get("options", {}).get("custom", [])
-        if "options" in param and "custom" in param["options"]
-        else []
-    )
+    # Initialize provider specificity tracking
+    provider_specific = False
+    available_providers_list = (
+        []
+    )  # Start with empty list - only add providers that match
 
-    if custom:
-        p["options"] = {"custom": custom}
+    # Extract providers from title
+    if p_schema.get("title"):
+        # Handle comma-separated list of providers in the title
+        if "," in p_schema["title"]:
+            title_providers = [p.strip().lower() for p in p_schema["title"].split(",")]
+            available_providers_list.extend(title_providers)
+            provider_specific = True
+        elif p_schema["title"].lower() in [p.lower() for p in providers]:
+            # Single provider in title
+            available_providers_list.append(p_schema["title"].lower())
+            provider_specific = True
 
+    # Extract providers from description
+    description = param.get("description", "")
+    if description and "(provider:" in description:
+        desc_parts = description.split("(provider:")
+        for part in desc_parts[1:]:  # Skip the first part (before any provider mention)
+            desc_provider_text = part.split(")")[0].strip()
+            # Handle multiple providers separated by commas in description
+            for dp in desc_provider_text.split(","):
+                desc_provider = dp.strip().lower()
+                if desc_provider and desc_provider not in available_providers_list:
+                    available_providers_list.append(desc_provider)
+                    provider_specific = True
+
+    # Process options and types
     p = set_parameter_options(p, p_schema, providers)
     p = set_parameter_type(p, p_schema)
 
+    # Ensure options has the expected format: {"provider": []} rather than just []
     if "options" not in p:
-        p["options"] = []
-        if p_schema.get("options", []):
-            p["options"] = p_schema["options"]
+        p["options"] = {} if providers else []
+        if providers:
+            for provider in providers:
+                p["options"][provider] = []
 
-    if title := p_schema.get("title", ""):
-
-        p["label"] = (
-            p.get("parameter_name", "").replace("_", " ").title()
-            if ("," in title and title.replace(",", "").islower())
-            or title.lower() in providers
-            else title
-        )
-
+    # Handle widget config
     if _widget_config := p_schema.get("x-widget_config", {}):
         for provider in providers:
             if provider in _widget_config:
                 _widget_config = _widget_config[provider]
                 break
         p.update(_widget_config)
+
+    # Check if this parameter is provider-specific and filter appropriately
+    if provider_specific and available_providers_list:
+        # ONLY include providers that are actually in the provided providers list
+        valid_provider_list = [
+            p
+            for p in available_providers_list
+            if p.lower() in [prov.lower() for prov in providers]
+        ]
+
+        if valid_provider_list:
+            p["available_providers"] = valid_provider_list
+
+            # Check if any of our current providers match the validated available providers list
+            valid_for_current_providers = any(
+                current_provider.lower()
+                in [valid_p.lower() for valid_p in valid_provider_list]
+                for current_provider in providers
+            )
+
+            # If parameter is provider-specific but not valid for any of our current providers, skip it
+            if not valid_for_current_providers:
+                return None
 
     return p
 
@@ -401,8 +491,10 @@ def get_query_schema_for_widget(
     params = command.get("parameters", [])
     route_params: list[dict] = []
     providers: list[str] = extract_providers(params)
+
     if not providers:
         providers = ["custom"]
+
     for param in params:
         if param["name"] in ["sort", "order"]:
             continue
@@ -731,7 +823,7 @@ def post_query_schema_for_widget(
 
     new_params: dict = {}
 
-    def set_param(k, v):
+    def set_param(k, v, parent_name=None):
         """Set the parameter."""
         nonlocal new_params
 
@@ -844,8 +936,9 @@ def post_query_schema_for_widget(
             route_params: list[dict] = []
             providers = ["custom"]
 
-            for param in list(new_params):
-                p = process_parameter(new_params[param], providers)
+            for new_param, new_param_values in new_params.items():
+                _new_values = new_param_values.copy()
+                p = process_parameter(_new_values, providers)
                 if not p.get("exclude") and not p.get("x-widget_config", {}).get(
                     "exclude"
                 ):

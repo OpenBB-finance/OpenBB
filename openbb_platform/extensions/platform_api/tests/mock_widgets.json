@@ -3641,7 +3641,7 @@
         "params": [
             {
                 "label": "Some Param",
-                "description": "",
+                "description": "Some Param",
                 "optional": true,
                 "type": "text",
                 "value": "",
@@ -3656,8 +3656,8 @@
                 "endpoint": "form_submit",
                 "inputParams": [
                     {
-                        "label": "Record Opened Date",
-                        "description": "",
+                        "label": "Date",
+                        "description": "Date",
                         "optional": true,
                         "type": "date",
                         "value": null,
@@ -3665,7 +3665,7 @@
                     },
                     {
                         "label": "Record ID",
-                        "description": "",
+                        "description": "Record Id",
                         "optional": true,
                         "type": "number",
                         "value": null,
@@ -3673,7 +3673,7 @@
                     },
                     {
                         "label": "First Name",
-                        "description": "",
+                        "description": "First Name",
                         "optional": true,
                         "type": "text",
                         "value": null,
@@ -3681,7 +3681,7 @@
                     },
                     {
                         "label": "Last Name",
-                        "description": "",
+                        "description": "Last Name",
                         "optional": true,
                         "type": "text",
                         "value": null,
@@ -3689,7 +3689,7 @@
                     },
                     {
                         "label": "Symptoms",
-                        "description": "",
+                        "description": "Symptoms",
                         "optional": true,
                         "type": "text",
                         "value": null,
@@ -3712,7 +3712,7 @@
                     },
                     {
                         "label": "Diagnosis",
-                        "description": "",
+                        "description": "Diagnosis",
                         "optional": true,
                         "type": "text",
                         "value": null,
@@ -3720,7 +3720,7 @@
                     },
                     {
                         "label": "Add Record",
-                        "description": "",
+                        "description": "Add Record",
                         "optional": true,
                         "type": "button",
                         "value": true,

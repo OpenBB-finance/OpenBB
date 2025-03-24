@@ -1,6 +1,8 @@
 """OpenBB Performance Extension router."""
 
-from typing import TYPE_CHECKING, List
+# pylint: disable=too-many-positional-arguments
+
+from typing import TYPE_CHECKING
 
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -40,11 +42,11 @@ router = Router(prefix="/performance")
     ],
 )
 def omega_ratio(
-    data: List[Data],
+    data: list[Data],
     target: str,
     threshold_start: float = 0.0,
     threshold_end: float = 1.5,
-) -> OBBject[List[OmegaModel]]:
+) -> OBBject[list[OmegaModel]]:
     """Calculate the Omega Ratio.
 
     The Omega Ratio is a sophisticated metric that goes beyond traditional performance measures by considering the
@@ -53,7 +55,7 @@ def omega_ratio(
 
     Parameters
     ----------
-    data : List[Data]
+    data : list[Data]
         Time series data.
     target : str
         Target column name.
@@ -64,7 +66,7 @@ def omega_ratio(
 
     Returns
     -------
-    OBBject[List[OmegaModel]]
+    OBBject[list[OmegaModel]]
         Omega ratios.
     """
     # pylint: disable=import-outside-toplevel
@@ -121,12 +123,12 @@ def omega_ratio(
     ],
 )
 def sharpe_ratio(
-    data: List[Data],
+    data: list[Data],
     target: str,
     rfr: float = 0.0,
     window: PositiveInt = 252,
     index: str = "date",
-) -> OBBject[List[Data]]:
+) -> OBBject[list[Data]]:
     """Get Rolling Sharpe Ratio.
 
     This function calculates the Sharpe Ratio, a metric used to assess the return of an investment compared to its risk.
@@ -138,7 +140,7 @@ def sharpe_ratio(
 
     Parameters
     ----------
-    data : List[Data]
+    data : list[Data]
         Time series data.
     target : str
         Target column name.
@@ -150,7 +152,7 @@ def sharpe_ratio(
 
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[list[Data]]
         Sharpe ratio.
     """
     # pylint: disable=import-outside-toplevel
@@ -200,13 +202,13 @@ def sharpe_ratio(
     ],
 )
 def sortino_ratio(
-    data: List[Data],
+    data: list[Data],
     target: str,
     target_return: float = 0.0,
     window: PositiveInt = 252,
     adjusted: bool = False,
     index: str = "date",
-) -> OBBject[List[Data]]:
+) -> OBBject[list[Data]]:
     """Get rolling Sortino Ratio.
 
     The Sortino Ratio enhances the evaluation of investment returns by distinguishing harmful volatility
@@ -223,7 +225,7 @@ def sortino_ratio(
 
     Parameters
     ----------
-    data : List[Data]
+    data : list[Data]
         Time series data.
     target : str
         Target column name.
@@ -237,7 +239,7 @@ def sortino_ratio(
         Index column for input data
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[list[Data]]
         Sortino ratio.
     """
     # pylint: disable=import-outside-toplevel
