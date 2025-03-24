@@ -821,7 +821,7 @@ def post_query_schema_for_widget(
 
     new_params: dict = {}
 
-    def set_param(k, v, parent_name=None):
+    def set_param(k, v):
         """Set the parameter."""
         nonlocal new_params
 
@@ -934,7 +934,7 @@ def post_query_schema_for_widget(
             route_params: list[dict] = []
             providers = ["custom"]
 
-            for new_param, new_param_values in new_params.items():
+            for new_param_values in new_params.values():
                 _new_values = new_param_values.copy()
                 p = process_parameter(_new_values, providers)
                 if not p.get("exclude") and not p.get("x-widget_config", {}).get(
