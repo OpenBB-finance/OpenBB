@@ -1,7 +1,7 @@
 """Econometrics Router."""
 
 from itertools import combinations
-from typing import Dict, List, Literal, Optional
+from typing import Literal, Optional
 
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -26,8 +26,8 @@ router = Router(prefix="", description="Econometrics analysis tools.")
     ],
 )
 def correlation_matrix(
-    data: List[Data], method: Literal["pearson", "kendall", "spearman"] = "pearson"
-) -> OBBject[List[Data]]:
+    data: list[Data], method: Literal["pearson", "kendall", "spearman"] = "pearson"
+) -> OBBject[list[Data]]:
     """Get the correlation matrix of an input dataset.
 
     The correlation matrix provides a view of how different variables in your dataset relate to one another.
@@ -37,7 +37,7 @@ def correlation_matrix(
 
     Parameters
     ----------
-    data : List[Data]
+    data : list[Data]
         Input dataset.
     method : Literal["pearson", "kendall", "spearman"]
         Method to use for correlation calculation. Default is "pearson".
@@ -47,7 +47,7 @@ def correlation_matrix(
 
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[list[Data]]
         Correlation matrix.
     """
     # pylint: disable=import-outside-toplevel
@@ -96,10 +96,10 @@ def correlation_matrix(
     ],
 )
 def ols_regression(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
-) -> OBBject[Dict]:
+    x_columns: list[str],
+) -> OBBject[dict]:
     """Perform Ordinary Least Squares (OLS) regression.
 
     OLS regression is a fundamental statistical method to explore and model the relationship between a
@@ -109,16 +109,16 @@ def ols_regression(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[dict]
         OBBject with the results being model and results objects.
     """
     # pylint: disable=import-outside-toplevel
@@ -156,9 +156,9 @@ def ols_regression(
     ],
 )
 def ols_regression_summary(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
+    x_columns: list[str],
 ) -> OBBject[Data]:
     """Perform Ordinary Least Squares (OLS) regression.
 
@@ -166,12 +166,12 @@ def ols_regression_summary(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
 
     Returns
     -------
@@ -250,9 +250,9 @@ def ols_regression_summary(
     ],
 )
 def autocorrelation(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
+    x_columns: list[str],
 ) -> OBBject[Data]:
     """Perform Durbin-Watson test for autocorrelation.
 
@@ -266,16 +266,16 @@ def autocorrelation(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[dict]
         OBBject with the results being the score from the test.
     """
     # pylint: disable=import-outside-toplevel
@@ -313,9 +313,9 @@ def autocorrelation(
     ],
 )
 def residual_autocorrelation(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
+    x_columns: list[str],
     lags: PositiveInt = 1,
 ) -> OBBject[Data]:
     """Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
@@ -330,12 +330,12 @@ def residual_autocorrelation(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
     lags: PositiveInt
         Number of lags to use in the test.
 
@@ -386,8 +386,8 @@ def residual_autocorrelation(
     ],
 )
 def cointegration(
-    data: List[Data],
-    columns: List[str],
+    data: list[Data],
+    columns: list[str],
 ) -> OBBject[Data]:
     """Show co-integration between two timeseries using the two step Engle-Granger test.
 
@@ -402,9 +402,9 @@ def cointegration(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
-    columns: List[str]
+    columns: list[str]
         Data columns to check cointegration
     maxlag: PositiveInt
         Number of lags to use in the test.
@@ -465,7 +465,7 @@ def cointegration(
     ],
 )
 def causality(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
     x_column: str,
     lag: PositiveInt = 3,
@@ -482,7 +482,7 @@ def causality(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
@@ -539,7 +539,7 @@ def causality(
     ],
 )
 def unit_root(
-    data: List[Data],
+    data: list[Data],
     column: str,
     regression: Literal["c", "ct", "ctt"] = "c",
 ) -> OBBject[Data]:
@@ -556,7 +556,7 @@ def unit_root(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     column: str
         Data columns to check unit root
@@ -598,10 +598,10 @@ def unit_root(
     ],
 )
 def panel_random_effects(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
-) -> OBBject[Dict]:
+    x_columns: list[str],
+) -> OBBject[dict]:
     """Perform One-way Random Effects model for panel data.
 
     One-way Random Effects model to panel data is offering a nuanced approach to analyzing data that spans across both
@@ -611,16 +611,16 @@ def panel_random_effects(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[dict]
         OBBject with the fit model returned
     """
     # pylint: disable=import-outside-toplevel
@@ -654,10 +654,10 @@ def panel_random_effects(
     ],
 )
 def panel_between(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
-) -> OBBject[Dict]:
+    x_columns: list[str],
+) -> OBBject[dict]:
     """Perform a Between estimator regression on panel data.
 
     The Between estimator for regression analysis on panel data is focusing on the differences between entities
@@ -667,16 +667,16 @@ def panel_between(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[dict]
         OBBject with the fit model returned
     """
     # pylint: disable=import-outside-toplevel
@@ -708,10 +708,10 @@ def panel_between(
     ],
 )
 def panel_pooled(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
-) -> OBBject[Dict]:
+    x_columns: list[str],
+) -> OBBject[dict]:
     """Perform a Pooled coefficient estimator regression on panel data.
 
     The Pooled coefficient estimator for regression analysis on panel data is treating the data as a large
@@ -722,16 +722,16 @@ def panel_pooled(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[dict]
         OBBject with the fit model returned
     """
     # pylint: disable=import-outside-toplevel
@@ -763,10 +763,10 @@ def panel_pooled(
     ],
 )
 def panel_fixed(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
-) -> OBBject[Dict]:
+    x_columns: list[str],
+) -> OBBject[dict]:
     """One- and two-way fixed effects estimator for panel data.
 
     The Fixed Effects estimator to panel data is enabling a focused analysis on the unique characteristics of entities
@@ -776,16 +776,16 @@ def panel_fixed(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[dict]
         OBBject with the fit model returned
     """
     # pylint: disable=import-outside-toplevel
@@ -817,10 +817,10 @@ def panel_fixed(
     ],
 )
 def panel_first_difference(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
-) -> OBBject[Dict]:
+    x_columns: list[str],
+) -> OBBject[dict]:
     """Perform a first-difference estimate for panel data.
 
     The First-Difference estimator for panel data analysis is focusing on the changes between consecutive observations
@@ -830,16 +830,16 @@ def panel_first_difference(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[dict]
         OBBject with the fit model returned
     """
     # pylint: disable=import-outside-toplevel
@@ -870,10 +870,10 @@ def panel_first_difference(
     ],
 )
 def panel_fmac(
-    data: List[Data],
+    data: list[Data],
     y_column: str,
-    x_columns: List[str],
-) -> OBBject[Dict]:
+    x_columns: list[str],
+) -> OBBject[dict]:
     """Fama-MacBeth estimator for panel data.
 
     The Fama-MacBeth estimator, a two-step procedure renowned for its application in finance to estimate the risk
@@ -884,16 +884,16 @@ def panel_fmac(
 
     Parameters
     ----------
-    data: List[Data]
+    data: list[Data]
         Input dataset.
     y_column: str
         Target column.
-    x_columns: List[str]
-        List of columns to use as exogenous variables.
+    x_columns: list[str]
+        list of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[dict]
         OBBject with the fit model returned
     """
     # pylint: disable=import-outside-toplevel
@@ -926,8 +926,8 @@ def panel_fmac(
     ],
 )
 def variance_inflation_factor(
-    data: List[Data], columns: Optional[list] = None
-) -> OBBject[List[Data]]:
+    data: list[Data], columns: Optional[list] = None
+) -> OBBject[list[Data]]:
     """Calculate VIF (variance inflation factor), which tests for collinearity.
 
     It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square
@@ -948,14 +948,14 @@ def variance_inflation_factor(
 
     Parameters
     ----------
-    dataset: List[Data]
+    dataset: list[Data]
         Dataset to calculate VIF on
     columns: Optional[list]
         The columns to calculate to test for collinearity
 
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[list[Data]]
         The resulting VIF values for the selected columns
     """
     # pylint: disable=import-outside-toplevel
