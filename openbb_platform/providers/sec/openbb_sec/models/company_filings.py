@@ -226,6 +226,7 @@ class SecCompanyFilingsFetcher(
             async with CachedSession(
                 cache=SQLiteBackend(cache_dir, expire_after=3600 * 24)
             ) as session:
+                await session.delete_expired_responses()
                 try:
                     data = await amake_request(url, headers=HEADERS, session=session)  # type: ignore
                 finally:
