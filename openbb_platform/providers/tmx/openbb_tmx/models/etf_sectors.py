@@ -47,6 +47,7 @@ class TmxEtfSectorsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.errors import EmptyDataError  # noqa
         from openbb_tmx.utils.helpers import get_all_etfs
         from pandas import DataFrame
 
@@ -65,6 +66,7 @@ class TmxEtfSectorsFetcher(
                 columns={"name": "sector", "percent": "weight"}
             )
             return target.to_dict(orient="records")
+        raise EmptyDataError(f"No sectors info found for ETF symbol: {query.symbol}.")
 
     @staticmethod
     def transform_data(

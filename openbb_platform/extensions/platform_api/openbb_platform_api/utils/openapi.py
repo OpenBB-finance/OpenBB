@@ -462,7 +462,7 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
 
             # If parameter is provider-specific but not valid for any of our current providers, skip it
             if not valid_for_current_providers:
-                return None
+                return {}
 
     return p
 
