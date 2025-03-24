@@ -17,7 +17,7 @@ from openbb_core.provider.standard_models.company_filings import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_sec.utils.definitions import FORM_LIST, FORM_TYPES, HEADERS
+from openbb_sec.utils.definitions import FORM_LIST, HEADERS
 from pydantic import Field, field_validator
 
 
