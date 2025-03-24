@@ -50,6 +50,7 @@ class TmxEtfCountriesFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.errors import EmptyDataError  # noqa
         from openbb_tmx.utils.helpers import get_all_etfs
         from pandas import DataFrame
 
@@ -78,6 +79,9 @@ class TmxEtfCountriesFetcher(
             else:
                 warn(f"No data found for {symbol}")
 
+        if not results:
+            raise EmptyDataError("No countries info found for the given symbol(s).")
+
         output = (
             DataFrame(results)
             .transpose()
@@ -96,16 +100,15 @@ class TmxEtfCountriesFetcher(
     ) -> List[TmxEtfCountriesData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
+        from numpy import nan
         from pandas import DataFrame
 
         output = DataFrame(data)
         for col in output.columns.to_list():
             if col != "country":
                 output[col] = output[col].astype(float) / 100
-        output = output.fillna(value="N/A").replace("N/A", None)
-        output["country"] = (
-            output["country"].astype(str).str.lower().str.replace(" ", "_")
-        )
+        output = output.replace({nan: None})
+
         return [
             TmxEtfCountriesData.model_validate(d) for d in output.to_dict("records")
         ]

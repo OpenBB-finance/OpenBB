@@ -739,6 +739,7 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
                 else "percent"
             )
             column_def["renderFn"] = "greenRed"
+            column_def["cellDataType"] = "number"
 
         if k in ["cik", "isin", "figi", "cusip", "sedol", "symbol"]:
             column_def["cellDataType"] = "text"
@@ -749,9 +750,6 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         if k in ["fiscal_year", "year", "year_born"]:
             column_def["cellDataType"] = "number"
             column_def["formatterFn"] = "none"
-
-        if "date" in column_def["headerTooltip"].lower():
-            column_def["cellDataType"] = "date"
 
         if (
             route

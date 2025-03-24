@@ -59,11 +59,12 @@ class TmxEtfSectorsFetcher(
             .replace(".TSX", "")
         )
         _target = _data[_data["symbol"] == symbol]["sectors"]
+
         if len(_target) > 0:
             target = DataFrame.from_records(_target.iloc[0]).rename(
                 columns={"name": "sector", "percent": "weight"}
             )
-        return target.to_dict(orient="records")
+            return target.to_dict(orient="records")
 
     @staticmethod
     def transform_data(
@@ -73,14 +74,19 @@ class TmxEtfSectorsFetcher(
     ) -> List[TmxEtfSectorsData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.errors import EmptyDataError  # noqa
+        from numpy import nan
         from pandas import DataFrame
 
         target = DataFrame(data)
-        target["weight"] = target["weight"] / 100
-        target["sector"] = (
-            target["sector"].astype(str).str.lower().str.replace(" ", "_")
-        )
-        target = target.fillna(value="N/A").replace("N/A", None)
+        try:
+            target["weight"] = target["weight"] / 100
+        except KeyError:
+            raise EmptyDataError(
+                f"No sectors info found for ETF symbol: {query.symbol}."
+            )
+
+        target = target.replace({nan: None})
         return [
             TmxEtfSectorsData.model_validate(d)
             for d in target.to_dict(orient="records")
