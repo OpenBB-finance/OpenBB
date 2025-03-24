@@ -24,7 +24,7 @@ class TmxEtfSearchQueryParams(EtfSearchQueryParams):
 
     sort_by: Optional[
         Literal[
-            "nav",
+            "aum",
             "return_1m",
             "return_3m",
             "return_6m",

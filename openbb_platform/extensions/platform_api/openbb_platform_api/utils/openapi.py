@@ -462,7 +462,7 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
 
             # If parameter is provider-specific but not valid for any of our current providers, skip it
             if not valid_for_current_providers:
-                return None
+                return {}
 
     return p
 
@@ -739,6 +739,7 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
                 else "percent"
             )
             column_def["renderFn"] = "greenRed"
+            column_def["cellDataType"] = "number"
 
         if k in ["cik", "isin", "figi", "cusip", "sedol", "symbol"]:
             column_def["cellDataType"] = "text"
@@ -749,9 +750,6 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         if k in ["fiscal_year", "year", "year_born"]:
             column_def["cellDataType"] = "number"
             column_def["formatterFn"] = "none"
-
-        if "date" in column_def["headerTooltip"].lower():
-            column_def["cellDataType"] = "date"
 
         if (
             route
@@ -823,7 +821,7 @@ def post_query_schema_for_widget(
 
     new_params: dict = {}
 
-    def set_param(k, v, parent_name=None):
+    def set_param(k, v):
         """Set the parameter."""
         nonlocal new_params
 
@@ -936,7 +934,7 @@ def post_query_schema_for_widget(
             route_params: list[dict] = []
             providers = ["custom"]
 
-            for new_param, new_param_values in new_params.items():
+            for new_param_values in new_params.values():
                 _new_values = new_param_values.copy()
                 p = process_parameter(_new_values, providers)
                 if not p.get("exclude") and not p.get("x-widget_config", {}).get(
