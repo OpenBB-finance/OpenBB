@@ -239,9 +239,17 @@ async def get_form_4_urls(
     )
     urls: list = []
     for item in form_4:
-        if start_date and item.filing_date < start_date:
+        if (
+            (not start_date or not item.filing_date)
+            or start_date
+            and item.filing_date < start_date
+        ):
             continue
-        if end_date and item.report_date > end_date:
+        if (
+            (not end_date or not item.report_date)
+            or end_date
+            and item.report_date > end_date
+        ):
             continue
         to_replace = f"{item.primary_doc.split('/')[0]}/"
         form_url = item.report_url.replace(to_replace, "")
