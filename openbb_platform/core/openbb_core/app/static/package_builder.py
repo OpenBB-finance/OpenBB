@@ -320,7 +320,7 @@ class ImportDefinition:
     def get_function_hint_type_list(cls, route) -> List[Type]:
         """Get the hint type list from the function."""
 
-        no_validate = route.openapi_extra.get("no_validate")
+        no_validate = getattr(route, "openapi_extra.get", {}).get("no_validate")
 
         func = route.endpoint
         sig = signature(func)
@@ -533,7 +533,11 @@ class ClassDefinition:
                         if route.openapi_extra
                         else None
                     ),
-                    examples=(route.openapi_extra.get("examples", []) or []),
+                    examples=(
+                        route.openapi_extra.get("examples", [])
+                        if route.openapi_extra
+                        else []
+                    ),
                 )
             else:
                 doc += "    /" if path else "    /"
