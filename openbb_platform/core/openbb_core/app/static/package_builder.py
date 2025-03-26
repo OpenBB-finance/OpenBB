@@ -320,7 +320,7 @@ class ImportDefinition:
     def get_function_hint_type_list(cls, route) -> List[Type]:
         """Get the hint type list from the function."""
 
-        no_validate = getattr(route, "openapi_extra.get", {}).get("no_validate")
+        no_validate = getattr(route, "openapi_extra", {}).get("no_validate")
 
         func = route.endpoint
         sig = signature(func)
