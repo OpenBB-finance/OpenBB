@@ -320,7 +320,7 @@ class ImportDefinition:
     def get_function_hint_type_list(cls, route) -> List[Type]:
         """Get the hint type list from the function."""
 
-        no_validate = route.openapi_extra.get("no_validate")
+        no_validate = getattr(route, "openapi_extra", {}).get("no_validate")
 
         func = route.endpoint
         sig = signature(func)
@@ -533,7 +533,11 @@ class ClassDefinition:
                         if route.openapi_extra
                         else None
                     ),
-                    examples=(route.openapi_extra.get("examples", []) or []),
+                    examples=(
+                        route.openapi_extra.get("examples", [])
+                        if route.openapi_extra
+                        else []
+                    ),
                 )
             else:
                 doc += "    /" if path else "    /"
@@ -1688,36 +1692,6 @@ class DocstringGenerator:
 
         provider_param: Union[Parameter, dict] = {}
         chart_param: Union[Parameter, dict] = {}
-
-        def process_param(param_name, param_type, description, kwarg_info=None):
-            """Process parameter info and add provider-specific choices info."""
-            formatted_description = description
-
-            # Check if we have provider-specific choices information for this parameter
-            if kwarg_info and param_name in kwarg_info:
-                param_info = kwarg_info[param_name]
-                for provider, details in param_info.items():
-                    if "choices" in details and details["choices"]:
-                        multiple_items = details.get("multiple_items_allowed", False)
-                        multiple_text = (
-                            " Multiple comma separated items allowed."
-                            if multiple_items
-                            else ""
-                        )
-
-                        # For parameters with many choices (like form_type for SEC)
-                        if len(details["choices"]) > 20:
-                            formatted_description += (
-                                f" (provider: {provider}){multiple_text}"
-                            )
-                        # For parameters with reasonable number of choices
-                        else:
-                            choices_str = ", ".join(
-                                [f"'{c}'" for c in details["choices"]]
-                            )
-                            formatted_description += f"\nChoices for {provider}: {choices_str}{multiple_text}"
-
-            return formatted_description
 
         # Description summary
         if "description" in sections:
