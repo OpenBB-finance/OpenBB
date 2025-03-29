@@ -185,7 +185,11 @@ def build_api_wrapper(
     func: Callable = route.endpoint  # type: ignore
     path: str = route.path  # type: ignore
 
-    no_validate = route.openapi_extra.get("no_validate")
+    no_validate = (
+        openapi_extra.get("no_validate")
+        if (openapi_extra := getattr(route, "openapi_extra", None))
+        else None
+    )
     new_signature = build_new_signature(path=path, func=func)
     new_annotations_map = build_new_annotation_map(sig=new_signature)
     func.__signature__ = new_signature  # type: ignore

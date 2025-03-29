@@ -423,7 +423,7 @@ class CommandMap:
 
         coverage_map: Dict[Any, Any] = {}
         for route in api_router.routes:
-            openapi_extra = getattr(route, "openapi_extra")
+            openapi_extra = getattr(route, "openapi_extra", None)
             if openapi_extra:
                 model = openapi_extra.get("model", None)
                 if model:
