@@ -10,6 +10,9 @@ from openbb_federal_reserve.models.central_bank_holdings import (
 from openbb_federal_reserve.models.federal_funds_rate import (
     FederalReserveFederalFundsRateFetcher,
 )
+from openbb_federal_reserve.models.fomc_documents import (
+    FederalReserveFomcDocumentsFetcher,
+)
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
@@ -131,22 +134,6 @@ def test_federal_reserve_primary_dealer_positioning_fetcher(
 
 
 @pytest.mark.record_http
-def test_federal_reserve_primary_dealer_positioning_fetcher(
-    credentials=test_credentials,
-):
-    """Test the Federal Reserve Primary Dealer Positioning Fetcher."""
-    params = {
-        "category": "cmbs",
-        "start_date": date(2024, 6, 1),
-        "end_date": date(2024, 6, 30),
-    }
-
-    fetcher = FederalReservePrimaryDealerPositioningFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_federal_reserve_primary_dealer_fails_fetcher(
     credentials=test_credentials,
 ):
@@ -154,5 +141,17 @@ def test_federal_reserve_primary_dealer_fails_fetcher(
     params = {}
 
     fetcher = FederalReservePrimaryDealerFailsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_fomc_documents_fetcher(
+    credentials=test_credentials,
+):
+    """Test the Federal Reserve FOMC Documents Fetcher."""
+    params = {}
+
+    fetcher = FederalReserveFomcDocumentsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

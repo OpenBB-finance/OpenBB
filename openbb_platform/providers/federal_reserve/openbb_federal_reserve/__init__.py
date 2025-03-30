@@ -7,6 +7,9 @@ from openbb_federal_reserve.models.central_bank_holdings import (
 from openbb_federal_reserve.models.federal_funds_rate import (
     FederalReserveFederalFundsRateFetcher,
 )
+from openbb_federal_reserve.models.fomc_documents import (
+    FederalReserveFomcDocumentsFetcher,
+)
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
@@ -32,6 +35,7 @@ federal_reserve_provider = Provider(
     fetcher_dict={
         "CentralBankHoldings": FederalReserveCentralBankHoldingsFetcher,
         "FederalFundsRate": FederalReserveFederalFundsRateFetcher,
+        "FomcDocuments": FederalReserveFomcDocumentsFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
         "OvernightBankFundingRate": FederalReserveOvernightBankFundingRateFetcher,
         "PrimaryDealerFails": FederalReservePrimaryDealerFailsFetcher,

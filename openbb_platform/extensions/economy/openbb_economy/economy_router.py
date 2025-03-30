@@ -1,5 +1,7 @@
 """Economy Router."""
 
+from typing import Union
+
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -790,3 +792,72 @@ async def direction_of_trade(
     for non-reporting and slow-reporting countries.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="FomcDocuments",
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(
+            description="Filter all documents by year.",
+            parameters={"provider": "federal_reserve", "year": 2022},
+        ),
+        APIEx(
+            description="Filter all documents by year and document type.",
+            parameters={
+                "provider": "federal_reserve",
+                "year": 2022,
+                "document_type": "minutes",
+            },
+        ),
+        APIEx(
+            description="The `url` parameter will override all other parameters to download the document."
+            + " The response will be a dictionary with keys `filename`, `content`, and `data_format`."
+            + " PDF content will be a base64 encoded string of the document.",
+            parameters={
+                "provider": "federal_reserve",
+                "url": "https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20220126.pdf",
+            },
+        ),
+    ],
+    openapi_extra={
+        "widget_config": {
+            "type": "multi_file_viewer",
+            "name": "FOMC Document Viewer",
+            "description": "View FOMC materials.",
+            "gridData": {
+                "w": 30,
+                "h": 27,
+            },
+            "refetchInterval": False,
+        }
+    },
+    response_model=Union[list, dict],
+)
+async def fomc_documents(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """
+    Get FOMC documents by year and document type.
+    Optionally, download the file directly from the Federal Reserve's website.
+
+    Source: https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm
+    Source: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
+
+    This function does not return the typical OBBject response.
+
+    The response is `list[dict[str, str]]` of FOMC documents and their URLs.
+
+    Each dictionary entry has keys: `date`, `url`, `doc_type`, and `doc_format`.
+
+    If `as_choices` is True, the response is a list of valid Workspace parameter choices.
+    Keys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.
+
+    If `url` was provided, the response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.
+    """
+    results = await OBBject.from_query(Query(**locals()))
+
+    return results.results.content
