@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-quantitative"
-version = "1.4.1"
+version = "1.4.2"
 description = "Quantitative Analysis extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_quantitative" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-openbb-core = "^1.4.2"
+openbb-core = "^1.4.3"
 pandas-ta-openbb = "^0.4.20"
 
 [build-system]
