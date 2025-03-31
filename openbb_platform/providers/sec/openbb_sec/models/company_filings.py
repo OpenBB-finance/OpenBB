@@ -17,7 +17,7 @@ from openbb_core.provider.standard_models.company_filings import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_sec.utils.definitions import FORM_LIST, FORM_TYPES, HEADERS
+from openbb_sec.utils.definitions import FORM_LIST, HEADERS
 from pydantic import Field, field_validator
 
 
@@ -34,10 +34,6 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         }
     }
 
-    symbol: Optional[str] = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", ""),
-        default=None,
-    )
     cik: Optional[Union[str, int]] = Field(
         description="Lookup filings by Central Index Key (CIK) instead of by symbol.",
         default=None,
@@ -50,9 +46,13 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    form_type: Optional[Union[FORM_TYPES, str]] = Field(
-        description="Type of the SEC filing form.",
+    form_type: Optional[str] = Field(
+        description="SEC form type to filter by.",
         default=None,
+    )
+    limit: Optional[int] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
     use_cache: bool = Field(
         description="Whether or not to use cache.  If True, cache will store for one day.",
@@ -74,13 +74,15 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         new_forms: list = []
         messages: list = []
         for form in forms:
-            if form.upper().replace("_", " ") in FORM_LIST:
-                new_forms.append(form.upper().replace("_", " "))
+            if form.upper() in FORM_LIST:
+                new_forms.append(form.upper())
             else:
                 messages.append(f"Invalid form type: {form}")
 
         if not new_forms:
-            raise OpenBBError(f"No valid forms provided -> {', '.join(messages)}")
+            raise OpenBBError(
+                f"No valid forms provided -> {', '.join(messages)} -> Valid forms: {', '.join(FORM_LIST)}"
+            )
 
         if new_forms and messages:
             warn("\n ".join(messages))
@@ -224,6 +226,7 @@ class SecCompanyFilingsFetcher(
             async with CachedSession(
                 cache=SQLiteBackend(cache_dir, expire_after=3600 * 24)
             ) as session:
+                await session.delete_expired_responses()
                 try:
                     data = await amake_request(url, headers=HEADERS, session=session)  # type: ignore
                 finally:
@@ -309,11 +312,11 @@ class SecCompanyFilingsFetcher(
         filings = DataFrame(data, columns=cols).astype(str)
         filings["reportDate"] = to_datetime(filings["reportDate"]).dt.date
         filings["filingDate"] = to_datetime(filings["filingDate"]).dt.date
-        filings = filings.sort_values(by=["reportDate", "filingDate"], ascending=False)
+        filings = filings.sort_values(by=["filingDate", "reportDate"], ascending=False)
         if query.start_date:
-            filings = filings[filings["reportDate"] >= query.start_date]
+            filings = filings[filings["filingDate"] >= query.start_date]
         if query.end_date:
-            filings = filings[filings["reportDate"] <= query.end_date]
+            filings = filings[filings["filingDate"] <= query.end_date]
         base_url = f"https://www.sec.gov/Archives/edgar/data/{str(int(query.cik))}/"  # type: ignore
         filings["primaryDocumentUrl"] = (
             base_url
@@ -329,7 +332,9 @@ class SecCompanyFilingsFetcher(
         )
         if query.form_type:
             form_types = query.form_type.replace("_", " ").split(",")
-            filings = filings[filings.form.isin(form_types)]
+            filings = filings[
+                filings.form.str.contains("|".join(form_types), case=False, na=False)
+            ]
         if query.limit:
             filings = filings.head(query.limit) if query.limit != 0 else filings
 

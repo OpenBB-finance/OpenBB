@@ -178,14 +178,13 @@ class ArgparseTranslator:
         """Return the argparse action type for the given parameter."""
         param_type = self.type_hints[param.name]
         type_origin = get_origin(param_type)
-
-        if param_type == bool or (
+        if param_type is bool or (
             type_origin is Union and bool in get_args(param_type)
         ):
             return "store_true"
         return "store"
 
-    def _get_type_and_choices(
+    def _get_type_and_choices(  # noqa: PLR0912 # pylint: disable=too-many-return-statements, too-many-branches, too-many-statements
         self, param: inspect.Parameter
     ) -> Tuple[Type[Any], Tuple[Any, ...]]:
         """Return the type and choices for the given parameter."""
@@ -196,6 +195,9 @@ class ArgparseTranslator:
 
         if type_origin is Literal:
             choices = get_args(param_type)
+            # Special handling for boolean literals
+            if all(isinstance(choice, bool) for choice in choices):
+                return bool, ()
             param_type = type(choices[0])  # type: ignore
 
         if type_origin is list:
@@ -203,30 +205,66 @@ class ArgparseTranslator:
 
             if get_origin(param_type) is Literal:
                 choices = get_args(param_type)
+                # Special handling for boolean literals in lists
+                if all(isinstance(choice, bool) for choice in choices):
+                    return bool, ()
                 param_type = type(choices[0])  # type: ignore
 
         if type_origin is Union:
             union_args = get_args(param_type)
-            if str in union_args:
+            # Check if Union contains bool type
+            if bool in union_args and (str in union_args or len(union_args) == 2):
+                return bool, ()
+
+            # Check if Union contains Literal types and extract all choices
+            literal_choices: list = []
+            for arg in union_args:
+                if get_origin(arg) is Literal:
+                    literal_choices.extend(get_args(arg))
+
+            if literal_choices:
+                # Check if all choices are boolean
+                if all(isinstance(choice, bool) for choice in literal_choices):
+                    return bool, ()
+                # We have Literal types in the Union, use their choices
+                choices = tuple(literal_choices)
+                param_type = type(choices[0])  # type: ignore
+            elif str in union_args:
                 param_type = str
 
             # check if it's an Optional, which would be a Union with NoneType
             if type(None) in get_args(param_type):
                 # remove NoneType from the args
-                args = [arg for arg in get_args(param_type) if arg != type(None)]
+                args = [arg for arg in get_args(param_type) if arg is not None]
                 # if there is only one arg left, use it
-                if len(args) > 1:
-                    raise ValueError(
-                        "Union with NoneType should have only one type left"
-                    )
-                param_type = args[0]
+                if len(args) == 1:
+                    param_type = args[0]
 
-                if get_origin(param_type) is Literal:
-                    choices = get_args(param_type)
-                    param_type = type(choices[0])  # type: ignore
+                    if get_origin(param_type) is Literal:
+                        choices = get_args(param_type)
+                        # Special handling for boolean literals
+                        if all(isinstance(choice, bool) for choice in choices):
+                            return bool, ()
+                        param_type = type(choices[0])  # type: ignore
+                elif len(args) > 1:
+                    # Handle Union with multiple types (not just Optional)
+                    # Try to extract Literal types again from the filtered args
+                    literal_choices = []
+                    for arg in args:
+                        if get_origin(arg) is Literal:
+                            literal_choices.extend(get_args(arg))
+
+                    if literal_choices:
+                        # Check if all choices are boolean
+                        if all(isinstance(choice, bool) for choice in literal_choices):
+                            return bool, ()
+                        choices = tuple(set(literal_choices))
+                        param_type = type(choices[0])  # type: ignore
 
         # if there are custom choices, override
-        choices = self._get_argument_custom_choices(param) or choices  # type: ignore
+        custom_choices = self._get_argument_custom_choices(param)
+        if custom_choices and param_type is not bool:
+            choices = tuple(custom_choices)
 
         return param_type, choices
 
@@ -329,13 +367,21 @@ class ArgparseTranslator:
 
             required = not self._param_is_default(param)
 
+            # Get the appropriate action based on the parameter type
+            action = self._get_action_type(param)
+
+            # For boolean parameters with action="store_true", we should not use any choices
+            if param_type is bool:
+                choices = ()
+                action = "store_true"
+
             argument = ArgparseArgumentModel(
                 name=param.name,
                 type=param_type,
                 dest=param.name,
                 default=param.default,
                 required=required,
-                action=self._get_action_type(param),
+                action=action,
                 help=self._get_argument_custom_help(param),
                 nargs=self._get_nargs(param),
                 choices=choices,

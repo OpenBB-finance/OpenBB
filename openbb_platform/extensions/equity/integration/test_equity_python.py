@@ -866,14 +866,21 @@ def test_equity_fundamental_revenue_per_segment(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "form_type": "1", "limit": 100, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "form_type": "144",
+                "limit": 100,
+                "provider": "fmp",
+            }
+        ),
         (
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "start_date": "2021-01-01",
-                "end_date": "2023-11-01",
-                "form_type": None,
+                "end_date": "2023-01-01",
+                "form_type": "4",
                 "limit": 100,
                 "thea_enabled": None,
             }
@@ -883,9 +890,9 @@ def test_equity_fundamental_revenue_per_segment(params, obb):
                 "symbol": "AAPL",
                 "limit": 3,
                 "form_type": "8-K",
-                "cik": None,
                 "start_date": None,
                 "end_date": None,
+                "cik": None,
                 "provider": "sec",
                 "use_cache": False,
             }

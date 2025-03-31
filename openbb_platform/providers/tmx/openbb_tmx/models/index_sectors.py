@@ -82,7 +82,7 @@ class TmxIndexSectorsFetcher(
             temp = data["indices"][query.symbol].get("sectors")
             results = [
                 {
-                    "sector": d.get("name").lower().replace(" ", "_"),
+                    "sector": d.get("name"),
                     "weight": d.get("weight"),
                 }
                 for d in temp
