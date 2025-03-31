@@ -63,14 +63,17 @@ async def response_callback(
     """Use callback for async_request."""
     data = await response.json()
 
-    if isinstance(data, dict) and (response.status != 200 or data.get("error")):
-        if message := data.get("error", None) or data.get("message", None):
-            if "api key" in message.lower():
-                raise UnauthorizedError(f"Unauthorized Intrinio request -> {message}")
-            raise OpenBBError(f"Error in Intrinio request -> {message}")
+    if isinstance(data, dict) and "error" in data:
+        message = data.get("message", "")
+        error = data.get("error", "")
+        if "api key" in message.lower() or error.startswith(
+            "You do not have sufficient access to view this data"
+        ):
+            raise UnauthorizedError(
+                f"Unauthorized Intrinio request -> {message} -> {error}"
+            )
 
-        if error := data.get("Error Message", None):
-            raise OpenBBError(f"Intrinio Error Message -> {error}")
+        raise OpenBBError(f"Error in Intrinio request -> {message} -> {error}")
 
     if isinstance(data, (str, float)):
         data = {"value": data}
