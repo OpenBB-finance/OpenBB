@@ -1,0 +1,96 @@
+{
+    "live_grid_example": {
+      "name": "Live Grid",
+      "description": "Live Grid",
+      "type": "live_grid",
+      "endpoint": "get_ws_data",
+      "wsEndpoint": "ws",
+      "data": {
+        "wsRowIdColumn": "symbol",
+        "table": {
+          "showAll": true,
+          "columnsDefs": [
+            {
+                "field": "date",
+                "headerName": "Date",
+                "type": "date"
+            },
+            {
+              "field": "symbol",
+              "headerName": "Symbol",
+              "type": "text"
+            },
+            {
+              "field": "price",
+              "headerName": "Price",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "params": [
+        {
+          "paramName": "symbol",
+          "description": "The symbol to get details for",
+          "value": null,
+          "label": "Symbol",
+          "type": "text",
+          "multiSelect": true,
+          "options": [
+            {
+                "label": "BTC/USD",
+                "value": "btc_usd"
+            },
+            {
+                "label": "ETH/USD",
+                "value": "eth_usd"
+            },
+            {
+                "label": "SOL/USD",
+                "value": "sol_usd"
+            },
+            {
+                "label": "XRP/USD",
+                "value": "xrp_usd"
+            },
+            {
+                "label": "BNB/USD",
+                "value": "bnb_usd"
+            },
+            {
+                "label": "MATIC/USD",
+                "value": "matic_usd"
+            },
+            {
+                "label": "STETH/USD",
+                "value": "steth_usd"
+            },
+            {
+                "label": "USYC/USD",
+                "value": "usyc_usd"
+            },
+            {
+                "label": "USDC/USD",
+                "value": "usdc_usd"
+            },
+            {
+                "label": "USDT/USD",
+                "value": "usdt_usd"
+            },
+            {
+                "label": "USDE/USD",
+                "value": "usde_usd"
+            },
+            {
+                "label": "PAXG/USD",
+                "value": "paxg_usd"
+            }
+          ]
+        }
+      ],
+      "gridData": {
+        "w": 20,
+        "h": 9
+      }
+    }
+  }
