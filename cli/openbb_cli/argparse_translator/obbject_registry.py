@@ -89,7 +89,9 @@ class Registry:
             if hasattr(obbject, "results") and obbject.results:
                 data_schema = (
                     obbject.results[0].model_json_schema()
-                    if obbject.results and isinstance(obbject.results, list)
+                    if obbject.results
+                    and isinstance(obbject.results, list)
+                    and hasattr(obbject.results[0], "model_json_schema")
                     else ""
                 )
                 if data_schema and "title" in data_schema:

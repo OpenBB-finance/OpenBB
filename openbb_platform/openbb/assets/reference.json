@@ -10880,6 +10880,102 @@
             },
             "model": "DirectionOfTrade"
         },
+        "/economy/fomc_documents": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get FOMC documents by year and document type.\nOptionally, download the file directly from the Federal Reserve's website.\n\nSource: https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm\nSource: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm\n\nThis function does not return the typical OBBject response.\n\nThe response is `list[dict[str, str]]` of FOMC documents and their URLs.\n\nEach dictionary entry has keys: `date`, `url`, `doc_type`, and `doc_format`.\n\nIf `as_choices` is True, the response is a list of valid Workspace parameter choices.\nKeys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.\n\nIf `url` was provided, the response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fomc_documents(provider='federal_reserve')\n# Filter all documents by year.\nobb.economy.fomc_documents(provider='federal_reserve', year=2022)\n# Filter all documents by year and document type.\nobb.economy.fomc_documents(provider='federal_reserve', year=2022, document_type=minutes)\n# The `url` parameter will override all other parameters to download the document. The response will be a dictionary with keys `filename`, `content`, and `data_format`. PDF content will be a base64 encoded string of the document.\nobb.economy.fomc_documents(provider='federal_reserve', url=https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20220126.pdf)\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "federal_reserve": [
+                    {
+                        "name": "year",
+                        "type": "int",
+                        "description": "The year of FOMC documents to retrieve. If None, all years since 1959 are returned.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "document_type",
+                        "type": "str",
+                        "description": "Filter by document type. Default is all. Choose from: all, monetary_policy, minutes, projections, materials, press_release, press_conference, conference_call, agenda, transcript, speaker_key, beige_book, teal_book, green_book, blue_book, red_book",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "pdf_only",
+                        "type": "bool",
+                        "description": "Whether to return as a list with only the PDF documents. Default is False.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "as_choices",
+                        "type": "bool",
+                        "description": "Whether to return cast as a list of valid Workspace parameter choices. Leave as False for typical use.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "Download a document from the supplied URL. When provided, all other parameters are ignored. Content is returned as a base64 encoded string.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[FomcDocuments]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['federal_reserve']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [],
+                "federal_reserve": [
+                    {
+                        "name": "content",
+                        "type": "Any",
+                        "description": "The content of request results. If `url` was provided, the content is a dictionary with keys `filename` and `content`. Otherwise, it is a list of dictionaries with a mapping of FOMC documents to URLs. The endpoint response will not be an OBBject.results object, but the content directly.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "FomcDocuments"
+        },
         "/equity/calendar/ipo": {
             "deprecated": {
                 "flag": null,
