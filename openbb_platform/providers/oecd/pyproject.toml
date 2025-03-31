@@ -9,7 +9,7 @@ packages = [{ include = "openbb_oecd" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openbb-core = "^1.4.2"
+openbb-core = "^1.4.3"
 urllib3 = ">1.26.16"
 defusedxml = "^0.8.0rc2"
 
