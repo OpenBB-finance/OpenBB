@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "openbb_finviz" }]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.9.21"
 openbb-core = "^1.4.3"
 finvizfinance = "^1.1.0"
 
