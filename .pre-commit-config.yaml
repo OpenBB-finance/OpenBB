@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: check-yaml
         exclude: 'construct.yaml'
@@ -11,11 +11,11 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
-    rev: 24.4.2
+    rev: 25.1.0
     hooks:
       - id: black
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.4.5"
+    rev: "v0.11.2"
     hooks:
       - id: ruff
   - repo: https://github.com/pycqa/pydocstyle
@@ -31,7 +31,7 @@ repos:
         exclude: 'tests/.*\.py|openbb_platform/test_.*\.py'
         args: ["--config=ruff.toml"]
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.5
+    rev: v2.4.1
     hooks:
       - id: codespell
         entry: codespell
@@ -43,7 +43,7 @@ repos:
             "-x=.github/workflows/general-linting.yml"
           ]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v1.6.1"
+    rev: "v1.15.0"
     hooks:
       - id: mypy
         name: mypy
@@ -56,7 +56,7 @@ repos:
         require_serial: true
         exclude: 'test_.*\.py'
   - repo: https://github.com/kynan/nbstripout
-    rev: 0.6.1
+    rev: 0.8.1
     hooks:
       - id: nbstripout
         name: Strip notebooks output
@@ -68,7 +68,7 @@ repos:
         language: system
         types: [python]
   - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.4.0
+    rev: v1.5.0
     hooks:
       - id: detect-secrets
         args:
