@@ -49,8 +49,8 @@ interactions:
         of Investor Relations","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Ms.
         Kristin Huguet Quayle","title":"Vice President of Worldwide Communications","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
         Greg  Joswiak","title":"Senior Vice President of Worldwide Marketing","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
-        Adrian  Perica","age":50,"title":"Vice President of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":7,"boardRisk":1,"compensationRisk":3,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1740787200,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","executiveTeam":[],"maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":217.9,"open":217.22,"dayLow":216.24,"dayHigh":224.97,"regularMarketPreviousClose":217.9,"regularMarketOpen":217.22,"regularMarketDayLow":216.24,"regularMarketDayHigh":224.97,"dividendRate":1.0,"dividendYield":0.0046,"exDividendDate":1739145600,"payoutRatio":0.1571,"fiveYearAvgDividendYield":0.59,"beta":1.178,"trailingPE":35.258728,"forwardPE":26.730444,"volume":65078252,"regularMarketVolume":65078252,"averageVolume":52753723,"averageVolume10days":47802000,"averageDailyVolume10Day":47802000,"bid":219.54,"ask":224.89,"bidSize":3000,"askSize":500,"marketCap":3336859287552,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":260.1,"priceToSalesTrailing12Months":8.431522,"fiftyDayAverage":230.3722,"twoHundredDayAverage":229.0202,"trailingAnnualDividendRate":0.99,"trailingAnnualDividendYield":0.0045433687,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3316333674496,"forwardPE":27.00751,"profitMargins":0.24295,"floatShares":14998187904,"sharesOutstanding":15022100480,"sharesShort":129678474,"sharesShortPriorMonth":127893856,"sharesShortPreviousMonthDate":1739491200,"dateShortInterest":1741910400,"sharesPercentSharesOut":0.0086,"heldPercentInsiders":0.0207,"heldPercentInstitutions":0.62836,"shortRatio":2.54,"shortPercentOfFloat":0.0086,"beta":1.178,"impliedSharesOutstanding":15172599808,"category":null,"bookValue":4.438,"priceToBook":50.051823,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1727481600,"nextFiscalYearEnd":1759017600,"mostRecentQuarter":1735344000,"earningsQuarterlyGrowth":0.071,"netIncomeToCommon":96150003712,"trailingEps":6.3,"forwardEps":8.31,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":8.38,"enterpriseToEbitda":24.145,"52WeekChange":0.2815386,"SandP52WeekChange":0.06429911,"lastDividendValue":0.25,"lastDividendDate":1739145600,"latestShareClass":null,"leadInvestor":null},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
-        Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":222.13,"targetHighPrice":325.0,"targetLowPrice":197.0,"targetMeanPrice":252.59052,"targetMedianPrice":255.0,"recommendationMean":2.02222,"recommendationKey":"buy","numberOfAnalystOpinions":39,"totalCash":53774999552,"totalCashPerShare":3.58,"ebitda":137352003584,"totalDebt":96798998528,"quickRatio":0.783,"currentRatio":0.923,"totalRevenue":395760009216,"debtToEquity":145.0,"revenuePerShare":25.974,"returnOnAssets":0.22518998,"returnOnEquity":1.3652,"grossProfits":184102993920,"freeCashflow":93833871360,"operatingCashflow":108293996544,"earningsGrowth":0.101,"revenueGrowth":0.04,"grossMargins":0.46519002,"ebitdaMargins":0.34706002,"operatingMargins":0.34459,"profitMargins":0.24295,"financialCurrency":"USD"}}],"error":null}}'
+        Adrian  Perica","age":50,"title":"Vice President of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":7,"boardRisk":1,"compensationRisk":3,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1743465600,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","executiveTeam":[],"maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":222.13,"open":219.805,"dayLow":218.9,"dayHigh":223.49,"regularMarketPreviousClose":222.13,"regularMarketOpen":219.805,"regularMarketDayLow":218.9,"regularMarketDayHigh":223.49,"dividendRate":1.0,"dividendYield":0.0045,"exDividendDate":1739145600,"payoutRatio":0.1571,"fiveYearAvgDividendYield":0.57,"beta":1.178,"trailingPE":35.370842,"forwardPE":26.858002,"volume":33600034,"regularMarketVolume":33600034,"averageVolume":52962733,"averageVolume10days":49524090,"averageDailyVolume10Day":49524090,"bid":223.04,"ask":230.75,"bidSize":500,"askSize":100,"marketCap":3352782700544,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":260.1,"priceToSalesTrailing12Months":8.471757,"fiftyDayAverage":230.2496,"twoHundredDayAverage":229.0951,"trailingAnnualDividendRate":0.99,"trailingAnnualDividendYield":0.00445685,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3379877117952,"forwardPE":27.136389,"profitMargins":0.24295,"floatShares":14998187904,"sharesOutstanding":15022100480,"sharesShort":129678474,"sharesShortPriorMonth":127893856,"sharesShortPreviousMonthDate":1739491200,"dateShortInterest":1741910400,"sharesPercentSharesOut":0.0086,"heldPercentInsiders":0.0207,"heldPercentInstitutions":0.62810004,"shortRatio":2.54,"shortPercentOfFloat":0.0086,"beta":1.178,"impliedSharesOutstanding":15172599808,"category":null,"bookValue":4.438,"priceToBook":50.29067,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1727481600,"nextFiscalYearEnd":1759017600,"mostRecentQuarter":1735344000,"earningsQuarterlyGrowth":0.071,"netIncomeToCommon":96150003712,"trailingEps":6.31,"forwardEps":8.31,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":8.54,"enterpriseToEbitda":24.607,"52WeekChange":0.31562424,"SandP52WeekChange":0.077997446,"lastDividendValue":0.25,"lastDividendDate":1739145600,"latestShareClass":null,"leadInvestor":null},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
+        Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":223.19,"targetHighPrice":325.0,"targetLowPrice":197.0,"targetMeanPrice":252.59052,"targetMedianPrice":255.0,"recommendationMean":2.02222,"recommendationKey":"buy","numberOfAnalystOpinions":39,"totalCash":53774999552,"totalCashPerShare":3.58,"ebitda":137352003584,"totalDebt":96798998528,"quickRatio":0.783,"currentRatio":0.923,"totalRevenue":395760009216,"debtToEquity":145.0,"revenuePerShare":25.974,"returnOnAssets":0.22518998,"returnOnEquity":1.3652,"grossProfits":184102993920,"freeCashflow":93833871360,"operatingCashflow":108293996544,"earningsGrowth":0.101,"revenueGrowth":0.04,"grossMargins":0.46519002,"ebitdaMargins":0.34706002,"operatingMargins":0.34459,"profitMargins":0.24295,"financialCurrency":"USD"}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -71,11 +71,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '3152'
+      - '3153'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 31 Mar 2025 22:14:36 GMT
+      - Tue, 01 Apr 2025 20:04:47 GMT
       server:
       - ATS
       vary:
@@ -85,7 +85,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '7'
       y-rid:
-      - 72bsr85jum4uc
+      - 09f36bhjuohmv
     status:
       code: 200
       message: OK
@@ -105,14 +105,14 @@ interactions:
   response:
     body:
       string: '{"quoteResponse":{"result":[{"language":"en-US","region":"US","quoteType":"EQUITY","typeDisp":"Equity","quoteSourceName":"Nasdaq
-        Real Time Price","triggerable":true,"customPriceAlertConfidence":"HIGH","hasPrePostMarketData":true,"firstTradeDateMilliseconds":345479400000,"priceHint":2,"postMarketChangePercent":-0.46369186,"postMarketPrice":221.1,"postMarketChange":-1.0299988,"regularMarketChange":4.230011,"regularMarketDayHigh":224.97,"regularMarketDayRange":"216.24
-        - 224.97","regularMarketDayLow":216.24,"regularMarketVolume":65078252,"regularMarketPreviousClose":217.9,"bid":219.54,"ask":224.89,"bidSize":30,"askSize":5,"fullExchangeName":"NasdaqGS","financialCurrency":"USD","regularMarketOpen":217.22,"averageDailyVolume3Month":52753723,"averageDailyVolume10Day":47802000,"fiftyTwoWeekLowChange":58.050003,"fiftyTwoWeekLowChangePercent":0.35379085,"fiftyTwoWeekRange":"164.08
-        - 260.1","fiftyTwoWeekHighChange":-37.97,"fiftyTwoWeekHighChangePercent":-0.14598231,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":260.1,"fiftyTwoWeekChangePercent":28.15386,"dividendDate":1739404800,"earningsTimestamp":1738272600,"earningsTimestampStart":1746010740,"earningsTimestampEnd":1746446400,"earningsCallTimestampStart":1738274400,"earningsCallTimestampEnd":1738274400,"isEarningsDateEstimate":true,"trailingAnnualDividendRate":0.99,"trailingPE":35.258728,"dividendRate":1.0,"trailingAnnualDividendYield":0.0045433687,"dividendYield":0.46,"epsTrailingTwelveMonths":6.3,"epsForward":8.31,"epsCurrentYear":7.32671,"priceEpsCurrentYear":30.317837,"sharesOutstanding":15022100480,"bookValue":4.438,"fiftyDayAverage":230.3722,"fiftyDayAverageChange":-8.2421875,"fiftyDayAverageChangePercent":-0.035777703,"twoHundredDayAverage":229.0202,"twoHundredDayAverageChange":-6.8901978,"twoHundredDayAverageChangePercent":-0.030085545,"marketCap":3336859287552,"forwardPE":26.730444,"priceToBook":50.051823,"sourceInterval":15,"exchangeDataDelayedBy":0,"averageAnalystRating":"2.0
-        - Buy","tradeable":false,"cryptoTradeable":false,"currency":"USD","shortName":"Apple
-        Inc.","longName":"Apple Inc.","marketState":"POST","regularMarketChangePercent":1.9412626,"regularMarketPrice":222.13,"corporateActions":[],"postMarketTime":1743459258,"regularMarketTime":1743451201,"exchange":"NMS","messageBoardId":"finmb_24937","exchangeTimezoneName":"America/New_York","exchangeTimezoneShortName":"EDT","gmtOffSetMilliseconds":-14400000,"market":"us_market","esgPopulated":false,"displayName":"Apple","symbol":"AAPL"}],"error":null}}'
+        Real Time Price","triggerable":true,"customPriceAlertConfidence":"HIGH","shortName":"Apple
+        Inc.","longName":"Apple Inc.","corporateActions":[],"postMarketTime":1743537881,"regularMarketTime":1743537601,"exchange":"NMS","messageBoardId":"finmb_24937","exchangeTimezoneName":"America/New_York","exchangeTimezoneShortName":"EDT","gmtOffSetMilliseconds":-14400000,"market":"us_market","esgPopulated":false,"currency":"USD","marketState":"POST","hasPrePostMarketData":true,"firstTradeDateMilliseconds":345479400000,"priceHint":2,"postMarketChangePercent":0.09857127,"postMarketPrice":223.41,"postMarketChange":0.22000122,"regularMarketChange":1.0599976,"regularMarketDayHigh":223.49,"regularMarketDayRange":"218.9
+        - 223.49","regularMarketDayLow":218.9,"regularMarketVolume":33600034,"regularMarketPreviousClose":222.13,"bid":223.04,"ask":230.75,"bidSize":5,"askSize":1,"fullExchangeName":"NasdaqGS","financialCurrency":"USD","regularMarketOpen":219.805,"averageDailyVolume3Month":52962733,"averageDailyVolume10Day":49524090,"fiftyTwoWeekLowChange":59.11,"fiftyTwoWeekLowChangePercent":0.3602511,"fiftyTwoWeekRange":"164.08
+        - 260.1","fiftyTwoWeekHighChange":-36.910004,"fiftyTwoWeekHighChangePercent":-0.14190698,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":260.1,"fiftyTwoWeekChangePercent":31.562424,"dividendDate":1739404800,"earningsTimestamp":1738272600,"earningsTimestampStart":1746010740,"earningsTimestampEnd":1746446400,"earningsCallTimestampStart":1738274400,"earningsCallTimestampEnd":1738274400,"isEarningsDateEstimate":true,"trailingAnnualDividendRate":0.99,"trailingPE":35.370842,"dividendRate":1.0,"trailingAnnualDividendYield":0.00445685,"dividendYield":0.45,"epsTrailingTwelveMonths":6.31,"epsForward":8.31,"epsCurrentYear":7.32671,"priceEpsCurrentYear":30.462513,"sharesOutstanding":15022100480,"bookValue":4.438,"fiftyDayAverage":230.2496,"fiftyDayAverageChange":-7.059601,"fiftyDayAverageChangePercent":-0.030660642,"twoHundredDayAverage":229.0951,"twoHundredDayAverageChange":-5.9050903,"twoHundredDayAverageChangePercent":-0.025775718,"marketCap":3352782700544,"forwardPE":26.858002,"priceToBook":50.29067,"sourceInterval":15,"exchangeDataDelayedBy":0,"averageAnalystRating":"2.0
+        - Buy","tradeable":false,"cryptoTradeable":false,"regularMarketChangePercent":0.47719693,"regularMarketPrice":223.19,"displayName":"Apple","symbol":"AAPL"}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Referrer-Policy:
@@ -130,11 +130,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1157'
+      - '1150'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 31 Mar 2025 22:14:35 GMT
+      - Tue, 01 Apr 2025 20:04:47 GMT
       server:
       - ATS
       vary:
@@ -144,7 +144,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '2'
       y-rid:
-      - 79ihcspjum4ub
+      - 01e682pjuohmv
     status:
       code: 200
       message: OK

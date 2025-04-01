@@ -25,26 +25,26 @@ interactions:
   response:
     body:
       string: '{"finance":{"result":[{"start":0,"count":1,"total":1,"quotes":[{"language":"en-US","region":"US","quoteType":"EQUITY","typeDisp":"Equity","quoteSourceName":"Nasdaq
-        Real Time Price","triggerable":true,"customPriceAlertConfidence":"HIGH","currency":"USD","regularMarketChangePercent":-1.6657121,"exchange":"NMS","fiftyTwoWeekHigh":488.54,"fiftyTwoWeekLow":138.8,"averageAnalystRating":"2.6
-        - Hold","shortName":"Tesla, Inc.","hasPrePostMarketData":true,"firstTradeDateMilliseconds":1277818200000,"priceHint":2,"postMarketChangePercent":-0.9106405,"postMarketTime":1743459274,"postMarketPrice":256.8,"postMarketChange":-2.3600159,"regularMarketChange":-4.389984,"regularMarketTime":1743451201,"regularMarketPrice":259.16,"regularMarketDayHigh":260.56,"regularMarketDayRange":"243.3601
-        - 260.56","regularMarketDayLow":243.3601,"regularMarketVolume":132361031,"regularMarketPreviousClose":263.55,"bid":258.73,"ask":272.27,"bidSize":3,"askSize":1,"market":"us_market","messageBoardId":"finmb_27444752","fullExchangeName":"NasdaqGS","longName":"Tesla,
-        Inc.","financialCurrency":"USD","regularMarketOpen":249.17,"averageDailyVolume3Month":96220698,"averageDailyVolume10Day":132599920,"corporateActions":[],"fiftyTwoWeekLowChange":120.36,"fiftyTwoWeekLowChangePercent":0.86714697,"fiftyTwoWeekRange":"138.8
-        - 488.54","fiftyTwoWeekHighChange":-229.38,"fiftyTwoWeekHighChangePercent":-0.46952143,"fiftyTwoWeekChangePercent":50.410915,"earningsTimestamp":1738184940,"earningsTimestampStart":1745438400,"earningsTimestampEnd":1746302400,"earningsCallTimestampStart":1738189800,"earningsCallTimestampEnd":1738189800,"isEarningsDateEstimate":true,"trailingAnnualDividendRate":0.0,"trailingPE":127.66503,"trailingAnnualDividendYield":0.0,"marketState":"POST","epsTrailingTwelveMonths":2.03,"epsForward":3.24,"epsCurrentYear":2.64111,"priceEpsCurrentYear":98.12541,"sharesOutstanding":3216519936,"bookValue":22.672,"fiftyDayAverage":322.4788,"fiftyDayAverageChange":-63.318787,"fiftyDayAverageChangePercent":-0.19635023,"twoHundredDayAverage":286.65094,"twoHundredDayAverageChange":-27.490936,"twoHundredDayAverageChangePercent":-0.09590387,"marketCap":833593344000,"forwardPE":79.987656,"priceToBook":11.43084,"sourceInterval":15,"exchangeDataDelayedBy":0,"exchangeTimezoneName":"America/New_York","exchangeTimezoneShortName":"EDT","gmtOffSetMilliseconds":-14400000,"esgPopulated":false,"tradeable":false,"cryptoTradeable":false,"displayName":"Tesla","symbol":"TSLA"}],"useRecords":false}],"error":null}}'
+        Real Time Price","triggerable":true,"customPriceAlertConfidence":"HIGH","currency":"USD","esgPopulated":false,"tradeable":false,"cryptoTradeable":false,"exchange":"NMS","fiftyTwoWeekHigh":488.54,"fiftyTwoWeekLow":138.8,"averageAnalystRating":"2.6
+        - Hold","shortName":"Tesla, Inc.","bid":268.4,"ask":268.54,"regularMarketChangePercent":3.5885122,"hasPrePostMarketData":true,"firstTradeDateMilliseconds":1277818200000,"priceHint":2,"postMarketChangePercent":-0.6984281,"postMarketTime":1743537887,"postMarketPrice":266.585,"postMarketChange":-1.875,"regularMarketChange":9.299988,"regularMarketTime":1743537601,"regularMarketPrice":268.46,"regularMarketDayHigh":277.45,"regularMarketDayRange":"259.25
+        - 277.45","regularMarketDayLow":259.25,"regularMarketVolume":142012302,"regularMarketPreviousClose":259.16,"bidSize":2,"askSize":7,"market":"us_market","messageBoardId":"finmb_27444752","fullExchangeName":"NasdaqGS","longName":"Tesla,
+        Inc.","financialCurrency":"USD","regularMarketOpen":263.735,"averageDailyVolume3Month":96850895,"averageDailyVolume10Day":134813110,"corporateActions":[],"fiftyTwoWeekLowChange":129.65999,"fiftyTwoWeekLowChangePercent":0.93414974,"fiftyTwoWeekRange":"138.8
+        - 488.54","fiftyTwoWeekHighChange":-220.08002,"fiftyTwoWeekHighChangePercent":-0.45048514,"fiftyTwoWeekChangePercent":55.530212,"earningsTimestamp":1738184940,"earningsTimestampStart":1745438400,"earningsTimestampEnd":1746302400,"earningsCallTimestampStart":1738189800,"earningsCallTimestampEnd":1738189800,"isEarningsDateEstimate":true,"trailingAnnualDividendRate":0.0,"trailingPE":130.9561,"trailingAnnualDividendYield":0.0,"marketState":"POST","epsTrailingTwelveMonths":2.05,"epsForward":3.24,"epsCurrentYear":2.64111,"priceEpsCurrentYear":101.64665,"sharesOutstanding":3216519936,"bookValue":22.672,"fiftyDayAverage":319.3856,"fiftyDayAverageChange":-50.9256,"fiftyDayAverageChangePercent":-0.15944864,"twoHundredDayAverage":287.09344,"twoHundredDayAverageChange":-18.633453,"twoHundredDayAverageChangePercent":-0.064903796,"marketCap":863506923520,"forwardPE":82.858025,"priceToBook":11.841037,"sourceInterval":15,"exchangeDataDelayedBy":0,"exchangeTimezoneName":"America/New_York","exchangeTimezoneShortName":"EDT","gmtOffSetMilliseconds":-14400000,"displayName":"Tesla","symbol":"TSLA"}],"useRecords":false}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Referrer-Policy:
       - no-referrer-when-downgrade
       Set-Cookie:
-      - A1=d=AQABBL0T62cCEGTIDfpFHqpzP5HpqBM3-dUFEgEBAQFl7Gf0ZyXUxyMA_eMAAA&S=AQAAAvky1oBhZY109yiPJ2InCBQ;
-        Expires=Wed, 1 Apr 2026 04:14:37 GMT; Max-Age=31557600; Domain=.yahoo.com;
+      - A1=d=AQABBM5G7GcCEJ_-3_7xEkGHjLsW1vlM4DUFEgEBAQGY7Wf2ZyXUxyMA_eMAAA&S=AQAAAugM4zyULTPBTsbsrCTxdPQ;
+        Expires=Thu, 2 Apr 2026 02:04:48 GMT; Max-Age=31557600; Domain=.yahoo.com;
         Path=/; SameSite=Lax; Secure; HttpOnly
-      - A3=d=AQABBL0T62cCEGTIDfpFHqpzP5HpqBM3-dUFEgEBAQFl7Gf0ZyXUxyMA_eMAAA&S=AQAAAvky1oBhZY109yiPJ2InCBQ;
-        Expires=Wed, 1 Apr 2026 04:14:37 GMT; Max-Age=31557600; Domain=.yahoo.com;
+      - A3=d=AQABBM5G7GcCEJ_-3_7xEkGHjLsW1vlM4DUFEgEBAQGY7Wf2ZyXUxyMA_eMAAA&S=AQAAAugM4zyULTPBTsbsrCTxdPQ;
+        Expires=Thu, 2 Apr 2026 02:04:48 GMT; Max-Age=31557600; Domain=.yahoo.com;
         Path=/; SameSite=None; Secure; HttpOnly
-      - A1S=d=AQABBL0T62cCEGTIDfpFHqpzP5HpqBM3-dUFEgEBAQFl7Gf0ZyXUxyMA_eMAAA&S=AQAAAvky1oBhZY109yiPJ2InCBQ;
+      - A1S=d=AQABBM5G7GcCEJ_-3_7xEkGHjLsW1vlM4DUFEgEBAQGY7Wf2ZyXUxyMA_eMAAA&S=AQAAAugM4zyULTPBTsbsrCTxdPQ;
         Domain=.yahoo.com; Path=/; SameSite=Lax; Secure
       Strict-Transport-Security:
       - max-age=31536000
@@ -59,11 +59,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1152'
+      - '1156'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 31 Mar 2025 22:14:37 GMT
+      - Tue, 01 Apr 2025 20:04:47 GMT
       server:
       - ATS
       vary:
@@ -71,9 +71,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-screeners--mtls-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
-      - '27'
+      - '29'
       y-rid:
-      - 3mm119djum4ud
+      - 3o7mca5juohn0
     status:
       code: 200
       message: OK

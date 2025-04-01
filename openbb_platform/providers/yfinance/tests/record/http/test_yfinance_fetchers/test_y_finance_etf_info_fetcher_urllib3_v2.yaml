@@ -20,9 +20,9 @@ interactions:
         the adviser adjusts the securities from time to time to conform to periodic
         changes in the identity and/or relative weights of index securities. The composition
         and weighting of the securities portion of a portfolio deposit are also adjusted
-        to conform to changes in the index.\",\"companyOfficers\":[],\"executiveTeam\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":468.94,\"open\":461.95,\"dayLow\":457.35,\"dayHigh\":469.85,\"regularMarketPreviousClose\":468.94,\"regularMarketOpen\":461.95,\"regularMarketDayLow\":457.35,\"regularMarketDayHigh\":469.85,\"trailingPE\":30.052998,\"volume\":50122018,\"regularMarketVolume\":50122018,\"averageVolume\":37138145,\"averageVolume10days\":37523470,\"averageDailyVolume10Day\":37523470,\"bid\":468.26,\"ask\":469.09,\"bidSize\":4200,\"askSize\":4200,\"yield\":0.0056,\"totalAssets\":323779231744,\"fiftyTwoWeekLow\":413.07,\"fiftyTwoWeekHigh\":540.81,\"fiftyDayAverage\":507.9346,\"twoHundredDayAverage\":494.50024,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.00377447,\"navPrice\":469.0,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
-        Growth\",\"ytdReturn\":-0.08138409,\"beta3Year\":1.16,\"totalAssets\":323779231744,\"yield\":0.0056,\"fundFamily\":\"Invesco\",\"fundInceptionDate\":921024000,\"legalType\":\"Exchange
-        Traded Fund\",\"threeYearAverageReturn\":0.0946047,\"fiveYearAverageReturn\":0.2116432,\"lastSplitFactor\":null,\"latestShareClass\":null,\"leadInvestor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
+        to conform to changes in the index.\",\"companyOfficers\":[],\"executiveTeam\":[],\"maxAge\":86400},\"summaryDetail\":{\"maxAge\":1,\"priceHint\":2,\"previousClose\":468.92,\"open\":467.23,\"dayLow\":464.42,\"dayHigh\":473.6262,\"regularMarketPreviousClose\":468.92,\"regularMarketOpen\":467.23,\"regularMarketDayLow\":464.42,\"regularMarketDayHigh\":473.6262,\"trailingPE\":30.295258,\"volume\":39417061,\"regularMarketVolume\":39417061,\"averageVolume\":37400216,\"averageVolume10days\":38635270,\"averageDailyVolume10Day\":38635270,\"bid\":472.29,\"ask\":473.07,\"bidSize\":10900,\"askSize\":10900,\"yield\":0.0056,\"totalAssets\":323779231744,\"fiftyTwoWeekLow\":413.07,\"fiftyTwoWeekHigh\":540.81,\"fiftyDayAverage\":507.0514,\"twoHundredDayAverage\":494.4741,\"trailingAnnualDividendRate\":1.77,\"trailingAnnualDividendYield\":0.0037746308,\"navPrice\":468.95,\"currency\":\"USD\",\"fromCurrency\":null,\"toCurrency\":null,\"lastMarket\":null,\"coinMarketCapLink\":null,\"algorithm\":null,\"tradeable\":false},\"defaultKeyStatistics\":{\"maxAge\":1,\"priceHint\":2,\"category\":\"Large
+        Growth\",\"ytdReturn\":-0.08142319,\"beta3Year\":1.16,\"totalAssets\":323779231744,\"yield\":0.0056,\"fundFamily\":\"Invesco\",\"fundInceptionDate\":921024000,\"legalType\":\"Exchange
+        Traded Fund\",\"threeYearAverageReturn\":0.0969692,\"fiveYearAverageReturn\":0.2050713,\"lastSplitFactor\":null,\"latestShareClass\":null,\"leadInvestor\":null},\"quoteType\":{\"exchange\":\"NGM\",\"quoteType\":\"ETF\",\"symbol\":\"QQQ\",\"underlyingSymbol\":\"QQQ\",\"shortName\":\"Invesco
         QQQ Trust, Series 1\",\"longName\":\"Invesco QQQ Trust\",\"firstTradeDateEpochUtc\":921076200,\"timeZoneFullName\":\"America/New_York\",\"timeZoneShortName\":\"EDT\",\"uuid\":\"714d32d4-5f6c-33bc-b36a-765119cb3c4c\",\"messageBoardId\":\"finmb_8108558\",\"gmtOffSetMilliseconds\":-14400000,\"maxAge\":1}}],\"error\":null}}"
     headers:
       Age:
@@ -44,11 +44,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1098'
+      - '1105'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 31 Mar 2025 22:14:36 GMT
+      - Tue, 01 Apr 2025 20:04:47 GMT
       server:
       - ATS
       vary:
@@ -56,9 +56,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
-      - '7'
+      - '5'
       y-rid:
-      - 3or7jl5jum4uc
+      - 2inb5dhjuohmv
     status:
       code: 200
       message: OK
@@ -78,10 +78,10 @@ interactions:
   response:
     body:
       string: '{"quoteResponse":{"result":[{"language":"en-US","region":"US","quoteType":"ETF","typeDisp":"ETF","quoteSourceName":"Nasdaq
-        Real Time Price","triggerable":true,"customPriceAlertConfidence":"HIGH","currency":"USD","postMarketPrice":466.4997,"postMarketChange":-2.4203186,"regularMarketChange":-0.019989014,"regularMarketDayHigh":469.85,"regularMarketDayRange":"457.35
-        - 469.85","regularMarketDayLow":457.35,"regularMarketVolume":50122018,"regularMarketPreviousClose":468.94,"bid":468.26,"ask":469.09,"bidSize":42,"askSize":42,"fullExchangeName":"NasdaqGM","financialCurrency":"USD","regularMarketOpen":461.95,"averageDailyVolume3Month":37138145,"averageDailyVolume10Day":37523470,"fiftyTwoWeekLowChange":55.850006,"fiftyTwoWeekLowChangePercent":0.13520712,"fiftyTwoWeekRange":"413.07
-        - 540.81","fiftyTwoWeekHighChange":-71.889984,"fiftyTwoWeekHighChangePercent":-0.1329302,"fiftyTwoWeekLow":413.07,"fiftyTwoWeekHigh":540.81,"fiftyTwoWeekChangePercent":5.3916216,"trailingAnnualDividendRate":1.77,"trailingPE":30.052998,"trailingAnnualDividendYield":0.00377447,"dividendYield":0.56,"ytdReturn":-0.52826,"trailingThreeMonthReturns":-0.09196,"trailingThreeMonthNavReturns":-0.09196,"netAssets":3.23779232E11,"epsTrailingTwelveMonths":15.603103,"sharesOutstanding":393100000,"bookValue":357.774,"fiftyDayAverage":507.9346,"fiftyDayAverageChange":-39.014587,"fiftyDayAverageChangePercent":-0.076810256,"twoHundredDayAverage":494.50024,"twoHundredDayAverageChange":-25.58023,"twoHundredDayAverageChangePercent":-0.05172946,"netExpenseRatio":0.2,"marketCap":184332451840,"priceToBook":1.3106599,"sourceInterval":15,"exchangeDataDelayedBy":0,"tradeable":false,"cryptoTradeable":false,"hasPrePostMarketData":true,"firstTradeDateMilliseconds":921076200000,"priceHint":2,"postMarketChangePercent":-0.51614743,"shortName":"Invesco
-        QQQ Trust, Series 1","longName":"Invesco QQQ Trust","regularMarketChangePercent":-0.004262595,"regularMarketPrice":468.92,"marketState":"POST","corporateActions":[],"postMarketTime":1743459274,"regularMarketTime":1743451200,"exchange":"NGM","messageBoardId":"finmb_8108558","exchangeTimezoneName":"America/New_York","exchangeTimezoneShortName":"EDT","gmtOffSetMilliseconds":-14400000,"market":"us_market","esgPopulated":false,"symbol":"QQQ"}],"error":null}}'
+        Real Time Price","triggerable":true,"customPriceAlertConfidence":"HIGH","currency":"USD","marketState":"POST","netExpenseRatio":0.2,"marketCap":185818382336,"priceToBook":1.3212252,"sourceInterval":15,"exchangeDataDelayedBy":0,"tradeable":false,"cryptoTradeable":false,"regularMarketChangePercent":0.8061074,"regularMarketPrice":472.7,"hasPrePostMarketData":true,"firstTradeDateMilliseconds":921076200000,"priceHint":2,"postMarketChangePercent":-0.0063462616,"postMarketPrice":472.67,"postMarketChange":-0.02999878,"regularMarketChange":3.7799988,"regularMarketDayHigh":473.6262,"regularMarketDayRange":"464.42
+        - 473.6262","regularMarketDayLow":464.42,"regularMarketVolume":39417061,"regularMarketPreviousClose":468.92,"bid":472.29,"ask":473.07,"bidSize":109,"askSize":109,"fullExchangeName":"NasdaqGM","financialCurrency":"USD","regularMarketOpen":467.23,"averageDailyVolume3Month":37400216,"averageDailyVolume10Day":38635270,"fiftyTwoWeekLowChange":59.630005,"fiftyTwoWeekLowChangePercent":0.14435811,"fiftyTwoWeekRange":"413.07
+        - 540.81","fiftyTwoWeekHighChange":-68.109985,"fiftyTwoWeekHighChangePercent":-0.1259407,"fiftyTwoWeekLow":413.07,"fiftyTwoWeekHigh":540.81,"fiftyTwoWeekChangePercent":6.30455,"trailingAnnualDividendRate":1.77,"trailingPE":30.295258,"trailingAnnualDividendYield":0.0037746308,"dividendYield":0.56,"ytdReturn":-0.52826,"trailingThreeMonthReturns":-0.09196,"trailingThreeMonthNavReturns":-0.09196,"netAssets":3.23779232E11,"epsTrailingTwelveMonths":15.603103,"sharesOutstanding":393100000,"bookValue":357.774,"fiftyDayAverage":507.0514,"fiftyDayAverageChange":-34.35138,"fiftyDayAverageChangePercent":-0.06774733,"twoHundredDayAverage":494.4741,"twoHundredDayAverageChange":-21.774078,"twoHundredDayAverageChangePercent":-0.04403482,"shortName":"Invesco
+        QQQ Trust, Series 1","longName":"Invesco QQQ Trust","corporateActions":[],"postMarketTime":1743537885,"regularMarketTime":1743537601,"exchange":"NGM","messageBoardId":"finmb_8108558","exchangeTimezoneName":"America/New_York","exchangeTimezoneShortName":"EDT","gmtOffSetMilliseconds":-14400000,"market":"us_market","esgPopulated":false,"symbol":"QQQ"}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -102,11 +102,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1065'
+      - '1063'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 31 Mar 2025 22:14:36 GMT
+      - Tue, 01 Apr 2025 20:04:47 GMT
       server:
       - ATS
       vary:
@@ -116,7 +116,7 @@ interactions:
       x-envoy-upstream-service-time:
       - '2'
       y-rid:
-      - 4l5jq11jum4uc
+      - 002ju5tjuohmv
     status:
       code: 200
       message: OK
@@ -158,7 +158,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 31 Mar 2025 22:14:36 GMT
+      - Tue, 01 Apr 2025 20:04:48 GMT
       server:
       - ATS
       vary:
@@ -166,9 +166,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '1'
       y-rid:
-      - 6jjjp49jum4uc
+      - 1dtrna9juohn0
     status:
       code: 200
       message: OK
