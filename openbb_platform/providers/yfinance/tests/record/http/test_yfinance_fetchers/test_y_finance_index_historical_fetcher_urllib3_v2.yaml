@@ -46,7 +46,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-canary-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '22'
       y-rid:
       - 2amhdaljum4tu
     status:

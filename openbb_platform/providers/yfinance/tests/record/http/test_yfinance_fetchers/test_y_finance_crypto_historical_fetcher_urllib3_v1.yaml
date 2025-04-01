@@ -764,7 +764,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
-      - '10'
+      - '11'
       y-rid:
       - 0ib280djum566
     status:

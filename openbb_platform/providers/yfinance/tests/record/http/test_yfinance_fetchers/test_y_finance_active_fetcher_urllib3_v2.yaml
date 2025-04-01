@@ -183,7 +183,7 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-screeners--mtls-production-gq1.finance-k8s:4080/*
+      - finance-screeners--mtls-canary-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
       - '59'
       y-rid:

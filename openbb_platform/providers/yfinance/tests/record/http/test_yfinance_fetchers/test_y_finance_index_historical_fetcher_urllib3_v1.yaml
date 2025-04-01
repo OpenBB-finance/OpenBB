@@ -18,7 +18,7 @@ interactions:
         500","shortName":"S&P 500","chartPreviousClose":5580.94,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1743427800,"start":1743408000,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1743451200,"start":1743427800,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1743465600,"start":1743451200,"gmtoffset":-14400}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1743454330],"indicators":{"quote":[{"low":[5488.72998046875],"high":[5627.56005859375],"volume":[3675243000],"close":[5611.85009765625],"open":[5527.91015625]}],"adjclose":[{"adjclose":[5611.85009765625]}]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Referrer-Policy:

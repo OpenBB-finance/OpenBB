@@ -1633,7 +1633,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v7/finance/options/OXY?crumb=MOCK_CRUMB&date=1768521600
+    uri: https://query2.finance.yahoo.com/v7/finance/options/OXY?crumb=MOCK_CRUMB&date=1758240000
   response:
     body:
       string: '{"optionChain":{"result":[{"underlyingSymbol":"OXY","expirationDates":[1743724800,1744329600,1744848000,1745539200,1746144000,1746748800,1747353600,1750377600,1752796800,1755216000,1758240000,1763683200,1768521600,1773964800,1781740800,1797552000,1799971200],"strikes":[25.0,27.5,30.0,32.5,35.0,37.5,40.0,42.5,45.0,47.5,50.0,52.5,55.0,57.5,60.0,62.5,65.0,67.5,70.0,72.5,75.0,77.5,80.0,85.0,90.0,95.0,100.0],"hasMiniOptions":false,"quote":{"language":"en-US","region":"US","quoteType":"EQUITY","typeDisp":"Equity","quoteSourceName":"Nasdaq
@@ -1654,6 +1654,8 @@ interactions:
       - no-referrer-when-downgrade
       Strict-Transport-Security:
       - max-age=31536000
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -1795,7 +1797,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-quote-api--mtls-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
-      - '14'
+      - '15'
       y-rid:
       - 1tin82ljum4u5
     status:

@@ -255,7 +255,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-quote-api--mtls-production-gq1.finance-k8s:4080/*
       x-envoy-upstream-service-time:
-      - '26'
+      - '36'
       y-rid:
       - 0c55srpjum569
     status:
@@ -1803,7 +1803,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v7/finance/options/OXY?crumb=MOCK_CRUMB&date=1747353600
+    uri: https://query2.finance.yahoo.com/v7/finance/options/OXY?crumb=MOCK_CRUMB&date=1740700800
   response:
     body:
       string: !!binary |
@@ -3817,7 +3817,7 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
-    uri: https://query2.finance.yahoo.com/v7/finance/options/OXY?crumb=MOCK_CRUMB&date=1797552000
+    uri: https://query2.finance.yahoo.com/v7/finance/options/OXY?crumb=MOCK_CRUMB&date=1773964800
   response:
     body:
       string: !!binary |

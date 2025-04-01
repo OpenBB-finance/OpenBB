@@ -4135,6 +4135,18 @@ files = [
 ]
 
 [[package]]
+name = "tld"
+version = "0.13"
+description = "Extract the top-level domain (TLD) from the URL given."
+optional = false
+python-versions = ">=3.7, <4"
+groups = ["main"]
+files = [
+    {file = "tld-0.13-py2.py3-none-any.whl", hash = "sha256:f75b2be080f767ed17c2338a339eaa4fab5792586319ca819119da252f9f3749"},
+    {file = "tld-0.13.tar.gz", hash = "sha256:93dde5e1c04bdf1844976eae440706379d21f4ab235b73c05d7483e074fb5629"},
+]
+
+[[package]]
 name = "tomli"
 version = "2.2.1"
 description = "A lil' TOML parser"
