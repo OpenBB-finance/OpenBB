@@ -936,8 +936,6 @@ class MethodDefinition:
         all_fields.update(extra_fields)
 
         for param, value in od.items():
-            # Skip if the parameter already has an Annotated type to prevent nesting
-
             if param not in all_fields:
                 continue
 
