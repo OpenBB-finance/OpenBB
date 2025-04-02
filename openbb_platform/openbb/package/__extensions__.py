@@ -39,7 +39,7 @@ Extensions:
     - econdb@1.3.0
     - federal_reserve@1.4.1
     - fmp@1.4.1
-    - fred@1.4.1
+    - fred@1.4.3
     - imf@1.1.0
     - intrinio@1.4.0
     - oecd@1.4.0
