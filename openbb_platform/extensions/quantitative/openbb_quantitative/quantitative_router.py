@@ -1,6 +1,6 @@
 """Quantitative Analysis Router."""
 
-from typing import List, Literal
+from typing import Literal
 
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -41,7 +41,7 @@ router.include_router(performance_router)
         APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 8)}),
     ],
 )
-def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
+def normality(data: list[Data], target: str) -> OBBject[NormalityModel]:
     """Get Normality Statistics.
 
     - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
@@ -52,7 +52,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
 
     Parameters
     ----------
-    data : List[Data]
+    data : list[Data]
         Time series data.
     target : str
         Target column name.
@@ -104,7 +104,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
         ),
     ],
 )
-def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
+def capm(data: list[Data], target: str) -> OBBject[CAPMModel]:
     """Get Capital Asset Pricing Model (CAPM).
 
     CAPM offers a streamlined way to assess the expected return on an investment while accounting for its risk relative
@@ -113,7 +113,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
 
     Parameters
     ----------
-    data : List[Data]
+    data : list[Data]
         Time series data.
     target : str
         Target column name.
@@ -175,7 +175,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     ],
 )
 def unitroot_test(
-    data: List[Data],
+    data: list[Data],
     target: str,
     fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
     kpss_reg: Literal["c", "ct"] = "c",
@@ -192,7 +192,7 @@ def unitroot_test(
 
     Parameters
     ----------
-    data : List[Data]
+    data : list[Data]
         Time series data.
     target : str
         Target column name.
@@ -249,7 +249,7 @@ def unitroot_test(
         APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 5)}),
     ],
 )
-def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
+def summary(data: list[Data], target: str) -> OBBject[SummaryModel]:
     """Get Summary Statistics.
 
     The summary that offers a snapshot of its central tendencies, variability, and distribution.
@@ -261,7 +261,7 @@ def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
 
     Parameters
     ----------
-    data : List[Data]
+    data : list[Data]
         Time series data.
     target : str
         Target column name.

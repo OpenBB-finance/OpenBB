@@ -36,18 +36,18 @@ class ROUTER_index(Container):
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp', 'yfinance']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.
 
         Returns
         -------
         OBBject
-            results : List[AvailableIndices]
+            results : list[AvailableIndices]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -107,20 +107,20 @@ class ROUTER_index(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
         OBBject
-            results : List[IndexConstituents]
+            results : list[IndexConstituents]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

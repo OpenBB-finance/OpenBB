@@ -1174,3 +1174,49 @@ def test_economy_direction_of_trade(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "federal_reserve",
+                "year": None,
+                "document_type": None,
+                "pdf_only": False,
+                "as_choices": False,
+                "url": None,
+            }
+        ),
+        (
+            {
+                "provider": "federal_reserve",
+                "year": None,
+                "document_type": None,
+                "pdf_only": False,
+                "as_choices": False,
+                "url": "https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20250129.pdf",
+            }
+        ),
+        (
+            {
+                "provider": "federal_reserve",
+                "year": 2022,
+                "document_type": "minutes",
+                "pdf_only": True,
+                "as_choices": True,
+                "url": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_fomc_documents(params, obb):
+    """Test the economy fomc documents endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.fomc_documents(**params)
+    assert result
+    assert isinstance(result, (list, dict))
+    assert len(result) > 0

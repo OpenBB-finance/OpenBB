@@ -159,7 +159,7 @@ def test_get_default_none(method_definition):
     """Test get default."""
 
     class TestField:
-        default = 42
+        default = None
 
     field = TestField()
     result = method_definition.get_default(field)

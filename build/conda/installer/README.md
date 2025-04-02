@@ -8,7 +8,7 @@ If you have never used Python before, don't worry, your first time is just a dou
 
 This is a kitted out development container for Pythonic, open source, financial research. It has everything you need to get started immediately.
 
-Included, is a complete installation of the OpenBB Platform and CLI, along with Conda and Jupyter Notebook, in an isolated Python 3.12 Conda environment.
+Included is a complete installation of the OpenBB Platform and CLI, along with Conda and Jupyter Notebook, in an isolated Python 3.12 Conda environment.
 
 If you already have an installation of Conda or Anaconda, the version in this folder will not rely on, interfere, or share base environment paths with, existing versions.
 
@@ -16,9 +16,9 @@ Tools for managing, updating, and building environments allow you to take full c
 
 Follow the quick start steps below to get started using right away; or, open one of the shortcuts described below.
 
-If you want to build your own end points, connections, and features, try installing the [example extensions](#examples)
+If you want to build your own endpoints, connections, and features, try installing the [example extensions](#examples)
 
-## OpenBB Terminal Pro Quick Start
+## OpenBB Workspace Quick Start
 
 - Login to the [OpenBB Hub](https://my.openbb.co)
 - Optionally, add API keys for remote authorization on the page [here](https://my.openbb.dev/app/platform/credentials).
@@ -33,7 +33,7 @@ If you want to build your own end points, connections, and features, try install
 
 - By default, the server will be running on: [http://127.0.0.1:6900](http://127.0.0.1:6900)
 
-- Login to OpenBB Terminal Pro [here](https://pro.openbb.co)
+- Login to OpenBB Workspace [here](https://pro.openbb.co)
 - From the sidebar, click on, "Data Connectors".
 - Then click on the button, "Add Data".
 - In the pop-up menu, select "Custom Backend".
@@ -219,7 +219,7 @@ Conda is for container management and machine code level operations, Poetry reso
 - [OpenBB Pro Data Connectors](https://docs.openbb.co/pro/data-connector)
 - [widgets.json](https://docs.openbb.co/pro/custom-backend/widgets.json)
 - [OpenBB Platform](https://docs.openbb.co/platform)
-- [OpenBB Platform Quckstart](https://docs.openbb.co/platform/getting_started/quickstart)
+- [OpenBB Platform Quickstart](https://docs.openbb.co/platform/getting_started/quickstart)
 - [OpenBB CLI](https://docs.openbb.co/cli)
 - [OpenBB User Settings](https://docs.openbb.co/platform/user_guides/settings_and_environment_variables)
 - [API Keys and Authorization](https://docs.openbb.co/platform/getting_started/api_keys)
@@ -244,4 +244,3 @@ Conda is for container management and machine code level operations, Poetry reso
 - [pandas](https://pandas.pydata.org/docs/)
 - [numpy](https://numpy.org/doc/)
 - [Plotly Graph Objects](https://plotly.com/python/graph-objects/)
-

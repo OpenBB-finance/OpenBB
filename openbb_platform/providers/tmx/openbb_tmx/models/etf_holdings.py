@@ -48,7 +48,9 @@ class TmxEtfHoldingsData(EtfHoldingsData):
     market_value: Optional[Union[float, str]] = Field(
         description="The market value of the holding.", default=None
     )
-    currency: Optional[str] = Field(description="The currency of the holding.")
+    currency: Optional[str] = Field(
+        default=None, description="The currency of the holding."
+    )
     share_percentage: Optional[float] = Field(
         description="The share percentage of the holding, as a normalized percentage.",
         default=None,

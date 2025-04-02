@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
@@ -55,63 +55,63 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         maturity : Union[str, Literal['all', 'overnight', '7d', '15d', '30d', '60d', '90d']]
             A target maturity. Multiple comma separated items allowed. (provider: fred)
         category : Union[str, Literal['all', 'asset_backed', 'financial', 'nonfinancial', 'a2p2']]
             The category of asset. Multiple comma separated items allowed. (provider: fred)
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
-                Frequency aggregation to convert daily data to lower frequency.
-                    a = Annual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
-                 (provider: fred)
+                    Frequency aggregation to convert daily data to lower frequency.
+                        a = Annual
+                        q = Quarterly
+                        m = Monthly
+                        w = Weekly
+                        wef = Weekly, Ending Friday
+                        weth = Weekly, Ending Thursday
+                        wew = Weekly, Ending Wednesday
+                        wetu = Weekly, Ending Tuesday
+                        wem = Weekly, Ending Monday
+                        wesu = Weekly, Ending Sunday
+                        wesa = Weekly, Ending Saturday
+                        bwew = Biweekly, Ending Wednesday
+                        bwem = Biweekly, Ending Monday
+                     (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
 
-                A key that indicates the aggregation method used for frequency aggregation.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
+                    A key that indicates the aggregation method used for frequency aggregation.
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
-                 (provider: fred)
+                    Transformation type
+                        None = No transformation
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[CommercialPaper]
+            results : list[CommercialPaper]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -190,7 +190,7 @@ class ROUTER_fixedincome_corporate(Container):
     def hqm(
         self,
         date: Annotated[
-            Union[datetime.date, str, None, List[Union[datetime.date, str, None]]],
+            Union[datetime.date, str, None, list[Union[datetime.date, str, None]]],
             OpenBBField(
                 description="A specific date to get data for. Multiple comma separated items allowed for provider(s): fred."
             ),
@@ -213,22 +213,22 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        date : Union[date, str, None, List[Union[date, str, None]]]
-            A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
-        provider : Optional[Literal['fred']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        date : Union[date, str, None, list[Union[date, str, None]]]
+            A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
         yield_curve : Literal['spot', 'par']
             The yield curve type. (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[HighQualityMarketCorporateBond]
+            results : list[HighQualityMarketCorporateBond]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -309,14 +309,14 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
             The type of series.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         category : Literal['all', 'duration', 'eur', 'usd']
             The type of category. (provider: fred)
         area : Literal['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us']
@@ -329,12 +329,12 @@ class ROUTER_fixedincome_corporate(Container):
         Returns
         -------
         OBBject
-            results : List[ICEBofA]
+            results : list[ICEBofA]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -417,26 +417,26 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['aaa', 'baa']
             The type of series.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         spread : Optional[Literal['treasury', 'fed_funds']]
             The type of spread. (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[MoodyCorporateBondIndex]
+            results : list[MoodyCorporateBondIndex]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -495,15 +495,15 @@ class ROUTER_fixedincome_corporate(Container):
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         maturity: Annotated[
-            Union[float, str, List[Union[float, str]]],
+            Union[float, str, list[Union[float, str]]],
             OpenBBField(
                 description="Maturities in years. Multiple comma separated items allowed for provider(s): fred."
             ),
         ] = 10.0,
         category: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
-                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred."
+                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.\nChoices for fred: 'par_yield', 'spot_rate'"
             ),
         ] = "spot_rate",
         provider: Annotated[
@@ -524,26 +524,27 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        maturity : Union[float, str, List[Union[float, str]]]
+        maturity : Union[float, str, list[Union[float, str]]]
             Maturities in years. Multiple comma separated items allowed for provider(s): fred.
-        category : Union[str, List[str]]
+        category : Union[str, list[str]]
             Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+            Choices for fred: 'par_yield', 'spot_rate'
 
         Returns
         -------
         OBBject
-            results : List[SpotRate]
+            results : list[SpotRate]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

@@ -52,7 +52,12 @@ def check_router_model_functions_signature() -> List[str]:
                 if "POST" in decorator or "GET" in decorator:
                     continue
                 args = list(function.__code__.co_varnames)
-                if args != expected_args and "model" in decorator:
+
+                if (
+                    args
+                    and not all(arg in args for arg in expected_args)
+                    and "model" in decorator
+                ):
                     missing_args.append(
                         f"{function.__name__} in {router_name} missing expected args: {expected_args}"
                     )

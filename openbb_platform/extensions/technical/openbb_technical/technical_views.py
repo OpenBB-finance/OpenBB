@@ -2,7 +2,7 @@
 
 # pylint: disable=too-many-locals,use-dict-literal
 
-from typing import TYPE_CHECKING, Any, Dict, Tuple
+from typing import TYPE_CHECKING, Any
 
 from openbb_charting.core.to_chart import to_chart
 from openbb_charting.styles.colors import LARGE_CYCLER
@@ -15,42 +15,42 @@ class TechnicalViews:
     """Technical Views."""
 
     @staticmethod
-    def technical_sma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_sma(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Plot simple moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "sma"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_ema(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_ema(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Exponential moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "ema"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_hma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_hma(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Hull moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "hma"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_wma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_wma(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Weighted moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "wma"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_zlma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_zlma(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Zero lag moving average chart."""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "zlma"
         return _ta_ma(**kwargs)
 
     @staticmethod
-    def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_aroon(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Technical Aroon Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
@@ -95,7 +95,7 @@ class TechnicalViews:
         return fig, content
 
     @staticmethod
-    def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_macd(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Plot moving average convergence divergence chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
@@ -138,7 +138,7 @@ class TechnicalViews:
         return fig, content
 
     @staticmethod
-    def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_adx(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Average directional movement index chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
@@ -178,7 +178,7 @@ class TechnicalViews:
         return fig, content
 
     @staticmethod
-    def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_rsi(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Relative strength index chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
@@ -218,7 +218,7 @@ class TechnicalViews:
         return fig, content
 
     @staticmethod
-    def technical_cones(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    def technical_cones(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Volatility Cones Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.chart_style import ChartStyle
@@ -337,7 +337,7 @@ class TechnicalViews:
     @staticmethod
     def technical_relative_rotation(
         **kwargs: Any,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Relative Rotation Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts import relative_rotation  # noqa

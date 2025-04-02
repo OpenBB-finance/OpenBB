@@ -11,8 +11,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -20,8 +20,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -29,8 +29,8 @@
                 "label": "Category",
                 "description": "Category of survey response.",
                 "optional": true,
-                "value": "spreads",
                 "type": "text",
+                "value": "spreads",
                 "show": true,
                 "options": [
                     {
@@ -80,6 +80,7 @@
                 "label": "Transform",
                 "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -116,7 +117,6 @@
                         "value": "log"
                     }
                 ],
-                "type": "text",
                 "paramName": "transform"
             },
             {
@@ -187,8 +187,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -196,8 +196,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -205,6 +205,7 @@
                 "label": "Frequency",
                 "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -217,13 +218,13 @@
                         "value": "quarter"
                     }
                 ],
-                "type": "text",
                 "paramName": "frequency"
             },
             {
                 "label": "Aggregation Method",
                 "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -240,13 +241,13 @@
                         "value": "eop"
                     }
                 ],
-                "type": "text",
                 "paramName": "aggregation_method"
             },
             {
                 "label": "Transform",
                 "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -283,7 +284,6 @@
                         "value": "log"
                     }
                 ],
-                "type": "text",
                 "paramName": "transform"
             },
             {
@@ -346,8 +346,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -355,8 +355,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -364,6 +364,7 @@
                 "label": "Frequency",
                 "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -376,13 +377,13 @@
                         "value": "quarter"
                     }
                 ],
-                "type": "text",
                 "paramName": "frequency"
             },
             {
                 "label": "Aggregation Method",
                 "description": "A key that indicates the aggregation method used for frequency aggregation.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -399,13 +400,13 @@
                         "value": "eop"
                     }
                 ],
-                "type": "text",
                 "paramName": "aggregation_method"
             },
             {
                 "label": "Transform",
                 "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -442,7 +443,6 @@
                         "value": "log"
                     }
                 ],
-                "type": "text",
                 "paramName": "transform"
             },
             {
@@ -553,8 +553,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -562,8 +562,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -571,9 +571,9 @@
                 "label": "Topic",
                 "description": "The topic for the survey response. Multiple comma separated items allowed.",
                 "optional": true,
+                "type": "text",
                 "value": "new_orders_growth",
                 "show": true,
-                "type": "text",
                 "multiSelect": true,
                 "options": [
                     {
@@ -639,6 +639,7 @@
                 "label": "Frequency",
                 "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -651,13 +652,13 @@
                         "value": "quarter"
                     }
                 ],
-                "type": "text",
                 "paramName": "frequency"
             },
             {
                 "label": "Aggregation Method",
                 "description": "A key that indicates the aggregation method used for frequency aggregation.\n            avg = Average\n            sum = Sum\n            eop = End of Period",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -674,13 +675,13 @@
                         "value": "eop"
                     }
                 ],
-                "type": "text",
                 "paramName": "aggregation_method"
             },
             {
                 "label": "Transform",
                 "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -717,7 +718,6 @@
                         "value": "log"
                     }
                 ],
-                "type": "text",
                 "paramName": "transform"
             },
             {
@@ -803,8 +803,8 @@
                 "label": "Date",
                 "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed.",
                 "optional": true,
-                "value": null,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "multiSelect": true,
                 "paramName": "date"
@@ -813,8 +813,8 @@
                 "label": "Category",
                 "description": "The category to query.",
                 "optional": true,
-                "value": "employees_nsa",
                 "type": "text",
+                "value": "employees_nsa",
                 "show": true,
                 "options": [
                     {
@@ -984,8 +984,8 @@
                 "label": "Country",
                 "description": "The country to get data. Multiple comma separated items allowed.",
                 "optional": true,
-                "value": "united_states",
                 "type": "text",
+                "value": "united_states",
                 "show": true,
                 "multiSelect": true,
                 "options": [
@@ -1192,8 +1192,8 @@
                 "label": "Transform",
                 "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
                 "optional": true,
-                "value": "yoy",
                 "type": "text",
+                "value": "yoy",
                 "show": true,
                 "options": [
                     {
@@ -1215,8 +1215,8 @@
                 "label": "Frequency",
                 "description": "The frequency of the data.",
                 "optional": true,
-                "value": "monthly",
                 "type": "text",
+                "value": "monthly",
                 "show": true,
                 "options": [
                     {
@@ -1238,8 +1238,8 @@
                 "label": "Harmonized",
                 "description": "If true, returns harmonized data.",
                 "optional": true,
-                "value": false,
                 "type": "boolean",
+                "value": false,
                 "show": true,
                 "paramName": "harmonized"
             },
@@ -1247,8 +1247,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -1256,8 +1256,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -1320,8 +1320,8 @@
                 "label": "Country",
                 "description": "The country to get data. Enter as a 3-letter ISO country code, default is USA.",
                 "optional": true,
-                "value": "united_states",
                 "type": "text",
+                "value": "united_states",
                 "show": true,
                 "options": [
                     {
@@ -1523,8 +1523,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -1532,8 +1532,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -1726,6 +1726,7 @@
                 "label": "Query",
                 "description": "The search word(s).",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "paramName": "query"
@@ -1734,8 +1735,8 @@
                 "label": "Is Release",
                 "description": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True.",
                 "optional": true,
-                "value": false,
                 "type": "boolean",
+                "value": false,
                 "show": true,
                 "paramName": "is_release"
             },
@@ -1744,6 +1745,7 @@
                 "description": "A specific release ID to target.",
                 "optional": true,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "paramName": "release_id"
             },
@@ -1751,8 +1753,8 @@
                 "label": "Limit",
                 "description": "The number of data entries to return. (1-1000)",
                 "optional": true,
-                "value": null,
                 "type": "number",
+                "value": null,
                 "show": true,
                 "paramName": "limit"
             },
@@ -1760,8 +1762,8 @@
                 "label": "Offset",
                 "description": "Offset the results in conjunction with limit.",
                 "optional": true,
-                "value": 0,
                 "type": "number",
+                "value": 0,
                 "show": true,
                 "paramName": "offset"
             },
@@ -1769,6 +1771,7 @@
                 "label": "Filter Variable",
                 "description": "Filter by an attribute.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -1785,13 +1788,13 @@
                         "value": "seasonal_adjustment"
                     }
                 ],
-                "type": "text",
                 "paramName": "filter_variable"
             },
             {
                 "label": "Filter Value",
                 "description": "String value to filter the variable by.  Used in conjunction with filter_variable.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "paramName": "filter_value"
@@ -1800,9 +1803,9 @@
                 "label": "Tag Names",
                 "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' Multiple comma separated items allowed.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
-                "type": "text",
                 "multiSelect": true,
                 "paramName": "tag_names"
             },
@@ -1810,9 +1813,9 @@
                 "label": "Exclude Tag Names",
                 "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. Multiple comma separated items allowed.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
-                "type": "text",
                 "multiSelect": true,
                 "paramName": "exclude_tag_names"
             },
@@ -1821,6 +1824,7 @@
                 "description": "A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas.",
                 "optional": true,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "paramName": "series_id"
             },
@@ -2005,6 +2009,7 @@
                 "description": "Symbol to get data for. Multiple comma separated items allowed.",
                 "optional": false,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "multiSelect": true,
                 "paramName": "symbol"
@@ -2013,8 +2018,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -2022,8 +2027,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -2031,8 +2036,8 @@
                 "label": "Limit",
                 "description": "The number of data entries to return.",
                 "optional": true,
-                "value": 100000,
                 "type": "number",
+                "value": 100000,
                 "show": true,
                 "paramName": "limit"
             },
@@ -2040,6 +2045,7 @@
                 "label": "Frequency",
                 "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -2100,13 +2106,13 @@
                         "value": "bwem"
                     }
                 ],
-                "type": "text",
                 "paramName": "frequency"
             },
             {
                 "label": "Aggregation Method",
                 "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
+                "type": "text",
                 "value": "eop",
                 "show": true,
                 "options": [
@@ -2123,13 +2129,13 @@
                         "value": "eop"
                     }
                 ],
-                "type": "text",
                 "paramName": "aggregation_method"
             },
             {
                 "label": "Transform",
                 "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -2166,7 +2172,6 @@
                         "value": "log"
                     }
                 ],
-                "type": "text",
                 "paramName": "transform"
             },
             {
@@ -2215,6 +2220,7 @@
                 "description": "Symbol to get data for. Multiple comma separated items allowed.",
                 "optional": false,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "multiSelect": true,
                 "paramName": "symbol"
@@ -2223,8 +2229,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -2232,8 +2238,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -2241,8 +2247,8 @@
                 "label": "Limit",
                 "description": "The number of data entries to return.",
                 "optional": true,
-                "value": 100000,
                 "type": "number",
+                "value": 100000,
                 "show": true,
                 "paramName": "limit"
             },
@@ -2250,6 +2256,7 @@
                 "label": "Frequency",
                 "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -2310,13 +2317,13 @@
                         "value": "bwem"
                     }
                 ],
-                "type": "text",
                 "paramName": "frequency"
             },
             {
                 "label": "Aggregation Method",
                 "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
+                "type": "text",
                 "value": "eop",
                 "show": true,
                 "options": [
@@ -2333,13 +2340,13 @@
                         "value": "eop"
                     }
                 ],
-                "type": "text",
                 "paramName": "aggregation_method"
             },
             {
                 "label": "Transform",
                 "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -2376,7 +2383,6 @@
                         "value": "log"
                     }
                 ],
-                "type": "text",
                 "paramName": "transform"
             },
             {
@@ -2435,6 +2441,7 @@
                 "description": "The ID of the release. Use `fred_search` to find releases.",
                 "optional": false,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "paramName": "release_id"
             },
@@ -2442,6 +2449,7 @@
                 "label": "Element ID",
                 "description": "The element ID of a specific table in the release.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "paramName": "element_id"
@@ -2450,8 +2458,8 @@
                 "label": "Date",
                 "description": "A specific date to get data for. Multiple comma separated items allowed.",
                 "optional": true,
-                "value": null,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "multiSelect": true,
                 "paramName": "date"
@@ -2567,6 +2575,7 @@
                 "description": "Symbol to get data for.",
                 "optional": false,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "paramName": "symbol"
             },
@@ -2574,8 +2583,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -2583,8 +2592,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -2592,8 +2601,8 @@
                 "label": "Limit",
                 "description": "The number of data entries to return.",
                 "optional": true,
-                "value": 100000,
                 "type": "number",
+                "value": 100000,
                 "show": true,
                 "paramName": "limit"
             },
@@ -2601,8 +2610,8 @@
                 "label": "Is Series Group",
                 "description": "When True, the symbol provided is for a series_group, else it is for a series ID.",
                 "optional": true,
-                "value": false,
                 "type": "boolean",
+                "value": false,
                 "show": true,
                 "paramName": "is_series_group"
             },
@@ -2610,6 +2619,7 @@
                 "label": "Region Type",
                 "description": "The type of regional data. Parameter is only valid when `is_series_group` is True.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -2646,15 +2656,14 @@
                         "value": "censusregion"
                     }
                 ],
-                "type": "text",
                 "paramName": "region_type"
             },
             {
                 "label": "Season",
                 "description": "The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True.",
                 "optional": true,
-                "value": "nsa",
                 "type": "text",
+                "value": "nsa",
                 "show": true,
                 "options": [
                     {
@@ -2676,6 +2685,7 @@
                 "label": "Units",
                 "description": "The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "paramName": "units"
@@ -2684,6 +2694,7 @@
                 "label": "Frequency",
                 "description": "Frequency aggregation to convert high frequency data to lower frequency.\n        \n    None = No change\n        \n    a = Annual\n        \n    q = Quarterly\n        \n    m = Monthly\n        \n    w = Weekly\n        \n    d = Daily\n        \n    wef = Weekly, Ending Friday\n        \n    weth = Weekly, Ending Thursday\n        \n    wew = Weekly, Ending Wednesday\n        \n    wetu = Weekly, Ending Tuesday\n        \n    wem = Weekly, Ending Monday\n        \n    wesu = Weekly, Ending Sunday\n        \n    wesa = Weekly, Ending Saturday\n        \n    bwew = Biweekly, Ending Wednesday\n        \n    bwem = Biweekly, Ending Monday",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -2744,13 +2755,13 @@
                         "value": "bwem"
                     }
                 ],
-                "type": "text",
                 "paramName": "frequency"
             },
             {
                 "label": "Aggregation Method",
                 "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                 "optional": true,
+                "type": "text",
                 "value": "eop",
                 "show": true,
                 "options": [
@@ -2767,13 +2778,13 @@
                         "value": "eop"
                     }
                 ],
-                "type": "text",
                 "paramName": "aggregation_method"
             },
             {
                 "label": "Transform",
                 "description": "Transformation type\n        \n    None = No transformation\n        \n    chg = Change\n        \n    ch1 = Change from Year Ago\n        \n    pch = Percent Change\n        \n    pc1 = Percent Change from Year Ago\n        \n    pca = Compounded Annual Rate of Change\n        \n    cch = Continuously Compounded Rate of Change\n        \n    cca = Continuously Compounded Annual Rate of Change\n        \n    log = Natural Log",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -2810,7 +2821,6 @@
                         "value": "log"
                     }
                 ],
-                "type": "text",
                 "paramName": "transform"
             },
             {
@@ -2887,6 +2897,7 @@
                 "label": "Item",
                 "description": "The item or basket of items to query.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "paramName": "item"
@@ -2895,8 +2906,8 @@
                 "label": "Country",
                 "description": "The country to get data.",
                 "optional": true,
-                "value": "united_states",
                 "type": "text",
+                "value": "united_states",
                 "show": true,
                 "paramName": "country"
             },
@@ -2904,8 +2915,8 @@
                 "label": "Start Date",
                 "description": "Start date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "start_date"
             },
@@ -2913,8 +2924,8 @@
                 "label": "End Date",
                 "description": "End date of the data, in YYYY-MM-DD format.",
                 "optional": true,
-                "value": null,
                 "type": "date",
+                "value": null,
                 "show": true,
                 "paramName": "end_date"
             },
@@ -2922,8 +2933,8 @@
                 "label": "Region",
                 "description": "The region to get average price levels for.",
                 "optional": true,
-                "value": "all_city",
                 "type": "text",
+                "value": "all_city",
                 "show": true,
                 "options": [
                     {
@@ -2953,8 +2964,8 @@
                 "label": "Frequency",
                 "description": "The frequency of the data.",
                 "optional": true,
-                "value": "monthly",
                 "type": "text",
+                "value": "monthly",
                 "show": true,
                 "options": [
                     {
@@ -2976,6 +2987,7 @@
                 "label": "Transform",
                 "description": "Transformation type\n            None = No transformation\n            chg = Change\n            ch1 = Change from Year Ago\n            pch = Percent Change\n            pc1 = Percent Change from Year Ago\n            pca = Compounded Annual Rate of Change\n            cch = Continuously Compounded Rate of Change\n            cca = Continuously Compounded Annual Rate of Change\n            log = Natural Log",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "options": [
@@ -3012,7 +3024,6 @@
                         "value": "log"
                     }
                 ],
-                "type": "text",
                 "paramName": "transform"
             },
             {
@@ -3089,8 +3100,8 @@
                 "label": "Date",
                 "description": "A specific date to get data for. Default is the latest report. Multiple comma separated items allowed.",
                 "optional": true,
-                "value": null,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "multiSelect": true,
                 "paramName": "date"
@@ -3099,8 +3110,8 @@
                 "label": "Category",
                 "description": "The category to query.",
                 "optional": true,
-                "value": "personal_income",
                 "type": "text",
+                "value": "personal_income",
                 "show": true,
                 "options": [
                     {
@@ -3242,6 +3253,7 @@
                 "description": "Symbol to get data for.",
                 "optional": false,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "paramName": "symbol"
             },
@@ -3249,8 +3261,8 @@
                 "label": "Use Cache",
                 "description": "Whether or not to use cache for the request, default is True.",
                 "optional": true,
-                "value": true,
                 "type": "boolean",
+                "value": true,
                 "show": true,
                 "paramName": "use_cache"
             },
@@ -3298,8 +3310,8 @@
                 "label": "Query",
                 "description": "Search query.",
                 "optional": true,
-                "value": "",
                 "type": "text",
+                "value": "",
                 "show": true,
                 "paramName": "query"
             },
@@ -3307,8 +3319,8 @@
                 "label": "Use Cache",
                 "description": "Whether or not to use cache.",
                 "optional": true,
-                "value": true,
                 "type": "boolean",
+                "value": true,
                 "show": true,
                 "paramName": "use_cache"
             },
@@ -3363,8 +3375,8 @@
                 "label": "Query",
                 "description": "Search query.",
                 "optional": true,
-                "value": "",
                 "type": "text",
+                "value": "",
                 "show": true,
                 "paramName": "query"
             },
@@ -3372,8 +3384,8 @@
                 "label": "Use Cache",
                 "description": "Whether or not to use cache.",
                 "optional": true,
-                "value": true,
                 "type": "boolean",
+                "value": true,
                 "show": true,
                 "paramName": "use_cache"
             },
@@ -3381,6 +3393,7 @@
                 "label": "URL",
                 "description": "Enter an optional URL path to fetch the next level.",
                 "optional": true,
+                "type": "text",
                 "value": null,
                 "show": true,
                 "paramName": "url"
@@ -3429,8 +3442,8 @@
                 "label": "Query",
                 "description": "Search query.",
                 "optional": false,
-                "value": null,
                 "type": "text",
+                "value": null,
                 "show": true,
                 "paramName": "query"
             },
@@ -3438,8 +3451,8 @@
                 "label": "Use Cache",
                 "description": "Whether or not to use cache. If True, cache will store for seven days.",
                 "optional": true,
-                "value": true,
                 "type": "boolean",
+                "value": true,
                 "show": true,
                 "paramName": "use_cache"
             },
@@ -3558,8 +3571,8 @@
                 "label": "Query",
                 "description": "Search query.",
                 "optional": true,
-                "value": "",
                 "type": "text",
+                "value": "",
                 "show": true,
                 "paramName": "query"
             },
@@ -3567,8 +3580,8 @@
                 "label": "Use Cache",
                 "description": "Whether or not to use cache.",
                 "optional": true,
-                "value": true,
                 "type": "boolean",
+                "value": true,
                 "show": true,
                 "paramName": "use_cache"
             },
@@ -3617,5 +3630,119 @@
             "SEC"
         ],
         "subCategory": "SEC"
+    },
+    "form_submit_custom_obb": {
+        "name": "Form Submit",
+        "description": "",
+        "category": "Form Submit",
+        "type": "table",
+        "searchCategory": "Form Submit",
+        "widgetId": "form_submit_custom_obb",
+        "params": [
+            {
+                "label": "Some Param",
+                "description": "Some Param",
+                "optional": true,
+                "type": "text",
+                "value": "",
+                "show": true,
+                "paramName": "some_param"
+            },
+            {
+                "type": "form",
+                "paramName": "",
+                "label": "Submit Form",
+                "description": "Submit a form via POST request.",
+                "endpoint": "form_submit",
+                "inputParams": [
+                    {
+                        "label": "Date",
+                        "description": "Date",
+                        "optional": true,
+                        "type": "date",
+                        "value": null,
+                        "paramName": "date"
+                    },
+                    {
+                        "label": "Record ID",
+                        "description": "Record Id",
+                        "optional": true,
+                        "type": "number",
+                        "value": null,
+                        "paramName": "record_id"
+                    },
+                    {
+                        "label": "First Name",
+                        "description": "First Name",
+                        "optional": true,
+                        "type": "text",
+                        "value": null,
+                        "paramName": "first_name"
+                    },
+                    {
+                        "label": "Last Name",
+                        "description": "Last Name",
+                        "optional": true,
+                        "type": "text",
+                        "value": null,
+                        "paramName": "last_name"
+                    },
+                    {
+                        "label": "Symptoms",
+                        "description": "Symptoms",
+                        "optional": true,
+                        "type": "text",
+                        "value": null,
+                        "multiSelect": true,
+                        "options": [
+                            {
+                                "label": "dizzy",
+                                "value": "dizzy"
+                            },
+                            {
+                                "label": "hungry",
+                                "value": "hungry"
+                            },
+                            {
+                                "label": "sleepy",
+                                "value": "sleepy"
+                            }
+                        ],
+                        "paramName": "symptoms"
+                    },
+                    {
+                        "label": "Diagnosis",
+                        "description": "Diagnosis",
+                        "optional": true,
+                        "type": "text",
+                        "value": null,
+                        "paramName": "diagnosis"
+                    },
+                    {
+                        "label": "Add Record",
+                        "description": "Add Record",
+                        "optional": true,
+                        "type": "button",
+                        "value": true,
+                        "paramName": "add_record"
+                    }
+                ]
+            }
+        ],
+        "endpoint": "form_submit",
+        "runButton": false,
+        "gridData": {
+            "w": 40,
+            "h": 15
+        },
+        "data": {
+            "dataKey": "",
+            "table": {
+                "showAll": true
+            }
+        },
+        "source": [
+            "Custom"
+        ]
     }
 }

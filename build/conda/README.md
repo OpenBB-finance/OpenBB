@@ -2,7 +2,7 @@
 
 The code in this folder creates a packaged installer for the OpenBB Platform, using Conda Constructor.
 
-The installers can be created for Windows (.exe), MacOS (.pkg).
+The installers can be created for Windows (.exe), macOS (.pkg).
 
 The installer is distributed with a Conda environment that contains Python and package management tools.
 

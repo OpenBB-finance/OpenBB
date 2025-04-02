@@ -185,7 +185,11 @@ def build_api_wrapper(
     func: Callable = route.endpoint  # type: ignore
     path: str = route.path  # type: ignore
 
-    no_validate = route.openapi_extra.get("no_validate")
+    no_validate = (
+        openapi_extra.get("no_validate")
+        if (openapi_extra := getattr(route, "openapi_extra", None))
+        else None
+    )
     new_signature = build_new_signature(path=path, func=func)
     new_annotations_map = build_new_annotation_map(sig=new_signature)
     func.__signature__ = new_signature  # type: ignore
@@ -210,39 +214,32 @@ def build_api_wrapper(
         )
 
         if defaults:
-            provider_choices = getattr(kwargs.get("provider_choices"), "__dict__", {})
             _provider = defaults.pop("provider", None)
+            standard_params = getattr(
+                kwargs.pop("standard_params", None), "__dict__", {}
+            )
+            extra_params = getattr(kwargs.pop("extra_params", None), "__dict__", {})
 
-            if (
-                _provider
-                and isinstance(_provider, list)
-                and _provider[0] == provider_choices.get("provider")
-            ):
-                standard_params = getattr(
-                    kwargs.pop("standard_params", None), "__dict__", {}
-                )
-                extra_params = getattr(kwargs.pop("extra_params", None), "__dict__", {})
+            if "chart" in defaults:
+                kwargs["chart"] = defaults.pop("chart", False)
 
-                if "chart" in defaults:
-                    kwargs["chart"] = defaults.pop("chart", False)
+            if "chart_params" in defaults:
+                extra_params["chart_params"] = defaults.pop("chart_params", {})
 
-                if "chart_params" in defaults:
-                    extra_params["chart_params"] = defaults.pop("chart_params", {})
+            for k, v in defaults.items():
+                if k in standard_params and standard_params[k] is None:
+                    standard_params[k] = v
+                elif (k in standard_params and standard_params[k] is not None) or (
+                    k in extra_params and extra_params[k] is not None
+                ):
+                    continue
+                elif k not in extra_params or (
+                    k in extra_params and extra_params[k] is None
+                ):
+                    extra_params[k] = v
 
-                for k, v in defaults.items():
-                    if k in standard_params and standard_params[k] is None:
-                        standard_params[k] = v
-                    elif (k in standard_params and standard_params[k] is not None) or (
-                        k in extra_params and extra_params[k] is not None
-                    ):
-                        continue
-                    elif k not in extra_params or (
-                        k in extra_params and extra_params[k] is None
-                    ):
-                        extra_params[k] = v
-
-                kwargs["standard_params"] = standard_params
-                kwargs["extra_params"] = extra_params
+            kwargs["standard_params"] = standard_params
+            kwargs["extra_params"] = extra_params
 
         execute = partial(command_runner.run, path, user_settings)
         output = await execute(*args, **kwargs)

@@ -511,8 +511,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
 ) -> "DataFrame":
     """Get yFinance OHLC data for any ticker and interval available."""
     # pylint: disable=import-outside-toplevel
-    from datetime import datetime  # noqa
-    from dateutil.relativedelta import relativedelta
+    from datetime import datetime, timedelta  # noqa
     from openbb_core.provider.utils.helpers import get_requests_session
     from pandas import DataFrame, concat, to_datetime
     import yfinance as yf
@@ -526,9 +525,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
         intraday = True
 
     if interval in ["2m", "5m", "15m", "30m", "90m"]:
-        _start_date = (datetime.now().date() - relativedelta(days=58)).strftime(
-            "%Y-%m-%d"
-        )
+        _start_date = (datetime.now().date() - timedelta(days=58)).strftime("%Y-%m-%d")
         intraday = True
 
     if interval == "1m":
@@ -591,6 +588,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     data = data.rename(columns={"Date": "date", "Datetime": "date"})
     data["date"] = data["date"].apply(to_datetime)
     data = data[data["Open"] > 0]
+
     if start_date is not None:
         data = data[data["date"] >= to_datetime(start_date)]  # type: ignore
     if (
@@ -602,7 +600,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
             data["date"]
             <= (
                 to_datetime(end_date)  # type: ignore
-                + relativedelta(minutes=719 if intraday is True else 0)
+                + timedelta(days=1 if intraday is True else 0)
             )
         ]
     if intraday is True:
