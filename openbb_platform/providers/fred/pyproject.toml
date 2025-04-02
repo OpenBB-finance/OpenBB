@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-fred"
-version = "1.4.1"
+version = "1.4.3"
 description = "FRED extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"

@@ -12,17 +12,17 @@ from openbb_core.provider.standard_models.tips_yields import (
     TipsYieldsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FredTipsYieldsQueryParams(TipsYieldsQueryParams):
     """FRED TIPS Yields Query."""
 
-    maturity: Optional[Literal[5, 10, 20, 30]] = Field(
+    maturity: Optional[Literal["5", "10", "20", "30"]] = Field(
         default=None,
         description="The maturity of the security in years - 5, 10, 20, 30 - defaults to all."
         + " Note that the maturity is the tenor of the security, not the time to maturity.",
-        json_schema_extra={"choices": [5, 10, 20, 30]},
+        json_schema_extra={"choices": ["5", "10", "20", "30"]},
     )
     frequency: Optional[
         Literal[
@@ -148,6 +148,7 @@ class FredTipsYieldsFetcher(
             df = df.query("not title.str.contains('DISCONTINUED')").set_index(
                 "series_id"
             )
+
             df.loc[:, "due"] = df.title.apply(
                 lambda x: x.split("Due ")[-1].strip()
             ).apply(to_datetime)
@@ -162,8 +163,11 @@ class FredTipsYieldsFetcher(
 
         # If we are looking for a specific tenor, the request will be smaller.
         if query.maturity:
-            ids = [i for i in ids if str(i[3]) == (f"{str(query.maturity)[0]}")]
-
+            ids = [
+                i
+                for i in ids
+                if i.rsplit("DTP", maxsplit=1)[-1].startswith(str(query.maturity))
+            ]
         # We split the due date from the title so that we can format it as a datetime.date object.
         due_map = ids_df.set_index("series_id")["due"].dt.date.to_dict()
         # We make a seriesID-title map for later.
@@ -201,6 +205,7 @@ class FredTipsYieldsFetcher(
                 meta[k]["title"] = v  # type: ignore
 
         # We flatten the data and format the output with the metadata.
+
         df = (
             df.melt(
                 id_vars="date",
