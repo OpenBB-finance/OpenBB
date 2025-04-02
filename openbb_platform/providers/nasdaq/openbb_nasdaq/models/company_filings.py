@@ -181,10 +181,8 @@ class NasdaqCompanyFilingsFetcher(
                 time.sleep(2)
                 try:
                     response = session.get(url=url, headers=headers, timeout=10)
-                except (ReadTimeout, ReadTimeoutError):
-                    raise OpenBBError(
-                        "Timeout error: Unable to fetch data from Nasdaq."
-                    )
+                except (ReadTimeout, ReadTimeoutError) as e:
+                    raise OpenBBError(e) from e
 
             if response.status_code != 200:
                 raise OpenBBError(
