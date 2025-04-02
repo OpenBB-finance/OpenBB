@@ -55,7 +55,7 @@ class NasdaqCompanyFilingsQueryParams(CompanyFilingsQueryParams):
                         }
                         for year in range(1994, datetime.now().year + 1)
                     ],
-                    key=lambda x: x["label"],
+                    key=lambda x: x["label"],  # type: ignore
                     reverse=True,
                 ),
                 "value": datetime.now().year,
