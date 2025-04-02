@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/company/AAPL/sec-filings?FormGroup=Annual+Reports&IsQuoteMedia=true&Year=2024&limit=100&sortColumn=filed&sortOrder=desc
+  response:
+    body:
+      string: '{"data":{"symbol":"AAPL","totalRecords":1,"latest":[{"label":"10-K","value":"https://app.quotemedia.com/data/downloadFiling?webmasterId=90423&ref=318680792&type=HTML&symbol=AAPL&cdn=a6ac3148f61462e1b7d60719ee317ef9&companyName=Apple+Inc.&formType=10-K&formDescription=Annual+report+pursuant+to+Section+13+or+15%28d%29&dateFiled=2024-11-01"},{"label":"10-Q","value":"https://app.quotemedia.com/data/downloadFiling?webmasterId=90423&ref=318878234&type=HTML&symbol=AAPL&cdn=88778d8faa1dedc3afb27fd38dc3d042&companyName=Apple+Inc.&formType=10-Q&formDescription=General+form+for+quarterly+reports+under+Section+13+or+15%28d%29&dateFiled=2025-01-31"}],"headers":{"companyName":"Company
+        Name","formType":"Form Type","filed":"Filed","period":"Period","view":"View"},"filterOptions":[{"group":"All","formtype":[]},{"group":"Annual
+        Reports","formtype":["10-K","ARS"]},{"group":"Quarterly Reports","formtype":["10-Q"]},{"group":"Proxies
+        and Info Statements","formtype":["PX14A6G","DEF 14A","DEFA14A"]},{"group":"Insider
+        Transactions","formtype":["4","3","SC 13G/A"]},{"group":"8-K Related","formtype":["8-K"]},{"group":"Registration
+        Statements","formtype":["S-1","S-1A","424B4","FWP","S-8"]},{"group":"Comment
+        Letters","formtype":["NO ACT","UPLOAD","CORRESP"]}],"rows":[{"companyName":"Apple
+        Inc.","reportingOwner":"","formType":"10-K","filed":"11/01/2024","period":"09/28/2024","view":{"htmlLink":"https://app.quotemedia.com/data/downloadFiling?webmasterId=90423&ref=318680792&type=HTML&symbol=AAPL&cdn=a6ac3148f61462e1b7d60719ee317ef9&companyName=Apple+Inc.&formType=10-K&formDescription=Annual+report+pursuant+to+Section+13+or+15%28d%29&dateFiled=2024-11-01","docLink":"https://app.quotemedia.com/data/downloadFiling?webmasterId=90423&ref=318680792&type=DOC&symbol=AAPL&cdn=a6ac3148f61462e1b7d60719ee317ef9&companyName=Apple+Inc.&formType=10-K&formDescription=Annual+report+pursuant+to+Section+13+or+15%28d%29&dateFiled=2024-11-01","pdfLink":"https://app.quotemedia.com/data/downloadFiling?webmasterId=90423&ref=318680792&type=PDF&symbol=AAPL&cdn=a6ac3148f61462e1b7d60719ee317ef9&companyName=Apple+Inc.&formType=10-K&formDescription=Annual+report+pursuant+to+Section+13+or+15%28d%29&dateFiled=2024-11-01","xbrLink":"https://api.quotemedia.com/supplement/filings/index.php?webmasterId=90423&ref=318680792&type=XBRL&symbol=AAPL&companyName=Apple%20Inc.&formType=10-K&formDescription=Annual%20report%20pursuant%20to%20Section%2013%20or%2015(d)&dateFiled=2024-11-01","ixbrlContent":"","xlsLink":"https://app.quotemedia.com/data/downloadFiling?webmasterId=90423&ref=318680792&type=XLS&symbol=AAPL&cdn=a6ac3148f61462e1b7d60719ee317ef9&companyName=Apple+Inc.&formType=10-K&formDescription=Annual+report+pursuant+to+Section+13+or+15%28d%29&dateFiled=2024-11-01","xBrlSubDoc":""}}]},"message":null,"status":{"rCode":200,"bCodeMessage":null,"developerMessage":null}}'
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '859'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 02 Apr 2025 22:20:49 GMT
+      Expires:
+      - Wed, 02 Apr 2025 22:20:49 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=45~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=e294982b87d9dd0de5b691c2d24701cc;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=D72D6B358606488CA1CFCFDDE415AC4D~000000000000000000000000000000~YAAQ25UeuPCnOeuVAQAAw76X+BuO/xwlzxEfQy2hfXEtd+Os3yjJJdPmn0cjd9nY/NeubQt45TSfKCfgZz245thNo5JEd2MbR986jU4jVVOQ8j1C1H7w2W9nM8TcgNjjHJHcr/8oV+nPtANdrN51B+iNoFSHo7Gzlwiug7pyyK0sYVYS54iHMYH+v9uJzOXguKU5HuLZY3TS4E7fOMSGctTR5ZjBAIE8KHvCxrltHp1pqBIyr/NPrO+KmfipwgxBLMuvAPPk6SgVcI+9FNkvaEQ0rLF96TlhI8zzm3NjIG+7IQC5PIDL+VtPn8RKC8KqerSfPdGKtbmj3y7jCxh6wV2moAIOmDVCfprdKENYQGMm7KZavRBw4KjdtDEXb15VYnVXRR/SqdhfTt1wv2yIEEuNFOO2Xes=;
+        Domain=.nasdaq.com; Path=/; Expires=Thu, 03 Apr 2025 00:20:48 GMT; Max-Age=7199
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '3'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '542'
+      gid:
+      - '103'
+      lang:
+      - en
+      rid:
+      - b06e2b24-562d-43d5-8fd0-fc7f3ba2ccb1
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1
