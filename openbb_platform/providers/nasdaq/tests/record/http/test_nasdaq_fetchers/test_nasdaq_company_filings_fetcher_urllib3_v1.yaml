@@ -1,0 +1,85 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/company/AAPL/sec-filings?FormGroup=Annual+Reports&IsQuoteMedia=true&Year=2024&limit=100&sortColumn=filed&sortOrder=desc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO1W32/aOhT+VyJLRbtKaOIkhYCEphRGbzU2KHS7laY9mNhpo2vszHZGq4r//R4n
+        MC1UnfrSh0r3geT4+Pz8/PmER0SJIWj4iPTDZi05GqI0XcyQh4w0hC9ZJhXVaIg9xIlh2qDht0cQ
+        18ya4qD7EUx/El4xWN4ZU+qh75OyPP1RScM2jBbkNJMb32bxqdwKLgmdFrwQt++3bL0h2jB1SUeD
+        IA6jjmL5KMJJLwn6g7BjHko2+vv606zT1DaylXUyKkakR7IIx0new3EvZHjdp72gjweMRbjP8kEH
+        UpZEPHwmGzZKy5Iz91Jkp51cqs21jWoLr1cTpjNVlKaQYpQKURHuKlZKZdyyUroiwrhGuiuWWQsX
+        R65ULj47CRN6Eg460BWDZhgdhUEYdzHuBhjtvBZAV68AUNJPwij+A0Bg0U9okhOCKaNZRPJ12M9p
+        lIBMIdJLALp6AtAFE0wBQlZvH+6Piigojz/sQdNuJShTL8PrDMDqRoDXdw/dMQJ+2vLwt8oAsXGz
+        cuqlhw71wc4URKeWQW1jWl399lDJVCGtYtEIcAIF28L6q33tageoe163pWtK3ypZlZb9nO/zmDrP
+        t+/2PH/t1hRxlk23bcPDbUiXK9Ryujqg9LzfVdtjoeR9wbRDBHUuRS6dlSGWLOKJ7+IGx2nvArST
+        D1MH5EZKrdQKeSl0ARA714oITbKm8XasGNYR/FZjB0cX/lGApPsR6rdDgB75wU7bdMluC20UsUme
+        L33VxTZZF9ua4zA+t/mn/yxqZdKOCDSwIZwZM8bypB3p89xJx9eg/LKYzdMJCOP5cvlhtYAgQC4l
+        t80Zt6lV096xtAeHhr9w6eZb4Djstsm2P9oDzzD2A+zbO/872YKBHyYHbUO4R7jyGz4rxL//j8f9
+        ePQQldkrIjKZj98aICXNXxGQxWT61gC5X6sngBTHgOjK1mXHgp/XcGi/gK/P/Wl5V74MmZvz5dHl
+        Oe76JAxe3DfYNp2DcOgdRCPhse8fJBzBQyornb2jfz2HQAEQ8LEUBtprptE9169IkpvZ6s2R5Fzx
+        VbWeyMwCtNvBBwNtmNbkFia2qDj3kIZvT1X/q1BjSUEdBoGH1lb+1Lak7CfjEkZ5S7/b/QctTg2R
+        IAsAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '859'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 02 Apr 2025 23:26:37 GMT
+      Expires:
+      - Wed, 02 Apr 2025 23:26:37 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=75~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=901f11c6d294abca4c90eaa80a059c27;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=CB8180E4E7DEA85FDA95C0327BB781CB~000000000000000000000000000000~YAAQ25UeuCu7O+uVAQAABf/T+BvOcaV9p3plNJPWo9MRC+Y+6FwfTaPLRucYm2+MG4oLsivg0m7h+DgDK0Ue0sk8xYTdlNRnER/DL5R27iI5+X4RlojjD5LAsU3IZuVyjOsLa01Fpqp5GxHUOge8WR0dZSOJfrIM/Fz7a3tRQKss2qzs76CVAGvU5U7WdNoePfJx2MBNOw3M0O+pdvrBA/e1JuI4ITaUeqkOpc+sbumxBGROWDPaNnb4I+6RhOqpOqah3lbVVkORE2e1heW/9RlCp0MlJwFRQeeT7OZBVwz2fsPlnKPSFFsOzS9t2PoU7auf0z3ZXLjjuc5sSpS9RZAYR6iPR22KA14ZMrurgUpOjpoDm9Fzpydefn3jL0UNSMR6iLzJmf4+628xBbrRme3I7L+zEAI=;
+        Domain=.nasdaq.com; Path=/; Expires=Thu, 03 Apr 2025 01:26:37 GMT; Max-Age=7200
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '3'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '619'
+      gid:
+      - '204'
+      lang:
+      - en
+      rid:
+      - 27fb7acd-7244-46d7-bcb0-334170e93cac
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

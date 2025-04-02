@@ -7,6 +7,7 @@ from openbb_core.app.service.user_service import UserService
 from openbb_nasdaq.models.calendar_dividend import NasdaqCalendarDividendFetcher
 from openbb_nasdaq.models.calendar_earnings import NasdaqCalendarEarningsFetcher
 from openbb_nasdaq.models.calendar_ipo import NasdaqCalendarIpoFetcher
+from openbb_nasdaq.models.company_filings import NasdaqCompanyFilingsFetcher
 from openbb_nasdaq.models.economic_calendar import NasdaqEconomicCalendarFetcher
 from openbb_nasdaq.models.equity_screener import NasdaqEquityScreenerFetcher
 from openbb_nasdaq.models.equity_search import NasdaqEquitySearchFetcher
@@ -123,5 +124,15 @@ def test_nasdaq_equity_screener_fetcher(credentials=test_credentials):
     params = {"mktcap": "large", "sector": "consumer_staples"}
 
     fetcher = NasdaqEquityScreenerFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_nasdaq_company_filings_fetcher(credentials=test_credentials):
+    """Test the Nasdaq Company Filings fetcher."""
+    params = {"symbol": "AAPL", "form_group": "annual", "year": 2024}
+
+    fetcher = NasdaqCompanyFilingsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

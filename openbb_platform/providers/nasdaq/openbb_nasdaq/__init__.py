@@ -4,6 +4,7 @@ from openbb_core.provider.abstract.provider import Provider
 from openbb_nasdaq.models.calendar_dividend import NasdaqCalendarDividendFetcher
 from openbb_nasdaq.models.calendar_earnings import NasdaqCalendarEarningsFetcher
 from openbb_nasdaq.models.calendar_ipo import NasdaqCalendarIpoFetcher
+from openbb_nasdaq.models.company_filings import NasdaqCompanyFilingsFetcher
 from openbb_nasdaq.models.economic_calendar import NasdaqEconomicCalendarFetcher
 from openbb_nasdaq.models.equity_screener import NasdaqEquityScreenerFetcher
 from openbb_nasdaq.models.equity_search import NasdaqEquitySearchFetcher
@@ -21,6 +22,7 @@ unmatched technology, insights and markets expertise.""",
         "CalendarDividend": NasdaqCalendarDividendFetcher,
         "CalendarEarnings": NasdaqCalendarEarningsFetcher,
         "CalendarIpo": NasdaqCalendarIpoFetcher,
+        "CompanyFilings": NasdaqCompanyFilingsFetcher,
         "EconomicCalendar": NasdaqEconomicCalendarFetcher,
         "EquitySearch": NasdaqEquitySearchFetcher,
         "EquityScreener": NasdaqEquityScreenerFetcher,
