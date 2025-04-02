@@ -12,7 +12,7 @@ from openbb_core.provider.standard_models.tips_yields import (
     TipsYieldsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class FredTipsYieldsQueryParams(TipsYieldsQueryParams):
