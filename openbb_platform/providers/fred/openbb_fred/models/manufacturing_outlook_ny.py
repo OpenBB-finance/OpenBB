@@ -368,7 +368,7 @@ class FredManufacturingOutlookNYQueryParams(ManufacturingOutlookTexasQueryParams
         description="The topic for the survey response.",
     )
     seasonally_adjusted: bool = Field(
-        default=True,
+        default=False,
         description="Whether the data is seasonally adjusted, default is False",
     )
     frequency: Optional[Literal["quarter", "annual"]] = Field(
