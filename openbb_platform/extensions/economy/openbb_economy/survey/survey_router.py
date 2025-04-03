@@ -134,6 +134,49 @@ async def manufacturing_outlook_texas(
 
 
 @router.command(
+    model="ManufacturingOutlookNY",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            parameters={
+                "topic": "hours_worked,new_orders",
+                "transform": "pc1",
+                "provider": "fred",
+                "seasonally_adjusted": True,
+            }
+        ),
+    ],
+    openapi_extra={
+        "widget_config": {
+            "name": "Empire State Manufacturing Survey",
+        }
+    },
+)
+async def manufacturing_outlook_ny(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the Empire State Manufacturing Survey.
+
+    It is a monthly survey of manufacturers in New York State conducted by the Federal Reserve Bank of New York.
+
+    Participants from across the state in a variety of industries respond to a questionnaire
+    and report the change in a variety of indicators from the previous month.
+
+    Respondents also state the likely direction of these same indicators six months ahead.
+    April 2002 is the first report, although survey data date back to July 2001.
+
+    The survey is sent on the first day of each month to the same pool of about 200
+    manufacturing executives in New York State, typically the president or CEO.
+
+    About 100 responses are received. Most are completed by the tenth, although surveys are accepted until the fifteenth.
+    """
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="NonFarmPayrolls",
     examples=[
         APIEx(parameters={"provider": "fred"}),

@@ -23,6 +23,9 @@ from openbb_fred.models.high_quality_market import (
 )
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
+from openbb_fred.models.manufacturing_outlook_ny import (
+    FredManufacturingOutlookNYFetcher,
+)
 from openbb_fred.models.manufacturing_outlook_texas import (
     FredManufacturingOutlookTexasFetcher,
 )
@@ -520,7 +523,7 @@ def test_fred_tips_yields_fetcher(credentials=test_credentials):
     params = {
         "start_date": datetime.date(2024, 7, 17),
         "end_date": datetime.date(2024, 7, 17),
-        "maturity": 5,
+        "maturity": "5",
     }
 
     fetcher = FredTipsYieldsFetcher()
@@ -538,5 +541,19 @@ def test_fred_commodity_spot_prices_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredCommoditySpotPricesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_manufacturing_outlook_ny_fetcher(credentials=test_credentials):
+    """Test FRED manufacturing outlook NY fetcher."""
+    params = {
+        "start_date": datetime.date(2024, 6, 30),
+        "end_date": datetime.date(2024, 10, 1),
+        "topic": "hours_worked",
+    }
+
+    fetcher = FredManufacturingOutlookNYFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
