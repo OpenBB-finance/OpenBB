@@ -14,19 +14,6 @@ from openbb_core.provider.standard_models.manufacturing_outlook_texas import (
 from openbb_core.provider.utils.errors import EmptyDataError, OpenBBError
 from pydantic import Field, field_validator
 
-[
-    "hours_worked",
-    "business_outlook",
-    "number_of_employees",
-    "inventories",
-    "prices_received",
-    "prices_paid",
-    "capital_expenditures",
-    "unfilled_orders",
-    "new_orders",
-    "shipments",
-    "delivery_time",
-]
 NY_MANUFACTURING_OUTLOOK = {
     "current_hours_worked": {
         "sa": {
@@ -425,11 +412,11 @@ class FredManufacturingOutlookNYQueryParams(ManufacturingOutlookTexasQueryParams
             topics = v
         if isinstance(v, str):
             topics = v.split(",")
-        for topic in topics:
-            if topic in NY_MANUFACTURING_OUTLOOK_CHOICES:
-                new_topics.append(topic)
+        for t in topics:
+            if t in NY_MANUFACTURING_OUTLOOK_CHOICES:
+                new_topics.append(t)
             else:
-                warn(f"Invalid topic: {topic}")
+                warn(f"Invalid topic: {t}")
         if not new_topics:
             new_topics = ["new_orders"]
 
