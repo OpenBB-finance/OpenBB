@@ -20,6 +20,9 @@ from openbb_fred.models.high_quality_market import (
 )
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
+from openbb_fred.models.manufacturing_outlook_ny import (
+    FredManufacturingOutlookNYFetcher,
+)
 from openbb_fred.models.manufacturing_outlook_texas import (
     FredManufacturingOutlookTexasFetcher,
 )
@@ -76,6 +79,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "DiscountWindowPrimaryCreditRate": FREDDiscountWindowPrimaryCreditRateFetcher,
         "EuropeanCentralBankInterestRates": FREDEuropeanCentralBankInterestRatesFetcher,
         "ICEBofA": FREDICEBofAFetcher,
+        "ManufacturingOutlookNY": FredManufacturingOutlookNYFetcher,
         "ManufacturingOutlookTexas": FredManufacturingOutlookTexasFetcher,
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
         "MortgageIndices": FredMortgageIndicesFetcher,
