@@ -457,14 +457,14 @@ class FredManufacturingOutlookNYFetcher(
         ids: list = []
         topics = query.topic.split(",")
         seasonality = "sa" if query.seasonally_adjusted is True else "not_sa"
-        for topic in topics:
+        for t in topics:
             future_series = list(
-                NY_MANUFACTURING_OUTLOOK.get("future_" + topic, {})
+                NY_MANUFACTURING_OUTLOOK.get("future_" + t, {})
                 .get(seasonality, {})
                 .values()
             )
             current_series = list(
-                NY_MANUFACTURING_OUTLOOK.get("current_" + topic, {})
+                NY_MANUFACTURING_OUTLOOK.get("current_" + t, {})
                 .get(seasonality, {})
                 .values()
             )
