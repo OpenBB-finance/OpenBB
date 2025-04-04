@@ -51,7 +51,7 @@ class ROUTER_fixedincome_government(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        maturity : Optional[Literal[5, 10, 20, 30]]
+        maturity : Optional[Literal['5', '10', '20', '30']]
             The maturity of the security in years - 5, 10, 20, 30 - defaults to all. Note that the maturity is the tenor of the security, not the time to maturity. (provider: fred)
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
             Frequency aggregation to convert high frequency data to lower frequency.
@@ -120,7 +120,7 @@ class ROUTER_fixedincome_government(Container):
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.government.tips_yields(provider='fred')
-        >>> obb.fixedincome.government.tips_yields(maturity=10, provider='fred')
+        >>> obb.fixedincome.government.tips_yields(maturity='10', provider='fred')
         """  # noqa: E501
 
         return self._run(
