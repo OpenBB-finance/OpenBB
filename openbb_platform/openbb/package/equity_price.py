@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
@@ -27,7 +27,7 @@ class ROUTER_equity_price(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
             ),
@@ -52,16 +52,19 @@ class ROUTER_equity_price(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.
+        symbol : Union[str, list[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.
-        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'], str, Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
+        interval : str
             Time interval of the data to return. (provider: fmp, intrinio, polygon, tiingo, yfinance)
+            Choices for fmp: '1m', '5m', '15m', '30m', '1h', '4h', '1d'
+            Choices for intrinio: '1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'
+            Choices for yfinance: '1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q'
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
         end_time : Optional[datetime.time]
@@ -70,8 +73,10 @@ class ROUTER_equity_price(Container):
             Timezone of the data, in the IANA format (Continent/City). (provider: intrinio)
         source : Literal['realtime', 'delayed', 'nasdaq_basic']
             The source of the data. (provider: intrinio)
-        adjustment : Union[Literal['splits_only', 'unadjusted'], Literal['splits_only', 'splits_and_dividends']]
+        adjustment : str
             The adjustment factor to apply. Default is splits only. (provider: polygon, yfinance)
+            Choices for polygon: 'splits_only', 'unadjusted'
+            Choices for yfinance: 'splits_only', 'splits_and_dividends'
         extended_hours : bool
             Include Pre and Post market data. (provider: polygon, yfinance)
         sort : Literal['asc', 'desc']
@@ -84,12 +89,12 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : List[EquityHistorical]
+            results : list[EquityHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -259,32 +264,32 @@ class ROUTER_equity_price(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: polygon.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['polygon']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: polygon.
         limit : int
             The number of data entries to return. Up to ten million records will be returned. Pagination occurs in groups of 50,000. Remaining limit values will always return 50,000 more records unless it is the last page. High volume tickers will require multiple max requests for a single day's NBBO records. Expect stocks, like SPY, to approach 1GB in size, per day, as a raw CSV. Splitting large requests into chunks is recommended for full-day requests of high-volume symbols. (provider: polygon)
-        date : Optional[datetime.date]
+        date : Optional[date]
             A specific date to get data for. Use bracketed the timestamp parameters to specify exact time ranges. (provider: polygon)
-        timestamp_lt : Optional[Union[datetime.datetime, str]]
+        timestamp_lt : Union[datetime, str, None]
             Query by datetime, less than. Either a date with the format 'YYYY-MM-DD' or a TZ-aware timestamp string, 'YYYY-MM-DDTH:M:S.000000000-04:00'. Include all nanoseconds and the 'T' between the day and hour. (provider: polygon)
-        timestamp_gt : Optional[Union[datetime.datetime, str]]
+        timestamp_gt : Union[datetime, str, None]
             Query by datetime, greater than. Either a date with the format 'YYYY-MM-DD' or a TZ-aware timestamp string, 'YYYY-MM-DDTH:M:S.000000000-04:00'. Include all nanoseconds and the 'T' between the day and hour. (provider: polygon)
-        timestamp_lte : Optional[Union[datetime.datetime, str]]
+        timestamp_lte : Union[datetime, str, None]
             Query by datetime, less than or equal to. Either a date with the format 'YYYY-MM-DD' or a TZ-aware timestamp string, 'YYYY-MM-DDTH:M:S.000000000-04:00'. Include all nanoseconds and the 'T' between the day and hour. (provider: polygon)
-        timestamp_gte : Optional[Union[datetime.datetime, str]]
+        timestamp_gte : Union[datetime, str, None]
             Query by datetime, greater than or equal to. Either a date with the format 'YYYY-MM-DD' or a TZ-aware timestamp string, 'YYYY-MM-DDTH:M:S.000000000-04:00'. Include all nanoseconds and the 'T' between the day and hour. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results : List[EquityNBBO]
+            results : list[EquityNBBO]
                 Serializable results.
-            provider : Optional[Literal['polygon']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -297,11 +302,9 @@ class ROUTER_equity_price(Container):
         ask : float
             The last ask price.
         ask_size : int
-
-                The ask size. This represents the number of round lot orders at the given ask price.
+            The ask size. This represents the number of round lot orders at the given ask price.
                 The normal round lot size is 100 shares.
                 An ask size of 2 means there are 200 shares available to purchase at the given ask price.
-
         bid_size : int
             The bid size in round lots.
         bid : float
@@ -310,9 +313,9 @@ class ROUTER_equity_price(Container):
             The exchange ID for the bid.
         tape : Optional[str]
             The exchange tape. (provider: polygon)
-        conditions : Optional[Union[str, List[int], List[str]]]
+        conditions : Optional[Union[str, list[int], list[str]]]
             A list of condition codes. (provider: polygon)
-        indicators : Optional[List[int]]
+        indicators : Optional[list[int]]
             A list of indicator codes. (provider: polygon)
         sequence_num : Optional[int]
             The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11) (provider: polygon)
@@ -351,7 +354,7 @@ class ROUTER_equity_price(Container):
     def performance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
@@ -368,20 +371,20 @@ class ROUTER_equity_price(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
-        provider : Optional[Literal['fmp']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
 
         Returns
         -------
         OBBject
-            results : List[PricePerformance]
+            results : list[PricePerformance]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -455,7 +458,7 @@ class ROUTER_equity_price(Container):
     def quote(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
@@ -472,22 +475,22 @@ class ROUTER_equity_price(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
-        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         source : Literal['iex', 'bats', 'bats_delayed', 'utp_delayed', 'cta_a_delayed', 'cta_b_delayed', 'intrinio_mx', 'intrinio_mx_plus', 'delayed_sip']
             Source of the data. (provider: intrinio)
 
         Returns
         -------
         OBBject
-            results : List[EquityQuote]
+            results : list[EquityQuote]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -515,11 +518,11 @@ class ROUTER_equity_price(Container):
             This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
         ask_exchange : Optional[str]
             The specific trading venue where the sale order was placed.
-        quote_conditions : Optional[Union[str, int, List[str], List[int]]]
+        quote_conditions : Optional[Union[str, int, list[str], list[int]]]
             Conditions or condition codes applicable to the quote.
-        quote_indicators : Optional[Union[str, int, List[str], List[int]]]
+        quote_indicators : Optional[Union[str, int, list[str], list[int]]]
             Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
-        sales_conditions : Optional[Union[str, int, List[str], List[int]]]
+        sales_conditions : Optional[Union[str, int, list[str], list[int]]]
             Conditions or condition codes applicable to the sale.
         sequence_number : Optional[int]
             The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).

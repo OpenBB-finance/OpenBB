@@ -43,50 +43,51 @@ class ROUTER_economy_gdp(Container):
     ) -> OBBject:
         """Get Forecasted GDP Data.
 
-        Parameters
-        ----------
-        start_date : Union[date, None, str]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[date, None, str]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['oecd']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : str
-            Country, or countries, to get forward GDP projections for. Default is all. Multiple comma separated items allowed. (provider: oecd)
-        frequency : Literal['annual', 'quarter']
-            Frequency of the data, default is annual. (provider: oecd)
-        units : Literal['current_prices', 'volume', 'capita', 'growth', 'deflator']
-            Units of the data, default is volume (chain linked volume, 2015).
-        'current_prices', 'volume', and 'capita' are expressed in USD; 'growth' as a percent; 'deflator' as an index. (provider: oecd)
+                Parameters
+                ----------
+                provider : str
+                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+                start_date : Union[date, None, str]
+                    Start date of the data, in YYYY-MM-DD format.
+                end_date : Union[date, None, str]
+                    End date of the data, in YYYY-MM-DD format.
+                country : str
+                    Country, or countries, to get forward GDP projections for. Default is all. Multiple comma separated items allowed. (provider: oecd)
+                frequency : Literal['annual', 'quarter']
+                    Frequency of the data, default is annual. (provider: oecd)
+                units : Literal['current_prices', 'volume', 'capita', 'growth', 'deflator']
+                    Units of the data, default is volume (chain linked volume, 2015).
+        'current_prices', 'volume', and 'capita' are expressed in USD;
+                    'deflator' as an index. (provider: oecd)
 
-        Returns
-        -------
-        OBBject
-            results : List[GdpForecast]
-                Serializable results.
-            provider : Optional[Literal['oecd']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+                Returns
+                -------
+                OBBject
+                    results : list[GdpForecast]
+                        Serializable results.
+                    provider : Optional[str]
+                        Provider name.
+                    warnings : Optional[list[Warning_]]
+                        list of warnings.
+                    chart : Optional[Chart]
+                        Chart object.
+                    extra : Dict[str, Any]
+                        Extra info.
 
-        GdpForecast
-        -----------
-        date : date
-            The date of the data.
-        country : str
-            None
-        value : Union[int, float]
-            Forecasted GDP value for the country and date.
+                GdpForecast
+                -----------
+                date : date
+                    The date of the data.
+                country : str
+                    None
+                value : Union[int, float]
+                    Forecasted GDP value for the country and date.
 
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.economy.gdp.forecast(provider='oecd')
-        >>> obb.economy.gdp.forecast(country='united_states,germany,france', frequency='annual', units='capita', provider='oecd')
+                Examples
+                --------
+                >>> from openbb import obb
+                >>> obb.economy.gdp.forecast(provider='oecd')
+                >>> obb.economy.gdp.forecast(country='united_states,germany,france', frequency='annual', units='capita', provider='oecd')
         """  # noqa: E501
 
         return self._run(
@@ -194,12 +195,12 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['econdb', 'oecd']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
         country : str
             The country to get data.Use 'all' to get data for all available countries. Multiple comma separated items allowed. (provider: econdb, oecd)
         use_cache : bool
@@ -214,12 +215,12 @@ class ROUTER_economy_gdp(Container):
         Returns
         -------
         OBBject
-            results : List[GdpNominal]
+            results : list[GdpNominal]
                 Serializable results.
-            provider : Optional[Literal['econdb', 'oecd']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -355,12 +356,12 @@ class ROUTER_economy_gdp(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['econdb', 'oecd']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, oecd.
         country : str
             The country to get data.Use 'all' to get data for all available countries. Multiple comma separated items allowed. (provider: econdb, oecd)
         use_cache : bool
@@ -371,12 +372,12 @@ class ROUTER_economy_gdp(Container):
         Returns
         -------
         OBBject
-            results : List[GdpReal]
+            results : list[GdpReal]
                 Serializable results.
-            provider : Optional[Literal['econdb', 'oecd']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

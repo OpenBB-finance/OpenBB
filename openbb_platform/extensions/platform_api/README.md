@@ -567,7 +567,7 @@ The file can be served at any time by visiting the URL (host address will vary):
 http://127.0.0.1:6900/widgets.json
 ```
 
-When launched as `openbb-api --editiable`, a file will be stored to disk. By default, that location is:
+When launched as `openbb-api --editable`, a file will be stored to disk. By default, that location is:
 
 ```sh
 /Path/to/environments/envs/obb/assets/widgets.json

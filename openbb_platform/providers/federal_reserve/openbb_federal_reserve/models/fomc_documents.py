@@ -138,7 +138,7 @@ class FederalReserveFomcDocumentsFetcher(
 
     @staticmethod
     def transform_query(
-        params: dict[str, Any]
+        params: dict[str, Any],
     ) -> FederalReserveFomcDocumentsQueryParams:
         """Transform query."""
         return FederalReserveFomcDocumentsQueryParams(**params)

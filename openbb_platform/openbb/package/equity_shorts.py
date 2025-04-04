@@ -35,31 +35,31 @@ class ROUTER_equity_shorts(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         limit : Optional[int]
 
-                Limit the number of reports to parse, from most recent.
-                Approximately 24 reports per year, going back to 2009.
-                 (provider: sec)
+                    Limit the number of reports to parse, from most recent.
+                    Approximately 24 reports per year, going back to 2009.
+                     (provider: sec)
         skip_reports : Optional[int]
 
-                Skip N number of reports from current. A value of 1 will skip the most recent report.
-                 (provider: sec)
+                    Skip N number of reports from current. A value of 1 will skip the most recent report.
+                     (provider: sec)
         use_cache : Optional[bool]
             Whether or not to use cache for the request, default is True. Each reporting period is a separate URL, new reports will be added to the cache. (provider: sec)
 
         Returns
         -------
         OBBject
-            results : List[EquityFTD]
+            results : list[EquityFTD]
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

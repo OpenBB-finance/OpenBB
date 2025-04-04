@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
@@ -30,13 +30,13 @@ class ROUTER_equity_estimates(Container):
     def analyst_search(
         self,
         analyst_name: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga."
             ),
         ] = None,
         firm_name: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga."
             ),
@@ -53,14 +53,14 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        analyst_name : Union[str, None, List[Optional[str]]]
-            Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.
-        firm_name : Union[str, None, List[Optional[str]]]
-            Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.
-        provider : Optional[Literal['benzinga']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga.
+        analyst_name : Union[str, None, list[Optional[str]]]
+            Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.
+        firm_name : Union[str, None, list[Optional[str]]]
+            Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.
         analyst_ids : Optional[str]
-            List of analyst IDs to return. Multiple comma separated items allowed. (provider: benzinga)
+            list of analyst IDs to return. Multiple comma separated items allowed. (provider: benzinga)
         firm_ids : Optional[str]
             Firm IDs to return. Multiple comma separated items allowed. (provider: benzinga)
         limit : Optional[int]
@@ -73,12 +73,12 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : List[AnalystSearch]
+            results : list[AnalystSearch]
                 Serializable results.
-            provider : Optional[Literal['benzinga']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -246,7 +246,7 @@ class ROUTER_equity_estimates(Container):
     def consensus(
         self,
         symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
@@ -263,22 +263,22 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
-        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
+        symbol : Union[str, None, list[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         industry_group_number : Optional[int]
             The Zacks industry group number. (provider: intrinio)
 
         Returns
         -------
         OBBject
-            results : List[PriceTargetConsensus]
+            results : list[PriceTargetConsensus]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -357,7 +357,7 @@ class ROUTER_equity_estimates(Container):
     def forward_ebitda(
         self,
         symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
             ),
@@ -374,13 +374,12 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
+        symbol : Union[str, None, list[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
         fiscal_period : Optional[Literal['annual', 'quarter']]
-            The future fiscal period to retrieve estimates for. (provider: fmp);
-            Filter for only full-year or quarterly estimates. (provider: intrinio)
+            The future fiscal period to retrieve estimates for. (provider: fmp)
         limit : Optional[int]
             The number of data entries to return. (provider: fmp)
         include_historical : bool
@@ -391,12 +390,12 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : List[ForwardEbitdaEstimates]
+            results : list[ForwardEbitdaEstimates]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -471,7 +470,7 @@ class ROUTER_equity_estimates(Container):
     def forward_eps(
         self,
         symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
             ),
@@ -488,12 +487,13 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
-        fiscal_period : Optional[Union[Literal['annual', 'quarter'], Literal['fy', 'q1', 'q2', 'q3', 'q4']]]
+        symbol : Union[str, None, list[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
+        fiscal_period : str
             The future fiscal period to retrieve estimates for. (provider: fmp, intrinio)
+            Choices for fmp: 'annual', 'quarter'
         limit : Optional[int]
             The number of data entries to return. (provider: fmp)
         include_historical : bool
@@ -508,12 +508,12 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : List[ForwardEpsEstimates]
+            results : list[ForwardEpsEstimates]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -593,7 +593,7 @@ class ROUTER_equity_estimates(Container):
     def forward_pe(
         self,
         symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
@@ -610,20 +610,20 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
-        provider : Optional[Literal['intrinio']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
+        symbol : Union[str, None, list[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
 
         Returns
         -------
         OBBject
-            results : List[ForwardPeEstimates]
+            results : list[ForwardPeEstimates]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -686,7 +686,7 @@ class ROUTER_equity_estimates(Container):
     def forward_sales(
         self,
         symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
@@ -703,10 +703,10 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
-        provider : Optional[Literal['intrinio']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
+        symbol : Union[str, None, list[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         fiscal_year : Optional[int]
             The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: intrinio)
         fiscal_period : Optional[Literal['fy', 'q1', 'q2', 'q3', 'q4']]
@@ -719,12 +719,12 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : List[ForwardSalesEstimates]
+            results : list[ForwardSalesEstimates]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -811,7 +811,7 @@ class ROUTER_equity_estimates(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
@@ -828,10 +828,10 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
-        provider : Optional[Literal['fmp']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         period : Literal['quarter', 'annual']
             Time period of the data to return. (provider: fmp)
         limit : Optional[int]
@@ -840,12 +840,12 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : List[AnalystEstimates]
+            results : list[AnalystEstimates]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -929,7 +929,7 @@ class ROUTER_equity_estimates(Container):
     def price_target(
         self,
         symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp."
             ),
@@ -949,31 +949,31 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[Optional[str]]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp.
+        symbol : Union[str, None, list[Optional[str]]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['benzinga', 'fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp.
         page : Optional[int]
             Page offset. For optimization, performance and technical reasons, page offsets are limited from 0 - 100000. Limit the query results by other parameters such as date. Used in conjunction with the limit and date parameters. (provider: benzinga)
-        date : Optional[datetime.date]
+        date : Optional[date]
             Date for calendar data, shorthand for date_from and date_to. (provider: benzinga)
-        start_date : Optional[datetime.date]
+        start_date : Optional[date]
             Start date of the data, in YYYY-MM-DD format. (provider: benzinga)
-        end_date : Optional[datetime.date]
+        end_date : Optional[date]
             End date of the data, in YYYY-MM-DD format. (provider: benzinga)
-        updated : Optional[Union[datetime.date, int]]
+        updated : Union[date, int, None]
             Records last Updated Unix timestamp (UTC). This will force the sort order to be Greater Than or Equal to the timestamp indicated. The date can be a date string or a Unix timestamp. The date string must be in the format of YYYY-MM-DD. (provider: benzinga)
         importance : Optional[int]
             Importance level to filter by. Uses Greater Than or Equal To the importance indicated (provider: benzinga)
         action : Optional[Literal['downgrades', 'maintains', 'reinstates', 'reiterates', 'upgrades', 'assumes', 'initiates', 'terminates', 'removes', 'suspends', 'firm_dissolved']]
             Filter by a specific action_company. (provider: benzinga)
-        analyst_ids : Optional[Union[str, List[str]]]
+        analyst_ids : Union[str, list[str], None]
             Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple comma separated items allowed. (provider: benzinga)
-        firm_ids : Optional[Union[str, List[str]]]
+        firm_ids : Union[str, list[str], None]
             Comma-separated list of firm IDs. Multiple comma separated items allowed. (provider: benzinga)
-        fields : Optional[Union[str, List[str]]]
+        fields : Union[str, list[str], None]
             Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. (provider: benzinga)
         with_grade : bool
             Include upgrades and downgrades in the response. (provider: fmp)
@@ -981,12 +981,12 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : List[PriceTarget]
+            results : list[PriceTarget]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

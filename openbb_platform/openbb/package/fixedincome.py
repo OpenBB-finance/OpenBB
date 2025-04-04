@@ -57,96 +57,96 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['yield', 'yield_to_worst', 'total_return', 'oas']
             The type of series. OAS is the option-adjusted spread. Default is yield.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         category : Literal['high_yield', 'us', 'emerging_markets']
             The type of index category. Used in conjunction with 'index', default is 'us'. (provider: fred)
         index : str
             The specific index to query. Used in conjunction with 'category' and 'index_type', default is 'yield_curve'.
-                Possible values are:
-                    corporate
-                    seasoned_corporate
-                    liquid_corporate
-                    yield_curve
-                    crossover
-                    public_sector
-                    private_sector
-                    non_financial
-                    high_grade
-                    high_yield
-                    liquid_emea
-                    emea
-                    liquid_asia
-                    asia
-                    liquid_latam
-                    latam
-                    liquid_aaa
-                    liquid_bbb
-                    aaa
-                    aa
-                    a
-                    bbb
-                    bb
-                    b
-                    ccc
+                    Possible values are:
+                        corporate
+                        seasoned_corporate
+                        liquid_corporate
+                        yield_curve
+                        crossover
+                        public_sector
+                        private_sector
+                        non_financial
+                        high_grade
+                        high_yield
+                        liquid_emea
+                        emea
+                        liquid_asia
+                        asia
+                        liquid_latam
+                        latam
+                        liquid_aaa
+                        liquid_bbb
+                        aaa
+                        aa
+                        a
+                        bbb
+                        bb
+                        b
+                        ccc
 
-                 Multiple comma separated items allowed. (provider: fred)
+                     Multiple comma separated items allowed. (provider: fred)
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
-                Frequency aggregation to convert daily data to lower frequency.
-                    None = No change
-                    a = Annual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    d = Daily
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
-                 (provider: fred)
+                    Frequency aggregation to convert daily data to lower frequency.
+                        None = No change
+                        a = Annual
+                        q = Quarterly
+                        m = Monthly
+                        w = Weekly
+                        d = Daily
+                        wef = Weekly, Ending Friday
+                        weth = Weekly, Ending Thursday
+                        wew = Weekly, Ending Wednesday
+                        wetu = Weekly, Ending Tuesday
+                        wem = Weekly, Ending Monday
+                        wesu = Weekly, Ending Sunday
+                        wesa = Weekly, Ending Saturday
+                        bwew = Biweekly, Ending Wednesday
+                        bwem = Biweekly, Ending Monday
+                     (provider: fred)
         aggregation_method : Literal['avg', 'sum', 'eop']
 
-                A key that indicates the aggregation method used for frequency aggregation.
-                This parameter has no affect if the frequency parameter is not set, default is 'avg'.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
+                    A key that indicates the aggregation method used for frequency aggregation.
+                    This parameter has no affect if the frequency parameter is not set, default is 'avg'.
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
-                 (provider: fred)
+                    Transformation type
+                        None = No transformation
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[BondIndices]
+            results : list[BondIndices]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -271,64 +271,64 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         index : Union[Literal['primary', 'ltv_lte_80', 'ltv_gt_80', 'conforming_30y', 'conforming_30y_na', 'jumbo_30y', 'fha_30y', 'va_30y', 'usda_30y', 'conforming_15y', 'ltv_lte80_fico_ge740', 'ltv_lte80_fico_a720b739', 'ltv_lte80_fico_a700b719', 'ltv_lte80_fico_a680b699', 'ltv_lte80_fico_lt680', 'ltv_gt80_fico_ge740', 'ltv_gt80_fico_a720b739', 'ltv_gt80_fico_a700b719', 'ltv_gt80_fico_a680b699', 'ltv_gt80_fico_lt680'], str]
             The specific index, or index group, to query. Default is the 'primary' group. Multiple comma separated items allowed. (provider: fred)
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
-                Frequency aggregation to convert daily data to lower frequency.
-                    None = No change
-                    a = Annual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    d = Daily
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
-                 (provider: fred)
+                    Frequency aggregation to convert daily data to lower frequency.
+                        None = No change
+                        a = Annual
+                        q = Quarterly
+                        m = Monthly
+                        w = Weekly
+                        d = Daily
+                        wef = Weekly, Ending Friday
+                        weth = Weekly, Ending Thursday
+                        wew = Weekly, Ending Wednesday
+                        wetu = Weekly, Ending Tuesday
+                        wem = Weekly, Ending Monday
+                        wesu = Weekly, Ending Sunday
+                        wesa = Weekly, Ending Saturday
+                        bwew = Biweekly, Ending Wednesday
+                        bwem = Biweekly, Ending Monday
+                     (provider: fred)
         aggregation_method : Literal['avg', 'sum', 'eop']
 
-                A key that indicates the aggregation method used for frequency aggregation.
-                This parameter has no affect if the frequency parameter is not set, default is 'avg'.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
+                    A key that indicates the aggregation method used for frequency aggregation.
+                    This parameter has no affect if the frequency parameter is not set, default is 'avg'.
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
-                 (provider: fred)
+                    Transformation type
+                        None = No transformation
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[MortgageIndices]
+            results : list[MortgageIndices]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -442,59 +442,59 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['federal_reserve', 'fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
-                Frequency aggregation to convert daily data to lower frequency.
-                    a = Annual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
-                 (provider: fred)
+                    Frequency aggregation to convert daily data to lower frequency.
+                        a = Annual
+                        q = Quarterly
+                        m = Monthly
+                        w = Weekly
+                        wef = Weekly, Ending Friday
+                        weth = Weekly, Ending Thursday
+                        wew = Weekly, Ending Wednesday
+                        wetu = Weekly, Ending Tuesday
+                        wem = Weekly, Ending Monday
+                        wesu = Weekly, Ending Sunday
+                        wesa = Weekly, Ending Saturday
+                        bwew = Biweekly, Ending Wednesday
+                        bwem = Biweekly, Ending Monday
+                     (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
 
-                A key that indicates the aggregation method used for frequency aggregation.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
+                    A key that indicates the aggregation method used for frequency aggregation.
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
-                 (provider: fred)
+                    Transformation type
+                        None = No transformation
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[SOFR]
+            results : list[SOFR]
                 Serializable results.
-            provider : Optional[Literal['federal_reserve', 'fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

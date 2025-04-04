@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from annotated_types import Ge
 from openbb_core.app.model.field import OpenBBField
@@ -65,35 +65,35 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
         symbol : str
             Symbol to get data for.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
         period : Literal['annual', 'quarter']
             Time period of the data to return. (provider: fmp, intrinio, polygon, yfinance)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
-        filing_date : Optional[datetime.date]
+        filing_date : Optional[date]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[datetime.date]
+        filing_date_lt : Optional[date]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[datetime.date]
+        filing_date_lte : Optional[date]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[datetime.date]
+        filing_date_gt : Optional[date]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[datetime.date]
+        filing_date_gte : Optional[date]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[datetime.date]
+        period_of_report_date : Optional[date]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[datetime.date]
+        period_of_report_date_lt : Optional[date]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[datetime.date]
+        period_of_report_date_lte : Optional[date]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[datetime.date]
+        period_of_report_date_gt : Optional[date]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[datetime.date]
+        period_of_report_date_gte : Optional[date]
             Period of report date greater than or equal to the given date. (provider: polygon)
         include_sources : bool
             Whether to include the sources of the financial statement. (provider: polygon)
@@ -105,12 +105,12 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : List[BalanceSheet]
+            results : list[BalanceSheet]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -437,24 +437,24 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         period : Literal['annual', 'quarter']
             Time period of the data to return. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[BalanceSheetGrowth]
+            results : list[BalanceSheetGrowth]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -603,35 +603,39 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
         symbol : str
             Symbol to get data for.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
-        period : Union[Literal['annual', 'quarter'], Literal['annual', 'quarter', 'ttm', 'ytd'], Literal['annual', 'quarter', 'ttm']]
+        period : str
             Time period of the data to return. (provider: fmp, intrinio, polygon, yfinance)
+            Choices for fmp: 'annual', 'quarter'
+            Choices for intrinio: 'annual', 'quarter', 'ttm', 'ytd'
+            Choices for polygon: 'annual', 'quarter', 'ttm'
+            Choices for yfinance: 'annual', 'quarter'
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
-        filing_date : Optional[datetime.date]
+        filing_date : Optional[date]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[datetime.date]
+        filing_date_lt : Optional[date]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[datetime.date]
+        filing_date_lte : Optional[date]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[datetime.date]
+        filing_date_gt : Optional[date]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[datetime.date]
+        filing_date_gte : Optional[date]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[datetime.date]
+        period_of_report_date : Optional[date]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[datetime.date]
+        period_of_report_date_lt : Optional[date]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[datetime.date]
+        period_of_report_date_lte : Optional[date]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[datetime.date]
+        period_of_report_date_gt : Optional[date]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[datetime.date]
+        period_of_report_date_gte : Optional[date]
             Period of report date greater than or equal to the given date. (provider: polygon)
         include_sources : bool
             Whether to include the sources of the financial statement. (provider: polygon)
@@ -643,12 +647,12 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : List[CashFlowStatement]
+            results : list[CashFlowStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -885,24 +889,24 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         period : Literal['annual', 'quarter']
             Time period of the data to return. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[CashFlowStatementGrowth]
+            results : list[CashFlowStatementGrowth]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -1037,26 +1041,26 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
         symbol : str
             Symbol to get data for.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio)
 
         Returns
         -------
         OBBject
-            results : List[HistoricalDividends]
+            results : list[HistoricalDividends]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -1127,20 +1131,20 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
         OBBject
-            results : List[HistoricalEmployees]
+            results : list[HistoricalEmployees]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -1197,15 +1201,6 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Optional[str], OpenBBField(description="Symbol to get data for.")
         ] = None,
-        form_type: Annotated[
-            Union[str, None, List[Optional[str]]],
-            OpenBBField(
-                description="Filter by form type. Check the data provider for available types. Multiple comma separated items allowed for provider(s): sec."
-            ),
-        ] = None,
-        limit: Annotated[
-            int, OpenBBField(description="The number of data entries to return.")
-        ] = 100,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "sec"]],
             OpenBBField(
@@ -1214,31 +1209,26 @@ class ROUTER_equity_fundamental(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.
-
-        SEC filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
-        Foreign Investment Disclosures and others. The annual 10-K report is required to be
-        filed annually and includes the company's financial statements, management discussion and analysis,
-        and audited financial statements.
-
+        """Get public company filings.
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
         symbol : Optional[str]
             Symbol to get data for.
-        form_type : Union[str, None, List[Optional[str]]]
-            Filter by form type. Check the data provider for available types. Multiple comma separated items allowed for provider(s): sec.
-        limit : int
-            The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
-        start_date : Optional[datetime.date]
+        form_type : Optional[str]
+            SEC form type to filter by. (provider: fmp, intrinio)
+        limit : Optional[int]
+            Number of results to return. (provider: fmp);
+            The number of data entries to return. (provider: sec)
+        start_date : Optional[date]
             Start date of the data, in YYYY-MM-DD format. (provider: intrinio, sec)
-        end_date : Optional[datetime.date]
+        end_date : Optional[date]
             End date of the data, in YYYY-MM-DD format. (provider: intrinio, sec)
         thea_enabled : Optional[bool]
             Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)
-        cik : Optional[Union[int, str]]
+        cik : Union[int, str, None]
             Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec)
         use_cache : bool
             Whether or not to use cache.  If True, cache will store for one day. (provider: sec)
@@ -1246,12 +1236,12 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : List[CompanyFilings]
+            results : list[CompanyFilings]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -1261,18 +1251,18 @@ class ROUTER_equity_fundamental(Container):
         --------------
         filing_date : date
             The date of the filing.
-        accepted_date : Optional[datetime]
-            Accepted date of the filing.
-        symbol : Optional[str]
-            Symbol representing the entity requested in the data.
-        cik : Optional[str]
-            Central Index Key (CIK) for the requested entity.
         report_type : Optional[str]
             Type of filing.
-        filing_url : Optional[str]
-            URL to the filing page.
         report_url : str
             URL to the actual report.
+        filing_url : Optional[str]
+            URL to the filing page. (provider: fmp, intrinio)
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data. (provider: fmp)
+        cik : Optional[str]
+            Central Index Key (CIK) for the requested entity. (provider: fmp)
+        accepted_date : Optional[datetime]
+            Accepted date of the filing. (provider: fmp, intrinio)
         id : Optional[str]
             Intrinio ID of the filing. (provider: intrinio)
         period_end_date : Optional[date]
@@ -1285,6 +1275,8 @@ class ROUTER_equity_fundamental(Container):
             Industry group of the company. (provider: intrinio)
         industry_category : Optional[str]
             Industry category of the company. (provider: intrinio)
+        word_count : Optional[int]
+            Number of words in the filing, if available. (provider: intrinio)
         report_date : Optional[date]
             The date of the filing. (provider: sec)
         act : Optional[Union[int, str]]
@@ -1331,8 +1323,6 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "form_type": form_type,
-                    "limit": limit,
                 },
                 extra_params=kwargs,
                 info={
@@ -1714,13 +1704,13 @@ class ROUTER_equity_fundamental(Container):
     def historical_attributes(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         tag: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
             ),
@@ -1759,9 +1749,11 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
+        symbol : Union[str, list[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
-        tag : Union[str, List[str]]
+        tag : Union[str, list[str]]
             Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
@@ -1775,18 +1767,16 @@ class ROUTER_equity_fundamental(Container):
             Filter by type, when applicable.
         sort : Optional[Literal['asc', 'desc']]
             Sort order.
-        provider : Optional[Literal['intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
 
         Returns
         -------
         OBBject
-            results : List[HistoricalAttributes]
+            results : list[HistoricalAttributes]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -1858,22 +1848,22 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         limit : Optional[int]
             The number of data entries to return. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[HistoricalEps]
+            results : list[HistoricalEps]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -1942,20 +1932,20 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
         OBBject
-            results : List[HistoricalSplits]
+            results : list[HistoricalSplits]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -2016,35 +2006,39 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
         symbol : str
             Symbol to get data for.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
-        period : Union[Literal['annual', 'quarter'], Literal['annual', 'quarter', 'ttm', 'ytd'], Literal['annual', 'quarter', 'ttm']]
+        period : str
             Time period of the data to return. (provider: fmp, intrinio, polygon, yfinance)
+            Choices for fmp: 'annual', 'quarter'
+            Choices for intrinio: 'annual', 'quarter', 'ttm', 'ytd'
+            Choices for polygon: 'annual', 'quarter', 'ttm'
+            Choices for yfinance: 'annual', 'quarter'
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
-        filing_date : Optional[datetime.date]
+        filing_date : Optional[date]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[datetime.date]
+        filing_date_lt : Optional[date]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[datetime.date]
+        filing_date_lte : Optional[date]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[datetime.date]
+        filing_date_gt : Optional[date]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[datetime.date]
+        filing_date_gte : Optional[date]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[datetime.date]
+        period_of_report_date : Optional[date]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[datetime.date]
+        period_of_report_date_lt : Optional[date]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[datetime.date]
+        period_of_report_date_lte : Optional[date]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[datetime.date]
+        period_of_report_date_gt : Optional[date]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[datetime.date]
+        period_of_report_date_gte : Optional[date]
             Period of report date greater than or equal to the given date. (provider: polygon)
         include_sources : Optional[bool]
             Whether to include the sources of the financial statement. (provider: polygon)
@@ -2056,12 +2050,12 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : List[IncomeStatement]
+            results : list[IncomeStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -2392,24 +2386,24 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         period : Literal['annual', 'quarter']
             Time period of the data to return. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[IncomeStatementGrowth]
+            results : list[IncomeStatementGrowth]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -2516,13 +2510,13 @@ class ROUTER_equity_fundamental(Container):
     def latest_attributes(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         tag: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
             ),
@@ -2539,22 +2533,22 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
-        tag : Union[str, List[str]]
-            Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
-        provider : Optional[Literal['intrinio']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
+        tag : Union[str, list[str]]
+            Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
 
         Returns
         -------
         OBBject
-            results : List[LatestAttributes]
+            results : list[LatestAttributes]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -2618,20 +2612,20 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.
 
         Returns
         -------
         OBBject
-            results : List[KeyExecutives]
+            results : list[KeyExecutives]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -2688,7 +2682,7 @@ class ROUTER_equity_fundamental(Container):
     def management_compensation(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
@@ -2705,22 +2699,22 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
-        provider : Optional[Literal['fmp']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         year : Optional[int]
             Year of the compensation. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[ExecutiveCompensation]
+            results : list[ExecutiveCompensation]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -2814,14 +2808,14 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         symbol : str
             Symbol to get data for.
         calendar_year : Optional[int]
             Calendar year of the report. By default, is the current year. If the calendar period is not provided, but the calendar year is, it will return the annual report.
         calendar_period : Optional[Literal['Q1', 'Q2', 'Q3', 'Q4']]
             Calendar period of the report. By default, is the most recent report available for the symbol. If no calendar year and no calendar period are provided, it will return the most recent report.
-        provider : Optional[Literal['sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         strategy : Literal['inscriptis', 'trafilatura']
             The strategy to use for extracting the text. Default is 'trafilatura'. (provider: sec)
         wrap_length : int
@@ -2838,10 +2832,10 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : ManagementDiscussionAnalysis
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -2898,7 +2892,7 @@ class ROUTER_equity_fundamental(Container):
     def metrics(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
@@ -2919,12 +2913,12 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
+        symbol : Union[str, list[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         limit : Optional[int]
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
         period : Literal['annual', 'quarter']
             Time period of the data to return. (provider: fmp)
         with_ttm : bool
@@ -2933,12 +2927,12 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : List[KeyMetrics]
+            results : list[KeyMetrics]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -3217,7 +3211,7 @@ class ROUTER_equity_fundamental(Container):
     def multiples(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
@@ -3234,20 +3228,20 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
-        provider : Optional[Literal['fmp']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
 
         Returns
         -------
         OBBject
-            results : List[EquityValuationMultiples]
+            results : list[EquityValuationMultiples]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -3424,26 +3418,28 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
         symbol : str
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
-        period : Union[Literal['annual', 'quarter', 'ttm'], Literal['annual', 'quarter', 'ttm', 'ytd']]
+        period : str
             Time period of the data to return. (provider: fmp, intrinio)
+            Choices for fmp: 'annual', 'quarter', 'ttm'
+            Choices for intrinio: 'annual', 'quarter', 'ttm', 'ytd'
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
 
         Returns
         -------
         OBBject
-            results : List[FinancialRatios]
+            results : list[FinancialRatios]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -3639,6 +3635,8 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         symbol : str
             Symbol to get data for.
         period : str
@@ -3647,20 +3645,18 @@ class ROUTER_equity_fundamental(Container):
             The type of financial statement - i.e, balance, income, cash.
         limit : Optional[int]
             The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks.
-        provider : Optional[Literal['intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
 
         Returns
         -------
         OBBject
-            results : List[ReportedFinancials]
+            results : list[ReportedFinancials]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -3724,22 +3720,22 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         period : Literal['quarter', 'annual']
             Time period of the data to return. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[RevenueGeographic]
+            results : list[RevenueGeographic]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -3809,22 +3805,22 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         period : Literal['quarter', 'annual']
             Time period of the data to return. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[RevenueBusinessLine]
+            results : list[RevenueBusinessLine]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -3898,22 +3894,22 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         query : str
             Query to search for.
         limit : Optional[int]
             The number of data entries to return.
-        provider : Optional[Literal['intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
 
         Returns
         -------
         OBBject
-            results : List[SearchAttributes]
+            results : list[SearchAttributes]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -3991,22 +3987,22 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: tiingo.
         symbol : str
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return. Default is 252, the number of trading days in a year.
-        provider : Optional[Literal['tiingo']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: tiingo.
 
         Returns
         -------
         OBBject
-            results : List[TrailingDividendYield]
+            results : list[TrailingDividendYield]
                 Serializable results.
-            provider : Optional[Literal['tiingo']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -4049,13 +4045,13 @@ class ROUTER_equity_fundamental(Container):
     def transcript(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         year: Annotated[
-            Union[int, str, List[Union[int, str]]],
+            Union[int, str, list[Union[int, str]]],
             OpenBBField(
                 description="Year of the earnings call transcript. Multiple comma separated items allowed for provider(s): fmp."
             ),
@@ -4072,22 +4068,22 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
-        year : Union[int, str, List[Union[int, str]]]
-            Year of the earnings call transcript. Multiple comma separated items allowed for provider(s): fmp.
-        provider : Optional[Literal['fmp']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
+        year : Union[int, str, list[Union[int, str]]]
+            Year of the earnings call transcript. Multiple comma separated items allowed for provider(s): fmp.
 
         Returns
         -------
         OBBject
-            results : List[EarningsCallTranscript]
+            results : list[EarningsCallTranscript]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

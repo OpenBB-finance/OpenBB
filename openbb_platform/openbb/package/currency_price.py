@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
@@ -24,7 +24,7 @@ class ROUTER_currency_price(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
             ),
@@ -56,16 +56,18 @@ class ROUTER_currency_price(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance.
+        symbol : Union[str, list[str]]
             Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon, tiingo, yfinance.
-        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], str, Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '5d', '21d'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
+        interval : str
             Time interval of the data to return. (provider: fmp, polygon, tiingo, yfinance)
+            Choices for fmp: '1m', '5m', '15m', '30m', '1h', '4h', '1d'
+            Choices for yfinance: '1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q'
         sort : Literal['asc', 'desc']
             Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)
         limit : int
@@ -74,12 +76,12 @@ class ROUTER_currency_price(Container):
         Returns
         -------
         OBBject
-            results : List[CurrencyHistorical]
+            results : list[CurrencyHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

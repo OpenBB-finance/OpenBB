@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
@@ -45,59 +45,59 @@ class ROUTER_fixedincome_government(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-        maturity : Optional[Literal[5, 10, 20, 30]]
+        maturity : Optional[Literal['5', '10', '20', '30']]
             The maturity of the security in years - 5, 10, 20, 30 - defaults to all. Note that the maturity is the tenor of the security, not the time to maturity. (provider: fred)
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
             Frequency aggregation to convert high frequency data to lower frequency.
-                    None = No change
-                    a = Annual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    d = Daily
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
-                 (provider: fred)
+                        None = No change
+                        a = Annual
+                        q = Quarterly
+                        m = Monthly
+                        w = Weekly
+                        d = Daily
+                        wef = Weekly, Ending Friday
+                        weth = Weekly, Ending Thursday
+                        wew = Weekly, Ending Wednesday
+                        wetu = Weekly, Ending Tuesday
+                        wem = Weekly, Ending Monday
+                        wesu = Weekly, Ending Sunday
+                        wesa = Weekly, Ending Saturday
+                        bwew = Biweekly, Ending Wednesday
+                        bwem = Biweekly, Ending Monday
+                     (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
             A key that indicates the aggregation method used for frequency aggregation.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca']]
             Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                 (provider: fred)
+                        None = No transformation
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[TipsYields]
+            results : list[TipsYields]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -120,7 +120,7 @@ class ROUTER_fixedincome_government(Container):
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.government.tips_yields(provider='fred')
-        >>> obb.fixedincome.government.tips_yields(maturity=10, provider='fred')
+        >>> obb.fixedincome.government.tips_yields(maturity='10', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -165,22 +165,22 @@ class ROUTER_fixedincome_government(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fmp.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['federal_reserve', 'fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fmp.
 
         Returns
         -------
         OBBject
-            results : List[TreasuryRates]
+            results : list[TreasuryRates]
                 Serializable results.
-            provider : Optional[Literal['federal_reserve', 'fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -246,7 +246,7 @@ class ROUTER_fixedincome_government(Container):
     def yield_curve(
         self,
         date: Annotated[
-            Union[datetime.date, str, None, List[Union[datetime.date, str, None]]],
+            Union[datetime.date, str, None, list[Union[datetime.date, str, None]]],
             OpenBBField(
                 description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred."
             ),
@@ -263,10 +263,10 @@ class ROUTER_fixedincome_government(Container):
 
         Parameters
         ----------
-        date : Union[date, str, None, List[Union[date, str, None]]]
-            A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.
-        provider : Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.
+        date : Union[date, str, None, list[Union[date, str, None]]]
+            A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.
         country : str
             The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. Multiple comma separated items allowed. (provider: econdb)
         use_cache : bool
@@ -277,12 +277,12 @@ class ROUTER_fixedincome_government(Container):
         Returns
         -------
         OBBject
-            results : List[YieldCurve]
+            results : list[YieldCurve]
                 Serializable results.
-            provider : Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

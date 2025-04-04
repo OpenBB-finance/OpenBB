@@ -789,6 +789,44 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         if column_def.get("field") == "change":
             column_def["renderFn"] = "greenRed"
 
+        if (
+            route
+            and route.endswith("chains")
+            and column_def.get("field")
+            in [
+                "underlying_symbol",
+                "contract_symbol",
+                "underlying_price",
+                "contract_symbol",
+            ]
+        ):
+            column_def["hide"] = True
+
+        if column_def.get("field") in [
+            "delta",
+            "gamma",
+            "theta",
+            "vega",
+            "rho",
+            "vega",
+            "charm",
+            "vanna",
+            "vomma",
+        ]:
+            column_def["formatterFn"] = "none"
+            if column_def["field"] in ["delta", "theta", "rho"]:
+                column_def["renderFn"] = "greenRed"
+
+        if (
+            route
+            and route.endswith("chains")
+            and column_def["field"] == "implied_volatility"
+        ):
+            column_def["formatterFn"] = "normalizedPercent"
+
+        if column_def.get("field") == "change":
+            column_def["renderFn"] = "greenRed"
+
         if _widget_config := prop.get("x-widget_config", {}):
 
             if _widget_config.get("exclude"):

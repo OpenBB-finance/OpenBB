@@ -43,61 +43,61 @@ class ROUTER_commodity_price(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         commodity : Literal['wti', 'brent', 'natural_gas', 'jet_fuel', 'propane', 'heating_oil', 'diesel_gulf_coast', 'diesel_ny_harbor', 'diesel_la', 'gasoline_ny_harbor', 'gasoline_gulf_coast', 'rbob', 'all']
             Commodity name associated with the EIA spot price commodity data, default is 'all'. (provider: fred)
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
             Frequency aggregation to convert high frequency data to lower frequency.
-                None = No change
-                a = Annual
-                q = Quarterly
-                m = Monthly
-                w = Weekly
-                d = Daily
-                wef = Weekly, Ending Friday
-                weth = Weekly, Ending Thursday
-                wew = Weekly, Ending Wednesday
-                wetu = Weekly, Ending Tuesday
-                wem = Weekly, Ending Monday
-                wesu = Weekly, Ending Sunday
-                wesa = Weekly, Ending Saturday
-                bwew = Biweekly, Ending Wednesday
-                bwem = Biweekly, Ending Monday
-                 (provider: fred)
+                    None = No change
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    d = Daily
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                     (provider: fred)
         aggregation_method : Literal['avg', 'sum', 'eop']
             A key that indicates the aggregation method used for frequency aggregation.
-                This parameter has no affect if the frequency parameter is not set.
-                avg = Average
-                sum = Sum
-                eop = End of Period
-                 (provider: fred)
+                    This parameter has no affect if the frequency parameter is not set.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                     (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
             Transformation type
-                None = No transformation
-                chg = Change
-                ch1 = Change from Year Ago
-                pch = Percent Change
-                pc1 = Percent Change from Year Ago
-                pca = Compounded Annual Rate of Change
-                cch = Continuously Compounded Rate of Change
-                cca = Continuously Compounded Annual Rate of Change
-                log = Natural Log
-                 (provider: fred)
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[CommoditySpotPrices]
+            results : list[CommoditySpotPrices]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

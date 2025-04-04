@@ -83,9 +83,9 @@ To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/
 
 Please feel free to check out our other products:
 
-[bold]OpenBB Terminal Pro[/]: [cmds]https://openbb.co/products/pro[/cmds]
-[bold]OpenBB Platform:[/]     [cmds]https://openbb.co/products/platform[/cmds]
-[bold]OpenBB Bot[/]:          [cmds]https://openbb.co/products/bot[/cmds]
+[bold]OpenBB Workspace[/]:    [cmds]https://openbb.co[/cmds]
+[bold]OpenBB Platform:[/]     [cmds]https://docs.openbb.co/platform[/cmds]
+[bold]OpenBB Bot[/]:          [cmds]https://docs.openbb.co/bot[/cmds]
     """
     session.console.print(text)
 

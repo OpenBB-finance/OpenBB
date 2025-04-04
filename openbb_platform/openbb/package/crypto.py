@@ -45,20 +45,20 @@ class ROUTER_crypto(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         query : Optional[str]
             Search query.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
         OBBject
-            results : List[CryptoSearch]
+            results : list[CryptoSearch]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

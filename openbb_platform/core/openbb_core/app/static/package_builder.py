@@ -29,6 +29,7 @@ from typing import (
     get_type_hints,
 )
 
+from fastapi import Query
 from importlib_metadata import entry_points
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
 from openbb_core.app.model.example import Example
@@ -713,7 +714,7 @@ class MethodDefinition:
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
                 annotation=Annotated[
                     bool,
-                    OpenBBField(
+                    Query(
                         description="Whether to create a chart or not, by default False.",
                     ),
                 ],
@@ -1864,6 +1865,7 @@ class DocstringGenerator:
                 description = getattr(field, "description", "")
                 docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
                 docstring += f"{create_indent(3)}{format_schema_description(description.strip())}\n"
+
         return docstring
 
     @classmethod
@@ -1919,6 +1921,13 @@ class DocstringGenerator:
                     results_type=results_type,
                     sections=sections,
                 )
+
+                if "examples" in sections:
+                    doc += cls.build_examples(
+                        path.replace("/", "."),
+                        param_types,
+                        examples,
+                    )
         else:
             doc_parts = []
             if doc:
@@ -2063,12 +2072,12 @@ class DocstringGenerator:
 
             doc = result_doc + "\n"
 
-        if doc and examples and "examples" in sections:
-            doc += cls.build_examples(
-                path.replace("/", "."),
-                param_types,
-                examples,
-            )
+            if "examples" in sections:
+                doc += cls.build_examples(
+                    path.replace("/", "."),
+                    param_types,
+                    examples,
+                )
 
         if (
             max_length  # pylint: disable=chained-comparison

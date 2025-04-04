@@ -54,24 +54,24 @@ class ROUTER_fixedincome_spreads(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         maturity : Optional[Literal['3m', '2y']]
             The maturity
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
         OBBject
-            results : List[TreasuryConstantMaturity]
+            results : list[TreasuryConstantMaturity]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -144,24 +144,24 @@ class ROUTER_fixedincome_spreads(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         maturity : Optional[Literal['10y', '5y', '1y', '6m', '3m']]
             The maturity
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
         OBBject
-            results : List[SelectedTreasuryConstantMaturity]
+            results : list[SelectedTreasuryConstantMaturity]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -234,24 +234,24 @@ class ROUTER_fixedincome_spreads(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
         maturity : Optional[Literal['3m', '6m']]
             The maturity
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
         OBBject
-            results : List[SelectedTreasuryBill]
+            results : list[SelectedTreasuryBill]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

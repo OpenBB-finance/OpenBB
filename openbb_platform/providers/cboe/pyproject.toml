@@ -8,10 +8,10 @@ readme = "README.md"
 packages = [{ include = "openbb_cboe" }]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9.21,<3.13"
 aiohttp-client-cache = "^0.11.0"
 aiosqlite = "^0.20.0"
-openbb-core = "^1.4.2"
+openbb-core = "^1.4.3"
 
 [build-system]
 requires = ["poetry-core"]

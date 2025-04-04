@@ -52,36 +52,36 @@ class ROUTER_regulators_cftc(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc.
         id : str
             A string with the CFTC market code or other identifying string, such as the contract market name, commodity name, or commodity group - i.e, 'gold' or 'japanese yen'.Default report is Fed Funds Futures. Use the 'cftc_market_code' for an exact match.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format. Default is the most recent report.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['cftc']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc.
         report_type : Literal['legacy', 'disaggregated', 'financial', 'supplemental']
             The type of report to retrieve. Set `id` as 'all' to return all items in the report
-                    type (default date range returns the latest report). The Legacy report is broken down by exchange
-                    with reported open interest further broken down into three trader classifications: commercial,
-                    non-commercial and non-reportable. The Disaggregated reports are broken down by Agriculture and
-                    Natural Resource contracts. The Disaggregated reports break down reportable open interest positions
-                    into four classifications: Producer/Merchant, Swap Dealers, Managed Money and Other Reportables.
-                    The Traders in Financial Futures (TFF) report includes financial contracts. The TFF report breaks
-                    down the reported open interest into five classifications: Dealer, Asset Manager, Leveraged Money,
-                    Other Reportables and Non-Reportables. (provider: cftc)
+                        type (default date range returns the latest report). The Legacy report is broken down by exchange
+                        with reported open interest further broken down into three trader classifications: commercial,
+                        non-commercial and non-reportable. The Disaggregated reports are broken down by Agriculture and
+                        Natural Resource contracts. The Disaggregated reports break down reportable open interest positions
+                        into four classifications: Producer/Merchant, Swap Dealers, Managed Money and Other Reportables.
+                        The Traders in Financial Futures (TFF) report includes financial contracts. The TFF report breaks
+                        down the reported open interest into five classifications: Dealer, Asset Manager, Leveraged Money,
+                        Other Reportables and Non-Reportables. (provider: cftc)
         futures_only : bool
             Returns the futures-only report. Default is False, for the combined report. (provider: cftc)
 
         Returns
         -------
         OBBject
-            results : List[COT]
+            results : list[COT]
                 Serializable results.
-            provider : Optional[Literal['cftc']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -187,20 +187,20 @@ class ROUTER_regulators_cftc(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc.
         query : str
             Search query.
-        provider : Optional[Literal['cftc']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc.
 
         Returns
         -------
         OBBject
-            results : List[COTSearch]
+            results : list[COTSearch]
                 Serializable results.
-            provider : Optional[Literal['cftc']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
