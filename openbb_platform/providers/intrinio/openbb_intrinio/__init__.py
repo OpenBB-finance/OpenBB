@@ -61,6 +61,7 @@ from openbb_intrinio.models.search_attributes import (
     IntrinioSearchAttributesFetcher,
 )
 from openbb_intrinio.models.share_statistics import IntrinioShareStatisticsFetcher
+from openbb_intrinio.models.websocket_connection import IntrinioWebSocketFetcher
 from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
 
 intrinio_provider = Provider(
@@ -108,6 +109,7 @@ historical financial market data to businesses and developers through an API."""
         "ReportedFinancials": IntrinioReportedFinancialsFetcher,
         "SearchAttributes": IntrinioSearchAttributesFetcher,
         "ShareStatistics": IntrinioShareStatisticsFetcher,
+        "WebSocketConnection": IntrinioWebSocketFetcher,
         "WorldNews": IntrinioWorldNewsFetcher,
     },
     repr_name="Intrinio",

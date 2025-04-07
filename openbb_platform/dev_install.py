@@ -72,6 +72,7 @@ openbb-charting = { path = "./obbject_extensions/charting", optional = true, dev
 openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
 openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
 openbb-technical = { path = "./extensions/technical", optional = true, develop = true }
+openbb-websockets = { path = "./extensions/websockets", optional = true, develop = true }
 """
 
 

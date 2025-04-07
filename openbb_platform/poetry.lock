@@ -2798,6 +2798,19 @@ openpyxl = ">=3.1.5,<4.0.0"
 xlrd = ">=2.0.1,<3.0.0"
 
 [[package]]
+name = "openbb-websockets"
+version = "1.0.0b0"
+description = "Websockets extension for OpenBB"
+optional = true
+python-versions = "*"
+files = []
+develop = true
+
+[package.source]
+type = "directory"
+url = "extensions/websockets"
+
+[[package]]
 name = "openbb-wsj"
 version = "1.4.0"
 description = "wsj extension for OpenBB"
@@ -4760,6 +4773,7 @@ type = ["pytest-mypy"]
 
 [extras]
 all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-deribit", "openbb-ecb", "openbb-econometrics", "openbb-finra", "openbb-finviz", "openbb-government-us", "openbb-multpl", "openbb-nasdaq", "openbb-quantitative", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-technical", "openbb-tmx", "openbb-tradier", "openbb-wsj"]
+all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-ecb", "openbb-econometrics", "openbb-finra", "openbb-finviz", "openbb-government-us", "openbb-multpl", "openbb-nasdaq", "openbb-quantitative", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-technical", "openbb-tmx", "openbb-tradier", "openbb-websockets", "openbb-wsj"]
 alpha-vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
@@ -4777,6 +4791,7 @@ stockgrid = ["openbb-stockgrid"]
 technical = ["openbb-technical"]
 tmx = ["openbb-tmx"]
 tradier = ["openbb-tradier"]
+websockets = ["openbb-websockets"]
 wsj = ["openbb-wsj"]
 
 [metadata]
