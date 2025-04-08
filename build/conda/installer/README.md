@@ -18,7 +18,7 @@ Follow the quick start steps below to get started using right away; or, open one
 
 If you want to build your own endpoints, connections, and features, try installing the [example extensions](#examples)
 
-## OpenBB Terminal Pro Quick Start
+## OpenBB Workspace Quick Start
 
 - Login to the [OpenBB Hub](https://my.openbb.co)
 - Optionally, add API keys for remote authorization on the page [here](https://my.openbb.dev/app/platform/credentials).
@@ -33,7 +33,7 @@ If you want to build your own endpoints, connections, and features, try installi
 
 - By default, the server will be running on: [http://127.0.0.1:6900](http://127.0.0.1:6900)
 
-- Login to OpenBB Terminal Pro [here](https://pro.openbb.co)
+- Login to OpenBB Workspace [here](https://pro.openbb.co)
 - From the sidebar, click on, "Data Connectors".
 - Then click on the button, "Add Data".
 - In the pop-up menu, select "Custom Backend".
@@ -244,4 +244,3 @@ Conda is for container management and machine code level operations, Poetry reso
 - [pandas](https://pandas.pydata.org/docs/)
 - [numpy](https://numpy.org/doc/)
 - [Plotly Graph Objects](https://plotly.com/python/graph-objects/)
-

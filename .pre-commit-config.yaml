@@ -52,7 +52,7 @@ repos:
         language: python
         "types_or": [python, pyi]
         args: ["--ignore-missing-imports", "--scripts-are-modules", "--check-untyped-defs"]
-        additional_dependencies: ["types-requests", "types-setuptools"]
+        additional_dependencies: ["types-requests", "types-setuptools", "types-python-dateutil", "types-pytz"]
         require_serial: true
         exclude: 'test_.*\.py'
   - repo: https://github.com/kynan/nbstripout

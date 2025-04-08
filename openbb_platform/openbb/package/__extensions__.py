@@ -25,7 +25,7 @@ Extensions:
     - crypto@1.4.0
     - currency@1.4.0
     - derivatives@1.4.0
-    - economy@1.4.0
+    - economy@1.4.1
     - equity@1.4.0
     - etf@1.4.0
     - fixedincome@1.4.2
@@ -34,21 +34,21 @@ Extensions:
     - regulators@1.4.1
 
     - benzinga@1.4.0
-    - bls@1.1.0
+    - bls@1.1.1
     - cftc@1.1.0
     - econdb@1.3.0
-    - federal_reserve@1.4.0
+    - federal_reserve@1.4.1
     - fmp@1.4.1
-    - fred@1.4.1
+    - fred@1.4.3
     - imf@1.1.0
     - intrinio@1.4.0
     - oecd@1.4.0
     - polygon@1.4.0
-    - sec@1.4.1
+    - sec@1.4.2
     - tiingo@1.4.0
     - tradingeconomics@1.4.0
     - us_eia@1.1.0
-    - yfinance@1.4.1    """
+    - yfinance@1.4.2    """
     # fmt: on
 
     def __repr__(self) -> str:

@@ -59,6 +59,7 @@ def vcr_config():
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
             ("crumb", "MOCK_CRUMB"),
+            ("date", "MOCK_DATE"),
         ],
     }
 
