@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
@@ -45,76 +45,77 @@ class ROUTER_economy_survey(Container):
     ) -> OBBject:
         """Search BLS surveys by category and keyword or phrase to identify BLS series IDs.
 
-        Parameters
-        ----------
-        query : str
-            The search word(s). Use semi-colon to separate multiple queries as an & operator.
-        provider : Optional[Literal['bls']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.
-        category : Optional[Literal['cpi', 'pce', 'ppi', 'ip', 'jolts', 'nfp', 'cps', 'lfs', 'wages', 'ec', 'sla', 'bed', 'tu']]
-            The category of BLS survey to search within.
-                An empty search query will return all series within the category. Options are:
+            Parameters
+            ----------
+            provider : str
+                The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.
+            query : str
+                The search word(s). Use semi-colon to separate multiple queries as an & operator.
+            category : Optional[Literal['cpi', 'pce', 'ppi', 'ip', 'jolts', 'nfp', 'cps', 'lfs', 'wages', 'ec', 'sla', 'bed', 'tu']]
+                The category of BLS survey to search within.
+            An empty search query will return all series within the category. Options are:
 
-            cpi - Consumer Price Index
+        cpi - Consumer Price Index
 
-            pce - Personal Consumption Expenditure
+        pce - Personal Consumption Expenditure
 
-            ppi - Producer Price Index
+        ppi - Producer Price Index
 
-            ip - Industry Productivity
+        ip - Industry Productivity
 
-            jolts - Job Openings and Labor Turnover Survey
+        jolts - Job Openings and Labor Turnover Survey
 
-            nfp - Nonfarm Payrolls
+        nfp - Nonfarm Payrolls
 
-            cps - Current Population Survey
+        cps - Current Population Survey
 
-            lfs - Labor Force Statistics
+        lfs - Labor Force Statistics
 
-            wages - Wages
+        wages - Wages
 
-            ec - Employer Costs
+        ec - Employer Costs
 
-            sla - State and Local Area Employment
+        sla - State and Local Area Employment
 
-            bed - Business Employment Dynamics
+        bed - Business Employment Dynamics
 
-            tu - Time Use
-                 (provider: bls)
-        include_extras : bool
-            Include additional information in the search results. Extra fields returned are metadata and vary by survey. Fields are undefined strings that typically have names ending with '_code'. (provider: bls)
-        include_code_map : bool
-            When True, includes the complete code map for eaçh survey in the category, returned separately as a nested JSON to the `extras['results_metadata']` property of the response. Example content is the NAICS industry map for PPI surveys. Each code is a value within the 'symbol' of the time series. (provider: bls)
+        tu - Time Use
+             (provider: bls)
+                Choices for bls: 'cpi', 'pce', 'ppi', 'ip', 'jolts', 'nfp', 'cps', 'lfs', 'wages', 'ec', 'sla', 'bed', 'tu'
+            include_extras : bool
+                Include additional information in the search results. Extra fields returned are metadata and vary by survey. Fields are undefined strings that typically have names ending with '_code'. (provider: bls)
+            include_code_map : bool
+                When True, includes the complete code map for eaçh survey in the category, returned separately as a nested JSON to the `extras['results_metadata']` property of the response. Example content is the NAICS industry map for PPI surveys. Each code is a value within the 'symbol' of the time series. (provider: bls)
 
-        Returns
-        -------
-        OBBject
-            results : List[BlsSearch]
-                Serializable results.
-            provider : Optional[Literal['bls']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+            Returns
+            -------
+            OBBject
+                results : list[BlsSearch]
+                    Serializable results.
+                provider : Optional[str]
+                    Provider name.
+                warnings : Optional[list[Warning_]]
+                    list of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra : Dict[str, Any]
+                    Extra info.
 
-        BlsSearch
-        ---------
-        symbol : str
-            Symbol representing the entity requested in the data.
-        title : Optional[str]
-            The title of the series.
-        survey_name : Optional[str]
-            The name of the survey.
+            BlsSearch
+            ---------
+            symbol : str
+                Symbol representing the entity requested in the data.
+            title : Optional[str]
+                The title of the series.
+            survey_name : Optional[str]
+                The name of the survey.
 
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.economy.survey.bls_search(provider='bls', category='cpi')
-        >>> # Use semi-colon to separate multiple queries as an & operator.
-        >>> obb.economy.survey.bls_search(provider='bls', category='cpi', query='seattle;gasoline')
+            Examples
+            --------
+            >>> from openbb import obb
+            >>> obb.economy.survey.bls_search(provider='bls', category='cpi')
+            >>> # Use semi-colon to separate multiple queries as an & operator.
+            >>> obb.economy.survey.bls_search(provider='bls', category='cpi', query='seattle;gasoline')
         """  # noqa: E501
 
         return self._run(
@@ -161,7 +162,7 @@ class ROUTER_economy_survey(Container):
     def bls_series(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): bls."
             ),
@@ -186,14 +187,14 @@ class ROUTER_economy_survey(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.
+        symbol : Union[str, list[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): bls.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['bls']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: bls.
         calculations : bool
             Include calculations in the response, if available. Default is True. (provider: bls)
         annual_average : bool
@@ -204,12 +205,12 @@ class ROUTER_economy_survey(Container):
         Returns
         -------
         OBBject
-            results : List[BlsSeries]
+            results : list[BlsSeries]
                 Serializable results.
-            provider : Optional[Literal['bls']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -298,54 +299,54 @@ class ROUTER_economy_survey(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         frequency : Optional[Literal['annual', 'quarter']]
             Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
             A key that indicates the aggregation method used for frequency aggregation.
 
-            avg = Average
+                avg = Average
 
-            sum = Sum
+                sum = Sum
 
-            eop = End of Period
-                 (provider: fred)
+                eop = End of Period
+                     (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
             Transformation type
 
-            None = No transformation
+                None = No transformation
 
-            chg = Change
+                chg = Change
 
-            ch1 = Change from Year Ago
+                ch1 = Change from Year Ago
 
-            pch = Percent Change
+                pch = Percent Change
 
-            pc1 = Percent Change from Year Ago
+                pc1 = Percent Change from Year Ago
 
-            pca = Compounded Annual Rate of Change
+                pca = Compounded Annual Rate of Change
 
-            cch = Continuously Compounded Rate of Change
+                cch = Continuously Compounded Rate of Change
 
-            cca = Continuously Compounded Annual Rate of Change
+                cca = Continuously Compounded Annual Rate of Change
 
-            log = Natural Log
-                 (provider: fred)
+                log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[SurveyOfEconomicConditionsChicago]
+            results : list[SurveyOfEconomicConditionsChicago]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -422,48 +423,48 @@ class ROUTER_economy_survey(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         topic : Union[Literal['business_activity', 'business_outlook', 'capex', 'prices_paid', 'production', 'inventory', 'new_orders', 'new_orders_growth', 'unfilled_orders', 'shipments', 'delivery_time', 'employment', 'wages', 'hours_worked'], str]
             The topic for the survey response. Multiple comma separated items allowed. (provider: fred)
         frequency : Optional[Literal['annual', 'quarter']]
 
-                Frequency aggregation to convert monthly data to lower frequency. None is monthly.
-                 (provider: fred)
+                    Frequency aggregation to convert monthly data to lower frequency. None is monthly.
+                     (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
 
-                A key that indicates the aggregation method used for frequency aggregation.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
+                    A key that indicates the aggregation method used for frequency aggregation.
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
-                 (provider: fred)
+                    Transformation type
+                        None = No transformation
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[ManufacturingOutlookTexas]
+            results : list[ManufacturingOutlookTexas]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -537,7 +538,7 @@ class ROUTER_economy_survey(Container):
     def nonfarm_payrolls(
         self,
         date: Annotated[
-            Union[datetime.date, str, None, List[Union[datetime.date, str, None]]],
+            Union[datetime.date, str, None, list[Union[datetime.date, str, None]]],
             OpenBBField(
                 description="A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred."
             ),
@@ -554,22 +555,22 @@ class ROUTER_economy_survey(Container):
 
         Parameters
         ----------
-        date : Union[date, str, None, List[Union[date, str, None]]]
-            A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.
-        provider : Optional[Literal['fred']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        date : Union[date, str, None, list[Union[date, str, None]]]
+            A specific date to get data for. Default is the latest report. Multiple comma separated items allowed for provider(s): fred.
         category : Literal['employees_nsa', 'employees_sa', 'employees_production_and_nonsupervisory', 'employees_women', 'employees_women_percent', 'avg_hours', 'avg_hours_production_and_nonsupervisory', 'avg_hours_overtime', 'avg_hours_overtime_production_and_nonsupervisory', 'avg_earnings_hourly', 'avg_earnings_hourly_production_and_nonsupervisory', 'avg_earnings_weekly', 'avg_earnings_weekly_production_and_nonsupervisory', 'index_weekly_hours', 'index_weekly_hours_production_and_nonsupervisory', 'index_weekly_payrolls', 'index_weekly_payrolls_production_and_nonsupervisory']
             The category to query. (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[NonFarmPayrolls]
+            results : list[NonFarmPayrolls]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -645,37 +646,37 @@ class ROUTER_economy_survey(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         category : Literal['spreads', 'consumer', 'auto', 'credit_card', 'firms', 'mortgage', 'commercial_real_estate', 'standards', 'demand', 'foreign_banks']
             Category of survey response. (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
-                 (provider: fred)
+                    Transformation type
+                        None = No transformation
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[SeniorLoanOfficerSurvey]
+            results : list[SeniorLoanOfficerSurvey]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -741,54 +742,54 @@ class ROUTER_economy_survey(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         frequency : Optional[Literal['annual', 'quarter']]
             Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)
         aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
             A key that indicates the aggregation method used for frequency aggregation.
 
-            avg = Average
+                avg = Average
 
-            sum = Sum
+                sum = Sum
 
-            eop = End of Period
-                 (provider: fred)
+                eop = End of Period
+                     (provider: fred)
         transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
             Transformation type
 
-            None = No transformation
+                None = No transformation
 
-            chg = Change
+                chg = Change
 
-            ch1 = Change from Year Ago
+                ch1 = Change from Year Ago
 
-            pch = Percent Change
+                pch = Percent Change
 
-            pc1 = Percent Change from Year Ago
+                pc1 = Percent Change from Year Ago
 
-            pca = Compounded Annual Rate of Change
+                pca = Compounded Annual Rate of Change
 
-            cch = Continuously Compounded Rate of Change
+                cch = Continuously Compounded Rate of Change
 
-            cca = Continuously Compounded Annual Rate of Change
+                cca = Continuously Compounded Annual Rate of Change
 
-            log = Natural Log
-                 (provider: fred)
+                log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[UniversityOfMichigan]
+            results : list[UniversityOfMichigan]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

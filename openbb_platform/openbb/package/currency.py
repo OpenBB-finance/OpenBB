@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
@@ -56,20 +56,20 @@ class ROUTER_currency(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.
         query : Optional[str]
             Query to search for currency pairs.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.
 
         Returns
         -------
         OBBject
-            results : List[CurrencyPairs]
+            results : list[CurrencyPairs]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -138,7 +138,7 @@ class ROUTER_currency(Container):
     def snapshots(
         self,
         base: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp, polygon."
             ),
@@ -150,7 +150,7 @@ class ROUTER_currency(Container):
             ),
         ] = "indirect",
         counter_currencies: Annotated[
-            Union[str, List[str], None],
+            Union[str, list[str], None],
             OpenBBField(
                 description="An optional list of counter currency symbols to filter for. None returns all."
             ),
@@ -167,24 +167,24 @@ class ROUTER_currency(Container):
 
         Parameters
         ----------
-        base : Union[str, List[str]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon.
+        base : Union[str, list[str]]
             The base currency symbol. Multiple comma separated items allowed for provider(s): fmp, polygon.
         quote_type : Literal['direct', 'indirect']
             Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.
-        counter_currencies : Union[str, List[str], None]
+        counter_currencies : Union[str, list[str], None]
             An optional list of counter currency symbols to filter for. None returns all.
-        provider : Optional[Literal['fmp', 'polygon']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, polygon.
 
         Returns
         -------
         OBBject
-            results : List[CurrencySnapshots]
+            results : list[CurrencySnapshots]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

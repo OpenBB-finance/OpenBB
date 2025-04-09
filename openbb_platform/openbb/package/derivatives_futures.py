@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
@@ -26,7 +26,7 @@ class ROUTER_derivatives_futures(Container):
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         date: Annotated[
-            Union[datetime.date, str, None, List[Union[datetime.date, str, None]]],
+            Union[datetime.date, str, None, list[Union[datetime.date, str, None]]],
             OpenBBField(
                 description="A specific date to get data for. Multiple comma separated items allowed for provider(s): yfinance."
             ),
@@ -43,22 +43,22 @@ class ROUTER_derivatives_futures(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
         symbol : str
             Symbol to get data for.
-        date : Union[date, str, None, List[Union[date, str, None]]]
+        date : Union[date, str, None, list[Union[date, str, None]]]
             A specific date to get data for. Multiple comma separated items allowed for provider(s): yfinance.
-        provider : Optional[Literal['yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
 
         Returns
         -------
         OBBject
-            results : List[FuturesCurve]
+            results : list[FuturesCurve]
                 Serializable results.
-            provider : Optional[Literal['yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -107,7 +107,7 @@ class ROUTER_derivatives_futures(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance."
             ),
@@ -136,7 +136,9 @@ class ROUTER_derivatives_futures(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
+        symbol : Union[str, list[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
@@ -144,20 +146,18 @@ class ROUTER_derivatives_futures(Container):
             End date of the data, in YYYY-MM-DD format.
         expiration : Optional[str]
             Future expiry date with format YYYY-MM
-        provider : Optional[Literal['yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
         interval : Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']
             Time interval of the data to return. (provider: yfinance)
 
         Returns
         -------
         OBBject
-            results : List[FuturesHistorical]
+            results : list[FuturesHistorical]
                 Serializable results.
-            provider : Optional[Literal['yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

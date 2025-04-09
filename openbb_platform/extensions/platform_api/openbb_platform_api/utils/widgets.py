@@ -180,6 +180,42 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
                 ["paramName", "value"],
             )
 
+        if not _item.get("label") and _item["paramName"] in [
+            "url",
+            "cik",
+            "lei",
+            "cusip",
+            "isin",
+            "sedol",
+        ]:
+            _item["label"] = _item["paramName"].upper()
+
+        if _label := _item.get("label"):
+            _item["label"] = " ".join(
+                [
+                    (word.upper() if word in TO_CAPS_STRINGS else word)
+                    for word in _label.split()
+                ]
+            )
+
+        if "x-widget_config" in _item:
+            provider_value_widget_config = _item.pop("x-widget_config")
+            _item.update(provider_value_widget_config)
+
+        if (
+            provider_value_widget_config
+            and provider_value in provider_value_widget_config
+        ):
+
+            if provider_value_widget_config[provider_value].get("exclude"):
+                continue
+
+            _item = deep_merge_configs(
+                _item,
+                provider_value_widget_config[provider_value],
+                ["paramName", "value"],
+            )
+
         modified_query_schema.append(_item)
 
     if provider_value != "custom":
@@ -313,7 +349,6 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     for word in name.split()
                 ]
             )
-
             modified_query_schema = modify_query_schema(query_schema, provider)
 
             if has_form_endpoint:

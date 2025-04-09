@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from annotated_types import Ge
 from openbb_core.app.model.field import OpenBBField
@@ -26,7 +26,7 @@ class ROUTER_news(Container):
     def company(
         self,
         symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance."
             ),
@@ -57,7 +57,9 @@ class ROUTER_news(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[Optional[str]]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, polygon, tiingo, yfinance.
+        symbol : Union[str, None, list[Optional[str]]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
@@ -65,9 +67,7 @@ class ROUTER_news(Container):
             End date of the data, in YYYY-MM-DD format.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, polygon, tiingo, yfinance.
-        date : Optional[datetime.date]
+        date : Optional[date]
             A specific date to get data for. (provider: benzinga)
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
@@ -78,8 +78,7 @@ class ROUTER_news(Container):
         sort : Literal['id', 'created', 'updated']
             Key to sort the news by. (provider: benzinga)
         order : Literal['asc', 'desc']
-            Order to sort the news by. (provider: benzinga);
-            Sort order of the articles. (provider: polygon)
+            Order to sort the news by. (provider: benzinga)
         isin : Optional[str]
             The company's ISIN. (provider: benzinga)
         cusip : Optional[str]
@@ -94,9 +93,8 @@ class ROUTER_news(Container):
             Content types of the news to retrieve. (provider: benzinga)
         page : Optional[int]
             Page number of the results. Use in combination with limit. (provider: fmp)
-        source : Optional[Union[Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases'], str]]
-            The source of the news article. (provider: intrinio);
-            A comma-separated list of the domains requested. Multiple comma separated items allowed. (provider: tiingo)
+        source : Union[Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases'], None, str]
+            The source of the news article. (provider: intrinio)
         sentiment : Optional[Literal['positive', 'neutral', 'negative']]
             Return news only from this source. (provider: intrinio)
         language : Optional[str]
@@ -119,12 +117,12 @@ class ROUTER_news(Container):
         Returns
         -------
         OBBject
-            results : List[CompanyNews]
+            results : list[CompanyNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -138,7 +136,7 @@ class ROUTER_news(Container):
             Title of the article.
         text : Optional[str]
             Text/body of the article.
-        images : Optional[List[Dict[str, str]]]
+        images : Optional[list[Dict[str, str]]]
             Images associated with the article.
         url : str
             URL to the article.
@@ -171,7 +169,7 @@ class ROUTER_news(Container):
         word_count : Optional[int]
             The word count of the news article. (provider: intrinio)
         business_relevance : Optional[float]
-                How strongly correlated the news article is to the business (provider: intrinio)
+            How strongly correlated the news article is to the business (provider: intrinio)
         sentiment : Optional[str]
             The sentiment of the news article - i.e, negative, positive. (provider: intrinio)
         sentiment_confidence : Optional[float]
@@ -299,15 +297,15 @@ class ROUTER_news(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, tiingo.
         limit : int
             The number of data entries to return. The number of articles to return.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp, intrinio, tiingo.
-        date : Optional[datetime.date]
+        date : Optional[date]
             A specific date to get data for. (provider: benzinga)
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
@@ -331,9 +329,8 @@ class ROUTER_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
-        source : Optional[Union[Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases'], str]]
-            The source of the news article. (provider: intrinio);
-            A comma-separated list of the domains requested. Multiple comma separated items allowed. (provider: tiingo)
+        source : Union[Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases'], None, str]
+            The source of the news article. (provider: intrinio)
         sentiment : Optional[Literal['positive', 'neutral', 'negative']]
             Return news only from this source. (provider: intrinio)
         language : Optional[str]
@@ -356,12 +353,12 @@ class ROUTER_news(Container):
         Returns
         -------
         OBBject
-            results : List[WorldNews]
+            results : list[WorldNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -373,7 +370,7 @@ class ROUTER_news(Container):
             The date of the data. The published date of the article.
         title : str
             Title of the article.
-        images : Optional[List[Dict[str, str]]]
+        images : Optional[list[Dict[str, str]]]
             Images associated with the article.
         text : Optional[str]
             Text/body of the article.
@@ -404,7 +401,7 @@ class ROUTER_news(Container):
         word_count : Optional[int]
             The word count of the news article. (provider: intrinio)
         business_relevance : Optional[float]
-                How strongly correlated the news article is to the business (provider: intrinio)
+            How strongly correlated the news article is to the business (provider: intrinio)
         sentiment : Optional[str]
             The sentiment of the news article - i.e, negative, positive. (provider: intrinio)
         sentiment_confidence : Optional[float]
