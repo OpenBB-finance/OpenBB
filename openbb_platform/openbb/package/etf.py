@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
@@ -32,7 +32,7 @@ class ROUTER_etf(Container):
     def countries(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp."
             ),
@@ -49,20 +49,20 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp.
-        provider : Optional[Literal['fmp']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp.
 
         Returns
         -------
         OBBject
-            results : List[EtfCountries]
+            results : list[EtfCountries]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -104,7 +104,7 @@ class ROUTER_etf(Container):
     def equity_exposure(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp."
             ),
@@ -121,20 +121,20 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp.
-        provider : Optional[Literal['fmp']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp.
 
         Returns
         -------
         OBBject
-            results : List[EtfEquityExposure]
+            results : list[EtfEquityExposure]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -186,7 +186,7 @@ class ROUTER_etf(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
             ),
@@ -211,16 +211,19 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.
+        symbol : Union[str, list[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.
         start_date : Union[date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.
-        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'], str, Literal['1m', '5m', '15m', '30m', '90m', '1h', '2h', '4h', '1d', '1W', '1M', '1Y'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
+        interval : str
             Time interval of the data to return. (provider: fmp, intrinio, polygon, tiingo, yfinance)
+            Choices for fmp: '1m', '5m', '15m', '30m', '1h', '4h', '1d'
+            Choices for intrinio: '1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'
+            Choices for yfinance: '1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q'
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
         end_time : Optional[datetime.time]
@@ -229,8 +232,10 @@ class ROUTER_etf(Container):
             Timezone of the data, in the IANA format (Continent/City). (provider: intrinio)
         source : Literal['realtime', 'delayed', 'nasdaq_basic']
             The source of the data. (provider: intrinio)
-        adjustment : Union[Literal['splits_only', 'unadjusted'], Literal['splits_only', 'splits_and_dividends']]
+        adjustment : str
             The adjustment factor to apply. Default is splits only. (provider: polygon, yfinance)
+            Choices for polygon: 'splits_only', 'unadjusted'
+            Choices for yfinance: 'splits_only', 'splits_and_dividends'
         extended_hours : bool
             Include Pre and Post market data. (provider: polygon, yfinance)
         sort : Literal['asc', 'desc']
@@ -243,12 +248,12 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfHistorical]
+            results : list[EtfHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -422,14 +427,13 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
         symbol : str
             Symbol to get data for. (ETF)
-        provider : Optional[Literal['fmp', 'intrinio', 'sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
-        date : Optional[Union[datetime.date, str]]
+        date : Union[date, str, None]
             A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
-            A specific date to get data for. (provider: intrinio);
-            A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing. (provider: sec)
+            The date represents the period ending. The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
         use_cache : bool
@@ -438,12 +442,12 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfHoldings]
+            results : list[EtfHoldings]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -507,7 +511,7 @@ class ROUTER_etf(Container):
         ric : Optional[str]
             The Reuters Instrument Code. (provider: intrinio)
         sedol : Optional[str]
-            The Stock Exchange Daily Official List. (provider: intrinio)
+            The Stock Exchange Daily Official list. (provider: intrinio)
         share_class_figi : Optional[str]
             The OpenFIGI symbol for the holding. (provider: intrinio)
         maturity_date : Optional[date]
@@ -681,22 +685,22 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for. (ETF)
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[EtfHoldingsDate]
+            results : list[EtfHoldingsDate]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -735,7 +739,7 @@ class ROUTER_etf(Container):
     def info(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
@@ -752,20 +756,20 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
-        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
 
         Returns
         -------
         OBBject
-            results : List[EtfInfo]
+            results : list[EtfInfo]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -825,7 +829,7 @@ class ROUTER_etf(Container):
         ric : Optional[str]
             Reuters Instrument Code (RIC). (provider: intrinio)
         sedol : Optional[str]
-            Stock Exchange Daily Official List (SEDOL). (provider: intrinio)
+            Stock Exchange Daily Official list (SEDOL). (provider: intrinio)
         figi_symbol : Optional[str]
             Financial Instrument Global Identifier (FIGI) symbol. (provider: intrinio)
         share_class_figi : Optional[str]
@@ -1022,7 +1026,7 @@ class ROUTER_etf(Container):
         base_currency : Optional[str]
             Base currency in which NAV is reported. (provider: intrinio)
         listing_currency : Optional[str]
-            Listing currency of the Exchange Traded Product (ETP) in which it is traded. Reported using the 3-digit ISO currency code. (provider: intrinio)
+            listing currency of the Exchange Traded Product (ETP) in which it is traded. Reported using the 3-digit ISO currency code. (provider: intrinio)
         number_of_holdings : Optional[int]
             The number of holdings in the ETF. (provider: intrinio)
         month_end_assets : Optional[float]
@@ -1127,7 +1131,7 @@ class ROUTER_etf(Container):
     def price_performance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
             ),
@@ -1144,10 +1148,10 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
         return_type : Literal['trailing', 'calendar']
             The type of returns to return, a trailing or calendar window. (provider: intrinio)
         adjustment : Literal['splits_only', 'splits_and_dividends']
@@ -1156,12 +1160,12 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfPricePerformance]
+            results : list[EtfPricePerformance]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -1284,25 +1288,24 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
         query : Optional[str]
             Search query.
-        provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
-        exchange : Optional[Union[Literal['AMEX', 'NYSE', 'NASDAQ', 'ETF', 'TSX', 'EURONEXT'], Literal['xnas', 'arcx', 'bats', 'xnys', 'bvmf', 'xshg', 'xshe', 'xhkg', 'xbom', 'xnse', 'xidx', 'tase', 'xkrx', 'xkls', 'xmex', 'xses', 'roco', 'xtai', 'xbkk', 'xist']]]
-            The exchange code the ETF trades on. (provider: fmp);
-            Target a specific exchange by providing the MIC code. (provider: intrinio)
+        exchange : str
+            The exchange code the ETF trades on. (provider: fmp)
         is_active : Optional[Literal[True, False]]
             Whether the ETF is actively trading. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[EtfSearch]
+            results : list[EtfSearch]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -1344,7 +1347,7 @@ class ROUTER_etf(Container):
         isin : Optional[str]
             The International Securities Identification Number. (provider: intrinio)
         sedol : Optional[str]
-            The Stock Exchange Daily Official List. (provider: intrinio)
+            The Stock Exchange Daily Official list. (provider: intrinio)
         intrinio_id : Optional[str]
             The unique Intrinio ID for the security. (provider: intrinio)
 
@@ -1408,20 +1411,20 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for. (ETF)
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
         OBBject
-            results : List[EtfSectors]
+            results : list[EtfSectors]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
