@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from annotated_types import Ge
 from openbb_core.app.model.field import OpenBBField
@@ -67,24 +67,24 @@ class ROUTER_equity_ownership(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         symbol : str
             Symbol to get data for. A CIK or Symbol can be used.
         date : Union[date, None, str]
             A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported.
         limit : Optional[int]
             The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter.
-        provider : Optional[Literal['sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
 
         Returns
         -------
         OBBject
-            results : List[Form13FHR]
+            results : list[Form13FHR]
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -155,7 +155,7 @@ class ROUTER_equity_ownership(Container):
     def government_trades(
         self,
         symbol: Annotated[
-            Union[str, None, List[Optional[str]]],
+            Union[str, None, list[Optional[str]]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
@@ -182,24 +182,24 @@ class ROUTER_equity_ownership(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[Optional[str]]]
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        symbol : Union[str, None, list[Optional[str]]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         chamber : Literal['house', 'senate', 'all']
             Government Chamber.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
         OBBject
-            results : List[GovernmentTrades]
+            results : list[GovernmentTrades]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -281,18 +281,17 @@ class ROUTER_equity_ownership(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
         symbol : str
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
         transaction_type : Optional[Literal['award', 'conversion', 'return', 'expire_short', 'in_kind', 'gift', 'expire_long', 'discretionary', 'other', 'small', 'exempt', 'otm', 'purchase', 'sale', 'tender', 'will', 'itm', 'trust']]
             Type of the transaction. (provider: fmp)
-        start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format. (provider: intrinio);
-            Start date of the data, in YYYY-MM-DD format. Wide date ranges can result in long download times. Recommended to use a smaller date range, default is 120 days ago. (provider: sec)
-        end_date : Optional[datetime.date]
+        start_date : Optional[date]
+            Start date of the data, in YYYY-MM-DD format. (provider: intrinio)
+        end_date : Optional[date]
             End date of the data, in YYYY-MM-DD format. (provider: intrinio, sec)
         ownership_type : Optional[Literal['D', 'I']]
             Type of ownership. (provider: intrinio)
@@ -304,12 +303,12 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[InsiderTrading]
+            results : list[InsiderTrading]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -471,24 +470,24 @@ class ROUTER_equity_ownership(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         include_current_quarter : Optional[bool]
             Include current quarter data. (provider: fmp)
-        date : Optional[datetime.date]
+        date : Optional[date]
             A specific date to get data for. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[InstitutionalOwnership]
+            results : list[InstitutionalOwnership]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -616,24 +615,24 @@ class ROUTER_equity_ownership(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         symbol : str
             Symbol to get data for.
         date : Union[date, None, str]
             A specific date to get data for.
         page : Optional[int]
             Page number of the data to fetch.
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
         OBBject
-            results : List[EquityOwnership]
+            results : list[EquityOwnership]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -751,7 +750,7 @@ class ROUTER_equity_ownership(Container):
     def share_statistics(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, list[str]],
             OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance."
             ),
@@ -768,20 +767,20 @@ class ROUTER_equity_ownership(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance.
-        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
+        symbol : Union[str, list[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance.
 
         Returns
         -------
         OBBject
-            results : List[ShareStatistics]
+            results : list[ShareStatistics]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]

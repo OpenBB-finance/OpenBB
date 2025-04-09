@@ -100,6 +100,7 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
+                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "start_date",
@@ -113,6 +114,7 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
+                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "end_date",
@@ -126,6 +128,7 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
+                    "x-widget_config": {},
                 },
             ],
             False,
@@ -167,6 +170,7 @@ def mock_openapi_json():
                     "options": {"fred": []},
                     "x-widget_config": {},
                     "show": True,
+                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "end_date",
@@ -179,6 +183,7 @@ def mock_openapi_json():
                     "options": {"fred": []},
                     "x-widget_config": {},
                     "show": True,
+                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "limit",
@@ -191,6 +196,7 @@ def mock_openapi_json():
                     "options": {"fred": []},
                     "x-widget_config": {},
                     "show": True,
+                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "frequency",
@@ -221,6 +227,7 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
+                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "aggregation_method",
@@ -240,6 +247,7 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
+                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "transform",
@@ -264,6 +272,7 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
+                    "x-widget_config": {},
                 },
             ],
             True,
@@ -293,6 +302,7 @@ def mock_openapi_json():
                     "options": {"sec": []},
                     "x-widget_config": {},
                     "show": True,
+                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "use_cache",
@@ -317,6 +327,7 @@ def mock_openapi_json():
                     "options": {"sec": []},
                     "x-widget_config": {},
                     "available_providers": ["sec"],
+                    "x-widget_config": {},
                     "show": True,
                 },
             ],

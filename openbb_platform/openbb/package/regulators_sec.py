@@ -42,10 +42,10 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         use_cache : Optional[bool]
             Whether or not to use cache for the request, default is True. (provider: sec)
 
@@ -54,10 +54,10 @@ class ROUTER_regulators_sec(Container):
         OBBject
             results : CikMap
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -107,7 +107,7 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
-        provider : Optional[Literal['sec']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         url : str
             URL for the SEC filing. The specific URL is not directly used or downloaded, but is used to generate the base URL for the filing. e.g. https://www.sec.gov/Archives/edgar/data/317540/000031754024000045/coke-20240731.htm and https://www.sec.gov/Archives/edgar/data/317540/000031754024000045/ are both valid URLs for the same filing. (provider: sec)
@@ -119,10 +119,10 @@ class ROUTER_regulators_sec(Container):
         OBBject
             results : SecFiling
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -157,7 +157,7 @@ class ROUTER_regulators_sec(Container):
         cover_page : Optional[dict]
             Cover page information, if available. (provider: sec)
         document_urls : Optional[list]
-            List of files associated with the filing. (provider: sec)
+            list of files associated with the filing. (provider: sec)
 
         Examples
         --------
@@ -197,7 +197,7 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
-        provider : Optional[Literal['sec']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         url : str
             URL for the SEC filing. (provider: sec)
@@ -209,10 +209,10 @@ class ROUTER_regulators_sec(Container):
         OBBject
             results : SecHtmFile
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -263,22 +263,22 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         query : str
             Search query.
-        provider : Optional[Literal['sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         use_cache : Optional[bool]
             Whether or not to use cache. (provider: sec)
 
         Returns
         -------
         OBBject
-            results : List[InstitutionsSearch]
+            results : list[InstitutionsSearch]
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -331,18 +331,18 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
-        provider : Optional[Literal['sec']]
+        provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
 
         Returns
         -------
         OBBject
-            results : List[RssLitigation]
+            results : list[RssLitigation]
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -399,10 +399,10 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         query : str
             Search query.
-        provider : Optional[Literal['sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         url : Optional[str]
             Enter an optional URL path to fetch the next level. (provider: sec)
         use_cache : Optional[bool]
@@ -413,10 +413,10 @@ class ROUTER_regulators_sec(Container):
         OBBject
             results : SchemaFiles
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -424,7 +424,7 @@ class ROUTER_regulators_sec(Container):
 
         SchemaFiles
         -----------
-        files : Optional[List[str]]
+        files : Optional[list[str]]
             Dictionary of URLs to SEC Schema Files (provider: sec)
 
         Examples
@@ -440,7 +440,7 @@ class ROUTER_regulators_sec(Container):
         >>> # The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.
         >>> obb.regulators.sec.schema_files(url=url).results.files
         >>> ['https://xbrl.fasb.org/us-gaap/2024/'
-        >>> 'USGAAP2024FileList.xml'
+        >>> 'USGAAP2024Filelist.xml'
         >>> 'dis/'
         >>> 'dqcrules/'
         >>> 'ebp/'
@@ -485,22 +485,22 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         query : str
             Search query.
-        provider : Optional[Literal['sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         use_cache : Optional[bool]
             Whether or not to use cache. (provider: sec)
 
         Returns
         -------
         OBBject
-            results : List[SicSearch]
+            results : list[SicSearch]
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
@@ -562,22 +562,22 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         query : str
             Search query.
         use_cache : Optional[bool]
             Whether or not to use cache. If True, cache will store for seven days.
-        provider : Optional[Literal['sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
 
         Returns
         -------
         OBBject
             results : SymbolMap
                 Serializable results.
-            provider : Optional[Literal['sec']]
+            provider : Optional[str]
                 Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
             chart : Optional[Chart]
                 Chart object.
             extra : Dict[str, Any]
