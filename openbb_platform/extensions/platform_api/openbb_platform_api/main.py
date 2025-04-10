@@ -189,6 +189,9 @@ async def get_templates():
         if new_templates:
             return JSONResponse(content=new_templates)
 
+    elif default_templates and not new_templates:
+        return JSONResponse(content=default_templates)
+
     return JSONResponse(content=[])
 
 
