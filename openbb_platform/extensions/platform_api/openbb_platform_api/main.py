@@ -145,11 +145,11 @@ async def get_templates():
     default_templates: list = []
     widgets = await get_widgets()
 
-    if not Path(TEMPLATES_PATH).parent.exists():
-        Path(TEMPLATES_PATH).parent.mkdir(parents=True, exist_ok=True)
-
+    if not os.path.exists(TEMPLATES_PATH):
+        os.makedirs(os.path.dirname(TEMPLATES_PATH), exist_ok=True)
+        # Write an empty file for the user to export templates to for any backend.
         with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
-            json.dump([], templates_file)
+            templates_file.write(json.dumps([]))
 
     if os.path.exists(DEFAULT_TEMPLATES_PATH):
         with open(DEFAULT_TEMPLATES_PATH) as f:
@@ -188,15 +188,6 @@ async def get_templates():
 
         if new_templates:
             return JSONResponse(content=new_templates)
-
-    elif default_templates and not new_templates:
-        # Create the workspace_templates.json file if it doesn't exist
-        os.makedirs(os.path.dirname(TEMPLATES_PATH), exist_ok=True)
-        # Write the default templates to the file
-        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
-            templates_file.write(json.dumps([]))
-
-        return JSONResponse(content=default_templates)
 
     return JSONResponse(content=[])
 
