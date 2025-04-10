@@ -190,6 +190,12 @@ async def get_templates():
             return JSONResponse(content=new_templates)
 
     elif default_templates and not new_templates:
+        # Create the workspace_templates.json file if it doesn't exist
+        os.makedirs(os.path.dirname(TEMPLATES_PATH), exist_ok=True)
+        # Write the default templates to the file
+        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
+            templates_file.write(json.dumps([]))
+
         return JSONResponse(content=default_templates)
 
     return JSONResponse(content=[])
