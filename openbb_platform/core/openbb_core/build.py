@@ -43,14 +43,15 @@ def main():
             check=True,
         )
         try:
-            result = logger.info.run(
+            result = subprocess.run(
                 [
                     sys.executable,
                     "-c",
-                    "import openbb;openbb.build()",
+                    "import openbb",
                 ],
                 capture_output=True,
                 text=True,
+                check=True,
             )
             logger.info(result.stdout)
             building_found = any(
@@ -60,10 +61,10 @@ def main():
             raise RuntimeError(f"Failed to import the OpenBB package. \n{e}") from e
 
     if not building_found:
+        logger.info("Did not build on import, triggering rebuild...\n")
         try:
             import openbb  # noqa
 
-            logger.info("Did not build on import, triggering rebuild...\n")
             openbb.build()
 
         except Exception as e:
