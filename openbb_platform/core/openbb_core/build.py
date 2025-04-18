@@ -70,20 +70,20 @@ def main():
         except Exception as e:
             raise RuntimeError(  # noqa
                 "Failed to build the OpenBB platform static assets. \n"
-                f"{e} -> {e.__traceback__.tb_frame.f_code.co_filename}:"  # noqa
-                f"{e.__traceback__.tb_lineno}"  # noqa
+                f"{e} -> {e.__traceback__.tb_frame.f_code.co_filename}:"  # type:ignore
+                f"{e.__traceback__.tb_lineno}"  # type:ignore
                 if hasattr(e, "__traceback__")
-                and hasattr(e.__traceback__, "tb_frame")  # noqa
+                and hasattr(e.__traceback__, "tb_frame")  # type:ignore
                 and hasattr(
-                    e.__traceback__.tb_frame,  # noqa
+                    e.__traceback__.tb_frame,  # type:ignore
                     "f_code",
                 )
                 and hasattr(
-                    e.__traceback__.tb_frame.f_code,  # noqa
+                    e.__traceback__.tb_frame.f_code,  # type:ignore
                     "co_filename",
                 )
                 and hasattr(
-                    e.__traceback__,  # noqa
+                    e.__traceback__,  # type:ignore
                     "tb_lineno",
                 )
                 else f"Failed to build the OpenBB platform static assets. \n{e}"
