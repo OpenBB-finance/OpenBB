@@ -46,7 +46,7 @@
                 "message": null
             },
             "description": "Commodity Spot Prices.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.commodity.price.spot(provider='fred')\nobb.commodity.price.spot(provider='fred', commodity=wti)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -228,7 +228,7 @@
                 "message": null
             },
             "description": "EIA Weekly Petroleum Status Report.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the EIA's Weekly Petroleum Status Report.\nobb.commodity.petroleum_status_report(provider='eia')\n# Select the category of data, and filter for a specific table within the report.\nobb.commodity.petroleum_status_report(category=weekly_estimates, table=imports, provider='eia')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -430,7 +430,7 @@
                 "message": null
             },
             "description": "Monthly short term (18 month) projections using EIA's STEO model.\n\nSource: www.eia.gov/steo/",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the EIA's Short Term Energy Outlook.\nobb.commodity.short_term_energy_outlook(provider='eia')\n# Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.\nobb.commodity.short_term_energy_outlook(table=03d, provider='eia')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -609,7 +609,7 @@
                 "message": null
             },
             "description": "Get historical price data for cryptocurrency pair(s) within a provider.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.crypto.price.historical(symbol='BTCUSD', provider='fmp')\nobb.crypto.price.historical(symbol='BTCUSD', start_date='2024-01-01', end_date='2024-01-31', provider='fmp')\nobb.crypto.price.historical(symbol='BTCUSD,ETHUSD', start_date='2024-01-01', end_date='2024-01-31', provider='polygon')\n# Get monthly historical prices from Yahoo Finance for Ethereum.\nobb.crypto.price.historical(symbol='ETH-USD', interval=1m, start_date='2024-01-01', end_date='2024-12-31', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -891,7 +891,7 @@
                 "message": null
             },
             "description": "Search available cryptocurrency pairs within a provider.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.crypto.search(provider='fmp')\nobb.crypto.search(query='BTCUSD', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -991,7 +991,7 @@
                 "message": null
             },
             "description": "Currency Historical Price. Currency historical data.\n\nCurrency historical prices refer to the past exchange rates of one currency against\nanother over a specific period.\nThis data provides insight into the fluctuations and trends in the foreign exchange market,\nhelping analysts, traders, and economists understand currency performance,\nevaluate economic health, and make predictions about future movements.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.currency.price.historical(symbol='EURUSD', provider='fmp')\n# Filter historical data with specific start and end date.\nobb.currency.price.historical(symbol='EURUSD', start_date='2023-01-01', end_date='2023-12-31', provider='fmp')\n# Get data with different granularity.\nobb.currency.price.historical(symbol='EURUSD', provider='polygon', interval=15m)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -1248,7 +1248,7 @@
                 "message": null
             },
             "description": "Currency Search.\n\nSearch available currency pairs.\nCurrency pairs are the national currencies from two countries coupled for trading on\nthe foreign exchange (FX) marketplace.\nBoth currencies will have exchange rates on which the trade will have its position basis.\nAll trading within the forex market, whether selling, buying, or trading, will take place through currency pairs.\n(ref: Investopedia)\nMajor currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.currency.search(provider='fmp')\n# Search for 'EUR' currency pair using 'intrinio' as provider.\nobb.currency.search(provider='intrinio', query='EUR')\n# Search for terms  using 'polygon' as provider.\nobb.currency.search(provider='polygon', query='EUR')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -1434,7 +1434,7 @@
                 "message": null
             },
             "description": "Snapshots of currency exchange rates from an indirect or direct perspective of a base currency.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.currency.snapshots(provider='fmp')\n# Get exchange rates from USD and XAU to EUR, JPY, and GBP using 'fmp' as provider.\nobb.currency.snapshots(provider='fmp', base='USD,XAU', counter_currencies='EUR,JPY,GBP', quote_type='indirect')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -1801,7 +1801,7 @@
                 "message": null
             },
             "description": "Get the complete options chain for a ticker.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.options.chains(symbol='AAPL', provider='intrinio')\n# Use the \"date\" parameter to get the end-of-day-data for a specific date, where supported.\nobb.derivatives.options.chains(symbol='AAPL', date=2023-01-25, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -2414,7 +2414,7 @@
                 "message": null
             },
             "description": "Get the complete options chain for a ticker.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')\n# Use the 'symbol' parameter to get the most recent activity for a specific symbol.\nobb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -2627,7 +2627,7 @@
                 "message": null
             },
             "description": "Get a snapshot of the options market universe.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.options.snapshots(provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "intrinio": [
@@ -2911,7 +2911,7 @@
                 "message": null
             },
             "description": "Historical futures prices.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.futures.historical(symbol='ES', provider='yfinance')\n# Enter multiple symbols.\nobb.derivatives.futures.historical(symbol='ES,NQ', provider='yfinance')\n# Enter expiration dates as \"YYYY-MM\".\nobb.derivatives.futures.historical(symbol='ES', provider='yfinance', expiration='2025-12')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -3051,7 +3051,7 @@
                 "message": null
             },
             "description": "Futures Term Structure, current or historical.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.futures.curve(symbol='NG', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -3142,7 +3142,7 @@
                 "message": null
             },
             "description": "Get Forecasted GDP Data.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.forecast(provider='oecd')\nobb.economy.gdp.forecast(country=united_states,germany,france, frequency=annual, units=capita, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -3319,7 +3319,7 @@
                 "message": null
             },
             "description": "Get Nominal GDP Data.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.nominal(provider='oecd')\nobb.economy.gdp.nominal(units=capita, country=all, frequency=annual, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -3556,7 +3556,7 @@
                 "message": null
             },
             "description": "Get Real GDP Data.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.real(provider='oecd')\nobb.economy.gdp.real(country=united_states,germany,japan, provider='econdb')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -3770,7 +3770,7 @@
                 "message": null
             },
             "description": "Get time series data for one, or more, BLS series IDs.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.bls_series(provider='bls', symbol='CES0000000001')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -3983,7 +3983,7 @@
                 "message": null
             },
             "description": "Search BLS surveys by category and keyword or phrase to identify BLS series IDs.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.bls_search(provider='bls', category=cpi)\n# Use semi-colon to separate multiple queries as an & operator.\nobb.economy.survey.bls_search(provider='bls', category=cpi, query='seattle;gasoline')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -4105,7 +4105,7 @@
                 "message": null
             },
             "description": "Get Senior Loan Officers Opinion Survey.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.sloos(provider='fred')\nobb.economy.survey.sloos(category=credit_card, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -4241,7 +4241,7 @@
                 "message": null
             },
             "description": "Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.university_of_michigan(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -4264,7 +4264,7 @@
                 "fred": [
                     {
                         "name": "frequency",
-                        "type": "Literal['annual', 'quarter']",
+                        "type": "Literal['quarter', 'annual']",
                         "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
                         "default": null,
                         "optional": true,
@@ -4373,7 +4373,7 @@
                 "message": null
             },
             "description": "Get The Survey Of Economic Conditions For The Chicago Region.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.economic_conditions_chicago(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -4561,7 +4561,7 @@
                 "message": null
             },
             "description": "Get The Manufacturing Outlook Survey For The Texas Region.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.manufacturing_outlook_texas(provider='fred')\nobb.economy.survey.manufacturing_outlook_texas(topic=business_outlook,new_orders, transform=pc1, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -4734,13 +4734,184 @@
                 "model": "ManufacturingOutlookTexas"
             }
         },
+        "/economy/survey/manufacturing_outlook_ny": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the Empire State Manufacturing Survey.\n\nIt is a monthly survey of manufacturers in New York State conducted by the Federal Reserve Bank of New York.\n\nParticipants from across the state in a variety of industries respond to a questionnaire\nand report the change in a variety of indicators from the previous month.\n\nRespondents also state the likely direction of these same indicators six months ahead.\nApril 2002 is the first report, although survey data date back to July 2001.\n\nThe survey is sent on the first day of each month to the same pool of about 200\nmanufacturing executives in New York State, typically the president or CEO.\n\nAbout 100 responses are received. Most are completed by the tenth, although surveys are accepted until the fifteenth.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.manufacturing_outlook_ny(provider='fred')\nobb.economy.survey.manufacturing_outlook_ny(topic=hours_worked,new_orders, transform=pc1, provider='fred', seasonally_adjusted=True)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "topic",
+                        "type": "Union[Union[Literal['business_outlook', 'hours_worked', 'employment', 'inventories', 'prices_received', 'prices_paid', 'capex', 'unfilled_orders', 'new_orders', 'shipments', 'delivery_times'], str], list[Union[Literal['business_outlook', 'hours_worked', 'employment', 'inventories', 'prices_received', 'prices_paid', 'capex', 'unfilled_orders', 'new_orders', 'shipments', 'delivery_times'], str]]]",
+                        "description": "The topic for the survey response. Multiple items allowed for provider(s): fred.",
+                        "default": "new_orders",
+                        "optional": true,
+                        "choices": [
+                            "business_outlook",
+                            "hours_worked",
+                            "employment",
+                            "inventories",
+                            "prices_received",
+                            "prices_paid",
+                            "capex",
+                            "unfilled_orders",
+                            "new_orders",
+                            "shipments",
+                            "delivery_times"
+                        ]
+                    },
+                    {
+                        "name": "seasonally_adjusted",
+                        "type": "bool",
+                        "description": "Whether the data is seasonally adjusted, default is False",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['quarter', 'annual']",
+                        "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        avg = Average\n        sum = Sum\n        eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type\n        None = No transformation\n        chg = Change\n        ch1 = Change from Year Ago\n        pch = Percent Change\n        pc1 = Percent Change from Year Ago\n        pca = Compounded Annual Rate of Change\n        cch = Continuously Compounded Rate of Change\n        cca = Continuously Compounded Annual Rate of Change\n        log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "list[ManufacturingOutlookNY]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[list[Warning_]]",
+                        "description": "list of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "topic",
+                        "type": "str",
+                        "description": "Topic of the survey response.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "diffusion_index",
+                        "type": "float",
+                        "description": "Diffusion Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_reporting_increase",
+                        "type": "float",
+                        "description": "Percent of respondents reporting an increase over the last month.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_reporting_decrease",
+                        "type": "float",
+                        "description": "Percent of respondents reporting a decrease over the last month.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_reporting_no_change",
+                        "type": "float",
+                        "description": "Percent of respondents reporting no change over the last month.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "ManufacturingOutlookNY",
+            "openapi_extra": {
+                "widget_config": {
+                    "name": "Empire State Manufacturing Survey"
+                },
+                "model": "ManufacturingOutlookNY"
+            }
+        },
         "/economy/survey/nonfarm_payrolls": {
             "deprecated": {
                 "flag": null,
                 "message": null
             },
             "description": "Get Nonfarm Payrolls Survey.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.nonfarm_payrolls(provider='fred')\nobb.economy.survey.nonfarm_payrolls(category=avg_hours, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -4891,7 +5062,7 @@
                 "message": null
             },
             "description": "Get the upcoming, or historical, economic calendar of global events.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# By default, the calendar will be forward-looking.\nobb.economy.calendar(provider='fmp')\nobb.economy.calendar(provider='fmp', start_date='2020-03-01', end_date='2020-03-31')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -5419,7 +5590,7 @@
                 "message": null
             },
             "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.cpi(country='japan,china,turkey', provider='fred')\n# Use the `transform` parameter to define the reference period for the change in values. Default is YoY.\nobb.economy.cpi(country='united_states,united_kingdom', transform='period', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -5618,7 +5789,7 @@
                 "message": null
             },
             "description": "Get Market Risk Premium by country.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.risk_premium(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "fmp": []
@@ -5700,7 +5871,7 @@
                 "message": null
             },
             "description": "Balance of Payments Reports.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.balance_of_payments(provider='fred')\nobb.economy.balance_of_payments(provider='fred', country=brazil)\n```\n\n",
             "parameters": {
                 "standard": [],
                 "fred": [
@@ -5992,7 +6163,7 @@
                 "message": null
             },
             "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fred_search(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -6334,7 +6505,7 @@
                 "message": null
             },
             "description": "Get data by series ID from FRED.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fred_series(symbol='NFCI', provider='fred')\n# Multiple series can be passed in as a list.\nobb.economy.fred_series(symbol='NFCI,STLFSI4', provider='fred')\n# Use the `transform` parameter to transform the data as change, log, or percent change.\nobb.economy.fred_series(symbol='CBBTCUSD', transform=pc1, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -6514,7 +6685,7 @@
                 "message": null
             },
             "description": "Get economic release data by ID and/or element from FRED.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the top-level elements of a release by not supplying an element ID.\nobb.economy.fred_release_table(release_id='50', provider='fred')\n# Drill down on a specific section of the release.\nobb.economy.fred_release_table(release_id='50', element_id='4880', provider='fred')\n# Drill down on a specific table of the release.\nobb.economy.fred_release_table(release_id='50', element_id='4881', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -6669,7 +6840,7 @@
                 "message": null
             },
             "description": "Get Money Measures (M1/M2 and components).\n\nThe Federal Reserve publishes as part of the H.6 Release.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.money_measures(provider='federal_reserve')\nobb.economy.money_measures(adjusted=False, provider='federal_reserve')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -6808,7 +6979,7 @@
                 "message": null
             },
             "description": "Get global unemployment data.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.unemployment(provider='oecd')\nobb.economy.unemployment(country='all', frequency='quarter', provider='oecd')\n# Demographics for the statistics are selected with the `age` parameter.\nobb.economy.unemployment(country='all', frequency='quarter', age=total, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -6960,7 +7131,7 @@
                 "message": null
             },
             "description": "Get the composite leading indicator (CLI).\n\nIt is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\n\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd', growth_rate=True)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -7100,7 +7271,7 @@
                 "message": "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5."
             },
             "description": "Get Short-term interest rates.\n\nThey are the rates at which short-term borrowings are effected between\nfinancial institutions or the rate at which short-term government paper is issued or traded in the market.\n\nShort-term interest rates are generally averages of daily rates, measured as a percentage.\nShort-term interest rates are based on three-month money market rates where available.\nTypical standardised names are \"money market rate\" and \"treasury bill rate\".",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.short_term_interest_rate(provider='oecd')\nobb.economy.short_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -7208,7 +7379,7 @@
                 "message": "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5."
             },
             "description": "Get Long-term interest rates that refer to government bonds maturing in ten years.\n\nRates are mainly determined by the price charged by the lender, the risk from the borrower and the\nfall in the capital value. Long-term interest rates are generally averages of daily rates,\nmeasured as a percentage. These interest rates are implied by the prices at which the government bonds are\ntraded on financial markets, not the interest rates at which the loans were issued.\nIn all cases, they refer to bonds whose capital repayment is guaranteed by governments.\nLong-term interest rates are one of the determinants of business investment.\nLow long-term interest rates encourage investment in new equipment and high interest rates discourage it.\nInvestment is, in turn, a major source of economic growth.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.long_term_interest_rate(provider='oecd')\nobb.economy.long_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -7316,7 +7487,7 @@
                 "message": null
             },
             "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fred_regional(symbol='NYICLAIMS', provider='fred')\n# With a date, time series data is returned.\nobb.economy.fred_regional(symbol='NYICLAIMS', start_date='2021-01-01', end_date='2021-12-31', limit=10, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -7546,7 +7717,7 @@
                 "message": null
             },
             "description": "Get a profile of country statistics and economic indicators.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.country_profile(provider='econdb', country='united_kingdom')\n# Enter the country as the full name, or iso code. If `latest` is False, the complete history for each series is returned.\nobb.economy.country_profile(country='united_states,jp', latest=False, provider='econdb')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -7734,7 +7905,7 @@
                 "message": null
             },
             "description": "Get the available economic indicators for a provider.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.available_indicators(provider='econdb')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "econdb": [
@@ -7966,7 +8137,7 @@
                 "message": null
             },
             "description": "Get economic indicators by country and indicator.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol=PCOCO)\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol=CPI, country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol=main, country='eu')\n# When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'. Use 'IRFCL' to get all the data from the set of indicators.\nobb.economy.indicators(provider='imf')\n# When the provider is 'imf', complete tables are returned by using a 'preset'. Refer to the function's docstring for descriptions of each preset. When no country is supplied, the data is returned for all countries.\nobb.economy.indicators(provider='imf', symbol=gold_reserves)\n# When the provider is 'imf', multiple countries and symbols can be supplied. Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.\nobb.economy.indicators(provider='imf', symbol=RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO, country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency=annual)\n# When the provider is 'imf', additional presets return the core Financial Soundness Indicators.\n    'fsi_core' -  Core FSIs\n    'fsi_encouraged_set' - Encouraged Set of FSIs,\n    'fsi_core_underlying' - Underlying data for the Core FSIs.\n    'fsi_other' - Additional/Other FSIs that are not in the Core or Encouraged Set.\n    'fsi_all' - all FSI data for a single country.\nobb.economy.indicators(provider='imf', symbol=fsi_encouraged_set, country='us,fr,gb', start_date='2022-01-01', end_date='2023-12-31', frequency=annual)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -8411,7 +8582,7 @@
                 "message": null
             },
             "description": "Get the balance sheet holdings of a central bank.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# The default is the latest Treasury securities held by the Federal Reserve.\nobb.economy.central_bank_holdings(provider='federal_reserve')\n# Get historical summaries of the Fed's holdings.\nobb.economy.central_bank_holdings(provider='federal_reserve', summary=True)\n# Get the balance sheet holdings as-of a historical date.\nobb.economy.central_bank_holdings(provider='federal_reserve', date='2019-05-21')\n# Use the `holding_type` parameter to select Agency securities, or specific categories or Treasury securities.\nobb.economy.central_bank_holdings(provider='federal_reserve', holding_type=agency_debts)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -8714,7 +8885,7 @@
                 "message": null
             },
             "description": "Get the Share Price Index by country from the OECD Short-Term Economics Statistics.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.share_price_index(provider='oecd')\n# Multiple countries can be passed in as a list.\nobb.economy.share_price_index(country='united_kingdom,germany', frequency='quarter', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -8834,7 +9005,7 @@
                 "message": null
             },
             "description": "Get the House Price Index by country from the OECD Short-Term Economics Statistics.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.house_price_index(provider='oecd')\n# Multiple countries can be passed in as a list.\nobb.economy.house_price_index(country='united_kingdom,germany', frequency='quarter', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -8966,7 +9137,7 @@
                 "message": "This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead. Deprecated in OpenBB Platform V4.3 to be removed in V4.5."
             },
             "description": "Get immediate interest rates by country.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.immediate_interest_rate(provider='oecd')\n# Multiple countries can be passed in as a list.\nobb.economy.immediate_interest_rate(country='united_kingdom,germany', frequency=monthly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -9082,7 +9253,7 @@
                 "message": null
             },
             "description": "Get interest rates by country(s) and duration.\nMost OECD countries publish short-term, a long-term, and immediate rates monthly.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.interest_rates(provider='oecd')\n# For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate. Overnight interbank rate is 'immediate', and 10-year rate is 'long'.\nobb.economy.interest_rates(provider='oecd', country='all', duration=immediate, frequency=quarter)\n# Multiple countries can be passed in as a list.\nobb.economy.interest_rates(duration=long, country='united_kingdom,germany', frequency=monthly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -9256,7 +9427,7 @@
                 "message": null
             },
             "description": "Get retail prices for common items.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.retail_prices(provider='fred')\n# The price of eggs in the northeast census region.\nobb.economy.retail_prices(item='eggs', region=northeast, provider='fred')\n# The percentage change in price, from one-year ago, of various meats, US City Average.\nobb.economy.retail_prices(item='meats', transform=pc1, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -9420,7 +9591,7 @@
                 "message": null
             },
             "description": "Get Primary dealer positioning statistics.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.primary_dealer_positioning(provider='federal_reserve')\nobb.economy.primary_dealer_positioning(category=abs, provider='federal_reserve')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -9551,7 +9722,7 @@
                 "message": null
             },
             "description": "Get Personal Consumption Expenditures (PCE) reports.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.pce(provider='fred')\n# Get reports for multiple dates, entered as a comma-separated string.\nobb.economy.pce(provider='fred', date='2024-05-01,2024-04-01,2023-05-01', category=pce_price_index)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -9701,7 +9872,7 @@
                 "message": null
             },
             "description": "Get top export destinations by country from the UN Comtrade International Trade Statistics Database.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.export_destinations(provider='econdb', country='us')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -9809,7 +9980,7 @@
                 "message": null
             },
             "description": "Primary Dealer Statistics for Fails to Deliver and Fails to Receive.\n\nData from the NY Federal Reserve are updated on Thursdays at approximately\n4:15 p.m. with the previous week's statistics.\n\nFor research on the topic, see:\nhttps://www.federalreserve.gov/econres/notes/feds-notes/the-systemic-nature-of-settlement-fails-20170703.html\n\n\"Large and protracted settlement fails are believed to undermine the liquidity\nand well-functioning of securities markets.\n\nNear-100 percent pass-through of fails suggests a high degree of collateral\nre-hypothecation together with the inability or unwillingness to borrow or buy the needed securities.\"",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.primary_dealer_fails(provider='federal_reserve')\n# Transform the data to be percentage totals by asset class\nobb.economy.primary_dealer_fails(provider='federal_reserve', unit=percent)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -9936,7 +10107,7 @@
                 "message": null
             },
             "description": "Get average dwelling times and TEU volumes from the top ports.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.port_volume(provider='econdb')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -10068,7 +10239,7 @@
                 "message": null
             },
             "description": "Get Direction Of Trade Statistics from the IMF database.\n\nThe Direction of Trade Statistics (DOTS) presents the value of merchandise exports and\nimports disaggregated according to a country's primary trading partners.\nArea and world aggregates are included in the display of trade flows between major areas of the world.\nReported data is supplemented by estimates whenever such data is not available or current.\nImports are reported on a cost, insurance and freight (CIF) basis\nand exports are reported on a free on board (FOB) basis.\nTime series data includes estimates derived from reports of partner countries\nfor non-reporting and slow-reporting countries.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.direction_of_trade(provider='imf', country='all', counterpart='china')\n# Select multiple countries or counterparts by entering a comma-separated list. The direction of trade can be 'exports', 'imports', 'balance', or 'all'.\nobb.economy.direction_of_trade(provider='imf', country='us', counterpart='world,eu', frequency='annual', direction='exports')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -10719,7 +10890,7 @@
                 "message": null
             },
             "description": "Get FOMC documents by year and document type.\nOptionally, download the file directly from the Federal Reserve's website.\n\nSource: https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm\nSource: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm\n\nThis function does not return the typical OBBject response.\n\nThe response is `list[dict[str, str]]` of FOMC documents and their URLs.\n\nEach dictionary entry has keys: `date`, `url`, `doc_type`, and `doc_format`.\n\nIf `as_choices` is True, the response is a list of valid Workspace parameter choices.\nKeys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.\n\nIf `url` was provided, the response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fomc_documents(provider='federal_reserve')\n# Filter all documents by year.\nobb.economy.fomc_documents(provider='federal_reserve', year=2022)\n# Filter all documents by year and document type.\nobb.economy.fomc_documents(provider='federal_reserve', year=2022, document_type=minutes)\n# The `url` parameter will override all other parameters to download the document. The response will be a dictionary with keys `filename`, `content`, and `data_format`. PDF content will be a base64 encoded string of the document.\nobb.economy.fomc_documents(provider='federal_reserve', url=https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20220126.pdf)\n```\n\n",
             "parameters": {
                 "standard": [],
                 "federal_reserve": [
@@ -10828,7 +10999,7 @@
                 "message": null
             },
             "description": "Get historical and upcoming initial public offerings (IPOs).",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.calendar.ipo(provider='intrinio')\n# Get all IPOs available.\nobb.equity.calendar.ipo(provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -11113,7 +11284,7 @@
                 "message": null
             },
             "description": "Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.calendar.dividend(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -11253,7 +11424,7 @@
                 "message": null
             },
             "description": "Get historical and upcoming stock split operations.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.calendar.splits(provider='fmp')\n# Get stock splits calendar for specific dates.\nobb.equity.calendar.splits(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -11360,7 +11531,7 @@
                 "message": null
             },
             "description": "Get historical and upcoming company events, such as Investor Day, Conference Call, Earnings Release.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.calendar.events(provider='fmp')\n# Get company events calendar for specific dates.\nobb.equity.calendar.events(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -11492,7 +11663,7 @@
                 "message": null
             },
             "description": "Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.calendar.earnings(provider='fmp')\n# Get earnings calendar for specific dates.\nobb.equity.calendar.earnings(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -11648,7 +11819,7 @@
                 "message": null
             },
             "description": "Get the closest peers for a given company.\n\nPeers consist of companies trading on the same exchange, operating within the same sector\nand with comparable market capitalizations.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.compare.peers(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -11715,7 +11886,7 @@
                 "message": null
             },
             "description": "Compare reported company facts and fundamental data points.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.compare.company_facts(provider='sec')\nobb.equity.compare.company_facts(provider='sec', fact='PaymentsForRepurchaseOfCommonStock', year=2023)\nobb.equity.compare.company_facts(provider='sec', symbol='NVDA,AAPL,AMZN,MSFT,GOOG,SMCI', fact='RevenueFromContractWithCustomerExcludingAssessedTax', year=2024)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -11950,7 +12121,7 @@
                 "message": null
             },
             "description": "Get analyst price targets by company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.price_target(provider='benzinga')\n# Get price targets for Microsoft using 'benzinga' as provider.\nobb.equity.estimates.price_target(start_date=2020-01-01, end_date=2024-02-16, limit=10, symbol='msft', provider='benzinga', action=downgrades)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -12355,7 +12526,7 @@
                 "message": null
             },
             "description": "Get historical analyst estimates for earnings and revenue.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.historical(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -12607,7 +12778,7 @@
                 "message": null
             },
             "description": "Get consensus price target and recommendation.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.consensus(symbol='AAPL', provider='fmp')\nobb.equity.estimates.consensus(symbol='AAPL,MSFT', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -12817,7 +12988,7 @@
                 "message": null
             },
             "description": "Search for specific analysts and get their forecast track record.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.analyst_search(provider='benzinga')\nobb.equity.estimates.analyst_search(firm_name='Wedbush', provider='benzinga')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -13374,7 +13545,7 @@
                 "message": null
             },
             "description": "Get forward sales estimates.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_sales(symbol='AAPL', provider='intrinio')\nobb.equity.estimates.forward_sales(fiscal_year=2025, fiscal_period=fy, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -13643,7 +13814,7 @@
                 "message": null
             },
             "description": "Get forward EBITDA estimates.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_ebitda(provider='intrinio')\nobb.equity.estimates.forward_ebitda(symbol='AAPL', fiscal_period=annual, provider='intrinio')\nobb.equity.estimates.forward_ebitda(symbol='AAPL,MSFT', fiscal_period=quarter, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -13684,7 +13855,7 @@
                 "intrinio": [
                     {
                         "name": "fiscal_period",
-                        "type": "Literal['annual', 'quarter']",
+                        "type": "Literal['quarter', 'annual']",
                         "description": "Filter for only full-year or quarterly estimates.",
                         "default": null,
                         "optional": true,
@@ -13867,7 +14038,7 @@
                 "message": null
             },
             "description": "Get forward EPS estimates.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_eps(symbol='AAPL', provider='intrinio')\nobb.equity.estimates.forward_eps(fiscal_year=2025, fiscal_period=fy, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -14131,7 +14302,7 @@
                 "message": null
             },
             "description": "Get forward PE estimates.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_pe(provider='intrinio')\nobb.equity.estimates.forward_pe(symbol='AAPL,MSFT,GOOG', provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -14271,7 +14442,7 @@
                 "message": null
             },
             "description": "Get the top price gainers in the stock market.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.gainers(provider='yfinance')\nobb.equity.discovery.gainers(sort='desc', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -14548,7 +14719,7 @@
                 "message": null
             },
             "description": "Get the top price losers in the stock market.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.losers(provider='yfinance')\nobb.equity.discovery.losers(sort='desc', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -14825,7 +14996,7 @@
                 "message": null
             },
             "description": "Get the most actively traded stocks based on volume.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.active(provider='yfinance')\nobb.equity.discovery.active(sort='desc', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -15102,7 +15273,7 @@
                 "message": null
             },
             "description": "Get potentially undervalued large cap stocks.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.undervalued_large_caps(provider='yfinance')\nobb.equity.discovery.undervalued_large_caps(sort='desc', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -15379,7 +15550,7 @@
                 "message": null
             },
             "description": "Get potentially undervalued growth stocks.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.undervalued_growth(provider='yfinance')\nobb.equity.discovery.undervalued_growth(sort='desc', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -15656,7 +15827,7 @@
                 "message": null
             },
             "description": "Get top small cap stocks based on earnings growth.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.aggressive_small_caps(provider='yfinance')\nobb.equity.discovery.aggressive_small_caps(sort='desc', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -15933,7 +16104,7 @@
                 "message": null
             },
             "description": "Get top tech stocks based on revenue and earnings growth.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.growth_tech(provider='yfinance')\nobb.equity.discovery.growth_tech(sort='desc', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -16210,7 +16381,7 @@
                 "message": null
             },
             "description": "Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.\n\nSEC filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,\nForeign Investment Disclosures and others. The annual 10-K report is required to be\nfiled annually and includes the company's financial statements, management discussion and analysis,\nand audited financial statements.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.filings(provider='fmp')\n# Get filings for the year 2023, limited to 100 results\nobb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -16350,7 +16521,7 @@
                 "message": null
             },
             "description": "Get the newest quarterly, annual, and current reports for all companies.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.latest_financial_reports(provider='sec')\nobb.equity.discovery.latest_financial_reports(provider='sec', date=2024-09-30)\n```\n\n",
             "parameters": {
                 "standard": [],
                 "sec": [
@@ -16543,7 +16714,7 @@
                 "message": null
             },
             "description": "Get equity valuation multiples for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.multiples(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -17090,7 +17261,7 @@
                 "message": null
             },
             "description": "Get the balance sheet for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.balance(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.balance(symbol='AAPL', period=annual, limit=5, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -18710,7 +18881,7 @@
                 "message": null
             },
             "description": "Get the growth of a company's balance sheet items over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.balance_growth(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.balance_growth(symbol='AAPL', limit=10, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -19134,7 +19305,7 @@
                 "message": null
             },
             "description": "Get the cash flow statement for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.cash(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.cash(symbol='AAPL', period=annual, limit=5, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -20157,7 +20328,7 @@
                 "message": null
             },
             "description": "Get financial statements as reported by the company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.reported_financials(symbol='AAPL', provider='intrinio')\n# Get AAPL balance sheet with a limit of 10 items.\nobb.equity.fundamental.reported_financials(symbol='AAPL', period='annual', statement_type='balance', limit=10, provider='intrinio')\n# Get reported income statement\nobb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='income', provider='intrinio')\n# Get reported cash flow statement\nobb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='cash', provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -20289,7 +20460,7 @@
                 "message": null
             },
             "description": "Get the growth of a company's cash flow statement items over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.cash_growth(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.cash_growth(symbol='AAPL', limit=10, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -20641,7 +20812,7 @@
                 "message": null
             },
             "description": "Get historical dividend data for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.dividends(symbol='AAPL', provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -20811,7 +20982,7 @@
                 "message": null
             },
             "description": "Get historical earnings per share data for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.historical_eps(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -20960,7 +21131,7 @@
                 "message": null
             },
             "description": "Get historical employee count data for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.employee_count(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -21091,7 +21262,7 @@
                 "message": null
             },
             "description": "Search Intrinio data tags to search in latest or historical attributes.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.search_attributes(query='ebitda', provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -21246,7 +21417,7 @@
                 "message": null
             },
             "description": "Get the latest value of a data tag from Intrinio.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.latest_attributes(symbol='AAPL', tag='ceo', provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -21337,7 +21508,7 @@
                 "message": null
             },
             "description": "Get the historical values of a data tag from Intrinio.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.historical_attributes(symbol='AAPL', tag='ebitda', provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -21484,7 +21655,7 @@
                 "message": null
             },
             "description": "Get the income statement for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.income(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.income(symbol='AAPL', period=annual, limit=5, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -22995,7 +23166,7 @@
                 "message": null
             },
             "description": "Get the growth of a company's income statement items over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.income_growth(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.income_growth(symbol='AAPL', limit=10, period=annual, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -23315,7 +23486,7 @@
                 "message": null
             },
             "description": "Get fundamental metrics for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.metrics(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.metrics(symbol='AAPL', period=annual, limit=100, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -24473,7 +24644,7 @@
                 "message": null
             },
             "description": "Get executive management team data for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -24615,7 +24786,7 @@
                 "message": null
             },
             "description": "Get executive management team compensation for a given company over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management_compensation(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -24804,7 +24975,7 @@
                 "message": null
             },
             "description": "Get an extensive set of financial and accounting ratios for a given company over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.ratios(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.ratios(symbol='AAPL', period=annual, limit=12, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -25381,7 +25552,7 @@
                 "message": null
             },
             "description": "Get the geographic breakdown of revenue for a given company over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_geography(symbol='AAPL', period=quarter, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -25500,7 +25671,7 @@
                 "message": null
             },
             "description": "Get the revenue breakdown by business segment for a given company over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', provider='fmp')\nobb.equity.fundamental.revenue_per_segment(symbol='AAPL', period=quarter, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -25619,7 +25790,7 @@
                 "message": null
             },
             "description": "Get public company filings.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.filings(provider='fmp')\nobb.equity.fundamental.filings(limit=100, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -26387,7 +26558,7 @@
                 "message": null
             },
             "description": "Get historical stock splits for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.historical_splits(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -26478,7 +26649,7 @@
                 "message": null
             },
             "description": "Get earnings call transcripts for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.transcript(symbol='AAPL', year='2020', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -26585,7 +26756,7 @@
                 "message": null
             },
             "description": "Get the 1 year trailing dividend yield for a given company over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.trailing_dividend_yield(symbol='AAPL', provider='tiingo')\nobb.equity.fundamental.trailing_dividend_yield(symbol='AAPL', limit=252, provider='tiingo')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -26668,7 +26839,7 @@
                 "message": null
             },
             "description": "Get the Management Discussion & Analysis section from the financial statements for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')\n# Get the Management Discussion & Analysis section by calendar year and period.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec')\n# Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', include_tables=True)\n# Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.\nobb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', raw_html=True)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -26843,7 +27014,7 @@
                 "message": null
             },
             "description": "Get data about major holders for a given company over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.major_holders(symbol='AAPL', provider='fmp')\nobb.equity.ownership.major_holders(symbol='AAPL', page=0, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -27230,7 +27401,7 @@
                 "message": null
             },
             "description": "Get data about institutional ownership for a given company over time.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.institutional(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -27595,7 +27766,7 @@
                 "message": null
             },
             "description": "Get data about trading by a company's management team and board of directors.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.insider_trading(symbol='AAPL', provider='fmp')\nobb.equity.ownership.insider_trading(symbol='AAPL', limit=500, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -28155,7 +28326,7 @@
                 "message": null
             },
             "description": "Get data about share float for a given company.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.share_statistics(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -28364,7 +28535,7 @@
                 "message": null
             },
             "description": "Get the form 13F.\n\nThe Securities and Exchange Commission's (SEC) Form 13F is a quarterly report\nthat is required to be filed by all institutional investment managers with at least\n$100 million in assets under management.\nManagers are required to file Form 13F within 45 days after the last day of the calendar quarter.\nMost funds wait until the end of this period in order to conceal\ntheir investment strategy from competitors and the public.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.form_13f(symbol='NVDA', provider='sec')\n# Enter a date (calendar quarter ending) for a specific report.\nobb.equity.ownership.form_13f(symbol='BRK-A', date='2016-09-30', provider='sec')\n# Example finding Michael Burry's filings.\ncik = obb.regulators.sec.institutions_search(\"Scion Asset Management\").results[0].cik\n# Use the `limit` parameter to return N number of reports from the most recent.\nobb.equity.ownership.form_13f(cik, limit=2).to_df()\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -28544,7 +28715,7 @@
                 "message": null
             },
             "description": "Obtain government transaction data, including data from the Senate\nand the House of Representatives.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.government_trades(symbol='AAPL', chamber='all', provider='fmp')\nobb.equity.ownership.government_trades(limit=500, chamber='all', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -28716,7 +28887,7 @@
                 "message": null
             },
             "description": "Get the latest quote for a given stock. Quote includes price, volume, and other data.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.price.quote(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -29199,7 +29370,7 @@
                 "message": null
             },
             "description": "Get the National Best Bid and Offer for a given stock.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.price.nbbo(symbol='AAPL', provider='polygon')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -29412,7 +29583,7 @@
                 "message": null
             },
             "description": "Get historical price data for a given stock. This includes open, high, low, close, and volume.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.price.historical(symbol='AAPL', provider='fmp')\nobb.equity.price.historical(symbol='AAPL', interval=1d, provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -29985,7 +30156,7 @@
                 "message": null
             },
             "description": "Get price performance data for a given stock. This includes price changes for different time periods.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.price.performance(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -30189,7 +30360,7 @@
                 "message": null
             },
             "description": "Get reported Fail-to-deliver (FTD) data.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.shorts.fails_to_deliver(symbol='AAPL', provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -30321,7 +30492,7 @@
                 "message": null
             },
             "description": "Search for stock symbol, CIK, LEI, or company name.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.search(provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -30474,7 +30645,7 @@
                 "message": null
             },
             "description": "Screen for companies meeting various criteria.\n\nThese criteria include market cap, price, beta, volume, and dividend yield.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.screener(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "fmp": [
@@ -31406,7 +31577,7 @@
                 "message": null
             },
             "description": "Get general information about a company. This includes company name, industry, sector and price data.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.profile(symbol='AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -31976,7 +32147,7 @@
                 "message": null
             },
             "description": "Get an updated equity market snapshot. This includes price data for thousands of stocks.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.market_snapshots(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "fmp": [
@@ -32508,7 +32679,7 @@
                 "message": null
             },
             "description": "Get the historical market cap of a ticker symbol.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.historical_market_cap(provider='fmp', symbol='AAPL')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -32624,7 +32795,7 @@
                 "message": null
             },
             "description": "Search for ETFs.\n\nAn empty query returns the full list of ETFs from the provider.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# An empty query returns the full list of ETFs from the provider.\nobb.etf.search(provider='fmp')\n# The query will return results from text-based fields containing the term.\nobb.etf.search(query='commercial real estate', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -32872,7 +33043,7 @@
                 "message": null
             },
             "description": "ETF Historical Market Price.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.historical(symbol='SPY', provider='fmp')\nobb.etf.historical(symbol='SPY', provider='yfinance')\n# This function accepts multiple tickers.\nobb.etf.historical(symbol='SPY,IWM,QQQ,DJIA', provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -33445,7 +33616,7 @@
                 "message": null
             },
             "description": "ETF Information Overview.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.info(symbol='SPY', provider='fmp')\n# This function accepts multiple tickers.\nobb.etf.info(symbol='SPY,IWM,QQQ,DJIA', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -34799,7 +34970,7 @@
                 "message": null
             },
             "description": "ETF Sector weighting.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.sectors(symbol='SPY', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -34874,7 +35045,7 @@
                 "message": null
             },
             "description": "ETF Country weighting.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.countries(symbol='VT', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -34941,7 +35112,7 @@
                 "message": null
             },
             "description": "Price performance as a return, over different periods.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.price_performance(symbol='QQQ', provider='fmp')\nobb.etf.price_performance(symbol='SPY,QQQ,IWM,DJIA', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -35285,7 +35456,7 @@
                 "message": null
             },
             "description": "Get the holdings for an individual ETF.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.holdings(symbol='XLK', provider='fmp')\n# Including a date (FMP, SEC) will return the holdings as per NPORT-P filings.\nobb.etf.holdings(symbol='XLK', date=2022-03-31, provider='fmp')\n# The same data can be returned from the SEC directly.\nobb.etf.holdings(symbol='XLK', date=2022-03-31, provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -36306,7 +36477,7 @@
                 "message": null
             },
             "description": "Use this function to get the holdings dates, if available.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.holdings_date(symbol='XLK', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -36382,7 +36553,7 @@
                 "message": null
             },
             "description": "Get the exposure to ETFs for a specific stock.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.equity_exposure(symbol='MSFT', provider='fmp')\n# This function accepts multiple tickers.\nobb.etf.equity_exposure(symbol='MSFT,AAPL', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -36481,7 +36652,7 @@
                 "message": null
             },
             "description": "AMERIBOR.\n\nAMERIBOR (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of\nshort-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the\nAmerican Financial Exchange (AFX).",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.ameribor(provider='fred')\n# The change from one year ago is applied with the transform parameter.\nobb.fixedincome.rate.ameribor(maturity=all, transform=pc1, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -36655,7 +36826,7 @@
                 "message": null
             },
             "description": "Sterling Overnight Index Average.\n\nSONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual\ntransactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other\nfinancial institutions and other institutional investors.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.sonia(provider='fred')\nobb.fixedincome.rate.sonia(parameter=total_nominal_value, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -36747,7 +36918,7 @@
                 "message": null
             },
             "description": "Secured Overnight Financing Rate.\n\nThe Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of\nborrowing cash overnight collateralizing by Treasury securities.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.sofr(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -36957,7 +37128,7 @@
                 "message": null
             },
             "description": "Interest on Reserve Balances.\n\nGet Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its\ndomestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the\nUnited States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.iorb(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -37040,7 +37211,7 @@
                 "message": null
             },
             "description": "Fed Funds Rate.\n\nGet Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its\ndomestic banks to borrow money. The rates central banks charge are set to stabilize the economy.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.effr(provider='fred')\nobb.fixedincome.rate.effr(effr_only=True, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -37274,7 +37445,7 @@
                 "message": null
             },
             "description": "Fed Funds Rate Projections.\n\nThe projections for the federal funds rate are the value of the midpoint of the\nprojected appropriate target range for the federal funds rate or the projected\nappropriate target level for the federal funds rate at the end of the specified\ncalendar year or over the longer run.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.effr_forecast(provider='fred')\nobb.fixedincome.rate.effr_forecast(long_run=True, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "fred": [
@@ -37397,7 +37568,7 @@
                 "message": null
             },
             "description": "Euro Short-Term Rate.\n\nThe euro short-term rate (\u20acSTR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in\nthe euro area. The \u20acSTR is published on each TARGET2 business day based on transactions conducted and settled on\nthe previous TARGET2 business day (the reporting date \u201cT\u201d) with a maturity date of T+1 which are deemed to have been\nexecuted at arm's length and thus reflect market rates in an unbiased way.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.estr(provider='fred')\nobb.fixedincome.rate.estr(transform=ch1, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -37580,7 +37751,7 @@
                 "message": null
             },
             "description": "European Central Bank Interest Rates.\n\nThe Governing Council of the ECB sets the key interest rates for the euro area:\n\n- The interest rate on the main refinancing operations (MRO), which provide\nthe bulk of liquidity to the banking system.\n- The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.\n- The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.ecb(provider='fred')\nobb.fixedincome.rate.ecb(interest_rate_type='refinancing', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -37671,7 +37842,7 @@
                 "message": null
             },
             "description": "Discount Window Primary Credit Rate.\n\nA bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.\nThe rates central banks charge are set to stabilize the economy.\nIn the United States, the Federal Reserve System's Board of Governors set the bank rate,\nalso known as the discount rate.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.dpcredit(provider='fred')\nobb.fixedincome.rate.dpcredit(start_date='2023-02-01', end_date='2023-05-01', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -37763,7 +37934,7 @@
                 "message": null
             },
             "description": "Overnight Bank Funding.\n\nFor the United States, the overnight bank funding rate (OBFR) is calculated as a volume-weighted median of\novernight federal funds transactions and Eurodollar transactions reported in the\nFR 2420 Report of Selected Money Market Rates.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.overnight_bank_funding(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -37949,7 +38120,7 @@
                 "message": null
             },
             "description": "Treasury Constant Maturity.\n\nGet data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.\nConstant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.\nTreasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury\nyield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.spreads.tcm(provider='fred')\nobb.fixedincome.spreads.tcm(maturity='2y', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -38040,7 +38211,7 @@
                 "message": null
             },
             "description": "Select Treasury Constant Maturity.\n\nGet data for Selected Treasury Constant Maturity Minus Federal Funds Rate\nConstant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.\nTreasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury\nyield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.spreads.tcm_effr(provider='fred')\nobb.fixedincome.spreads.tcm_effr(maturity='10y', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -38131,7 +38302,7 @@
                 "message": null
             },
             "description": "Select Treasury Bill.\n\nGet Selected Treasury Bill Minus Federal Funds Rate.\nConstant maturity is the theoretical value of a U.S. Treasury that is based on recent values of\nauctioned U.S. Treasuries.\nThe value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury\nyield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.spreads.treasury_effr(provider='fred')\nobb.fixedincome.spreads.treasury_effr(maturity='6m', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -38222,7 +38393,7 @@
                 "message": null
             },
             "description": "Get yield curve data by country and date.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.yield_curve(provider='federal_reserve')\nobb.fixedincome.government.yield_curve(date='2023-05-01,2024-05-01', provider='fmp')\nobb.fixedincome.government.yield_curve(date='2023-05-01', country=united_kingdom, provider='econdb')\nobb.fixedincome.government.yield_curve(provider='fred', yield_curve_type=real, date='2023-05-01,2024-05-01')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -38357,7 +38528,7 @@
                 "message": null
             },
             "description": "Government Treasury Rates.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.treasury_rates(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -38538,7 +38709,7 @@
                 "message": null
             },
             "description": "Get current Treasury inflation-protected securities yields.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.tips_yields(provider='fred')\nobb.fixedincome.government.tips_yields(maturity=10, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -38710,7 +38881,7 @@
                 "message": "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5."
             },
             "description": "ICE BofA US Corporate Bond Indices.\n\nThe ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt\npublicly issued in the US domestic market. Qualifying securities must have an investment grade rating (based on an\naverage of Moody\u2019s, S&P and Fitch), at least 18 months to final maturity at the time of issuance, at least one year\nremaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount\noutstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.ice_bofa(provider='fred')\nobb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -38834,7 +39005,7 @@
                 "message": "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Set `category` to `us` and `index` to `seasoned_corporate`. Deprecated in OpenBB Platform V4.2 to be removed in V4.5."
             },
             "description": "Moody Corporate Bond Index.\n\nMoody's Aaa and Baa are investment bonds that acts as an index of\nthe performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively.\nThese corporate bonds often are used in macroeconomics as an alternative to the federal ten-year\nTreasury Bill as an indicator of the interest rate.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.moody(provider='fred')\nobb.fixedincome.corporate.moody(index_type='baa', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -38934,7 +39105,7 @@
                 "message": null
             },
             "description": "High Quality Market Corporate Bond.\n\nThe HQM yield curve represents the high quality corporate bond market, i.e.,\ncorporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms.\nThese terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve\nthat is the market-weighted average (MWA) quality of high quality bonds.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.hqm(provider='fred')\nobb.fixedincome.corporate.hqm(yield_curve=par, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -39029,7 +39200,7 @@
                 "message": null
             },
             "description": "Spot Rates.\n\nThe spot rates for any maturity is the yield on a bond that provides a single payment at that maturity.\nThis is a zero coupon bond.\nBecause each spot rate pertains to a single cashflow, it is the relevant interest rate\nconcept for discounting a pension liability at the same maturity.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.spot_rates(provider='fred')\nobb.fixedincome.corporate.spot_rates(maturity='10,20,30,50', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -39131,7 +39302,7 @@
                 "message": null
             },
             "description": "Commercial Paper.\n\nCommercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.\nMaturities range up to 270 days but average about 30 days.\nMany companies use CP to raise cash needed for current transactions,\nand many find it to be a lower-cost alternative to bank loans.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.commercial_paper(provider='fred')\nobb.fixedincome.corporate.commercial_paper(category=all, maturity=15d, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -39329,7 +39500,7 @@
                 "message": "This endpoint is deprecated; use `/fixedincome/rate/sofr` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5."
             },
             "description": "Secured Overnight Financing Rate.\n\nThe Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of\nborrowing cash overnight collateralizing by Treasury securities.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.sofr(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -39539,7 +39710,7 @@
                 "message": null
             },
             "description": "Bond Indices.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# The default state for FRED are series for constructing the US Corporate Bond Yield Curve.\nobb.fixedincome.bond_indices(provider='fred')\n# Multiple indices, from within the same 'category', can be requested.\nobb.fixedincome.bond_indices(category=high_yield, index=us,europe,emerging, index_type='total_return', provider='fred')\n# From FRED, there are three main categories, 'high_yield', 'us', and 'emerging_markets'. Emerging markets is a broad category.\nobb.fixedincome.bond_indices(category=emerging_markets, index=corporate,private_sector,public_sector, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -39755,7 +39926,7 @@
                 "message": null
             },
             "description": "Mortgage Indices.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# The default state for FRED are the primary mortgage indices from Optimal Blue.\nobb.fixedincome.mortgage_indices(provider='fred')\n# Multiple indices can be requested.\nobb.fixedincome.mortgage_indices(index=jumbo_30y,conforming_30y,conforming_15y, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -39936,7 +40107,7 @@
                 "message": null
             },
             "description": "Historical Index Levels.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.index.price.historical(symbol='^GSPC', provider='fmp')\n# Not all providers have the same symbols.\nobb.index.price.historical(symbol='SPX', provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -40173,7 +40344,7 @@
                 "message": null
             },
             "description": "Get Index Constituents.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.index.constituents(symbol='dowjones', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -40306,7 +40477,7 @@
                 "message": null
             },
             "description": "All indices available from a given provider.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.index.available(provider='fmp')\nobb.index.available(provider='yfinance')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "fmp": [],
@@ -40408,7 +40579,7 @@
                 "message": null
             },
             "description": "World News. Global news data.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.news.world(provider='fmp')\nobb.news.world(limit=100, provider='intrinio')\n# Get news on the specified dates.\nobb.news.world(start_date='2024-02-01', end_date='2024-02-07', provider='intrinio')\n# Display the headlines of the news.\nobb.news.world(display=headline, provider='benzinga')\n# Get news by topics.\nobb.news.world(topics=finance, provider='benzinga')\n# Get news by source using 'tingo' as provider.\nobb.news.world(provider='tiingo', source=bloomberg)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -40928,7 +41099,7 @@
                 "message": null
             },
             "description": "Company News. Get news for one or more companies.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.news.company(provider='benzinga')\nobb.news.company(limit=100, provider='benzinga')\n# Get news on the specified dates.\nobb.news.company(symbol='AAPL', start_date='2024-02-01', end_date='2024-02-07', provider='intrinio')\n# Display the headlines of the news.\nobb.news.company(symbol='AAPL', display=headline, provider='benzinga')\n# Get news for multiple symbols.\nobb.news.company(symbol='aapl,tsla', provider='fmp')\n# Get news company's ISIN.\nobb.news.company(symbol='NVDA', isin=US0378331005, provider='benzinga')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -41540,7 +41711,7 @@
                 "message": null
             },
             "description": "Download the index headers, and cover page if available, for any SEC filing.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.filing_headers(url=https://www.sec.gov/Archives/edgar/data/317540/000119312524076556/d645509ddef14a.htm, provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "sec": [
@@ -41730,7 +41901,7 @@
                 "message": null
             },
             "description": "Download a raw HTML object from the SEC website.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.htm_file(url=https://www.sec.gov/Archives/edgar/data/1723690/000119312525030074/d866336dex991.htm, provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "sec": [
@@ -41826,7 +41997,7 @@
                 "message": null
             },
             "description": "Map a ticker symbol to a CIK number.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.cik_map(symbol='MSFT', provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -41902,7 +42073,7 @@
                 "message": null
             },
             "description": "Search SEC-regulated institutions by name and return a list of results with CIK numbers.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.institutions_search(provider='sec')\nobb.regulators.sec.institutions_search(query='blackstone real estate', provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -41986,7 +42157,7 @@
                 "message": null
             },
             "description": "Use tool for navigating the directory of SEC XML schema files by year.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.schema_files(provider='sec')\n# Get a list of schema files.\ndata = obb.regulators.sec.schema_files().results\ndata.files[0]\n'https://xbrl.fasb.org/us-gaap/'\n# The directory structure can be navigated by constructing a URL from the 'results' list.\nurl = data.files[0]+data.files[-1]\n# The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.\nobb.regulators.sec.schema_files(url=url).results.files\n['https://xbrl.fasb.org/us-gaap/2024/'\n'USGAAP2024Filelist.xml'\n'dis/'\n'dqcrules/'\n'ebp/'\n'elts/'\n'entire/'\n'meta/'\n'stm/'\n'us-gaap-2024.zip']\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -42070,7 +42241,7 @@
                 "message": null
             },
             "description": "Map a CIK number to a ticker symbol, leading 0s can be omitted or included.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.symbol_map(query='0000789019', provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -42145,7 +42316,7 @@
                 "message": null
             },
             "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.rss_litigation(provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [],
                 "sec": []
@@ -42235,7 +42406,7 @@
                 "message": null
             },
             "description": "Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.sic_search(provider='sec')\nobb.regulators.sec.sic_search(query='real estate investment trusts', provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -42327,7 +42498,7 @@
                 "message": null
             },
             "description": "Get the current Commitment of Traders Reports.\n\nSearch a list of the current Commitment of Traders Reports series information.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.cftc.cot_search(provider='cftc')\nobb.regulators.cftc.cot_search(query='gold', provider='cftc')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -42443,7 +42614,7 @@
                 "message": null
             },
             "description": "Get Commitment of Traders Reports.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get the latest report for all items classified as, GOLD.\nobb.regulators.cftc.cot(id='gold', provider='cftc')\n# Enter the entire history for a single CFTC Market Contract Code.\nobb.regulators.cftc.cot(id='088691', provider='cftc')\n# Get the report for futures only.\nobb.regulators.cftc.cot(id='088691', futures_only=True, provider='cftc')\n# Get the most recent Commodity Index Traders Supplemental Report.\nobb.regulators.cftc.cot(id='all', report_type=supplemental, provider='cftc')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
