@@ -73,17 +73,17 @@ def main():
                 f"{e} -> {e.__traceback__.tb_frame.f_code.co_filename}:"  # noqa
                 f"{e.__traceback__.tb_lineno}"  # noqa
                 if hasattr(e, "__traceback__")
-                and hasattr(e.__traceback__, "tb_frame")
+                and hasattr(e.__traceback__, "tb_frame")  # noqa
                 and hasattr(
-                    e.__traceback__.tb_frame,
+                    e.__traceback__.tb_frame,  # noqa
                     "f_code",
                 )
                 and hasattr(
-                    e.__traceback__.tb_frame.f_code,
+                    e.__traceback__.tb_frame.f_code,  # noqa
                     "co_filename",
                 )
                 and hasattr(
-                    e.__traceback__,
+                    e.__traceback__,  # noqa
                     "tb_lineno",
                 )
                 else f"Failed to build the OpenBB platform static assets. \n{e}"
