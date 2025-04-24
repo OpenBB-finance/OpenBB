@@ -38,7 +38,7 @@ def z_score_standardization(data: "Series") -> "Series":
 
 def calculate_returns(data: "Series") -> "Series":
     """Calculate the returns of a column."""
-    return ((1 + data.pct_change().dropna()).cumprod() - 1) * 100
+    return ((1 + data.pct_change(fill_method=None).fillna(0)).cumprod() - 1) * 100
 
 
 def should_share_axis(

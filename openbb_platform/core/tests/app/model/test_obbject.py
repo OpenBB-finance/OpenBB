@@ -129,7 +129,7 @@ class MockDataFrame(Data):
                 "3": {"x": 3, "y": 1},
                 "4": {"x": 4, "y": 6},
             },
-            pd.DataFrame(
+            pd.DataFrame.from_dict(
                 {
                     "0": {"x": 0, "y": 2},
                     "1": {"x": 1, "y": 3},
@@ -137,13 +137,15 @@ class MockDataFrame(Data):
                     "3": {"x": 3, "y": 1},
                     "4": {"x": 4, "y": 6},
                 },
+                orient="index",
             ),
         ),
         # Test case 8: Dict of Lists
         (
             {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]},
-            pd.DataFrame(
-                {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]}
+            pd.DataFrame.from_dict(
+                {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]},
+                orient="index",
             ),
         ),
         # Test case 9: List of dict of data
@@ -305,7 +307,7 @@ def test_to_df_daylight_savings(results):
         # Test case 3: Dict of lists
         (
             {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]},
-            {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]},
+            {0: [0, 1, 2, 3, 4], 1: [2, 3, 0, 1, 6]},
         ),
         # Test case 4: No results
         ([], OpenBBError("Results not found.")),
@@ -335,7 +337,7 @@ def test_to_df_daylight_savings(results):
                 "3": {"x": 3, "y": 1},
                 "4": {"x": 4, "y": 6},
             },
-            {"x": [0, 1, 2, 3, 4], "y": [2, 3, 0, 1, 6]},
+            {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]},
         ),
     ],
 )

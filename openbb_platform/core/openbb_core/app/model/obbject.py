@@ -161,7 +161,7 @@ class OBBject(Tagged, Generic[T]):
             Pandas DataFrame.
         """
         # pylint: disable=import-outside-toplevel
-        from pandas import DataFrame, concat  # noqa
+        from pandas import DataFrame, Series, concat  # noqa
         from openbb_core.app.utils import basemodel_to_df  # noqa
 
         def is_list_of_basemodel(items: Union[List[T], T]) -> bool:
@@ -182,7 +182,21 @@ class OBBject(Tagged, Generic[T]):
 
             # BaseModel
             if isinstance(res, BaseModel):
-                df = DataFrame(res.model_dump(exclude_unset=True, exclude_none=True))
+                res_dict = res.model_dump(exclude_unset=True, exclude_none=True)
+                series = Series(res_dict, name=res.__class__.__name__)
+                df = series.to_frame().reset_index()
+                sort_columns = False
+
+            # Dict[str, Any]
+            elif isinstance(res, dict):
+                try:
+                    df = DataFrame.from_dict(res).T
+                except ValueError:
+                    try:
+                        df = DataFrame.from_dict(res, orient="index")
+                    except ValueError:
+                        series = Series(res, name="values")
+                        df = series.to_frame().reset_index()
                 sort_columns = False
 
             # List[Dict]
