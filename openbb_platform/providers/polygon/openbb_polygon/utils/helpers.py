@@ -1,72 +1,31 @@
 """Polygon Helpers Module."""
 
-import json
-from io import StringIO
-from typing import Any, Dict, List, Optional, Tuple, TypeVar, Union
+from typing import Any, Optional, Tuple, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
     amake_request,
 )
-from pydantic import BaseModel
-
-T = TypeVar("T", bound=BaseModel)
-
-
-class BasicResponse:
-    """Basic Response class."""
-
-    def __init__(self, response: StringIO):
-        """Initialize the BasicResponse class."""
-        # Find a way to get the status code
-        self.status_code = 200
-        response.seek(0)
-        self.text = response.read()
-
-    def json(self) -> dict:
-        """Return the response as a dictionary."""
-        return json.loads(self.text)
-
-
-def request(url: str) -> BasicResponse:
-    """Request function for PyScript.
-
-    Pass in Method and make sure to await.
-
-    Parameters
-    ----------
-    url: str
-        URL to make request to
-
-    Return
-    ------
-    response: BasicRequest
-        BasicRequest object with status_code and text attributes
-    """
-    # pylint: disable=import-outside-toplevel
-    from pyodide.http import open_url  # type: ignore
-
-    response = open_url(url)
-    return BasicResponse(response)
 
 
 async def response_callback(
     response: ClientResponse, _: ClientSession
-) -> Union[dict, List[dict]]:
+) -> Union[dict, list]:
     """Use callback for make_request."""
-    data: Dict = await response.json()  # type: ignore
+    data = await response.json()  # type: ignore
 
     if response.status != 200:
         message = data.get("error") or data.get("message")
         raise OpenBBError(f"Error in Polygon request -> {message}")
 
-    keys_in_data = "results" in data or "tickers" in data
+    if isinstance(data, dict) and data.get("status") == "NOT_AUTHORIZED":
+        raise UnauthorizedError(response.get("message", str(response)))
 
-    if not keys_in_data or len(data) == 0:
-        raise EmptyDataError()
+    if not data:
+        raise EmptyDataError("No data was returned from the Polygon endpoint")
 
     return data
 
@@ -78,7 +37,7 @@ async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
 
 async def get_data_many(
     url: str, sub_dict: Optional[str] = None, **kwargs: Any
-) -> List[dict]:
+) -> list[dict]:
     """Get data from Polygon endpoint and convert to list of schemas.
 
     Parameters

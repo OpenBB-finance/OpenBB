@@ -2,10 +2,8 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from datetime import date as dateType
-from typing import Any, Dict, List, Optional
-from warnings import warn
+from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -13,9 +11,6 @@ from openbb_core.provider.standard_models.forward_pe_estimates import (
     ForwardPeEstimatesData,
     ForwardPeEstimatesQueryParams,
 )
-from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_intrinio.utils.helpers import response_callback
 from pydantic import Field
 
 
@@ -59,13 +54,13 @@ class IntrinioForwardPeEstimatesData(ForwardPeEstimatesData):
 
 
 class IntrinioForwardPeEstimatesFetcher(
-    Fetcher[IntrinioForwardPeEstimatesQueryParams, List[IntrinioForwardPeEstimatesData]]
+    Fetcher[IntrinioForwardPeEstimatesQueryParams, list[IntrinioForwardPeEstimatesData]]
 ):
     """Intrinio Forward PE Estimates Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioForwardPeEstimatesQueryParams:
         """Transform the query params."""
         return IntrinioForwardPeEstimatesQueryParams(**params)
@@ -73,14 +68,20 @@ class IntrinioForwardPeEstimatesFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioForwardPeEstimatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
+        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_intrinio.utils.helpers import response_callback
+
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         BASE_URL = "https://api-v2.intrinio.com/zacks/forward_pe"
         symbols = query.symbol.split(",") if query.symbol else None
-        results: List[Dict] = []
+        results: list[dict] = []
 
         async def get_one(symbol):
             """Get the data for one symbol."""
@@ -90,33 +91,51 @@ class IntrinioForwardPeEstimatesFetcher(
                     url, response_callback=response_callback, **kwargs
                 )
             except Exception as e:
-                warn(f"Symbol Error: {symbol} --> {e}")
+                raise OpenBBError(e) from e
             else:
                 if data:
                     results.append(data)  # type: ignore
 
         if symbols:
-            await asyncio.gather(*[get_one(symbol) for symbol in symbols])
-            if not results:
-                raise EmptyDataError(
-                    f"There were no results found for any of the given symbols. -> {symbols}"
+            try:
+                gather_results = await asyncio.gather(
+                    *[get_one(symbol) for symbol in symbols], return_exceptions=True
                 )
-            return results
+
+                for result in gather_results:
+                    if isinstance(result, UnauthorizedError):
+                        raise result
+                    if isinstance(result, OpenBBError):
+                        raise result
+
+                if not results:
+                    raise EmptyDataError(
+                        f"There were no results found for any of the given symbols. -> {symbols}"
+                    )
+                return results
+            except Exception as e:
+                raise OpenBBError(
+                    f"Error in Intrinio request -> {e} -> {symbols}"
+                ) from e
 
         async def fetch_callback(response, session):
             """Use callback for pagination."""
             data = await response.json()
             error = data.get("error", None)
+
             if error:
                 message = data.get("message", "")
-                if "api key" in message.lower():
+                if "api key" in message.lower() or "view this data" in error.lower():
                     raise UnauthorizedError(
-                        f"Unauthorized Intrinio request -> {message}"
+                        f"Unauthorized Intrinio request -> {message} -> {error}"
                     )
                 raise OpenBBError(f"Error: {error} -> {message}")
+
             forward_pe = data.get("forward_pe")
+
             if forward_pe and len(forward_pe) > 0:  # type: ignore
                 results.extend(forward_pe)  # type: ignore
+
             return results
 
         url = f"{BASE_URL}?page_size=10000&api_key={api_key}"
@@ -130,9 +149,9 @@ class IntrinioForwardPeEstimatesFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioForwardPeEstimatesQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioForwardPeEstimatesData]:
+    ) -> list[IntrinioForwardPeEstimatesData]:
         """Transform the raw data into the standard format."""
         symbols = query.symbol.split(",") if query.symbol else []
         if symbols:

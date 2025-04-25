@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, PositiveFloat, field_validator
+from pydantic import Field, field_validator
 
 
 class CryptoHistoricalQueryParams(QueryParams):
@@ -47,12 +47,14 @@ class CryptoHistoricalData(Data):
     date: Union[dateType, datetime] = Field(
         description=DATA_DESCRIPTIONS.get("date", "")
     )
-    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
-    close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: Optional[PositiveFloat] = Field(
+    open: float = Field(description=DATA_DESCRIPTIONS.get("open", ""))
+    high: float = Field(description=DATA_DESCRIPTIONS.get("high", ""))
+    low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    volume: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("volume", "")
+    )
+    vwap: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
     )
 
