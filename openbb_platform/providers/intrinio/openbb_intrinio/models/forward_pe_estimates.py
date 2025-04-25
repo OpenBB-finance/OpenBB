@@ -92,9 +92,9 @@ class IntrinioForwardPeEstimatesFetcher(
                 )
             except Exception as e:
                 raise OpenBBError(e) from e
-            else:
-                if data:
-                    results.append(data)  # type: ignore
+
+            if data:
+                results.append(data)  # type: ignore
 
         if symbols:
             try:
