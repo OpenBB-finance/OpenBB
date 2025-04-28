@@ -46,11 +46,38 @@ class YFUndervaluedLargeCapsFetcher(
     ) -> list[dict]:
         """Get data from YF."""
         # pylint: disable=import-outside-toplevel
-        from openbb_yfinance.utils.helpers import get_defined_screener
+        from openbb_yfinance.utils.helpers import get_custom_screener
 
-        return await get_defined_screener(
-            name="undervalued_large_caps", limit=query.limit
-        )
+        body = {
+            "offset": 0,
+            "size": 250,
+            "sortField": "eodvolume",
+            "sortType": "desc",
+            "quoteType": "equity",
+            "query": {
+                "operator": "and",
+                "operands": [
+                    {"operator": "gt", "operands": ["intradaymarketcap", 10000000000]},
+                    {
+                        "operator": "or",
+                        "operands": [
+                            {"operator": "eq", "operands": ["exchange", "NMS"]},
+                            {"operator": "eq", "operands": ["exchange", "NYQ"]},
+                        ],
+                    },
+                    {
+                        "operator": "btwn",
+                        "operands": ["peratio.lasttwelvemonths", 0, 20],
+                    },
+                    {"operator": "lt", "operands": ["pegratio_5y", 1]},
+                    {"operator": "gte", "operands": ["epsgrowth.lasttwelvemonths", 25]},
+                ],
+            },
+            "userId": "",
+            "userIdType": "guid",
+        }
+
+        return await get_custom_screener(body=body, limit=query.limit)
 
     @staticmethod
     def transform_data(

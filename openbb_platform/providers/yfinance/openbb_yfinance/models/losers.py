@@ -44,9 +44,34 @@ class YFLosersFetcher(Fetcher[YFLosersQueryParams, list[YFLosersData]]):
     ) -> list[dict]:
         """Get data from YF."""
         # pylint: disable=import-outside-toplevel
-        from openbb_yfinance.utils.helpers import get_defined_screener
+        from openbb_yfinance.utils.helpers import get_custom_screener
 
-        return await get_defined_screener(name="day_losers", limit=query.limit)
+        body = {
+            "offset": 0,
+            "size": 250,
+            "sortField": "percentchange",
+            "sortType": "asc",
+            "quoteType": "equity",
+            "query": {
+                "operator": "and",
+                "operands": [
+                    {"operator": "gt", "operands": ["intradaymarketcap", 500000000]},
+                    {
+                        "operator": "or",
+                        "operands": [
+                            {"operator": "eq", "operands": ["exchange", "NMS"]},
+                            {"operator": "eq", "operands": ["exchange", "NYQ"]},
+                        ],
+                    },
+                    {"operator": "gt", "operands": ["percentchange", -3]},
+                    {"operator": "gt", "operands": ["intradayprice", 5]},
+                ],
+            },
+            "userId": "",
+            "userIdType": "guid",
+        }
+
+        return await get_custom_screener(body=body, limit=query.limit)
 
     @staticmethod
     def transform_data(
