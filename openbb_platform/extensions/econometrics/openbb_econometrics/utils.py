@@ -79,7 +79,7 @@ def get_engle_granger_two_step_cointegration_test(
     short_run_ols = sm.OLS(dependent_series.diff().iloc[1:], (z.shift().iloc[1:]))
     short_run_ols_fit = short_run_ols.fit()
 
-    alpha = short_run_ols_fit.params[0]
+    alpha = short_run_ols_fit.params.iloc[0]
 
     # NOTE: The p-value returned by the adfuller function assumes we do not estimate z
     # first, but test stationarity of an unestimated series directly. This assumption
