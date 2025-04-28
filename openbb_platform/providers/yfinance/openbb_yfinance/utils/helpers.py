@@ -192,8 +192,7 @@ async def get_defined_screener(
         res = yf.screen(
             name,
             session=session,
-            proxy=session.proxies if session.proxies else None,
-            size=25,
+            size=250,
             offset=offset,
         )
         if not res:
