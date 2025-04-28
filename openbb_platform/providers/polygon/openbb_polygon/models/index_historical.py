@@ -3,8 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
-from warnings import warn
+from typing import Any, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_historical import (
@@ -95,13 +94,13 @@ class PolygonIndexHistoricalData(IndexHistoricalData):
 class PolygonIndexHistoricalFetcher(
     Fetcher[
         PolygonIndexHistoricalQueryParams,
-        List[PolygonIndexHistoricalData],
+        list[PolygonIndexHistoricalData],
     ]
 ):
     """Polygon Index Historical Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonIndexHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonIndexHistoricalQueryParams:
         """Transform the query params."""
         # pylint: disable=import-outside-toplevel
         from dateutil.relativedelta import relativedelta
@@ -119,18 +118,21 @@ class PolygonIndexHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: PolygonIndexHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract raw data from the Polygon endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import (  # noqa
+        from aiohttp import ClientResponseError  # noqa
+        from openbb_core.provider.utils.errors import OpenBBError, UnauthorizedError
+        from openbb_core.provider.utils.helpers import (
             ClientResponse,
             ClientSession,
             amake_requests,
             safe_fromtimestamp,
         )
-        from pytz import timezone  # noqa
+        from pytz import timezone
+        from warnings import warn
 
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -146,8 +148,11 @@ class PolygonIndexHistoricalFetcher(
 
         async def callback(
             response: ClientResponse, session: ClientSession
-        ) -> List[Dict]:
+        ) -> list[dict]:
             data = await response.json()
+
+            if isinstance(data, dict) and data.get("status") == "NOT_AUTHORIZED":
+                raise UnauthorizedError(response.get("message", str(response)))
 
             symbol = response.url.parts[4]
             next_url = data.get("next_url", None)  # type: ignore[union-attr]
@@ -178,14 +183,24 @@ class PolygonIndexHistoricalFetcher(
 
             return results
 
-        return await amake_requests(urls, callback, **kwargs)  # type: ignore
+        try:
+            return await amake_requests(urls, callback, raise_for_status=True)  # type: ignore
+
+        except ClientResponseError as e:
+            if e.status == 403:
+                raise UnauthorizedError(
+                    f"Unauthorized Polygon request -> {e.message} -> {e.request_info.url}"
+                ) from e
+            raise OpenBBError(
+                f"Error in Polygon request -> {e} -> {e.request_info.url}"
+            ) from e
 
     @staticmethod
     def transform_data(
         query: PolygonIndexHistoricalQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[PolygonIndexHistoricalData]:
+    ) -> list[PolygonIndexHistoricalData]:
         """Transform the data."""
         if not data:
             raise EmptyDataError()

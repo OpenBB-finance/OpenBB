@@ -2,10 +2,8 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
-from warnings import warn
+from typing import Any, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -17,12 +15,6 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    amake_request,
-    get_querystring,
-)
-from openbb_fmp.utils.helpers import get_interval
 from pydantic import Field
 
 
@@ -69,13 +61,13 @@ class FMPCryptoHistoricalData(CryptoHistoricalData):
 class FMPCryptoHistoricalFetcher(
     Fetcher[
         FMPCryptoHistoricalQueryParams,
-        List[FMPCryptoHistoricalData],
+        list[FMPCryptoHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPCryptoHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPCryptoHistoricalQueryParams:
         """Transform the query params. Start and end dates are set to 1 year interval."""
         transformed_params = params
 
@@ -91,10 +83,20 @@ class FMPCryptoHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPCryptoHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_core.provider.utils.helpers import (
+            amake_request,
+            get_querystring,
+        )
+        from openbb_fmp.utils.helpers import get_interval, response_callback
+        from warnings import warn
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         interval = get_interval(query.interval)
@@ -111,17 +113,16 @@ class FMPCryptoHistoricalFetcher(
 
         symbols = query.symbol.split(",")
 
-        results = []
-        messages = []
+        results: list = []
+        messages: list = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
 
             url = get_url_params(symbol)
+            data: list = []
 
-            data = []
-
-            response = await amake_request(url, **kwargs)
+            response = await amake_request(url, response_callback=response_callback)
 
             if isinstance(response, dict) and response.get("Error Message"):
                 message = f"Error fetching data for {symbol}: {response.get('Error Message', '')}"
@@ -161,13 +162,13 @@ class FMPCryptoHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPCryptoHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPCryptoHistoricalData]:
+        query: FMPCryptoHistoricalQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPCryptoHistoricalData]:
         """Return the transformed data."""
 
         # Get rid of duplicate fields.
         to_pop = ["label", "changePercent", "unadjustedVolume"]
-        results: List[FMPCryptoHistoricalData] = []
+        results: list[FMPCryptoHistoricalData] = []
 
         for d in sorted(
             data,
@@ -179,8 +180,8 @@ class FMPCryptoHistoricalFetcher(
             reverse=False,
         ):
             _ = [d.pop(pop) for pop in to_pop if pop in d]
-            if d.get("unadjusted_volume") == d.get("volume"):
-                _ = d.pop("unadjusted_volume")
+            if d.get("unadjusted_volume") and d["adjusted_volume"] == d.get("volume"):
+                _ = d.pop("unadjusted_volume", None)
             results.append(FMPCryptoHistoricalData.model_validate(d))
 
         return results
