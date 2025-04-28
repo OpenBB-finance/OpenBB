@@ -124,7 +124,8 @@ class NasdaqEquitySearchFetcher(
         """Transform the data and filter the results."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
-        from pandas import read_csv  # noqa
+        from numpy import nan
+        from pandas import read_csv
 
         directory = read_csv(StringIO(data), sep="|").iloc[:-1]
 
@@ -142,9 +143,8 @@ class NasdaqEquitySearchFetcher(
             ]
         directory["Market Category"] = directory["Market Category"].replace(" ", None)
         results = (
-            directory.astype(object)
-            .fillna("N/A")
-            .replace("N/A", None)
+            directory.infer_objects(copy=False)
+            .replace({nan: None})
             .to_dict(orient="records")
         )
 

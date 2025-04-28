@@ -388,6 +388,8 @@ class TA_Data:
                 ) from e
 
             if indicator_data is not None:
-                output = output.join(indicator_data).interpolate("linear")
+                output = output.join(indicator_data).infer_objects(copy=False)
+                numeric_cols = output.select_dtypes(include=["number"]).columns
+                output[numeric_cols] = output[numeric_cols].interpolate("linear")
 
         return output
