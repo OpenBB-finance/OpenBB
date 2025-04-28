@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -85,13 +85,13 @@ class IntrinioMarketSnapshotsData(MarketSnapshotsData):
 class IntrinioMarketSnapshotsFetcher(
     Fetcher[
         IntrinioMarketSnapshotsQueryParams,
-        List[IntrinioMarketSnapshotsData],
+        list[IntrinioMarketSnapshotsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioMarketSnapshotsQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioMarketSnapshotsQueryParams:
         """Transform the query params."""
         # pylint: disable=import-outside-toplevel
         from pytz import timezone
@@ -137,9 +137,9 @@ class IntrinioMarketSnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioMarketSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -165,7 +165,7 @@ class IntrinioMarketSnapshotsFetcher(
             raise OpenBBError(
                 f"Error: {response.get('error')}. Message: {response.get('message')}"
             )
-        urls = []
+        urls: list = []
         # Get the URL to the CSV file.
         if response.get("snapshots"):  # type: ignore
             for d in response["snapshots"]:  # type: ignore
@@ -176,7 +176,7 @@ class IntrinioMarketSnapshotsFetcher(
         if not urls:
             raise OpenBBError("No snapshots found.")
 
-        results = []
+        results: list = []
 
         async def response_callback(response, _):
             """Response Callback."""
@@ -231,7 +231,7 @@ class IntrinioMarketSnapshotsFetcher(
                         )
                     )
                     .dt.tz_convert("America/New_York")
-                    .dt.floor("S")
+                    .dt.floor("s")
                 )
 
             for c in ["trade_size", "total_trade_volume"]:
@@ -256,8 +256,8 @@ class IntrinioMarketSnapshotsFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioMarketSnapshotsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioMarketSnapshotsData]:
+    ) -> list[IntrinioMarketSnapshotsData]:
         """Return the transformed data."""
         return [IntrinioMarketSnapshotsData.model_validate(d) for d in data]
