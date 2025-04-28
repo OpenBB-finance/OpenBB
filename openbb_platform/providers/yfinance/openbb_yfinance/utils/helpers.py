@@ -124,7 +124,6 @@ async def get_custom_screener(
             body=body,
             user_agent_headers=_data.user_agent_headers,
             params=params_dict,
-            proxy=session.proxies if session.proxies else None,
         )
         if not res:
             break
@@ -171,14 +170,12 @@ async def get_defined_screener(
 
     results: list = []
     session = get_requests_session()
-
     offset = 0
 
     response = yf.screen(
         name,
         session=session,
-        proxy=session.proxies if session.proxies else None,
-        size=25,
+        size=250,
         offset=offset,
     )
 
