@@ -134,6 +134,10 @@ class NasdaqEquitySearchFetcher(
         if query.is_etf is False:
             directory = directory[directory["ETF"] == "N"]
 
+        directory = directory[
+            ~directory["Security Name"].str.contains("test", case=False)
+        ]
+
         if query.query:
             directory = directory[
                 directory["Symbol"].str.contains(query.query, case=False)
