@@ -27,7 +27,7 @@ Launcher specific arguments:
     --exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
     --no-filter                     Do not filter out widgets in widget_settings.json file.
     --widgets-path                  Absolute path to the widgets.json file. Default is ~/envs/{env}/assets/widgets.json. Supplying this sets --editable true.
-    --templates-path                Absolute path to the workspace_templates.json file. Default is ~/OpenBBUserData/workspace_templates.json.
+    --apps-json                     Absolute path to the workspace_apps.json file. Default is ~/OpenBBUserData/workspace_apps.json.
     --copilots-path                 Absolute path to the copilots.json file. Including this will add the /copilots endpoint to the API.
 
 
@@ -434,11 +434,11 @@ def parse_args():
         widget_path = str(cwd.joinpath(widget_path).resolve())
         _kwargs["widgets-path"] = widget_path
 
-    if (template_path := _kwargs.get("templates-path")) and not str(
-        template_path
-    ).startswith("/"):
+    if (
+        template_path := _kwargs.get("apps-json") or _kwargs.get("templates-path")
+    ) and not str(template_path).startswith("/"):
         template_path = str(cwd.joinpath(template_path).resolve())
-        _kwargs["templates-path"] = template_path
+        _kwargs["apps-json"] = template_path
 
     if _kwargs.get("widgets-path") and not _kwargs.get("editable"):
         _kwargs["editable"] = True
