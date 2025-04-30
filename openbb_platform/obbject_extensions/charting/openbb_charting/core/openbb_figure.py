@@ -1127,11 +1127,7 @@ class OpenBBFigure(go.Figure):
         for row, row_dict in self._subplot_xdates.items():
             for col, values in row_dict.items():
                 try:
-                    x_values = (
-                        to_datetime(concatenate(values))
-                        .to_pydatetime()
-                        .astype("datetime64[ms]")
-                    )
+                    x_values = to_datetime(concatenate(values)).to_pydatetime()
                     self.hide_date_gaps(
                         DataFrame(index=x_values.tolist()),
                         row=row,
