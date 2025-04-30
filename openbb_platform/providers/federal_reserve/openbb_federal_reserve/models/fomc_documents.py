@@ -69,6 +69,7 @@ class FederalReserveFomcDocumentsQueryParams(QueryParams):
                     "provider": "federal_reserve",
                 },
                 "show": False,
+                "roles": ["fileSelector"],
             }
         },
     }
