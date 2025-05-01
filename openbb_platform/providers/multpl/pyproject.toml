@@ -1,14 +1,14 @@
 [tool.poetry]
 name = "openbb-multpl"
-version = "1.1.0"
+version = "1.1.1"
 description = "Public data on historical S&P Multiples."
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_multpl" }]
 
 [tool.poetry.dependencies]
-python = "^3.9,<3.13"
-openbb-core = "^1.4.3"
+python = "^3.9.21,<3.13"
+openbb-core = "^1.4.6"
 
 
 [build-system]
