@@ -2522,14 +2522,14 @@ urllib3 = ">1.26.16"
 
 [[package]]
 name = "openbb-platform-api"
-version = "1.1.6"
+version = "1.1.8"
 description = "OpenBB Platform API: Launch script and widgets builder for the OpenBB Platform API and Workspace Backend Connector."
 optional = false
 python-versions = "<3.13,>=3.9.21"
 groups = ["main"]
 files = [
-    {file = "openbb_platform_api-1.1.6-py3-none-any.whl", hash = "sha256:a2ab1537dbc267380581d81e07257a22a0a8ba37adb2a9aeda39e408760f009d"},
-    {file = "openbb_platform_api-1.1.6.tar.gz", hash = "sha256:df036090aa19fefd79bd0a582b98ebfe14fb6d3e91a7020a14d9930c21835e26"},
+    {file = "openbb_platform_api-1.1.8-py3-none-any.whl", hash = "sha256:34406d2a3aaee7b957fc8535db604825d58e2ea58bc3dd941fd1a0f0db0c4532"},
+    {file = "openbb_platform_api-1.1.8.tar.gz", hash = "sha256:ae9d00f78e06bbefa10f8d2fbfe5aca57411e338840908dcb3bd3d9b0590fec6"},
 ]
 
 [package.dependencies]
@@ -4769,4 +4769,4 @@ wsj = ["openbb-wsj"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9.21,<3.13"
-content-hash = "e5c2d9b1e9cf5df2bd1c767a7690f168991d08ed89b18e5f57a1567b2e526c3c"
+content-hash = "572f93a17af97cc517743ea9455559fb4dfa7c723fda6b6889ac084725c4b9f9"
