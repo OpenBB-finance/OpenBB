@@ -58,7 +58,7 @@ class PdfResponseModel(Data):
     """
     PDF Widget Response Model.
 
-    Supply the url_reference or content, and an optional filename.
+    Supply the url or content, and an optional filename.
 
     Fields
     ------
@@ -66,7 +66,7 @@ class PdfResponseModel(Data):
         The filename of the PDF content.
     content : bytes
         The PDF content to display in the PDF widget.
-    url_reference : str
+    url : str
         The URL reference to the PDF
 
     Returns
@@ -103,7 +103,7 @@ class PdfResponseModel(Data):
         description="The PDF content to display in the PDF widget.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    url_reference: Optional[str] = Field(
+    url: Optional[str] = Field(
         default=None,
         description="The URL reference to the PDF content.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
@@ -123,11 +123,11 @@ class PdfResponseModel(Data):
         from io import BytesIO
 
         content = getattr(values, "content", None)
-        file_reference = getattr(values, "url_reference", None)
+        file_reference = getattr(values, "url", None)
         filename = getattr(values, "filename", "")
 
         if not content and not file_reference:
-            raise ValueError("Either 'content' or 'url_reference' must be provided.")
+            raise ValueError("Either 'content' or 'url' must be provided.")
 
         if file_reference and "://" not in file_reference:
             raise ValueError("Invalid URL reference provided")
@@ -141,9 +141,9 @@ class PdfResponseModel(Data):
 
         values.content = pdf
         if file_reference:
-            values.url_reference = file_reference
-        elif hasattr(values, "url_reference"):
-            del values.url_reference
+            values.url = file_reference
+        elif hasattr(values, "url"):
+            del values.url
         values.data_format = {"data_type": "pdf", "filename": filename}
 
         return values

@@ -1,7 +1,7 @@
 [
   {
     "name": "FOMC Documents",
-    "img": "https://papers.ssrn.com/sol3/journalcovers/671301_22122.gif",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_the_United_States_Federal_Reserve.svg/640px-Flag_of_the_United_States_Federal_Reserve.svg.png",
     "img_dark": "",
     "img_light": "",
     "description": "Read current and historical FOMC documents, beginning 1959.",
@@ -30,7 +30,7 @@
   },
   {
     "name": "Basic FRED Template",
-    "img": "https://www.ajcottleappraisers.com/wp-content/uploads/2024/03/fred.png",
+    "img": "https://tvblog-static.tradingview.com/uploads/2021/07/fred-preview.png",
     "description": "FRED (Federal Reserve Economic Data) offers U.S. and global economic data, including GDP, inflation (CPI, PCE), unemployment, and consumer spending. It tracks interest rates, money supply (M1, M2), stock indices, bond yields, exchange rates, housing prices (Case-Shiller), mortgage rates, and trade balances. Industry data covers manufacturing, energy, and real estate.",
     "authentication": "Get your FRED API KEY at https://fred.stlouisfed.org/docs/api/api_key.html",
     "allowCustomization": true,

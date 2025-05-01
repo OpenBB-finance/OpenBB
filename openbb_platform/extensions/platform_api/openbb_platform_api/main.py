@@ -53,15 +53,12 @@ if _app:
     app = _app
 
 WIDGETS_PATH = kwargs.pop("widgets-path", None)
-TEMPLATES_PATH = kwargs.pop("templates-path", None)
+TEMPLATES_PATH = kwargs.pop("apps-json", None) or kwargs.pop("templates-path", None)
 EDITABLE = kwargs.pop("editable", None) is True or WIDGETS_PATH is not None
 
 
 DEFAULT_TEMPLATES_PATH = (
-    Path(__file__)
-    .absolute()
-    .parent.joinpath("assets")
-    .joinpath("default_templates.json")
+    Path(__file__).absolute().parent.joinpath("assets").joinpath("default_apps.json")
 )
 COPILOTS = kwargs.pop("copilots", None)
 build = kwargs.pop("build", True)
@@ -102,11 +99,11 @@ widgets_json = get_widgets_json(
 TEMPLATES_PATH = (
     TEMPLATES_PATH
     + f"{'/' if TEMPLATES_PATH[-1] != '/' else ''}"
-    + "workspace_templates.json"
+    + f"{'workspace_apps.json' if '.json' not in TEMPLATES_PATH else ''}"
     if TEMPLATES_PATH
     else (
         current_settings["preferences"].get("data_directory", HOME + "/OpenBBUserData")
-        + "/workspace_templates.json"
+        + "/workspace_apps.json"
     )
 )
 
@@ -138,9 +135,9 @@ async def get_widgets():
 
 
 # If a custom implementation, you might want to override.
-@app.get("/templates.json")
-async def get_templates():
-    """Get the templates.json file."""
+@app.get("/apps.json")
+async def get_apps_json():
+    """Get the default apps.json file."""
     new_templates: list = []
     default_templates: list = []
     widgets = await get_widgets()
