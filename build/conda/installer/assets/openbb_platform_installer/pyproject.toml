@@ -16,20 +16,7 @@ openbb-update = "openbb_platform_installer.update:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9.21,<3.13"
-poetry = ">=^1.8"
-setuptools = "*"
-openbb-core = ">=1.4.4"
-openbb-platform-api = "^1.1.6"
-deepdiff = "*"
-types-python-dateutil = "*"
-types-toml = "*"
-pandas-stubs = "*"
-codespell = "*"
-ruff = "*"
-mypy = "*"
-black = "*"
-pylint = "^3"
-pydocstyle = "~6.3"
+openbb-platform-api = "^1.1.8"
 
 [tool.poetry.group.openbb-all]
 

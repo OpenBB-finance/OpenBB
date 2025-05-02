@@ -9,7 +9,6 @@ packages = [{ include = "empty_router" }]
 [tool.poetry.dependencies]
 python = "^3.9.21,<3.13"
 openbb-core = "^1.4.6"
-openbb-platform-api = "^1.1.6"
 
 [build-system]
 requires = ["poetry-core"]
