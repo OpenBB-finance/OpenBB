@@ -1,5 +1,8 @@
 """The OBBject."""
 
+# pylint: disable=too-many-branches, too-many-locals, too-many-statements
+
+from collections.abc import Hashable
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -7,7 +10,6 @@ from typing import (
     ClassVar,
     Dict,
     Generic,
-    Hashable,
     List,
     Literal,
     Optional,
@@ -122,7 +124,7 @@ class OBBject(Tagged, Generic[T]):
         """
         return self.to_dataframe(index=index, sort_by=sort_by, ascending=ascending)
 
-    def to_dataframe(
+    def to_dataframe(  # noqa: PLR0912
         self,
         index: Optional[Union[str, None]] = "date",
         sort_by: Optional[str] = None,
@@ -182,7 +184,9 @@ class OBBject(Tagged, Generic[T]):
 
             # BaseModel
             if isinstance(res, BaseModel):
-                res_dict = res.model_dump(exclude_unset=True, exclude_none=True)
+                res_dict = res.model_dump(  # pylint: disable=no-member
+                    exclude_unset=True, exclude_none=True
+                )
                 # Model is serialized as a dict[str, list] or list[dict]
                 if (
                     (
