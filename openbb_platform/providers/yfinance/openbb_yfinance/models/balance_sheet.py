@@ -82,6 +82,7 @@ class YFinanceBalanceSheetFetcher(
         """Extract the data from the Yahoo Finance endpoints."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
+        from curl_adapter import CurlCffiAdapter
         from numpy import nan
         from openbb_core.provider.utils.errors import EmptyDataError
         from openbb_core.provider.utils.helpers import (
@@ -92,10 +93,11 @@ class YFinanceBalanceSheetFetcher(
 
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         session = get_requests_session()
+        session.mount("https://", CurlCffiAdapter())
+        session.mount("http://", CurlCffiAdapter())
         data = Ticker(
             query.symbol,
             session=session,
-            proxy=session.proxies if session.proxies else None,
         ).get_balance_sheet(as_dict=False, pretty=False, freq=period)
 
         if data is None:

@@ -82,14 +82,18 @@ async def get_custom_screener(
 ):
     """Get a custom screener."""
     # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import (
+    from openbb_core.provider.utils.helpers import (  # noqa
         get_requests_session,
         safe_fromtimestamp,
     )
+    from curl_adapter import CurlCffiAdapter
     from pytz import timezone
     from yfinance.data import YfData
 
     session = get_requests_session()
+    session.mount("https://", CurlCffiAdapter())
+    session.mount("http://", CurlCffiAdapter())
+
     params_dict = {
         "corsDomain": "finance.yahoo.com",
         "formatted": "false",
@@ -157,6 +161,7 @@ async def get_defined_screener(
     """Get a predefined screener."""
     # pylint: disable=import-outside-toplevel
     import yfinance as yf  # noqa
+    from curl_adapter import CurlCffiAdapter
     from openbb_core.provider.utils.helpers import (
         get_requests_session,
         safe_fromtimestamp,
@@ -170,6 +175,9 @@ async def get_defined_screener(
 
     results: list = []
     session = get_requests_session()
+    session.mount("https://", CurlCffiAdapter())
+    session.mount("http://", CurlCffiAdapter())
+
     offset = 0
 
     response = yf.screen(
@@ -248,15 +256,19 @@ def get_futures_data() -> "DataFrame":
 def get_futures_symbols(symbol: str) -> list:
     """Get the list of futures symbols from the continuation symbol."""
     # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import get_requests_session
+    from openbb_core.provider.utils.helpers import get_requests_session  # noqa
+    from curl_adapter import CurlCffiAdapter
     from yfinance.data import YfData
 
     _symbol = symbol.upper() + "%3DF"
     URL = f"https://query2.finance.yahoo.com/v10/finance/quoteSummary/{_symbol}"
     params = {"modules": "futuresChain"}
-    response: dict = YfData(session=get_requests_session()).get_raw_json(
-        url=URL, params=params
-    )
+
+    session = get_requests_session()
+    session.mount("https://", CurlCffiAdapter())
+    session.mount("http://", CurlCffiAdapter())
+
+    response: dict = YfData(session=session).get_raw_json(url=URL, params=params)
     futures_symbols: list = []
 
     if "quoteSummary" in response:
@@ -518,6 +530,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     """Get yFinance OHLC data for any ticker and interval available."""
     # pylint: disable=import-outside-toplevel
     from datetime import datetime, timedelta  # noqa
+    from curl_adapter import CurlCffiAdapter
     from openbb_core.provider.utils.helpers import get_requests_session
     from pandas import DataFrame, concat, to_datetime
     import yfinance as yf
@@ -543,6 +556,9 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
         kwargs.update(dict(auto_adjust=False, back_adjust=False, period=period))
 
     session = kwargs.pop("session", None) or get_requests_session()
+    session.mount("https://", CurlCffiAdapter())
+    session.mount("http://", CurlCffiAdapter())
+
     if session.proxies:
         kwargs["proxy"] = session.proxies
     try:

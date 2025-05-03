@@ -63,6 +63,7 @@ class YFinanceOptionsChainsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from curl_adapter import CurlCffiAdapter
         from openbb_core.provider.utils.helpers import get_requests_session
         from pandas import concat
         from yfinance import Ticker
@@ -71,10 +72,11 @@ class YFinanceOptionsChainsFetcher(
         symbol = query.symbol.upper()
         symbol = "^" + symbol if symbol in ["VIX", "RUT", "SPX", "NDX"] else symbol
         session = get_requests_session()
+        session.mount("https://", CurlCffiAdapter())
+        session.mount("http://", CurlCffiAdapter())
         ticker = Ticker(
             symbol,
             session=session,
-            proxy=session.proxies if session.proxies else None,
         )
         expirations = list(ticker.options)
 

@@ -239,6 +239,7 @@ class YFinanceKeyMetricsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from curl_adapter import CurlCffiAdapter
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
         from openbb_core.provider.utils.helpers import get_requests_session
@@ -287,6 +288,8 @@ class YFinanceKeyMetricsFetcher(
         ]
         messages: list = []
         session = get_requests_session()
+        session.mount("https://", CurlCffiAdapter())
+        session.mount("http://", CurlCffiAdapter())
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
@@ -296,7 +299,6 @@ class YFinanceKeyMetricsFetcher(
                 ticker = Ticker(
                     symbol,
                     session=session,
-                    proxy=session.proxies if session.proxies else None,
                 ).get_info()
             except Exception as e:
                 messages.append(
