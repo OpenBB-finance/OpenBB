@@ -183,9 +183,22 @@ class OBBject(Tagged, Generic[T]):
             # BaseModel
             if isinstance(res, BaseModel):
                 res_dict = res.model_dump(exclude_unset=True, exclude_none=True)
-                series = Series(res_dict, name=res.__class__.__name__)
-                df = series.to_frame().reset_index()
-                sort_columns = False
+                # Model is serialized as a dict[str, list] or list[dict]
+                if (
+                    (
+                        isinstance(res_dict, dict)
+                        and res_dict
+                        and all(isinstance(v, list) for v in res_dict.values())
+                    )
+                    or isinstance(res_dict, list)
+                    and all(isinstance(item, dict) for item in res_dict)
+                ):
+                    df = DataFrame(res_dict)
+                    sort_columns = False
+                else:
+                    series = Series(res_dict, name=res.__class__.__name__)
+                    df = series.to_frame().reset_index()
+                    sort_columns = False
 
             # Dict[str, Any]
             elif isinstance(res, dict):
