@@ -28,7 +28,7 @@ class YFinanceHistoricalDividendsFetcher(
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: Dict[str, Any],
     ) -> YFinanceHistoricalDividendsQueryParams:
         """Transform the query."""
         return YFinanceHistoricalDividendsQueryParams(**params)
@@ -41,15 +41,18 @@ class YFinanceHistoricalDividendsFetcher(
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
+        from curl_adapter import CurlCffiAdapter
         from openbb_core.provider.utils.helpers import get_requests_session
         from yfinance import Ticker
 
         session = get_requests_session()
+        session.mount("https://", CurlCffiAdapter())
+        session.mount("http://", CurlCffiAdapter())
+
         try:
             ticker = Ticker(
                 query.symbol,
                 session=session,
-                proxy=session.proxies if session.proxies else None,
             ).get_dividends()
             if isinstance(ticker, List) and not ticker or ticker.empty:  # type: ignore
                 raise OpenBBError(f"No dividend data found for {query.symbol}")
