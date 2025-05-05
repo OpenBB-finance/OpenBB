@@ -21,7 +21,7 @@ openbb-platform-api = "^1.1.8"
 [tool.poetry.group.openbb-all]
 
 [tool.poetry.group.openbb-all.dependencies]
-openbb = { version = ">=^4.4.4", extras = ["all"] }
+openbb = { version = "^4.4.4", extras = ["all"] }
 
 [tool.poetry.group.cli]
 
