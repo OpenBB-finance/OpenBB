@@ -59,6 +59,11 @@ class Env(metaclass=SingletonMeta):
         """Hub backend: sets the backend for the OpenBB Hub."""
         return self._environ.get("OPENBB_HUB_BACKEND", "https://payments.openbb.co")
 
+    @property
+    def OPENBB_ENABLE_MCP(self) -> bool:
+        """Enable MCP: enables the MCP server."""
+        return self.str2bool(self._environ.get("OPENBB_ENABLE_MCP", False))
+
     @staticmethod
     def str2bool(value) -> bool:
         """Match a value to its boolean correspondent."""

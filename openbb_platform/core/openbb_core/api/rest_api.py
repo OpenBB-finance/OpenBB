@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from openbb_core.api.app_loader import AppLoader
+from openbb_core.api.mcp_server import mount_mcp_server
 from openbb_core.api.router.commands import router as router_commands
 from openbb_core.api.router.coverage import router as router_coverage
 from openbb_core.api.router.system import router as router_system
@@ -22,13 +23,14 @@ system = SystemService().system_settings
 async def lifespan(_: FastAPI):
     """Startup event."""
     auth = "ENABLED" if Env().API_AUTH else "DISABLED"
+    mcp = "ENABLED" if Env().OPENBB_ENABLE_MCP else "DISABLED"
     banner = rf"""
 
                    ███╗
   █████████████████╔══█████████████████╗       OpenBB Platform v{system.version}
   ███╔══════════███║  ███╔══════════███║
   █████████████████║  █████████████████║       Authentication: {auth}
-  ╚═════════════███║  ███╔═════════════╝
+  ╚═════════════███║  ███╔═════════════╝       MCP: {mcp}
      ██████████████║  ██████████████╗
      ███╔═══════███║  ███╔═══════███║
      ██████████████║  ██████████████║
@@ -65,6 +67,7 @@ app = FastAPI(
     ],
     lifespan=lifespan,
 )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=system.api_settings.cors.allow_origins,
@@ -86,6 +89,17 @@ AppLoader.add_routers(
 )
 AppLoader.add_openapi_tags(app)
 AppLoader.add_exception_handlers(app)
+
+if Env().OPENBB_ENABLE_MCP:
+    try:
+        mount_mcp_server(app)
+    except ImportError as e:
+        logger.error(f"Failed to import or mount MCP server: {e}")
+        logger.error("Ensure 'fastapi-mcp' is installed.")
+    except Exception as e:
+        logger.error(f"An unexpected error occurred while mounting MCP server: {e}")
+else:
+    logger.debug("MCP Server not enabled (OPENBB_ENABLE_MCP not set to true).")
 
 
 if __name__ == "__main__":
