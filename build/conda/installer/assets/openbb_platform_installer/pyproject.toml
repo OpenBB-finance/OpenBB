@@ -1,7 +1,7 @@
 # If you will be using this as a template for your own package, please change the values accordingly.
 [tool.poetry]
 name = "openbb_platform_installer"  # Change this to your package name
-version = "1.0.2"  # Change this to your package version
+version = "1.0.3"  # Change this to your package version
 description = "A meta package for installing the OpenBB Platform: Investment research for everyone, anywhere."  # Change this to your description
 authors = ["OpenBB <hello@openbb.co>"]  # Change this to your name and email
 license = "AGPL-3.0-only"  # This license must be compatible with the OpenBB license
@@ -16,25 +16,12 @@ openbb-update = "openbb_platform_installer.update:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9.21,<3.13"
-poetry = "^1.8"
-setuptools = "*"
-openbb-core = ">=1.3.5"
-openbb-platform-api = "^1"
-deepdiff = "*"
-types-python-dateutil = "*"
-types-toml = "*"
-pandas-stubs = "*"
-codespell = "*"
-ruff = "*"
-mypy = "*"
-black = "*"
-pylint = "^3"
-pydocstyle = "~6.3"
+openbb-platform-api = "^1.1.8"
 
 [tool.poetry.group.openbb-all]
 
 [tool.poetry.group.openbb-all.dependencies]
-openbb = { version = "^4", extras = ["all"] }
+openbb = { version = "^4.4.4", extras = ["all"] }
 
 [tool.poetry.group.cli]
 

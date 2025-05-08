@@ -69,7 +69,7 @@ Launcher specific arguments:
     --exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
     --no-filter                     Do not filter out widgets in widget_settings.json file.
     --widgets-path                  Absolute path to the widgets.json file. Default is ~/envs/{env}/assets/widgets.json. Supplying this sets --editable true.
-    --templates-path                Absolute path to the workspace_templates.json file. Default is ~/OpenBBUserData/workspace_templates.json.
+    --apps-json                     Absolute path to the workspace_apps.json file. Default is ~/OpenBBUserData/workspace_apps.json.
     --copilots-path                 Absolute path to the copilots.json file. Including this will add the /copilots endpoint to the API.
 
 All other arguments will be passed to uvicorn. Here are the most common ones:
@@ -567,7 +567,7 @@ The file can be served at any time by visiting the URL (host address will vary):
 http://127.0.0.1:6900/widgets.json
 ```
 
-When launched as `openbb-api --editiable`, a file will be stored to disk. By default, that location is:
+When launched as `openbb-api --editable`, a file will be stored to disk. By default, that location is:
 
 ```sh
 /Path/to/environments/envs/obb/assets/widgets.json
@@ -586,24 +586,24 @@ openbb-api --widgets-path /Users/some_user/path/to/widgets.json
 ```
 
 
-### Location of `workspace_templates.json`
+### Location of `workspace_apps.json`
 
 By default, the location is:
 
-> ~/OpenBBUserData/workspace_templates.json
+> ~/OpenBBUserData/workspace_apps.json
 
 This can be changed by adding the path as an argument.
 
 ```sh
-openbb-api --templates-path /Users/some_user/path/to/workspace_templates.json
+openbb-api --apps-json /Users/some_user/path/to/workspace_apps.json
 ```
 
 The OpenBB Workspace allows you to export the current dashboard layout - when it is a custom backend - as a template.
 
-To export the layout, right-click on the dashboard and select, "Export Template".
+To export the layout, right-click on the dashboard and select, "Export apps.json".
 
-A JSON dictionary will be exported. Insert the contents of the export into "~/OpenBBUserData/workspace_templates.json" by pasting between the JSON list markers, [ ].
+A JSON dictionary will be exported. Insert the contents of the export into "~/OpenBBUserData/workspace_apps.json" by pasting between the JSON list markers, [ ].
 
 If there are more than one, add a comma between each dictionary entry.
 
-See the page [here](https://docs.openbb.co/terminal/custom-backend/advanced-controls/templates) for details on custom backend templates.
+See the page [here](https://docs.openbb.co/workspace/apps#creating-your-own-app) for details on custom backend apps.

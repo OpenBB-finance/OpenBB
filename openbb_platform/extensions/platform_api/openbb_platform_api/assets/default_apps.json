@@ -1,7 +1,7 @@
 [
   {
     "name": "FOMC Documents",
-    "img": "https://papers.ssrn.com/sol3/journalcovers/671301_22122.gif",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_the_United_States_Federal_Reserve.svg/640px-Flag_of_the_United_States_Federal_Reserve.svg.png",
     "img_dark": "",
     "img_light": "",
     "description": "Read current and historical FOMC documents, beginning 1959.",
@@ -29,8 +29,8 @@
     "groups": []
   },
   {
-    "name": "Basic FRED Template",
-    "img": "https://www.ajcottleappraisers.com/wp-content/uploads/2024/03/fred.png",
+    "name": "Exammple FRED App",
+    "img": "https://tvblog-static.tradingview.com/uploads/2021/07/fred-preview.png",
     "description": "FRED (Federal Reserve Economic Data) offers U.S. and global economic data, including GDP, inflation (CPI, PCE), unemployment, and consumer spending. It tracks interest rates, money supply (M1, M2), stock indices, bond yields, exchange rates, housing prices (Case-Shiller), mortgage rates, and trade balances. Industry data covers manufacturing, energy, and real estate.",
     "authentication": "Get your FRED API KEY at https://fred.stlouisfed.org/docs/api/api_key.html",
     "allowCustomization": true,
@@ -332,6 +332,25 @@
           }
         ]
       },
+      "EmpireState": {
+        "id": "EmpireState",
+        "name": "Empire State Manufacturing",
+        "layout": [
+          {
+            "i": "economy_survey_manufacturing_outlook_ny_fred_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
       "ManufacturingOutlook": {
         "id": "ManufacturingOutlook",
         "name": "Texas Manufacturing Outlook",
@@ -374,7 +393,7 @@
     "groups": []
   },
   {
-    "name": "Basic BLS Template",
+    "name": "Example BLS App",
     "img": "https://tigadvisors.com/wp-content/uploads/2022/01/BLS.jpg",
     "description": "The Bureau of Labor Statistics (BLS) provides U.S. economic data on employment, unemployment, wages, and productivity. Key datasets include the Consumer Price Index (CPI) for inflation, Producer Price Index (PPI) for wholesale prices, and Employment Situation Report for job market trends. It tracks wages (CES, QCEW), job openings (JOLTS), productivity (BLS Productivity), and workplace injuries (SOII). Industry and regional data are also available.",
     "authentication": "Get your BLS API KEY at https://www.bls.gov/developers/home.htm",
@@ -447,7 +466,7 @@
     "groups": []
   },
   {
-      "name": "Basic IMF Template",
+      "name": "Example IMF App",
       "img": "https://www.imf.org/-/media/Images/IMF/About/Factsheets/2022/Hero/imf-logo.ashx",
       "description": "Global economic and financial data, including GDP, inflation, trade, and fiscal balances (WEO), financial stability risks (GFSR), and public debt (GFS, QPSD). It tracks exchange rates, interest rates, and money supply (IFS), balance of payments and trade flows (BOPS, DOTS), and banking sector health (FSIs).",
       "allowCustomization": true,

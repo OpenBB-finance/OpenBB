@@ -1,40 +1,40 @@
 {
-    "openbb": "4.4.3",
+    "openbb": "4.4.4",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.4.4",
+        "core": "1.4.6",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.3.0",
-                "crypto@1.4.0",
-                "currency@1.4.0",
-                "derivatives@1.4.0",
-                "economy@1.4.1",
-                "equity@1.4.0",
-                "etf@1.4.0",
-                "fixedincome@1.4.2",
-                "index@1.4.0",
-                "news@1.4.0",
-                "regulators@1.4.1"
+                "commodity@1.3.1",
+                "crypto@1.4.1",
+                "currency@1.4.1",
+                "derivatives@1.4.1",
+                "economy@1.4.2",
+                "equity@1.4.1",
+                "etf@1.4.1",
+                "fixedincome@1.4.3",
+                "index@1.4.1",
+                "news@1.4.1",
+                "regulators@1.4.2"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.4.0",
-                "bls@1.1.1",
-                "cftc@1.1.0",
-                "econdb@1.3.0",
-                "federal_reserve@1.4.1",
-                "fmp@1.4.1",
-                "fred@1.4.3",
-                "imf@1.1.0",
-                "intrinio@1.4.0",
-                "oecd@1.4.0",
-                "polygon@1.4.0",
-                "sec@1.4.2",
-                "tiingo@1.4.0",
-                "tradingeconomics@1.4.0",
-                "us_eia@1.1.0",
-                "yfinance@1.4.2"
+                "benzinga@1.4.1",
+                "bls@1.1.2",
+                "cftc@1.1.1",
+                "econdb@1.3.1",
+                "federal_reserve@1.4.2",
+                "fmp@1.4.2",
+                "fred@1.4.4",
+                "imf@1.1.1",
+                "intrinio@1.4.1",
+                "oecd@1.4.1",
+                "polygon@1.4.1",
+                "sec@1.4.3",
+                "tiingo@1.4.1",
+                "tradingeconomics@1.4.1",
+                "us_eia@1.1.1",
+                "yfinance@1.4.3"
             ],
             "openbb_obbject_extension": []
         }
@@ -811,13 +811,13 @@
                         "name": "volume",
                         "type": "float",
                         "description": "The trading volume.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "vwap",
-                        "type": "Annotated[float, Gt(gt=0)]",
+                        "type": "float",
                         "description": "Volume Weighted Average Price over the period.",
                         "default": null,
                         "optional": true,
@@ -4264,7 +4264,7 @@
                 "fred": [
                     {
                         "name": "frequency",
-                        "type": "Literal['annual', 'quarter']",
+                        "type": "Literal['quarter', 'annual']",
                         "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
                         "default": null,
                         "optional": true,
@@ -4732,6 +4732,177 @@
             "model": "ManufacturingOutlookTexas",
             "openapi_extra": {
                 "model": "ManufacturingOutlookTexas"
+            }
+        },
+        "/economy/survey/manufacturing_outlook_ny": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the Empire State Manufacturing Survey.\n\nIt is a monthly survey of manufacturers in New York State conducted by the Federal Reserve Bank of New York.\n\nParticipants from across the state in a variety of industries respond to a questionnaire\nand report the change in a variety of indicators from the previous month.\n\nRespondents also state the likely direction of these same indicators six months ahead.\nApril 2002 is the first report, although survey data date back to July 2001.\n\nThe survey is sent on the first day of each month to the same pool of about 200\nmanufacturing executives in New York State, typically the president or CEO.\n\nAbout 100 responses are received. Most are completed by the tenth, although surveys are accepted until the fifteenth.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.manufacturing_outlook_ny(provider='fred')\nobb.economy.survey.manufacturing_outlook_ny(topic=hours_worked,new_orders, transform=pc1, provider='fred', seasonally_adjusted=True)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "topic",
+                        "type": "Union[Union[Literal['business_outlook', 'hours_worked', 'employment', 'inventories', 'prices_received', 'prices_paid', 'capex', 'unfilled_orders', 'new_orders', 'shipments', 'delivery_times'], str], list[Union[Literal['business_outlook', 'hours_worked', 'employment', 'inventories', 'prices_received', 'prices_paid', 'capex', 'unfilled_orders', 'new_orders', 'shipments', 'delivery_times'], str]]]",
+                        "description": "The topic for the survey response. Multiple items allowed for provider(s): fred.",
+                        "default": "new_orders",
+                        "optional": true,
+                        "choices": [
+                            "business_outlook",
+                            "hours_worked",
+                            "employment",
+                            "inventories",
+                            "prices_received",
+                            "prices_paid",
+                            "capex",
+                            "unfilled_orders",
+                            "new_orders",
+                            "shipments",
+                            "delivery_times"
+                        ]
+                    },
+                    {
+                        "name": "seasonally_adjusted",
+                        "type": "bool",
+                        "description": "Whether the data is seasonally adjusted, default is False",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['quarter', 'annual']",
+                        "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.\n        avg = Average\n        sum = Sum\n        eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type\n        None = No transformation\n        chg = Change\n        ch1 = Change from Year Ago\n        pch = Percent Change\n        pc1 = Percent Change from Year Ago\n        pca = Compounded Annual Rate of Change\n        cch = Continuously Compounded Rate of Change\n        cca = Continuously Compounded Annual Rate of Change\n        log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "list[ManufacturingOutlookNY]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[list[Warning_]]",
+                        "description": "list of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "topic",
+                        "type": "str",
+                        "description": "Topic of the survey response.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "diffusion_index",
+                        "type": "float",
+                        "description": "Diffusion Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_reporting_increase",
+                        "type": "float",
+                        "description": "Percent of respondents reporting an increase over the last month.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_reporting_decrease",
+                        "type": "float",
+                        "description": "Percent of respondents reporting a decrease over the last month.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_reporting_no_change",
+                        "type": "float",
+                        "description": "Percent of respondents reporting no change over the last month.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "ManufacturingOutlookNY",
+            "openapi_extra": {
+                "widget_config": {
+                    "name": "Empire State Manufacturing Survey"
+                },
+                "model": "ManufacturingOutlookNY"
             }
         },
         "/economy/survey/nonfarm_payrolls": {
@@ -13684,7 +13855,7 @@
                 "intrinio": [
                     {
                         "name": "fiscal_period",
-                        "type": "Literal['annual', 'quarter']",
+                        "type": "Literal['quarter', 'annual']",
                         "description": "Filter for only full-year or quarterly estimates.",
                         "default": null,
                         "optional": true,

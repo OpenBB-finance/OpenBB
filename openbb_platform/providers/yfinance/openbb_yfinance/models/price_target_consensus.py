@@ -71,7 +71,7 @@ class YFinancePriceTargetConsensusFetcher(
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: Dict[str, Any],
     ) -> YFinancePriceTargetConsensusQueryParams:
         """Transform the query."""
         return YFinancePriceTargetConsensusQueryParams(**params)
@@ -85,6 +85,7 @@ class YFinancePriceTargetConsensusFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from curl_adapter import CurlCffiAdapter
         from openbb_core.provider.utils.errors import EmptyDataError
         from openbb_core.provider.utils.helpers import get_requests_session
         from warnings import warn
@@ -105,6 +106,8 @@ class YFinancePriceTargetConsensusFetcher(
             "numberOfAnalystOpinions",
         ]
         session = get_requests_session()
+        session.mount("https://", CurlCffiAdapter())
+        session.mount("http://", CurlCffiAdapter())
         messages: list = []
 
         async def get_one(symbol):
@@ -115,7 +118,6 @@ class YFinancePriceTargetConsensusFetcher(
                 ticker = Ticker(
                     symbol,
                     session=session,
-                    proxy=session.proxies if session.proxies else None,
                 ).get_info()
             except Exception as e:
                 messages.append(

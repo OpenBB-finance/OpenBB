@@ -1,5 +1,8 @@
 """The OBBject."""
 
+# pylint: disable=too-many-branches, too-many-locals, too-many-statements
+
+from collections.abc import Hashable
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -7,7 +10,6 @@ from typing import (
     ClassVar,
     Dict,
     Generic,
-    Hashable,
     List,
     Literal,
     Optional,
@@ -122,7 +124,7 @@ class OBBject(Tagged, Generic[T]):
         """
         return self.to_dataframe(index=index, sort_by=sort_by, ascending=ascending)
 
-    def to_dataframe(
+    def to_dataframe(  # noqa: PLR0912
         self,
         index: Optional[Union[str, None]] = "date",
         sort_by: Optional[str] = None,
@@ -161,7 +163,7 @@ class OBBject(Tagged, Generic[T]):
             Pandas DataFrame.
         """
         # pylint: disable=import-outside-toplevel
-        from pandas import DataFrame, concat  # noqa
+        from pandas import DataFrame, Series, concat  # noqa
         from openbb_core.app.utils import basemodel_to_df  # noqa
 
         def is_list_of_basemodel(items: Union[List[T], T]) -> bool:
@@ -182,7 +184,36 @@ class OBBject(Tagged, Generic[T]):
 
             # BaseModel
             if isinstance(res, BaseModel):
-                df = DataFrame(res.model_dump(exclude_unset=True, exclude_none=True))
+                res_dict = res.model_dump(  # pylint: disable=no-member
+                    exclude_unset=True, exclude_none=True
+                )
+                # Model is serialized as a dict[str, list] or list[dict]
+                if (
+                    (
+                        isinstance(res_dict, dict)
+                        and res_dict
+                        and all(isinstance(v, list) for v in res_dict.values())
+                    )
+                    or isinstance(res_dict, list)
+                    and all(isinstance(item, dict) for item in res_dict)
+                ):
+                    df = DataFrame(res_dict)
+                    sort_columns = False
+                else:
+                    series = Series(res_dict, name=res.__class__.__name__)
+                    df = series.to_frame().reset_index()
+                    sort_columns = False
+
+            # Dict[str, Any]
+            elif isinstance(res, dict):
+                try:
+                    df = DataFrame.from_dict(res).T
+                except ValueError:
+                    try:
+                        df = DataFrame.from_dict(res, orient="index")
+                    except ValueError:
+                        series = Series(res, name="values")
+                        df = series.to_frame().reset_index()
                 sort_columns = False
 
             # List[Dict]

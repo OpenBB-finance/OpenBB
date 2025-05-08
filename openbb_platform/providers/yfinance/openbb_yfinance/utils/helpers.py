@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-arguments,too-many-branches,too-many-locals,too-many-statements
 
-from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
@@ -82,14 +82,18 @@ async def get_custom_screener(
 ):
     """Get a custom screener."""
     # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import (
+    from openbb_core.provider.utils.helpers import (  # noqa
         get_requests_session,
         safe_fromtimestamp,
     )
+    from curl_adapter import CurlCffiAdapter
     from pytz import timezone
     from yfinance.data import YfData
 
     session = get_requests_session()
+    session.mount("https://", CurlCffiAdapter())
+    session.mount("http://", CurlCffiAdapter())
+
     params_dict = {
         "corsDomain": "finance.yahoo.com",
         "formatted": "false",
@@ -104,7 +108,6 @@ async def get_custom_screener(
         body=body,
         user_agent_headers=_data.user_agent_headers,
         params=params_dict,
-        proxy=session.proxies if session.proxies else None,
     )
     response.raise_for_status()
     res = response.json()["finance"]["result"][0]
@@ -125,7 +128,6 @@ async def get_custom_screener(
             body=body,
             user_agent_headers=_data.user_agent_headers,
             params=params_dict,
-            proxy=session.proxies if session.proxies else None,
         )
         if not res:
             break
@@ -159,6 +161,7 @@ async def get_defined_screener(
     """Get a predefined screener."""
     # pylint: disable=import-outside-toplevel
     import yfinance as yf  # noqa
+    from curl_adapter import CurlCffiAdapter
     from openbb_core.provider.utils.helpers import (
         get_requests_session,
         safe_fromtimestamp,
@@ -172,13 +175,14 @@ async def get_defined_screener(
 
     results: list = []
     session = get_requests_session()
+    session.mount("https://", CurlCffiAdapter())
+    session.mount("http://", CurlCffiAdapter())
 
     offset = 0
 
     response = yf.screen(
         name,
         session=session,
-        proxy=session.proxies if session.proxies else None,
         size=250,
         offset=offset,
     )
@@ -196,7 +200,6 @@ async def get_defined_screener(
         res = yf.screen(
             name,
             session=session,
-            proxy=session.proxies if session.proxies else None,
             size=250,
             offset=offset,
         )
@@ -205,8 +208,15 @@ async def get_defined_screener(
         results.extend(res.get("quotes", []))
 
     output: list = []
+    symbols: set = set()
 
     for item in results:
+        sym = item.get("symbol")
+
+        if not sym or sym in symbols:
+            continue
+
+        symbols.add(sym)
         tz = item["exchangeTimezoneName"]
         earnings_date = (
             safe_fromtimestamp(item["earningsTimestamp"], timezone(tz)).strftime(  # type: ignore
@@ -217,8 +227,12 @@ async def get_defined_screener(
         )
         item["earnings_date"] = earnings_date
         result = {k: item.get(k, None) for k in SCREENER_FIELDS}
+
         if result.get("regularMarketChange") and result.get("regularMarketVolume"):
             output.append(result)
+
+        if not output:
+            raise EmptyDataError("No data found for the predefined screener.")
 
     return output[:limit] if limit is not None else output
 
@@ -242,15 +256,19 @@ def get_futures_data() -> "DataFrame":
 def get_futures_symbols(symbol: str) -> list:
     """Get the list of futures symbols from the continuation symbol."""
     # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import get_requests_session
+    from openbb_core.provider.utils.helpers import get_requests_session  # noqa
+    from curl_adapter import CurlCffiAdapter
     from yfinance.data import YfData
 
     _symbol = symbol.upper() + "%3DF"
     URL = f"https://query2.finance.yahoo.com/v10/finance/quoteSummary/{_symbol}"
     params = {"modules": "futuresChain"}
-    response: Dict = YfData(session=get_requests_session()).get_raw_json(
-        url=URL, params=params
-    )
+
+    session = get_requests_session()
+    session.mount("https://", CurlCffiAdapter())
+    session.mount("http://", CurlCffiAdapter())
+
+    response: dict = YfData(session=session).get_raw_json(url=URL, params=params)
     futures_symbols: list = []
 
     if "quoteSummary" in response:
@@ -264,7 +282,7 @@ def get_futures_symbols(symbol: str) -> list:
     return futures_symbols
 
 
-async def get_futures_quotes(symbols: List) -> "DataFrame":
+async def get_futures_quotes(symbols: list) -> "DataFrame":
     """Get the current futures quotes for a list of symbols."""
     # pylint: disable=import-outside-toplevel
     import os  # noqa
@@ -301,7 +319,7 @@ async def get_futures_quotes(symbols: List) -> "DataFrame":
 
 
 async def get_historical_futures_prices(
-    symbols: List, start_date: "date", end_date: "date"
+    symbols: list, start_date: "date", end_date: "date"
 ):
     """Get historical futures prices for the list of symbols."""
     # pylint: disable=import-outside-toplevel
@@ -322,7 +340,7 @@ async def get_historical_futures_prices(
 
 
 async def get_futures_curve(  # pylint: disable=too-many-return-statements
-    symbol: str, date: Optional[Union[str, List]] = None
+    symbol: str, date: Optional[Union[str, list]] = None
 ) -> "DataFrame":
     """Get the futures curve for a given symbol.
 
@@ -345,7 +363,7 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
 
     futures_symbols = get_futures_symbols(symbol)
     today = datetime.today().date()
-    dates: List = []
+    dates: list = []
     if date:
         if isinstance(date, dateType):
             date = date.strftime("%Y-%m-%d")
@@ -417,10 +435,10 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
         except IndexError as exc:
             raise ValueError(f"Symbol {symbol} was not found.") from exc
 
-        futures_index: List = []
-        futures_curve: List = []
-        futures_date: List = []
-        historical_curve: List = []
+        futures_index: list = []
+        futures_curve: list = []
+        futures_date: list = []
+        historical_curve: list = []
         if dates:
             dates = [d.strftime("%Y-%m-%d") for d in dates]
             dates_list = DatetimeIndex(dates)
@@ -512,6 +530,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     """Get yFinance OHLC data for any ticker and interval available."""
     # pylint: disable=import-outside-toplevel
     from datetime import datetime, timedelta  # noqa
+    from curl_adapter import CurlCffiAdapter
     from openbb_core.provider.utils.helpers import get_requests_session
     from pandas import DataFrame, concat, to_datetime
     import yfinance as yf
@@ -537,6 +556,9 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
         kwargs.update(dict(auto_adjust=False, back_adjust=False, period=period))
 
     session = kwargs.pop("session", None) or get_requests_session()
+    session.mount("https://", CurlCffiAdapter())
+    session.mount("http://", CurlCffiAdapter())
+
     if session.proxies:
         kwargs["proxy"] = session.proxies
     try:

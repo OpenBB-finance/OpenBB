@@ -37,7 +37,7 @@ class YFUndervaluedGrowthEquitiesFetcher(
 
     @staticmethod
     def transform_query(
-        params: dict[str, Any]
+        params: dict[str, Any],
     ) -> YFUndervaluedGrowthEquitiesQueryParams:
         """Transform query params."""
         return YFUndervaluedGrowthEquitiesQueryParams(**params)
@@ -50,11 +50,38 @@ class YFUndervaluedGrowthEquitiesFetcher(
     ) -> list[dict]:
         """Get data from YF."""
         # pylint: disable=import-outside-toplevel
-        from openbb_yfinance.utils.helpers import get_defined_screener
+        from openbb_yfinance.utils.helpers import get_custom_screener
 
-        return await get_defined_screener(
-            name="undervalued_growth_stocks", limit=query.limit
-        )
+        body = {
+            "offset": 0,
+            "size": 250,
+            "sortField": "eodvolume",
+            "sortType": "desc",
+            "quoteType": "equity",
+            "query": {
+                "operator": "and",
+                "operands": [
+                    {"operator": "gt", "operands": ["intradaymarketcap", 500000000]},
+                    {
+                        "operator": "or",
+                        "operands": [
+                            {"operator": "eq", "operands": ["exchange", "NMS"]},
+                            {"operator": "eq", "operands": ["exchange", "NYQ"]},
+                        ],
+                    },
+                    {
+                        "operator": "btwn",
+                        "operands": ["peratio.lasttwelvemonths", 0, 20],
+                    },
+                    {"operator": "lt", "operands": ["pegratio_5y", 1]},
+                    {"operator": "gte", "operands": ["epsgrowth.lasttwelvemonths", 25]},
+                ],
+            },
+            "userId": "",
+            "userIdType": "guid",
+        }
+
+        return await get_custom_screener(body=body, limit=query.limit)
 
     @staticmethod
     def transform_data(

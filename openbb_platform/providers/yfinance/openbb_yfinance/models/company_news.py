@@ -59,6 +59,7 @@ class YFinanceCompanyNewsFetcher(
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from curl_adapter import CurlCffiAdapter
         from openbb_core.provider.utils.errors import EmptyDataError
         from openbb_core.provider.utils.helpers import get_requests_session
         from yfinance import Ticker
@@ -66,12 +67,13 @@ class YFinanceCompanyNewsFetcher(
         results: list = []
         symbols = query.symbol.split(",")  # type: ignore
         session = get_requests_session()
+        session.mount("https://", CurlCffiAdapter())
+        session.mount("http://", CurlCffiAdapter())
 
         async def get_one(symbol):
             data = Ticker(symbol, session=session).get_news(
                 count=query.limit,
                 tab="all",
-                proxy=session.proxies if session.proxies else None,
             )
             for d in data:
                 new_content: dict = {}
