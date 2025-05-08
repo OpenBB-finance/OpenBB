@@ -94,9 +94,9 @@ class ROUTER_crypto_price(Container):
             The low price.
         close : float
             The close price.
-        volume : float
+        volume : Optional[float]
             The trading volume.
-        vwap : Optional[Annotated[float, Gt(gt=0)]]
+        vwap : Optional[float]
             Volume Weighted Average Price over the period.
         adj_close : Optional[float]
             The adjusted close price. (provider: fmp)

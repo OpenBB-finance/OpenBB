@@ -42,6 +42,7 @@ def main():
             [sys.executable, "-m", "pip", "install", "openbb", "--no-deps"],
             check=True,
         )
+
         try:
             result = subprocess.run(
                 [
