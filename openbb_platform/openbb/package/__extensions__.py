@@ -48,7 +48,7 @@ Extensions:
     - tiingo@1.4.1
     - tradingeconomics@1.4.1
     - us_eia@1.1.1
-    - yfinance@1.4.3    """
+    - yfinance@1.4.5    """
     # fmt: on
 
     def __repr__(self) -> str:
