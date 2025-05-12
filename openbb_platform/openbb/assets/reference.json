@@ -34,7 +34,7 @@
                 "tiingo@1.4.1",
                 "tradingeconomics@1.4.1",
                 "us_eia@1.1.1",
-                "yfinance@1.4.5"
+                "yfinance@1.4.6"
             ],
             "openbb_obbject_extension": []
         }
