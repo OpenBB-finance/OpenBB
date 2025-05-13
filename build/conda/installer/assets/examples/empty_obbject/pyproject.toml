@@ -7,9 +7,8 @@ readme = "README.md"
 packages = [{ include = "empty_obbject" }]
 
 [tool.poetry.dependencies]
-python = "^3.9,<3.13"
-openbb-core = "^1"
-openbb-platform-api = "^1"
+python = "^3.9.21,<3.13"
+openbb-core = "^1.4.6"
 
 [build-system]
 requires = ["poetry-core"]
