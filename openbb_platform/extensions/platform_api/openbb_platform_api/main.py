@@ -78,7 +78,9 @@ for key, value in uvicorn_settings.items():
 if not dont_filter and os.path.exists(WIDGET_SETTINGS):
     with open(WIDGET_SETTINGS) as widget_settings_file:
         try:
-            widget_exclude_filter_json = json.load(widget_settings_file)["exclude"]
+            widget_exclude_filter_json = json.load(widget_settings_file).get(
+                "exclude", []
+            )
             if isinstance(widget_exclude_filter_json, list):
                 widget_exclude_filter.extend(widget_exclude_filter_json)
         except json.JSONDecodeError as e:
@@ -102,7 +104,9 @@ TEMPLATES_PATH = (
     + f"{'workspace_apps.json' if '.json' not in TEMPLATES_PATH else ''}"
     if TEMPLATES_PATH
     else (
-        current_settings["preferences"].get("data_directory", HOME + "/OpenBBUserData")
+        current_settings.get("preferences", {}).get(
+            "data_directory", HOME + "/OpenBBUserData"
+        )
         + "/workspace_apps.json"
     )
 )
