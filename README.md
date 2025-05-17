@@ -37,7 +37,7 @@ Data integrations available can be found here: https://docs.openbb.co/platform/r
 
 While the OpenBB Platform is all about an integration to dozens of different data vendors, the interface is either Python or a CLI.
 
-If you want an enterprise UI to visualize this datasets and use AI agents on top, you can find OpenBB Workspace at [pro.openbb.co](https://pro.openbb.co).
+If you want an enterprise UI to visualize this datasets and use AI agents on top, you can find OpenBB Workspace at <https://pro.openbb.co>.
 
 <a href="https://pro.openbb.co">
   <div align="center">
@@ -46,9 +46,11 @@ If you want an enterprise UI to visualize this datasets and use AI agents on top
 </a>
 
 Data integration:
+
 - You can learn more about adding data to the OpenBB workspace from the [docs](https://docs.openbb.co/workspace) or [this open source repository](https://github.com/OpenBB-finance/backends-for-openbb).
 
 AI Agents integration:
+
 - You can learn more about adding AI agents to the OpenBB workspace from [this open source repository](https://github.com/OpenBB-finance/agents-for-openbb).
 
 ### Integrating OpenBB Platform to the OpenBB Workspace
@@ -71,7 +73,7 @@ openbb-api
 
 This will launch a FastAPI server, via Uvicorn, at `127.0.0.1:6900`.
 
-You can check that it works by going to [http://127.0.0.1:6900/](http://127.0.0.1:6900/).
+You can check that it works by going to <http://127.0.0.1:6900>.
 
 #### Integrate OpenBB Platform backend to OpenBB Workspace
 
