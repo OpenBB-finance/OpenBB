@@ -29,7 +29,7 @@ df = output.to_dataframe()
 
 You can sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
 
-Data integrations available can be found here: https://docs.openbb.co/platform/reference
+Data integrations available can be found here: <https://docs.openbb.co/platform/reference>
 
 ---
 
@@ -85,7 +85,7 @@ Sign-in to the [OpenBB Workspace](https://pro.openbb.co/), and follow the follow
 2. Click on "Connect backend"
 3. Fill in the form with:
    Name: OpenBB Platform
-   URL: http://127.0.0.1:6900
+   URL: <http://127.0.0.1:6900>
 4. Click on "Test". You should get a "Test successful" with the number of apps found.
 5. Click on "Add".
 
