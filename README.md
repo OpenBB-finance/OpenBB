@@ -34,11 +34,13 @@ If you are looking for our **FREE** AI-powered Research and Analytics Workspace,
 Connect this library to the OpenBB Workspace with a few simple commands, in a Python (3.9.21 - 3.12) environment.
 
 - Install the packages.
+
 ```sh
 pip install "openbb[all]"
 ```
 
 - Start the API server over localhost.
+
 ```sh
 openbb-api
 ```
