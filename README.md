@@ -41,7 +41,7 @@ If you want an enterprise UI to visualize this datasets and use AI agents on top
 
 <a href="https://pro.openbb.co">
   <div align="center">
-  <img src="https://openbb.co/api/image?src=https%3A%2F%2Fopenbb-cms.directus.app%2Fassets%2Ff431ed60-5e46-439a-a9f7-4b06e72d0720.png&width=2400&height=1552&fit=cover&position=center&background[]=0&background[]=0&background[]=0&background[]=0&quality=100&compressionLevel=9&loop=0&delay=100&crop=null" alt="Logo" width="600">
+  <img src="https://openbb-cms.directus.app/assets/f69b6aaf-0821-4bc8-a43c-715e03a924ef.png" alt="Logo" width="1000">
   </div>
 </a>
 
