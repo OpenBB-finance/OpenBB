@@ -31,7 +31,30 @@ If you are looking for our **FREE** AI-powered Research and Analytics Workspace,
   </div>
 </a>
 
-We also have an open source AI financial analyst agent that can access all of the data within OpenBB, and that repo can be found [here](https://github.com/OpenBB-finance/openbb-agents).
+Connect this library to the OpenBB Workspace with a few simple commands, in a Python (3.9.21 - 3.12) environment.
+
+- Install the packages.
+```sh
+pip install "openbb[all]"
+```
+
+- Start the API server over localhost.
+```sh
+openbb-api
+```
+
+This will launch a FastAPI server, via Uvicorn, at http://127.0.0.1:6900.
+
+- Sign-in to the [Workspace](https://pro.openbb.co/), and from the sidebar, click "Widgets".
+
+![Screenshot 2025-05-16 at 6 00 31 PM](https://github.com/user-attachments/assets/3fde6454-bc0f-4f7e-ad20-edeaf3967dcb)
+
+- Click the "Add Data" button, enter the server into the form, click "Test", and then "Add".
+
+![Screenshot 2025-05-16 at 5 58 24 PM](https://github.com/user-attachments/assets/57edc2ee-6a96-4806-9cdc-529712820ddf)
+
+
+We also have examples of custom AI agents that integrate with the OpenBB Workspace, and that repo can be found [here](https://github.com/OpenBB-finance/agents-for-openbb).
 
 ---
 
@@ -55,7 +78,7 @@ The OpenBB Platform can be installed as a [PyPI package](https://pypi.org/projec
 
 or by cloning the repository directly with `git clone https://github.com/OpenBB-finance/OpenBB.git`.
 
-Please find more about the installation process in the [OpenBB Documentation](https://docs.openbb.co/platform/installation).
+Please find more about the installation process, in the [OpenBB Documentation](https://docs.openbb.co/platform/installation).
 
 ### OpenBB Platform CLI installation
 
