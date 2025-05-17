@@ -5,6 +5,7 @@
 from datetime import (
     date as dateType,
     datetime,
+    timezone,
 )
 from typing import Any, Dict, List, Optional
 from warnings import warn
@@ -93,8 +94,8 @@ class YFinanceShareStatisticsData(ShareStatisticsData):
     )
     @classmethod
     def validate_first_trade_date(cls, v):
-        """Convert  dates from UTC timestamp."""
-        return datetime.utcfromtimestamp(v).date() if v else None
+        """Convert dates from UTC timestamp."""
+        return datetime.fromtimestamp(v, timezone.utc).date() if v else None
 
 
 class YFinanceShareStatisticsFetcher(
