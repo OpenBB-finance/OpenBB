@@ -15,15 +15,29 @@
 </a>
 [![PyPI](https://img.shields.io/pypi/v/openbb?color=blue&label=PyPI%20Package)](https://pypi.org/project/openbb/)
 
-The first financial Platform that is free and fully open source.
+The first financial Platform that is open source.
 
 The OpenBB Platform offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
 
-Sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
+Get started with: `pip install openbb`
+
+```python
+from openbb import obb
+output = obb.equity.price.historical("AAPL")
+df = output.to_dataframe()
+```
+
+You can sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
+
+Data integrations available can be found here: https://docs.openbb.co/platform/reference
 
 ---
 
-If you are looking for our **FREE** AI-powered Research and Analytics Workspace, you can find it here: [pro.openbb.co](https://pro.openbb.co).
+## OpenBB Workspace
+
+While the OpenBB Platform is all about an integration to dozens of different data vendors, the interface is either Python or a CLI.
+
+If you want an enterprise UI to visualize this datasets and use AI agents on top, you can find OpenBB Workspace at [pro.openbb.co](https://pro.openbb.co).
 
 <a href="https://pro.openbb.co">
   <div align="center">
@@ -31,7 +45,17 @@ If you are looking for our **FREE** AI-powered Research and Analytics Workspace,
   </div>
 </a>
 
+Data integration:
+- You can learn more about adding data to the OpenBB workspace from the [docs](https://docs.openbb.co/workspace) or [this open source repository](https://github.com/OpenBB-finance/backends-for-openbb).
+
+AI Agents integration:
+- You can learn more about adding AI agents to the OpenBB workspace from [this open source repository](https://github.com/OpenBB-finance/agents-for-openbb).
+
+### Integrating OpenBB Platform to the OpenBB Workspace
+
 Connect this library to the OpenBB Workspace with a few simple commands, in a Python (3.9.21 - 3.12) environment.
+
+#### Run OpenBB Platform backend
 
 - Install the packages.
 
@@ -47,15 +71,23 @@ openbb-api
 
 This will launch a FastAPI server, via Uvicorn, at `127.0.0.1:6900`.
 
-- Sign-in to the [Workspace](https://pro.openbb.co/), and from the sidebar, click "Widgets".
+You can check that it works by going to [http://127.0.0.1:6900/](http://127.0.0.1:6900/).
 
-![Screenshot 2025-05-16 at 6 00 31 PM](https://github.com/user-attachments/assets/3fde6454-bc0f-4f7e-ad20-edeaf3967dcb)
+#### Integrate OpenBB Platform backend to OpenBB Workspace
 
-- Click the "Add Data" button, enter the server into the form, click "Test", and then "Add".
+Sign-in to the [OpenBB Workspace](https://pro.openbb.co/), and follow the following steps:
 
-![Screenshot 2025-05-16 at 5 58 24 PM](https://github.com/user-attachments/assets/57edc2ee-6a96-4806-9cdc-529712820ddf)
+![CleanShot 2025-05-17 at 09 51 56@2x](https://github.com/user-attachments/assets/75cffb4a-5e95-470a-b9d0-6ffd4067e069)
 
-We also have examples of custom AI agents that integrate with the OpenBB Workspace, and that repo can be found [here](https://github.com/OpenBB-finance/agents-for-openbb).
+1. Go to the "Apps" tab
+2. Click on "Connect backend"
+3. Fill in the form with:
+   Name: OpenBB Platform
+   URL: http://127.0.0.1:6900
+4. Click on "Test". You should get a "Test successful" with the number of apps found.
+5. Click on "Add".
+
+That's it.
 
 ---
 
