@@ -45,7 +45,7 @@ pip install "openbb[all]"
 openbb-api
 ```
 
-This will launch a FastAPI server, via Uvicorn, at http://127.0.0.1:6900.
+This will launch a FastAPI server, via Uvicorn, at `127.0.0.1:6900`.
 
 - Sign-in to the [Workspace](https://pro.openbb.co/), and from the sidebar, click "Widgets".
 
@@ -54,7 +54,6 @@ This will launch a FastAPI server, via Uvicorn, at http://127.0.0.1:6900.
 - Click the "Add Data" button, enter the server into the form, click "Test", and then "Add".
 
 ![Screenshot 2025-05-16 at 5 58 24 PM](https://github.com/user-attachments/assets/57edc2ee-6a96-4806-9cdc-529712820ddf)
-
 
 We also have examples of custom AI agents that integrate with the OpenBB Workspace, and that repo can be found [here](https://github.com/OpenBB-finance/agents-for-openbb).
 
@@ -98,15 +97,15 @@ There are three main ways of contributing to this project. (Hopefully you have s
 
 ### Become a Contributor
 
-* More information on our [Contributing Documentation](https://docs.openbb.co/platform/developer_guide/contributing).
+- More information on our [Contributing Documentation](https://docs.openbb.co/platform/developer_guide/contributing).
 
 ### Create a GitHub ticket
 
 Before creating a ticket make sure the one you are creating doesn't exist already [here](https://github.com/OpenBB-finance/OpenBB/issues)
 
-* [Report bug](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D)
-* [Suggest improvement](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
-* [Request a feature](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
+- [Report bug](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D)
+- [Suggest improvement](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
+- [Request a feature](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
 
 ### Provide feedback
 
