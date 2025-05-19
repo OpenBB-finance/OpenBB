@@ -68,9 +68,10 @@ Launcher specific arguments:
     --login                         Login to the OpenBB Platform.
     --exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
     --no-filter                     Do not filter out widgets in widget_settings.json file.
-    --widgets-path                  Absolute path to the widgets.json file. Default is ~/envs/{env}/assets/widgets.json. Supplying this sets --editable true.
-    --apps-json                     Absolute path to the workspace_apps.json file. Default is ~/OpenBBUserData/workspace_apps.json.
-    --copilots-path                 Absolute path to the copilots.json file. Including this will add the /copilots endpoint to the API.
+    --widgets-json                  Absolute/relative path to use as the widgets.json file. Default is ~/envs/{env}/assets/widgets.json, when --editable is 'true'.
+    --apps-json                     Absolute/relative path to use as the apps.json file. Default is ~/OpenBBUserData/workspace_apps.json.
+    --agents-json                   Absolute/relative path to use as the agents.json file. Including this will add the /agents endpoint to the API.
+
 
 All other arguments will be passed to uvicorn. Here are the most common ones:
 
@@ -582,7 +583,7 @@ openbb-api --editable --no-build
 If you would like to construct this file manually, create the file and define the path as an argument.
 
 ```sh
-openbb-api --widgets-path /Users/some_user/path/to/widgets.json
+openbb-api --widgets-json /Users/some_user/path/to/widgets.json
 ```
 
 
