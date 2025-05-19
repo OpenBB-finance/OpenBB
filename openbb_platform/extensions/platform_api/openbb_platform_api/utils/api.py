@@ -368,7 +368,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
     return app
 
 
-def parse_args():  # noqa: PLR0912
+def parse_args():  # noqa: PLR0912  # pylint: disable=too-many-branches
     """Parse the launch script command line arguments."""
     args = sys.argv[1:].copy()
     cwd = Path.cwd()
