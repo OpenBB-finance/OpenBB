@@ -420,7 +420,7 @@ def parse_args():  # noqa: PLR0912  # pylint: disable=too-many-branches
                 f"{_agents_path}{'' if _agents_path.endswith('/') else '/'}agents.json"
             )
 
-        if not str(_agents_path).startswith("/"):
+        if str(_agents_path).startswith("./"):
             _agents_path = str(cwd.joinpath(_agents_path).resolve())
 
         _kwargs["agents-json"] = _agents_path
@@ -437,7 +437,7 @@ def parse_args():  # noqa: PLR0912  # pylint: disable=too-many-branches
             widgets_file_path = f"{_widgets_path}{'' if str(_widgets_path).endswith('/') else '/'}widgets.json"
 
         # Resolve relative paths to absolute
-        if not str(widgets_file_path).startswith("/"):
+        if str(widgets_file_path).startswith("./"):
             widgets_file_path = str(cwd.joinpath(widgets_file_path).resolve())
 
         _kwargs["widgets-json"] = widgets_file_path
@@ -466,7 +466,7 @@ def parse_args():  # noqa: PLR0912  # pylint: disable=too-many-branches
                 apps_file_path = f"{_apps_path}{'' if str(_apps_path).endswith('/') else '/'}apps.json"
 
         # Resolve relative paths to absolute
-        if not str(apps_file_path).startswith("/"):
+        if str(apps_file_path).startswith("./"):
             apps_file_path = str(cwd.joinpath(apps_file_path).resolve())
 
         _kwargs["apps-json"] = apps_file_path
