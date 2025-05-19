@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 import uvicorn
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from openbb_core.api.rest_api import app
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.env import Env
@@ -113,12 +113,12 @@ TEMPLATES_PATH = (
 
 
 @app.get("/")
-async def get_root():
-    """Root response and welcome message."""
-    return JSONResponse(
-        content="Welcome to the OpenBB Platform API and Custom Workspace Backend."
-        + " Learn how to connect to the OpenBB Workspace here: https://docs.openbb.co/pro/custom-backend,"
-    )
+async def root():
+    """Serve the landing page HTML content."""
+    html_path = Path(__file__).parent / "assets" / "landing_page.html"
+    with open(html_path) as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content)
 
 
 @app.get("/widgets.json")
