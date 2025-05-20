@@ -143,7 +143,9 @@ async def get_apps_json():
     widgets = await get_widgets()
 
     if not os.path.exists(APPS_PATH):
-        os.makedirs(os.path.dirname(APPS_PATH), exist_ok=True)
+        apps_dir = os.path.dirname(APPS_PATH)
+        if not os.path.exists(apps_dir):
+            os.makedirs(apps_dir, exist_ok=True)
         # Write an empty file for the user to add exported apps from Workspace to.
         with open(APPS_PATH, "w", encoding="utf-8") as templates_file:
             templates_file.write(json.dumps([]))
