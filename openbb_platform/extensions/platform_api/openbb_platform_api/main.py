@@ -52,8 +52,14 @@ _app = kwargs.pop("app", None)
 if _app:
     app = _app
 
+
+# These are handled for backwards compatibility, and in ./utils/api::parse_args.
+# It should be handled by this point in the code execution, but in case the key
+# still exists for some reason, we will pop it so it doesn't get passed to uvicorn.run
+# It would be reasonable to remove special handling by V1.3
 WIDGETS_PATH = kwargs.pop("widgets-json", None) or kwargs.pop("widgets-path", None)
 APPS_PATH = kwargs.pop("apps-json", None) or kwargs.pop("templates-path", None)
+
 EDITABLE = kwargs.pop("editable", None) is True or WIDGETS_PATH is not None
 DEFAULT_APPS_PATH = (
     Path(__file__).absolute().parent.joinpath("assets").joinpath("default_apps.json")
