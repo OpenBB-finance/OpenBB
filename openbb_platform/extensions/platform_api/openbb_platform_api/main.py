@@ -52,15 +52,19 @@ _app = kwargs.pop("app", None)
 if _app:
     app = _app
 
-WIDGETS_PATH = kwargs.pop("widgets-path", None)
-TEMPLATES_PATH = kwargs.pop("apps-json", None) or kwargs.pop("templates-path", None)
+
+# These are handled for backwards compatibility, and in ./utils/api::parse_args.
+# It should be handled by this point in the code execution, but in case the key
+# still exists for some reason, we will pop it so it doesn't get passed to uvicorn.run
+# It would be reasonable to remove special handling by V1.3
+WIDGETS_PATH = kwargs.pop("widgets-json", None) or kwargs.pop("widgets-path", None)
+APPS_PATH = kwargs.pop("apps-json", None) or kwargs.pop("templates-path", None)
+
 EDITABLE = kwargs.pop("editable", None) is True or WIDGETS_PATH is not None
-
-
-DEFAULT_TEMPLATES_PATH = (
+DEFAULT_APPS_PATH = (
     Path(__file__).absolute().parent.joinpath("assets").joinpath("default_apps.json")
 )
-COPILOTS = kwargs.pop("copilots", None)
+AGENTS_PATH = kwargs.pop("agents-json", None)
 build = kwargs.pop("build", True)
 build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
@@ -98,11 +102,9 @@ widgets_json = get_widgets_json(
 
 # A template file will be served from the OpenBBUserDataDirectory, if it exists.
 # If it doesn't exist, an empty list will be returned, and an empty file will be created.
-TEMPLATES_PATH = (
-    TEMPLATES_PATH
-    + f"{'/' if TEMPLATES_PATH[-1] != '/' else ''}"
-    + f"{'workspace_apps.json' if '.json' not in TEMPLATES_PATH else ''}"
-    if TEMPLATES_PATH
+APPS_PATH = (
+    APPS_PATH
+    if APPS_PATH
     else (
         current_settings.get("preferences", {}).get(
             "data_directory", HOME + "/OpenBBUserData"
@@ -141,23 +143,25 @@ async def get_widgets():
 # If a custom implementation, you might want to override.
 @app.get("/apps.json")
 async def get_apps_json():
-    """Get the default apps.json file."""
+    """Get the apps.json file."""
     new_templates: list = []
     default_templates: list = []
     widgets = await get_widgets()
 
-    if not os.path.exists(TEMPLATES_PATH):
-        os.makedirs(os.path.dirname(TEMPLATES_PATH), exist_ok=True)
-        # Write an empty file for the user to export templates to for any backend.
-        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
+    if not os.path.exists(APPS_PATH):
+        apps_dir = os.path.dirname(APPS_PATH)
+        if not os.path.exists(apps_dir):
+            os.makedirs(apps_dir, exist_ok=True)
+        # Write an empty file for the user to add exported apps from Workspace to.
+        with open(APPS_PATH, "w", encoding="utf-8") as templates_file:
             templates_file.write(json.dumps([]))
 
-    if os.path.exists(DEFAULT_TEMPLATES_PATH):
-        with open(DEFAULT_TEMPLATES_PATH) as f:
+    if os.path.exists(DEFAULT_APPS_PATH):
+        with open(DEFAULT_APPS_PATH) as f:
             default_templates = json.load(f)
 
-    if os.path.exists(TEMPLATES_PATH):
-        with open(TEMPLATES_PATH) as templates_file:
+    if os.path.exists(APPS_PATH):
+        with open(APPS_PATH) as templates_file:
             templates = json.load(templates_file)
 
         if isinstance(templates, dict):
@@ -193,12 +197,16 @@ async def get_apps_json():
     return JSONResponse(content=[])
 
 
-if COPILOTS:
+if AGENTS_PATH:
 
-    @app.get("/copilots.json")
-    async def get_copilots():
-        """Get the copilots.json file."""
-        return JSONResponse(content=COPILOTS)
+    @app.get("/agents.json")
+    async def get_agents():
+        """Get the agents.json file."""
+        if os.path.exists(AGENTS_PATH):
+            with open(AGENTS_PATH) as f:
+                agents = json.load(f)
+            return JSONResponse(content=agents)
+        return JSONResponse(content=[])
 
 
 def launch_api(**_kwargs):  # noqa PRL0912
