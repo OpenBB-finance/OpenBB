@@ -14,7 +14,7 @@ security = HTTPBasic() if Env().API_AUTH else lambda: None
 
 
 async def authenticate_user(
-    credentials: Annotated[Optional[HTTPBasicCredentials], Depends(security)]
+    credentials: Annotated[Optional[HTTPBasicCredentials], Depends(security)],
 ):
     """Authenticate the user."""
     if credentials:
@@ -54,4 +54,4 @@ async def get_user_settings(
     user_service: Annotated[UserService, Depends(get_user_service)],
 ) -> UserSettings:
     """Get user settings."""
-    return user_service.default_user_settings
+    return user_service.read_from_file()
