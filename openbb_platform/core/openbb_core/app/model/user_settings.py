@@ -1,8 +1,8 @@
 """User settings model."""
 
 import json
-import logging
 import os
+import warnings
 
 from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.model.abstract.tagged import Tagged
@@ -31,7 +31,11 @@ class UserSettings(Tagged):
                 # Initialize with settings from file
                 super().__init__(**{k: v for k, v in file_settings.items() if v})
             except (json.JSONDecodeError, OSError) as e:
-                logging.error(f"Error loading user settings from file: {e}")
+                warnings.warn(
+                    f"Error loading user settings from file: {e}",
+                    stacklevel=2,
+                    category=UserWarning,
+                )
                 # Fall back to defaults if file can't be read
                 super().__init__(**kwargs)
         else:
