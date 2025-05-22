@@ -426,13 +426,11 @@ def test_charting_technical_zlma(params, obb):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "model": "yang_zhang",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "model": "yang_zhang",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -453,15 +451,13 @@ def test_charting_technical_cones(params, obb):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "DGS10",
-                "transform": "pc1",
-                "chart": True,
-                "provider": "fred",
-            }
-        )
+        {
+            "data": None,
+            "symbol": "DGS10",
+            "transform": "pc1",
+            "chart": True,
+            "provider": "fred",
+        }
     ],
 )
 @pytest.mark.integration
@@ -520,15 +516,13 @@ def test_charting_technical_relative_rotation(params, obb):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
-                "chart": True,
-                "provider": "finviz",
-                "chart_params": {"limit": 4, "orientation": "h"},
-            }
-        )
+        {
+            "data": None,
+            "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+            "chart": True,
+            "provider": "finviz",
+            "chart_params": {"limit": 4, "orientation": "h"},
+        }
     ],
 )
 @pytest.mark.integration
@@ -545,15 +539,13 @@ def test_charting_equity_price_performance(params, obb):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
-                "chart": True,
-                "provider": "intrinio",
-                "chart_params": {"orientation": "v"},
-            }
-        )
+        {
+            "data": None,
+            "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+            "chart": True,
+            "provider": "fmp",
+            "chart_params": {"orientation": "v"},
+        }
     ],
 )
 @pytest.mark.integration
@@ -570,15 +562,13 @@ def test_charting_etf_price_performance(params, obb):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "XRT",
-                "chart": True,
-                "provider": "fmp",
-                "chart_params": {"orientation": "v", "limit": 10},
-            }
-        )
+        {
+            "data": None,
+            "symbol": "XRT",
+            "chart": True,
+            "provider": "fmp",
+            "chart_params": {"orientation": "v", "limit": 10},
+        }
     ],
 )
 @pytest.mark.integration
@@ -626,15 +616,13 @@ def test_charting_fixedincome_government_yield_curve(params, obb):
 @parametrize(
     "params",
     [
-        (
-            {
-                "provider": "yfinance",
-                "symbol": "ES",
-                "start_date": "2022-01-01",
-                "end_date": "2022-02-01",
-                "chart": True,
-            }
-        )
+        {
+            "provider": "yfinance",
+            "symbol": "ES",
+            "start_date": "2022-01-01",
+            "end_date": "2022-02-01",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -733,13 +721,11 @@ def test_charting_economy_survey_bls_series(params, obb):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "method": "pearson",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "method": "pearson",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration

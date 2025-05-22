@@ -16,7 +16,13 @@ type PopupData = {
   bordercolor: string;
   color: string;
   size: number;
+  bgcolor?: string;
+  arrowcolor?: string;
+  arrowsize?: number;
+  arrowwidth?: number;
   annotation?: any;
+  high?: number;
+  low?: number;
 };
 
 export function add_annotation({
@@ -58,14 +64,15 @@ export function add_annotation({
       text: popup_data.text,
       showarrow: true,
       arrowhead: 2,
-      arrowsize: 1,
-      arrowwidth: 2,
+      arrowsize: popup_data.arrowsize || 1,
+      arrowwidth: popup_data.arrowwidth || 2,
       ax: x,
       ay: y + popup_data.yshift,
       ayref: yref,
       axref: "x",
       bordercolor: popup_data.bordercolor,
-      bgcolor: "#000000",
+      bgcolor: popup_data.bgcolor || "#000000",
+      arrowcolor: popup_data.arrowcolor || popup_data.bordercolor,
       borderwidth: 2,
       borderpad: 4,
       opacity: 0.8,
@@ -86,6 +93,10 @@ export function add_annotation({
     annotations[index].font.size = popup_data.size;
     annotations[index].ay = y + popup_data.yshift;
     annotations[index].bordercolor = popup_data.bordercolor;
+    annotations[index].bgcolor = popup_data.bgcolor || "#000000";
+    annotations[index].arrowcolor = popup_data.arrowcolor || popup_data.bordercolor;
+    annotations[index].arrowsize = popup_data.arrowsize || 1;
+    annotations[index].arrowwidth = popup_data.arrowwidth || 2;
     annotations[index].high = popup_data.high || undefined;
     annotations[index].low = popup_data.low || undefined;
   }
@@ -204,6 +215,11 @@ export function init_annotation({
       return;
     }
 
+    // First remove any existing click handlers to avoid duplicates
+    plotDiv.removeAllListeners("plotly_clickannotation");
+    plotDiv.removeAllListeners("plotly_click");
+
+    // Add handler for clicking on existing annotations
     plotDiv.on("plotly_clickannotation", (eventData) => {
       console.log("plotly_clickannotation", eventData);
       const annotation = eventData.annotation;
@@ -235,6 +251,7 @@ export function init_annotation({
       setOnAnnotationClick({});
     });
 
+    // Add handler for adding a new annotation on click
     function clickHandler(eventData: PlotMouseEvent) {
       console.log("plotly_click", eventData);
       const x = eventData.points[0].x;
@@ -282,13 +299,23 @@ export function init_annotation({
       setAnnotations(
         [...annotations, to_update.annotation].filter((a) => a !== undefined),
       );
+
+      // Important: update plotData with the new annotations to make them visible
       plotData.layout.dragmode = "pan";
       setPlotData({ ...plotData, ...to_update.update });
 
+      // Force a relayout to ensure annotations appear
+      Plotly.relayout(plotDiv, {'annotations': to_update.update.annotations, dragmode: "pan"});
+
+      // Remove click handler after creating the annotation
       plotDiv.removeAllListeners("plotly_click");
     }
+
+    // Set up dragmode and add the click handler
     plotData.layout.dragmode = "select";
     setPlotData({ ...plotData });
+
+    // Ensure we add the click handler
     plotDiv.on("plotly_click", clickHandler);
   }
 }

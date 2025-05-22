@@ -9,9 +9,9 @@ packages = [{ include = "openbb_charting" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9.21,<3.13"  # scipy forces python <4.0 explicitly
-openbb-core = "^1.4.6"
+openbb-core = "^1.4.7"
 pandas-ta-openbb = "^0.4.20"
-plotly = "^5.24.1"
+plotly = "^6.1.1"
 pywry = { version = "^0.6.2", optional = true }
 nbformat = "^5.10.0"
 

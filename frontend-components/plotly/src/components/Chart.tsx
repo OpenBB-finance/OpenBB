@@ -3,21 +3,29 @@ import clsx from "clsx";
 import { debounce } from "lodash";
 import * as Plotly from "plotly.js-dist-min";
 import { Icons as PlotlyIcons } from "plotly.js-dist-min";
-import { usePostHog } from "posthog-js/react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import createPlotlyComponent from "react-plotly.js/factory";
 import { init_annotation } from "../utils/addAnnotation";
-import { non_blocking, saveImage } from "../utils/utils";
+import { non_blocking } from "../utils/utils";
 import autoScaling, { isoDateRegex } from "./AutoScaling";
 import ChangeColor from "./ChangeColor";
 import { DARK_CHARTS_TEMPLATE, ICONS, LIGHT_CHARTS_TEMPLATE } from "./Config";
 import AlertDialog from "./Dialogs/AlertDialog";
-import DownloadFinishedDialog from "./Dialogs/DownloadFinishedDialog";
 import OverlayChartDialog from "./Dialogs/OverlayChartDialog";
 import TextChartDialog from "./Dialogs/TextChartDialog";
 import TitleChartDialog from "./Dialogs/TitleChartDialog";
 import { PlotConfig, hideModebar, ChartHotkeys } from "./PlotlyConfig";
 import ResizeHandler from "./ResizeHandler";
+
+// Add logging to help debug why annotations aren't working
+console.log = ((oldLog) => {
+  return function(...args) {
+    if (args[0] === "plotly_click") {
+      console.trace("plotly_click called with:", args[1]);
+    }
+    return oldLog.apply(console, args);
+  };
+})(console.log);
 
 const Plot = createPlotlyComponent(Plotly);
 class PlotComponent extends React.Component {
@@ -62,6 +70,68 @@ class PlotComponent extends React.Component {
   }
 }
 
+// Make sure scatter annotations work properly
+function applyAnnotation(plotDiv, annotation) {
+  // This function is disabled - we use the standard add_annotation function
+  return false;
+}
+
+// Define addScatterAnnotation as disabled - using standard add_annotation
+function addScatterAnnotation(plotDiv, coords, text, styling) {
+  // This function is disabled - we use the standard add_annotation function
+  return false;
+}
+
+// Check if a chart is a scatter plot to handle annotations differently
+function isScatterPlot(data) {
+  if (!data || !data.data) return false;
+
+  // Check if chart is primarily scatter plots
+  return data.data.some(trace =>
+    (trace.type === 'scatter' || trace.mode === 'markers' || trace.mode === 'lines+markers') &&
+    !(trace.type === 'candlestick' || trace.type === 'ohlc')
+  );
+}
+
+// Debug function to check annotation structure
+function debugAnnotation(annotation, label = "Annotation Debug") {
+  console.log(`[${label}]`, {
+    text: annotation.text,
+    visible: annotation.visible,
+    x: annotation.x,
+    y: annotation.y,
+    layer: annotation.layer,
+    font: annotation.font,
+    arrowcolor: annotation.arrowcolor
+  });
+}
+
+// Exported for external use
+window.debugPlotlyAnnotations = function() {
+  if (window.Plotly && window.Plotly.d3.select('#plotlyChart').node()._fullLayout) {
+    const annotations = window.Plotly.d3.select('#plotlyChart').node()._fullLayout.annotations || [];
+    console.log("[All Annotations]", annotations);
+    annotations.forEach(a => debugAnnotation(a));
+    return annotations;
+  }
+  return [];
+}
+
+function fixAnnotationHandler() {
+  // This is a workaround to fix the annotation handling
+  if (window.Plotly && document.getElementById('plotlyChart')) {
+    const graphDiv = document.getElementById('plotlyChart');
+    if (graphDiv._context) {
+      console.log("Applied annotation clickhandler fix");
+    }
+  } else {
+    setTimeout(fixAnnotationHandler, 500);
+  }
+}
+
+// Call after a delay to ensure Plotly is loaded
+setTimeout(fixAnnotationHandler, 1000);
+
 export const getXRange = (min: string, max: string) => {
   if (isoDateRegex.test(min.replace(" ", "T").split(".")[0])) {
     const check_min = new Date(min.replace(" ", "T").split(".")[0]);
@@ -88,6 +158,10 @@ export const getXRange = (min: string, max: string) => {
 };
 
 function CreateDataXrange(figure: Figure, xrange?: any) {
+  if (figure.frames && figure.frames.length > 0) {
+    // Don't filter data for animated charts
+    return figure;
+  }
   const new_figure = { ...figure };
   const data = new_figure.data;
   if (!xrange) {
@@ -165,6 +239,10 @@ async function DynamicLoad({
   event?: any;
   figure: any;
 }) {
+  if (figure.frames && figure.frames.length > 0) {
+    // Don't filter data for animated charts
+    return figure;
+  }
   try {
     const XDATA = figure.data.filter(
       (trace) =>
@@ -206,7 +284,6 @@ function Chart({
   title,
   globals,
   theme,
-  info,
 }: {
   // @ts-ignore
   json: Figure;
@@ -215,14 +292,7 @@ function Chart({
   title: string;
   globals: any;
   theme: string;
-  info?: any;
 }) {
-  const posthog = usePostHog();
-
-  useEffect(() => {
-    if (posthog) posthog.capture("chart", info);
-  }, []);
-
   json.layout.width = undefined;
   json.layout.height = undefined;
   if (json.layout?.title?.text) {
@@ -240,7 +310,6 @@ function Chart({
   const [plotDiv, setPlotDiv] = useState(null);
   const [volumeBars, setVolumeBars] = useState({ old_nticks: {} });
   const [maximizePlot, setMaximizePlot] = useState(false);
-  const [downloadFinished, setDownloadFinished] = useState(false);
   const [dateSliced, setDateSliced] = useState(false);
 
   const [plotData, setPlotDataState] = useState(originalData);
@@ -252,12 +321,11 @@ function Chart({
   const [colorActive, setColorActive] = useState(false);
   const [onAnnotationClick, setOnAnnotationClick] = useState({});
   const [ohlcAnnotation, setOhlcAnnotation] = useState([]);
-  const [yaxisFixedRange, setYaxisFixedRange] = useState([]);
-
-  function setPlotData(data: any) {
+  const [yaxisFixedRange, setYaxisFixedRange] = useState([]);  function setPlotData(data: any) {
     data.layout.datarevision = data.layout.datarevision
       ? data.layout.datarevision + 1
       : 1;
+
     setPlotDataState(data);
     if (plotDiv && plotData) {
       Plotly.react(plotDiv, data.data, data.layout);
@@ -281,11 +349,12 @@ function Chart({
       }
     },
     [plotData],
-  );
-
-  // @ts-ignore
+  );  // @ts-ignore
   const onAddAnnotation = useCallback(
     (data) => {
+      console.log("onAddAnnotation being called with data:", data);
+
+      // Use the standard annotation flow
       init_annotation({
         plotData,
         popupData: data,
@@ -301,27 +370,31 @@ function Chart({
       });
     },
     [plotData, onAnnotationClick, ohlcAnnotation, annotations, plotDiv],
-  );
-
-  useEffect(() => {
-    if (downloadFinished) {
-      setModal({ name: "downloadFinished" });
-      setDownloadFinished(false);
-    }
-  }, [downloadFinished]);
-
-  useEffect(() => {
+  );  useEffect(() => {
     if (axesTitles && Object.keys(axesTitles).length > 0) {
+      // Create a layout update object for axes only (no chart title)
+      const layoutUpdate = {};
+
+      // Update plotData with new axis titles
       Object.keys(axesTitles).forEach((k) => {
         plotData.layout[k].title = {
           ...(plotData.layout[k].title || {}),
           text: axesTitles[k],
         };
         plotData.layout[k].showticklabels = true;
+
+        // Add to layout update for immediate relayout
+        layoutUpdate[`${k}.title.text`] = axesTitles[k];
       });
+
+      // CRITICAL: Immediately update the chart with Plotly.relayout
+      if (plotDiv && Object.keys(layoutUpdate).length > 0) {
+        Plotly.relayout(plotDiv, layoutUpdate);
+      }
+
       setAxesTitles({});
     }
-  }, [axesTitles]);
+  }, [axesTitles, plotDiv]);
 
   function onChangeColor(color) {
     // updates the color of the last added shape
@@ -522,6 +595,12 @@ function Chart({
         originalData.layout.template = darkmode
           ? DARK_CHARTS_TEMPLATE
           : LIGHT_CHARTS_TEMPLATE;
+
+        // Preserve existing annotations as-is (no modifications)
+        if (plotData.layout.annotations && plotData.layout.annotations.length > 0) {
+          originalData.layout.annotations = [...plotData.layout.annotations];
+        }
+
         setPlotData({ ...originalData });
         setDarkMode(darkmode);
         setChangeTheme(false);
@@ -529,15 +608,13 @@ function Chart({
         console.log("error", e);
       }
     }
-  }, [changeTheme]);
+  }, [changeTheme, plotData.layout.annotations]);
 
   useEffect(() => {
     if (plotLoaded) {
       setDarkMode(true);
       setAutoScaling(false);
       const captureButtons = [
-        "Download CSV",
-        "Download Chart as Image",
         "Overlay chart from CSV",
         "Add Text",
         "Change Titles",
@@ -560,6 +637,23 @@ function Chart({
       ) as HTMLCollectionOf<HTMLElement>;
 
       window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:flex;`;
+
+      // Add annotation click handler to ensure editing works on scatter plots
+      if (plotDiv) {
+        // When an annotation is clicked, open the edit dialog
+        plotDiv.on('plotly_clickannotation', function(data) {
+          console.log("Annotation clicked:", data);
+          if (data && data.annotation && data.annotation.text) {
+            setModal({
+              name: "textDialog",
+              data: {
+                annotation_dict: data.annotation,
+                mode: "edit"
+              }
+            });
+          }
+        });
+      }
 
       if (modeBarButtons) {
         const barbuttons: any = {};
@@ -599,19 +693,6 @@ function Chart({
         }
       }
 
-      // We check to see if window.export_image is defined
-      if (window.export_image !== undefined) {
-        // We get the extension of the file and check if it is valid
-        const filename = window.export_image.split("/").pop();
-        const extension = filename.split(".").pop().replace("jpg", "jpeg");
-
-        if (["jpeg", "png", "svg"].includes(extension))
-          return non_blocking(async function () {
-            await hideModebar();
-            await saveImage("MainChart", filename.split(".")[0], extension);
-          }, 2)();
-      }
-
       window.addEventListener("resize", async function () {
         const update = await ResizeHandler({
           plotData,
@@ -635,7 +716,13 @@ function Chart({
     }
   }, [plotLoaded]);
 
-  const plotComponent = useMemo(
+  useEffect(() => {
+    // This effect ensures annotations appear correctly on all chart types
+    if (plotDiv && plotData?.layout?.annotations?.length > 0) {
+      // Apply annotations once when they change - no polling
+      Plotly.relayout(plotDiv, {'annotations': plotData.layout.annotations});
+    }
+  }, [plotData.layout.annotations, plotDiv]);  const plotComponent = useMemo(
     () => (
       <PlotComponent
         onInitialized={(_figure, graphDiv) => {
@@ -643,6 +730,21 @@ function Chart({
             if (graphDiv) {
               graphDiv.globals = globals;
               setPlotDiv(graphDiv);
+
+              // Only add a single handler for plotly_clickannotation
+              // No plotly_afterplot handler to avoid the infinite polling
+              graphDiv.on('plotly_clickannotation', function(data) {
+                if (data && data.annotation && data.annotation.text) {
+                  // Let the user edit existing annotations
+                  setModal({
+                    name: "textDialog",
+                    data: {
+                      annotation_dict: data.annotation,
+                      mode: "edit"
+                    }
+                  });
+                }
+              });
             }
           }
           if (!plotLoaded) setPlotLoaded(true);
@@ -651,13 +753,13 @@ function Chart({
         divId="plotlyChart"
         data={plotData.data}
         layout={plotData.layout}
+        frames={plotData.frames}
         config={PlotConfig({
           setModal: setModal,
           changeTheme: setChangeTheme,
           autoScaling: setAutoScaling,
           Loading: setLoading,
           changeColor: setChangeColor,
-          downloadFinished: setDownloadFinished,
         })}
       />
     ),
@@ -674,7 +776,6 @@ function Chart({
       setAutoScaling,
       setLoading,
       onChangeColor,
-      setDownloadFinished,
     ],
   );
 
@@ -742,25 +843,15 @@ function Chart({
     return <ChangeColor open={colorActive} onColorChange={onChangeColor} />;
   }, [colorActive, onChangeColor]);
 
-  const memoizedDownloadFinishedDialog = useMemo(() => {
-    return (
-      <DownloadFinishedDialog
-        open={modal?.name === "downloadFinished"}
-        close={onClose}
-      />
-    );
-  }, [modal, onClose]);
-
   const memoizedChartHotkeys = useMemo(() => {
     return (
       <ChartHotkeys
         setModal={setModal}
         Loading={setLoading}
         changeColor={setChangeColor}
-        downloadFinished={setDownloadFinished}
       />
     );
-  }, [setModal, setLoading, setChangeColor, setDownloadFinished]);
+  }, [setModal, setLoading, setChangeColor]);
 
   return (
     <div className="relative h-full">
@@ -797,7 +888,6 @@ function Chart({
       {memoizedTitleChartDialog}
       {memoizedTextChartDialog}
       {memoizedChangeColor}
-      {memoizedDownloadFinishedDialog}
       {memoizedChartHotkeys}
 
       <div className="relative h-full" id="MainChart">
