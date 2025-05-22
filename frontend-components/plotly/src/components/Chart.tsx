@@ -70,18 +70,6 @@ class PlotComponent extends React.Component {
   }
 }
 
-// Make sure scatter annotations work properly
-function applyAnnotation(plotDiv, annotation) {
-  // This function is disabled - we use the standard add_annotation function
-  return false;
-}
-
-// Define addScatterAnnotation as disabled - using standard add_annotation
-function addScatterAnnotation(plotDiv, coords, text, styling) {
-  // This function is disabled - we use the standard add_annotation function
-  return false;
-}
-
 // Check if a chart is a scatter plot to handle annotations differently
 function isScatterPlot(data) {
   if (!data || !data.data) return false;
@@ -116,21 +104,6 @@ window.debugPlotlyAnnotations = function() {
   }
   return [];
 }
-
-function fixAnnotationHandler() {
-  // This is a workaround to fix the annotation handling
-  if (window.Plotly && document.getElementById('plotlyChart')) {
-    const graphDiv = document.getElementById('plotlyChart');
-    if (graphDiv._context) {
-      console.log("Applied annotation clickhandler fix");
-    }
-  } else {
-    setTimeout(fixAnnotationHandler, 500);
-  }
-}
-
-// Call after a delay to ensure Plotly is loaded
-setTimeout(fixAnnotationHandler, 1000);
 
 export const getXRange = (min: string, max: string) => {
   if (isoDateRegex.test(min.replace(" ", "T").split(".")[0])) {
@@ -372,22 +345,17 @@ function Chart({
     [plotData, onAnnotationClick, ohlcAnnotation, annotations, plotDiv],
   );  useEffect(() => {
     if (axesTitles && Object.keys(axesTitles).length > 0) {
-      // Create a layout update object for axes only (no chart title)
       const layoutUpdate = {};
-
-      // Update plotData with new axis titles
+      // Update the layout with the new titles
       Object.keys(axesTitles).forEach((k) => {
         plotData.layout[k].title = {
           ...(plotData.layout[k].title || {}),
           text: axesTitles[k],
         };
         plotData.layout[k].showticklabels = true;
-
-        // Add to layout update for immediate relayout
         layoutUpdate[`${k}.title.text`] = axesTitles[k];
       });
 
-      // CRITICAL: Immediately update the chart with Plotly.relayout
       if (plotDiv && Object.keys(layoutUpdate).length > 0) {
         Plotly.relayout(plotDiv, layoutUpdate);
       }
@@ -672,11 +640,6 @@ function Chart({
         if (plotData.layout.yaxis.type === "log" && !LogYaxis) {
           console.log("yaxis.type changed to log");
           setLogYaxis(true);
-
-          // const layout_update = {
-          //   "yaxis.exponentformat": "none"
-          // };
-          // Plotly.update(plotDiv, {}, layout_update);
         }
         if (plotData.layout.yaxis.type === "linear" && LogYaxis) {
           console.log("yaxis.type changed to linear");
@@ -719,7 +682,6 @@ function Chart({
   useEffect(() => {
     // This effect ensures annotations appear correctly on all chart types
     if (plotDiv && plotData?.layout?.annotations?.length > 0) {
-      // Apply annotations once when they change - no polling
       Plotly.relayout(plotDiv, {'annotations': plotData.layout.annotations});
     }
   }, [plotData.layout.annotations, plotDiv]);  const plotComponent = useMemo(
@@ -730,12 +692,8 @@ function Chart({
             if (graphDiv) {
               graphDiv.globals = globals;
               setPlotDiv(graphDiv);
-
-              // Only add a single handler for plotly_clickannotation
-              // No plotly_afterplot handler to avoid the infinite polling
               graphDiv.on('plotly_clickannotation', function(data) {
                 if (data && data.annotation && data.annotation.text) {
-                  // Let the user edit existing annotations
                   setModal({
                     name: "textDialog",
                     data: {
