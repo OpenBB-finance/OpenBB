@@ -132,7 +132,7 @@ def create_rrg_with_tails(
     frames: list = []
     x_data = ratios_data
     y_data = momentum_data
-    for i, date in enumerate(ratios_data.index):
+    for i, date in enumerate(ratios_data.index):  # pylint: disable=unused-variable
 
         frame_data: list = []
 
