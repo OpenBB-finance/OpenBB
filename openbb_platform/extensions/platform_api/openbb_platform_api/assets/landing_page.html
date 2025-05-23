@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="OpenBB Platform - The first open source financial platform offering access to equity, options, crypto, forex, macro economy, fixed income, and more." />
+    <title>OpenBB Platform</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Hero Section -->
+            <div class="bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="text-center">
+                        <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                            OpenBB Platform
+                        </h1>
+                        <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+                            The first open source financial platform. Access equity, options, crypto, forex, macro economy, fixed income, and more through a unified platform with powerful extensions.
+                        </p>
+                        <div class="mt-4 flex justify-center">
+                            <a href="https://docs.openbb.co/platform" target="_blank" rel="noopener noreferrer" 
+                               class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white hover:opacity-90"
+                               style="background-color: #f5b166;">
+                                Documentation
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integration Guide Section -->
+            <div class="bg-gray-50 py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <h2 class="text-3xl font-extrabold text-gray-900">Connect to the OpenBB Workspace</h2>
+                        <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+                            Connect your OpenBB Platform backend with OpenBB Workspace to access all your data in an enterprise UI built for AI workflows.
+                        </p>
+                        <div class="mt-8 flex justify-center">
+                            <img src="https://openbb-cms.directus.app/assets/f69b6aaf-0821-4bc8-a43c-715e03a924ef.png" alt="OpenBB Platform" class="max-w-3xl w-full rounded-lg shadow-lg" />
+                        </div>                        
+                        <div class="mt-8 text-left max-w-3xl mx-auto">
+                            <div class="bg-white rounded-lg shadow-sm p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-4">Steps to Integrate with OpenBB Workspace</h3>
+                                
+                                <ol class="list-decimal list-inside space-y-4 text-gray-600">
+                                    <li>Sign in to <a href="https://pro.openbb.co/" class="text-blue-600 hover:text-blue-700">OpenBB Workspace</a></li>
+                                    <li>Navigate to the "Apps" tab</li>
+                                    <li>Click on "Connect backend"</li>
+                                    <li>Fill in the form with:
+                                        <ul class="list-disc list-inside ml-6 mt-2 space-y-2">
+                                            <li>Name: OpenBB Platform</li>
+                                            <li>URL: <code class="bg-gray-100 px-2 py-1 rounded">http://127.0.0.1:6900</code></li>
+                                        </ul>
+                                    </li>
+                                    <li>Click on "Test" - You should see "Test successful" with the number of apps found</li>
+                                    <li>Click on "Add" to complete the integration</li>
+                                </ol>
+
+                                <div class="mt-6">
+                                    <img src="https://github.com/user-attachments/assets/75cffb4a-5e95-470a-b9d0-6ffd4067e069" 
+                                         alt="Integration Guide Screenshot" 
+                                         class="rounded-lg shadow-sm w-full" />
+                                </div>
+
+                            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                                <p class="text-gray-600">
+                                    For more detailed information about integrating OpenBB Platform with OpenBB Workspace, including advanced configuration options and troubleshooting, visit our 
+                                    <a href="https://docs.openbb.co/workspace/platform-installer" 
+                                       class="text-blue-600 hover:text-blue-700 font-medium"
+                                       target="_blank" 
+                                       rel="noopener noreferrer">
+                                        comprehensive integration guide
+                                    </a>.
+                                </p>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex justify-between items-center">
+                    <div class="text-gray-500 text-sm">
+                        © 2025 OpenBB. All rights reserved.
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="https://twitter.com/openbb_finance" class="text-gray-400 hover:text-gray-500">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://discord.com/invite/xPHTuHCmuV" class="text-gray-400 hover:text-gray-500">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="https://github.com/OpenBB-finance/OpenBB" class="text-gray-400 hover:text-gray-500">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
