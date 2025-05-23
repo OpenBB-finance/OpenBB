@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Fira Code";
-  src: url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap") format("truetype");
-  font-weight: 400 700;
-  font-stretch: 50%;
-}
 
 @layer components {
   ._input {
@@ -96,14 +90,14 @@ html {
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    "Ubuntu", "Cantarell", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: "Fira Code", monospace, "Arial Black";
+  font-family: "Arial", monospace, "Arial Black";
   font-size: 12px;
   font-size: 1.2rem;
   color: #ffffff;
@@ -155,7 +149,7 @@ code {
   padding: 40px;
   box-sizing: border-box;
   display: none;
-  font-family: "Fira Code", monospace, "Arial Black";
+  font-family: "Arial", monospace, "Arial Black";
   animation: popup 0.3s ease-in-out;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
   z-index: 2;
@@ -176,7 +170,7 @@ code {
   color: #ff0000;
   font-size: 12px;
   font-size: 0.8rem;
-  font-family: "Fira Code", monospace, "Arial Black";
+  font-family: "Arial", monospace, "Arial Black";
   display: none;
   background-color: rgba(255, 0, 0, 0.1);
   border-radius: 4px;

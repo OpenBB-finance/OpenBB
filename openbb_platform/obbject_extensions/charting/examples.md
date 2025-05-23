@@ -76,7 +76,7 @@ The `data` parameter allows modifications to the data before creating the figure
 In this example, the length of the data is trimmed to the beginning of the year.
 
 ```python
-new_data = spdrs.to_df().loc[datetime(2023,12,29).date():]
+new_data = spdrs.to_df().loc[datetime(2024,12,29).date():]
 spdrs.charting.to_chart(data=new_data, title="YTD")
 ```
 
@@ -125,28 +125,28 @@ symbols = [
     'XOM',
     'CVX',
     'COP',
-    'EOG',
-    'MPC',
-    'SLB',
-    'PSX',
-    'PXD',
-    'VLO',
     'WMB',
-    'OKE',
-    'OXY',
-    'HES',
-    'FANG',
-    'HAL',
+    'EOG',
     'KMI',
-    'DVN',
+    'OKE',
+    'MPC',
+    'PSX',
+    'SLB',
+    'VLO',
     'BKR',
+    'HES',
     'TRGP',
-    'CTRA',
-    'MRO',
     'EQT',
-    'APA'
+    'OXY',
+    'TPL',
+    'FANG',
+    'EXE',
+    'DVN',
+    'HAL',
+    'CTRA',
+    'APA',
 ]
-data = obb.equity.price.historical(symbols, start_date="2024-01-01", provider="yfinance")
+data = obb.equity.price.historical(symbols, start_date="2025-01-01", provider="yfinance")
 create_bar_chart = data.charting.create_bar_chart
 volume = data.to_df().groupby("symbol").sum()["volume"]
 shares = obb.equity.profile(
