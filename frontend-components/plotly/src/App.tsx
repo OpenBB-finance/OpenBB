@@ -1,5 +1,4 @@
 //@ts-nocheck
-import { PostHogProvider } from "posthog-js/react";
 import { useEffect, useState } from "react";
 import Chart from "./components/Chart";
 import { candlestickMockup } from "./data/mockup";
@@ -92,7 +91,6 @@ function App() {
       date: new Date(),
       globals: globals,
       cmd: data.command_location,
-      posthog: data.posthog,
       python_version: data.python_version,
       pywry_version: data.pywry_version,
       terminal_version: data.terminal_version,
@@ -104,51 +102,7 @@ function App() {
   const transformedData = transformData(json_data);
 
   if (transformedData) {
-    if (transformedData.posthog.collect_logs && !options) {
-      const opts = {
-        api_host: "https://app.posthog.com",
-        autocapture: {
-          css_selector_allowlist: [".ph-capture"],
-        },
-        capture_pageview: false,
-        loaded: function (posthog: any) {
-          const log_id = transformedData?.log_id || "";
-
-          if (log_id !== "" && log_id !== "REPLACE_ME")
-            posthog.identify(log_id);
-
-          posthog.onFeatureFlags(function () {
-            if (
-              !posthog.isFeatureEnabled("record-pywry", { send_event: false })
-            )
-              posthog.stopSessionRecording();
-
-            if (
-              !posthog.isFeatureEnabled("collect-logs-pywry", {
-                send_event: false,
-              })
-            )
-              posthog.opt_out_capturing();
-            else if (posthog.has_opted_out_capturing())
-              posthog.opt_in_capturing();
-          });
-        },
-      };
-      setOptions(opts);
-    }
-
-    const info = {
-      INFO: {
-        command: transformedData.cmd,
-        title: transformedData.title,
-        date: transformedData.date,
-        python_version: transformedData.python_version,
-        pywry_version: transformedData.pywry_version,
-        terminal_version: transformedData.terminal_version,
-      },
-    };
-
-    const chartDiv = (
+    return (
       <Chart
         json={transformedData.data}
         date={transformedData.date}
@@ -156,22 +110,8 @@ function App() {
         title={transformedData.title}
         globals={transformedData.globals}
         theme={transformedData.theme}
-        info={info}
       />
     );
-
-    if (transformedData.posthog.collect_logs && options) {
-      return (
-        <PostHogProvider
-          apiKey="phc_vhssDAMod5qIplznQ75Kdgz4aB1qPFmeVmfEOZ4hkRw"
-          options={options}
-        >
-          {chartDiv}
-        </PostHogProvider>
-      );
-    }
-
-    return chartDiv;
   } else
     return (
       <div className="absolute inset-0 flex items-center justify-center z-[100]">

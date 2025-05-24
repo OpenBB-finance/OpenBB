@@ -117,11 +117,15 @@ export const DARK_CHARTS_TEMPLATE = {
     ],
     dragmode: "pan",
     font: {
-      family: "Fira Code",
-      size: 18,
+      family: "Arial, Helvetica, sans-serif",
+      size: 16,
     },
     hoverlabel: {
       align: "left",
+      font: {
+        family: "Arial, Helvetica, sans-serif",
+        size: 14,
+      },
     },
     mapbox: {
       style: "dark",
@@ -134,7 +138,8 @@ export const DARK_CHARTS_TEMPLATE = {
       y: 0.99,
       yanchor: "bottom",
       font: {
-        size: 15,
+        family: "Arial, Helvetica, sans-serif",
+        size: 14,
       },
     },
     paper_bgcolor: "#000000",
@@ -148,6 +153,7 @@ export const DARK_CHARTS_TEMPLATE = {
       showgrid: true,
       showline: true,
       tickfont: {
+        family: "Arial, Helvetica, sans-serif",
         size: 14,
       },
       zeroline: false,
@@ -155,6 +161,10 @@ export const DARK_CHARTS_TEMPLATE = {
       title: {
         standoff: 20,
         text: "",
+        font: {
+          family: "Arial, Helvetica, sans-serif",
+          size: 16,
+        },
       },
       gridcolor: "#283442",
       linecolor: "#F5EFF3",
@@ -171,11 +181,16 @@ export const DARK_CHARTS_TEMPLATE = {
       side: "right",
       tick0: 0.5,
       tickfont: {
+        family: "Arial, Helvetica, sans-serif",
         size: 14,
       },
       title: {
         standoff: 20,
         text: "",
+        font: {
+          family: "Arial, Helvetica, sans-serif",
+          size: 16,
+        },
       },
       gridcolor: "#283442",
       linecolor: "#F5EFF3",
@@ -287,27 +302,6 @@ export const LIGHT_CHARTS_TEMPLATE = {
           [1.0, "#f0f921"],
         ],
         type: "contour",
-      },
-    ],
-    heatmapgl: [
-      {
-        colorbar: {
-          outlinewidth: 0,
-          ticks: "",
-        },
-        colorscale: [
-          [0.0, "#0d0887"],
-          [0.1111111111111111, "#46039f"],
-          [0.2222222222222222, "#7201a8"],
-          [0.3333333333333333, "#9c179e"],
-          [0.4444444444444444, "#bd3786"],
-          [0.5555555555555556, "#d8576b"],
-          [0.6666666666666666, "#ed7953"],
-          [0.7777777777777778, "#fb9f3a"],
-          [0.8888888888888888, "#fdca26"],
-          [1.0, "#f0f921"],
-        ],
-        type: "heatmapgl",
       },
     ],
     heatmap: [
@@ -647,7 +641,8 @@ export const LIGHT_CHARTS_TEMPLATE = {
       "#9edae5"
     ],
     font: {
-      color: "#2a3f5f",
+      family: "Arial, Helvetica, sans-serif",
+      size: 16,
     },
     geo: {
       bgcolor: "white",
@@ -659,6 +654,10 @@ export const LIGHT_CHARTS_TEMPLATE = {
     },
     hoverlabel: {
       align: "left",
+      font: {
+        family: "Arial, Helvetica, sans-serif",
+        size: 14,
+      },
     },
     hovermode: "x",
     mapbox: {
@@ -738,49 +737,53 @@ export const LIGHT_CHARTS_TEMPLATE = {
       automargin: true,
       autorange: true,
       rangeslider: {
-          visible: false
+        visible: false
       },
       showgrid: true,
       showline: true,
       tickfont: {
-          size: 14
+        family: "Arial, Helvetica, sans-serif",
+        size: 14,
       },
       zeroline: false,
       tick0: 1,
       title: {
-          standoff: 20,
-          font: {
-              size: 16
-          }
+        standoff: 20,
+        font: {
+          family: "Arial, Helvetica, sans-serif",
+          size: 16,
+        },
       },
       gridcolor: "#283442",
       linecolor: "#A9A9A9",
       mirror: true,
       ticks: "outside"
-  },
-  yaxis: {
-    anchor: "x",
-    automargin: true,
-    fixedrange: false,
-    zeroline: false,
-    showgrid: true,
-    showline: true,
-    side: "right",
-    tick0: 0.5,
-    tickfont: {
-        size: 14
     },
-    title: {
+    yaxis: {
+      anchor: "x",
+      automargin: true,
+      fixedrange: false,
+      zeroline: false,
+      showgrid: true,
+      showline: true,
+      side: "right",
+      tick0: 0.5,
+      tickfont: {
+        family: "Arial, Helvetica, sans-serif",
+        size: 14,
+      },
+      title: {
         standoff: 20,
         font: {
-            size: 16
-        }
+          family: "Arial, Helvetica, sans-serif",
+          size: 16,
+        },
+      },
+      gridcolor: "rgba(128, 128, 128, 0.33)",
+      linecolor: "#A9A9A9",
+      mirror: true,
+      ticks: "outside"
     },
-    gridcolor: "rgba(128, 128, 128, 0.33)",
-    linecolor: "#A9A9A9",
-    mirror: true,
-    ticks: "outside"
-  },
     dragmode: "pan",
     legend: {
       bgcolor: "rgba(255, 255, 255, 0)",
@@ -789,8 +792,9 @@ export const LIGHT_CHARTS_TEMPLATE = {
       y: 1.02,
       yanchor: "bottom",
       font: {
-          size: 12
-      }
+        family: "Arial, Helvetica, sans-serif",
+        size: 14,
+      },
     },
   },
 };
