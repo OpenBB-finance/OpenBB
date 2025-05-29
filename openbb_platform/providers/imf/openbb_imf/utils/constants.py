@@ -268,8 +268,7 @@ PORT_COUNTRIES: dict = {
 }
 
 PORT_COUNTRIES_CHOICES = [
-    {"label": key, "value": value}
-    for key, value in PORT_COUNTRIES.items()
+    {"label": key, "value": value} for key, value in PORT_COUNTRIES.items()
 ]
 
 PortCountries = Literal[
