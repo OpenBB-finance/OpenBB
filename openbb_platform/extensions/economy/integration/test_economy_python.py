@@ -1163,6 +1163,14 @@ def test_economy_primary_dealer_fails(params, obb):
                 "end_date": None,
             }
         ),
+        (
+            {
+                "provider": "imf",
+                "country": "CRI",
+                "start_date": "2020-01-01",
+                "end_date": "2020-01-31",
+            }
+        )
     ],
 )
 @pytest.mark.integration
@@ -1247,3 +1255,97 @@ def test_economy_fomc_documents(params, obb):
     assert result
     assert isinstance(result, (list, dict))
     assert len(result) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "country": "CRI",
+                "continent": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_port_info(params, obb):
+    """Test economy shipping port info."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.shipping_port_info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_chokepoint_info(params, obb):
+    """Test economy shipping chokepoint info."""
+    result = obb.economy.shipping.chokepoint_info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "chokepoint": "chokepoint1",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-31",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_chokepoint_volume(params, obb):
+    """Test economy shipping chokepoint volume."""
+    result = obb.economy.shipping.chokepoint_volume(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "chokepoint": "port1201",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-31",
+            }
+        ),
+        (
+            {
+                "provider": "econdb",
+                "start_date": None,
+                "end_date": None,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_port_volume(params, obb):
+    """Test economy shipping chokepoint volume."""
+    result = obb.economy.shipping.chokepoint_volume(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+

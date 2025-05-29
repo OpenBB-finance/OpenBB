@@ -376,7 +376,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                             openapi, form_route.get("operationId"), route, _param
                         )
                         modified_post_params = modify_query_schema(
-                            post_params, provider
+                            post_params, provider  # type: ignore
                         )
                         form_params = {
                             "type": "form",
@@ -402,7 +402,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     post_params = post_query_schema_for_widget(
                         openapi, form_route.get("operationId"), route
                     )
-                    modified_post_params = modify_query_schema(post_params, provider)
+                    modified_post_params = modify_query_schema(post_params, provider)  # type: ignore
                     form_params = {
                         "type": "form",
                         "paramName": "",
@@ -538,13 +538,13 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             if data_config := data_schema_to_columns_defs(
                 openapi, widget_id, provider, route, True
             ):
-                for key, value in data_config.copy().items():
+                for key, value in data_config.copy().items():  # type: ignore
                     if key.startswith("$."):
                         data_var_key[key] = value
 
                 widget_config["data"] = deep_merge_configs(
                     widget_config["data"],
-                    {k: v for k, v in data_config.items() if not k.startswith("$.")},
+                    {k: v for k, v in data_config.items() if not k.startswith("$.")},  # type: ignore
                 )
 
             if data_var_key:
@@ -615,8 +615,8 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     },
                 )
                 widget_config_chart["searchCategory"] = "chart"
-                widget_config_chart["gridData"]["h"] = 20
-                widget_config_chart["gridData"]["w"] = 40
+                widget_config_chart["gridData"]["h"] = widget_config_dict.get("gridData", {}).get("h", 20)
+                widget_config_chart["gridData"]["w"] = widget_config_dict.get("gridData", {}).get("w", 40)
                 widget_config_chart["defaultViz"] = "chart"
                 widget_config_chart["data"]["dataKey"] = (
                     "chart.content" if data_key else ""

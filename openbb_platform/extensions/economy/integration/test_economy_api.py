@@ -1208,6 +1208,14 @@ def test_economy_primary_dealer_fails(params, headers):
                 "end_date": None,
             }
         ),
+        (
+            {
+                "provider": "imf",
+                "chokepoint": "port1201",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-31",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1292,6 +1300,108 @@ def test_economy_fomc_documents(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/fomc_documents?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "chokepoint": "port1201",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-31",
+            }
+        ),
+        (
+            {
+                "provider": "econdb",
+                "start_date": None,
+                "end_date": None,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_port_volume(params, headers):
+    """Test the economy shipping port volume endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/shipping/port_volume?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "chokepoint": "chokepoint1",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-31",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_chokepoint_volume(params, headers):
+    """Test the economy shipping chokepoint volume endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/shipping/chokepoint_volume?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_chokepoint_info(params, headers):
+    """Test the economy shipping chokepoint info endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/shipping/chokepoint_info?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_port_info(params, headers):
+    """Test the economy shipping port info endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/shipping/port_info?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
