@@ -1,3 +1,5 @@
+"""Plotting functions for IMF Maritime Chokepoint Information"""
+
 from openbb_imf.models.maritime_chokepoint_info import ImfMaritimeChokePointInfoData
 
 
