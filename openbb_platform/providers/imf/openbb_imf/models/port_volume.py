@@ -165,12 +165,7 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
             )
         if not values.get("port_code") and not values.get("country"):
             values["port_code"] = "port1114"
-            # raise OpenBBError(
-            #    ValueError(
-            #        "At least one of `port_code` or `country` must be provided."
-            #        " Use `obb.economy.shipping.port_info()` to get available ports."
-            #    )
-            # )
+
         return values
 
 
@@ -391,7 +386,8 @@ class ImfPortVolumeFetcher(Fetcher[ImfPortVolumeQueryParams, list[ImfPortVolumeD
 
         if country := params.pop("country", None):
             params["port_code"] = (
-                params["port_code"] if params.get("port_code")
+                params["port_code"]
+                if params.get("port_code")
                 else get_port_ids_by_country(country)
             )
 
