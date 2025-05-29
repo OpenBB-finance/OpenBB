@@ -358,7 +358,7 @@ async def get_daily_port_activity_data(
             url = get_port_url(offset)
 
             async with await session.get(url) as response:
-                data: dict = {}
+                data = {}
                 if response.status != 200:
                     raise OpenBBError(f"Failed to fetch data: {response.status}")
                 data = await response.json()
