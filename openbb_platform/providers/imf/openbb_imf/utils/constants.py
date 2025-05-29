@@ -84,7 +84,7 @@ PortContinents = Literal[
     "africa",
 ]
 
-PORT_COUNTRIES = {
+PORT_COUNTRIES: dict = {
     "Albania": "ALB",
     "Algeria": "DZA",
     "American Samoa": "ASM",
@@ -265,7 +265,6 @@ PORT_COUNTRIES = {
     "Venezuela": "VEN",
     "Vietnam": "VNM",
     "Yemen": "YEM",
-    "World": "WLD",
 }
 
 PortCountries = Literal[
