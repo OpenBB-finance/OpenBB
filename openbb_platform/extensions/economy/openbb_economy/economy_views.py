@@ -492,7 +492,7 @@ class EconomyViews:
             )
 
         fig.update_layout(
-            # margin=dict(b=20),
+            margin=dict(b=20),
             legend=dict(
                 orientation="h",
                 yanchor="top",
