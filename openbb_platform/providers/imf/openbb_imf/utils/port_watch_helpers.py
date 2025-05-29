@@ -255,7 +255,10 @@ async def get_all_daily_port_activity_data() -> list:
     from openbb_core.provider.utils.helpers import get_async_requests_session
     from pandas import read_csv, to_datetime
 
-    url = "https://hub.arcgis.com/api/v3/datasets/959214444157458aad969389b3ebe1a0_0/downloads/data?format=csv&spatialRefId=4326&where=1%3D1"
+    url = (
+        "https://hub.arcgis.com/api/v3/datasets/959214444157458aad969389b3ebe1a0_0/"
+        + "downloads/data?format=csv&spatialRefId=4326&where=1%3D1"
+    )
     content = ""
     try:
         async with await get_async_requests_session(

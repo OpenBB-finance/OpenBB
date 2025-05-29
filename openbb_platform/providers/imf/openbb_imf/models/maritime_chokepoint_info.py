@@ -151,7 +151,10 @@ class ImfMaritimeChokePointInfoFetcher(
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import get_async_requests_session
 
-        url = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/PortWatch_chokepoints_database/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"
+        url = (
+            "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/"
+            "PortWatch_chokepoints_database/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"
+        )
 
         try:
             async with await get_async_requests_session() as session, await session.get(

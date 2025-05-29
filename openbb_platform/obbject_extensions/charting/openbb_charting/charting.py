@@ -451,7 +451,7 @@ class Charting:
                     fig=fig, content=content, format=self._format
                 )
                 if render:
-                    return fig.show(**kwargs)  # type: ignore
+                    fig.show(**kwargs)  # type: ignore
             except Exception as e:
                 raise RuntimeError(
                     "Failed to automatically create a generic chart with the data provided."
