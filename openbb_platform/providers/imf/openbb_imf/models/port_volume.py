@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.port_volume import (
     PortVolumeData,
     PortVolumeQueryParams,
 )
-from openbb_imf.utils.constants import PORT_COUNTRIES, PortCountries
+from openbb_imf.utils.constants import PORT_COUNTRIES, PORT_COUNTRIES_CHOICES, PortCountries
 from openbb_imf.utils.port_watch_helpers import (
     get_port_id_choices,
     get_port_ids_by_country,
@@ -39,14 +39,8 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
         },
         "country": {
             "x-widget_config": {
-                "options": sorted(
-                    [
-                        {"label": key, "value": value}
-                        for key, value in PORT_COUNTRIES.items()
-                    ],
-                    key=lambda x: x["label"],
-                ),
-                "description": "Filter by country. This parameter supersedes `port_code` if both are provided.",
+                "options": PORT_COUNTRIES_CHOICES,
+                "description": "Filter by country. This parameter is overridden by `port_code` if both are provided.",
                 "style": {"popupWidth": 350},
             }
         },
@@ -68,7 +62,7 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
     country: Optional[PortCountries] = Field(
         default=None,
         description="Country to focus on. Enter as a 3-letter ISO country code."
-        + " This parameter supersedes `continent` if both are provided.",
+        + " This parameter is overridden by `port_code` if both are provided.",
     )
 
     @field_validator("port_code")
@@ -396,7 +390,10 @@ class ImfPortVolumeFetcher(Fetcher[ImfPortVolumeQueryParams, list[ImfPortVolumeD
             )
 
         if country := params.pop("country", None):
-            params["port_code"] = get_port_ids_by_country(country)
+            params["port_code"] = (
+                params["port_code"] if params.get("port_code")
+                else get_port_ids_by_country(country)
+            )
 
         return ImfPortVolumeQueryParams(**params)
 

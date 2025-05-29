@@ -1166,7 +1166,7 @@ def test_economy_primary_dealer_fails(params, obb):
         (
             {
                 "provider": "imf",
-                "port_id": "port1201",
+                "port_code": "port1201",
                 "start_date": "2020-01-01",
                 "end_date": "2020-01-31",
                 "country": None,
@@ -1328,7 +1328,7 @@ def test_economy_shipping_chokepoint_volume(params, obb):
         (
             {
                 "provider": "imf",
-                "port_id": "port1201",
+                "port_code": "port1201",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-31",
                 "country": None,

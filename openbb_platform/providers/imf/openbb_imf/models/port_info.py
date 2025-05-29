@@ -12,7 +12,7 @@ from openbb_core.provider.standard_models.port_info import (
 )
 from openbb_imf.utils.constants import (
     PORT_CONTINENTS,
-    PORT_COUNTRIES,
+    PORT_COUNTRIES_CHOICES,
     PortContinents,
     PortCountries,
 )
@@ -33,13 +33,7 @@ class ImfPortInfoQueryParams(PortInfoQueryParams):
         },
         "country": {
             "x-widget_config": {
-                "options": sorted(
-                    [
-                        {"label": key, "value": value}
-                        for key, value in PORT_COUNTRIES.items()
-                    ],
-                    key=lambda x: x["label"],
-                ),
+                "options": PORT_COUNTRIES_CHOICES,
                 "description": "Filter by country. This parameter supersedes `continent` if both are provided.",
                 "style": {"popupWidth": 350},
             }
