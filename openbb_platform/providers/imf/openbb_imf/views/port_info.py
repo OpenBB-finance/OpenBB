@@ -13,7 +13,8 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
         from openbb_charting.core.openbb_figure import OpenBBFigure
     except Exception as e:
         raise OpenBBError(
-            "Could not import Charting modules. Install with `pip install openbb-charting`." + f" -> {e}"
+            "Could not import Charting modules. Install with `pip install openbb-charting`."
+            + f" -> {e}"
         ) from e
 
     if (
@@ -38,7 +39,8 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
         share_values = df["import_export_share"]
         if share_values.nunique() > 1:
             df["marker_size"] = (
-                (share_values - share_values.min()) / (share_values.max() - share_values.min() + 1e-9)
+                (share_values - share_values.min())
+                / (share_values.max() - share_values.min() + 1e-9)
             ) * (max_size - min_size) + min_size
         else:
             df["marker_size"] = (min_size + max_size) / 2
@@ -46,7 +48,8 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
     elif "vessel_count_total" in df.columns and df["vessel_count_total"].nunique() > 1:
         vessel_counts = df["vessel_count_total"].astype(float)
         df["marker_size"] = (
-            (vessel_counts - vessel_counts.min()) / (vessel_counts.max() - vessel_counts.min() + 1e-9)
+            (vessel_counts - vessel_counts.min())
+            / (vessel_counts.max() - vessel_counts.min() + 1e-9)
         ) * (max_size - min_size) + min_size
     else:
         df["marker_size"] = min_size
@@ -65,7 +68,7 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
         center_lon = df["longitude"].mean()
         map_center = {"lat": center_lat, "lon": center_lon}
 
-    df = df.replace({nan: None}) # Crucial: converts np.nan to None for .get() checks
+    df = df.replace({nan: None})  # Crucial: converts np.nan to None for .get() checks
 
     # Define helper function to generate hover HTML for each row
     def generate_hover_html(row):
@@ -80,22 +83,42 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
 
         traffic_lines_content: list = []
         if share_import is not None:
-            traffic_lines_content.append(f"&nbsp;&nbsp;&nbsp;&nbsp;Imports:&nbsp;&nbsp;&nbsp;&nbsp;{share_import:.2%}<br>")
+            traffic_lines_content.append(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;Imports:&nbsp;&nbsp;&nbsp;&nbsp;{share_import:.2%}<br>"
+            )
         if share_export is not None:
-            traffic_lines_content.append(f"&nbsp;&nbsp;&nbsp;&nbsp;Exports:&nbsp;&nbsp;&nbsp;&nbsp;{share_export:.2%}<br>")
+            traffic_lines_content.append(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;Exports:&nbsp;&nbsp;&nbsp;&nbsp;{share_export:.2%}<br>"
+            )
 
         if traffic_lines_content:
             html_parts.append("<br><b>Share of Country's Maritime Traffic</b>:<br>")
             html_parts.extend(traffic_lines_content)
 
         # Avg Annual Vessels
-        vessel_labels = ["Total", "Containers", "Tankers", "Dry Bulk", "General Cargo", "Ro-Ro"]
+        vessel_labels = [
+            "Total",
+            "Containers",
+            "Tankers",
+            "Dry Bulk",
+            "General Cargo",
+            "Ro-Ro",
+        ]
         vessel_cols = [
-            "vessel_count_total", "vessel_count_container", "vessel_count_tanker",
-            "vessel_count_dry_bulk", "vessel_count_general_cargo", "vessel_count_roro"
+            "vessel_count_total",
+            "vessel_count_container",
+            "vessel_count_tanker",
+            "vessel_count_dry_bulk",
+            "vessel_count_general_cargo",
+            "vessel_count_roro",
         ]
         spaces_after_colon = {
-            "Total": 17, "Containers": 7, "Tankers": 12, "Dry Bulk": 11, "General Cargo": 1, "Ro-Ro": 14
+            "Total": 17,
+            "Containers": 7,
+            "Tankers": 12,
+            "Dry Bulk": 11,
+            "General Cargo": 1,
+            "Ro-Ro": 14,
         }
 
         vessel_lines_content: list = []
@@ -104,7 +127,9 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
             if count is not None:
                 num_spaces = spaces_after_colon.get(label, 1)
                 space_str = "&nbsp;" * num_spaces
-                vessel_lines_content.append(f"&nbsp;&nbsp;&nbsp;&nbsp;{label}:{space_str}{count:,}<br>")
+                vessel_lines_content.append(
+                    f"&nbsp;&nbsp;&nbsp;&nbsp;{label}:{space_str}{count:,}<br>"
+                )
 
         if vessel_lines_content:
             html_parts.append("<br><b>Avg Annual Vessels</b>:<br>")
@@ -135,12 +160,10 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
         color_discrete_sequence=["fuchsia"],
         opacity=0.4,
         height=600,
-        width=600
+        width=600,
     )
 
-    fig.update_traces(
-        hovertemplate="%{customdata[0]}<extra></extra>"
-    )
+    fig.update_traces(hovertemplate="%{customdata[0]}<extra></extra>")
 
     layout_map_config = {
         "style": "carto-voyager",
@@ -150,9 +173,7 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
         layout_map_config["center"] = map_center
 
     fig.update_layout(
-        autosize=False,
-        map=layout_map_config,
-        margin={"r":0,"t":0,"l":0,"b":0}
+        autosize=False, map=layout_map_config, margin={"r": 0, "t": 0, "l": 0, "b": 0}
     )
 
     return OpenBBFigure(fig).show(external=True)

@@ -615,8 +615,12 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     },
                 )
                 widget_config_chart["searchCategory"] = "chart"
-                widget_config_chart["gridData"]["h"] = widget_config_dict.get("gridData", {}).get("h", 20)
-                widget_config_chart["gridData"]["w"] = widget_config_dict.get("gridData", {}).get("w", 40)
+                widget_config_chart["gridData"]["h"] = widget_config_dict.get(
+                    "gridData", {}
+                ).get("h", 20)
+                widget_config_chart["gridData"]["w"] = widget_config_dict.get(
+                    "gridData", {}
+                ).get("w", 40)
                 widget_config_chart["defaultViz"] = "chart"
                 widget_config_chart["data"]["dataKey"] = (
                     "chart.content" if data_key else ""

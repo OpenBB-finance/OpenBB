@@ -20,9 +20,7 @@ router = Router(prefix="/shipping")
     model="PortInfo",
     examples=[
         APIEx(parameters={"provider": "imf"}),
-        APIEx(
-            parameters={"provider": "imf", "continent": "asia_pacific"}
-        )
+        APIEx(parameters={"provider": "imf", "continent": "asia_pacific"}),
     ],
 )
 async def port_info(
@@ -40,7 +38,7 @@ async def port_info(
     examples=[
         APIEx(
             description="Get average dwelling times and TEU volumes from the top ports.",
-            parameters={"provider": "econdb"}
+            parameters={"provider": "econdb"},
         ),
         APIEx(
             description="Get daily port calls and estimated trading volumes for specific ports"
@@ -48,16 +46,16 @@ async def port_info(
             parameters={
                 "provider": "imf",
                 "port_code": "rotterdam,singapore",
-            }
+            },
         ),
         APIEx(
             description="Get data for all ports in a specific country. Use the 3-letter ISO country code.",
             parameters={
                 "provider": "imf",
                 "country": "GBR",
-            }
-        )
-    ]
+            },
+        ),
+    ],
 )
 async def port_volume(
     cc: CommandContext,
@@ -67,6 +65,7 @@ async def port_volume(
 ) -> OBBject:
     """Daily port calls and estimates of trading volumes for ports around the world."""
     return await OBBject.from_query(Query(**locals()))
+
 
 @router.command(
     model="MaritimeChokePointInfo",
@@ -94,7 +93,7 @@ async def chokepoint_info(
                 "chokepoint": "suez_canal,panama_canal",
             }
         ),
-    ]
+    ],
 )
 async def chokepoint_volume(
     cc: CommandContext,

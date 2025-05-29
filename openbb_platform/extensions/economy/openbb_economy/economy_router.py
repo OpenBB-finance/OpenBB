@@ -768,7 +768,7 @@ async def primary_dealer_fails(
             parameters={
                 "provider": "imf",
                 "port_code": "rotterdam,singapore",
-            }
+            },
         ),
     ],
     deprecated=True,

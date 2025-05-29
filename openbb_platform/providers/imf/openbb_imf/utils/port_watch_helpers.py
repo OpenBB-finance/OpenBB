@@ -3,7 +3,11 @@
 from typing import Optional
 
 from async_lru import alru_cache
-from openbb_imf.utils.constants import CHOKEPOINTS_BASE_URL, DAILY_TRADE_BASE_URL, PORT_COUNTRIES
+from openbb_imf.utils.constants import (
+    CHOKEPOINTS_BASE_URL,
+    DAILY_TRADE_BASE_URL,
+    PORT_COUNTRIES,
+)
 
 
 def map_port_country_code(country_code: str) -> str:
@@ -19,9 +23,7 @@ def map_port_country_code(country_code: str) -> str:
     str
         The full country name, without accents, corresponding to the provided country code.
     """
-    COUNTRY_CODE_TO_PORT = {
-        v: k for k, v in PORT_COUNTRIES.items()
-    }
+    COUNTRY_CODE_TO_PORT = {v: k for k, v in PORT_COUNTRIES.items()}
     if country_code not in COUNTRY_CODE_TO_PORT:
         raise ValueError("Country code is not supported by IMF Port Watch.")
 
@@ -54,12 +56,13 @@ def get_port_ids_by_country(country_code: str) -> str:
 
     port_ids_by_country: dict = {}
 
-
     with open(str(json_path), encoding="utf-8") as file:
         port_ids_by_country = json.load(file)
 
     if country_code.upper() not in port_ids_by_country:
-        raise ValueError(f"Country code '{country_code}' is not supported by IMF Port Watch.")
+        raise ValueError(
+            f"Country code '{country_code}' is not supported by IMF Port Watch."
+        )
 
     return port_ids_by_country.get(country_code.upper(), "")
 
@@ -102,9 +105,7 @@ def get_port_id_choices() -> list:
 
 @alru_cache(maxsize=25)
 async def get_daily_chokepoint_data(
-    chokepoint_id,
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None
+    chokepoint_id, start_date: Optional[str] = None, end_date: Optional[str] = None
 ) -> list:
     """Get the daily chokepoint data for a specific chokepoint and date range.
 
@@ -128,17 +129,21 @@ async def get_daily_chokepoint_data(
         """Construct the URL for fetching chokepoint data with offset."""
         nonlocal chokepoint_id
         return (
-            CHOKEPOINTS_BASE_URL
-            + f"where=portid%20%3D%20%27{chokepoint_id.upper()}%27"
-            + f"AND%20date%20>%3D%20TIMESTAMP%20%27{start_date}%2000%3A00%3A00%27"
-            + f"%20AND%20date%20<%3D%20TIMESTAMP%20%27{end_date}%2000%3A00%3A00%27&"
-            + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
-            + "&outSR=&f=json"
-        ) if start_date is not None and end_date is not None else (
-            CHOKEPOINTS_BASE_URL
-            + f"where=portid%20%3D%20%27{chokepoint_id.upper()}%27&"
-            + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
-            + "&outSR=&f=json"
+            (
+                CHOKEPOINTS_BASE_URL
+                + f"where=portid%20%3D%20%27{chokepoint_id.upper()}%27"
+                + f"AND%20date%20>%3D%20TIMESTAMP%20%27{start_date}%2000%3A00%3A00%27"
+                + f"%20AND%20date%20<%3D%20TIMESTAMP%20%27{end_date}%2000%3A00%3A00%27&"
+                + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
+                + "&outSR=&f=json"
+            )
+            if start_date is not None and end_date is not None
+            else (
+                CHOKEPOINTS_BASE_URL
+                + f"where=portid%20%3D%20%27{chokepoint_id.upper()}%27&"
+                + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
+                + "&outSR=&f=json"
+            )
         )
 
     offset: int = 0
@@ -193,8 +198,7 @@ async def get_daily_chokepoint_data(
 
 @alru_cache(maxsize=1)
 async def get_all_daily_chokepoint_activity_data(
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None
+    start_date: Optional[str] = None, end_date: Optional[str] = None
 ) -> list:
     """Get the complete historical volume dataset for all chokepoints."""
     # pylint: disable=import-outside-toplevel
@@ -212,10 +216,10 @@ async def get_all_daily_chokepoint_activity_data(
         except Exception as e:
             raise OpenBBError(f"Failed to fetch data for {chokepoint_id}: {e}") from e
 
-
     try:
         gather_results = await asyncio.gather(
-            *[_get_one_chokepoint_data(cp) for cp in chokepoints], return_exceptions=True
+            *[_get_one_chokepoint_data(cp) for cp in chokepoints],
+            return_exceptions=True,
         )
 
         for result in gather_results:
@@ -228,7 +232,9 @@ async def get_all_daily_chokepoint_activity_data(
         return chokepoints_data
 
     except Exception as e:
-        raise OpenBBError(f"Error in fetching chokepoint data: {e} -> {e.args[0]}") from e
+        raise OpenBBError(
+            f"Error in fetching chokepoint data: {e} -> {e.args[0]}"
+        ) from e
 
 
 @alru_cache(maxsize=1)
@@ -252,17 +258,26 @@ async def get_all_daily_port_activity_data() -> list:
     url = "https://hub.arcgis.com/api/v3/datasets/959214444157458aad969389b3ebe1a0_0/downloads/data?format=csv&spatialRefId=4326&where=1%3D1"
     content = ""
     try:
-        async with await get_async_requests_session(timeout=120) as session, \
-                await session.get(url) as response:
+        async with await get_async_requests_session(
+            timeout=120
+        ) as session, await session.get(url) as response:
             if response.status != 200:
-                raise OpenBBError(f"Failed to fetch port activity data: {response.status} - {response.reason}")
+                raise OpenBBError(
+                    f"Failed to fetch port activity data: {response.status} - {response.reason}"
+                )
             if response.content is None:
                 raise OpenBBError("No content returned from the request.")
             content = await response.text()
 
         df = read_csv(StringIO(content))
         df.date = to_datetime(df.date).dt.date
-        df = df.drop(columns=[d for d in ["ObjectId", "GlobalID", "year", "month", "day"] if d in df.columns])
+        df = df.drop(
+            columns=[
+                d
+                for d in ["ObjectId", "GlobalID", "year", "month", "day"]
+                if d in df.columns
+            ]
+        )
 
         return df.to_dict(orient="records")
 
@@ -271,7 +286,9 @@ async def get_all_daily_port_activity_data() -> list:
 
 
 @alru_cache(maxsize=125)
-async def get_daily_port_activity_data(port_id, start_date: Optional[str] = None, end_date: Optional[str] = None) -> list:
+async def get_daily_port_activity_data(
+    port_id, start_date: Optional[str] = None, end_date: Optional[str] = None
+) -> list:
     """Get the daily port activity data for a specific port ID.
 
     Parameters
@@ -290,7 +307,9 @@ async def get_daily_port_activity_data(port_id, start_date: Optional[str] = None
     from openbb_core.provider.utils.helpers import get_async_requests_session
 
     if port_id is None:
-        raise OpenBBError(ValueError("Either port_id or country_code must be provided."))
+        raise OpenBBError(
+            ValueError("Either port_id or country_code must be provided.")
+        )
 
     if start_date is not None and end_date is None:
         end_date = datetime.now().strftime("%Y-%m-%d")
@@ -302,18 +321,23 @@ async def get_daily_port_activity_data(port_id, start_date: Optional[str] = None
         """Construct the URL for fetching chokepoint data with offset."""
         nonlocal port_id, start_date, end_date
         return (
-            DAILY_TRADE_BASE_URL
-            + f"where=portid%20%3D%20%27{port_id.upper()}%27&"  # type: ignore
-            + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
-            + "&outSR=&f=json"
-        ) if start_date is None and end_date is None else (
-            DAILY_TRADE_BASE_URL
-            + f"where=portid%20%3D%20%27{port_id.upper()}%27%20"
-            + f"AND%20date%20>%3D%20TIMESTAMP%20%27{start_date}%2000%3A00%3A00%27"
-            + f"%20AND%20date%20<%3D%20TIMESTAMP%20%27{end_date}%2000%3A00%3A00%27&"
-            + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
-            + "&outSR=&f=json"
+            (
+                DAILY_TRADE_BASE_URL
+                + f"where=portid%20%3D%20%27{port_id.upper()}%27&"  # type: ignore
+                + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
+                + "&outSR=&f=json"
+            )
+            if start_date is None and end_date is None
+            else (
+                DAILY_TRADE_BASE_URL
+                + f"where=portid%20%3D%20%27{port_id.upper()}%27%20"
+                + f"AND%20date%20>%3D%20TIMESTAMP%20%27{start_date}%2000%3A00%3A00%27"
+                + f"%20AND%20date%20<%3D%20TIMESTAMP%20%27{end_date}%2000%3A00%3A00%27&"
+                + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
+                + "&outSR=&f=json"
+            )
         )
+
     offset: int = 0
     output: dict = {}
     url = get_port_url(offset)

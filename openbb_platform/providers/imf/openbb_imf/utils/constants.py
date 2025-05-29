@@ -5,13 +5,9 @@ from typing import Literal
 # pylint: disable=line-too-long
 # flake8: noqa: E501
 
-DAILY_TRADE_BASE_URL = (
-    "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Trade_Data/FeatureServer/0/query?"
-)
+DAILY_TRADE_BASE_URL = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Trade_Data/FeatureServer/0/query?"
 
-CHOKEPOINTS_BASE_URL = (
-    "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Chokepoints_Data/FeatureServer/0/query?"
-)
+CHOKEPOINTS_BASE_URL = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Chokepoints_Data/FeatureServer/0/query?"
 
 CHOKEPOINTS_ID_MAP = {
     "chokepoint1": "Suez Canal",
@@ -37,10 +33,12 @@ CHOKEPOINTS_ID_MAP = {
     "chokepoint21": "Magellan Strait",
     "chokepoint22": "Yucatan Channel",
     "chokepoint23": "Windward Passage",
-    "chokepoint24": "Mona Passage"
+    "chokepoint24": "Mona Passage",
 }
 
-CHOKEPOINTS_NAME_TO_ID = {v.replace(" ", "_").lower(): k for k, v in CHOKEPOINTS_ID_MAP.items()}
+CHOKEPOINTS_NAME_TO_ID = {
+    v.replace(" ", "_").lower(): k for k, v in CHOKEPOINTS_ID_MAP.items()
+}
 
 ChokepointsNames = Literal[
     "suez_canal",
@@ -452,7 +450,6 @@ PortCountries = Literal[
     "YEM",
     "ZAF",
 ]
-
 
 
 FSI_PRESETS = [

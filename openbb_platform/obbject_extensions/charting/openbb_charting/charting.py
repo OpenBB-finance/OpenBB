@@ -458,7 +458,6 @@ class Charting:
                     + f" -> {e} -> {e.args}"
                 ) from e
 
-
     # pylint: disable=too-many-locals,inconsistent-return-statements
     def to_chart(
         self,

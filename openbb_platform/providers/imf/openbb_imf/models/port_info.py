@@ -10,7 +10,12 @@ from openbb_core.provider.standard_models.port_info import (
     PortInfoData,
     PortInfoQueryParams,
 )
-from openbb_imf.utils.constants import PORT_CONTINENTS, PORT_COUNTRIES, PortContinents, PortCountries
+from openbb_imf.utils.constants import (
+    PORT_CONTINENTS,
+    PORT_COUNTRIES,
+    PortContinents,
+    PortCountries,
+)
 from pydantic import ConfigDict, Field, field_validator
 
 
@@ -28,12 +33,15 @@ class ImfPortInfoQueryParams(PortInfoQueryParams):
         },
         "country": {
             "x-widget_config": {
-                "options": sorted([
-                    {"label": key, "value": value}
-                    for key, value in PORT_COUNTRIES.items()
-                ], key=lambda x: x["label"]),
+                "options": sorted(
+                    [
+                        {"label": key, "value": value}
+                        for key, value in PORT_COUNTRIES.items()
+                    ],
+                    key=lambda x: x["label"],
+                ),
                 "description": "Filter by country. This parameter supersedes `continent` if both are provided.",
-                "style": {"popupWidth": 350}
+                "style": {"popupWidth": 350},
             }
         },
     }
@@ -72,7 +80,7 @@ class ImfPortInfoData(PortInfoData):
                     "w": 25,
                 }
             }
-        }
+        },
     )
 
     __alias_dict__ = {
@@ -83,7 +91,7 @@ class ImfPortInfoData(PortInfoData):
         "vessel_count_roro": "vessel_count_RoRo",
         "latitude": "lat",
         "longitude": "lon",
-        "country": "countrynoaccents"
+        "country": "countrynoaccents",
     }
 
     port_code: str = Field(
@@ -266,12 +274,16 @@ class ImfPortInfoFetcher(Fetcher[ImfPortInfoQueryParams, list[ImfPortInfoData]])
             results.extend(
                 [
                     ImfPortInfoData(**d["attributes"])
-                    for d in sorted(data, key=lambda x: x["attributes"]["vessel_count_total"], reverse=True)
+                    for d in sorted(
+                        data,
+                        key=lambda x: x["attributes"]["vessel_count_total"],
+                        reverse=True,
+                    )
                     if d["attributes"]["ISO3"] == query.country.upper()
-                    ]
+                ]
             )
             if query.limit:
-                results = results[:query.limit]
+                results = results[: query.limit]
         elif query.continent:
             target_continent: str = ""
             for continent in PORT_CONTINENTS:
@@ -282,20 +294,28 @@ class ImfPortInfoFetcher(Fetcher[ImfPortInfoQueryParams, list[ImfPortInfoData]])
                 results.extend(
                     [
                         ImfPortInfoData(**d["attributes"])
-                        for d in sorted(data, key=lambda x: x["attributes"]["vessel_count_total"], reverse=True)
+                        for d in sorted(
+                            data,
+                            key=lambda x: x["attributes"]["vessel_count_total"],
+                            reverse=True,
+                        )
                         if d["attributes"]["continent"] == target_continent
                     ]
                 )
                 if query.limit:
-                    results = results[:query.limit]
+                    results = results[: query.limit]
         else:
             results.extend(
                 [
                     ImfPortInfoData(**d["attributes"])
-                    for d in sorted(data, key=lambda x: x["attributes"]["vessel_count_total"], reverse=True)
+                    for d in sorted(
+                        data,
+                        key=lambda x: x["attributes"]["vessel_count_total"],
+                        reverse=True,
+                    )
                 ]
             )
             if query.limit:
-                results = results[:query.limit]
+                results = results[: query.limit]
 
         return results

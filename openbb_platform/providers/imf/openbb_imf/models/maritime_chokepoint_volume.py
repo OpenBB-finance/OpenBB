@@ -17,11 +17,13 @@ CHOKEPOINT_DOCSTRING = (
     "\n    - " + "\n    - ".join(list(ChokepointsNames.__args__)) + "\n\n"
 )
 
+
 class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams):
     """IMF Maritime Chokepoint Volume Query Parameters.
 
     Source: https://portwatch.imf.org/datasets/42132aa4e2fc4d41bdaf9a445f688931/about
     """
+
     __json_schema_extra__ = {
         "chokepoint": {
             "x-widget_config": {
@@ -31,7 +33,7 @@ class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams
                 ],
                 "description": "Name of the chokepoint. No selection will return data for all chokepoints.",
             },
-            "multiple_items_allowed": True
+            "multiple_items_allowed": True,
         },
     }
 
@@ -52,10 +54,9 @@ class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams
             if "," in v:
                 chokepoints = v.split(",")
                 for chokepoint in chokepoints:
-                    if (
-                        chokepoint not in list(CHOKEPOINTS_NAME_TO_ID)
-                        and chokepoint not in list(CHOKEPOINTS_NAME_TO_ID.values())
-                    ):
+                    if chokepoint not in list(
+                        CHOKEPOINTS_NAME_TO_ID
+                    ) and chokepoint not in list(CHOKEPOINTS_NAME_TO_ID.values()):
                         raise OpenBBError(
                             ValueError(
                                 f"Invalid chokepoint name: {chokepoint} -> "
@@ -66,7 +67,11 @@ class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams
 
                 return ",".join(chokepoints) if chokepoints else None
 
-            if v and v not in CHOKEPOINTS_NAME_TO_ID and v not in list(CHOKEPOINTS_NAME_TO_ID.values()):
+            if (
+                v
+                and v not in CHOKEPOINTS_NAME_TO_ID
+                and v not in list(CHOKEPOINTS_NAME_TO_ID.values())
+            ):
                 raise OpenBBError(
                     ValueError(
                         f"Invalid chokepoint name: {v} -> "
@@ -75,7 +80,12 @@ class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams
                     )
                 )
 
-            return v if v in CHOKEPOINTS_NAME_TO_ID or v in list(CHOKEPOINTS_NAME_TO_ID.values()) else None
+            return (
+                v
+                if v in CHOKEPOINTS_NAME_TO_ID
+                or v in list(CHOKEPOINTS_NAME_TO_ID.values())
+                else None
+            )
 
         if isinstance(v, list):
             chokepoints: list = []
@@ -117,7 +127,7 @@ class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
                     " 90 thousands ships worldwide, harnessing the power of big data analytics."
                 ),
                 "$.refetchInterval": False,
-                "$.source": ["UN Global Platform; [IMF PortWatch](portwatch.imf.org)"]
+                "$.source": ["UN Global Platform; [IMF PortWatch](portwatch.imf.org)"],
             }
         },
     )
@@ -180,8 +190,8 @@ class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     capacity_cargo: float = Field(
         description="Total trade volume (in metric tons) of all ships (excluding tankers)"
@@ -192,8 +202,8 @@ class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     capacity_tanker: float = Field(
         description="Total trade volume (in metric tons) of tankers transiting through the chokepoint at this date.",
@@ -202,8 +212,8 @@ class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     capacity_container: float = Field(
         description="Total trade volume (in metric tons) of containers transiting through the chokepoint at this date.",
@@ -212,8 +222,8 @@ class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     capacity_general_cargo: float = Field(
         description="Total trade volume (in metric tons) of general cargo Vessels"
@@ -223,8 +233,8 @@ class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     capacity_dry_bulk: float = Field(
         description="Total trade volume (in metric tons) of dry bulk carriers"
@@ -234,8 +244,8 @@ class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     capacity_roro: float = Field(
         description="Total trade volume (in metric tons) of Ro-Ro ships transiting through the chokepoint at this date.",
@@ -244,18 +254,22 @@ class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
 
 
 class ImfMaritimeChokePointVolumeFetcher(
-    Fetcher[ImfMaritimeChokePointVolumeQueryParams, list[ImfMaritimeChokePointVolumeData]]
+    Fetcher[
+        ImfMaritimeChokePointVolumeQueryParams, list[ImfMaritimeChokePointVolumeData]
+    ]
 ):
     """IMF Maritime Chokepoint Info Fetcher."""
 
     @staticmethod
-    def transform_query(params: dict[str, Any]) -> ImfMaritimeChokePointVolumeQueryParams:
+    def transform_query(
+        params: dict[str, Any],
+    ) -> ImfMaritimeChokePointVolumeQueryParams:
         """Transform query parameters."""
         return ImfMaritimeChokePointVolumeQueryParams(**params)
 
@@ -268,19 +282,22 @@ class ImfMaritimeChokePointVolumeFetcher(
         """Extract the raw data from the IMF Port Watch API."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_imf.utils.port_watch_helpers import get_daily_chokepoint_data, get_all_daily_chokepoint_activity_data
+        from openbb_imf.utils.port_watch_helpers import (
+            get_daily_chokepoint_data,
+            get_all_daily_chokepoint_activity_data,
+        )
 
         chokepoints = (
             query.chokepoint
             if isinstance(query.chokepoint, list)
-            else query.chokepoint.split(",")
-            if query.chokepoint
-            else []
+            else query.chokepoint.split(",") if query.chokepoint else []
         )
 
         if not chokepoints:
             try:
-                return await get_all_daily_chokepoint_activity_data(start_date=query.start_date, end_date=query.end_date)
+                return await get_all_daily_chokepoint_activity_data(
+                    start_date=query.start_date, end_date=query.end_date
+                )
             except Exception as e:
                 raise OpenBBError(e) from e
 
@@ -288,7 +305,9 @@ class ImfMaritimeChokePointVolumeFetcher(
 
         async def get_one(chokepoint_id):
             """Get data for a single chokepoint."""
-            data = await get_daily_chokepoint_data(chokepoint_id, query.start_date, query.end_date)
+            data = await get_daily_chokepoint_data(
+                chokepoint_id, query.start_date, query.end_date
+            )
             if data:
                 results.extend(data)
 
@@ -297,7 +316,9 @@ class ImfMaritimeChokePointVolumeFetcher(
         for chokepoint in chokepoints:
             if chokepoint in CHOKEPOINTS_NAME_TO_ID:
                 chokepoint_ids.append(CHOKEPOINTS_NAME_TO_ID[chokepoint])
-            elif chokepoint in CHOKEPOINTS_NAME_TO_ID.values() or chokepoint.startswith("chokepoint"):
+            elif chokepoint in CHOKEPOINTS_NAME_TO_ID.values() or chokepoint.startswith(
+                "chokepoint"
+            ):
                 chokepoint_ids.append(chokepoint)
             else:
                 raise OpenBBError(
@@ -319,7 +340,6 @@ class ImfMaritimeChokePointVolumeFetcher(
             raise OpenBBError("The response was returned empty with no error message.")
 
         return results
-
 
     @staticmethod
     def transform_data(

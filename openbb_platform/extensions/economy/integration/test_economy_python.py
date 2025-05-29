@@ -1170,7 +1170,7 @@ def test_economy_primary_dealer_fails(params, obb):
                 "start_date": "2020-01-01",
                 "end_date": "2020-01-31",
             }
-        )
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1338,7 +1338,7 @@ def test_economy_shipping_chokepoint_volume(params, obb):
                 "start_date": None,
                 "end_date": None,
             }
-        )
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1348,4 +1348,3 @@ def test_economy_shipping_port_volume(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-

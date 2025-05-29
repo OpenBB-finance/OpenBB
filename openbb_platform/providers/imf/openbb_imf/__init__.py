@@ -5,7 +5,9 @@ from openbb_imf.models.available_indicators import ImfAvailableIndicatorsFetcher
 from openbb_imf.models.direction_of_trade import ImfDirectionOfTradeFetcher
 from openbb_imf.models.economic_indicators import ImfEconomicIndicatorsFetcher
 from openbb_imf.models.maritime_chokepoint_info import ImfMaritimeChokePointInfoFetcher
-from openbb_imf.models.maritime_chokepoint_volume import ImfMaritimeChokePointVolumeFetcher
+from openbb_imf.models.maritime_chokepoint_volume import (
+    ImfMaritimeChokePointVolumeFetcher,
+)
 from openbb_imf.models.port_info import ImfPortInfoFetcher
 from openbb_imf.models.port_volume import ImfPortVolumeFetcher
 

@@ -1,7 +1,9 @@
 from openbb_imf.models.maritime_chokepoint_info import ImfMaritimeChokePointInfoData
 
 
-def plot_chokepoint_annual_avg_vessels(data: list[ImfMaritimeChokePointInfoData], theme="light"):
+def plot_chokepoint_annual_avg_vessels(
+    data: list[ImfMaritimeChokePointInfoData], theme="light"
+):
     """Plot the average annual vessels for each chokepoint."""
     # pylint: disable=import-outside-toplevel
     import datetime  # noqa
@@ -14,7 +16,8 @@ def plot_chokepoint_annual_avg_vessels(data: list[ImfMaritimeChokePointInfoData]
         from plotly.subplots import make_subplots
     except Exception as e:
         raise OpenBBError(
-            "Could not import Charting modules. Install with `pip install openbb-charting`." + f" -> {e}"
+            "Could not import Charting modules. Install with `pip install openbb-charting`."
+            + f" -> {e}"
         ) from e
 
     if (
@@ -22,7 +25,9 @@ def plot_chokepoint_annual_avg_vessels(data: list[ImfMaritimeChokePointInfoData]
         and not isinstance(data, list)
         or not all(isinstance(item, ImfMaritimeChokePointInfoData) for item in data)
     ):
-        raise OpenBBError("Invalid data format. Expected a list of ImfMaritimeChokePointInfoData.")
+        raise OpenBBError(
+            "Invalid data format. Expected a list of ImfMaritimeChokePointInfoData."
+        )
     if len(data) == 0:
         raise OpenBBError("No data to plot.")
 
@@ -72,7 +77,10 @@ def plot_chokepoint_annual_avg_vessels(data: list[ImfMaritimeChokePointInfoData]
         column_widths=[0.33, 0.67],
         horizontal_spacing=0,
         shared_yaxes=True,
-        subplot_titles=["Global Maritime Chokepoints", "Annual Average Vessels by Chokepoint"],
+        subplot_titles=[
+            "Global Maritime Chokepoints",
+            "Annual Average Vessels by Chokepoint",
+        ],
     )
 
     fig.add_trace(

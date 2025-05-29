@@ -45,7 +45,9 @@ class EconomyViews:
         provider = kwargs.get("provider")
 
         if provider != "fred":
-            raise RuntimeError(f"This charting method does not support {provider}. Supported providers: fred.")
+            raise RuntimeError(
+                f"This charting method does not support {provider}. Supported providers: fred."
+            )
 
         columns = basemodel_to_df(kwargs["obbject_item"], index=None).columns.to_list()  # type: ignore
 
@@ -175,7 +177,9 @@ class EconomyViews:
                 warn("Bar chart failed. Attempting line chart.")
 
         # Create the figure object with subplots.
-        fig = OpenBBFigure().create_subplots(rows=1, cols=1, shared_xaxes=True, shared_yaxes=False)
+        fig = OpenBBFigure().create_subplots(
+            rows=1, cols=1, shared_xaxes=True, shared_yaxes=False
+        )
         fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
         text_color = "white" if ChartStyle().plt_style == "dark" else "black"
         # For each series in the DataFrame, add a scatter plot.
@@ -226,15 +230,21 @@ class EconomyViews:
         # Now update the layout of the complete figure.
         fig.update_layout(
             title=dict(text=title, x=0.5, font=dict(size=16)),
-            paper_bgcolor=("rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"),
-            plot_bgcolor=("rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"),
+            paper_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
+            plot_bgcolor=(
+                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+            ),
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
                 xanchor="right",
                 y=1.02,
                 x=0.95,
-                bgcolor=("rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"),
+                bgcolor=(
+                    "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                ),
                 font=dict(size=12),
             ),
             yaxis=(
@@ -276,7 +286,11 @@ class EconomyViews:
                     position=0,
                     showgrid=False,
                     showticklabels=True,
-                    title=(dict(text=y3title, standoff=10, font=dict(size=16)) if y3title else None),
+                    title=(
+                        dict(text=y3title, standoff=10, font=dict(size=16))
+                        if y3title
+                        else None
+                    ),
                     tickfont=dict(size=12, color="rgba(128,128,128,0.9)"),
                     anchor="free",
                 )
@@ -288,11 +302,17 @@ class EconomyViews:
                 showgrid=True,
                 showline=True,
                 mirror=True,
-                title=(dict(text=xtitle, standoff=30, font=dict(size=16)) if xtitle else None),
+                title=(
+                    dict(text=xtitle, standoff=30, font=dict(size=16))
+                    if xtitle
+                    else None
+                ),
                 gridcolor="rgba(128,128,128,0.3)",
                 domain=[0.095, 0.95] if y3title else None,
             ),
-            margin=(dict(r=25, l=25, b=75 if xtitle else 30) if normalize is False else None),
+            margin=(
+                dict(r=25, l=25, b=75 if xtitle else 30) if normalize is False else None
+            ),
             font=dict(color=text_color),
             autosize=True,
             dragmode="pan",
@@ -348,10 +368,14 @@ class EconomyViews:
         provider = kwargs.get("provider")
 
         if provider != "bls":
-            raise RuntimeError(f"This charting method does not support {provider}. Supported providers: bls.")
+            raise RuntimeError(
+                f"This charting method does not support {provider}. Supported providers: bls."
+            )
 
         _data = (
-            kwargs.pop("data", None) if "data" in kwargs and kwargs["data"] is not None else kwargs.get("obbject_item")
+            kwargs.pop("data", None)
+            if "data" in kwargs and kwargs["data"] is not None
+            else kwargs.get("obbject_item")
         )
         df = DataFrame()
 
@@ -431,7 +455,10 @@ class EconomyViews:
         bar_kwargs: dict = kwargs.pop("bar_kwargs", {})  # type: ignore
         hovertemplate = scatter_kwargs.pop("hovertemplate", None)  # type: ignore
         trace_titles = {
-            symbol: metadata.get(symbol, {}).get("series_title", symbol).replace(",", " -") for symbol in target_symbols
+            symbol: metadata.get(symbol, {})
+            .get("series_title", symbol)
+            .replace(",", " -")
+            for symbol in target_symbols
         }
         new_df.columns = [trace_titles.get(col, col) for col in new_df.columns]
         scatter_kwargs["hovertemplate"] = (  # type: ignore
@@ -516,7 +543,9 @@ class EconomyViews:
         provider = kwargs.get("provider")
 
         if provider != "imf":
-            raise RuntimeError(f"This charting method does not support {provider}. Supported providers: imf.")
+            raise RuntimeError(
+                f"This charting method does not support {provider}. Supported providers: imf."
+            )
 
         try:
             from openbb_imf.views.maritime_chokepoint_info import (
@@ -530,7 +559,11 @@ class EconomyViews:
             or kwargs.get("theme")
             or getattr(kwargs["charting_settings"], "chart_style", "dark")
         )
-        data = kwargs.pop("data", None) if "data" in kwargs and kwargs["data"] is not None else kwargs.get("obbject_item")
+        data = (
+            kwargs.pop("data", None)
+            if "data" in kwargs and kwargs["data"] is not None
+            else kwargs.get("obbject_item")
+        )
         fig = plot_chokepoint_annual_avg_vessels(data, theme=theme)  # type: ignore
         fig.update_layout(
             margin=dict(l=25, r=25, t=50, b=0),
@@ -540,7 +573,6 @@ class EconomyViews:
         content["config"] = dict(responsive=False)
 
         return fig, content
-
 
     @staticmethod
     def economy_shipping_port_info(
@@ -552,7 +584,9 @@ class EconomyViews:
         provider = kwargs.get("provider")
 
         if provider != "imf":
-            raise RuntimeError(f"This charting method does not support {provider}. Supported providers: imf.")
+            raise RuntimeError(
+                f"This charting method does not support {provider}. Supported providers: imf."
+            )
 
         try:
             from openbb_imf.views.port_info import (
@@ -561,7 +595,11 @@ class EconomyViews:
         except Exception as e:
             raise RuntimeError("Unable to import the required module.") from e
 
-        data = kwargs.pop("data", None) if "data" in kwargs and kwargs["data"] is not None else kwargs.get("obbject_item")
+        data = (
+            kwargs.pop("data", None)
+            if "data" in kwargs and kwargs["data"] is not None
+            else kwargs.get("obbject_item")
+        )
         fig = plot_port_info_map(data)  # type: ignore
         fig.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),

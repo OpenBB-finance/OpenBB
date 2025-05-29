@@ -22,6 +22,7 @@ class MaritimeChokePointVolumeQueryParams(QueryParams):
         default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
 
+
 class MaritimeChokePointVolumeData(Data):
     """MaritimeChokepointVolume Data."""
 

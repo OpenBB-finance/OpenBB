@@ -8,7 +8,9 @@ from openbb_imf.models.available_indicators import ImfAvailableIndicatorsFetcher
 from openbb_imf.models.direction_of_trade import ImfDirectionOfTradeFetcher
 from openbb_imf.models.economic_indicators import ImfEconomicIndicatorsFetcher
 from openbb_imf.models.maritime_chokepoint_info import ImfMaritimeChokePointInfoFetcher
-from openbb_imf.models.maritime_chokepoint_volume import ImfMaritimeChokePointVolumeFetcher
+from openbb_imf.models.maritime_chokepoint_volume import (
+    ImfMaritimeChokePointVolumeFetcher,
+)
 from openbb_imf.models.port_info import ImfPortInfoFetcher
 from openbb_imf.models.port_volume import ImfPortVolumeFetcher
 
@@ -84,10 +86,7 @@ def test_imf_direction_of_trade_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_imf_port_info_fetcher(credentials=test_credentials):
     """Test the ImfPortInfo fetcher."""
-    params = {
-        "continent": "asia_pacific",
-        "limit": 10
-    }
+    params = {"continent": "asia_pacific", "limit": 10}
 
     fetcher = ImfPortInfoFetcher()
     result = fetcher.test(params, credentials)
@@ -100,7 +99,7 @@ def test_imf_port_volume_fetcher(credentials=test_credentials):
     params = {
         "port_code": "port1201",
         "start_date": date(year=2023, month=1, day=1),
-        "end_date": date(year=2023, month=1,day= 31),
+        "end_date": date(year=2023, month=1, day=31),
     }
 
     fetcher = ImfPortVolumeFetcher()
@@ -116,6 +115,7 @@ def test_imf_maritime_chokepoint_info_fetcher(credentials=test_credentials):
     fetcher = ImfMaritimeChokePointInfoFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
 
 @pytest.mark.record_http
 def test_imf_maritime_chokepoint_volume_fetcher(credentials=test_credentials):

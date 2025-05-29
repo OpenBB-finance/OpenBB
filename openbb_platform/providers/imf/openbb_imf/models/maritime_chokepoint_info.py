@@ -44,7 +44,14 @@ class ImfMaritimeChokePointInfoData(MaritimeChokePointInfoData):
         populate_by_name=True,
         json_schema_extra={
             "x-widget_config": {
-                "$.gridData": {"h": 13, "w": 40, "minH": 10, "minW": 30, "maxW": 40, "maxH": 20},
+                "$.gridData": {
+                    "h": 13,
+                    "w": 40,
+                    "minH": 10,
+                    "minW": 30,
+                    "maxW": 40,
+                    "maxH": 20,
+                },
                 "$.name": "Global Maritime Chokepoints",
                 "$.description": "Global maritime chokepoints are narrow channels along popular shipping routes.",
                 "$.refetchInterval": False,
@@ -147,7 +154,9 @@ class ImfMaritimeChokePointInfoFetcher(
         url = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/PortWatch_chokepoints_database/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"
 
         try:
-            async with await get_async_requests_session() as session, await session.get(url) as response:
+            async with await get_async_requests_session() as session, await session.get(
+                url
+            ) as response:
                 if response.status != 200:
                     raise OpenBBError(f"Failed to fetch data: {response.status}")
 
@@ -166,4 +175,7 @@ class ImfMaritimeChokePointInfoFetcher(
         if not data or "features" not in data:
             raise OpenBBError("No data found in the response.")
 
-        return [ImfMaritimeChokePointInfoData(**feature["properties"]) for feature in data["features"]]
+        return [
+            ImfMaritimeChokePointInfoData(**feature["properties"])
+            for feature in data["features"]
+        ]

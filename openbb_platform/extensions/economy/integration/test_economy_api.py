@@ -1305,7 +1305,6 @@ def test_economy_fomc_documents(params, headers):
     assert result.status_code == 200
 
 
-
 @parametrize(
     "params",
     [
@@ -1323,7 +1322,7 @@ def test_economy_fomc_documents(params, headers):
                 "start_date": None,
                 "end_date": None,
             }
-        )
+        ),
     ],
 )
 @pytest.mark.integration

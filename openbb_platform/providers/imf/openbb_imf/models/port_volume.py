@@ -7,9 +7,15 @@ from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.port_volume import PortVolumeData, PortVolumeQueryParams
+from openbb_core.provider.standard_models.port_volume import (
+    PortVolumeData,
+    PortVolumeQueryParams,
+)
 from openbb_imf.utils.constants import PORT_COUNTRIES, PortCountries
-from openbb_imf.utils.port_watch_helpers import get_port_id_choices, get_port_ids_by_country
+from openbb_imf.utils.port_watch_helpers import (
+    get_port_id_choices,
+    get_port_ids_by_country,
+)
 from pydantic import ConfigDict, Field, field_validator, model_validator
 
 
@@ -28,17 +34,20 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
             "multiple_items_allowed": True,
             "x-widget_config": {
                 "options": get_port_id_choices(),
-                "style": {"popupWidth": 350}
-            }
+                "style": {"popupWidth": 350},
+            },
         },
         "country": {
             "x-widget_config": {
-                "options": sorted([
-                    {"label": key, "value": value}
-                    for key, value in PORT_COUNTRIES.items()
-                ], key=lambda x: x["label"]),
+                "options": sorted(
+                    [
+                        {"label": key, "value": value}
+                        for key, value in PORT_COUNTRIES.items()
+                    ],
+                    key=lambda x: x["label"],
+                ),
                 "description": "Filter by country. This parameter supersedes `port_code` if both are provided.",
-                "style": {"popupWidth": 350}
+                "style": {"popupWidth": 350},
             }
         },
         "start_date": {
@@ -46,7 +55,7 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
             "x-widget_config": {
                 "type": "date",
                 "value": "2019-01-01",
-            }
+            },
         },
     }
 
@@ -62,7 +71,6 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
         + " This parameter supersedes `continent` if both are provided.",
     )
 
-
     @field_validator("port_code")
     @classmethod
     def validate_port_code(cls, v):
@@ -74,7 +82,9 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
             raise OpenBBError("port_code must be a string or a list of strings.")
 
         port_id_choices = get_port_id_choices()
-        port_id_map = {choice["value"].lower(): choice["label"] for choice in port_id_choices}
+        port_id_map = {
+            choice["value"].lower(): choice["label"] for choice in port_id_choices
+        }
 
         # Create country name to ISO code mapping
         country_name_to_iso = {}
@@ -113,21 +123,25 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
                         break
             # Accept lower_snake_case
             elif item_lower in [
-                v_.replace(" - ", "_").replace("-", "_").lower().replace(" ", "_") for v_ in port_id_map.values()
+                v_.replace(" - ", "_").replace("-", "_").lower().replace(" ", "_")
+                for v_ in port_id_map.values()
             ]:
                 # Match by value
                 values_snake = [
-                    v_.replace(" - ", "_").replace("-", "_").lower().replace(" ", "_") for v_ in port_id_map.values()
+                    v_.replace(" - ", "_").replace("-", "_").lower().replace(" ", "_")
+                    for v_ in port_id_map.values()
                 ]
                 idx = values_snake.index(item_lower)
                 new_item = port_id_map[idx]
                 new_values.append(new_item)
             # Accept first part of port name (before dash)
             elif item_lower in [
-                v_.split(" - ")[0].lower().replace(" ", "_") for v_ in port_id_map.values()
+                v_.split(" - ")[0].lower().replace(" ", "_")
+                for v_ in port_id_map.values()
             ]:
                 first_parts = [
-                    v_.split(" - ")[0].lower().replace(" ", "_") for v_ in port_id_map.values()
+                    v_.split(" - ")[0].lower().replace(" ", "_")
+                    for v_ in port_id_map.values()
                 ]
                 idx = first_parts.index(item_lower)
                 new_values.append(list(port_id_map.keys())[idx])
@@ -147,19 +161,24 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
     @classmethod
     def validate_model(cls, values):
         """Validate the model before instantiation."""
-        if values.get("start_date") is not None and values["start_date"] < dateType(2019, 1, 1):
+        if values.get("start_date") is not None and values["start_date"] < dateType(
+            2019, 1, 1
+        ):
             raise OpenBBError(
-                ValueError(f"Minimum start_date is 2019-01-01. Got {values['start_date']} instead.")
+                ValueError(
+                    f"Minimum start_date is 2019-01-01. Got {values['start_date']} instead."
+                )
             )
         if not values.get("port_code") and not values.get("country"):
             values["port_code"] = "port1114"
-            #raise OpenBBError(
+            # raise OpenBBError(
             #    ValueError(
             #        "At least one of `port_code` or `country` must be provided."
             #        " Use `obb.economy.shipping.port_info()` to get available ports."
             #    )
-            #)
+            # )
         return values
+
 
 class ImfPortVolumeData(PortVolumeData):
     """IMF Port Volume Data Model."""
@@ -175,9 +194,9 @@ class ImfPortVolumeData(PortVolumeData):
                     " signals of vessels—as our primary data source."
                     " More info at [IMF PortWatch](https://portwatch.imf.org/datasets/959214444157458aad969389b3ebe1a0/about)."
                 ),
-                "$.refetchInterval": False
+                "$.refetchInterval": False,
             }
-        }
+        },
     )
 
     __alias_dict__ = {
@@ -245,8 +264,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     imports_container: float = Field(
         description="Total import volume (in metric tons) of all container ships entering the port at this date.",
@@ -255,8 +274,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     imports_general_cargo: float = Field(
         description="Total import volume (in metric tons) of general cargo ships entering the port at this date.",
@@ -265,8 +284,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     imports_dry_bulk: float = Field(
         description="Total import volume (in metric tons) of dry bulk carriers entering the port at this date.",
@@ -275,8 +294,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     imports_roro: float = Field(
         description="Total import volume (in metric tons) of Ro-Ro ships entering the port at this date.",
@@ -285,8 +304,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     exports: float = Field(
         description="Total export volume (in metric tons) of all ships entering the port at this date."
@@ -295,8 +314,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     exports_cargo: float = Field(
         description="Total export volume (in metric tons) of all ships (excluding tankers)"
@@ -306,8 +325,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     exports_tanker: float = Field(
         description="Total export volume (in metric tons) of tankers entering the port at this date.",
@@ -316,8 +335,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     exports_container: float = Field(
         description="Total export volume (in metric tons) of all container ships entering the port at this date.",
@@ -326,18 +345,18 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     exports_general_cargo: float = Field(
         description="Total export volume (in metric tons) of general cargo ships entering the port at this date.",
         title="General Cargo Exports",
         json_schema_extra={
             "x-unit_measurement": "metric_tons",
-                "x-widget_config": {
+            "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     exports_dry_bulk: float = Field(
         description="Total export volume (in metric tons) of dry bulk carriers entering the port at this date.",
@@ -346,8 +365,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
     exports_roro: float = Field(
         description="Total export volume (in metric tons) of Ro-Ro ships entering the port at this date.",
@@ -356,8 +375,8 @@ class ImfPortVolumeData(PortVolumeData):
             "x-unit_measurement": "metric_tons",
             "x-widget_config": {
                 "suffix": "mt",
-            }
-        }
+            },
+        },
     )
 
 
@@ -367,12 +386,14 @@ class ImfPortVolumeFetcher(Fetcher[ImfPortVolumeQueryParams, list[ImfPortVolumeD
     @staticmethod
     def transform_query(params: dict[str, Any]) -> ImfPortVolumeQueryParams:
         """Transform query parameters to the model."""
-        if (start_date := params.get("start_date")) and start_date < dateType(2019, 1, 1):
-            raise OpenBBError(ValueError(
-                "start_date must be after 2019-01-01 for IMF Port Volume data."
-            ))
-
-
+        if (start_date := params.get("start_date")) and start_date < dateType(
+            2019, 1, 1
+        ):
+            raise OpenBBError(
+                ValueError(
+                    "start_date must be after 2019-01-01 for IMF Port Volume data."
+                )
+            )
 
         if country := params.pop("country", None):
             params["port_code"] = get_port_ids_by_country(country)
@@ -393,37 +414,40 @@ class ImfPortVolumeFetcher(Fetcher[ImfPortVolumeQueryParams, list[ImfPortVolumeD
         port_codes = (
             get_port_ids_by_country(query.country)
             if query.country
-            else query.port_code.split(",")
-            if isinstance(query.port_code, str)
-            else query.port_code
+            else (
+                query.port_code.split(",")
+                if isinstance(query.port_code, str)
+                else query.port_code
+            )
         )
 
         if not port_codes:
-            raise OpenBBError(
-                "Expected values as valid portIDs, got None instead."
-            )
+            raise OpenBBError("Expected values as valid portIDs, got None instead.")
 
         output: list = []
 
         async def fetch_port_data(port_code: str):
             """Fetch data for a single port."""
             try:
-                data = await get_daily_port_activity_data(port_code, query.start_date, query.end_date)
+                data = await get_daily_port_activity_data(
+                    port_code, query.start_date, query.end_date
+                )
                 if data:
                     output.extend(data)
             except Exception as e:
-                raise OpenBBError(f"Failed to fetch data for port {port_code}: {e} -> {e.args}") from e
+                raise OpenBBError(
+                    f"Failed to fetch data for port {port_code}: {e} -> {e.args}"
+                ) from e
 
-        tasks = [
-            fetch_port_data(port_code=port_code)
-            for port_code in port_codes
-        ]
+        tasks = [fetch_port_data(port_code=port_code) for port_code in port_codes]
 
         tasks_results = await asyncio.gather(*tasks, return_exceptions=True)
 
         for result in tasks_results:
             if isinstance(result, Exception):
-                raise OpenBBError(f"Error fetching port data: {result} -> {result.args[0]}")
+                raise OpenBBError(
+                    f"Error fetching port data: {result} -> {result.args[0]}"
+                )
 
         if not output:
             raise OpenBBError(
@@ -440,8 +464,6 @@ class ImfPortVolumeFetcher(Fetcher[ImfPortVolumeQueryParams, list[ImfPortVolumeD
     ) -> list[ImfPortVolumeData]:
         """Transform the raw data into the model."""
         return [
-            ImfPortVolumeData(**item) for item in sorted(
-                data,
-                key=lambda x: (x.get("date"), x.get("portname"))
-            )
+            ImfPortVolumeData(**item)
+            for item in sorted(data, key=lambda x: (x.get("date"), x.get("portname")))
         ]
