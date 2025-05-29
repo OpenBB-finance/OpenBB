@@ -51,19 +51,12 @@ def plot_chokepoint_annual_avg_vessels(
         paper_bgcolor = "rgba(21,21,21,1)"
     else:
         geo_bgcolor = "rgba(255,255,255,0)"
-        # landcolor = "#B6D7A8"
-        # countrycolor = "#333333"
-        # oceancolor = "#A5CAFD"
-        # coastlinecolor = "#333333"
-        # lakecolor = "#1565C0"
-        # rivercolor = "#1565C0"
         landcolor = "#3a5d3a"
         countrycolor = "#cccccc"
-        oceancolor = "#3a5d99"  # Lighter blue color for ocean
+        oceancolor = "#3a5d99"
         coastlinecolor = "#cccccc"
         lakecolor = "#0d47a1"
         rivercolor = "#0d47a1"
-
         table_header_fill = "#0d6efd"
         table_header_font = "white"
         table_cell_fill = ["#f5f5f5", "white"] * (len(df) // 2 + 1)
@@ -216,7 +209,6 @@ def plot_chokepoint_annual_avg_vessels(
         domain=dict(x=[0, 0.30], y=[0.1, 0.8]),
         bgcolor=geo_bgcolor,
     )
-    # Add a proper title at the top
     fig.update_layout(
         title=dict(
             text="Global Maritime Chokepoints: Annual Average Vessels",
@@ -226,8 +218,8 @@ def plot_chokepoint_annual_avg_vessels(
             xref="paper",
         ),
         autosize=True,
-        uirevision="fixedsize",  # Keep size fixed on user actions
-        dragmode="pan",  # Maintain pan functionality
+        uirevision="fixedsize",
+        dragmode="pan",
         geo=dict(bgcolor=geo_bgcolor, visible=False),
         paper_bgcolor=paper_bgcolor,
         plot_bgcolor=plot_bgcolor,
@@ -238,7 +230,7 @@ def plot_chokepoint_annual_avg_vessels(
                 xref="paper",
                 yref="paper",
                 y=1,
-                yshift=10,  # 15 pixels down from the top
+                yshift=10,
                 showarrow=False,
                 font=dict(size=10, color=annotation_color),
                 xanchor="center",
