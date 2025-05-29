@@ -33,12 +33,11 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
     min_size, max_size = 4, 10
 
     if "country" in df.columns and df["country"].nunique() == 1:
-        # Single country: size by import/export share
         share_import = df["share_country_maritime_import"].fillna(0)
         share_export = df["share_country_maritime_export"].fillna(0)
         df["import_export_share"] = share_import + share_export
-
         share_values = df["import_export_share"]
+
         if share_values.nunique() > 1:
             df["marker_size"] = (
                 (share_values - share_values.min())
@@ -70,11 +69,11 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
         center_lon = df["longitude"].mean()
         map_center = {"lat": center_lat, "lon": center_lon}
 
-    df = df.replace({nan: None})  # Crucial: converts np.nan to None for .get() checks
+    df = df.replace({nan: None})
 
-    # Define helper function to generate hover HTML for each row
     def generate_hover_html(row):
-        html_parts = []
+        """Generate HTML content for hover tooltip."""
+        html_parts: list = []
 
         port_name = row.get("port_full_name", "Unknown Port")
         html_parts.append(f"<b>{port_name}</b><br>")
@@ -137,7 +136,6 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
             html_parts.append("<br><b>Avg Annual Vessels</b>:<br>")
             html_parts.extend(vessel_lines_content)
 
-        # Top Industries
         industry_lines_content: list = []
         for i in [1, 2, 3]:
             industry = row.get(f"industry_top{i}")
