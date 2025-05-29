@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Trade_Data/FeatureServer/0/query?where=portid%20%3D%20'PORT1201'%20AND%20date%20%3E%3D%20TIMESTAMP%20'2023-01-01%2000:00:00'%20AND%20date%20%3C%3D%20TIMESTAMP%20'2023-01-31%2000:00:00'&outFields=*&orderByFields=date&returnZ=true&resultOffset=0&resultRecordCount=1000&outSR=&f=json
+    uri: https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Trade_Data/FeatureServer/0/query?where=portid%20%3D%20'PORT1201'%20AND%20date%20%3E%3D%20TIMESTAMP%20'2023-01-01%2000:00:00'%20AND%20date%20%3C%3D%20TIMESTAMP%20'2023-01-31%2000:00:00'&outFields=*&orderByFields=date&returnZ=true&resultOffset=0&resultRecordCount=1000&maxRecordCountFactor=5&outSR=&f=json
   response:
     body:
       string: !!binary |
