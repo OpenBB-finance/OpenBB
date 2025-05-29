@@ -13,7 +13,9 @@ from openbb_core.provider.standard_models.maritime_chokepoint_volume import (
 from openbb_imf.utils.constants import CHOKEPOINTS_NAME_TO_ID, ChokepointsNames
 from pydantic import ConfigDict, Field, field_validator
 
-CHOKEPOINT_DOCSTRING = f'\n{"    - " + "\n    - ".join(list(ChokepointsNames.__args__))}' + "\n\n"
+CHOKEPOINT_DOCSTRING = (
+    "\n    - " + "\n    - ".join(list(ChokepointsNames.__args__)) + "\n\n"
+)
 
 class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams):
     """IMF Maritime Chokepoint Volume Query Parameters.
