@@ -166,7 +166,7 @@ async def get_daily_chokepoint_data(
             url = get_chokepoints_url(offset)
 
             async with await session.get(url) as response:
-                data: dict = {}
+                data = {}
                 if response.status != 200:
                     raise OpenBBError(f"Failed to fetch data: {response.status}")
                 data = await response.json()
@@ -344,7 +344,7 @@ async def get_daily_port_activity_data(
 
     async with await get_async_requests_session() as session:
         async with await session.get(url) as response:
-            data: dict = {}
+            data = {}
 
             if response.status != 200:
                 raise OpenBBError(f"Failed to fetch data: {response.status}")

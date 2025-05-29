@@ -88,7 +88,7 @@ class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams
             )
 
         if isinstance(v, list):
-            chokepoints: list = []
+            chokepoints = []
             for d in v:
                 if d in CHOKEPOINTS_NAME_TO_ID:
                     chokepoints.append(CHOKEPOINTS_NAME_TO_ID[d])
