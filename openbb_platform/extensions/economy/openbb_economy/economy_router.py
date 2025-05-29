@@ -1,5 +1,7 @@
 """Economy Router."""
 
+# pylint: disable=unused-argument
+
 from typing import Union
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
@@ -15,13 +17,13 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 
 from openbb_economy.gdp.gdp_router import router as gdp_router
+from openbb_economy.shipping.shipping_router import router as shipping_router
 from openbb_economy.survey.survey_router import router as survey_router
 
 router = Router(prefix="", description="Economic data.")
 router.include_router(gdp_router)
+router.include_router(shipping_router)
 router.include_router(survey_router)
-
-# pylint: disable=unused-argument
 
 
 @router.command(
@@ -270,6 +272,11 @@ async def composite_leading_indicator(
             parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
 )
 async def short_term_interest_rate(
     cc: CommandContext,
@@ -303,6 +310,11 @@ async def short_term_interest_rate(
             parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
 )
 async def long_term_interest_rate(
     cc: CommandContext,
@@ -565,6 +577,11 @@ async def house_price_index(
             },
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
 )
 async def immediate_interest_rate(
     cc: CommandContext,
@@ -745,7 +762,27 @@ async def primary_dealer_fails(
     model="PortVolume",
     examples=[
         APIEx(parameters={"provider": "econdb"}),
+        APIEx(
+            description="Get daily port calls and estimated trading volumes for specific ports"
+            + " Get the list of available ports with `openbb shipping port_info`",
+            parameters={
+                "provider": "imf",
+                "port_code": "rotterdam,singapore",
+            },
+        ),
     ],
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint has been moved and will be removed in a future version."
+        + " Use, `/economy/shipping/port_volume`, instead.",
+        since=(4, 4),
+        expected_removal=(4, 5),
+    ),
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
 )
 async def port_volume(
     cc: CommandContext,
