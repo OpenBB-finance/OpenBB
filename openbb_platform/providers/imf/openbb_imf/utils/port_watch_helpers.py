@@ -59,7 +59,7 @@ def get_port_ids_by_country(country_code: str) -> str:
         port_ids_by_country = json.load(file)
 
     if country_code.upper() not in port_ids_by_country:
-        raise ValueError(f"Country code '{country_code}' is not supoorted by IMF Port Watch.")
+        raise ValueError(f"Country code '{country_code}' is not supported by IMF Port Watch.")
 
     return port_ids_by_country.get(country_code.upper(), "")
 

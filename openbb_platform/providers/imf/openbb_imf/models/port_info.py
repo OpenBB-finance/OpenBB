@@ -32,7 +32,7 @@ class ImfPortInfoQueryParams(PortInfoQueryParams):
                     {"label": key, "value": value}
                     for key, value in PORT_COUNTRIES.items()
                 ], key=lambda x: x["label"]),
-                "description": "Filter by country. This parameter supercedes `continent` if both are provided.",
+                "description": "Filter by country. This parameter supersedes `continent` if both are provided.",
                 "style": {"popupWidth": 350}
             }
         },
@@ -46,7 +46,7 @@ class ImfPortInfoQueryParams(PortInfoQueryParams):
     country: Optional[PortCountries] = Field(
         default=None,
         description="Country to focus on. Enter as a 3-letter ISO country code."
-        + " This parameter supercedes `continent` if both are provided.",
+        + " This parameter supersedes `continent` if both are provided.",
     )
 
     limit: Optional[int] = Field(
