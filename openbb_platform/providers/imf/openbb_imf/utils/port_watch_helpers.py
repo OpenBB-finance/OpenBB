@@ -135,14 +135,14 @@ async def get_daily_chokepoint_data(
                 + f"AND%20date%20>%3D%20TIMESTAMP%20%27{start_date}%2000%3A00%3A00%27"
                 + f"%20AND%20date%20<%3D%20TIMESTAMP%20%27{end_date}%2000%3A00%3A00%27&"
                 + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
-                + "&outSR=&f=json"
+                + "&maxRecordCountFactor=5&outSR=&f=json"
             )
             if start_date is not None and end_date is not None
             else (
                 CHOKEPOINTS_BASE_URL
                 + f"where=portid%20%3D%20%27{chokepoint_id.upper()}%27&"
                 + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
-                + "&outSR=&f=json"
+                + "&maxRecordCountFactor=5&outSR=&f=json"
             )
         )
 
@@ -328,7 +328,7 @@ async def get_daily_port_activity_data(
                 DAILY_TRADE_BASE_URL
                 + f"where=portid%20%3D%20%27{port_id.upper()}%27&"  # type: ignore
                 + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
-                + "&outSR=&f=json"
+                + "&maxRecordCountFactor=5&outSR=&f=json"
             )
             if start_date is None and end_date is None
             else (
@@ -337,7 +337,7 @@ async def get_daily_port_activity_data(
                 + f"AND%20date%20>%3D%20TIMESTAMP%20%27{start_date}%2000%3A00%3A00%27"
                 + f"%20AND%20date%20<%3D%20TIMESTAMP%20%27{end_date}%2000%3A00%3A00%27&"
                 + f"outFields=*&orderByFields=date&returnZ=true&resultOffset={offset}&resultRecordCount=1000"
-                + "&outSR=&f=json"
+                + "&maxRecordCountFactor=5&outSR=&f=json"
             )
         )
 
