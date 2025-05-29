@@ -14,10 +14,7 @@
 *.txt
 *.yaml
 ./build/pyinstaller
-./website/config.toml
 ./**/node_modules
 ./frontend-components/**
-./website/content/terminal/reference/crypto/onchain/**
 ./openbb_platform/providers/econdb/openbb_econdb/utils/helpers.py
 ./openbb_platform/openbb/package/**
-./openbb_platform/openbb/assets/**
