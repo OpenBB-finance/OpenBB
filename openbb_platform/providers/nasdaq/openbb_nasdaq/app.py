@@ -12,14 +12,14 @@ openbb-api --app openbb_nasdaq.app:main --factory
 
 Then navigate to the OpenBB Workspace and add the server as a backend data source.
 
-Open the server's URL in your browser.
+Open the server's URL in your browser for more information on connecting to the OpenBB Workspace.
 """
 
 # pylint: disable=too-many-statements, too-many-locals, line-too-long
 
 
 def main():
-    """Factory function to create the FastAPI app."""
+    """Return a FastAPI app instance."""
     # pylint: disable=import-outside-toplevel
     from datetime import datetime
     from typing import Annotated, Literal, Optional
