@@ -167,6 +167,21 @@ test = ["anyio[trio]", "blockbuster (>=1.5.23)", "coverage[toml] (>=7)", "except
 trio = ["trio (>=0.26.1)"]
 
 [[package]]
+name = "async-lru"
+version = "2.0.5"
+description = "Simple LRU cache for asyncio"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "async_lru-2.0.5-py3-none-any.whl", hash = "sha256:ab95404d8d2605310d345932697371a5f40def0487c03d6d0ad9138de52c9943"},
+    {file = "async_lru-2.0.5.tar.gz", hash = "sha256:481d52ccdd27275f42c43a928b4a50c3bfb2d67af4e78b170e3e0bb39c66e5bb"},
+]
+
+[package.dependencies]
+typing_extensions = {version = ">=4.0.0", markers = "python_version < \"3.11\""}
+
+[[package]]
 name = "async-timeout"
 version = "5.0.1"
 description = "Timeout context manager for asyncio programs"
@@ -369,6 +384,30 @@ files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
+
+[[package]]
+name = "deepdiff"
+version = "8.5.0"
+description = "Deep Difference and Search of any Python object/data. Recreate objects by adding adding deltas to each other."
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "deepdiff-8.5.0-py3-none-any.whl", hash = "sha256:d4599db637f36a1c285f5fdfc2cd8d38bde8d8be8636b65ab5e425b67c54df26"},
+    {file = "deepdiff-8.5.0.tar.gz", hash = "sha256:a4dd3529fa8d4cd5b9cbb6e3ea9c95997eaa919ba37dac3966c1b8f872dc1cd1"},
+]
+
+[package.dependencies]
+orderly-set = ">=5.4.1,<6"
+
+[package.extras]
+cli = ["click (>=8.1.0,<8.2.0)", "pyyaml (>=6.0.0,<6.1.0)"]
+coverage = ["coverage (>=7.6.0,<7.7.0)"]
+dev = ["bump2version (>=1.0.0,<1.1.0)", "ipdb (>=0.13.0,<0.14.0)", "jsonpickle (>=4.0.0,<4.1.0)", "nox (==2025.5.1)", "numpy (>=2.0,<3.0) ; python_version < \"3.10\"", "numpy (>=2.2.0,<2.3.0) ; python_version >= \"3.10\"", "orjson (>=3.10.0,<3.11.0)", "pandas (>=2.2.0,<2.3.0)", "polars (>=1.21.0,<1.22.0)", "python-dateutil (>=2.9.0,<2.10.0)", "tomli (>=2.2.0,<2.3.0)", "tomli-w (>=1.2.0,<1.3.0)"]
+docs = ["Sphinx (>=6.2.0,<6.3.0)", "sphinx-sitemap (>=2.6.0,<2.7.0)", "sphinxemoji (>=0.3.0,<0.4.0)"]
+optimize = ["orjson"]
+static = ["flake8 (>=7.1.0,<7.2.0)", "flake8-pyproject (>=1.2.3,<1.3.0)", "pydantic (>=2.10.0,<2.11.0)"]
+test = ["pytest (>=8.3.0,<8.4.0)", "pytest-benchmark (>=5.1.0,<5.2.0)", "pytest-cov (>=6.0.0,<6.1.0)", "python-dotenv (>=1.0.0,<1.1.0)"]
 
 [[package]]
 name = "distro"
@@ -933,6 +972,34 @@ ruff = ">=0.7,<0.8"
 uuid7 = ">=0.1.0,<0.2.0"
 uvicorn = ">=0.34.2,<0.35.0"
 websockets = ">=15.0,<16.0"
+
+[[package]]
+name = "openbb-platform-api"
+version = "1.1.10"
+description = "OpenBB Platform API: Launch script and widgets builder for the OpenBB Platform API and Workspace Backend Connector."
+optional = false
+python-versions = "<3.13,>=3.9.21"
+groups = ["main"]
+files = [
+    {file = "openbb_platform_api-1.1.10-py3-none-any.whl", hash = "sha256:18da196dac5b2be9e7fc8632eaa495826ae1bcfd3365d319c5c8550219919e2c"},
+    {file = "openbb_platform_api-1.1.10.tar.gz", hash = "sha256:8a0cb7dd9f183587a262965cfaa7b7b4098e9fa112614ebdcb5eb40d35e70c84"},
+]
+
+[package.dependencies]
+deepdiff = "*"
+openbb-core = ">=1.4.7,<2.0.0"
+
+[[package]]
+name = "orderly-set"
+version = "5.4.1"
+description = "Orderly set"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "orderly_set-5.4.1-py3-none-any.whl", hash = "sha256:b5e21d21680bd9ef456885db800c5cb4f76a03879880c0175e1b077fb166fd83"},
+    {file = "orderly_set-5.4.1.tar.gz", hash = "sha256:a1fb5a4fdc5e234e9e8d8e5c1bbdbc4540f4dfe50d12bf17c8bc5dbf1c9c878d"},
+]
 
 [[package]]
 name = "pandas"
@@ -1788,4 +1855,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9.21,<3.13"
-content-hash = "e87dd4d308fbc419916e8f08f30702b1ea7005caf3424a3220cafac9139c31b3"
+content-hash = "8d6ad6be9cd05a1d7c1ec900e35fafc7551844a836386799eafbb4a2641e185b"
