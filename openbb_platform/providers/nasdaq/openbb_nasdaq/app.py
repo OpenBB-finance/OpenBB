@@ -109,7 +109,7 @@ def main():
 
         for item in items:
             form = item.model_dump()  # type: ignore
-            title = f"{form.get("filing_date", "")} - {'8-K' if form_group == '8k' else form_group.title()}"
+            title = f"{form.get('filing_date', '')} - {'8-K' if form_group == '8k' else form_group.title()}"
             url = form.get("pdf_url")
 
             if not url:
