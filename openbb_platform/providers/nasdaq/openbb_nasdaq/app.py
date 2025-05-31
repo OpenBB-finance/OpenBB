@@ -39,7 +39,7 @@ def main():
     current_year = int(datetime.now().year)
     years = sorted(
         [{"label": str(i), "value": i} for i in range(1994, current_year + 1)],
-        key=lambda x: x["value"],
+        key=lambda x: x["value"],  # type: ignore
         reverse=True,
     )
 
