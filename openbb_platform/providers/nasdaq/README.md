@@ -61,7 +61,7 @@ To see all the launch arguments, use:
 openbb-api --help
 ```
 
-The application is served via a factory function, and the FastAPI instance can be utilized by calling the `main` function.
+The application is served by a factory function, and the FastAPI instance can be utilized by calling the `main` function.
 
 ```python
 from openbb_nasdaq.app import main
