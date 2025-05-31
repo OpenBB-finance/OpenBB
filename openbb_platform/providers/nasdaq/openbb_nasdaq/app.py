@@ -38,7 +38,7 @@ def main():
 
     current_year = int(datetime.now().year)
     years = sorted(
-        [{"label": str(i), "value": int(i)} for i in range(1994, current_year + 1)],
+        [{"label": str(i), "value": i} for i in range(1994, current_year + 1)],
         key=lambda x: x["value"],
         reverse=True,
     )
@@ -56,7 +56,7 @@ def main():
 
     async def startup_event():
         """Startup event for the FastAPI app."""
-        nonlocal listings, years
+        nonlocal listings
         fetcher = NasdaqEquitySearchFetcher()
 
         directory = await fetcher.fetch_data({}, {})
