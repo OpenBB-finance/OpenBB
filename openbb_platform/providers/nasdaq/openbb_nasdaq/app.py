@@ -15,6 +15,8 @@ Then navigate to the OpenBB Workspace and add the server as a backend data sourc
 Open the server's URL in your browser.
 """
 
+# pylint: disable=too-many-statements, too-many-locals, line-too-long
+
 
 def main():
     """Factory function to create the FastAPI app."""
@@ -32,26 +34,34 @@ def main():
     from openbb_nasdaq.models.equity_search import NasdaqEquitySearchFetcher
     from pandas import DataFrame
 
-    NASDAQ_LISTINGS = DataFrame()
+    listings = DataFrame()
+
+    current_year = int(datetime.now().year)
+    years = sorted(
+        [{"label": str(i), "value": int(i)} for i in range(1994, current_year + 1)],
+        key=lambda x: x["value"],
+        reverse=True,
+    )
+
     app = FastAPI()
 
-    async def get_nasdaq_listings() -> DataFrame:
+    async def get_listings() -> DataFrame:
         """Get the Nasdaq listings."""
-        return NASDAQ_LISTINGS
+        return listings
 
-    NasdaqListings = Annotated[
+    Nasdaqlistings = Annotated[
         DataFrame,
-        Depends(get_nasdaq_listings),
+        Depends(get_listings),
     ]
 
     async def startup_event():
         """Startup event for the FastAPI app."""
-        nonlocal NASDAQ_LISTINGS
+        nonlocal listings, years
         fetcher = NasdaqEquitySearchFetcher()
 
         directory = await fetcher.fetch_data({}, {})
 
-        NASDAQ_LISTINGS = DataFrame([d.model_dump() for d in directory]).query(  # type: ignore
+        listings = DataFrame([d.model_dump() for d in directory]).query(  # type: ignore
             "test_issue == 'N' and etf == 'N'"
             " and not name.str.contains('%')"
             " and not name.str.contains('Unit')"
@@ -64,7 +74,7 @@ def main():
 
     @app.get("/get_symbol_choices", include_in_schema=False)
     async def get_symbol_choices(
-        directory: NasdaqListings,  # type: ignore
+        directory: Nasdaqlistings,  # type: ignore
         symbol: Optional[str] = None,
         year: Optional[int] = None,
         form_group: Optional[str] = None,
@@ -159,16 +169,9 @@ def main():
                         "paramName": "year",
                         "label": "Calendar Year",
                         "description": "Calendar year for the filings.",
-                        "value": datetime.now().year,
+                        "value": years[0]["value"],
                         "type": "number",
-                        "options": sorted(
-                            [
-                                {"label": str(i), "value": i}
-                                for i in range(1994, datetime.now().year + 1)
-                            ],
-                            key=lambda x: x["value"],
-                            reverse=True,
-                        ),
+                        "options": years,
                     },
                     {
                         "paramName": "form_group",
