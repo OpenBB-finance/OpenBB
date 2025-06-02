@@ -96,24 +96,11 @@ class SystemSettings(Tagged):
 
         return values
 
-    @model_validator(mode="after")  # type: ignore
-    @classmethod
-    def validate_posthog_handler(cls, values: "SystemSettings") -> "SystemSettings":
-        """If the user has enabled log collection, then we need to add the Posthog."""
-        if (
-            not any([values.test_mode, values.debug_mode, values.logging_suppress])
-            and values.log_collect
-            and "posthog" not in values.logging_handlers
-        ):
-            values.logging_handlers.append("posthog")
-
-        return values
-
     @field_validator("logging_handlers")
     @classmethod
     def validate_logging_handlers(cls, v):
         """Validate the logging handlers."""
         for value in v:
-            if value not in ["stdout", "stderr", "noop", "file", "posthog"]:
+            if value not in ["stdout", "stderr", "noop", "file"]:
                 raise ValueError("Invalid logging handler")
         return v

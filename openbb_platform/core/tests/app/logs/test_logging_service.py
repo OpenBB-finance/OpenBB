@@ -59,7 +59,7 @@ def logging_service():
         mock_log_startup,
     ):
         _logging_service = LoggingService(
-            system_settings=mock_system_settings,
+            system_settings=mock_system_settings,  # type: ignore
             user_settings=mock_user_settings,
         )
         _logging_service._logger = MagicMock()
@@ -122,7 +122,6 @@ def test_log_startup(logging_service):
         credentials=MockCredentials(username="username", password="password"),
     )
     logging_service._system_settings = "your_system_settings"
-    logging_service._system_settings
 
     logging_service._log_startup(
         route="test_route", custom_headers={"X-OpenBB-Test": "test"}
