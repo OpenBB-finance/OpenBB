@@ -204,16 +204,14 @@ def test_charting_crypto_price_historical(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "index": "date",
-                "length": "60",
-                "scalar": "90.0",
-                "drift": "2",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "index": "date",
+            "length": "60",
+            "scalar": "90.0",
+            "drift": "2",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -238,7 +236,7 @@ def test_charting_technical_adx(params, headers):
 
 @parametrize(
     "params",
-    [({"data": "", "index": "date", "length": "30", "scalar": "110", "chart": True})],
+    [{"data": "", "index": "date", "length": "30", "scalar": "110", "chart": True}],
 )
 @pytest.mark.integration
 def test_charting_technical_aroon(params, headers):
@@ -263,16 +261,14 @@ def test_charting_technical_aroon(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "",
-                "length": "60",
-                "offset": "10",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "target": "high",
+            "index": "",
+            "length": "60",
+            "offset": "10",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -298,16 +294,14 @@ def test_charting_technical_ema(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "55",
-                "offset": "2",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "target": "high",
+            "index": "date",
+            "length": "55",
+            "offset": "2",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -333,17 +327,15 @@ def test_charting_technical_hma(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "fast": "10",
-                "slow": "30",
-                "signal": "10",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "target": "high",
+            "index": "date",
+            "fast": "10",
+            "slow": "30",
+            "signal": "10",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -369,17 +361,15 @@ def test_charting_technical_macd(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "16",
-                "scalar": "90.0",
-                "drift": "2",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "target": "high",
+            "index": "date",
+            "length": "16",
+            "scalar": "90.0",
+            "drift": "2",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -405,16 +395,14 @@ def test_charting_technical_rsi(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "55",
-                "offset": "2",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "target": "high",
+            "index": "date",
+            "length": "55",
+            "offset": "2",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -440,16 +428,14 @@ def test_charting_technical_sma(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "60",
-                "offset": "10",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "target": "high",
+            "index": "date",
+            "length": "60",
+            "offset": "10",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -475,16 +461,14 @@ def test_charting_technical_wma(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "55",
-                "offset": "5",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "target": "high",
+            "index": "date",
+            "length": "55",
+            "offset": "5",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -510,13 +494,11 @@ def test_charting_technical_zlma(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "model": "yang_zhang",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "model": "yang_zhang",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -542,15 +524,13 @@ def test_charting_technical_cones(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "DGS10",
-                "transform": "pc1",
-                "chart": True,
-                "provider": "fred",
-            }
-        )
+        {
+            "data": None,
+            "symbol": "DGS10",
+            "transform": "pc1",
+            "chart": True,
+            "provider": "fred",
+        }
     ],
 )
 @pytest.mark.integration
@@ -620,14 +600,12 @@ def test_charting_technical_relative_rotation(params):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
-                "chart": True,
-                "provider": "finviz",
-            }
-        )
+        {
+            "data": None,
+            "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+            "chart": True,
+            "provider": "finviz",
+        }
     ],
 )
 @pytest.mark.integration
@@ -656,14 +634,12 @@ def test_charting_equity_price_performance(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
-                "chart": True,
-                "provider": "intrinio",
-            }
-        )
+        {
+            "data": None,
+            "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+            "chart": True,
+            "provider": "fmp",
+        }
     ],
 )
 @pytest.mark.integration
@@ -688,14 +664,12 @@ def test_charting_etf_price_performance(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "XRT",
-                "chart": True,
-                "provider": "fmp",
-            }
-        )
+        {
+            "data": None,
+            "symbol": "XRT",
+            "chart": True,
+            "provider": "fmp",
+        }
     ],
 )
 @pytest.mark.integration
@@ -763,15 +737,13 @@ def test_charting_fixedincome_government_yield_curve(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "provider": "yfinance",
-                "symbol": "ES",
-                "start_date": "2022-01-01",
-                "end_date": "2022-02-01",
-                "chart": True,
-            }
-        )
+        {
+            "provider": "yfinance",
+            "symbol": "ES",
+            "start_date": "2022-01-01",
+            "end_date": "2022-02-01",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -821,7 +793,7 @@ def test_charting_derivatives_futures_curve(params, headers):
     body = (json.dumps({"extra_params": {"chart_params": {"title": "test chart"}}}),)
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/curve?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10, json=body)
+    result = requests.get(url, headers=headers, timeout=30, json=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -836,15 +808,13 @@ def test_charting_derivatives_futures_curve(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "provider": "fmp",
-                "symbol": "AAPL",
-                "start_date": "2024-01-01",
-                "end_date": "2024-06-30",
-                "chart": True,
-            }
-        )
+        {
+            "provider": "fmp",
+            "symbol": "AAPL",
+            "start_date": "2024-01-01",
+            "end_date": "2024-06-30",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -902,13 +872,11 @@ def test_charting_economy_survey_bls_series(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "method": "pearson",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "method": "pearson",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
