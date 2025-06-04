@@ -22,14 +22,20 @@ No authorization is required to use, but IP addresses are bound by the limitatio
   - International Reserves and Foreign Currency Liquidity
   - Direction of Trade Statistics
   - Financial Soundness Indicators
+  - Port Watch
 
 Coverage:
   - All IRFCL tables.
   - Individual, or multiple, time series from single or multiple countries.
   - Core and Encouraged Set tables, plus all individual underlying series.
+  - Daily Port and Chokepoints data, with charts for metadata and average annual statistics.
 
 ### Endpoints
 
 - `obb.economy.available_indicators`
 - `obb.economy.indicators`
 - `obb.economy.direction_of_trade`
+- `obb.economy.shipping.chokepoint_info`
+- `obb.economy.shipping.chokepoint_volume`
+- `obb.economy.shipping.port_info`
+- `obb.economy.shipping.port_volume`
