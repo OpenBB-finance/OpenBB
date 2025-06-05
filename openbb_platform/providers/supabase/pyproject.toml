@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "openbb-supabase"
+version = "0.0.1"
+description = "Supabase provider for OpenBB" # Updated description
+authors = ["Aurelius Agent <agent@example.com>"] # Updated author
+readme = "README.md"
+packages = [{ include = "openbb_supabase" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+openbb-core = { version = "^1.1.2" }
+supabase = "^1.0" # Added supabase-py
+
+[tool.poetry.group.dev.dependencies]
+openbb-devtools = { version = "^1.0.0" }
+pytest = "^7.0.0"
+pytest-asyncio = "^0.21.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# Router plugin removed for now as router.py is not part of openbb_supabase yet
+# [tool.poetry.plugins."openbb_core_extension"]
+# supabase = "openbb_supabase.router:router"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+supabase = "openbb_supabase:supabase_provider" # Updated path

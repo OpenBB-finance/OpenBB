@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "openbb-helixdb"
+version = "0.0.1"
+description = "HelixDB provider for OpenBB" # Updated description
+authors = ["Aurelius Agent <agent@example.com>"] # Updated author
+readme = "README.md"
+packages = [{ include = "openbb_helixdb" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+openbb-core = { version = "^1.1.2" }
+requests = "^2.26" # Added requests
+
+[tool.poetry.group.dev.dependencies]
+openbb-devtools = { version = "^1.0.0" }
+pytest = "^7.0.0" # Added pytest
+pytest-asyncio = "^0.21.0" # Added pytest-asyncio
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# Router plugin removed for now as router.py is not part of openbb_helixdb yet
+# [tool.poetry.plugins."openbb_core_extension"]
+# helixdb = "openbb_helixdb.router:router"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+helixdb = "openbb_helixdb:helixdb_provider" # Updated path
