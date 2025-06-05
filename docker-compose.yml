@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  openbb-platform:
+    build:
+      context: .
+      dockerfile: build/docker/platform.dockerfile
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    container_name: openbb-platform

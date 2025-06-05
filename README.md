@@ -208,3 +208,19 @@ OpenBB wouldn't be OpenBB without you. If we are going to disrupt financial indu
 [license-url]: https://github.com/OpenBB-finance/OpenBB/blob/main/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/DidierRLopes
+
+## Deploying with Coolify
+
+This project includes a `docker-compose.yml` file that can be used for deploying the application with [Coolify](https://coolify.io/).
+
+To deploy with Coolify:
+
+1.  **Push your repository to GitHub/GitLab.**
+2.  **In Coolify, create a new "Application" resource.**
+3.  **Choose "Use a Docker Compose file from your Git repository".**
+4.  **Select your repository and the branch where the `docker-compose.yml` is located.**
+5.  **Configure the "Base Directory" if your `docker-compose.yml` is not in the root of the repository (though in this case, it is).**
+6.  **Coolify will detect the `docker-compose.yml` and use it for the deployment.**
+7.  **By default, the application will be available on port 8000. Coolify will manage SSL and domain configuration.**
+8.  **The included `docker-compose.yml` uses the `build/docker/platform.dockerfile` to build the main application image.**
+9.  **Authentication is disabled by default via the `.env` file (`OPENBB_ENABLE_AUTHENTICATION=false`). Coolify or your reverse proxy can handle authentication if needed.**
