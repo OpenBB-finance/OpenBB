@@ -226,7 +226,6 @@ class LoggingService(metaclass=SingletonMeta):
                 # Remove CommandContext if any
                 kwargs.pop("cc", None)
 
-                # Get provider for posthog logs
                 passed_model = kwargs.get("provider_choices", DummyProvider())
                 provider = (
                     passed_model.provider
