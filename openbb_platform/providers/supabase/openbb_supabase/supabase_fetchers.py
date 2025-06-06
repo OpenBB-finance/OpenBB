@@ -54,7 +54,7 @@ class SupabaseFetcher(
             return {"results": response.data if response.data else []}
         except Exception as e:
             # Log error properly in a real implementation
-            print(f"Error connecting to Supabase or executing query: {e}")
+            self.logger.error(f"Error connecting to Supabase or executing query: {e}", exc_info=True)
             return {"results": []}
 
 
