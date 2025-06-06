@@ -745,3 +745,49 @@ def test_charting_econometrics_correlation_matrix(params, obb):
     assert len(result.results) > 0
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "country": "CRI",
+                "continent": None,
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_economy_shipping_port_info(params, obb):
+    """Test chart economy shipping port info."""
+    result = obb.economy.shipping.port_info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_economy_shipping_chokepoint_info(params, obb):
+    """Test chart economy shipping chokepoint info."""
+    result = obb.economy.shipping.chokepoint_info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)

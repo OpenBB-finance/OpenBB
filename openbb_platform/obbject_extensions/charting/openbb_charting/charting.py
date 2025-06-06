@@ -18,6 +18,7 @@ from typing import (
 from warnings import warn
 
 from importlib_metadata import entry_points
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.provider.abstract.data import Data
@@ -122,8 +123,8 @@ class Charting:
 
         create_backend(self._charting_settings)
         backend = get_backend()
-        backend.start(debug=self._charting_settings.debug_mode)
-        return backend
+        backend.start(debug=self._charting_settings.debug_mode)  # type: ignore
+        return backend  # type: ignore
 
     def _get_chart_function(self, route: str) -> Callable:
         """Given a route, it returns the chart function. The module must contain the given route."""
@@ -417,7 +418,6 @@ class Charting:
         fig = self._set_chart_style(fig)
         return fig
 
-    # pylint: disable=inconsistent-return-statements
     def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
         try:
@@ -435,11 +435,13 @@ class Charting:
             kwargs["provider"] = self._obbject.provider
             kwargs["extra"] = self._obbject.extra
             fig, content = charting_function(**kwargs)
-            fig = self._set_chart_style(fig)
-            content = fig.show(external=True, **kwargs).to_plotly_json()
             self._obbject.chart = Chart(fig=fig, content=content, format=self._format)
             if render:
                 fig.show(**kwargs)
+
+        except (RuntimeError, OpenBBError) as e:
+            raise e from e
+
         except Exception:  # pylint: disable=W0718
             try:
                 fig = self.create_line_chart(data=self._obbject.results, render=False, **kwargs)  # type: ignore
@@ -449,10 +451,11 @@ class Charting:
                     fig=fig, content=content, format=self._format
                 )
                 if render:
-                    return fig.show(**kwargs)  # type: ignore
+                    fig.show(**kwargs)  # type: ignore
             except Exception as e:
                 raise RuntimeError(
                     "Failed to automatically create a generic chart with the data provided."
+                    + f" -> {e} -> {e.args}"
                 ) from e
 
     # pylint: disable=too-many-locals,inconsistent-return-statements

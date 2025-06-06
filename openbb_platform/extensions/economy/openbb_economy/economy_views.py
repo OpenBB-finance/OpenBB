@@ -3,7 +3,7 @@
 # flake8: noqa: PLR0912
 # pylint: disable=too-many-branches
 
-from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Optional
 from warnings import warn
 
 if TYPE_CHECKING:
@@ -18,7 +18,7 @@ class EconomyViews:
     @staticmethod
     def economy_fred_series(
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """FRED Series Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.generic_charts import bar_chart
@@ -103,7 +103,8 @@ class EconomyViews:
             and (
                 has_params is False
                 or not any(
-                    i in params.transform for i in ["pc1", "pch", "pca", "cch", "cca", "log"]  # type: ignore
+                    i in params.transform  # type: ignore
+                    for i in ["pc1", "pch", "pca", "cch", "cca", "log"]
                 )
             )
         ):
@@ -125,7 +126,8 @@ class EconomyViews:
 
         # If the request was transformed, the y-axis will be shared under these conditions.
         if has_params and any(
-            i in params.transform for i in ["pc1", "pch", "pca", "cch", "cca", "log"]  # type: ignore
+            i in params.transform  # type: ignore
+            for i in ["pc1", "pch", "pca", "cch", "cca", "log"]
         ):
             y1title = "Log" if params.transform == "Log" else "Percent"  # type: ignore
             y2title = None
@@ -182,7 +184,6 @@ class EconomyViews:
         text_color = "white" if ChartStyle().plt_style == "dark" else "black"
         # For each series in the DataFrame, add a scatter plot.
         for i, col in enumerate(df_ta.columns):
-
             # Check if the y-axis should be shared for this series.
             on_y1 = (
                 (
@@ -328,7 +329,7 @@ class EconomyViews:
     @staticmethod
     def economy_survey_bls_series(
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Economy Survey BLS Series Chart.
 
         Parameters
@@ -349,11 +350,11 @@ class EconomyViews:
             The title of the x-axis.
         ytitle: Optional[str]
             The title of the y-axis.
-        bar_kwargs: Optional[Dict]
+        bar_kwargs: Optional[dict]
             Additional keyword arguments applied to `fig.add_bar`.
-        scatter_kwargs: Optional[Dict]
+        scatter_kwargs: Optional[dict]
             Additional keyword arguments applied to `fig.add_scatter`.
-        layout_kwargs: Optional[Dict]
+        layout_kwargs: Optional[dict]
             Additional keyword arguments applied to `fig.update_layout`.
         """
         # pylint: disable=import-outside-toplevel
@@ -421,7 +422,7 @@ class EconomyViews:
                 + " Change"
             )
 
-        title_map: Dict = {}
+        title_map: dict = {}
         for symbol in target_symbols:
             if symbol not in new_df.columns:
                 continue
@@ -449,9 +450,9 @@ class EconomyViews:
                 else "bar"
             )
 
-        layout_kwargs: Dict = kwargs.pop("layout_kwargs", {})  # type: ignore
-        scatter_kwargs: Dict = kwargs.pop("scatter_kwargs", {})  # type: ignore
-        bar_kwargs: Dict = kwargs.pop("bar_kwargs", {})  # type: ignore
+        layout_kwargs: dict = kwargs.pop("layout_kwargs", {})  # type: ignore
+        scatter_kwargs: dict = kwargs.pop("scatter_kwargs", {})  # type: ignore
+        bar_kwargs: dict = kwargs.pop("bar_kwargs", {})  # type: ignore
         hovertemplate = scatter_kwargs.pop("hovertemplate", None)  # type: ignore
         trace_titles = {
             symbol: metadata.get(symbol, {})
@@ -481,7 +482,7 @@ class EconomyViews:
                     data=new_df,
                     title=title,
                     ytitle=ytitle,
-                    x=new_df.index,
+                    x=new_df.index,  # type: ignore
                     y=list(trace_titles.values()),
                     layout_kwargs=layout_kwargs,
                     bar_kwargs=bar_kwargs,
@@ -509,7 +510,7 @@ class EconomyViews:
                     data=new_df,
                     title=title,
                     ytitle=ytitle,
-                    x=new_df.index,
+                    x=new_df.index,  # type: ignore
                     y=list(trace_titles.values()),
                     layout_kwargs=layout_kwargs,
                     bar_kwargs=bar_kwargs,
@@ -529,5 +530,87 @@ class EconomyViews:
             ),
         )
         content = fig.to_plotly_json()
+
+        return fig, content
+
+    @staticmethod
+    def economy_shipping_chokepoint_info(
+        **kwargs,
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
+        """Maritime Chokepoint Info Chart."""
+        # pylint: disable=import-outside-toplevel
+
+        provider = kwargs.get("provider")
+
+        if provider != "imf":
+            raise RuntimeError(
+                f"This charting method does not support {provider}. Supported providers: imf."
+            )
+
+        try:
+            from openbb_imf.views.maritime_chokepoint_info import (
+                plot_chokepoint_annual_avg_vessels,
+            )
+        except Exception as e:
+            raise RuntimeError("Unable to import the required module.") from e
+
+        theme = (
+            kwargs.get("extra_params", {}).get("theme")
+            or kwargs.get("theme")
+            or getattr(kwargs["charting_settings"], "chart_style", "dark")
+        )
+        data = (
+            kwargs.pop("data", None)
+            if "data" in kwargs and kwargs["data"] is not None
+            else kwargs.get("obbject_item")
+        )
+        fig = plot_chokepoint_annual_avg_vessels(data, theme=theme)  # type: ignore
+        fig.update_layout(
+            margin=dict(l=25, r=25, t=50, b=0),
+        )
+        content = fig.to_plotly_json()
+
+        content["config"] = dict(responsive=False)
+
+        return fig, content
+
+    @staticmethod
+    def economy_shipping_port_info(
+        **kwargs,
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
+        """Port Info Chart."""
+        # pylint: disable=import-outside-toplevel
+
+        provider = kwargs.get("provider")
+
+        if provider != "imf":
+            raise RuntimeError(
+                f"This charting method does not support {provider}. Supported providers: imf."
+            )
+
+        try:
+            from openbb_imf.views.port_info import (
+                plot_port_info_map,
+            )
+        except Exception as e:
+            raise RuntimeError("Unable to import the required module.") from e
+
+        data = (
+            kwargs.pop("data", None)
+            if "data" in kwargs and kwargs["data"] is not None
+            else kwargs.get("obbject_item")
+        )
+        fig = plot_port_info_map(data)  # type: ignore
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+        )
+        content = fig.to_plotly_json()
+
+        content["config"] = dict(
+            responsive=False,
+            displayModeBar=False,
+            dragMode="pan",
+            doubleClick="reset",
+        )
 
         return fig, content
