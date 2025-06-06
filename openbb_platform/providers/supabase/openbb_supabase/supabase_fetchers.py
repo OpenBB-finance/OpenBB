@@ -44,6 +44,8 @@ class SupabaseFetcher(
                     elif f.get('operator') == 'gt':
                         query = query.gt(f['column'], f['value'])
                     # Add more operators as needed: lt, gte, lte, like, ilike, is, in, cs, cd etc.
+                    else:
+                        raise ValueError(f"Unsupported operator: {f.get('operator')}")
 
             if query_params.limit:
                 query = query.limit(query_params.limit)
