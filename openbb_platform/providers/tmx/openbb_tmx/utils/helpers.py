@@ -292,6 +292,8 @@ async def get_data_from_url(
     python_settings = get_python_request_settings()
     if timeout := python_settings.get("timeout"):
         kwargs.setdefault("timeout", timeout)
+    else:
+        kwargs.setdefault("timeout", 300)
 
     data: Any = None
     if use_cache is True and backend is not None:
