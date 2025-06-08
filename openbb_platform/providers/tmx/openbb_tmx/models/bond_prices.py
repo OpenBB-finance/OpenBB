@@ -177,7 +177,9 @@ class TmxBondPricesFetcher(
                 query.isin.split(",") if isinstance(query.isin, str) else query.isin
             )
 
-            data = bonds[bonds["isin"].str.contains("|".join(isin_list), na=False, case=False)]  # type: ignore
+            data = bonds[
+                bonds["isin"].str.contains("|".join(isin_list), na=False, case=False)
+            ].query("bondType == 'Corp'")
 
             if data.empty or len(data) == 0:
                 raise OpenBBError(
