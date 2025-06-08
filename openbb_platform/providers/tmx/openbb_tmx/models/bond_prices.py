@@ -171,7 +171,6 @@ class TmxBondPricesFetcher(
         from numpy import nan
 
         bonds = data.copy()
-        data = data[data["bondType"] == "Corp"]  # type: ignore
 
         if query.isin is not None:
             isin_list = (
