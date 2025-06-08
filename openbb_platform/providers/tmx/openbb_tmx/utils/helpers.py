@@ -284,7 +284,14 @@ async def get_data_from_url(
     """Make an asynchronous HTTP request to a static file."""
     # pylint: disable=import-outside-toplevel
     from aiohttp_client_cache.session import CachedSession
-    from openbb_core.provider.utils.helpers import amake_request
+    from openbb_core.provider.utils.helpers import (
+        amake_request,
+        get_python_request_settings,
+    )
+
+    python_settings = get_python_request_settings()
+    if timeout := python_settings.get("timeout"):
+        kwargs.setdefault("timeout", timeout)
 
     data: Any = None
     if use_cache is True and backend is not None:
