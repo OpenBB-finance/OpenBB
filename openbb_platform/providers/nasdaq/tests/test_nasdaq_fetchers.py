@@ -51,6 +51,7 @@ def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
     params = {
         "start_date": datetime.date(2024, 7, 1),
         "end_date": datetime.date(2024, 7, 7),
+        "use_cache": True
     }
 
     fetcher = NasdaqEconomicCalendarFetcher()
@@ -111,7 +112,10 @@ def test_nasdaq_calendar_earnings_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_nasdaq_historical_dividends_fetcher(credentials=test_credentials):
     """Test the Nasdaq Historical Dividends fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {
+        "symbol": "AAPL",
+        "use_cache": True
+    }
 
     fetcher = NasdaqHistoricalDividendsFetcher()
     result = fetcher.test(params, credentials)
