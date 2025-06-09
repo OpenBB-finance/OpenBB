@@ -461,7 +461,7 @@ def bar_chart(  # noqa: PLR0912
             "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
         ),
         plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rbga(255,255,255,0)"
+            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
         ),
         legend=dict(
             orientation="v",
