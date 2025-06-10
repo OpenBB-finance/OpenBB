@@ -77,7 +77,6 @@ class CboeOptionsChainsFetcher(
             if symbol in TICKER_EXCEPTIONS or symbol in INDEXES.index
             else f"https://cdn.cboe.com/api/global/delayed_quotes/options/{symbol}.json"
         )
-        print(quotes_url)
         results = await amake_request(quotes_url)
         return results  # type: ignore
 
