@@ -284,10 +284,20 @@ async def get_data_from_url(
     """Make an asynchronous HTTP request to a static file."""
     # pylint: disable=import-outside-toplevel
     from aiohttp_client_cache.session import CachedSession
-    from openbb_core.provider.utils.helpers import amake_request
+    from openbb_core.provider.utils.helpers import (
+        amake_request,
+        get_python_request_settings,
+    )
+
+    python_settings = get_python_request_settings()
+    if timeout := python_settings.get("timeout"):
+        kwargs.setdefault("timeout", timeout)
+    else:
+        kwargs.setdefault("timeout", 300)
 
     data: Any = None
-    if use_cache is True:
+    if use_cache is True and backend is not None:
+        await backend.delete_expired_responses()
         async with CachedSession(cache=backend) as cached_session:
             try:
                 response = await cached_session.get(url, **kwargs)
@@ -295,7 +305,7 @@ async def get_data_from_url(
             finally:
                 await cached_session.close()
     else:
-        data = await amake_request(url, response_callback=response_callback, timeout=20)
+        data = await amake_request(url, response_callback=response_callback, **kwargs)
 
     return data
 
@@ -307,11 +317,11 @@ async def get_data_from_gql(url: str, headers, data, **kwargs: Any) -> Any:
 
     response = await amake_request(
         url=url,
-        method="POST",
+        method=kwargs.pop("method", "POST"),
         response_callback=response_callback,
         headers=headers,
         data=data,
-        timeout=30,
+        **kwargs,
     )
 
     return response
@@ -1112,10 +1122,10 @@ async def get_all_bonds(use_cache: bool = True) -> "DataFrame":
     tmx_bonds_backend = SQLiteBackend(
         f"{get_user_cache_directory()}/http/tmx_bonds", expire_after=timedelta(days=1)
     )
-
+    _ = await tmx_bonds_backend.delete_expired_responses()
     url = "https://bondtradedata.iiroc.ca/debtip/designatedbonds/list"
     response = await get_data_from_url(
-        url, use_cache=use_cache, timeout=30, backend=tmx_bonds_backend
+        url, use_cache=use_cache, backend=tmx_bonds_backend
     )
 
     # Convert the response to a DataFrame and set the types for proper filtering in-fetcher.
