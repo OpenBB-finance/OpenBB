@@ -244,78 +244,29 @@ class DerivativesViews:
         return figure, content
 
     @staticmethod
-    def derivatives_options_chains(  # noqa: PLR0912
+    def derivatives_options_surface(  # noqa: PLR0912
         **kwargs,
     ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-        """Get Derivatives Options Chains Chart.
+        """Options surface chart. All parameters are optional, and are kwargs.
 
-        Parameters
-        -----------
-        data: OptionsChainsData
-            The options chains data.
-        z: Literal["implied_volatility", "dex", "gex", "gamma", "theta", "vega", "rho"] = implied_volatility
-            The field to use as the z-axis. Default is "implied_volatility".
-        last_price: Optional[float]
-            The last price of the underlying stock.
-        option_type: Optional[str] = "otm"
-            The type of df to display. Default is "otm".
-            Choices are: ["otm", "itm", "puts", "calls"]
-        dte_min: Optional[int] = None
-            Minimum days to expiration (DTE) to filter options.
-        dte_max: Optional[int] = None
-            Maximum days to expiration (DTE) to filter options.
-        moneyness: Optional[float] = None
-            Specify a % moneyness to target for display,
-            entered as a value between 0 and 100.
-        strike_min: Optional[float] = None
-            Minimum strike price to filter options.
-        strike_max: Optional[float] = None
-            Maximum strike price to filter options.
-        oi: bool = False
-            Filter for only options that have open interest. Default is False.
-        volume: bool = False
-            Filter for only options that have trading volume. Default is False.
-        render: bool = False
-            Whether to run fig.show(). Default is False.
-        title: Optional[str] = None
-            Title for the chart. If not supplied, a default title will be used.
-        theme: Literal["dark", "light"] = "dark"
-            The theme to use for the chart. Default is "dark".
+        Data filtering is done by the POST request function.
+
+        It is not recommended to redraw this chart with the `to_chart` method,
+        instead, POST a new request with the desired parameters to the
+        `/derivatives/options/surface` endpoint.
+
+        Exposed parameters are:
+
+        - `title`: The title of the chart.
+        - `xtitle`: Title for the x-axis.
+        - `ytitle`: Title for the y-axis.
+        - `ztitle`: Title for the z-axis.
+        - `colorscale`: The colorscale to use for the chart.
+        - `layout_kwargs`: Additional dictionary to be passed to `fig.update_layout` before output.
         """
         # pylint: disable=import-outside-toplevel
-        from datetime import datetime  # noqa
         from openbb_charting.charts.generic_charts import surface3d
-        from openbb_charting.core.openbb_figure import OpenBBFigure
-        from openbb_core.app.model.abstract.error import OpenBBError
-        from openbb_core.provider.abstract.data import Data
-        from openbb_core.provider.standard_models.options_chains import (
-            OptionsChainsData,
-        )
-        from pandas import DataFrame, concat, to_datetime
-
-        data = kwargs.get("data") or kwargs.get("obbject_item")
-        df = DataFrame()
-
-        if not data:
-            raise RuntimeError("No data to plot!")
-
-        if isinstance(data, OptionsChainsData):
-            df = data.dataframe
-        elif isinstance(data, DataFrame):
-            df = data.copy()
-        elif isinstance(data, list):
-            if all(isinstance(d, dict) for d in data):
-                df = DataFrame(data)
-            elif all(isinstance(d, Data) for d in data):
-                df = DataFrame(
-                    [d.model_dump(exclude_none=True, exclude_unset=True) for d in data]  # type: ignore
-                )
-        elif isinstance(data, dict) and all(isinstance(v, list) for v in data.values()):
-            df = DataFrame(data)
-        else:
-            raise RuntimeError(
-                "Unsupported data type. Expected DataFrame or OptionsChainsData."
-            )
+        from pandas import DataFrame
 
         cols_map = {
             "expiration": "Expiration",
@@ -334,129 +285,30 @@ class DerivativesViews:
             "volume": "Volume",
         }
 
-        z = kwargs.get("z") or "implied_volatility"
-
-        if z and z not in list(cols_map):
-            raise RuntimeError(
-                f"Invalid z value: {z}. Must be one of {list(cols_map)}."
-            )
-
-        target = z.upper() if z in ["gex", "dex"] else z
-        options = df.copy()
-
-        last_price = kwargs.get("last_price") or options.underlying_price.iloc[0]
-        symbol = options.underlying_symbol.iloc[0]
-
-        if target not in options.columns:
-            raise OpenBBError(f"Error: No {target} field found.")
-        if "dte" not in options.columns:
-            options.dte = (options.expiration - datetime.today().date()).days
-
-        calls = options.query(
-            f"`option_type` == 'call' and `dte` >= 0 and `{target}` > 0"
-        )
-        puts = options.query(
-            f"`option_type` == 'put' and `dte` >= 0 and `{target}` > 0"
-        )
+        data = kwargs["obbject_item"]
+        df = DataFrame(data)
+        df = df.rename(columns=cols_map)
+        target = kwargs.get("target", "implied_volatility")
+        option_type = kwargs.get("option_type", "otm").lower()
         oi = kwargs.get("oi", False)
         volume = kwargs.get("volume", False)
 
-        if oi:
-            calls = calls[calls["open_interest"] > 0]
-            puts = puts[puts["open_interest"] > 0]
-
-        if volume:
-            calls = calls[calls["volume"] > 0]
-            puts = puts[puts["volume"] > 0]
-
-        dte_min = kwargs.get("dte_min")
-        dte_max = kwargs.get("dte_max")
-
-        if dte_min is not None:
-            calls = calls.query("dte >= @dte_min")  # type: ignore
-            calls = puts.query("dte >= @dte_min")  # type: ignore
-
-        if dte_max is not None:
-            calls = calls.query("dte <= @dte_max")  # type: ignore
-            puts = puts.query("dte <= @dte_max")  # type: ignore
-
-        moneyness = kwargs.get("moneyness")
-
-        if moneyness is not None and moneyness > 0:
-            high = (  # noqa:F841 pylint: disable=unused-variable
-                1 + (moneyness / 100)
-            ) * last_price
-            low = (  # noqa:F841 pylint: disable=unused-variable
-                1 - (moneyness / 100)
-            ) * last_price
-            calls = calls.query("@low <= `strike` <= @high")  # type: ignore
-            puts = puts.query("@low <= `strike` <= @high")  # type: ignore
-
-        strike_min = kwargs.get("strike_min")
-        strike_max = kwargs.get("strike_max")
-
-        if strike_min is not None:
-            calls = calls.query("strike >= @strike_min")  # type: ignore
-            puts = puts.query("strike >= @strike_min")  # type: ignore
-
-        if strike_max is not None:
-            calls = calls.query("strike <= @strike_max")  # type: ignore
-            puts = puts.query("strike <= @strike_max")  # type: ignore
-
-        option_type = kwargs.get("option_type", "otm").lower()
-
-        if option_type in ["otm", "itm"] and last_price is None:
-            raise RuntimeError(
-                "Last price must be provided for OTM/ITM options filtering,"
-                " and was not found in the data."
-            )
-
-        if option_type is not None and option_type == "otm":
-            otm_calls = calls.query("strike > @last_price").set_index(  # type: ignore
-                ["expiration", "strike", "option_type"]
-            )
-            otm_puts = puts.query("strike < @last_price").set_index(  # type: ignore
-                ["expiration", "strike", "option_type"]
-            )
-            df = concat([otm_calls, otm_puts]).sort_index().reset_index()
-        elif option_type is not None and option_type == "itm":
-            itm_calls = calls.query("strike < @last_price").set_index(  # type: ignore
-                ["expiration", "strike", "option_type"]
-            )
-            itm_puts = puts.query("strike > @last_price").set_index(  # type: ignore
-                ["expiration", "strike", "option_type"]
-            )
-            df = concat([itm_calls, itm_puts]).sort_index().reset_index()
-        elif option_type is not None and option_type == "calls":
-            df = calls
-        elif option_type is not None and option_type == "puts":
-            df = puts
-
-        df = DataFrame(
-            df[
-                [
-                    "expiration",
-                    "strike",
-                    "option_type",
-                    "dte",
-                    target,
-                    "open_interest",
-                    "volume",
-                ]
-            ]
-        )
-
-        df = df.rename(columns=cols_map)
-
         label_dict = {"calls": "Call", "puts": "Put", "otm": "OTM", "itm": "ITM"}
+
         label = (
-            f" {symbol} {label_dict[option_type]} {cols_map.get(target, '')} Surface"
+            f" {label_dict[option_type]} {cols_map.get(target, '')} Surface"
             if not oi
-            else f"{symbol} {label_dict[option_type]} {cols_map.get(target, '')} With Open Interest"
+            else f"{label_dict[option_type]} {cols_map.get(target, '')} With Open Interest"
         )
         label = label + " Excluding Untraded Contracts" if volume else label
 
         title = kwargs.get("title") or label
+        theme = kwargs.get("theme")
+        colorscale = kwargs.get("colorscale")
+        layout_kwargs = kwargs.get("layout_kwargs")
+        z_title = kwargs.get("ztitle") or cols_map.get(target, "Value")
+        x_title = kwargs.get("xtitle") or "DTE"
+        y_title = kwargs.get("ytitle") or "Strike"
 
         X = df.DTE
         Y = df.Strike
@@ -465,10 +317,16 @@ class DerivativesViews:
         figure = surface3d(
             X=X,
             Y=Y,
-            Z=Z,
+            Z=Z,  # type: ignore
+            xtitle=x_title,
+            ytitle=y_title,
+            ztitle=z_title,
+            layout_kwargs=layout_kwargs,
+            colorscale=colorscale,
+            theme=theme,
             title=title,
         )
 
-        content = figure.show(external=True).to_plotly_json()
+        content = figure.show(external=True).to_plotly_json()  # type: ignore
 
-        return figure, content
+        return figure, content  # type: ignore

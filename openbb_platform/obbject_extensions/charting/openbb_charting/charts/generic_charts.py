@@ -666,6 +666,7 @@ def surface3d(
     colorscale: Optional[Union[str, list]] = None,
     title: Optional[str] = None,
     layout_kwargs: Optional[dict[str, Any]] = None,
+    theme: Optional[Literal["dark", "light"]] = None,
 ) -> Union["OpenBBFigure", "Figure"]:
     """Create a 3D surface chart.
 
@@ -711,9 +712,12 @@ def surface3d(
         raise OpenBBError(f"Not enough points to render 3D: {e}") from e
 
     fig = OpenBBFigure(create_backend=False)
-    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
-    text_color = "white" if ChartStyle().plt_style == "dark" else "black"
-    fig.set_title(f"{title if title else ''}")
+    chart_style = ChartStyle()
+    if theme:
+        chart_style.plt_style = theme
+    fig.update_layout(chart_style.plotly_template.get("layout", {}))
+    text_color = "white" if chart_style.plt_style == "dark" else "black"
+    fig.set_title(f"{title if title and title != 'OpenBB Platform' else ''}")
     fig_kwargs = dict(z=Z, x=X, y=Y, i=II, j=J, k=K, intensity=Z)
     customdata = np.array([[xtitle, ytitle, ztitle]] * len(X))
 
@@ -790,7 +794,7 @@ def surface3d(
                 title=dict(text=ztitle if ztitle else "IV", font=dict(size=18)),
                 tickfont=dict(size=12),
             ),
-            domain=dict(y=[0.025, 0.95], x=[0.0125, 1]),
+            domain=dict(y=[0.0125, 0.95], x=[0.0125, 1]),
         ),
         title_x=0.5,
         title_y=0.98,
@@ -813,12 +817,6 @@ def surface3d(
         aspectmode="manual",
         aspectratio=dict(x=1.5, y=2.0, z=0.75),
         dragmode="turntable",
-        paper_bgcolor=(
-            "rgba(21,21,21,1)" if text_color == "white" else "rgba(255,255,255,1)"
-        ),
-        plot_bgcolor=(
-            "rgba(21,21,21,1)" if text_color == "white" else "rgba(255,255,255,1)"
-        ),
     )
 
     if layout_kwargs:

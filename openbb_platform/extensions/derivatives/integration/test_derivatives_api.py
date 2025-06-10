@@ -1,6 +1,7 @@
 """API integration tests for the derivatives extension."""
 
 import base64
+import json
 
 import pytest
 import requests
@@ -72,20 +73,18 @@ def test_derivatives_options_chains(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "symbol": "AAPL",
-                "provider": "intrinio",
-                "start_date": "2023-11-20",
-                "end_date": None,
-                "min_value": None,
-                "max_value": None,
-                "trade_type": None,
-                "sentiment": "neutral",
-                "limit": 1000,
-                "source": "delayed",
-            }
-        )
+        {
+            "symbol": "AAPL",
+            "provider": "intrinio",
+            "start_date": "2023-11-20",
+            "end_date": None,
+            "min_value": None,
+            "max_value": None,
+            "trade_type": None,
+            "sentiment": "neutral",
+            "limit": 1000,
+            "source": "delayed",
+        }
     ],
 )
 @pytest.mark.integration
@@ -220,5 +219,42 @@ def test_derivatives_futures_info(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/info?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "target": "implied_volatility",
+                "underlying_price": None,
+                "option_type": "otm",
+                "dte_min": None,
+                "dte_max": None,
+                "moneyness": None,
+                "strike_min": None,
+                "strike_max": None,
+                "oi": False,
+                "volume": False,
+                "theme": "dark",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_derivatives_options_surface(params, headers):
+    """Test the options surface endpoint."""
+    params = {p: v for p, v in params.items() if v and p != "data"}
+    data_url = "http://0.0.0.0:8000/api/v1/derivatives/options/chains?symbol=AAPL&provider=cboe"
+    data_response = requests.get(data_url, headers=headers, timeout=10).json()
+    data = data_response["results"]
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/derivatives/options/surface?{query_str}"
+    result = requests.post(
+        url, headers=headers, timeout=10, data=json.dumps({"data": data})
+    )
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

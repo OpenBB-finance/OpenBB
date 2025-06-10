@@ -76,20 +76,18 @@ def test_derivatives_options_chains(params, obb):
 @parametrize(
     "params",
     [
-        (
-            {
-                "symbol": "AAPL",
-                "provider": "intrinio",
-                "start_date": "2023-11-20",
-                "end_date": None,
-                "min_value": None,
-                "max_value": None,
-                "trade_type": None,
-                "sentiment": "neutral",
-                "limit": 1000,
-                "source": "delayed",
-            }
-        )
+        {
+            "symbol": "AAPL",
+            "provider": "intrinio",
+            "start_date": "2023-11-20",
+            "end_date": None,
+            "min_value": None,
+            "max_value": None,
+            "trade_type": None,
+            "sentiment": "neutral",
+            "limit": 1000,
+            "source": "delayed",
+        }
     ],
 )
 @pytest.mark.integration
@@ -193,6 +191,39 @@ def test_derivatives_futures_instruments(params, obb):
 def test_derivatives_futures_info(params, obb):
     """Test the futures info endpoint."""
     result = obb.derivatives.futures.info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "target": "implied_volatility",
+                "underlying_price": None,
+                "option_type": "otm",
+                "dte_min": None,
+                "dte_max": None,
+                "moneyness": None,
+                "strike_min": None,
+                "strike_max": None,
+                "oi": False,
+                "volume": False,
+                "theme": "dark",
+                "chart": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_derivatives_options_surface(params, obb):
+    """Test equity price historical."""
+    data = obb.derivatives.options.chains("AAPL", provider="cboe")
+    params["data"] = data.results
+    result = obb.derivatives.options.surface(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
