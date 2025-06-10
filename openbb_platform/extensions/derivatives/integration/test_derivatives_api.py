@@ -240,6 +240,7 @@ def test_derivatives_futures_info(params, headers):
                 "oi": False,
                 "volume": False,
                 "theme": "dark",
+                "chart_params": None,
             }
         ),
     ],
