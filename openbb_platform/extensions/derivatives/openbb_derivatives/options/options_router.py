@@ -4,7 +4,7 @@ from typing import Literal, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -41,7 +41,20 @@ async def chains(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Filter and process options chains data for volatility.",
+            code=[
+                "data = obb.derivatives.options.chains('AAPL', provider='cboe')",
+                "surface = "
+                + "obb.derivatives.options.surface(data=data.results, moneyness=20, dte_min=10, dte_max=60, chart=True)",
+                "surface.show()",
+            ],
+        ),
+    ],
+)
 async def surface(  # pylint: disable=R0913, R0917
     data: Union[list[Data], Data],
     target: str = "implied_volatility",
