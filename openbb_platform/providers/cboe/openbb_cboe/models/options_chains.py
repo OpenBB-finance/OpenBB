@@ -77,6 +77,7 @@ class CboeOptionsChainsFetcher(
             if symbol in TICKER_EXCEPTIONS or symbol in INDEXES.index
             else f"https://cdn.cboe.com/api/global/delayed_quotes/options/{symbol}.json"
         )
+        print(quotes_url)
         results = await amake_request(quotes_url)
         return results  # type: ignore
 
@@ -151,6 +152,12 @@ class CboeOptionsChainsFetcher(
         option_df_index = option_df_index.reset_index().drop(
             columns=["match", "level_0"]
         )
+        # Filter out adjusted options.
+        valid_expiration_mask = option_df_index["expiration"].str.len() <= 6
+        option_df_index = option_df_index[valid_expiration_mask]
+        valid_indices = option_df_index.index
+        options_df = options_df.iloc[valid_indices]
+
         option_df_index.option_type = option_df_index.option_type.str.replace(
             "C", "call"
         ).str.replace("P", "put")
