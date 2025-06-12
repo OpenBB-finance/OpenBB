@@ -6394,10 +6394,6 @@ export const plotlyMockup = {
 		autoexpand: true,
 	},
 	port: 9999,
-	log_id: "7dfe280a-4d58-4847-9621-04090c2f2739",
-	posthog: {
-		collect_logs: false,
-	},
 	python_version: "3.10.8",
 	pywry_version: "0.5.0",
 	terminal_version: "3.0.0",
@@ -10541,10 +10537,6 @@ export const candlestickMockup = {
 			range: ["2020-05-11 12:00", "2023-05-17 12:00"],
 			autorange: true,
 		},
-	},
-	log_id: "7dfe280a-4d58-4847-9621-04090c2f2739",
-	posthog: {
-		collect_logs: false,
 	},
 	python_version: "3.10.11",
 	pywry_version: "0.5.8",

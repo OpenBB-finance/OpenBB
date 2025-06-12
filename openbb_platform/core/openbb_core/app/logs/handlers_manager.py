@@ -9,7 +9,6 @@ from openbb_core.app.logs.formatters.formatter_with_exceptions import (
 from openbb_core.app.logs.handlers.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
-from openbb_core.app.logs.handlers.posthog_handler import PosthogHandler
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
 
@@ -37,17 +36,8 @@ class HandlersManager:
                 self._add_noop_handler()
             elif handler_type == "file" and not self._settings.logging_suppress:
                 self._add_file_handler()
-            elif handler_type == "posthog" and not self._settings.logging_suppress:
-                self._add_posthog_handler()
             else:
                 self._logger.debug("Unknown log handler.")
-
-    def _add_posthog_handler(self):
-        """Add a Posthog handler."""
-        handler = PosthogHandler(settings=self._settings)
-        formatter = FormatterWithExceptions(settings=self._settings)
-        handler.setFormatter(formatter)
-        self._logger.addHandler(handler)
 
     def _add_stdout_handler(self):
         """Add a stdout handler."""
@@ -82,7 +72,7 @@ class HandlersManager:
         logger = self._logger
         for hdlr in logger.handlers:
             if (
-                isinstance(hdlr, (PathTrackingFileHandler, PosthogHandler))
+                isinstance(hdlr, PathTrackingFileHandler)
                 and not settings.logging_suppress
             ):
                 hdlr.settings = settings

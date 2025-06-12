@@ -142,19 +142,8 @@ class Backend(PyWry):
         theme: Optional[str] = None,
     ) -> dict:
         """Get the json update for the backend."""
-        posthog: Dict[str, Any] = dict(collect_logs=self.charting_settings.log_collect)
-        if (
-            self.charting_settings.log_collect
-            and self.charting_settings.user_uuid
-            and not self.logged_in
-        ):
+        if self.charting_settings.user_uuid and not self.logged_in:
             self.logged_in = True
-            posthog.update(
-                dict(
-                    user_id=self.charting_settings.user_uuid,
-                    email=self.charting_settings.user_email,
-                )
-            )
 
         return dict(
             theme=theme or self.charting_settings.chart_style,
@@ -162,7 +151,6 @@ class Backend(PyWry):
             pywry_version=self.__version__,
             platform_version=self.charting_settings.version,
             python_version=self.charting_settings.python_version,
-            posthog=posthog,
             command_location=cmd_loc,
         )
 

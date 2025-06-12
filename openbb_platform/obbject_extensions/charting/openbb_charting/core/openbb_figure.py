@@ -1177,7 +1177,12 @@ class OpenBBFigure(go.Figure):
         self.update_traces(marker_line_width=0.0001, selector=dict(type="bar"))
         kwargs.update(
             dict(
-                config={"scrollZoom": True, "displaylogo": False},
+                config={
+                    "scrollZoom": True,
+                    "displaylogo": False,
+                    "editable": True,
+                    "displayModeBar": "hover",
+                },
                 include_plotlyjs=kwargs.pop("include_plotlyjs", False),
                 full_html=False,
             )
@@ -1217,66 +1222,21 @@ class OpenBBFigure(go.Figure):
 
         return super().to_html(*args, **kwargs)
 
-    def to_plotly_json(
-        self, ndarray: bool = False, np_nan: bool = False
-    ) -> Dict[str, Any]:
-        """Convert figure to a JSON representation as a Python dict.
+    def to_plotly_json(self) -> dict:
+        """Serialize, then deserialize, the figure to JSON. Returns as a Python dictionary."""
+        fig = json.loads(self.to_json())
 
-        Parameters
-        ----------
-        ndarray : `bool`, optional
-            If the plotly json should contain ndarray, by default False
-
-        np_nan : `bool`, optional
-            If the plotly json should contain nan, by default False
-        """
-        # pylint: disable=import-outside-toplevel
-        from numpy import ndarray as np_ndarray
-
-        def remove_ndarrays(data):
-            """Remove ndarrays from the plotly json."""
-            if isinstance(data, dict):
-                for key, val in data.items():
-                    if isinstance(val, np_ndarray):
-                        data[key] = val.tolist()
-                    elif isinstance(val, (dict, list)):
-                        data[key] = remove_ndarrays(val)
-            elif isinstance(data, list):
-                for i, val in enumerate(data):
-                    if isinstance(val, np_ndarray):
-                        data[i] = val.tolist()
-                    elif isinstance(val, (dict, list)):
-                        data[i] = remove_ndarrays(val)
-
-            return data
-
-        def remove_nan(data):
-            """Remove nan from the plotly json."""
-            # pylint: disable=import-outside-toplevel
-            from numpy import isnan
-
-            if isinstance(data, dict):
-                for key, val in data.items():
-                    if isinstance(val, float) and isnan(val):
-                        data[key] = None
-                    elif isinstance(val, (dict, list)):
-                        data[key] = remove_nan(val)
-            elif isinstance(data, list):
-                for i, val in enumerate(data):
-                    if isinstance(val, float) and isnan(val):
-                        data[i] = None
-                    elif isinstance(val, (dict, list)):
-                        data[i] = remove_nan(val)
-
-            return data
-
-        plotly_json = super().to_plotly_json()
-        if not ndarray:
-            plotly_json = remove_ndarrays(plotly_json)
-        if not np_nan:
-            plotly_json = remove_nan(plotly_json)
-
-        return plotly_json
+        fig.update(
+            {
+                "config": {
+                    "displayModeBar": "hover",
+                    "displaylogo": False,
+                    "editable": True,
+                    "scrollZoom": True,
+                }
+            }
+        )
+        return fig
 
     @staticmethod
     def row_colors(data: "DataFrame") -> Optional[List[str]]:
