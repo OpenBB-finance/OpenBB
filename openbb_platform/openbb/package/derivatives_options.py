@@ -1,12 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Literal, Optional
+from typing import Any, Literal, Optional, Union
 
+from numpy import ndarray
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from openbb_core.provider.abstract.data import Data
+from pandas import DataFrame, Series
 from typing_extensions import Annotated
 
 
@@ -14,6 +17,7 @@ class ROUTER_derivatives_options(Container):
     """/derivatives/options
     chains
     snapshots
+    surface
     unusual
     """
 
@@ -241,7 +245,7 @@ class ROUTER_derivatives_options(Container):
                         }
                     },
                 },
-            )
+            ),
         )
 
     @exception_handler
@@ -356,7 +360,136 @@ class ROUTER_derivatives_options(Container):
                 },
                 standard_params={},
                 extra_params=kwargs,
-            )
+            ),
+        )
+
+    @exception_handler
+    @validate(config=dict(arbitrary_types_allowed=True))
+    def surface(
+        self,
+        data: Annotated[
+            Union[
+                list,
+                dict,
+                DataFrame,
+                list["DataFrame"],
+                Series,
+                list["Series"],
+                ndarray,
+                Data,
+                list[Data],
+                Data,
+            ],
+            OpenBBField(description=""),
+        ],
+        target: Annotated[str, OpenBBField(description="")] = "implied_volatility",
+        underlying_price: Annotated[
+            Optional[float], OpenBBField(description="")
+        ] = None,
+        option_type: Annotated[
+            Optional[Literal["otm", "itm", "calls", "puts"]],
+            OpenBBField(description=""),
+        ] = "otm",
+        dte_min: Annotated[Optional[int], OpenBBField(description="")] = None,
+        dte_max: Annotated[Optional[int], OpenBBField(description="")] = None,
+        moneyness: Annotated[Optional[float], OpenBBField(description="")] = None,
+        strike_min: Annotated[Optional[float], OpenBBField(description="")] = None,
+        strike_max: Annotated[Optional[float], OpenBBField(description="")] = None,
+        oi: Annotated[bool, OpenBBField(description="")] = False,
+        volume: Annotated[bool, OpenBBField(description="")] = False,
+        theme: Annotated[
+            Literal["dark", "light"], OpenBBField(description="")
+        ] = "dark",
+        chart_params: Annotated[Optional[dict], OpenBBField(description="")] = None,
+        **kwargs: Any
+    ) -> OBBject:
+        """Filter and process the options chains data for volatility.
+
+        Data posted can be an instance of OptionsChainsData,
+        a pandas DataFrame, or a list of dictionaries.
+        Data should contain the fields:
+
+        - `expiration`: The expiration date of the option.
+        - `strike`: The strike price of the option.
+        - `option_type`: The type of the option (call or put).
+        - `implied_volatility`: The implied volatility of the option. Or 'target' field.
+        - `open_interest`: The open interest of the option.
+        - `volume`: The trading volume of the option.
+        - `dte` : Optional, days to expiration (DTE) of the option.
+        - `underlying_price`: Optional, the price of the underlying asset.
+
+        Results from the `/derivatives/options/chains` endpoint are the preferred input.
+
+        If `underlying_price` is not supplied in the data as a field, it must be provided as a parameter.
+
+        Parameters
+        -----------
+        data: Union[list[Data], Data]
+        target: str
+            The field to use as the z-axis. Default is "implied_volatility".
+        underlying_price: Optional[float]
+            The price of the underlying asset.
+        option_type: Optional[str] = "otm"
+            The type of df to display. Default is "otm".
+            Choices are: ["otm", "itm", "puts", "calls"]
+        dte_min: Optional[int] = None
+            Minimum days to expiration (DTE) to filter options.
+        dte_max: Optional[int] = None
+            Maximum days to expiration (DTE) to filter options.
+        moneyness: Optional[float] = None
+            Specify a % moneyness to target for display,
+            entered as a value between 0 and 100.
+        strike_min: Optional[float] = None
+            Minimum strike price to filter options.
+        strike_max: Optional[float] = None
+            Maximum strike price to filter options.
+        oi: bool = False
+            Filter for only options that have open interest. Default is False.
+        volume: bool = False
+            Filter for only options that have trading volume. Default is False.
+        chart: bool = False
+            Whether to return a chart or not. Default is False.
+            Only valid if `openbb-charting` is installed.
+        theme: Literal["dark", "light"] = "dark"
+            The theme to use for the chart. Default is "dark".
+            Only valid if `openbb-charting` is installed.
+        chart_params: Optional[dict] = None
+            Additional parameters to pass to the charting library.
+            Only valid if `openbb-charting` is installed.
+            Valid keys are:
+            - `title`: The title of the chart.
+            - `xtitle`: Title for the x-axis.
+            - `ytitle`: Title for the y-axis.
+            - `ztitle`: Title for the z-axis.
+            - `colorscale`: The colorscale to use for the chart.
+            - `layout_kwargs`: Additional dictionary to be passed to `fig.update_layout` before output.
+
+        Returns
+        -------
+        OBBject[list]
+            An OBBject containing the processed options data.
+            Results are a list of dictionaries.
+        """  # noqa: E501
+
+        return self._run(
+            "/derivatives/options/surface",
+            **filter_inputs(
+                data=data,
+                target=target,
+                underlying_price=underlying_price,
+                option_type=option_type,
+                dte_min=dte_min,
+                dte_max=dte_max,
+                moneyness=moneyness,
+                strike_min=strike_min,
+                strike_max=strike_max,
+                oi=oi,
+                volume=volume,
+                theme=theme,
+                chart_params=chart_params,
+                data_processing=True,
+                **kwargs,
+            ),
         )
 
     @exception_handler
@@ -461,5 +594,5 @@ class ROUTER_derivatives_options(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-            )
+            ),
         )
