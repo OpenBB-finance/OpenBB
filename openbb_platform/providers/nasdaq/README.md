@@ -50,7 +50,7 @@ This package includes a standalone Workspace application for viewing market cale
 Launch it from the command line, with the environment active, by entering:
 
 ```sh
-openbb-api --app openbb_nasdaq.app:app --factory
+openbb-api --app openbb_nasdaq.app:main --factory
 ```
 
 This will start the FastAPI application via Uvicorn and serve the configuration files to Workspace when added as a backend data source.
