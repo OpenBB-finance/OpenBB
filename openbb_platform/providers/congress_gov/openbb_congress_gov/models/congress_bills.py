@@ -1,47 +1,58 @@
 """Congress Bills Model."""
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, field_validator
 
 
 class CongressBillsQueryParams(QueryParams):
     """Congress Bills Query Parameters."""
+
+    __json_schema_extra__ = {
+        "format": {
+            "x-widget_config": {
+                "exclude": True,
+            },
+        },
+        "offset": {
+            "x-widget_config": {
+                "exclude": True,
+            },
+        },
+        "sort": {"choices": ["asc", "desc"]},
+    }
     
-    congress: Optional[int] = Field(
-        default=None,
-        description="Filter by congress number (e.g. 117, 118)."
+    format: Literal["json", "xml"] = Field(
+        default="json",
+        description="The data format. Value can be xml or json."
     )
-    bill_type: Optional[str] = Field(
-        default=None,
-        description="Filter by bill type (e.g. 'hr', 's', 'hjres', 'sjres')."
-    )
-    limit: Optional[int] = Field(
+    limit: int = Field(
         default=100,
-        description=QUERY_DESCRIPTIONS.get("limit", "") + " Max is 250."
+        description="The number of records returned. The maximum limit is 250."
     )
     offset: Optional[int] = Field(
         default=0,
-        description="Number of results to skip."
+        description="The starting record returned. 0 is the first record."
     )
     from_date: Optional[dateType] = Field(
         default=None,
-        description="Filter bills updated on or after this date."
+        description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
     to_date: Optional[dateType] = Field(
         default=None,
-        description="Filter bills updated on or before this date."
+        description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
-    sort: Optional[str] = Field(
-        default="updateDate+desc",
-        description="Sort order (updateDate+asc or updateDate+desc)."
+    sort: Literal["asc", "desc"] = Field(
+        default="asc",
+        description="Sort by update date in Congress.gov.",
+        json_schema_extra={"choices": ["asc", "desc"]},
     )
 
     @field_validator("limit")
@@ -52,54 +63,51 @@ class CongressBillsQueryParams(QueryParams):
             raise ValueError("Limit cannot exceed 250")
         return v
 
+    @field_validator("format")
+    @classmethod
+    def validate_format(cls, v: str) -> str:
+        """Validate format parameter."""
+        if v and v not in ["json", "xml"]:
+            raise ValueError("Format must be either 'json' or 'xml'")
+        return v
+
+    @field_validator("sort")
+    @classmethod
+    def validate_sort(cls, v: str) -> str:
+        """Validate sort parameter."""
+        if v and v not in ["asc", "desc"]:
+            raise ValueError(
+                "Sort must be either 'asc' or 'desc'"
+            )
+        return v
+
+
+class LatestAction(Data):
+    """Latest Action Data for Congress Bills."""
+    
+    actionDate: Optional[dateType] = Field(
+        default=None,
+        description="Date of the latest action on the bill."
+    )
+    text: Optional[str] = Field(
+        default=None,
+        description="Description of the latest action on the bill."
+    )
+
 
 class CongressBillsData(Data):
     """Congress Bills Data."""
     
-    congress: Optional[int] = Field(
-        default=None,
-        description="The congress session number."
-    )
-    number: Optional[str] = Field(
-        default=None,
-        description="The bill number."
-    )
-    bill_type: Optional[str] = Field(
-        default=None,
-        description="The type of bill (e.g., HR, S)."
-    )
-    title: Optional[str] = Field(
-        default=None,
-        description="The title of the bill."
-    )
-    latest_action_date: Optional[dateType] = Field(
-        default=None,
-        description="Date of the latest action on the bill."
-    )
-    latest_action_text: Optional[str] = Field(
-        default=None,
-        description="Description of the latest action on the bill."
-    )
-    origin_chamber: Optional[str] = Field(
-        default=None,
-        description="The chamber where the bill originated."
-    )
-    origin_chamber_code: Optional[str] = Field(
-        default=None,
-        description="The chamber code where the bill originated."
-    )
-    update_date: Optional[dateType] = Field(
-        default=None,
-        description="The date the bill was last updated."
-    )
-    update_date_including_text: Optional[dateType] = Field(
-        default=None,
-        description="The date the bill text was last updated."
-    )
-    url: Optional[str] = Field(
-        default=None,
-        description="URL to the bill on congress.gov."
-    )
+    congress: int = Field(description="The congress session number.")
+    latestAction: LatestAction = Field(description="Latest action information for the bill.")
+    number: str = Field(description="The bill number.")
+    originChamber: str = Field(description="The chamber where the bill originated.")
+    originChamberCode: str = Field(description="The chamber code where the bill originated.")
+    title: str = Field(description="The title of the bill.")
+    type: str = Field(description="The type of bill (e.g., HR, S).")
+    updateDate: dateType = Field(description="The date the bill was last updated.")
+    updateDateIncludingText: str = Field(description="The date and time the bill text was last updated.")
+    url: str = Field(description="URL to the bill on congress.gov.")
 
 
 class CongressBillsFetcher(
@@ -124,27 +132,24 @@ class CongressBillsFetcher(
         """Extract data from the Congress API."""
         api_key = credentials.get("api_key") if credentials else ""
         
-        if query.congress and query.bill_type:
-            url = (
-                f"https://api.congress.gov/v3/bill/"
-                f"{query.congress}/{query.bill_type}"
-            )
-        else:
-            url = "https://api.congress.gov/v3/bill"
+        url = "https://api.congress.gov/v3/bill"
         
         params = {
             "api_key": api_key,
-            "format": "json",
-            "offset": query.offset,
+            "format": query.format,
             "limit": query.limit,
-            "sort": query.sort
         }
         
+        if query.offset is not None:
+            params["offset"] = query.offset
+            
         if query.from_date:
-            params["fromDateTime"] = f"{query.from_date}T00:00:00Z"
+            params["fromDateTime"] = query.from_date.strftime("%Y-%m-%dT00:00:00Z")
         if query.to_date:
-            params["toDateTime"] = f"{query.to_date}T00:00:00Z"
+            params["toDateTime"] = query.to_date.strftime("%Y-%m-%dT00:00:00Z")
         
+        params["sort"] = "updateDate+asc" if query.sort == "asc" else "updateDate+desc"
+
         response = await amake_request(url, params=params, **kwargs)
         
         if not response or not response.get("bills"):
@@ -166,15 +171,17 @@ class CongressBillsFetcher(
             
             transformed_bill = CongressBillsData(
                 congress=bill.get("congress"),
+                latestAction=LatestAction(
+                    actionDate=latest_action.get("actionDate"),
+                    text=latest_action.get("text")
+                ) if latest_action else None,
                 number=bill.get("number"),
-                bill_type=bill.get("type"),
+                originChamber=bill.get("originChamber"),
+                originChamberCode=bill.get("originChamberCode"),
                 title=bill.get("title"),
-                latest_action_date=latest_action.get("actionDate"),
-                latest_action_text=latest_action.get("text"),
-                origin_chamber=bill.get("originChamber"),
-                origin_chamber_code=bill.get("originChamberCode"),
-                update_date=bill.get("updateDate"),
-                update_date_including_text=bill.get("updateDateIncludingText"),
+                type=bill.get("type"),
+                updateDate=bill.get("updateDate"),
+                updateDateIncludingText=bill.get("updateDateIncludingText"),
                 url=bill.get("url")
             )
             transformed_data.append(transformed_bill)
