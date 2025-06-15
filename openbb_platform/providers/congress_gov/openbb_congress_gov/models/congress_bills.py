@@ -38,10 +38,10 @@ class CongressBillsQueryParams(QueryParams):
     offset: Optional[int] = Field(
         default=None, description="The starting record returned. 0 is the first record."
     )
-    from_date: Optional[dateType] = Field(
+    start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
-    to_date: Optional[dateType] = Field(
+    end_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
     sort: Literal["asc", "desc"] = Field(
@@ -138,10 +138,10 @@ class CongressBillsFetcher(
         if query.offset is not None:
             params["offset"] = query.offset
 
-        if query.from_date:
-            params["fromDateTime"] = query.from_date.strftime("%Y-%m-%dT00:00:00Z")
-        if query.to_date:
-            params["toDateTime"] = query.to_date.strftime("%Y-%m-%dT00:00:00Z")
+        if query.start_date:
+            params["fromDateTime"] = query.start_date.strftime("%Y-%m-%dT00:00:00Z")
+        if query.end_date:
+            params["toDateTime"] = query.end_date.strftime("%Y-%m-%dT00:00:00Z")
 
         params["sort"] = "updateDate+asc" if query.sort == "asc" else "updateDate+desc"
 
