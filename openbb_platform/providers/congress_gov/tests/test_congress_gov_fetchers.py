@@ -1,8 +1,8 @@
 """Congress.gov Fetchers tests."""
 
 import pytest
-from openbb_congress_gov.models.congress_bills import CongressBillsFetcher
 from openbb_core.app.service.user_service import UserService
+from openbb_congress_gov.models.congress_bills import CongressBillsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"

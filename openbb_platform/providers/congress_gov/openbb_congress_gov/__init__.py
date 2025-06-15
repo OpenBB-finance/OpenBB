@@ -6,7 +6,7 @@ from openbb_congress_gov.models.congress_bills import CongressBillsFetcher
 congress_gov_provider = Provider(
     name="congress_gov",
     website="https://api.congress.gov",
-    description="""The Congress.gov API provides legislative data from the U.S. 
+    description="""The Congress.gov API provides legislative data from the U.S.
 Congress, including bills, summaries, and related information. The Federal 
 Register API provides access to presidential documents and regulations.""",
     credentials=["api_key"],
