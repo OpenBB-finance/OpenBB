@@ -1,5 +1,7 @@
 """Congress Bills Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional
 
