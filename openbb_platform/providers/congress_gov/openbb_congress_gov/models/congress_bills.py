@@ -92,14 +92,14 @@ class CongressBillsData(Data):
         description="Latest action information for the bill."
     )
     number: str = Field(description="The bill number.")
-    originChamber: str = Field(description="The chamber where the bill originated.")
-    originChamberCode: str = Field(
+    origin_chamber: str = Field(description="The chamber where the bill originated.")
+    origin_chamber_code: str = Field(
         description="The chamber code where the bill originated."
     )
     title: str = Field(description="The title of the bill.")
     type: str = Field(description="The type of bill (e.g., HR, S).")
-    updateDate: dateType = Field(description="The date the bill was last updated.")
-    updateDateIncludingText: str = Field(
+    update_date: dateType = Field(description="The date the bill was last updated.")
+    update_date_including_text: str = Field(
         description="The date and time the bill text was last updated."
     )
     url: str = Field(description="URL to the bill on congress.gov.")
@@ -173,12 +173,12 @@ class CongressBillsFetcher(
                     else None
                 ),
                 number=bill.get("number"),
-                originChamber=bill.get("originChamber"),
-                originChamberCode=bill.get("originChamberCode"),
+                origin_chamber=bill.get("originChamber"),
+                origin_chamber_code=bill.get("originChamberCode"),
                 title=bill.get("title"),
                 type=bill.get("type"),
-                updateDate=bill.get("updateDate"),
-                updateDateIncludingText=bill.get("updateDateIncludingText"),
+                update_date=bill.get("updateDate"),
+                update_date_including_text=bill.get("updateDateIncludingText"),
                 url=bill.get("url"),
             )
             transformed_data.append(transformed_bill)
