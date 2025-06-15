@@ -14,6 +14,7 @@
                 "equity@1.4.1",
                 "etf@1.4.1",
                 "fixedincome@1.4.3",
+                "government@1.4.2",
                 "index@1.4.1",
                 "news@1.4.1",
                 "regulators@1.4.2"
@@ -22,6 +23,7 @@
                 "benzinga@1.4.1",
                 "bls@1.1.2",
                 "cftc@1.1.1",
+                "congress_gov@1.0.0",
                 "econdb@1.3.1",
                 "federal_reserve@1.4.3",
                 "fmp@1.4.2",
@@ -3064,7 +3066,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], list[Union[str, date]]]",
+                        "type": "Union[Union[date, str], list[Union[date, str]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): yfinance.",
                         "default": null,
                         "optional": true,
@@ -3762,931 +3764,6 @@
             "model": "GdpReal",
             "openapi_extra": {
                 "model": "GdpReal"
-            }
-        },
-        "/economy/shipping/port_info": {
-            "deprecated": {
-                "flag": null,
-                "message": null
-            },
-            "description": "Get general metadata and statistics for all ports from a given provider.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.shipping.port_info(provider='imf')\nobb.economy.shipping.port_info(provider='imf', continent=asia_pacific)\n```\n\n",
-            "parameters": {
-                "standard": [],
-                "imf": [
-                    {
-                        "name": "continent",
-                        "type": "Literal['north_america', 'europe', 'asia_pacific', 'south_america', 'africa']",
-                        "description": "Filter by continent. This parameter is ignored when a `country` is provided.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "country",
-                        "type": "Literal['ABW', 'AGO', 'AIA', 'ALB', 'ARE', 'ARG', 'ASM', 'ATG', 'AUS', 'AZE', 'BEL', 'BEN', 'BES', 'BGD', 'BGR', 'BHR', 'BHS', 'BLM', 'BLZ', 'BRA', 'BRB', 'BRN', 'CAN', 'CHL', 'CHN', 'CIV', 'CMR', 'COD', 'COG', 'COK', 'COL', 'COM', 'CPV', 'CRI', 'CUB', 'CUW', 'CYM', 'CYP', 'DEU', 'DJI', 'DMA', 'DNK', 'DOM', 'DZA', 'ECU', 'EGY', 'ERI', 'ESP', 'EST', 'FIN', 'FJI', 'FRA', 'FRO', 'FSM', 'GAB', 'GBR', 'GEO', 'GHA', 'GIB', 'GIN', 'GLP', 'GMB', 'GNB', 'GNQ', 'GRC', 'GRD', 'GTM', 'GUF', 'GUM', 'GUY', 'HKG', 'HND', 'HRV', 'HTI', 'IDN', 'IND', 'IRL', 'IRN', 'IRQ', 'ISL', 'ISR', 'ITA', 'JAM', 'JOR', 'JPN', 'KAZ', 'KEN', 'KHM', 'KIR', 'KNA', 'KOR', 'KWT', 'LBN', 'LBR', 'LBY', 'LCA', 'LKA', 'LTU', 'LVA', 'MAC', 'MAF', 'MAR', 'MDA', 'MDG', 'MDV', 'MEX', 'MHL', 'MLT', 'MMR', 'MNE', 'MNP', 'MOZ', 'MRT', 'MSR', 'MTQ', 'MUS', 'MYS', 'MYT', 'NAM', 'NCL', 'NGA', 'NIC', 'NLD', 'NOR', 'NRU', 'NZL', 'OMN', 'PAK', 'PAN', 'PER', 'PHL', 'PLW', 'PNG', 'POL', 'PRI', 'PRT', 'PYF', 'QAT', 'REU', 'ROU', 'RUS', 'SAU', 'SDN', 'SEN', 'SGP', 'SLB', 'SLE', 'SLV', 'SOM', 'STP', 'SUR', 'SVN', 'SWE', 'SXM', 'SYC', 'SYR', 'TCA', 'TGO', 'THA', 'TKM', 'TLS', 'TON', 'TTO', 'TUN', 'TUR', 'TUV', 'TWN', 'TZA', 'UKR', 'URY', 'USA', 'VCT', 'VEN', 'VGB', 'VIR', 'VNM', 'VUT', 'WSM', 'YEM', 'ZAF']",
-                        "description": "Country to focus on. Enter as a 3-letter ISO country code. This parameter supersedes `continent` if both are provided.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "limit",
-                        "type": "int",
-                        "description": "Limit the number of results returned. Limit is determined by the annual average number of vessels transiting through the port. If not provided, all ports are returned.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "list[PortInfo]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['imf']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[list[Warning_]]",
-                        "description": "list of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [
-                    {
-                        "name": "port_code",
-                        "type": "str",
-                        "description": "Unique ID assigned to the port by the source.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ],
-                "imf": [
-                    {
-                        "name": "port_code",
-                        "type": "str",
-                        "description": "Unique ID assigned to the port.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "continent",
-                        "type": "str",
-                        "description": "Continent where the port is located.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "country",
-                        "type": "str",
-                        "description": "Country where the port is located.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "country_code",
-                        "type": "str",
-                        "description": "3-letter ISO code of the country where the port is located.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "port_name",
-                        "type": "str",
-                        "description": "Port name.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "port_full_name",
-                        "type": "str",
-                        "description": "Full name of the port.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "latitude",
-                        "type": "float",
-                        "description": "Latitude of the port.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "longitude",
-                        "type": "float",
-                        "description": "Longitude of the port.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_total",
-                        "type": "int",
-                        "description": "Yearly average number of all ships transiting through the port. Estimated using AIS data beginning 2019. The total is calculated over the sum of vessel_count_container, vessel_count_dry_bulk, vessel_count_general_cargo, vessel_count_roro and vessel_count_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_tanker",
-                        "type": "int",
-                        "description": "Yearly average number of tankers transiting through the port. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_container",
-                        "type": "int",
-                        "description": "Yearly average number of containers transiting through the port. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_general_cargo",
-                        "type": "int",
-                        "description": "Yearly average number of general cargo ships transiting through the port. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_dry_bulk",
-                        "type": "int",
-                        "description": "Yearly average number of dry bulk carriers transiting through the port. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_roro",
-                        "type": "int",
-                        "description": "Yearly average number of Ro-Ro ships transiting through the port. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "industry_top1",
-                        "type": "str",
-                        "description": "First dominant traded industries based on the volume of goods estimated to flow through the port.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "industry_top2",
-                        "type": "str",
-                        "description": "Second dominant traded industries based on the volume of goods estimated to flow through the port.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "industry_top3",
-                        "type": "str",
-                        "description": "Third dominant traded industries based on the volume of goods estimated to flow through the port.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "share_country_maritime_import",
-                        "type": "float",
-                        "description": "Share of the total maritime imports of the country that are estimated to flow through the port.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "share_country_maritime_export",
-                        "type": "float",
-                        "description": "Share of the total maritime exports of the country that are estimated to flow through the port.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ]
-            },
-            "model": "PortInfo",
-            "openapi_extra": {
-                "model": "PortInfo"
-            }
-        },
-        "/economy/shipping/port_volume": {
-            "deprecated": {
-                "flag": null,
-                "message": null
-            },
-            "description": "Daily port calls and estimates of trading volumes for ports around the world.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Get average dwelling times and TEU volumes from the top ports.\nobb.economy.shipping.port_volume(provider='econdb')\n# Get daily port calls and estimated trading volumes for specific ports Get the list of available ports with `openbb shipping port_info`\nobb.economy.shipping.port_volume(provider='imf', port_code=rotterdam,singapore)\n# Get data for all ports in a specific country. Use the 3-letter ISO country code.\nobb.economy.shipping.port_volume(provider='imf', country=GBR)\n```\n\n",
-            "parameters": {
-                "standard": [
-                    {
-                        "name": "start_date",
-                        "type": "date",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "econdb": [],
-                "imf": [
-                    {
-                        "name": "port_code",
-                        "type": "Union[str, list[str]]",
-                        "description": "Port code to filter results by a specific port. This parameter is ignored if `country` parameter is provided. To get a list of available ports, use `obb.economy.shipping.port_info()`. Multiple items allowed for provider(s): imf.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "country",
-                        "type": "Literal['ABW', 'AGO', 'AIA', 'ALB', 'ARE', 'ARG', 'ASM', 'ATG', 'AUS', 'AZE', 'BEL', 'BEN', 'BES', 'BGD', 'BGR', 'BHR', 'BHS', 'BLM', 'BLZ', 'BRA', 'BRB', 'BRN', 'CAN', 'CHL', 'CHN', 'CIV', 'CMR', 'COD', 'COG', 'COK', 'COL', 'COM', 'CPV', 'CRI', 'CUB', 'CUW', 'CYM', 'CYP', 'DEU', 'DJI', 'DMA', 'DNK', 'DOM', 'DZA', 'ECU', 'EGY', 'ERI', 'ESP', 'EST', 'FIN', 'FJI', 'FRA', 'FRO', 'FSM', 'GAB', 'GBR', 'GEO', 'GHA', 'GIB', 'GIN', 'GLP', 'GMB', 'GNB', 'GNQ', 'GRC', 'GRD', 'GTM', 'GUF', 'GUM', 'GUY', 'HKG', 'HND', 'HRV', 'HTI', 'IDN', 'IND', 'IRL', 'IRN', 'IRQ', 'ISL', 'ISR', 'ITA', 'JAM', 'JOR', 'JPN', 'KAZ', 'KEN', 'KHM', 'KIR', 'KNA', 'KOR', 'KWT', 'LBN', 'LBR', 'LBY', 'LCA', 'LKA', 'LTU', 'LVA', 'MAC', 'MAF', 'MAR', 'MDA', 'MDG', 'MDV', 'MEX', 'MHL', 'MLT', 'MMR', 'MNE', 'MNP', 'MOZ', 'MRT', 'MSR', 'MTQ', 'MUS', 'MYS', 'MYT', 'NAM', 'NCL', 'NGA', 'NIC', 'NLD', 'NOR', 'NRU', 'NZL', 'OMN', 'PAK', 'PAN', 'PER', 'PHL', 'PLW', 'PNG', 'POL', 'PRI', 'PRT', 'PYF', 'QAT', 'REU', 'ROU', 'RUS', 'SAU', 'SDN', 'SEN', 'SGP', 'SLB', 'SLE', 'SLV', 'SOM', 'STP', 'SUR', 'SVN', 'SWE', 'SXM', 'SYC', 'SYR', 'TCA', 'TGO', 'THA', 'TKM', 'TLS', 'TON', 'TTO', 'TUN', 'TUR', 'TUV', 'TWN', 'TZA', 'UKR', 'URY', 'USA', 'VCT', 'VEN', 'VGB', 'VIR', 'VNM', 'VUT', 'WSM', 'YEM', 'ZAF']",
-                        "description": "Country to focus on. Enter as a 3-letter ISO country code. This parameter supersedes `continent` if both are provided.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "list[PortVolume]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['econdb', 'imf']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[list[Warning_]]",
-                        "description": "list of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [
-                    {
-                        "name": "date",
-                        "type": "Union[date, str]",
-                        "description": "The date of the data.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "port_code",
-                        "type": "str",
-                        "description": "Port code.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "port_name",
-                        "type": "str",
-                        "description": "Port name.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "country",
-                        "type": "str",
-                        "description": "Country where the port is located.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "econdb": [
-                    {
-                        "name": "export_dwell_time",
-                        "type": "float",
-                        "description": "EconDB model estimate for the average number of days from when a container enters the terminal gates until it is loaded on a vessel. High dwelling times can indicate vessel delays.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "import_dwell_time",
-                        "type": "float",
-                        "description": "EconDB model estimate for the average number of days from when a container is discharged from a vessel until it exits the terminal gates. High dwelling times can indicate trucking or port congestion.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "import_teu",
-                        "type": "int",
-                        "description": "EconDB model estimate for the number of twenty-foot equivalent units (TEUs) of containers imported through the port.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "export_teu",
-                        "type": "int",
-                        "description": "EconDB model estimate for the number of twenty-foot equivalent units (TEUs) of containers exported through the port.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "imf": [
-                    {
-                        "name": "country_code",
-                        "type": "str",
-                        "description": "3-letter ISO country code of the country where the port is located.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls",
-                        "type": "int",
-                        "description": "Total number of ships entering the port at this date. This is the sum of portcalls_container, portcalls_dry_bulk, portcalls_general_cargo, portcalls_roro and portcalls_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_tanker",
-                        "type": "int",
-                        "description": "Number of tankers transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_container",
-                        "type": "int",
-                        "description": "Number of containers transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_general_cargo",
-                        "type": "int",
-                        "description": "Number of general cargo ships transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_dry_bulk",
-                        "type": "int",
-                        "description": "Number of dry bulk carriers transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_roro",
-                        "type": "int",
-                        "description": "Number of Ro-Ro ships transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of all ships entering the port at this date. This is the sum of import_container, import_dry_bulk, import_general_cargo, import_roro and import_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_cargo",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of all ships (excluding tankers) entering the port at this date. This is the sum of import_container, import_dry_bulk, import_general_cargo and import_roro.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_tanker",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of tankers entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_container",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of all container ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_general_cargo",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of general cargo ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_dry_bulk",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of dry bulk carriers entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_roro",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of Ro-Ro ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of all ships entering the port at this date. This is the sum of export_container, export_dry_bulk, export_general_cargo, export_roro and export_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_cargo",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of all ships (excluding tankers) entering the port at this date. This is the sum of export_container, export_dry_bulk, export_general_cargo and export_roro.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_tanker",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of tankers entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_container",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of all container ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_general_cargo",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of general cargo ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_dry_bulk",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of dry bulk carriers entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_roro",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of Ro-Ro ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ]
-            },
-            "model": "PortVolume",
-            "openapi_extra": {
-                "model": "PortVolume"
-            }
-        },
-        "/economy/shipping/chokepoint_info": {
-            "deprecated": {
-                "flag": null,
-                "message": null
-            },
-            "description": "Get general metadata and statistics for all maritime chokepoint locations from a given provider.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.shipping.chokepoint_info(provider='imf')\n```\n\n",
-            "parameters": {
-                "standard": [],
-                "imf": [
-                    {
-                        "name": "theme",
-                        "type": "Literal['dark', 'light']",
-                        "description": "Theme for the map. Only valid if `openbb-charting` is installed and `chart` parameter is set to `true`. Default is the 'chart_style' setting in `user_settings.json`, if available, otherwise 'dark'.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "list[MaritimeChokePointInfo]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['imf']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[list[Warning_]]",
-                        "description": "list of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [
-                    {
-                        "name": "chokepoint_code",
-                        "type": "str",
-                        "description": "Unique ID assigned to the chokepoint by the source.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ],
-                "imf": [
-                    {
-                        "name": "name",
-                        "type": "str",
-                        "description": "Port name.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "latitude",
-                        "type": "float",
-                        "description": "Latitude of the chokepoint location.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "longitude",
-                        "type": "float",
-                        "description": "Longitude of the chokepoint location.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_total",
-                        "type": "int",
-                        "description": "Yearly average number of all ships transiting through the chokepoint. Estimated using AIS data beginning 2019. The total is calculated over the sum of vessel_count_container, vessel_count_dry_bulk, vessel_count_general_cargo, vessel_count_roro and vessel_count_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_tanker",
-                        "type": "int",
-                        "description": "Yearly average number of tankers transiting through the chokepoint. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_container",
-                        "type": "int",
-                        "description": "Yearly average number of containers transiting through the chokepoint. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_general_cargo",
-                        "type": "int",
-                        "description": "Yearly average number of general cargo ships transiting through the chokepoint. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_dry_bulk",
-                        "type": "int",
-                        "description": "Yearly average number of dry bulk carriers transiting through the chokepoint. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessel_count_roro",
-                        "type": "int",
-                        "description": "Yearly average number of Ro-Ro ships transiting through the chokepoint. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "industry_top1",
-                        "type": "str",
-                        "description": "First dominant traded industries based on the volume of goods estimated to flow through the chokepoint.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "industry_top2",
-                        "type": "str",
-                        "description": "Second dominant traded industries based on the volume of goods estimated to flow through the chokepoint.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "industry_top3",
-                        "type": "str",
-                        "description": "Third dominant traded industries based on the volume of goods estimated to flow through the chokepoint.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
-            },
-            "model": "MaritimeChokePointInfo",
-            "openapi_extra": {
-                "model": "MaritimeChokePointInfo"
-            }
-        },
-        "/economy/shipping/chokepoint_volume": {
-            "deprecated": {
-                "flag": null,
-                "message": null
-            },
-            "description": "Daily transit calls and estimates of transit trade volumes for shipping lane chokepoints around the world.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.shipping.chokepoint_volume(provider='imf')\nobb.economy.shipping.chokepoint_volume(provider='imf', chokepoint=suez_canal,panama_canal)\n```\n\n",
-            "parameters": {
-                "standard": [
-                    {
-                        "name": "start_date",
-                        "type": "Union[date, str]",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "imf": [
-                    {
-                        "name": "chokepoint",
-                        "type": "Union[str, list[str]]",
-                        "description": "Name of the chokepoint. Use `None` for all chokepoints. Choices are: \n    - suez_canal\n    - panama_canal\n    - bosporus_strait\n    - bab_el_mandeb_strait\n    - malacca_strait\n    - strait_of_hormuz\n    - cape_of_good_hope\n    - gibraltar_strait\n    - dover_strait\n    - oresund_strait\n    - taiwan_strait\n    - korea_strait\n    - tsugaru_strait\n    - luzon_strait\n    - lombok_strait\n    - ombai_strait\n    - bohai_strait\n    - torres_strait\n    - sunda_strait\n    - makassar_strait\n    - magellan_strait\n    - yucatan_channel\n    - windward_passage\n    - mona_passage Multiple items allowed for provider(s): imf.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "list[MaritimeChokePointVolume]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['imf']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[list[Warning_]]",
-                        "description": "list of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [
-                    {
-                        "name": "date",
-                        "type": "Union[date, str]",
-                        "description": "The date of the data.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ],
-                "imf": [
-                    {
-                        "name": "chokepoint",
-                        "type": "str",
-                        "description": "Name of the chokepoint.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessels_total",
-                        "type": "int",
-                        "description": "Number of all ships transiting through the chokepoint on that date. The total is calculated over the sum of vessels_container, vessels_dry_bulk, vessels_general_cargo, vessels_roro and vessels_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessels_cargo",
-                        "type": "int",
-                        "description": "Total number of ships (excluding tankers) transiting through the chokepoint at this date. This is the sum of vessels_container, vessels_dry_bulk, vessels_general_cargo and vessels_roro.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessels_tanker",
-                        "type": "int",
-                        "description": "Number of tankers transiting through the chokepoint on that date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessels_container",
-                        "type": "int",
-                        "description": "Number of containers transiting through the chokepoint on that date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessels_general_cargo",
-                        "type": "int",
-                        "description": "Number of general cargo ships transiting through the chokepoint on that date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessels_dry_bulk",
-                        "type": "int",
-                        "description": "Yearly average number of dry bulk carriers transiting through the chokepoint. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "vessels_roro",
-                        "type": "int",
-                        "description": "Yearly average number of Ro-Ro ships transiting through the chokepoint. Estimated using AIS data beginning 2019.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "capacity_total",
-                        "type": "float",
-                        "description": "Total trade volume (in metric tons) of all ships transiting through the chokepoint at this date. This is the sum of capacity_container, capacity_dry_bulk, capacity_general_cargo, capacity_roro and capacity_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "capacity_cargo",
-                        "type": "float",
-                        "description": "Total trade volume (in metric tons) of all ships (excluding tankers) transiting through the chokepoint at this date. This is the sum of capacity_container, capacity_dry_bulk, capacity_general_cargo and capacity_roro.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "capacity_tanker",
-                        "type": "float",
-                        "description": "Total trade volume (in metric tons) of tankers transiting through the chokepoint at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "capacity_container",
-                        "type": "float",
-                        "description": "Total trade volume (in metric tons) of containers transiting through the chokepoint at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "capacity_general_cargo",
-                        "type": "float",
-                        "description": "Total trade volume (in metric tons) of general cargo Vessels transiting through the chokepoint at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "capacity_dry_bulk",
-                        "type": "float",
-                        "description": "Total trade volume (in metric tons) of dry bulk carriers transiting through the chokepoint at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "capacity_roro",
-                        "type": "float",
-                        "description": "Total trade volume (in metric tons) of Ro-Ro ships transiting through the chokepoint at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ]
-            },
-            "model": "MaritimeChokePointVolume",
-            "openapi_extra": {
-                "model": "MaritimeChokePointVolume"
             }
         },
         "/economy/survey/bls_series": {
@@ -8295,9 +7372,6 @@
             },
             "model": "STIR",
             "openapi_extra": {
-                "widget_config": {
-                    "exclude": true
-                },
                 "model": "STIR"
             }
         },
@@ -8406,9 +7480,6 @@
             },
             "model": "LTIR",
             "openapi_extra": {
-                "widget_config": {
-                    "exclude": true
-                },
                 "model": "LTIR"
             }
         },
@@ -10175,9 +9246,6 @@
             },
             "model": "ImmediateInterestRate",
             "openapi_extra": {
-                "widget_config": {
-                    "exclude": true
-                },
                 "model": "ImmediateInterestRate"
             }
         },
@@ -11037,16 +10105,16 @@
         },
         "/economy/port_volume": {
             "deprecated": {
-                "flag": true,
-                "message": "This endpoint has been moved and will be removed in a future version. Use, `/economy/shipping/port_volume`, instead. Deprecated in OpenBB Platform V4.4 to be removed in V4.5."
+                "flag": null,
+                "message": null
             },
             "description": "Get average dwelling times and TEU volumes from the top ports.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.port_volume(provider='econdb')\n# Get daily port calls and estimated trading volumes for specific ports Get the list of available ports with `openbb shipping port_info`\nobb.economy.port_volume(provider='imf', port_code=rotterdam,singapore)\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.port_volume(provider='econdb')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
                         "name": "start_date",
-                        "type": "date",
+                        "type": "Union[date, str]",
                         "description": "Start date of the data, in YYYY-MM-DD format.",
                         "default": null,
                         "optional": true,
@@ -11061,25 +10129,7 @@
                         "choices": null
                     }
                 ],
-                "econdb": [],
-                "imf": [
-                    {
-                        "name": "port_code",
-                        "type": "Union[str, list[str]]",
-                        "description": "Port code to filter results by a specific port. This parameter is ignored if `country` parameter is provided. To get a list of available ports, use `obb.economy.shipping.port_info()`. Multiple items allowed for provider(s): imf.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "country",
-                        "type": "Literal['ABW', 'AGO', 'AIA', 'ALB', 'ARE', 'ARG', 'ASM', 'ATG', 'AUS', 'AZE', 'BEL', 'BEN', 'BES', 'BGD', 'BGR', 'BHR', 'BHS', 'BLM', 'BLZ', 'BRA', 'BRB', 'BRN', 'CAN', 'CHL', 'CHN', 'CIV', 'CMR', 'COD', 'COG', 'COK', 'COL', 'COM', 'CPV', 'CRI', 'CUB', 'CUW', 'CYM', 'CYP', 'DEU', 'DJI', 'DMA', 'DNK', 'DOM', 'DZA', 'ECU', 'EGY', 'ERI', 'ESP', 'EST', 'FIN', 'FJI', 'FRA', 'FRO', 'FSM', 'GAB', 'GBR', 'GEO', 'GHA', 'GIB', 'GIN', 'GLP', 'GMB', 'GNB', 'GNQ', 'GRC', 'GRD', 'GTM', 'GUF', 'GUM', 'GUY', 'HKG', 'HND', 'HRV', 'HTI', 'IDN', 'IND', 'IRL', 'IRN', 'IRQ', 'ISL', 'ISR', 'ITA', 'JAM', 'JOR', 'JPN', 'KAZ', 'KEN', 'KHM', 'KIR', 'KNA', 'KOR', 'KWT', 'LBN', 'LBR', 'LBY', 'LCA', 'LKA', 'LTU', 'LVA', 'MAC', 'MAF', 'MAR', 'MDA', 'MDG', 'MDV', 'MEX', 'MHL', 'MLT', 'MMR', 'MNE', 'MNP', 'MOZ', 'MRT', 'MSR', 'MTQ', 'MUS', 'MYS', 'MYT', 'NAM', 'NCL', 'NGA', 'NIC', 'NLD', 'NOR', 'NRU', 'NZL', 'OMN', 'PAK', 'PAN', 'PER', 'PHL', 'PLW', 'PNG', 'POL', 'PRI', 'PRT', 'PYF', 'QAT', 'REU', 'ROU', 'RUS', 'SAU', 'SDN', 'SEN', 'SGP', 'SLB', 'SLE', 'SLV', 'SOM', 'STP', 'SUR', 'SVN', 'SWE', 'SXM', 'SYC', 'SYR', 'TCA', 'TGO', 'THA', 'TKM', 'TLS', 'TON', 'TTO', 'TUN', 'TUR', 'TUV', 'TWN', 'TZA', 'UKR', 'URY', 'USA', 'VCT', 'VEN', 'VGB', 'VIR', 'VNM', 'VUT', 'WSM', 'YEM', 'ZAF']",
-                        "description": "Country to focus on. Enter as a 3-letter ISO country code. This parameter supersedes `continent` if both are provided.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
+                "econdb": []
             },
             "returns": {
                 "OBBject": [
@@ -11090,7 +10140,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['econdb', 'imf']]",
+                        "type": "Optional[Literal['econdb']]",
                         "description": "Provider name."
                     },
                     {
@@ -11178,183 +10228,10 @@
                         "optional": true,
                         "choices": null
                     }
-                ],
-                "imf": [
-                    {
-                        "name": "country_code",
-                        "type": "str",
-                        "description": "3-letter ISO country code of the country where the port is located.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls",
-                        "type": "int",
-                        "description": "Total number of ships entering the port at this date. This is the sum of portcalls_container, portcalls_dry_bulk, portcalls_general_cargo, portcalls_roro and portcalls_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_tanker",
-                        "type": "int",
-                        "description": "Number of tankers transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_container",
-                        "type": "int",
-                        "description": "Number of containers transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_general_cargo",
-                        "type": "int",
-                        "description": "Number of general cargo ships transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_dry_bulk",
-                        "type": "int",
-                        "description": "Number of dry bulk carriers transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "portcalls_roro",
-                        "type": "int",
-                        "description": "Number of Ro-Ro ships transiting through the chokepoint or making a port call.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of all ships entering the port at this date. This is the sum of import_container, import_dry_bulk, import_general_cargo, import_roro and import_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_cargo",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of all ships (excluding tankers) entering the port at this date. This is the sum of import_container, import_dry_bulk, import_general_cargo and import_roro.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_tanker",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of tankers entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_container",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of all container ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_general_cargo",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of general cargo ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_dry_bulk",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of dry bulk carriers entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "imports_roro",
-                        "type": "float",
-                        "description": "Total import volume (in metric tons) of Ro-Ro ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of all ships entering the port at this date. This is the sum of export_container, export_dry_bulk, export_general_cargo, export_roro and export_tanker.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_cargo",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of all ships (excluding tankers) entering the port at this date. This is the sum of export_container, export_dry_bulk, export_general_cargo and export_roro.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_tanker",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of tankers entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_container",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of all container ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_general_cargo",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of general cargo ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_dry_bulk",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of dry bulk carriers entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "exports_roro",
-                        "type": "float",
-                        "description": "Total export volume (in metric tons) of Ro-Ro ships entering the port at this date.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
                 ]
             },
             "model": "PortVolume",
             "openapi_extra": {
-                "widget_config": {
-                    "exclude": true
-                },
                 "model": "PortVolume"
             }
         },
@@ -26990,7 +25867,7 @@
                 "sec": [
                     {
                         "name": "cik",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Lookup filings by Central Index Key (CIK) instead of by symbol.",
                         "default": null,
                         "optional": true,
@@ -27576,7 +26453,7 @@
                     },
                     {
                         "name": "act",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The SEC Act number.",
                         "default": null,
                         "optional": true,
@@ -27608,7 +26485,7 @@
                     },
                     {
                         "name": "accession_number",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The accession number.",
                         "default": null,
                         "optional": true,
@@ -27616,7 +26493,7 @@
                     },
                     {
                         "name": "file_number",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The file number.",
                         "default": null,
                         "optional": true,
@@ -27624,7 +26501,7 @@
                     },
                     {
                         "name": "film_number",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The film number.",
                         "default": null,
                         "optional": true,
@@ -27632,7 +26509,7 @@
                     },
                     {
                         "name": "is_inline_xbrl",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Whether the filing is an inline XBRL filing.",
                         "default": null,
                         "optional": true,
@@ -27640,7 +26517,7 @@
                     },
                     {
                         "name": "is_xbrl",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Whether the filing is an XBRL filing.",
                         "default": null,
                         "optional": true,
@@ -27648,7 +26525,7 @@
                     },
                     {
                         "name": "size",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The size of the filing.",
                         "default": null,
                         "optional": true,
@@ -29288,7 +28165,7 @@
                     },
                     {
                         "name": "form",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Form type.",
                         "default": null,
                         "optional": true,
@@ -36624,7 +35501,7 @@
                 "sec": [
                     {
                         "name": "date",
-                        "type": "Union[Union[str, date], str]",
+                        "type": "Union[Union[date, str], str]",
                         "description": "A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing.",
                         "default": null,
                         "optional": true,
@@ -37359,7 +36236,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_rec",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The rate tenor unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true,
@@ -37375,7 +36252,7 @@
                     },
                     {
                         "name": "reset_date_unit_rec",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The reset date unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true,
@@ -37431,7 +36308,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_pmnt",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The rate tenor unit for payment portion of the swap.",
                         "default": null,
                         "optional": true,
@@ -37447,7 +36324,7 @@
                     },
                     {
                         "name": "reset_date_unit_pmnt",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The reset date unit for payment portion of the swap.",
                         "default": null,
                         "optional": true,
@@ -41226,6 +40103,185 @@
                 "model": "MortgageIndices"
             }
         },
+        "/government/us/congress_bills": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get Congress Bills Data.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.government.us.congress_bills(provider='congress_gov')\nobb.government.us.congress_bills(start_date=2025-01-01, end_date=2025-01-31, provider='congress_gov')\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "congress_gov": [
+                    {
+                        "name": "format",
+                        "type": "Literal['json', 'xml']",
+                        "description": "The data format. Value can be xml or json.",
+                        "default": "json",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of records returned. The maximum limit is 250.",
+                        "default": 100,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "offset",
+                        "type": "int",
+                        "description": "The starting record returned. 0 is the first record.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "sort",
+                        "type": "Literal['asc', 'desc']",
+                        "description": "Sort by update date in Congress.gov.",
+                        "default": "asc",
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "list[CongressBills]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['congress_gov']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[list[Warning_]]",
+                        "description": "list of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [],
+                "congress_gov": [
+                    {
+                        "name": "congress",
+                        "type": "int",
+                        "description": "The congress session number.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "latestAction",
+                        "type": "LatestAction",
+                        "description": "Latest action information for the bill.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "number",
+                        "type": "str",
+                        "description": "The bill number.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "origin_chamber",
+                        "type": "str",
+                        "description": "The chamber where the bill originated.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "origin_chamber_code",
+                        "type": "str",
+                        "description": "The chamber code where the bill originated.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "The title of the bill.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "type",
+                        "type": "str",
+                        "description": "The type of bill (e.g., HR, S).",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "update_date",
+                        "type": "date",
+                        "description": "The date the bill was last updated.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "update_date_including_text",
+                        "type": "str",
+                        "description": "The date and time the bill text was last updated.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "url",
+                        "type": "str",
+                        "description": "URL to the bill on congress.gov.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "CongressBills",
+            "openapi_extra": {
+                "model": "CongressBills"
+            }
+        },
         "/index/price/historical": {
             "deprecated": {
                 "flag": null,
@@ -43178,7 +42234,7 @@
                 "standard": [
                     {
                         "name": "cik",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Central Index Key (CIK) for the requested entity.",
                         "default": null,
                         "optional": true,
@@ -43263,7 +42319,7 @@
                     },
                     {
                         "name": "cik",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Central Index Key (CIK)",
                         "default": null,
                         "optional": true,
@@ -43983,6 +43039,9 @@
         },
         "/fixedincome": {
             "description": "Fixed Income market data."
+        },
+        "/government": {
+            "description": "Government data."
         },
         "/index": {
             "description": "Indices data."
