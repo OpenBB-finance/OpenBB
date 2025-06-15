@@ -121,11 +121,11 @@ class CongressBillsFetcher(
     @staticmethod
     async def aextract_data(
         query: CongressBillsQueryParams,
-        credentials: Optional[Dict[str, str]] = None,
+        credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data from the Congress API."""
-        api_key = credentials.get("congres_gov_api_key") if credentials else ""
+        api_key = credentials.get("congress_gov_api_key") if credentials else ""
 
         url = "https://api.congress.gov/v3/bill"
 
@@ -135,7 +135,7 @@ class CongressBillsFetcher(
             "limit": query.limit,
         }
 
-        if query.offset is not None:
+        if query.offset:
             params["offset"] = query.offset
 
         if query.start_date:
