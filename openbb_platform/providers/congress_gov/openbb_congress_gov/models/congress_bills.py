@@ -26,7 +26,6 @@ class CongressBillsQueryParams(QueryParams):
                 "exclude": True,
             },
         },
-        "sort": {"choices": ["asc", "desc"]},
     }
     
     format: Literal["json", "xml"] = Field(
@@ -38,7 +37,7 @@ class CongressBillsQueryParams(QueryParams):
         description="The number of records returned. The maximum limit is 250."
     )
     offset: Optional[int] = Field(
-        default=0,
+        default=None,
         description="The starting record returned. 0 is the first record."
     )
     from_date: Optional[dateType] = Field(
@@ -51,8 +50,7 @@ class CongressBillsQueryParams(QueryParams):
     )
     sort: Literal["asc", "desc"] = Field(
         default="asc",
-        description="Sort by update date in Congress.gov.",
-        json_schema_extra={"choices": ["asc", "desc"]},
+        description="Sort by update date in Congress.gov."
     )
 
     @field_validator("limit")
