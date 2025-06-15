@@ -130,7 +130,7 @@ class CongressBillsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data from the Congress API."""
-        api_key = credentials.get("api_key") if credentials else ""
+        api_key = credentials.get("congres_gov_api_key") if credentials else ""
         
         url = "https://api.congress.gov/v3/bill"
         
