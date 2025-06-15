@@ -1,1 +1,1 @@
-""" The Congress.gov provider."""
+"""The Congress.gov provider."""
