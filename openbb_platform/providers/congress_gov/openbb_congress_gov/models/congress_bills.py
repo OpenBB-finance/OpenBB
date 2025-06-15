@@ -27,30 +27,25 @@ class CongressBillsQueryParams(QueryParams):
             },
         },
     }
-    
+
     format: Literal["json", "xml"] = Field(
-        default="json",
-        description="The data format. Value can be xml or json."
+        default="json", description="The data format. Value can be xml or json."
     )
     limit: int = Field(
         default=100,
-        description="The number of records returned. The maximum limit is 250."
+        description="The number of records returned. The maximum limit is 250.",
     )
     offset: Optional[int] = Field(
-        default=None,
-        description="The starting record returned. 0 is the first record."
+        default=None, description="The starting record returned. 0 is the first record."
     )
     from_date: Optional[dateType] = Field(
-        default=None,
-        description=QUERY_DESCRIPTIONS.get("start_date", "")
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
     to_date: Optional[dateType] = Field(
-        default=None,
-        description=QUERY_DESCRIPTIONS.get("end_date", "")
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
     sort: Literal["asc", "desc"] = Field(
-        default="asc",
-        description="Sort by update date in Congress.gov."
+        default="asc", description="Sort by update date in Congress.gov."
     )
 
     @field_validator("limit")
@@ -74,37 +69,39 @@ class CongressBillsQueryParams(QueryParams):
     def validate_sort(cls, v: str) -> str:
         """Validate sort parameter."""
         if v and v not in ["asc", "desc"]:
-            raise ValueError(
-                "Sort must be either 'asc' or 'desc'"
-            )
+            raise ValueError("Sort must be either 'asc' or 'desc'")
         return v
 
 
 class LatestAction(Data):
     """Latest Action Data for Congress Bills."""
-    
+
     actionDate: Optional[dateType] = Field(
-        default=None,
-        description="Date of the latest action on the bill."
+        default=None, description="Date of the latest action on the bill."
     )
     text: Optional[str] = Field(
-        default=None,
-        description="Description of the latest action on the bill."
+        default=None, description="Description of the latest action on the bill."
     )
 
 
 class CongressBillsData(Data):
     """Congress Bills Data."""
-    
+
     congress: int = Field(description="The congress session number.")
-    latestAction: LatestAction = Field(description="Latest action information for the bill.")
+    latestAction: LatestAction = Field(
+        description="Latest action information for the bill."
+    )
     number: str = Field(description="The bill number.")
     originChamber: str = Field(description="The chamber where the bill originated.")
-    originChamberCode: str = Field(description="The chamber code where the bill originated.")
+    originChamberCode: str = Field(
+        description="The chamber code where the bill originated."
+    )
     title: str = Field(description="The title of the bill.")
     type: str = Field(description="The type of bill (e.g., HR, S).")
     updateDate: dateType = Field(description="The date the bill was last updated.")
-    updateDateIncludingText: str = Field(description="The date and time the bill text was last updated.")
+    updateDateIncludingText: str = Field(
+        description="The date and time the bill text was last updated."
+    )
     url: str = Field(description="URL to the bill on congress.gov.")
 
 
@@ -129,50 +126,52 @@ class CongressBillsFetcher(
     ) -> List[Dict]:
         """Extract data from the Congress API."""
         api_key = credentials.get("congres_gov_api_key") if credentials else ""
-        
+
         url = "https://api.congress.gov/v3/bill"
-        
+
         params = {
             "api_key": api_key,
             "format": query.format,
             "limit": query.limit,
         }
-        
+
         if query.offset is not None:
             params["offset"] = query.offset
-            
+
         if query.from_date:
             params["fromDateTime"] = query.from_date.strftime("%Y-%m-%dT00:00:00Z")
         if query.to_date:
             params["toDateTime"] = query.to_date.strftime("%Y-%m-%dT00:00:00Z")
-        
+
         params["sort"] = "updateDate+asc" if query.sort == "asc" else "updateDate+desc"
 
         response = await amake_request(url, params=params, **kwargs)
-        
+
         if not response or not response.get("bills"):
             raise EmptyDataError()
-        
+
         return response["bills"]
 
     @staticmethod
     def transform_data(
-        query: CongressBillsQueryParams,
-        data: List[Dict],
-        **kwargs: Any
+        query: CongressBillsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[CongressBillsData]:
         """Transform raw data into CongressBillsData models."""
         transformed_data = []
-        
+
         for bill in data:
             latest_action = bill.get("latestAction", {})
-            
+
             transformed_bill = CongressBillsData(
                 congress=bill.get("congress"),
-                latestAction=LatestAction(
-                    actionDate=latest_action.get("actionDate"),
-                    text=latest_action.get("text")
-                ) if latest_action else None,
+                latestAction=(
+                    LatestAction(
+                        actionDate=latest_action.get("actionDate"),
+                        text=latest_action.get("text"),
+                    )
+                    if latest_action
+                    else None
+                ),
                 number=bill.get("number"),
                 originChamber=bill.get("originChamber"),
                 originChamberCode=bill.get("originChamberCode"),
@@ -180,8 +179,8 @@ class CongressBillsFetcher(
                 type=bill.get("type"),
                 updateDate=bill.get("updateDate"),
                 updateDateIncludingText=bill.get("updateDateIncludingText"),
-                url=bill.get("url")
+                url=bill.get("url"),
             )
             transformed_data.append(transformed_bill)
-        
-        return transformed_data 
+
+        return transformed_data

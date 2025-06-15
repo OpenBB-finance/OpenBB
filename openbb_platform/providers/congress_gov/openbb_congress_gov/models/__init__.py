@@ -8,6 +8,6 @@ from openbb_congress_gov.models.congress_bills import (
 
 __all__ = [
     "CongressBillsData",
-    "CongressBillsFetcher", 
+    "CongressBillsFetcher",
     "CongressBillsQueryParams",
 ]

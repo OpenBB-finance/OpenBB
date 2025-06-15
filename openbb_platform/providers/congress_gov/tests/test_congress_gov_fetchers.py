@@ -8,6 +8,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
 )
 
+
 @pytest.fixture(scope="module")
 def vcr_config():
     """VCR configuration."""
