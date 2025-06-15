@@ -1,1 +1,1 @@
-"""Template Provider Constants"""
+"""Congress.gov constants."""
