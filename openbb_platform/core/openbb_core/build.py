@@ -27,14 +27,12 @@ def main():
             check=True,
         )
         logger.info(result.stdout)
-        building_found = any(
-            line.startswith("Building") for line in result.stdout.splitlines()
-        )
+        building_found = any(line.startswith("Building") for line in result.stdout.splitlines())
 
         if result.returncode != 0:
             raise ModuleNotFoundError(result.stderr)
 
-    except ModuleNotFoundError:
+    except (ModuleNotFoundError, subprocess.CalledProcessError):
         logger.info(
             "\nOpenBB build script not found, installing from PyPI...\n",
         )
@@ -55,10 +53,8 @@ def main():
                 check=True,
             )
             logger.info(result.stdout)
-            building_found = any(
-                line.startswith("Building") for line in result.stdout.splitlines()
-            )
-        except Exception as e:
+            building_found = any(line.startswith("Building") for line in result.stdout.splitlines())
+        except (subprocess.CalledProcessError, ModuleNotFoundError) as e:
             raise RuntimeError(f"Failed to import the OpenBB package. \n{e}") from e
 
     if not building_found:
@@ -68,7 +64,7 @@ def main():
 
             openbb.build()
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             raise RuntimeError(  # noqa
                 "Failed to build the OpenBB platform static assets. \n"
                 f"{e} -> {e.__traceback__.tb_frame.f_code.co_filename}:"  # type:ignore  # pylint: disable=E1101
