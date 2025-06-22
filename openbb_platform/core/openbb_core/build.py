@@ -27,7 +27,9 @@ def main():
             check=True,
         )
         logger.info(result.stdout)
-        building_found = any(line.startswith("Building") for line in result.stdout.splitlines())
+        building_found = any(
+            line.startswith("Building") for line in result.stdout.splitlines()
+        )
 
         if result.returncode != 0:
             raise ModuleNotFoundError(result.stderr)
@@ -39,7 +41,15 @@ def main():
 
         try:
             result = subprocess.run(
-                [sys.executable, "-m", "pip", "install", "openbb", "--no-deps", "--force-reinstall"],
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "openbb",
+                    "--no-deps",
+                    "--force-reinstall",
+                ],
                 check=True,
                 capture_output=True,
                 text=True,
@@ -64,9 +74,13 @@ def main():
                 check=True,
             )
             logger.info(result.stdout)
-            building_found = any(line.startswith("Building") for line in result.stdout.splitlines())
+            building_found = any(
+                line.startswith("Building") for line in result.stdout.splitlines()
+            )
         except subprocess.CalledProcessError as e:
-            raise RuntimeError(f"Failed to import the OpenBB package. \n{e.stderr}") from e
+            raise RuntimeError(
+                f"Failed to import the OpenBB package. \n{e.stderr}"
+            ) from e
 
     if not building_found:
         logger.info("Did not build on import, triggering rebuild...\n")
