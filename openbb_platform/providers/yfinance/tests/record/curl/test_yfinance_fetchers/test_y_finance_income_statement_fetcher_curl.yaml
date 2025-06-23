@@ -1,0 +1,1264 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: '*/*'
+      Accept-Encoding: gzip, deflate, br, zstd
+      Connection: keep-alive
+    method: GET
+    uri: https://fc.yahoo.com/
+  response:
+    body:
+      encoding: utf-8
+      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n  <head>\n    <meta http-equiv=\"\
+        content-type\" content=\"text/html; charset=UTF-8\">\n    <meta charset=\"\
+        utf-8\">\n    <title>Yahoo</title>\n    <meta name=\"viewport\" content=\"\
+        width=device-width,initial-scale=1,minimal-ui\">\n    <meta http-equiv=\"\
+        X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <style>\n      html {\n\
+        \          height: 100%;\n      }\n      body {\n          background: #fafafc\
+        \ url(https://s.yimg.com/nn/img/sad-panda-201402200631.png) 50% 50%;\n   \
+        \       background-size: cover;\n          height: 100%;\n          text-align:\
+        \ center;\n          font: 300 18px \"helvetica neue\", helvetica, verdana,\
+        \ tahoma, arial, sans-serif;\n          margin: 0;\n      }\n      table {\n\
+        \          height: 100%;\n          width: 100%;\n          table-layout:\
+        \ fixed;\n          border-collapse: collapse;\n          border-spacing:\
+        \ 0;\n          border: none;\n      }\n      h1 {\n          font-size: 42px;\n\
+        \          font-weight: 400;\n          color: #400090;\n      }\n      p\
+        \ {\n          color: #1A1A1A;\n      }\n      #message-1 {\n          font-weight:\
+        \ bold;\n          margin: 0;\n      }\n      #message-2 {\n          display:\
+        \ inline-block;\n          *display: inline;\n          zoom: 1;\n       \
+        \   max-width: 17em;\n          _width: 17em;\n      }\n      </style>\n \
+        \     <script>\n      !function(){if(window==window.top){var o=window.location.host;o.endsWith(\"\
+        .yahoo.com\")&&window.location.replace(\"https://www.yahoo.com/\"),o.endsWith(\"\
+        .aol.com\")&&window.location.replace(\"https://www.aol.com/\"),o.endsWith(\"\
+        .huffpost.com\")&&window.location.replace(\"https://www.huffpost.com/\"),o.endsWith(\"\
+        .engadget.com\")&&window.location.replace(\"https://www.engadget.com/\")}}();\n\
+        \      </script>\n  </head>\n  <body>\n  <!-- status code : 404 -->\n  <!--\
+        \ Not Found on Accelerator -->\n  <!-- host machine: e14.ycpi.swb.yahoo.com\
+        \ -->\n  <!-- timestamp: 1750707019.706 -->\n  <!-- url: https://fc.yahoo.com/-->\n\
+        \  <script type=\"text/javascript\">\n    function buildUrl(url, parameters){\n\
+        \      var qs = [];\n      for(var key in parameters) {\n        var value\
+        \ = parameters[key];\n        qs.push(encodeURIComponent(key) + \"=\" + encodeURIComponent(value));\n\
+        \      }\n      url = url + \"?\" + qs.join('&');\n      return url;\n   \
+        \ }\n\n    function generateBRBMarkup(site) {\n      params.source = 'brb';\n\
+        \      generateBeaconMarkup(params);\n      var englishHeader = 'Will be right\
+        \ back...';\n      var englishMessage1 = 'Thank you for your patience.';\n\
+        \      var englishMessage2 = 'Our engineers are working quickly to resolve\
+        \ the issue.';\n      var defaultLogoStyle = '';\n      var siteDataMap =\
+        \ {\n        'default': {\n          logo: 'https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_205x58_frontpage.png',\n\
+        \          logoAlt: 'Yahoo Logo',\n          logoStyle: defaultLogoStyle,\n\
+        \          header: englishHeader,\n          message1: englishMessage1,\n\
+        \          message2: englishMessage2\n        }\n      };\n\n      var siteDetails\
+        \ = siteDataMap['default'];\n\n      document.write('<table><tbody><tr><td>');\n\
+        \      document.write('<div id=\"content\">');\n      document.write('<img\
+        \ src=\"' + siteDetails['logo'] + '\" alt=\"' + siteDetails['logoAlt'] + '\"\
+        \ style=\"' + siteDetails['logoStyle'] + '\">');\n      document.write('<h1\
+        \ style=\"margin-top:20px;\">' + siteDetails['header'] + '</h1>');\n     \
+        \ document.write('<p id=\"message-1\">' + siteDetails['message1'] + '</p>');\n\
+        \      document.write('<p id=\"message-2\">' + siteDetails['message2'] + '</p>');\n\
+        \      document.write('</div>');\n      document.write('</td></tr></tbody></table>');\n\
+        \    }\n\n    function generateBeaconMarkup(params) {\n        document.write('<img\
+        \ src=\"' + buildUrl('//geo.yahoo.com/b', params) + '\" style=\"display:none;\"\
+        \ width=\"0px\" height=\"0px\"/>');\n        var beacon = new Image();\n \
+        \       beacon.src = buildUrl('//bcn.fp.yahoo.com/p', params);\n    }\n\n\
+        \    var hostname = window.location.hostname;\n    var device = 'desktop';\n\
+        \    var ynet = ('-' === '1');\n    var time = new Date().getTime();\n   \
+        \ var params = {\n        s: '1197757129',\n        t: time,\n        err_url:\
+        \ document.URL,\n        err: '404',\n        test: '-',\n        ats_host:\
+        \ 'e14.ycpi.swb.yahoo.com',\n        rid: '-',\n        message: 'Not Found\
+        \ on Accelerator'\n    };\n\n    if(ynet) {\n        document.write('<div\
+        \ style=\"height: 5px; background-color: red;\"></div>');\n    }\n    generateBRBMarkup(hostname,\
+        \ params);\n\n  </script>\n  <noscript>\n  <table>\n    <tbody>\n      <tr>\n\
+        \        <td>\n          <div id=\"englishContent\">\n            <h1 style=\"\
+        margin-top:20px;\">Will be right back...</h1>\n            <p id=\"message-1\"\
+        >Thank you for your patience.</p>\n            <p id=\"message-2\">Our engineers\
+        \ are working quickly to resolve the issue.</p>\n          </div>\n      \
+        \  </td>\n      </tr>\n    </tbody>\n  </table>\n  </noscript>\n  </body>\n\
+        </html>\n"
+    headers:
+      Cache-Control: no-store
+      Content-Language: en
+      Content-Length: '4744'
+      Content-Type: text/html
+      Date: Mon, 23 Jun 2025 19:30:19 GMT
+      Server: ATS
+      Set-Cookie: A3=d=AQABBEurWWgCEMB4b0U4BNWRN3s1MsjbLaIFEgEBAQH8WmhjaCXUxyMA_eMCAA&S=AQAAAsRgRDb6_iHBLskvkwfS9MU;
+        Expires=Wed, 24 Jun 2026 01:30:19 GMT; Max-Age=31557600; Domain=.yahoo.com;
+        Path=/; SameSite=None; Secure; HttpOnly
+    status:
+      code: 404
+      message: ''
+- request:
+    body: null
+    headers:
+      Accept: '*/*'
+      Accept-Encoding: gzip, deflate, br, zstd
+      Connection: keep-alive
+      Cookie: MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?symbol=AAPL&type=annualTaxEffectOfUnusualItems%2CannualTaxRateForCalcs%2CannualNormalizedEBITDA%2CannualNormalizedDilutedEPS%2CannualNormalizedBasicEPS%2CannualTotalUnusualItems%2CannualTotalUnusualItemsExcludingGoodwill%2CannualNetIncomeFromContinuingOperationNetMinorityInterest%2CannualReconciledDepreciation%2CannualReconciledCostOfRevenue%2CannualEBITDA%2CannualEBIT%2CannualNetInterestIncome%2CannualInterestExpense%2CannualInterestIncome%2CannualContinuingAndDiscontinuedDilutedEPS%2CannualContinuingAndDiscontinuedBasicEPS%2CannualNormalizedIncome%2CannualNetIncomeFromContinuingAndDiscontinuedOperation%2CannualTotalExpenses%2CannualRentExpenseSupplemental%2CannualReportedNormalizedDilutedEPS%2CannualReportedNormalizedBasicEPS%2CannualTotalOperatingIncomeAsReported%2CannualDividendPerShare%2CannualDilutedAverageShares%2CannualBasicAverageShares%2CannualDilutedEPS%2CannualDilutedEPSOtherGainsLosses%2CannualTaxLossCarryforwardDilutedEPS%2CannualDilutedAccountingChange%2CannualDilutedExtraordinary%2CannualDilutedDiscontinuousOperations%2CannualDilutedContinuousOperations%2CannualBasicEPS%2CannualBasicEPSOtherGainsLosses%2CannualTaxLossCarryforwardBasicEPS%2CannualBasicAccountingChange%2CannualBasicExtraordinary%2CannualBasicDiscontinuousOperations%2CannualBasicContinuousOperations%2CannualDilutedNIAvailtoComStockholders%2CannualAverageDilutionEarnings%2CannualNetIncomeCommonStockholders%2CannualOtherunderPreferredStockDividend%2CannualPreferredStockDividends%2CannualNetIncome%2CannualMinorityInterests%2CannualNetIncomeIncludingNoncontrollingInterests%2CannualNetIncomeFromTaxLossCarryforward%2CannualNetIncomeExtraordinary%2CannualNetIncomeDiscontinuousOperations%2CannualNetIncomeContinuousOperations%2CannualEarningsFromEquityInterestNetOfTax%2CannualTaxProvision%2CannualPretaxIncome%2CannualOtherIncomeExpense%2CannualOtherNonOperatingIncomeExpenses%2CannualSpecialIncomeCharges%2CannualGainOnSaleOfPPE%2CannualGainOnSaleOfBusiness%2CannualOtherSpecialCharges%2CannualWriteOff%2CannualImpairmentOfCapitalAssets%2CannualRestructuringAndMergernAcquisition%2CannualSecuritiesAmortization%2CannualEarningsFromEquityInterest%2CannualGainOnSaleOfSecurity%2CannualNetNonOperatingInterestIncomeExpense%2CannualTotalOtherFinanceCost%2CannualInterestExpenseNonOperating%2CannualInterestIncomeNonOperating%2CannualOperatingIncome%2CannualOperatingExpense%2CannualOtherOperatingExpenses%2CannualOtherTaxes%2CannualProvisionForDoubtfulAccounts%2CannualDepreciationAmortizationDepletionIncomeStatement%2CannualDepletionIncomeStatement%2CannualDepreciationAndAmortizationInIncomeStatement%2CannualAmortization%2CannualAmortizationOfIntangiblesIncomeStatement%2CannualDepreciationIncomeStatement%2CannualResearchAndDevelopment%2CannualSellingGeneralAndAdministration%2CannualSellingAndMarketingExpense%2CannualGeneralAndAdministrativeExpense%2CannualOtherGandA%2CannualInsuranceAndClaims%2CannualRentAndLandingFees%2CannualSalariesAndWages%2CannualGrossProfit%2CannualCostOfRevenue%2CannualTotalRevenue%2CannualExciseTaxes%2CannualOperatingRevenue%2CannualLossAdjustmentExpense%2CannualNetPolicyholderBenefitsAndClaims%2CannualPolicyholderBenefitsGross%2CannualPolicyholderBenefitsCeded%2CannualOccupancyAndEquipment%2CannualProfessionalExpenseAndContractServicesExpense%2CannualOtherNonInterestExpense&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&crumb=MOCK_CRUMB
+  response:
+    body:
+      encoding: utf-8
+      string: "{\"timeseries\":{\"result\":[{\"meta\":{\"symbol\":[\"AAPL\"],\"type\"\
+        :[\"annualNetIncomeContinuousOperations\"]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"\
+        annualNetIncomeContinuousOperations\":[{\"dataId\":20094,\"asOfDate\":\"2021-09-30\"\
+        ,\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\"\
+        :9.468E10,\"fmt\":\"94.68B\"}},{\"dataId\":20094,\"asOfDate\":\"2022-09-30\"\
+        ,\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\"\
+        :9.9803E10,\"fmt\":\"99.80B\"}},{\"dataId\":20094,\"asOfDate\":\"2023-09-30\"\
+        ,\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\"\
+        :9.6995E10,\"fmt\":\"97.00B\"}},{\"dataId\":20094,\"asOfDate\":\"2024-09-30\"\
+        ,\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\"\
+        :9.3736E10,\"fmt\":\"93.74B\"}}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\"\
+        :[\"annualTaxEffectOfUnusualItems\"]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"\
+        annualTaxEffectOfUnusualItems\":[{\"dataId\":20419,\"asOfDate\":\"2021-09-30\"\
+        ,\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\"\
+        :0.0,\"fmt\":\"0.00\"}},{\"dataId\":20419,\"asOfDate\":\"2022-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":0.0,\"fmt\":\"\
+        0.00\"}},{\"dataId\":20419,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\"\
+        ,\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":0.0,\"fmt\":\"0.00\"\
+        }},{\"dataId\":20419,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":0.0,\"fmt\":\"0.00\"}}]},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncomeFromContinuingOperationNetMinorityInterest\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualNetIncomeFromContinuingOperationNetMinorityInterest\"\
+        :[{\"dataId\":20331,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.468E10,\"fmt\":\"94.68B\"\
+        }},{\"dataId\":20331,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.9803E10,\"fmt\":\"99.80B\"\
+        }},{\"dataId\":20331,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.6995E10,\"fmt\":\"97.00B\"\
+        }},{\"dataId\":20331,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.3736E10,\"fmt\":\"93.74B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalOperatingIncomeAsReported\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualTotalOperatingIncomeAsReported\"\
+        :[{\"dataId\":20435,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.08949E11,\"fmt\":\"108.95B\"\
+        }},{\"dataId\":20435,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.19437E11,\"fmt\":\"119.44B\"\
+        }},{\"dataId\":20435,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.14301E11,\"fmt\":\"114.30B\"\
+        }},{\"dataId\":20435,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.23216E11,\"fmt\":\"123.22B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicAverageShares\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualBasicAverageShares\"\
+        :[{\"dataId\":29010,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.6701272E10,\"fmt\":\"\
+        16.70B\"}},{\"dataId\":29010,\"asOfDate\":\"2022-09-30\",\"periodType\":\"\
+        12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.6215963E10,\"\
+        fmt\":\"16.22B\"}},{\"dataId\":29010,\"asOfDate\":\"2023-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.5744231E10,\"\
+        fmt\":\"15.74B\"}},{\"dataId\":29010,\"asOfDate\":\"2024-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.5343783E10,\"\
+        fmt\":\"15.34B\"}}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualReconciledDepreciation\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualReconciledDepreciation\"\
+        :[{\"dataId\":20315,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.1284E10,\"fmt\":\"11.28B\"\
+        }},{\"dataId\":20315,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.1104E10,\"fmt\":\"11.10B\"\
+        }},{\"dataId\":20315,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.1519E10,\"fmt\":\"11.52B\"\
+        }},{\"dataId\":20315,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.1445E10,\"fmt\":\"11.45B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOperatingExpense\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualOperatingExpense\"\
+        :[{\"dataId\":20108,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":4.3887E10,\"fmt\":\"43.89B\"\
+        }},{\"dataId\":20108,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":5.1345E10,\"fmt\":\"51.34B\"\
+        }},{\"dataId\":20108,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":5.4847E10,\"fmt\":\"54.85B\"\
+        }},{\"dataId\":20108,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":5.7467E10,\"fmt\":\"57.47B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalRevenue\"]},\"\
+        timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualTotalRevenue\"\
+        :[{\"dataId\":20100,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.65817E11,\"fmt\":\"365.82B\"\
+        }},{\"dataId\":20100,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.94328E11,\"fmt\":\"394.33B\"\
+        }},{\"dataId\":20100,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.83285E11,\"fmt\":\"383.29B\"\
+        }},{\"dataId\":20100,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.91035E11,\"fmt\":\"391.04B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualResearchAndDevelopment\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualResearchAndDevelopment\"\
+        :[{\"dataId\":20151,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.1914E10,\"fmt\":\"21.91B\"\
+        }},{\"dataId\":20151,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.6251E10,\"fmt\":\"26.25B\"\
+        }},{\"dataId\":20151,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.9915E10,\"fmt\":\"29.91B\"\
+        }},{\"dataId\":20151,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.137E10,\"fmt\":\"31.37B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualInterestExpense\"\
+        ]},\"timestamp\":[1601424000,1632960000,1664496000,1696032000],\"annualInterestExpense\"\
+        :[{\"dataId\":20057,\"asOfDate\":\"2020-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.873E9,\"fmt\":\"2.87B\"\
+        }},{\"dataId\":20057,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.645E9,\"fmt\":\"2.65B\"\
+        }},{\"dataId\":20057,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.931E9,\"fmt\":\"2.93B\"\
+        }},{\"dataId\":20057,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.933E9,\"fmt\":\"3.93B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedNIAvailtoComStockholders\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualDilutedNIAvailtoComStockholders\"\
+        :[{\"dataId\":20424,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.468E10,\"fmt\":\"94.68B\"\
+        }},{\"dataId\":20424,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.9803E10,\"fmt\":\"99.80B\"\
+        }},{\"dataId\":20424,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.6995E10,\"fmt\":\"97.00B\"\
+        }},{\"dataId\":20424,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.3736E10,\"fmt\":\"93.74B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncomeIncludingNoncontrollingInterests\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualNetIncomeIncludingNoncontrollingInterests\"\
+        :[{\"dataId\":20346,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.468E10,\"fmt\":\"94.68B\"\
+        }},{\"dataId\":20346,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.9803E10,\"fmt\":\"99.80B\"\
+        }},{\"dataId\":20346,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.6995E10,\"fmt\":\"97.00B\"\
+        }},{\"dataId\":20346,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.3736E10,\"fmt\":\"93.74B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNormalizedEBITDA\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualNormalizedEBITDA\"\
+        :[{\"dataId\":20420,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.23136E11,\"fmt\":\"123.14B\"\
+        }},{\"dataId\":20420,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.30541E11,\"fmt\":\"130.54B\"\
+        }},{\"dataId\":20420,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.2582E11,\"fmt\":\"125.82B\"\
+        }},{\"dataId\":20420,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.34661E11,\"fmt\":\"134.66B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGrossProfit\"]},\"\
+        timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualGrossProfit\"\
+        :[{\"dataId\":20046,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.52836E11,\"fmt\":\"152.84B\"\
+        }},{\"dataId\":20046,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.70782E11,\"fmt\":\"170.78B\"\
+        }},{\"dataId\":20046,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.69148E11,\"fmt\":\"169.15B\"\
+        }},{\"dataId\":20046,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.80683E11,\"fmt\":\"180.68B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicEPS\"]},\"timestamp\"\
+        :[1632960000,1664496000,1696032000,1727654400],\"annualBasicEPS\":[{\"dataId\"\
+        :29004,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"currencyCode\"\
+        :\"USD\",\"reportedValue\":{\"raw\":5.67,\"fmt\":\"5.67\"}},{\"dataId\":29004,\"\
+        asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\"\
+        ,\"reportedValue\":{\"raw\":6.15,\"fmt\":\"6.15\"}},{\"dataId\":29004,\"asOfDate\"\
+        :\"2023-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\"\
+        :{\"raw\":6.16,\"fmt\":\"6.16\"}},{\"dataId\":29004,\"asOfDate\":\"2024-09-30\"\
+        ,\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\"\
+        :6.11,\"fmt\":\"6.11\"}}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherNonOperatingIncomeExpenses\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualOtherNonOperatingIncomeExpenses\"\
+        :[{\"dataId\":20412,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":6.0E7,\"fmt\":\"60.00M\"\
+        }},{\"dataId\":20412,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-3.34E8,\"fmt\":\"-334.00M\"\
+        }},{\"dataId\":20412,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-5.65E8,\"fmt\":\"-565.00M\"\
+        }},{\"dataId\":20412,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.69E8,\"fmt\":\"269.00M\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOperatingRevenue\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualOperatingRevenue\"\
+        :[{\"dataId\":20112,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.65817E11,\"fmt\":\"365.82B\"\
+        },\"businessSegmentData\":[{\"dataValue\":3.1862E10,\"segmentType\":\"Business\"\
+        ,\"segmentName\":\"iPad\",\"isPrimarySegment\":0},{\"dataValue\":3.1862E10,\"\
+        segmentType\":\"Business\",\"segmentName\":\"iPad \xAE\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.91973E11,\"segmentType\":\"Business\",\"segmentName\"\
+        :\"iPhone\",\"isPrimarySegment\":1},{\"dataValue\":1.91973E11,\"segmentType\"\
+        :\"Business\",\"segmentName\":\"iPhone \xAE\",\"isPrimarySegment\":1},{\"\
+        dataValue\":3.519E10,\"segmentType\":\"Business\",\"segmentName\":\"Mac\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":3.519E10,\"segmentType\":\"Business\"\
+        ,\"segmentName\":\"Mac \xAE\",\"isPrimarySegment\":0},{\"dataValue\":6.8425E10,\"\
+        segmentType\":\"Business\",\"segmentName\":\"Services\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.8367E10,\"segmentType\":\"Business\",\"segmentName\"\
+        :\"Wearables, Home and Accessories\",\"isPrimarySegment\":0}],\"geographicSegmentData\"\
+        :[{\"dataValue\":1.9503E10,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Americas\",\"isPrimarySegment\":0},{\"dataValue\":1.9503E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Americas, excluding U.S\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.42233659E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Argentina\",\"isPrimarySegment\":0},{\"dataValue\":5.180982076E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Australia\",\"isPrimarySegment\":0},{\"\
+        dataValue\":1.437439515E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Austria\",\"isPrimarySegment\":0},{\"dataValue\":1.398014694E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Bangladesh\",\"isPrimarySegment\":0},{\"\
+        dataValue\":1.807422974E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Belgium\",\"isPrimarySegment\":0},{\"dataValue\":4.656249953E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Brazil\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :5.761088775E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Canada\",\"\
+        isPrimarySegment\":0},{\"dataValue\":9.17539402E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Chile\",\"isPrimarySegment\":0},{\"dataValue\":6.4176674651E10,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"China, People's Republic of\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":9.09621498E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Colombia\",\"isPrimarySegment\":0},{\"dataValue\":3.10667234E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Cuba\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.196467098E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Denmark\",\"isPrimarySegment\":0},{\"dataValue\":2.72732255E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Dominican Republic\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.07234665E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Ecuador\",\"isPrimarySegment\":0},{\"dataValue\":1.217673715E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Egypt\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :8.9307E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Europe\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":8.850544083E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"France\",\"isPrimarySegment\":0},{\"dataValue\":1.2724160949E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Germany\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :6.8366E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Greater China\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":2.48836842E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Guatemala\",\"isPrimarySegment\":0},{\"dataValue\":1.332235779E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Hong Kong\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":9.561380676E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"India\",\"isPrimarySegment\":0},{\"dataValue\":3.983461635E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Indonesia\",\"isPrimarySegment\":0},{\"\
+        dataValue\":4.297412116E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Iran, Islamic Republic of\",\"isPrimarySegment\":0},{\"dataValue\":1.502149599E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Ireland\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.451024431E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Israel\",\"isPrimarySegment\":0},{\"dataValue\":6.326895187E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Italy\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.8482E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Japan\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":6.40844643E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Kazakhstan\",\"isPrimarySegment\":0},{\"dataValue\":6.040328122E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Korea, Republic of\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.25170756E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Malaysia\",\"isPrimarySegment\":0},{\"dataValue\":3.74193771E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Mexico\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.06723401E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Netherlands\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":8.39589818E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"New Zealand\",\"isPrimarySegment\":0},{\"dataValue\":1.328051809E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Nigeria\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.453572663E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Norway\",\"isPrimarySegment\":0},{\"dataValue\":1.163184289E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Pakistan\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :6.46064384E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Peru\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.323528714E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Philippines\",\"isPrimarySegment\":0},{\"dataValue\":2.030893353E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Poland\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.08690691E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Puerto Rico\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":2.6356E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Rest of Asia Pacific\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :5.350448073E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Russian Federation\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":2.511442344E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Saudi Arabia\",\"isPrimarySegment\":0},{\"dataValue\":1.333269902E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Singapore\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.265289823E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"South Africa\",\"isPrimarySegment\":0},{\"dataValue\":4.294328595E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Spain\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":2.83854233E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Sri Lanka\",\"isPrimarySegment\":0},{\"dataValue\":1.890457292E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Sweden\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.449151087E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Switzerland\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":2.857089577E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Taiwan\",\"isPrimarySegment\":0},{\"dataValue\":1.699325877E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Thailand\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":2.45639676E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Turkey\",\"isPrimarySegment\":0},{\"dataValue\":1.235222014E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"United Arab Emirates\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":9.601941852E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"United Kingdom\",\"isPrimarySegment\":0},{\"dataValue\":1.33803E11,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"United States\",\"isPrimarySegment\":1},{\"\
+        dataValue\":1.217908441E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Viet Nam\",\"isPrimarySegment\":0}]},{\"dataId\":20112,\"asOfDate\":\"2022-09-30\"\
+        ,\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\"\
+        :3.94328E11,\"fmt\":\"394.33B\"},\"businessSegmentData\":[{\"dataValue\":2.9292E10,\"\
+        segmentType\":\"Business\",\"segmentName\":\"iPad\",\"isPrimarySegment\":0},{\"\
+        dataValue\":2.9292E10,\"segmentType\":\"Business\",\"segmentName\":\"iPad\
+        \ \xAE\",\"isPrimarySegment\":0},{\"dataValue\":2.05489E11,\"segmentType\"\
+        :\"Business\",\"segmentName\":\"iPhone\",\"isPrimarySegment\":1},{\"dataValue\"\
+        :2.05489E11,\"segmentType\":\"Business\",\"segmentName\":\"iPhone \xAE\",\"\
+        isPrimarySegment\":1},{\"dataValue\":4.0177E10,\"segmentType\":\"Business\"\
+        ,\"segmentName\":\"Mac\",\"isPrimarySegment\":0},{\"dataValue\":4.0177E10,\"\
+        segmentType\":\"Business\",\"segmentName\":\"Mac \xAE\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":7.8129E10,\"segmentType\":\"Business\",\"segmentName\"\
+        :\"Services\",\"isPrimarySegment\":0},{\"dataValue\":4.1241E10,\"segmentType\"\
+        :\"Business\",\"segmentName\":\"Wearables, Home and Accessories\",\"isPrimarySegment\"\
+        :0}],\"geographicSegmentData\":[{\"dataValue\":2.1799E10,\"segmentType\":\"\
+        Geographic\",\"segmentName\":\"Americas\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.1799E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Americas, excluding\
+        \ U.S\",\"isPrimarySegment\":0},{\"dataValue\":1.80733905E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Argentina\",\"isPrimarySegment\":0},{\"\
+        dataValue\":6.041758711E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Australia\",\"isPrimarySegment\":0},{\"dataValue\":1.52624859E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Austria\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.659539468E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Bangladesh\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.873342323E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Belgium\",\"isPrimarySegment\":0},{\"dataValue\":5.484239342E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Brazil\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":6.111880619E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Canada\",\"isPrimarySegment\":0},{\"dataValue\":8.597981E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Chile\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :5.10976644E10,\"segmentType\":\"Geographic\",\"segmentName\":\"China, People's\
+        \ Republic of\",\"isPrimarySegment\":0},{\"dataValue\":9.82371022E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Colombia\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.06622271E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Cuba\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.280196367E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Denmark\",\"isPrimarySegment\":0},{\"dataValue\":3.24587566E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Dominican Republic\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.28608053E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Ecuador\",\"isPrimarySegment\":0},{\"dataValue\":1.543562643E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Egypt\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :9.5118E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Europe\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":9.010192459E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"France\",\"isPrimarySegment\":0},{\"dataValue\":1.3184505747E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Germany\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :7.42E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Greater China\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":2.71351609E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Guatemala\",\"isPrimarySegment\":0},{\"dataValue\":1.02358946E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Hong Kong\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.0959881036E10,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"India\",\"isPrimarySegment\":0},{\"dataValue\":4.756832077E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Indonesia\",\"isPrimarySegment\":0},{\"\
+        dataValue\":1.257987618E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Iran, Islamic Republic of\",\"isPrimarySegment\":0},{\"dataValue\":1.713532289E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Ireland\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.690183911E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Israel\",\"isPrimarySegment\":0},{\"dataValue\":6.509159853E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Italy\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.5977E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Japan\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":7.9559275E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Kazakhstan\",\"isPrimarySegment\":0},{\"dataValue\":6.005073208E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Korea, Republic of\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.465187424E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Malaysia\",\"isPrimarySegment\":0},{\"dataValue\":4.039247423E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Mexico\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.208924694E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Netherlands\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":8.91555364E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"New Zealand\",\"isPrimarySegment\":0},{\"dataValue\":1.545629595E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Nigeria\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.875489764E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Norway\",\"isPrimarySegment\":0},{\"dataValue\":1.357821828E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Pakistan\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :6.93012118E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Peru\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.457897303E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Philippines\",\"isPrimarySegment\":0},{\"dataValue\":2.228104422E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Poland\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.23996163E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Puerto Rico\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":2.9375E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Rest of Asia Pacific\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :7.253799534E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Russian Federation\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":3.587845938E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Saudi Arabia\",\"isPrimarySegment\":0},{\"dataValue\":1.683294919E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Singapore\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.314081451E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"South Africa\",\"isPrimarySegment\":0},{\"dataValue\":4.524705666E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Spain\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.897091014E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Sweden\",\"isPrimarySegment\":0},{\"dataValue\":2.61510399E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Switzerland\",\"isPrimarySegment\":0},{\"\
+        dataValue\":2.2078746147E10,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Taiwan\",\"isPrimarySegment\":0},{\"dataValue\":1.786257014E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Thailand\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.933310226E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Turkey\",\"\
+        isPrimarySegment\":0},{\"dataValue\":1.643242151E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"United Arab Emirates\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :9.941878719E9,\"segmentType\":\"Geographic\",\"segmentName\":\"United Kingdom\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.47859E11,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"United States\",\"isPrimarySegment\":1},{\"dataValue\"\
+        :2.65946664E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Venezuela\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.474189936E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Viet Nam\",\"isPrimarySegment\":0}]},{\"dataId\":20112,\"\
+        asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\"\
+        ,\"reportedValue\":{\"raw\":3.83285E11,\"fmt\":\"383.29B\"},\"businessSegmentData\"\
+        :[{\"dataValue\":2.83E10,\"segmentType\":\"Business\",\"segmentName\":\"iPad\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":2.83E10,\"segmentType\":\"Business\"\
+        ,\"segmentName\":\"iPad \xAE\",\"isPrimarySegment\":0},{\"dataValue\":2.00583E11,\"\
+        segmentType\":\"Business\",\"segmentName\":\"iPhone\",\"isPrimarySegment\"\
+        :1},{\"dataValue\":2.00583E11,\"segmentType\":\"Business\",\"segmentName\"\
+        :\"iPhone \xAE\",\"isPrimarySegment\":1},{\"dataValue\":2.9357E10,\"segmentType\"\
+        :\"Business\",\"segmentName\":\"Mac\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.9357E10,\"segmentType\":\"Business\",\"segmentName\":\"Mac \xAE\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":8.52E10,\"segmentType\":\"Business\",\"segmentName\":\"\
+        Services\",\"isPrimarySegment\":0},{\"dataValue\":3.9845E10,\"segmentType\"\
+        :\"Business\",\"segmentName\":\"Wearables, Home and Accessories\",\"isPrimarySegment\"\
+        :0}],\"geographicSegmentData\":[{\"dataValue\":2.3987E10,\"segmentType\":\"\
+        Geographic\",\"segmentName\":\"Americas\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.3987E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Americas, excluding\
+        \ U.S\",\"isPrimarySegment\":0},{\"dataValue\":1.834814444E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Argentina\",\"isPrimarySegment\":0},{\"\
+        dataValue\":6.091043127E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Australia\",\"isPrimarySegment\":0},{\"dataValue\":1.590683307E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Austria\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.545581612E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Bangladesh\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.948817473E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Belgium\",\"isPrimarySegment\":0},{\"dataValue\":6.225923539E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Brazil\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":6.129741745E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Canada\",\"isPrimarySegment\":0},{\"dataValue\":9.61051604E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Chile\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :6.8195339369E10,\"segmentType\":\"Geographic\",\"segmentName\":\"China, People's\
+        \ Republic of\",\"isPrimarySegment\":0},{\"dataValue\":1.041270175E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Colombia\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.07482476E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Cuba\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.245948979E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Denmark\",\"isPrimarySegment\":0},{\"dataValue\":3.47846871E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Dominican Republic\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.40401386E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Ecuador\",\"isPrimarySegment\":0},{\"dataValue\":1.220448308E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Egypt\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :9.4294E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Europe\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":9.342809188E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"France\",\"isPrimarySegment\":0},{\"dataValue\":1.3735939322E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Germany\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :7.2559E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Greater China\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":2.92298148E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Guatemala\",\"isPrimarySegment\":0},{\"dataValue\":1.464156256E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Hong Kong\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.0942680512E10,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"India\",\"isPrimarySegment\":0},{\"dataValue\":4.844953455E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Indonesia\",\"isPrimarySegment\":0},{\"\
+        dataValue\":1.237643941E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Iran, Islamic Republic of\",\"isPrimarySegment\":0},{\"dataValue\":1.6819113E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Ireland\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.571779322E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Israel\",\"isPrimarySegment\":0},{\"dataValue\":6.950614076E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Italy\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.4257E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Japan\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":9.23716315E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Kazakhstan\",\"isPrimarySegment\":0},{\"dataValue\":6.052053854E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Korea, Republic of\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.412135874E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Malaysia\",\"isPrimarySegment\":0},{\"dataValue\":5.123820464E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Mexico\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.446637004E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Netherlands\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":8.95606308E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"New Zealand\",\"isPrimarySegment\":0},{\"dataValue\":1.532239924E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Nigeria\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.496602383E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Norway\",\"isPrimarySegment\":0},{\"dataValue\":1.195605242E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Pakistan\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :7.66482812E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Peru\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.544631264E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Philippines\",\"isPrimarySegment\":0},{\"dataValue\":2.500626376E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Poland\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.37701754E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Puerto Rico\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":2.9615E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Rest of Asia Pacific\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :6.231063266E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Russian Federation\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":3.290841062E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Saudi Arabia\",\"isPrimarySegment\":0},{\"dataValue\":1.771764886E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Singapore\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.164517689E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"South Africa\",\"isPrimarySegment\":0},{\"dataValue\":4.872516134E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Spain\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.828756949E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Sweden\",\"isPrimarySegment\":0},{\"dataValue\":2.727842611E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Switzerland\",\"isPrimarySegment\":0},{\"\
+        dataValue\":2.899504375E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Taiwan\",\"isPrimarySegment\":0},{\"dataValue\":1.819528163E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Thailand\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.415496269E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Turkey\",\"\
+        isPrimarySegment\":0},{\"dataValue\":1.554122534E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"United Arab Emirates\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.0295701976E10,\"segmentType\":\"Geographic\",\"segmentName\":\"United Kingdom\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.38573E11,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"United States\",\"isPrimarySegment\":1},{\"dataValue\"\
+        :2.78164579E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Venezuela\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.518379897E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Viet Nam\",\"isPrimarySegment\":0}]},{\"dataId\":20112,\"\
+        asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\"\
+        ,\"reportedValue\":{\"raw\":3.91035E11,\"fmt\":\"391.04B\"},\"businessSegmentData\"\
+        :[{\"dataValue\":2.6694E10,\"segmentType\":\"Business\",\"segmentName\":\"\
+        iPad\",\"isPrimarySegment\":0},{\"dataValue\":2.01183E11,\"segmentType\":\"\
+        Business\",\"segmentName\":\"iPhone\",\"isPrimarySegment\":1},{\"dataValue\"\
+        :2.9984E10,\"segmentType\":\"Business\",\"segmentName\":\"Mac\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":9.6169E10,\"segmentType\":\"Business\",\"segmentName\"\
+        :\"Services\",\"isPrimarySegment\":0},{\"dataValue\":3.7005E10,\"segmentType\"\
+        :\"Business\",\"segmentName\":\"Wearables, Home and Accessories\",\"isPrimarySegment\"\
+        :0}],\"geographicSegmentData\":[{\"dataValue\":2.4849E10,\"segmentType\":\"\
+        Geographic\",\"segmentName\":\"Americas\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.900750578E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Argentina\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":6.305561377E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Australia\",\"isPrimarySegment\":0},{\"dataValue\":1.709342675E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Austria\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.600014893E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Bangladesh\",\"isPrimarySegment\":0},{\"dataValue\":2.094192387E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Belgium\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :6.44965915E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Brazil\",\"\
+        isPrimarySegment\":0},{\"dataValue\":6.350020954E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Canada\",\"isPrimarySegment\":0},{\"dataValue\":9.95588082E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Chile\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":6.2925541441E10,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"China, People's Republic of\",\"isPrimarySegment\":0},{\"dataValue\":1.078689397E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Colombia\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.18532207E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Cuba\",\"isPrimarySegment\":0},{\"dataValue\":1.338892381E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Denmark\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.60347142E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Dominican Republic\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":3.52634095E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Ecuador\",\"isPrimarySegment\":0},{\"dataValue\":1.311489449E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Egypt\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.01328E11,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Europe\",\"isPrimarySegment\":0},{\"dataValue\":1.0039749819E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"France\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.4760591974E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Germany\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":6.6952E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Greater China\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.02802213E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Guatemala\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.351013515E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Hong Kong\",\"isPrimarySegment\":0},{\"dataValue\":1.1758965904E10,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"India\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":5.015586123E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Indonesia\",\"isPrimarySegment\":0},{\"dataValue\":1.329967816E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Iran, Islamic Republic of\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.807375954E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Ireland\",\"isPrimarySegment\":0},{\"dataValue\":1.689028518E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Israel\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :7.469105384E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Italy\",\"\
+        isPrimarySegment\":0},{\"dataValue\":2.5052E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Japan\",\"isPrimarySegment\":0},{\"dataValue\":9.56248347E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Kazakhstan\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":6.265198955E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Korea, Republic of\",\"isPrimarySegment\":0},{\"dataValue\":1.461869378E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Malaysia\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":5.307950753E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Mexico\",\"isPrimarySegment\":0},{\"dataValue\":3.703743974E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Netherlands\",\"isPrimarySegment\":0},{\"\
+        dataValue\":9.27148343E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        New Zealand\",\"isPrimarySegment\":0},{\"dataValue\":1.608243646E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Norway\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.237712832E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Pakistan\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":7.9402724E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Peru\",\"isPrimarySegment\":0},{\"dataValue\":1.599031075E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Philippines\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":2.687164289E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Poland\",\"isPrimarySegment\":0},{\"dataValue\":3.49837449E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Puerto Rico\",\"isPrimarySegment\":0},{\"\
+        dataValue\":3.0658E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Rest\
+        \ of Asia Pacific\",\"isPrimarySegment\":0},{\"dataValue\":6.69587862E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Russian Federation\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.536326205E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Saudi Arabia\",\"isPrimarySegment\":0},{\"dataValue\":1.834164035E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Singapore\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.251386604E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"South Africa\",\"isPrimarySegment\":0},{\"dataValue\":5.235988661E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Spain\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.965175771E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Sweden\",\"isPrimarySegment\":0},{\"dataValue\":2.931330054E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Switzerland\",\"isPrimarySegment\":0},{\"\
+        dataValue\":2.675445044E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Taiwan\",\"isPrimarySegment\":0},{\"dataValue\":1.883609469E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Thailand\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.67028025E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Turkey\",\"\
+        isPrimarySegment\":0},{\"dataValue\":1.670054597E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"United Arab Emirates\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.106372505E10,\"segmentType\":\"Geographic\",\"segmentName\":\"United Kingdom\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.42196E11,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"United States\",\"isPrimarySegment\":1},{\"dataValue\"\
+        :2.88160738E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Venezuela\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.571855171E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Viet Nam\",\"isPrimarySegment\":0}]}]},{\"meta\":{\"symbol\"\
+        :[\"AAPL\"],\"type\":[\"annualEBITDA\"]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"\
+        annualEBITDA\":[{\"dataId\":20190,\"asOfDate\":\"2021-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.23136E11,\"\
+        fmt\":\"123.14B\"}},{\"dataId\":20190,\"asOfDate\":\"2022-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.30541E11,\"\
+        fmt\":\"130.54B\"}},{\"dataId\":20190,\"asOfDate\":\"2023-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.2582E11,\"\
+        fmt\":\"125.82B\"}},{\"dataId\":20190,\"asOfDate\":\"2024-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.34661E11,\"\
+        fmt\":\"134.66B\"}}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualInterestIncome\"\
+        ]},\"timestamp\":[1601424000,1632960000,1664496000,1696032000],\"annualInterestIncome\"\
+        :[{\"dataId\":20177,\"asOfDate\":\"2020-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.763E9,\"fmt\":\"3.76B\"\
+        }},{\"dataId\":20177,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.843E9,\"fmt\":\"2.84B\"\
+        }},{\"dataId\":20177,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.825E9,\"fmt\":\"2.83B\"\
+        }},{\"dataId\":20177,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.75E9,\"fmt\":\"3.75B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetNonOperatingInterestIncomeExpense\"\
+        ]},\"timestamp\":[1601424000,1632960000,1664496000,1696032000],\"annualNetNonOperatingInterestIncomeExpense\"\
+        :[{\"dataId\":20077,\"asOfDate\":\"2020-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":8.9E8,\"fmt\":\"890.00M\"\
+        }},{\"dataId\":20077,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.98E8,\"fmt\":\"198.00M\"\
+        }},{\"dataId\":20077,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-1.06E8,\"fmt\":\"-106.00M\"\
+        }},{\"dataId\":20077,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-1.83E8,\"fmt\":\"-183.00M\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualReconciledCostOfRevenue\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualReconciledCostOfRevenue\"\
+        :[{\"dataId\":20314,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.12981E11,\"fmt\":\"212.98B\"\
+        }},{\"dataId\":20314,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.23546E11,\"fmt\":\"223.55B\"\
+        }},{\"dataId\":20314,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.14137E11,\"fmt\":\"214.14B\"\
+        }},{\"dataId\":20314,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.10352E11,\"fmt\":\"210.35B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTaxRateForCalcs\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualTaxRateForCalcs\"\
+        :[{\"dataId\":20418,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":0.133,\"fmt\":\"0.13\"}},{\"\
+        dataId\":20418,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"currencyCode\"\
+        :\"USD\",\"reportedValue\":{\"raw\":0.162,\"fmt\":\"0.16\"}},{\"dataId\":20418,\"\
+        asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\"\
+        ,\"reportedValue\":{\"raw\":0.147,\"fmt\":\"0.15\"}},{\"dataId\":20418,\"\
+        asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\"\
+        ,\"reportedValue\":{\"raw\":0.241,\"fmt\":\"0.24\"}}]},{\"meta\":{\"symbol\"\
+        :[\"AAPL\"],\"type\":[\"annualNetIncomeCommonStockholders\"]},\"timestamp\"\
+        :[1632960000,1664496000,1696032000,1727654400],\"annualNetIncomeCommonStockholders\"\
+        :[{\"dataId\":20093,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.468E10,\"fmt\":\"94.68B\"\
+        }},{\"dataId\":20093,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.9803E10,\"fmt\":\"99.80B\"\
+        }},{\"dataId\":20093,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.6995E10,\"fmt\":\"97.00B\"\
+        }},{\"dataId\":20093,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.3736E10,\"fmt\":\"93.74B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedAverageShares\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualDilutedAverageShares\"\
+        :[{\"dataId\":29011,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.6864919E10,\"fmt\":\"\
+        16.86B\"}},{\"dataId\":29011,\"asOfDate\":\"2022-09-30\",\"periodType\":\"\
+        12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.6325819E10,\"\
+        fmt\":\"16.33B\"}},{\"dataId\":29011,\"asOfDate\":\"2023-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.5812547E10,\"\
+        fmt\":\"15.81B\"}},{\"dataId\":29011,\"asOfDate\":\"2024-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.5408095E10,\"\
+        fmt\":\"15.41B\"}}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualEBIT\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualEBIT\"\
+        :[{\"dataId\":20189,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.11852E11,\"fmt\":\"111.85B\"\
+        }},{\"dataId\":20189,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.19437E11,\"fmt\":\"119.44B\"\
+        }},{\"dataId\":20189,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.14301E11,\"fmt\":\"114.30B\"\
+        }},{\"dataId\":20189,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.23216E11,\"fmt\":\"123.22B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncome\"]},\"timestamp\"\
+        :[1632960000,1664496000,1696032000,1727654400],\"annualNetIncome\":[{\"dataId\"\
+        :20091,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"currencyCode\"\
+        :\"USD\",\"reportedValue\":{\"raw\":9.468E10,\"fmt\":\"94.68B\"}},{\"dataId\"\
+        :20091,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"currencyCode\"\
+        :\"USD\",\"reportedValue\":{\"raw\":9.9803E10,\"fmt\":\"99.80B\"}},{\"dataId\"\
+        :20091,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"currencyCode\"\
+        :\"USD\",\"reportedValue\":{\"raw\":9.6995E10,\"fmt\":\"97.00B\"}},{\"dataId\"\
+        :20091,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"currencyCode\"\
+        :\"USD\",\"reportedValue\":{\"raw\":9.3736E10,\"fmt\":\"93.74B\"}}]},{\"meta\"\
+        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualNormalizedIncome\"]},\"timestamp\"\
+        :[1632960000,1664496000,1696032000,1727654400],\"annualNormalizedIncome\"\
+        :[{\"dataId\":20316,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.468E10,\"fmt\":\"94.68B\"\
+        }},{\"dataId\":20316,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.9803E10,\"fmt\":\"99.80B\"\
+        }},{\"dataId\":20316,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.6995E10,\"fmt\":\"97.00B\"\
+        }},{\"dataId\":20316,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.3736E10,\"fmt\":\"93.74B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualCostOfRevenue\"]},\"\
+        timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualCostOfRevenue\"\
+        :[{\"dataId\":20013,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.12981E11,\"fmt\":\"212.98B\"\
+        }},{\"dataId\":20013,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.23546E11,\"fmt\":\"223.55B\"\
+        }},{\"dataId\":20013,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.14137E11,\"fmt\":\"214.14B\"\
+        }},{\"dataId\":20013,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.10352E11,\"fmt\":\"210.35B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPretaxIncome\"]},\"\
+        timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualPretaxIncome\"\
+        :[{\"dataId\":20136,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.09207E11,\"fmt\":\"109.21B\"\
+        }},{\"dataId\":20136,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.19103E11,\"fmt\":\"119.10B\"\
+        }},{\"dataId\":20136,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.13736E11,\"fmt\":\"113.74B\"\
+        }},{\"dataId\":20136,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.23485E11,\"fmt\":\"123.48B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTaxProvision\"]},\"\
+        timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualTaxProvision\"\
+        :[{\"dataId\":20145,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.4527E10,\"fmt\":\"14.53B\"\
+        }},{\"dataId\":20145,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.93E10,\"fmt\":\"19.30B\"\
+        }},{\"dataId\":20145,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.6741E10,\"fmt\":\"16.74B\"\
+        }},{\"dataId\":20145,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.9749E10,\"fmt\":\"29.75B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualInterestIncomeNonOperating\"\
+        ]},\"timestamp\":[1601424000,1632960000,1664496000,1696032000],\"annualInterestIncomeNonOperating\"\
+        :[{\"dataId\":20075,\"asOfDate\":\"2020-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.763E9,\"fmt\":\"3.76B\"\
+        }},{\"dataId\":20075,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.843E9,\"fmt\":\"2.84B\"\
+        }},{\"dataId\":20075,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.825E9,\"fmt\":\"2.83B\"\
+        }},{\"dataId\":20075,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.75E9,\"fmt\":\"3.75B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSellingGeneralAndAdministration\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualSellingGeneralAndAdministration\"\
+        :[{\"dataId\":20159,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.1973E10,\"fmt\":\"21.97B\"\
+        }},{\"dataId\":20159,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.5094E10,\"fmt\":\"25.09B\"\
+        }},{\"dataId\":20159,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.4932E10,\"fmt\":\"24.93B\"\
+        }},{\"dataId\":20159,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.6097E10,\"fmt\":\"26.10B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherIncomeExpense\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualOtherIncomeExpense\"\
+        :[{\"dataId\":20117,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":6.0E7,\"fmt\":\"60.00M\"\
+        }},{\"dataId\":20117,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-3.34E8,\"fmt\":\"-334.00M\"\
+        }},{\"dataId\":20117,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-5.65E8,\"fmt\":\"-565.00M\"\
+        }},{\"dataId\":20117,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.69E8,\"fmt\":\"269.00M\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOperatingIncome\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualOperatingIncome\"\
+        :[{\"dataId\":20109,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.08949E11,\"fmt\":\"108.95B\"\
+        },\"geographicSegmentData\":[{\"dataValue\":5.3382E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Americas\",\"isPrimarySegment\":0},{\"dataValue\":5.3382E10,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Americas, excluding U.S\",\"\
+        isPrimarySegment\":0},{\"dataValue\":7.19153474E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Argentina\",\"isPrimarySegment\":0},{\"dataValue\":1.534599468E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Australia\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":4.16042704E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Austria\",\"isPrimarySegment\":0},{\"dataValue\":4.1408995E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Bangladesh\",\"isPrimarySegment\":0},{\"\
+        dataValue\":5.23128197E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Belgium\",\"isPrimarySegment\":0},{\"dataValue\":2.354265758E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Brazil\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.912887877E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Canada\",\"\
+        isPrimarySegment\":0},{\"dataValue\":4.63920884E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Chile\",\"isPrimarySegment\":0},{\"dataValue\":2.1277789605E10,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"China, People's Republic of\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":4.59917481E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Colombia\",\"isPrimarySegment\":0},{\"dataValue\":3.46297289E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Denmark\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.52435188E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Egypt\",\"isPrimarySegment\":0},{\"dataValue\":3.2505E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Europe\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.561641206E9,\"segmentType\":\"Geographic\",\"segmentName\":\"France\",\"\
+        isPrimarySegment\":0},{\"dataValue\":3.682794492E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Germany\",\"isPrimarySegment\":0},{\"dataValue\":2.8504E10,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Greater China\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":4.41703045E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Hong Kong\",\"isPrimarySegment\":0},{\"dataValue\":2.767380908E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"India\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.179895629E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Indonesia\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.243813697E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Iran, Islamic Republic of\",\"isPrimarySegment\":0},{\"\
+        dataValue\":4.3477195E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Ireland\",\"isPrimarySegment\":0},{\"dataValue\":4.1997463E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Israel\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.831213456E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Italy\",\"\
+        isPrimarySegment\":0},{\"dataValue\":1.0177140431E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Japan\",\"isPrimarySegment\":0},{\"dataValue\":1.89817265E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Kazakhstan\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.789136536E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Korea, Republic of\",\"isPrimarySegment\":0},{\"dataValue\":3.70753986E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Malaysia\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.89197657E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Mexico\",\"isPrimarySegment\":0},{\"dataValue\":8.87759323E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Netherlands\",\"isPrimarySegment\":0},{\"\
+        dataValue\":2.48685301E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        New Zealand\",\"isPrimarySegment\":0},{\"dataValue\":3.84382271E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Nigeria\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :4.20712173E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Norway\",\"\
+        isPrimarySegment\":0},{\"dataValue\":-6.143E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Other corporate expenses, net\",\"isPrimarySegment\":0},{\"\
+        dataValue\":3.4453352E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Pakistan\",\"isPrimarySegment\":0},{\"dataValue\":3.92027309E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Philippines\",\"isPrimarySegment\":0},{\"\
+        dataValue\":5.87807941E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Poland\",\"isPrimarySegment\":0},{\"dataValue\":-2.1914E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Research and development expense\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":9.817E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Rest of Asia Pacific\",\"isPrimarySegment\":0},{\"dataValue\":1.548597253E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Russian Federation\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":7.26894769E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Saudi Arabia\",\"isPrimarySegment\":0},{\"dataValue\":3.94912635E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Singapore\",\"isPrimarySegment\":0},{\"\
+        dataValue\":3.6621687E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        South Africa\",\"isPrimarySegment\":0},{\"dataValue\":1.242921224E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Spain\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :8.4077217E7,\"segmentType\":\"Geographic\",\"segmentName\":\"Sri Lanka\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":5.47161084E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Sweden\",\"isPrimarySegment\":0},{\"dataValue\":7.08865611E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Switzerland\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":9.47268634E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Taiwan\",\"isPrimarySegment\":0},{\"dataValue\":5.0333789E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Thailand\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :7.1096275E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Turkey\",\"\
+        isPrimarySegment\":0},{\"dataValue\":3.57514248E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"United Arab Emirates\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.779120659E9,\"segmentType\":\"Geographic\",\"segmentName\":\"United Kingdom\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":3.3647956918E10,\"segmentType\":\"\
+        Geographic\",\"segmentName\":\"United States\",\"isPrimarySegment\":1},{\"\
+        dataValue\":3.60742735E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Viet Nam\",\"isPrimarySegment\":0}]},{\"dataId\":20109,\"asOfDate\":\"2022-09-30\"\
+        ,\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\"\
+        :1.19437E11,\"fmt\":\"119.44B\"},\"geographicSegmentData\":[{\"dataValue\"\
+        :6.2683E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Americas\",\"\
+        isPrimarySegment\":0},{\"dataValue\":6.2683E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Americas, excluding U.S\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :9.7088228E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Argentina\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.858775441E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Australia\",\"isPrimarySegment\":0},{\"dataValue\":4.41629212E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Austria\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":5.10565111E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Bangladesh\",\"isPrimarySegment\":0},{\"dataValue\":5.42062872E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Belgium\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.946071897E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Brazil\",\"\
+        isPrimarySegment\":0},{\"dataValue\":3.283233752E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Canada\",\"isPrimarySegment\":0},{\"dataValue\":1.6758788592E10,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"China, People's Republic of\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":5.277187E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Colombia\",\"isPrimarySegment\":0},{\"dataValue\":3.70432521E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Denmark\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":4.46639138E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Egypt\",\"isPrimarySegment\":0},{\"dataValue\":3.5233E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Europe\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.607153397E9,\"segmentType\":\"Geographic\",\"segmentName\":\"France\",\"\
+        isPrimarySegment\":0},{\"dataValue\":3.815016062E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Germany\",\"isPrimarySegment\":0},{\"dataValue\":3.1153E10,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Greater China\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.35712396E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Hong Kong\",\"isPrimarySegment\":0},{\"dataValue\":3.171307517E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"India\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.463461728E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Indonesia\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":3.64006286E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Iran, Islamic Republic of\",\"isPrimarySegment\":0},{\"\
+        dataValue\":4.95820877E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Ireland\",\"isPrimarySegment\":0},{\"dataValue\":4.89064883E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Israel\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.883464565E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Italy\",\"\
+        isPrimarySegment\":0},{\"dataValue\":9.574801719E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Japan\",\"isPrimarySegment\":0},{\"dataValue\":2.44767846E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Kazakhstan\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.847488974E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Korea, Republic of\",\"isPrimarySegment\":0},{\"dataValue\":4.50771792E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Malaysia\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":2.169838435E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Mexico\",\"isPrimarySegment\":0},{\"dataValue\":9.28521667E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Netherlands\",\"isPrimarySegment\":0},{\"\
+        dataValue\":2.74291195E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        New Zealand\",\"isPrimarySegment\":0},{\"dataValue\":4.47237223E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Nigeria\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :5.42684247E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Norway\",\"\
+        isPrimarySegment\":0},{\"dataValue\":-7.207E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Other corporate expenses, net\",\"isPrimarySegment\":0},{\"\
+        dataValue\":4.17740262E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Pakistan\",\"isPrimarySegment\":0},{\"dataValue\":4.48528952E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Philippines\",\"isPrimarySegment\":0},{\"\
+        dataValue\":6.4471542E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Poland\",\"isPrimarySegment\":0},{\"dataValue\":-2.6251E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Research and development expense\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.1569E10,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Rest of Asia Pacific\",\"isPrimarySegment\":0},{\"dataValue\":2.098930537E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Russian Federation\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.038164808E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Saudi Arabia\",\"isPrimarySegment\":0},{\"dataValue\":5.17873587E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Singapore\",\"isPrimarySegment\":0},{\"\
+        dataValue\":3.80237374E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        South Africa\",\"isPrimarySegment\":0},{\"dataValue\":1.309250807E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Spain\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :5.48934699E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Sweden\",\"\
+        isPrimarySegment\":0},{\"dataValue\":7.56696073E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Switzerland\",\"isPrimarySegment\":0},{\"dataValue\":7.241290642E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Taiwan\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":5.49550359E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Thailand\",\"isPrimarySegment\":0},{\"dataValue\":8.48770962E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Turkey\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :4.75482003E8,\"segmentType\":\"Geographic\",\"segmentName\":\"United Arab\
+        \ Emirates\",\"isPrimarySegment\":0},{\"dataValue\":2.876742422E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"United Kingdom\",\"isPrimarySegment\":0},{\"\
+        dataValue\":3.9068339312E10,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"United States\",\"isPrimarySegment\":1},{\"dataValue\":4.53541457E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Viet Nam\",\"isPrimarySegment\"\
+        :0}]},{\"dataId\":20109,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\"\
+        ,\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.14301E11,\"fmt\":\"\
+        114.30B\"},\"geographicSegmentData\":[{\"dataValue\":6.0508E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Americas\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :6.0508E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Americas, excluding\
+        \ U.S\",\"isPrimarySegment\":0},{\"dataValue\":8.51876964E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Argentina\",\"isPrimarySegment\":0},{\"\
+        dataValue\":1.879916616E9,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Australia\",\"isPrimarySegment\":0},{\"dataValue\":4.61294348E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Austria\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :4.77022489E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Bangladesh\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":5.65152397E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Belgium\",\"isPrimarySegment\":0},{\"dataValue\":2.890603389E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Brazil\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":2.845947617E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Canada\",\"isPrimarySegment\":0},{\"dataValue\":2.1592478986E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"China, People's Republic of\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":4.83446202E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Colombia\",\"isPrimarySegment\":0},{\"dataValue\":3.61322218E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Denmark\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.53927085E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Egypt\",\"\
+        isPrimarySegment\":0},{\"dataValue\":3.6098E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Europe\",\"isPrimarySegment\":0},{\"dataValue\":2.709392277E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"France\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.983389489E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Germany\",\"isPrimarySegment\":0},{\"dataValue\":3.0328E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Greater China\",\"isPrimarySegment\":0},{\"\
+        dataValue\":4.63591258E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Hong Kong\",\"isPrimarySegment\":0},{\"dataValue\":3.173351128E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"India\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.495328192E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Indonesia\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":3.58913777E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Iran, Islamic Republic of\",\"isPrimarySegment\":0},{\"\
+        dataValue\":4.87750247E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Ireland\",\"isPrimarySegment\":0},{\"dataValue\":4.55812237E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Israel\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.015661427E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Italy\",\"\
+        isPrimarySegment\":0},{\"dataValue\":9.005423148E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Japan\",\"isPrimarySegment\":0},{\"dataValue\":2.85092325E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Kazakhstan\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.867883114E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Korea, Republic of\",\"isPrimarySegment\":0},{\"dataValue\":4.35836299E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Malaysia\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":2.378913378E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Mexico\",\"isPrimarySegment\":0},{\"dataValue\":9.99516472E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Netherlands\",\"isPrimarySegment\":0},{\"\
+        dataValue\":2.76416559E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        New Zealand\",\"isPrimarySegment\":0},{\"dataValue\":4.44345906E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Nigeria\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :4.34011105E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Norway\",\"\
+        isPrimarySegment\":0},{\"dataValue\":-6.672E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Other corporate expenses, net\",\"isPrimarySegment\":0},{\"\
+        dataValue\":3.690071E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Pakistan\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":4.76729177E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Philippines\",\"isPrimarySegment\":0},{\"dataValue\":7.25175657E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Poland\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":-2.9915E10,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Research and development expense\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.2066E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Rest of Asia Pacific\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.806993416E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Russian Federation\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :9.54336023E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Saudi Arabia\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":5.46830843E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Singapore\",\"isPrimarySegment\":0},{\"dataValue\":3.3770734E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"South Africa\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":1.413018003E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Spain\",\"isPrimarySegment\":0},{\"dataValue\":5.30335133E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Sweden\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :7.91067821E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Switzerland\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":9.18061086E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Taiwan\",\"isPrimarySegment\":0},{\"dataValue\":5.61572321E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Thailand\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":9.90485734E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Turkey\",\"isPrimarySegment\":0},{\"dataValue\":4.50691811E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"United Arab Emirates\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":2.985728902E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"United Kingdom\",\"isPrimarySegment\":0},{\"dataValue\":3.6385361835E10,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"United States\",\"isPrimarySegment\"\
+        :1},{\"dataValue\":4.68627054E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Viet Nam\",\"isPrimarySegment\":0}]},{\"dataId\":20109,\"asOfDate\":\"\
+        2024-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\"\
+        :{\"raw\":1.23216E11,\"fmt\":\"123.22B\"},\"geographicSegmentData\":[{\"dataValue\"\
+        :6.7656E10,\"segmentType\":\"Geographic\",\"segmentName\":\"Americas\",\"\
+        isPrimarySegment\":0},{\"dataValue\":9.56112987E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Argentina\",\"isPrimarySegment\":0},{\"dataValue\":2.04279021E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Australia\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":5.36051094E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Austria\",\"isPrimarySegment\":0},{\"dataValue\":5.18351113E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Bangladesh\",\"isPrimarySegment\":0},{\"\
+        dataValue\":6.56740241E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Belgium\",\"isPrimarySegment\":0},{\"dataValue\":3.24429883E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Brazil\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.194178959E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Canada\",\"\
+        isPrimarySegment\":0},{\"dataValue\":1.9354336653E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"China, People's Republic of\",\"isPrimarySegment\":0},{\"\
+        dataValue\":5.42600882E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Colombia\",\"isPrimarySegment\":0},{\"dataValue\":4.19877615E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Denmark\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :4.11284036E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Egypt\",\"\
+        isPrimarySegment\":0},{\"dataValue\":4.179E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Europe\",\"isPrimarySegment\":0},{\"dataValue\":3.148472774E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"France\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":4.628932274E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Germany\",\"isPrimarySegment\":0},{\"dataValue\":2.7082E10,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Greater China\",\"isPrimarySegment\":0},{\"\
+        dataValue\":4.15538266E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Hong Kong\",\"isPrimarySegment\":0},{\"dataValue\":3.687620177E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"India\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.624881532E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Indonesia\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":4.17078865E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Iran, Islamic Republic of\",\"isPrimarySegment\":0},{\"\
+        dataValue\":5.66794401E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Ireland\",\"isPrimarySegment\":0},{\"dataValue\":5.2968056E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Israel\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.342316828E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Italy\",\"\
+        isPrimarySegment\":0},{\"dataValue\":9.469848092E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Japan\",\"isPrimarySegment\":0},{\"dataValue\":3.09792363E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Kazakhstan\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":2.02971414E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Korea, Republic of\",\"isPrimarySegment\":0},{\"dataValue\":4.73596604E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Malaysia\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":2.669998215E9,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Mexico\",\"isPrimarySegment\":0},{\"dataValue\":1.161496778E9,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Netherlands\",\"isPrimarySegment\":0},{\"\
+        dataValue\":3.00364939E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        New Zealand\",\"isPrimarySegment\":0},{\"dataValue\":5.04346366E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Norway\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :-7.458E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Other corporate\
+        \ expenses, net\",\"isPrimarySegment\":0},{\"dataValue\":4.00977408E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Pakistan\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :5.18032389E8,\"segmentType\":\"Geographic\",\"segmentName\":\"Philippines\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":8.42696656E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Poland\",\"isPrimarySegment\":0},{\"dataValue\":-3.137E10,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Research and development expense\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.3062E10,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Rest of Asia Pacific\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :2.099832358E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Russian Federation\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":1.108994445E9,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"Saudi Arabia\",\"isPrimarySegment\":0},{\"dataValue\":5.94207575E8,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Singapore\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":3.9243574E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"South Africa\",\"isPrimarySegment\":0},{\"dataValue\":1.642009815E9,\"\
+        segmentType\":\"Geographic\",\"segmentName\":\"Spain\",\"isPrimarySegment\"\
+        :0},{\"dataValue\":6.16280537E8,\"segmentType\":\"Geographic\",\"segmentName\"\
+        :\"Sweden\",\"isPrimarySegment\":0},{\"dataValue\":9.19267216E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Switzerland\",\"isPrimarySegment\":0},{\"\
+        dataValue\":8.22900572E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Taiwan\",\"isPrimarySegment\":0},{\"dataValue\":6.10226236E8,\"segmentType\"\
+        :\"Geographic\",\"segmentName\":\"Thailand\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :1.15100253E9,\"segmentType\":\"Geographic\",\"segmentName\":\"Turkey\",\"\
+        isPrimarySegment\":0},{\"dataValue\":5.23730324E8,\"segmentType\":\"Geographic\"\
+        ,\"segmentName\":\"United Arab Emirates\",\"isPrimarySegment\":0},{\"dataValue\"\
+        :3.469592144E9,\"segmentType\":\"Geographic\",\"segmentName\":\"United Kingdom\"\
+        ,\"isPrimarySegment\":0},{\"dataValue\":4.0837489946E10,\"segmentType\":\"\
+        Geographic\",\"segmentName\":\"United States\",\"isPrimarySegment\":1},{\"\
+        dataValue\":5.09228309E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
+        Viet Nam\",\"isPrimarySegment\":0}]}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"\
+        type\":[\"annualNetIncomeFromContinuingAndDiscontinuedOperation\"]},\"timestamp\"\
+        :[1632960000,1664496000,1696032000,1727654400],\"annualNetIncomeFromContinuingAndDiscontinuedOperation\"\
+        :[{\"dataId\":20309,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.468E10,\"fmt\":\"94.68B\"\
+        }},{\"dataId\":20309,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.9803E10,\"fmt\":\"99.80B\"\
+        }},{\"dataId\":20309,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.6995E10,\"fmt\":\"97.00B\"\
+        }},{\"dataId\":20309,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.3736E10,\"fmt\":\"93.74B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetInterestIncome\"\
+        ]},\"timestamp\":[1601424000,1632960000,1664496000,1696032000],\"annualNetInterestIncome\"\
+        :[{\"dataId\":20095,\"asOfDate\":\"2020-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":8.9E8,\"fmt\":\"890.00M\"\
+        }},{\"dataId\":20095,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.98E8,\"fmt\":\"198.00M\"\
+        }},{\"dataId\":20095,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-1.06E8,\"fmt\":\"-106.00M\"\
+        }},{\"dataId\":20095,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-1.83E8,\"fmt\":\"-183.00M\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalExpenses\"]},\"\
+        timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualTotalExpenses\"\
+        :[{\"dataId\":20164,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.56868E11,\"fmt\":\"256.87B\"\
+        }},{\"dataId\":20164,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.74891E11,\"fmt\":\"274.89B\"\
+        }},{\"dataId\":20164,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.68984E11,\"fmt\":\"268.98B\"\
+        }},{\"dataId\":20164,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.67819E11,\"fmt\":\"267.82B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualInterestExpenseNonOperating\"\
+        ]},\"timestamp\":[1601424000,1632960000,1664496000,1696032000],\"annualInterestExpenseNonOperating\"\
+        :[{\"dataId\":20064,\"asOfDate\":\"2020-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.873E9,\"fmt\":\"2.87B\"\
+        }},{\"dataId\":20064,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.645E9,\"fmt\":\"2.65B\"\
+        }},{\"dataId\":20064,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":2.931E9,\"fmt\":\"2.93B\"\
+        }},{\"dataId\":20064,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":3.933E9,\"fmt\":\"3.93B\"\
+        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedEPS\"]},\"\
+        timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualDilutedEPS\"\
+        :[{\"dataId\":29009,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
+        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":5.61,\"fmt\":\"5.61\"}},{\"\
+        dataId\":29009,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"currencyCode\"\
+        :\"USD\",\"reportedValue\":{\"raw\":6.11,\"fmt\":\"6.11\"}},{\"dataId\":29009,\"\
+        asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\"\
+        ,\"reportedValue\":{\"raw\":6.13,\"fmt\":\"6.13\"}},{\"dataId\":29009,\"asOfDate\"\
+        :\"2024-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\"\
+        :{\"raw\":6.08,\"fmt\":\"6.08\"}}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\"\
+        :[\"annualContinuingAndDiscontinuedBasicEPS\"]}},{\"meta\":{\"symbol\":[\"\
+        AAPL\"],\"type\":[\"annualBasicAccountingChange\"]}},{\"meta\":{\"symbol\"\
+        :[\"AAPL\"],\"type\":[\"annualTotalUnusualItemsExcludingGoodwill\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedDiscontinuousOperations\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualRentExpenseSupplemental\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepletionIncomeStatement\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGeneralAndAdministrativeExpense\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepreciationIncomeStatement\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualContinuingAndDiscontinuedDilutedEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualWriteOff\"]}},{\"meta\"\
+        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualEarningsFromEquityInterestNetOfTax\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherSpecialCharges\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualProfessionalExpenseAndContractServicesExpense\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualExciseTaxes\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOccupancyAndEquipment\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGainOnSaleOfBusiness\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDividendPerShare\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSpecialIncomeCharges\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualImpairmentOfCapitalAssets\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedContinuousOperations\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSalariesAndWages\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualReportedNormalizedDilutedEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualMinorityInterests\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPreferredStockDividends\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherTaxes\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualRentAndLandingFees\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSecuritiesAmortization\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualAmortization\"]}},{\"meta\"\
+        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherGandA\"]}},{\"meta\":{\"symbol\"\
+        :[\"AAPL\"],\"type\":[\"annualNetIncomeFromTaxLossCarryforward\"]}},{\"meta\"\
+        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualTaxLossCarryforwardBasicEPS\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPolicyholderBenefitsGross\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicExtraordinary\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicDiscontinuousOperations\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherNonInterestExpense\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualRestructuringAndMergernAcquisition\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualEarningsFromEquityInterest\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualInsuranceAndClaims\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGainOnSaleOfSecurity\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTaxLossCarryforwardDilutedEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepreciationAndAmortizationInIncomeStatement\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicEPSOtherGainsLosses\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedEPSOtherGainsLosses\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedAccountingChange\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalUnusualItems\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualReportedNormalizedBasicEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNormalizedBasicEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncomeExtraordinary\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncomeDiscontinuousOperations\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualAmortizationOfIntangiblesIncomeStatement\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGainOnSaleOfPPE\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPolicyholderBenefitsCeded\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSellingAndMarketingExpense\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherOperatingExpenses\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualAverageDilutionEarnings\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetPolicyholderBenefitsAndClaims\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicContinuousOperations\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepreciationAmortizationDepletionIncomeStatement\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedExtraordinary\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNormalizedDilutedEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalOtherFinanceCost\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualProvisionForDoubtfulAccounts\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherunderPreferredStockDividend\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualLossAdjustmentExpense\"\
+        ]}}],\"error\":null}}"
+    headers:
+      Age: '0'
+      Cache-Control: public, max-age=60, stale-while-revalidate=30
+      Content-Encoding: gzip
+      Content-Type: application/json;charset=utf-8
+      Date: Mon, 23 Jun 2025 19:30:21 GMT
+      Referrer-Policy: no-referrer-when-downgrade
+      Server: ATS
+      Strict-Transport-Security: max-age=31536000
+      Vary: Origin,Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Envoy-Decorator-Operation: finance-company-fundamentals-api--mtls-production-gq1.finance-k8s:4080/*
+      X-Envoy-Upstream-Service-Time: '127'
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+      Y-Rid: 4vt3j0tk5jaqd
+    status:
+      code: 200
+      message: ''

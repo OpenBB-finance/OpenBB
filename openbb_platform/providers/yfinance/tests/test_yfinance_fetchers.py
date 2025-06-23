@@ -64,7 +64,7 @@ def vcr_config():
     }
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_crypto_historical_fetcher(credentials=test_credentials):
     """Test YFinanceCryptoHistoricalFetcher."""
     params = {
@@ -79,7 +79,7 @@ def test_y_finance_crypto_historical_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_currency_historical_fetcher(credentials=test_credentials):
     """Test YFinanceCurrencyHistoricalFetcher."""
     params = {
@@ -93,7 +93,7 @@ def test_y_finance_currency_historical_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_index_historical_fetcher(credentials=test_credentials):
     """Test YFinanceIndexHistoricalFetcher."""
     params = {
@@ -107,7 +107,7 @@ def test_y_finance_index_historical_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
     """Test YFinanceEquityHistoricalFetcher."""
     params = {
@@ -122,7 +122,7 @@ def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_historical_dividends_fetcher(credentials=test_credentials):
     """Test YFinanceHistoricalDividendsFetcher."""
     params = {"symbol": "IBM"}
@@ -132,7 +132,7 @@ def test_y_finance_historical_dividends_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
     """Test YFinanceFuturesHistoricalFetcher."""
     params = {
@@ -146,7 +146,7 @@ def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_options_chains_fetcher(credentials=test_credentials):
     """Test YFinanceOptionsChainsFetcher."""
 
@@ -158,7 +158,7 @@ def test_y_finance_options_chains_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.skip("Unreliable amount of data while recording test.")
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_futures_curve_fetcher(credentials=test_credentials):
     """Test YFinanceFuturesCurveFetcher."""
     params = {"symbol": "ES"}
@@ -168,7 +168,7 @@ def test_y_finance_futures_curve_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_company_news_fetcher(credentials=test_credentials):
     """Test YFinanceCompanyNewsFetcher."""
     params = {"symbol": "AAPL,MSFT", "limit": 2}
@@ -178,7 +178,7 @@ def test_y_finance_company_news_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_balance_sheet_fetcher(credentials=test_credentials):
     """Test YFinanceBalanceSheetFetcher."""
     params = {"symbol": "AAPL"}
@@ -188,7 +188,7 @@ def test_y_finance_balance_sheet_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_cash_flow_statement_fetcher(credentials=test_credentials):
     """Test YFinanceCashFlowStatementFetcher."""
     params = {"symbol": "AAPL"}
@@ -198,7 +198,7 @@ def test_y_finance_cash_flow_statement_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_income_statement_fetcher(credentials=test_credentials):
     """Test YFinanceIncomeStatementFetcher."""
     params = {"symbol": "AAPL"}
@@ -217,7 +217,7 @@ def test_y_finance_available_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_active_fetcher(credentials=test_credentials):
     """Test YFActiveFetcher."""
     params = {"limit": 10}
@@ -227,7 +227,7 @@ def test_y_finance_active_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_gainers_fetcher(credentials=test_credentials):
     """Test YFGainersFetcher."""
     params = {"limit": 10}
@@ -237,7 +237,7 @@ def test_y_finance_gainers_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_losers_fetcher(credentials=test_credentials):
     """Test YFLosersFetcher."""
     params = {"limit": 10}
@@ -247,7 +247,7 @@ def test_y_finance_losers_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_undervalued_large_caps_fetcher(credentials=test_credentials):
     """Test YFUndervaluedLargeCapsFetcher."""
     params = {"limit": 10}
@@ -257,7 +257,7 @@ def test_y_finance_undervalued_large_caps_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_undervalued_growth_equities_fetcher(credentials=test_credentials):
     """Test YFUndervaluedGrowthEquitiesFetcher."""
     params = {"limit": 10}
@@ -267,7 +267,7 @@ def test_y_finance_undervalued_growth_equities_fetcher(credentials=test_credenti
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_aggressive_small_caps_fetcher(credentials=test_credentials):
     """Test YFAggressiveSmallCapsFetcher."""
     params = {"limit": 10}
@@ -277,7 +277,7 @@ def test_y_finance_aggressive_small_caps_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_growth_tech_equities_fetcher(credentials=test_credentials):
     """Test YFGrowthTechEquitiesFetcher."""
     params = {"limit": 10}
@@ -287,7 +287,7 @@ def test_y_finance_growth_tech_equities_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_equity_profile_fetcher(credentials=test_credentials):
     """Test YFinanceEquityProfileFetcher."""
     params = {"symbol": "AAPL"}
@@ -297,7 +297,7 @@ def test_y_finance_equity_profile_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_equity_quote_fetcher(credentials=test_credentials):
     """Test YFinanceEquityQuoteFetcher."""
     params = {"symbol": "AAPL"}
@@ -307,7 +307,7 @@ def test_y_finance_equity_quote_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_price_target_consensus_fetcher(credentials=test_credentials):
     """Test YFinancePriceTargetConsensusFetcher."""
     params = {"symbol": "AAPL"}
@@ -317,7 +317,7 @@ def test_y_finance_price_target_consensus_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_share_statistics_fetcher(credentials=test_credentials):
     """Test YFinanceShareStatisticsFetcher."""
     params = {"symbol": "AAPL"}
@@ -327,7 +327,7 @@ def test_y_finance_share_statistics_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_key_executives_fetcher(credentials=test_credentials):
     """Test YFinanceKeyExecutivesFetcher."""
     params = {"symbol": "AAPL"}
@@ -337,8 +337,10 @@ def test_y_finance_key_executives_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
-def test_y_finance_key_metrics_fetcher(credentials=test_credentials):
+@pytest.mark.record_curl
+def test_y_finance_key_metrics_fetcher(
+    credentials=test_credentials,
+):
     """Test YFinanceKeyMetricsFetcher."""
     params = {"symbol": "AAPL"}
 
@@ -347,7 +349,7 @@ def test_y_finance_key_metrics_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_etf_info_fetcher(credentials=test_credentials):
     """Test YFinanceEtfInfoFetcher."""
     params = {"symbol": "QQQ"}
@@ -357,7 +359,7 @@ def test_y_finance_etf_info_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
+@pytest.mark.record_curl
 def test_y_finance_equity_screener_fetcher(credentials=test_credentials):
     """Test YFinanceEquityScreener."""
     params = {

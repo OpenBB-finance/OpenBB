@@ -11,7 +11,7 @@ packages = [{ include = "openbb_yfinance" }]
 python = ">=3.9.21,<3.13"
 yfinance = "0.2.58"
 openbb-core = "^1.4.7"
-curl-adapter = "^1.0.0.post3"
+curl-adapter = ">=1.1.0"
 
 [build-system]
 requires = ["poetry-core"]
