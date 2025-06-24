@@ -46,6 +46,21 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
+def scrub_string(key, value):
+    """Scrub a string from the response."""
+
+    def before_record_response(response):
+        if key == "<!doctype html>":
+            response_body = response["body"]["string"]
+            if key in response_body.lower():
+                response["body"]["string"] = "MOCK_RESPONSE"
+        if key in response["headers"]:
+            response["headers"][key] = value
+        return response
+
+    return before_record_response
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     """VCR configuration."""
@@ -60,6 +75,17 @@ def vcr_config():
             ("period2", "MOCK_PERIOD_2"),
             ("crumb", "MOCK_CRUMB"),
             ("date", "MOCK_DATE"),
+            ("corsDomain", "MOCK_CORS"),
+        ],
+        "before_record_response": [
+            scrub_string("Set-Cookie", "MOCK_COOKIE"),
+            scrub_string("X-Envoy-Decorator-Operation", "MOCK_OPERATION"),
+            scrub_string("Y-Rid", "MOCK_RID"),
+            scrub_string("Content-Security-Policy", "MOCK_CSP"),
+            scrub_string("<!doctype html>", "MOCK_RESPONSE"),
+            scrub_string("Link", "MOCK_LINK"),
+            scrub_string("Report-To", "MOCK_REPORT"),
+            scrub_string("Expect-Ct", "MOCK_EXPECT_CT"),
         ],
     }
 

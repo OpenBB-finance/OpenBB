@@ -5,95 +5,6 @@ interactions:
       Accept: '*/*'
       Accept-Encoding: gzip, deflate, br, zstd
       Connection: keep-alive
-    method: GET
-    uri: https://fc.yahoo.com/
-  response:
-    body:
-      encoding: utf-8
-      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n  <head>\n    <meta http-equiv=\"\
-        content-type\" content=\"text/html; charset=UTF-8\">\n    <meta charset=\"\
-        utf-8\">\n    <title>Yahoo</title>\n    <meta name=\"viewport\" content=\"\
-        width=device-width,initial-scale=1,minimal-ui\">\n    <meta http-equiv=\"\
-        X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <style>\n      html {\n\
-        \          height: 100%;\n      }\n      body {\n          background: #fafafc\
-        \ url(https://s.yimg.com/nn/img/sad-panda-201402200631.png) 50% 50%;\n   \
-        \       background-size: cover;\n          height: 100%;\n          text-align:\
-        \ center;\n          font: 300 18px \"helvetica neue\", helvetica, verdana,\
-        \ tahoma, arial, sans-serif;\n          margin: 0;\n      }\n      table {\n\
-        \          height: 100%;\n          width: 100%;\n          table-layout:\
-        \ fixed;\n          border-collapse: collapse;\n          border-spacing:\
-        \ 0;\n          border: none;\n      }\n      h1 {\n          font-size: 42px;\n\
-        \          font-weight: 400;\n          color: #400090;\n      }\n      p\
-        \ {\n          color: #1A1A1A;\n      }\n      #message-1 {\n          font-weight:\
-        \ bold;\n          margin: 0;\n      }\n      #message-2 {\n          display:\
-        \ inline-block;\n          *display: inline;\n          zoom: 1;\n       \
-        \   max-width: 17em;\n          _width: 17em;\n      }\n      </style>\n \
-        \     <script>\n      !function(){if(window==window.top){var o=window.location.host;o.endsWith(\"\
-        .yahoo.com\")&&window.location.replace(\"https://www.yahoo.com/\"),o.endsWith(\"\
-        .aol.com\")&&window.location.replace(\"https://www.aol.com/\"),o.endsWith(\"\
-        .huffpost.com\")&&window.location.replace(\"https://www.huffpost.com/\"),o.endsWith(\"\
-        .engadget.com\")&&window.location.replace(\"https://www.engadget.com/\")}}();\n\
-        \      </script>\n  </head>\n  <body>\n  <!-- status code : 404 -->\n  <!--\
-        \ Not Found on Accelerator -->\n  <!-- host machine: e14.ycpi.swb.yahoo.com\
-        \ -->\n  <!-- timestamp: 1750707019.706 -->\n  <!-- url: https://fc.yahoo.com/-->\n\
-        \  <script type=\"text/javascript\">\n    function buildUrl(url, parameters){\n\
-        \      var qs = [];\n      for(var key in parameters) {\n        var value\
-        \ = parameters[key];\n        qs.push(encodeURIComponent(key) + \"=\" + encodeURIComponent(value));\n\
-        \      }\n      url = url + \"?\" + qs.join('&');\n      return url;\n   \
-        \ }\n\n    function generateBRBMarkup(site) {\n      params.source = 'brb';\n\
-        \      generateBeaconMarkup(params);\n      var englishHeader = 'Will be right\
-        \ back...';\n      var englishMessage1 = 'Thank you for your patience.';\n\
-        \      var englishMessage2 = 'Our engineers are working quickly to resolve\
-        \ the issue.';\n      var defaultLogoStyle = '';\n      var siteDataMap =\
-        \ {\n        'default': {\n          logo: 'https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_205x58_frontpage.png',\n\
-        \          logoAlt: 'Yahoo Logo',\n          logoStyle: defaultLogoStyle,\n\
-        \          header: englishHeader,\n          message1: englishMessage1,\n\
-        \          message2: englishMessage2\n        }\n      };\n\n      var siteDetails\
-        \ = siteDataMap['default'];\n\n      document.write('<table><tbody><tr><td>');\n\
-        \      document.write('<div id=\"content\">');\n      document.write('<img\
-        \ src=\"' + siteDetails['logo'] + '\" alt=\"' + siteDetails['logoAlt'] + '\"\
-        \ style=\"' + siteDetails['logoStyle'] + '\">');\n      document.write('<h1\
-        \ style=\"margin-top:20px;\">' + siteDetails['header'] + '</h1>');\n     \
-        \ document.write('<p id=\"message-1\">' + siteDetails['message1'] + '</p>');\n\
-        \      document.write('<p id=\"message-2\">' + siteDetails['message2'] + '</p>');\n\
-        \      document.write('</div>');\n      document.write('</td></tr></tbody></table>');\n\
-        \    }\n\n    function generateBeaconMarkup(params) {\n        document.write('<img\
-        \ src=\"' + buildUrl('//geo.yahoo.com/b', params) + '\" style=\"display:none;\"\
-        \ width=\"0px\" height=\"0px\"/>');\n        var beacon = new Image();\n \
-        \       beacon.src = buildUrl('//bcn.fp.yahoo.com/p', params);\n    }\n\n\
-        \    var hostname = window.location.hostname;\n    var device = 'desktop';\n\
-        \    var ynet = ('-' === '1');\n    var time = new Date().getTime();\n   \
-        \ var params = {\n        s: '1197757129',\n        t: time,\n        err_url:\
-        \ document.URL,\n        err: '404',\n        test: '-',\n        ats_host:\
-        \ 'e14.ycpi.swb.yahoo.com',\n        rid: '-',\n        message: 'Not Found\
-        \ on Accelerator'\n    };\n\n    if(ynet) {\n        document.write('<div\
-        \ style=\"height: 5px; background-color: red;\"></div>');\n    }\n    generateBRBMarkup(hostname,\
-        \ params);\n\n  </script>\n  <noscript>\n  <table>\n    <tbody>\n      <tr>\n\
-        \        <td>\n          <div id=\"englishContent\">\n            <h1 style=\"\
-        margin-top:20px;\">Will be right back...</h1>\n            <p id=\"message-1\"\
-        >Thank you for your patience.</p>\n            <p id=\"message-2\">Our engineers\
-        \ are working quickly to resolve the issue.</p>\n          </div>\n      \
-        \  </td>\n      </tr>\n    </tbody>\n  </table>\n  </noscript>\n  </body>\n\
-        </html>\n"
-    headers:
-      Cache-Control: no-store
-      Content-Language: en
-      Content-Length: '4744'
-      Content-Type: text/html
-      Date: Mon, 23 Jun 2025 19:30:19 GMT
-      Server: ATS
-      Set-Cookie: A3=d=AQABBEurWWgCEMB4b0U4BNWRN3s1MsjbLaIFEgEBAQH8WmhjaCXUxyMA_eMCAA&S=AQAAAsRgRDb6_iHBLskvkwfS9MU;
-        Expires=Wed, 24 Jun 2026 01:30:19 GMT; Max-Age=31557600; Domain=.yahoo.com;
-        Path=/; SameSite=None; Secure; HttpOnly
-    status:
-      code: 404
-      message: ''
-- request:
-    body: null
-    headers:
-      Accept: '*/*'
-      Accept-Encoding: gzip, deflate, br, zstd
-      Connection: keep-alive
       Cookie: MOCK_COOKIE
     method: GET
     uri: https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?symbol=AAPL&type=annualTaxEffectOfUnusualItems%2CannualTaxRateForCalcs%2CannualNormalizedEBITDA%2CannualNormalizedDilutedEPS%2CannualNormalizedBasicEPS%2CannualTotalUnusualItems%2CannualTotalUnusualItemsExcludingGoodwill%2CannualNetIncomeFromContinuingOperationNetMinorityInterest%2CannualReconciledDepreciation%2CannualReconciledCostOfRevenue%2CannualEBITDA%2CannualEBIT%2CannualNetInterestIncome%2CannualInterestExpense%2CannualInterestIncome%2CannualContinuingAndDiscontinuedDilutedEPS%2CannualContinuingAndDiscontinuedBasicEPS%2CannualNormalizedIncome%2CannualNetIncomeFromContinuingAndDiscontinuedOperation%2CannualTotalExpenses%2CannualRentExpenseSupplemental%2CannualReportedNormalizedDilutedEPS%2CannualReportedNormalizedBasicEPS%2CannualTotalOperatingIncomeAsReported%2CannualDividendPerShare%2CannualDilutedAverageShares%2CannualBasicAverageShares%2CannualDilutedEPS%2CannualDilutedEPSOtherGainsLosses%2CannualTaxLossCarryforwardDilutedEPS%2CannualDilutedAccountingChange%2CannualDilutedExtraordinary%2CannualDilutedDiscontinuousOperations%2CannualDilutedContinuousOperations%2CannualBasicEPS%2CannualBasicEPSOtherGainsLosses%2CannualTaxLossCarryforwardBasicEPS%2CannualBasicAccountingChange%2CannualBasicExtraordinary%2CannualBasicDiscontinuousOperations%2CannualBasicContinuousOperations%2CannualDilutedNIAvailtoComStockholders%2CannualAverageDilutionEarnings%2CannualNetIncomeCommonStockholders%2CannualOtherunderPreferredStockDividend%2CannualPreferredStockDividends%2CannualNetIncome%2CannualMinorityInterests%2CannualNetIncomeIncludingNoncontrollingInterests%2CannualNetIncomeFromTaxLossCarryforward%2CannualNetIncomeExtraordinary%2CannualNetIncomeDiscontinuousOperations%2CannualNetIncomeContinuousOperations%2CannualEarningsFromEquityInterestNetOfTax%2CannualTaxProvision%2CannualPretaxIncome%2CannualOtherIncomeExpense%2CannualOtherNonOperatingIncomeExpenses%2CannualSpecialIncomeCharges%2CannualGainOnSaleOfPPE%2CannualGainOnSaleOfBusiness%2CannualOtherSpecialCharges%2CannualWriteOff%2CannualImpairmentOfCapitalAssets%2CannualRestructuringAndMergernAcquisition%2CannualSecuritiesAmortization%2CannualEarningsFromEquityInterest%2CannualGainOnSaleOfSecurity%2CannualNetNonOperatingInterestIncomeExpense%2CannualTotalOtherFinanceCost%2CannualInterestExpenseNonOperating%2CannualInterestIncomeNonOperating%2CannualOperatingIncome%2CannualOperatingExpense%2CannualOtherOperatingExpenses%2CannualOtherTaxes%2CannualProvisionForDoubtfulAccounts%2CannualDepreciationAmortizationDepletionIncomeStatement%2CannualDepletionIncomeStatement%2CannualDepreciationAndAmortizationInIncomeStatement%2CannualAmortization%2CannualAmortizationOfIntangiblesIncomeStatement%2CannualDepreciationIncomeStatement%2CannualResearchAndDevelopment%2CannualSellingGeneralAndAdministration%2CannualSellingAndMarketingExpense%2CannualGeneralAndAdministrativeExpense%2CannualOtherGandA%2CannualInsuranceAndClaims%2CannualRentAndLandingFees%2CannualSalariesAndWages%2CannualGrossProfit%2CannualCostOfRevenue%2CannualTotalRevenue%2CannualExciseTaxes%2CannualOperatingRevenue%2CannualLossAdjustmentExpense%2CannualNetPolicyholderBenefitsAndClaims%2CannualPolicyholderBenefitsGross%2CannualPolicyholderBenefitsCeded%2CannualOccupancyAndEquipment%2CannualProfessionalExpenseAndContractServicesExpense%2CannualOtherNonInterestExpense&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&crumb=MOCK_CRUMB
@@ -1128,8 +1039,17 @@ interactions:
         Geographic\",\"segmentName\":\"United States\",\"isPrimarySegment\":1},{\"\
         dataValue\":5.09228309E8,\"segmentType\":\"Geographic\",\"segmentName\":\"\
         Viet Nam\",\"isPrimarySegment\":0}]}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"\
-        type\":[\"annualNetIncomeFromContinuingAndDiscontinuedOperation\"]},\"timestamp\"\
-        :[1632960000,1664496000,1696032000,1727654400],\"annualNetIncomeFromContinuingAndDiscontinuedOperation\"\
+        type\":[\"annualNetInterestIncome\"]},\"timestamp\":[1601424000,1632960000,1664496000,1696032000],\"\
+        annualNetInterestIncome\":[{\"dataId\":20095,\"asOfDate\":\"2020-09-30\",\"\
+        periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":8.9E8,\"\
+        fmt\":\"890.00M\"}},{\"dataId\":20095,\"asOfDate\":\"2021-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.98E8,\"fmt\"\
+        :\"198.00M\"}},{\"dataId\":20095,\"asOfDate\":\"2022-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-1.06E8,\"fmt\"\
+        :\"-106.00M\"}},{\"dataId\":20095,\"asOfDate\":\"2023-09-30\",\"periodType\"\
+        :\"12M\",\"currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-1.83E8,\"fmt\"\
+        :\"-183.00M\"}}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncomeFromContinuingAndDiscontinuedOperation\"\
+        ]},\"timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualNetIncomeFromContinuingAndDiscontinuedOperation\"\
         :[{\"dataId\":20309,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
         currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.468E10,\"fmt\":\"94.68B\"\
         }},{\"dataId\":20309,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
@@ -1138,16 +1058,6 @@ interactions:
         currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.6995E10,\"fmt\":\"97.00B\"\
         }},{\"dataId\":20309,\"asOfDate\":\"2024-09-30\",\"periodType\":\"12M\",\"\
         currencyCode\":\"USD\",\"reportedValue\":{\"raw\":9.3736E10,\"fmt\":\"93.74B\"\
-        }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetInterestIncome\"\
-        ]},\"timestamp\":[1601424000,1632960000,1664496000,1696032000],\"annualNetInterestIncome\"\
-        :[{\"dataId\":20095,\"asOfDate\":\"2020-09-30\",\"periodType\":\"12M\",\"\
-        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":8.9E8,\"fmt\":\"890.00M\"\
-        }},{\"dataId\":20095,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
-        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":1.98E8,\"fmt\":\"198.00M\"\
-        }},{\"dataId\":20095,\"asOfDate\":\"2022-09-30\",\"periodType\":\"12M\",\"\
-        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-1.06E8,\"fmt\":\"-106.00M\"\
-        }},{\"dataId\":20095,\"asOfDate\":\"2023-09-30\",\"periodType\":\"12M\",\"\
-        currencyCode\":\"USD\",\"reportedValue\":{\"raw\":-1.83E8,\"fmt\":\"-183.00M\"\
         }}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalExpenses\"]},\"\
         timestamp\":[1632960000,1664496000,1696032000,1727654400],\"annualTotalExpenses\"\
         :[{\"dataId\":20164,\"asOfDate\":\"2021-09-30\",\"periodType\":\"12M\",\"\
@@ -1178,87 +1088,87 @@ interactions:
         ,\"reportedValue\":{\"raw\":6.13,\"fmt\":\"6.13\"}},{\"dataId\":29009,\"asOfDate\"\
         :\"2024-09-30\",\"periodType\":\"12M\",\"currencyCode\":\"USD\",\"reportedValue\"\
         :{\"raw\":6.08,\"fmt\":\"6.08\"}}]},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\"\
-        :[\"annualContinuingAndDiscontinuedBasicEPS\"]}},{\"meta\":{\"symbol\":[\"\
-        AAPL\"],\"type\":[\"annualBasicAccountingChange\"]}},{\"meta\":{\"symbol\"\
-        :[\"AAPL\"],\"type\":[\"annualTotalUnusualItemsExcludingGoodwill\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedDiscontinuousOperations\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualRentExpenseSupplemental\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepletionIncomeStatement\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGeneralAndAdministrativeExpense\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepreciationIncomeStatement\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualContinuingAndDiscontinuedDilutedEPS\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualWriteOff\"]}},{\"meta\"\
-        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualEarningsFromEquityInterestNetOfTax\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherSpecialCharges\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualProfessionalExpenseAndContractServicesExpense\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualExciseTaxes\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOccupancyAndEquipment\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGainOnSaleOfBusiness\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDividendPerShare\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSpecialIncomeCharges\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualImpairmentOfCapitalAssets\"\
+        :[\"annualAmortization\"]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"\
+        annualContinuingAndDiscontinuedBasicEPS\"]}},{\"meta\":{\"symbol\":[\"AAPL\"\
+        ],\"type\":[\"annualOtherTaxes\"]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\"\
+        :[\"annualSecuritiesAmortization\"]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"\
+        type\":[\"annualRentExpenseSupplemental\"]}},{\"meta\":{\"symbol\":[\"AAPL\"\
+        ],\"type\":[\"annualRestructuringAndMergernAcquisition\"]}},{\"meta\":{\"\
+        symbol\":[\"AAPL\"],\"type\":[\"annualSpecialIncomeCharges\"]}},{\"meta\"\
+        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetPolicyholderBenefitsAndClaims\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGainOnSaleOfBusiness\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDividendPerShare\"\
         ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedContinuousOperations\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSalariesAndWages\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualReportedNormalizedDilutedEPS\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualMinorityInterests\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPreferredStockDividends\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherTaxes\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualRentAndLandingFees\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSecuritiesAmortization\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualAmortization\"]}},{\"meta\"\
-        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherGandA\"]}},{\"meta\":{\"symbol\"\
-        :[\"AAPL\"],\"type\":[\"annualNetIncomeFromTaxLossCarryforward\"]}},{\"meta\"\
-        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualTaxLossCarryforwardBasicEPS\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPolicyholderBenefitsGross\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicExtraordinary\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicDiscontinuousOperations\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherNonInterestExpense\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualRestructuringAndMergernAcquisition\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualEarningsFromEquityInterest\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualInsuranceAndClaims\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGainOnSaleOfSecurity\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTaxLossCarryforwardDilutedEPS\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepreciationAndAmortizationInIncomeStatement\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicEPSOtherGainsLosses\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedEPSOtherGainsLosses\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedAccountingChange\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncomeFromTaxLossCarryforward\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherSpecialCharges\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualAmortizationOfIntangiblesIncomeStatement\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalUnusualItemsExcludingGoodwill\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualExciseTaxes\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepreciationAmortizationDepletionIncomeStatement\"\
         ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalUnusualItems\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSalariesAndWages\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualProvisionForDoubtfulAccounts\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedExtraordinary\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherOperatingExpenses\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualEarningsFromEquityInterestNetOfTax\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicContinuousOperations\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicAccountingChange\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherNonInterestExpense\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualContinuingAndDiscontinuedDilutedEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepreciationIncomeStatement\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualRentAndLandingFees\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepreciationAndAmortizationInIncomeStatement\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTaxLossCarryforwardDilutedEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNormalizedDilutedEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualReportedNormalizedDilutedEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncomeDiscontinuousOperations\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPreferredStockDividends\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPolicyholderBenefitsGross\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedAccountingChange\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGainOnSaleOfPPE\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherunderPreferredStockDividend\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedDiscontinuousOperations\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherGandA\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedEPSOtherGainsLosses\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualInsuranceAndClaims\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGeneralAndAdministrativeExpense\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalOtherFinanceCost\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualWriteOff\"]}},{\"meta\"\
+        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualMinorityInterests\"]}},{\"meta\"\
+        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicExtraordinary\"]}},{\"meta\"\
+        :{\"symbol\":[\"AAPL\"],\"type\":[\"annualImpairmentOfCapitalAssets\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOccupancyAndEquipment\"]}},{\"\
+        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualProfessionalExpenseAndContractServicesExpense\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTaxLossCarryforwardBasicEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPolicyholderBenefitsCeded\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSellingAndMarketingExpense\"\
         ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualReportedNormalizedBasicEPS\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualLossAdjustmentExpense\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicDiscontinuousOperations\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualAverageDilutionEarnings\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepletionIncomeStatement\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGainOnSaleOfSecurity\"\
         ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNormalizedBasicEPS\"\
         ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncomeExtraordinary\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetIncomeDiscontinuousOperations\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualAmortizationOfIntangiblesIncomeStatement\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualGainOnSaleOfPPE\"]}},{\"\
-        meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualPolicyholderBenefitsCeded\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualSellingAndMarketingExpense\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherOperatingExpenses\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualAverageDilutionEarnings\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNetPolicyholderBenefitsAndClaims\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicContinuousOperations\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDepreciationAmortizationDepletionIncomeStatement\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualDilutedExtraordinary\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualNormalizedDilutedEPS\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualTotalOtherFinanceCost\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualProvisionForDoubtfulAccounts\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualOtherunderPreferredStockDividend\"\
-        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualLossAdjustmentExpense\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualEarningsFromEquityInterest\"\
+        ]}},{\"meta\":{\"symbol\":[\"AAPL\"],\"type\":[\"annualBasicEPSOtherGainsLosses\"\
         ]}}],\"error\":null}}"
     headers:
-      Age: '0'
+      Age: '3'
       Cache-Control: public, max-age=60, stale-while-revalidate=30
       Content-Encoding: gzip
       Content-Type: application/json;charset=utf-8
-      Date: Mon, 23 Jun 2025 19:30:21 GMT
+      Date: Tue, 24 Jun 2025 17:22:06 GMT
       Referrer-Policy: no-referrer-when-downgrade
       Server: ATS
       Strict-Transport-Security: max-age=31536000
       Vary: Origin,Accept-Encoding
       X-Content-Type-Options: nosniff
-      X-Envoy-Decorator-Operation: finance-company-fundamentals-api--mtls-production-gq1.finance-k8s:4080/*
-      X-Envoy-Upstream-Service-Time: '127'
+      X-Envoy-Decorator-Operation: MOCK_OPERATION
+      X-Envoy-Upstream-Service-Time: '139'
       X-Frame-Options: SAMEORIGIN
       X-Xss-Protection: 1; mode=block
-      Y-Rid: 4vt3j0tk5jaqd
+      Y-Rid: MOCK_RID
     status:
       code: 200
       message: ''

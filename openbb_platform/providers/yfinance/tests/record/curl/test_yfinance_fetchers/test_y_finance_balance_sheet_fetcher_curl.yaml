@@ -5,95 +5,6 @@ interactions:
       Accept: '*/*'
       Accept-Encoding: gzip, deflate, br, zstd
       Connection: keep-alive
-    method: GET
-    uri: https://fc.yahoo.com/
-  response:
-    body:
-      encoding: utf-8
-      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n  <head>\n    <meta http-equiv=\"\
-        content-type\" content=\"text/html; charset=UTF-8\">\n    <meta charset=\"\
-        utf-8\">\n    <title>Yahoo</title>\n    <meta name=\"viewport\" content=\"\
-        width=device-width,initial-scale=1,minimal-ui\">\n    <meta http-equiv=\"\
-        X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <style>\n      html {\n\
-        \          height: 100%;\n      }\n      body {\n          background: #fafafc\
-        \ url(https://s.yimg.com/nn/img/sad-panda-201402200631.png) 50% 50%;\n   \
-        \       background-size: cover;\n          height: 100%;\n          text-align:\
-        \ center;\n          font: 300 18px \"helvetica neue\", helvetica, verdana,\
-        \ tahoma, arial, sans-serif;\n          margin: 0;\n      }\n      table {\n\
-        \          height: 100%;\n          width: 100%;\n          table-layout:\
-        \ fixed;\n          border-collapse: collapse;\n          border-spacing:\
-        \ 0;\n          border: none;\n      }\n      h1 {\n          font-size: 42px;\n\
-        \          font-weight: 400;\n          color: #400090;\n      }\n      p\
-        \ {\n          color: #1A1A1A;\n      }\n      #message-1 {\n          font-weight:\
-        \ bold;\n          margin: 0;\n      }\n      #message-2 {\n          display:\
-        \ inline-block;\n          *display: inline;\n          zoom: 1;\n       \
-        \   max-width: 17em;\n          _width: 17em;\n      }\n      </style>\n \
-        \     <script>\n      !function(){if(window==window.top){var o=window.location.host;o.endsWith(\"\
-        .yahoo.com\")&&window.location.replace(\"https://www.yahoo.com/\"),o.endsWith(\"\
-        .aol.com\")&&window.location.replace(\"https://www.aol.com/\"),o.endsWith(\"\
-        .huffpost.com\")&&window.location.replace(\"https://www.huffpost.com/\"),o.endsWith(\"\
-        .engadget.com\")&&window.location.replace(\"https://www.engadget.com/\")}}();\n\
-        \      </script>\n  </head>\n  <body>\n  <!-- status code : 404 -->\n  <!--\
-        \ Not Found on Accelerator -->\n  <!-- host machine: e2.ycpi.swb.yahoo.com\
-        \ -->\n  <!-- timestamp: 1750707018.747 -->\n  <!-- url: https://fc.yahoo.com/-->\n\
-        \  <script type=\"text/javascript\">\n    function buildUrl(url, parameters){\n\
-        \      var qs = [];\n      for(var key in parameters) {\n        var value\
-        \ = parameters[key];\n        qs.push(encodeURIComponent(key) + \"=\" + encodeURIComponent(value));\n\
-        \      }\n      url = url + \"?\" + qs.join('&');\n      return url;\n   \
-        \ }\n\n    function generateBRBMarkup(site) {\n      params.source = 'brb';\n\
-        \      generateBeaconMarkup(params);\n      var englishHeader = 'Will be right\
-        \ back...';\n      var englishMessage1 = 'Thank you for your patience.';\n\
-        \      var englishMessage2 = 'Our engineers are working quickly to resolve\
-        \ the issue.';\n      var defaultLogoStyle = '';\n      var siteDataMap =\
-        \ {\n        'default': {\n          logo: 'https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_205x58_frontpage.png',\n\
-        \          logoAlt: 'Yahoo Logo',\n          logoStyle: defaultLogoStyle,\n\
-        \          header: englishHeader,\n          message1: englishMessage1,\n\
-        \          message2: englishMessage2\n        }\n      };\n\n      var siteDetails\
-        \ = siteDataMap['default'];\n\n      document.write('<table><tbody><tr><td>');\n\
-        \      document.write('<div id=\"content\">');\n      document.write('<img\
-        \ src=\"' + siteDetails['logo'] + '\" alt=\"' + siteDetails['logoAlt'] + '\"\
-        \ style=\"' + siteDetails['logoStyle'] + '\">');\n      document.write('<h1\
-        \ style=\"margin-top:20px;\">' + siteDetails['header'] + '</h1>');\n     \
-        \ document.write('<p id=\"message-1\">' + siteDetails['message1'] + '</p>');\n\
-        \      document.write('<p id=\"message-2\">' + siteDetails['message2'] + '</p>');\n\
-        \      document.write('</div>');\n      document.write('</td></tr></tbody></table>');\n\
-        \    }\n\n    function generateBeaconMarkup(params) {\n        document.write('<img\
-        \ src=\"' + buildUrl('//geo.yahoo.com/b', params) + '\" style=\"display:none;\"\
-        \ width=\"0px\" height=\"0px\"/>');\n        var beacon = new Image();\n \
-        \       beacon.src = buildUrl('//bcn.fp.yahoo.com/p', params);\n    }\n\n\
-        \    var hostname = window.location.hostname;\n    var device = 'desktop';\n\
-        \    var ynet = ('-' === '1');\n    var time = new Date().getTime();\n   \
-        \ var params = {\n        s: '1197757129',\n        t: time,\n        err_url:\
-        \ document.URL,\n        err: '404',\n        test: '-',\n        ats_host:\
-        \ 'e2.ycpi.swb.yahoo.com',\n        rid: '-',\n        message: 'Not Found\
-        \ on Accelerator'\n    };\n\n    if(ynet) {\n        document.write('<div\
-        \ style=\"height: 5px; background-color: red;\"></div>');\n    }\n    generateBRBMarkup(hostname,\
-        \ params);\n\n  </script>\n  <noscript>\n  <table>\n    <tbody>\n      <tr>\n\
-        \        <td>\n          <div id=\"englishContent\">\n            <h1 style=\"\
-        margin-top:20px;\">Will be right back...</h1>\n            <p id=\"message-1\"\
-        >Thank you for your patience.</p>\n            <p id=\"message-2\">Our engineers\
-        \ are working quickly to resolve the issue.</p>\n          </div>\n      \
-        \  </td>\n      </tr>\n    </tbody>\n  </table>\n  </noscript>\n  </body>\n\
-        </html>\n"
-    headers:
-      Cache-Control: no-store
-      Content-Language: en
-      Content-Length: '4742'
-      Content-Type: text/html
-      Date: Mon, 23 Jun 2025 19:30:18 GMT
-      Server: ATS
-      Set-Cookie: A3=d=AQABBEqrWWgCEAHEVcZ2iyQupdOJngQnd7gFEgEBAQH8WmhjaCXUxyMA_eMCAA&S=AQAAAq9iZGStelEpJWvmdSK8F3s;
-        Expires=Wed, 24 Jun 2026 01:30:18 GMT; Max-Age=31557600; Domain=.yahoo.com;
-        Path=/; SameSite=None; Secure; HttpOnly
-    status:
-      code: 404
-      message: ''
-- request:
-    body: null
-    headers:
-      Accept: '*/*'
-      Accept-Encoding: gzip, deflate, br, zstd
-      Connection: keep-alive
       Cookie: MOCK_COOKIE
     method: GET
     uri: https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?symbol=AAPL&type=annualTreasurySharesNumber%2CannualPreferredSharesNumber%2CannualOrdinarySharesNumber%2CannualShareIssued%2CannualNetDebt%2CannualTotalDebt%2CannualTangibleBookValue%2CannualInvestedCapital%2CannualWorkingCapital%2CannualNetTangibleAssets%2CannualCapitalLeaseObligations%2CannualCommonStockEquity%2CannualPreferredStockEquity%2CannualTotalCapitalization%2CannualTotalEquityGrossMinorityInterest%2CannualMinorityInterest%2CannualStockholdersEquity%2CannualOtherEquityInterest%2CannualGainsLossesNotAffectingRetainedEarnings%2CannualOtherEquityAdjustments%2CannualFixedAssetsRevaluationReserve%2CannualForeignCurrencyTranslationAdjustments%2CannualMinimumPensionLiabilities%2CannualUnrealizedGainLoss%2CannualTreasuryStock%2CannualRetainedEarnings%2CannualAdditionalPaidInCapital%2CannualCapitalStock%2CannualOtherCapitalStock%2CannualCommonStock%2CannualPreferredStock%2CannualTotalPartnershipCapital%2CannualGeneralPartnershipCapital%2CannualLimitedPartnershipCapital%2CannualTotalLiabilitiesNetMinorityInterest%2CannualTotalNonCurrentLiabilitiesNetMinorityInterest%2CannualOtherNonCurrentLiabilities%2CannualLiabilitiesHeldforSaleNonCurrent%2CannualRestrictedCommonStock%2CannualPreferredSecuritiesOutsideStockEquity%2CannualDerivativeProductLiabilities%2CannualEmployeeBenefits%2CannualNonCurrentPensionAndOtherPostretirementBenefitPlans%2CannualNonCurrentAccruedExpenses%2CannualDuetoRelatedPartiesNonCurrent%2CannualTradeandOtherPayablesNonCurrent%2CannualNonCurrentDeferredLiabilities%2CannualNonCurrentDeferredRevenue%2CannualNonCurrentDeferredTaxesLiabilities%2CannualLongTermDebtAndCapitalLeaseObligation%2CannualLongTermCapitalLeaseObligation%2CannualLongTermDebt%2CannualLongTermProvisions%2CannualCurrentLiabilities%2CannualOtherCurrentLiabilities%2CannualCurrentDeferredLiabilities%2CannualCurrentDeferredRevenue%2CannualCurrentDeferredTaxesLiabilities%2CannualCurrentDebtAndCapitalLeaseObligation%2CannualCurrentCapitalLeaseObligation%2CannualCurrentDebt%2CannualOtherCurrentBorrowings%2CannualLineOfCredit%2CannualCommercialPaper%2CannualCurrentNotesPayable%2CannualPensionandOtherPostRetirementBenefitPlansCurrent%2CannualCurrentProvisions%2CannualPayablesAndAccruedExpenses%2CannualCurrentAccruedExpenses%2CannualInterestPayable%2CannualPayables%2CannualOtherPayable%2CannualDuetoRelatedPartiesCurrent%2CannualDividendsPayable%2CannualTotalTaxPayable%2CannualIncomeTaxPayable%2CannualAccountsPayable%2CannualTotalAssets%2CannualTotalNonCurrentAssets%2CannualOtherNonCurrentAssets%2CannualDefinedPensionBenefit%2CannualNonCurrentPrepaidAssets%2CannualNonCurrentDeferredAssets%2CannualNonCurrentDeferredTaxesAssets%2CannualDuefromRelatedPartiesNonCurrent%2CannualNonCurrentNoteReceivables%2CannualNonCurrentAccountsReceivable%2CannualFinancialAssets%2CannualInvestmentsAndAdvances%2CannualOtherInvestments%2CannualInvestmentinFinancialAssets%2CannualHeldToMaturitySecurities%2CannualAvailableForSaleSecurities%2CannualFinancialAssetsDesignatedasFairValueThroughProfitorLossTotal%2CannualTradingSecurities%2CannualLongTermEquityInvestment%2CannualInvestmentsinJointVenturesatCost%2CannualInvestmentsInOtherVenturesUnderEquityMethod%2CannualInvestmentsinAssociatesatCost%2CannualInvestmentsinSubsidiariesatCost%2CannualInvestmentProperties%2CannualGoodwillAndOtherIntangibleAssets%2CannualOtherIntangibleAssets%2CannualGoodwill%2CannualNetPPE%2CannualAccumulatedDepreciation%2CannualGrossPPE%2CannualLeases%2CannualConstructionInProgress%2CannualOtherProperties%2CannualMachineryFurnitureEquipment%2CannualBuildingsAndImprovements%2CannualLandAndImprovements%2CannualProperties%2CannualCurrentAssets%2CannualOtherCurrentAssets%2CannualHedgingAssetsCurrent%2CannualAssetsHeldForSaleCurrent%2CannualCurrentDeferredAssets%2CannualCurrentDeferredTaxesAssets%2CannualRestrictedCash%2CannualPrepaidAssets%2CannualInventory%2CannualInventoriesAdjustmentsAllowances%2CannualOtherInventories%2CannualFinishedGoods%2CannualWorkInProcess%2CannualRawMaterials%2CannualReceivables%2CannualReceivablesAdjustmentsAllowances%2CannualOtherReceivables%2CannualDuefromRelatedPartiesCurrent%2CannualTaxesReceivable%2CannualAccruedInterestReceivable%2CannualNotesReceivable%2CannualLoansReceivable%2CannualAccountsReceivable%2CannualAllowanceForDoubtfulAccountsReceivable%2CannualGrossAccountsReceivable%2CannualCashCashEquivalentsAndShortTermInvestments%2CannualOtherShortTermInvestments%2CannualCashAndCashEquivalents%2CannualCashEquivalents%2CannualCashFinancial%2CannualCashCashEquivalentsAndFederalFundsSold&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&crumb=MOCK_CRUMB
@@ -153,23 +64,23 @@ interactions:
         securities","isPrimarySegment":0},{"dataValue":5.219E9,"segmentType":"Geographic","segmentName":"Other
         countries","isPrimarySegment":0},{"dataValue":7.4834E10,"segmentType":"Geographic","segmentName":"Other
         non-current assets","isPrimarySegment":0},{"dataValue":3.5664E10,"segmentType":"Geographic","segmentName":"United
-        States","isPrimarySegment":1}]}]},{"meta":{"symbol":["AAPL"],"type":["annualNetDebt"]},"timestamp":[1632960000,1664496000,1696032000,1727654400],"annualNetDebt":[{"dataId":23531,"asOfDate":"2021-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":8.9779E10,"fmt":"89.78B"}},{"dataId":23531,"asOfDate":"2022-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":9.6423E10,"fmt":"96.42B"}},{"dataId":23531,"asOfDate":"2023-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":8.1123E10,"fmt":"81.12B"}},{"dataId":23531,"asOfDate":"2024-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":7.6686E10,"fmt":"76.69B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualRestrictedCash"]}},{"meta":{"symbol":["AAPL"],"type":["annualDefinedPensionBenefit"]}},{"meta":{"symbol":["AAPL"],"type":["annualUnrealizedGainLoss"]}},{"meta":{"symbol":["AAPL"],"type":["annualInventoriesAdjustmentsAllowances"]}},{"meta":{"symbol":["AAPL"],"type":["annualRestrictedCommonStock"]}},{"meta":{"symbol":["AAPL"],"type":["annualHedgingAssetsCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualReceivablesAdjustmentsAllowances"]}},{"meta":{"symbol":["AAPL"],"type":["annualBuildingsAndImprovements"]}},{"meta":{"symbol":["AAPL"],"type":["annualLimitedPartnershipCapital"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentDeferredTaxesLiabilities"]}},{"meta":{"symbol":["AAPL"],"type":["annualPreferredSecuritiesOutsideStockEquity"]}},{"meta":{"symbol":["AAPL"],"type":["annualNotesReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentNotesPayable"]}},{"meta":{"symbol":["AAPL"],"type":["annualFixedAssetsRevaluationReserve"]}},{"meta":{"symbol":["AAPL"],"type":["annualFinancialAssetsDesignatedasFairValueThroughProfitorLossTotal"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentAccountsReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentDeferredTaxesAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualOtherInventories"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentNoteReceivables"]}},{"meta":{"symbol":["AAPL"],"type":["annualTreasuryStock"]}},{"meta":{"symbol":["AAPL"],"type":["annualPreferredStock"]}},{"meta":{"symbol":["AAPL"],"type":["annualTradingSecurities"]}},{"meta":{"symbol":["AAPL"],"type":["annualLineOfCredit"]}},{"meta":{"symbol":["AAPL"],"type":["annualDuefromRelatedPartiesCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentsinJointVenturesatCost"]}},{"meta":{"symbol":["AAPL"],"type":["annualDuetoRelatedPartiesNonCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualAdditionalPaidInCapital"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentProvisions"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentPensionAndOtherPostretirementBenefitPlans"]}},{"meta":{"symbol":["AAPL"],"type":["annualAccruedInterestReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualMinorityInterest"]}},{"meta":{"symbol":["AAPL"],"type":["annualFinancialAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualLongTermEquityInvestment"]}},{"meta":{"symbol":["AAPL"],"type":["annualRawMaterials"]}},{"meta":{"symbol":["AAPL"],"type":["annualWorkInProcess"]}},{"meta":{"symbol":["AAPL"],"type":["annualEmployeeBenefits"]}},{"meta":{"symbol":["AAPL"],"type":["annualHeldToMaturitySecurities"]}},{"meta":{"symbol":["AAPL"],"type":["annualPensionandOtherPostRetirementBenefitPlansCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualTaxesReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualDuetoRelatedPartiesCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentDeferredAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualOtherPayable"]}},{"meta":{"symbol":["AAPL"],"type":["annualLoansReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualGeneralPartnershipCapital"]}},{"meta":{"symbol":["AAPL"],"type":["annualConstructionInProgress"]}},{"meta":{"symbol":["AAPL"],"type":["annualAssetsHeldForSaleCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualFinishedGoods"]}},{"meta":{"symbol":["AAPL"],"type":["annualOtherEquityInterest"]}},{"meta":{"symbol":["AAPL"],"type":["annualInterestPayable"]}},{"meta":{"symbol":["AAPL"],"type":["annualDividendsPayable"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentPrepaidAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentsinAssociatesatCost"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentAccruedExpenses"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentProperties"]}},{"meta":{"symbol":["AAPL"],"type":["annualForeignCurrencyTranslationAdjustments"]}},{"meta":{"symbol":["AAPL"],"type":["annualCashCashEquivalentsAndFederalFundsSold"]}},{"meta":{"symbol":["AAPL"],"type":["annualPreferredSharesNumber"]}},{"meta":{"symbol":["AAPL"],"type":["annualLongTermProvisions"]}},{"meta":{"symbol":["AAPL"],"type":["annualPrepaidAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualOtherCapitalStock"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentsInOtherVenturesUnderEquityMethod"]}},{"meta":{"symbol":["AAPL"],"type":["annualMinimumPensionLiabilities"]}},{"meta":{"symbol":["AAPL"],"type":["annualDerivativeProductLiabilities"]}},{"meta":{"symbol":["AAPL"],"type":["annualPreferredStockEquity"]}},{"meta":{"symbol":["AAPL"],"type":["annualLiabilitiesHeldforSaleNonCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualTotalPartnershipCapital"]}},{"meta":{"symbol":["AAPL"],"type":["annualDuefromRelatedPartiesNonCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentsinSubsidiariesatCost"]}}],"error":null}}'
+        States","isPrimarySegment":1}]}]},{"meta":{"symbol":["AAPL"],"type":["annualNetDebt"]},"timestamp":[1632960000,1664496000,1696032000,1727654400],"annualNetDebt":[{"dataId":23531,"asOfDate":"2021-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":8.9779E10,"fmt":"89.78B"}},{"dataId":23531,"asOfDate":"2022-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":9.6423E10,"fmt":"96.42B"}},{"dataId":23531,"asOfDate":"2023-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":8.1123E10,"fmt":"81.12B"}},{"dataId":23531,"asOfDate":"2024-09-30","periodType":"12M","currencyCode":"USD","reportedValue":{"raw":7.6686E10,"fmt":"76.69B"}}]},{"meta":{"symbol":["AAPL"],"type":["annualAdditionalPaidInCapital"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentDeferredTaxesAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentNotesPayable"]}},{"meta":{"symbol":["AAPL"],"type":["annualLiabilitiesHeldforSaleNonCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualPreferredSecuritiesOutsideStockEquity"]}},{"meta":{"symbol":["AAPL"],"type":["annualRestrictedCash"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentAccruedExpenses"]}},{"meta":{"symbol":["AAPL"],"type":["annualReceivablesAdjustmentsAllowances"]}},{"meta":{"symbol":["AAPL"],"type":["annualPensionandOtherPostRetirementBenefitPlansCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualDefinedPensionBenefit"]}},{"meta":{"symbol":["AAPL"],"type":["annualRestrictedCommonStock"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentDeferredAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentDeferredTaxesLiabilities"]}},{"meta":{"symbol":["AAPL"],"type":["annualFinancialAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualTotalPartnershipCapital"]}},{"meta":{"symbol":["AAPL"],"type":["annualTreasuryStock"]}},{"meta":{"symbol":["AAPL"],"type":["annualBuildingsAndImprovements"]}},{"meta":{"symbol":["AAPL"],"type":["annualPreferredStockEquity"]}},{"meta":{"symbol":["AAPL"],"type":["annualWorkInProcess"]}},{"meta":{"symbol":["AAPL"],"type":["annualMinimumPensionLiabilities"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentsInOtherVenturesUnderEquityMethod"]}},{"meta":{"symbol":["AAPL"],"type":["annualOtherInventories"]}},{"meta":{"symbol":["AAPL"],"type":["annualPreferredSharesNumber"]}},{"meta":{"symbol":["AAPL"],"type":["annualGeneralPartnershipCapital"]}},{"meta":{"symbol":["AAPL"],"type":["annualLimitedPartnershipCapital"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentsinAssociatesatCost"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentProperties"]}},{"meta":{"symbol":["AAPL"],"type":["annualDerivativeProductLiabilities"]}},{"meta":{"symbol":["AAPL"],"type":["annualDuetoRelatedPartiesNonCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualAssetsHeldForSaleCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualAccruedInterestReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualCurrentProvisions"]}},{"meta":{"symbol":["AAPL"],"type":["annualForeignCurrencyTranslationAdjustments"]}},{"meta":{"symbol":["AAPL"],"type":["annualFixedAssetsRevaluationReserve"]}},{"meta":{"symbol":["AAPL"],"type":["annualHeldToMaturitySecurities"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentsinJointVenturesatCost"]}},{"meta":{"symbol":["AAPL"],"type":["annualEmployeeBenefits"]}},{"meta":{"symbol":["AAPL"],"type":["annualHedgingAssetsCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualNotesReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualOtherPayable"]}},{"meta":{"symbol":["AAPL"],"type":["annualLoansReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualDuefromRelatedPartiesCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualInventoriesAdjustmentsAllowances"]}},{"meta":{"symbol":["AAPL"],"type":["annualLineOfCredit"]}},{"meta":{"symbol":["AAPL"],"type":["annualLongTermProvisions"]}},{"meta":{"symbol":["AAPL"],"type":["annualUnrealizedGainLoss"]}},{"meta":{"symbol":["AAPL"],"type":["annualFinishedGoods"]}},{"meta":{"symbol":["AAPL"],"type":["annualPreferredStock"]}},{"meta":{"symbol":["AAPL"],"type":["annualDividendsPayable"]}},{"meta":{"symbol":["AAPL"],"type":["annualTaxesReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentPrepaidAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualMinorityInterest"]}},{"meta":{"symbol":["AAPL"],"type":["annualInvestmentsinSubsidiariesatCost"]}},{"meta":{"symbol":["AAPL"],"type":["annualDuetoRelatedPartiesCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentPensionAndOtherPostretirementBenefitPlans"]}},{"meta":{"symbol":["AAPL"],"type":["annualLongTermEquityInvestment"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentNoteReceivables"]}},{"meta":{"symbol":["AAPL"],"type":["annualPrepaidAssets"]}},{"meta":{"symbol":["AAPL"],"type":["annualCashCashEquivalentsAndFederalFundsSold"]}},{"meta":{"symbol":["AAPL"],"type":["annualInterestPayable"]}},{"meta":{"symbol":["AAPL"],"type":["annualRawMaterials"]}},{"meta":{"symbol":["AAPL"],"type":["annualConstructionInProgress"]}},{"meta":{"symbol":["AAPL"],"type":["annualOtherCapitalStock"]}},{"meta":{"symbol":["AAPL"],"type":["annualFinancialAssetsDesignatedasFairValueThroughProfitorLossTotal"]}},{"meta":{"symbol":["AAPL"],"type":["annualNonCurrentAccountsReceivable"]}},{"meta":{"symbol":["AAPL"],"type":["annualOtherEquityInterest"]}},{"meta":{"symbol":["AAPL"],"type":["annualDuefromRelatedPartiesNonCurrent"]}},{"meta":{"symbol":["AAPL"],"type":["annualTradingSecurities"]}}],"error":null}}'
     headers:
-      Age: '3'
+      Age: '0'
       Cache-Control: public, max-age=60, stale-while-revalidate=30
       Content-Encoding: gzip
       Content-Type: application/json;charset=utf-8
-      Date: Mon, 23 Jun 2025 19:30:18 GMT
+      Date: Tue, 24 Jun 2025 17:22:04 GMT
       Referrer-Policy: no-referrer-when-downgrade
       Server: ATS
       Strict-Transport-Security: max-age=31536000
       Vary: Origin,Accept-Encoding
       X-Content-Type-Options: nosniff
-      X-Envoy-Decorator-Operation: finance-company-fundamentals-api--mtls-production-gq1.finance-k8s:4080/*
-      X-Envoy-Upstream-Service-Time: '165'
+      X-Envoy-Decorator-Operation: MOCK_OPERATION
+      X-Envoy-Upstream-Service-Time: '132'
       X-Frame-Options: SAMEORIGIN
       X-Xss-Protection: 1; mode=block
-      Y-Rid: 7p4qh9tk5jaqa
+      Y-Rid: MOCK_RID
     status:
       code: 200
       message: ''
