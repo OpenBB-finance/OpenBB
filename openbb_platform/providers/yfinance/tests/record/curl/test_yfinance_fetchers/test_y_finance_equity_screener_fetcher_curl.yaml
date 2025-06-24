@@ -11,21 +11,22 @@ interactions:
   response:
     body:
       encoding: utf-8
-      string: MOCK_RESPONSE
+      string: !!binary |
+        TU9DS19SRVNQT05TRQ==
     headers:
       Age: '0'
       Cache-Control: no-store, no-cache, max-age=0, private
       Content-Encoding: gzip
       Content-Security-Policy: MOCK_CSP
       Content-Type: text/html; charset=utf-8
-      Date: Tue, 24 Jun 2025 17:23:06 GMT
+      Date: Tue, 24 Jun 2025 18:06:08 GMT
       Expect-Ct: MOCK_EXPECT_CT
       Expires: '-1'
       Referrer-Policy: no-referrer-when-downgrade
       Server: ATS
       Strict-Transport-Security: max-age=31536000
       X-Content-Type-Options: nosniff
-      X-Envoy-Upstream-Service-Time: '48'
+      X-Envoy-Upstream-Service-Time: '44'
       X-Frame-Options: SAMEORIGIN
       X-Xss-Protection: 1; mode=block
     status:
@@ -43,13 +44,14 @@ interactions:
   response:
     body:
       encoding: utf-8
-      string: CZP09oYV2Tw
+      string: !!binary |
+        OGJNbmhhLjdnc1o=
     headers:
       Age: '0'
       Cache-Control: private, max-age=60, stale-while-revalidate=30
       Content-Length: '11'
       Content-Type: text/plain;charset=utf-8
-      Date: Tue, 24 Jun 2025 17:23:07 GMT
+      Date: Tue, 24 Jun 2025 18:06:12 GMT
       Referrer-Policy: no-referrer-when-downgrade
       Server: ATS
       Strict-Transport-Security: max-age=31536000
@@ -64,13 +66,17 @@ interactions:
       code: 200
       message: ''
 - request:
-    body: '{"offset": 0, "size": 100, "sortField": "percentchange", "sortType": "DESC",
-      "quoteType": "EQUITY", "query": {"operands": [{"operator": "EQ", "operands":
-      ["region", "us"]}, {"operator": "EQ", "operands": ["sector", "Consumer Cyclical"]},
-      {"operator": "EQ", "operands": ["industry", "Auto Manufacturers"]}, {"operator":
-      "gt", "operands": ["intradaymarketcap", 60000000000]}, {"operator": "gt", "operands":
-      ["intradayprice", 10.0]}, {"operator": "gt", "operands": ["dayvolume", 5000000]}],
-      "operator": "AND"}, "userId": "", "userIdType": "guid"}'
+    body: !!binary |
+      eyJvZmZzZXQiOiAwLCAic2l6ZSI6IDEwMCwgInNvcnRGaWVsZCI6ICJwZXJjZW50Y2hhbmdlIiwg
+      InNvcnRUeXBlIjogIkRFU0MiLCAicXVvdGVUeXBlIjogIkVRVUlUWSIsICJxdWVyeSI6IHsib3Bl
+      cmFuZHMiOiBbeyJvcGVyYXRvciI6ICJFUSIsICJvcGVyYW5kcyI6IFsicmVnaW9uIiwgInVzIl19
+      LCB7Im9wZXJhdG9yIjogIkVRIiwgIm9wZXJhbmRzIjogWyJzZWN0b3IiLCAiQ29uc3VtZXIgQ3lj
+      bGljYWwiXX0sIHsib3BlcmF0b3IiOiAiRVEiLCAib3BlcmFuZHMiOiBbImluZHVzdHJ5IiwgIkF1
+      dG8gTWFudWZhY3R1cmVycyJdfSwgeyJvcGVyYXRvciI6ICJndCIsICJvcGVyYW5kcyI6IFsiaW50
+      cmFkYXltYXJrZXRjYXAiLCA2MDAwMDAwMDAwMF19LCB7Im9wZXJhdG9yIjogImd0IiwgIm9wZXJh
+      bmRzIjogWyJpbnRyYWRheXByaWNlIiwgMTAuMF19LCB7Im9wZXJhdG9yIjogImd0IiwgIm9wZXJh
+      bmRzIjogWyJkYXl2b2x1bWUiLCA1MDAwMDAwXX1dLCAib3BlcmF0b3IiOiAiQU5EIn0sICJ1c2Vy
+      SWQiOiAiIiwgInVzZXJJZFR5cGUiOiAiZ3VpZCJ9
     headers:
       Accept: '*/*'
       Accept-Encoding: gzip, deflate, br, zstd
@@ -83,19 +89,55 @@ interactions:
   response:
     body:
       encoding: utf-8
-      string: '{"finance":{"result":[{"start":0,"count":1,"total":1,"quotes":[{"language":"en-US","region":"US","quoteType":"EQUITY","typeDisp":"Equity","quoteSourceName":"Nasdaq
-        Real Time Price","triggerable":true,"customPriceAlertConfidence":"HIGH","exchange":"NMS","fiftyTwoWeekHigh":488.54,"fiftyTwoWeekLow":182.0,"averageAnalystRating":"2.6
-        - Hold","shortName":"Tesla, Inc.","bid":341.33,"ask":342.51,"hasPrePostMarketData":true,"firstTradeDateMilliseconds":1277818200000,"priceHint":2,"regularMarketChange":-6.75,"regularMarketTime":1750785787,"regularMarketPrice":341.93,"regularMarketDayHigh":356.2599,"regularMarketDayRange":"340.44
-        - 356.2599","regularMarketDayLow":340.44,"regularMarketVolume":81354167,"regularMarketPreviousClose":348.68,"bidSize":2,"askSize":2,"market":"us_market","messageBoardId":"finmb_27444752","fullExchangeName":"NasdaqGS","longName":"Tesla,
-        Inc.","financialCurrency":"USD","regularMarketOpen":356.16,"averageDailyVolume3Month":126194850,"averageDailyVolume10Day":121351270,"corporateActions":[],"fiftyTwoWeekLowChange":159.93,"fiftyTwoWeekLowChangePercent":0.8787362,"fiftyTwoWeekRange":"182.0
-        - 488.54","fiftyTwoWeekHighChange":-146.61002,"fiftyTwoWeekHighChangePercent":-0.30009827,"fiftyTwoWeekChangePercent":86.11156,"earningsTimestamp":1745352420,"earningsTimestampStart":1753128000,"earningsTimestampEnd":1753473600,"earningsCallTimestampStart":1745357400,"earningsCallTimestampEnd":1745357400,"isEarningsDateEstimate":true,"trailingAnnualDividendRate":0.0,"trailingPE":196.51149,"trailingAnnualDividendYield":0.0,"marketState":"REGULAR","epsTrailingTwelveMonths":1.74,"epsForward":3.24,"sharesOutstanding":3220960000,"bookValue":23.184,"fiftyDayAverage":305.1746,"fiftyDayAverageChange":36.7554,"fiftyDayAverageChangePercent":0.12044057,"twoHundredDayAverage":310.6197,"twoHundredDayAverageChange":31.310303,"twoHundredDayAverageChangePercent":0.10079948,"marketCap":1101342834688,"forwardPE":105.53395,"priceToBook":14.748533,"sourceInterval":15,"exchangeDataDelayedBy":0,"exchangeTimezoneName":"America/New_York","exchangeTimezoneShortName":"EDT","gmtOffSetMilliseconds":-14400000,"esgPopulated":false,"tradeable":false,"cryptoTradeable":false,"currency":"USD","regularMarketChangePercent":-1.9360517,"displayName":"Tesla","symbol":"TSLA"}],"useRecords":false}],"error":null}}'
+      string: !!binary |
+        eyJmaW5hbmNlIjp7InJlc3VsdCI6W3sic3RhcnQiOjAsImNvdW50IjoxLCJ0b3RhbCI6MSwicXVv
+        dGVzIjpbeyJsYW5ndWFnZSI6ImVuLVVTIiwicmVnaW9uIjoiVVMiLCJxdW90ZVR5cGUiOiJFUVVJ
+        VFkiLCJ0eXBlRGlzcCI6IkVxdWl0eSIsInF1b3RlU291cmNlTmFtZSI6Ik5hc2RhcSBSZWFsIFRp
+        bWUgUHJpY2UiLCJ0cmlnZ2VyYWJsZSI6dHJ1ZSwiY3VzdG9tUHJpY2VBbGVydENvbmZpZGVuY2Ui
+        OiJISUdIIiwiYmlkIjozNDEuMTIsImFzayI6MzQyLjM0LCJjdXJyZW5jeSI6IlVTRCIsImhhc1By
+        ZVBvc3RNYXJrZXREYXRhIjp0cnVlLCJmaXJzdFRyYWRlRGF0ZU1pbGxpc2Vjb25kcyI6MTI3Nzgx
+        ODIwMDAwMCwicHJpY2VIaW50IjoyLCJyZWd1bGFyTWFya2V0Q2hhbmdlIjotNi45MjEzODY3LCJy
+        ZWd1bGFyTWFya2V0VGltZSI6MTc1MDc4ODM3MSwicmVndWxhck1hcmtldFByaWNlIjozNDEuNzU4
+        NiwicmVndWxhck1hcmtldERheUhpZ2giOjM1Ni4yNTk5LCJyZWd1bGFyTWFya2V0RGF5UmFuZ2Ui
+        OiIzNDAuNDQgLSAzNTYuMjU5OSIsInJlZ3VsYXJNYXJrZXREYXlMb3ciOjM0MC40NCwicmVndWxh
+        ck1hcmtldFZvbHVtZSI6ODc5ODM0NjcsInJlZ3VsYXJNYXJrZXRQcmV2aW91c0Nsb3NlIjozNDgu
+        NjgsImJpZFNpemUiOjIsImFza1NpemUiOjIsIm1hcmtldCI6InVzX21hcmtldCIsIm1lc3NhZ2VC
+        b2FyZElkIjoiZmlubWJfMjc0NDQ3NTIiLCJmdWxsRXhjaGFuZ2VOYW1lIjoiTmFzZGFxR1MiLCJs
+        b25nTmFtZSI6IlRlc2xhLCBJbmMuIiwiZmluYW5jaWFsQ3VycmVuY3kiOiJVU0QiLCJyZWd1bGFy
+        TWFya2V0T3BlbiI6MzU2LjE2LCJhdmVyYWdlRGFpbHlWb2x1bWUzTW9udGgiOjEyNjE5NDg1MCwi
+        YXZlcmFnZURhaWx5Vm9sdW1lMTBEYXkiOjEyMTM1MTI3MCwiY29ycG9yYXRlQWN0aW9ucyI6W10s
+        ImZpZnR5VHdvV2Vla0xvd0NoYW5nZSI6MTU5Ljc1ODYsImZpZnR5VHdvV2Vla0xvd0NoYW5nZVBl
+        cmNlbnQiOjAuODc3Nzk0NTYsImZpZnR5VHdvV2Vla1JhbmdlIjoiMTgyLjAgLSA0ODguNTQiLCJm
+        aWZ0eVR3b1dlZWtIaWdoQ2hhbmdlIjotMTQ2Ljc4MTQsImZpZnR5VHdvV2Vla0hpZ2hDaGFuZ2VQ
+        ZXJjZW50IjotMC4zMDA0NDkxLCJmaWZ0eVR3b1dlZWtDaGFuZ2VQZXJjZW50Ijo4Ni4xMTE1Niwi
+        c291cmNlSW50ZXJ2YWwiOjE1LCJleGNoYW5nZURhdGFEZWxheWVkQnkiOjAsImV4Y2hhbmdlVGlt
+        ZXpvbmVOYW1lIjoiQW1lcmljYS9OZXdfWW9yayIsImV4Y2hhbmdlVGltZXpvbmVTaG9ydE5hbWUi
+        OiJFRFQiLCJnbXRPZmZTZXRNaWxsaXNlY29uZHMiOi0xNDQwMDAwMCwiZXNnUG9wdWxhdGVkIjpm
+        YWxzZSwidHJhZGVhYmxlIjpmYWxzZSwiY3J5cHRvVHJhZGVhYmxlIjpmYWxzZSwiZWFybmluZ3NU
+        aW1lc3RhbXAiOjE3NDUzNTI0MjAsImVhcm5pbmdzVGltZXN0YW1wU3RhcnQiOjE3NTMxMjgwMDAs
+        ImVhcm5pbmdzVGltZXN0YW1wRW5kIjoxNzUzNDczNjAwLCJlYXJuaW5nc0NhbGxUaW1lc3RhbXBT
+        dGFydCI6MTc0NTM1NzQwMCwiZWFybmluZ3NDYWxsVGltZXN0YW1wRW5kIjoxNzQ1MzU3NDAwLCJp
+        c0Vhcm5pbmdzRGF0ZUVzdGltYXRlIjp0cnVlLCJ0cmFpbGluZ0FubnVhbERpdmlkZW5kUmF0ZSI6
+        MC4wLCJ0cmFpbGluZ1BFIjoxOTYuNDEzLCJ0cmFpbGluZ0FubnVhbERpdmlkZW5kWWllbGQiOjAu
+        MCwibWFya2V0U3RhdGUiOiJSRUdVTEFSIiwiZXBzVHJhaWxpbmdUd2VsdmVNb250aHMiOjEuNzQs
+        ImVwc0ZvcndhcmQiOjMuMjQsInNoYXJlc091dHN0YW5kaW5nIjozMjIwOTYwMDAwLCJib29rVmFs
+        dWUiOjIzLjE4NCwiZmlmdHlEYXlBdmVyYWdlIjozMDUuMTc0NiwiZmlmdHlEYXlBdmVyYWdlQ2hh
+        bmdlIjozNi41ODQwMTUsImZpZnR5RGF5QXZlcmFnZUNoYW5nZVBlcmNlbnQiOjAuMTE5ODc4OTcs
+        InR3b0h1bmRyZWREYXlBdmVyYWdlIjozMTAuNjE5NywidHdvSHVuZHJlZERheUF2ZXJhZ2VDaGFu
+        Z2UiOjMxLjEzODkxNiwidHdvSHVuZHJlZERheUF2ZXJhZ2VDaGFuZ2VQZXJjZW50IjowLjEwMDI0
+        NzcyLCJtYXJrZXRDYXAiOjExMDA3OTA3NTk0MjQsImZvcndhcmRQRSI6MTA1LjQ4MTA1LCJwcmlj
+        ZVRvQm9vayI6MTQuNzQxMTQsImV4Y2hhbmdlIjoiTk1TIiwiZmlmdHlUd29XZWVrSGlnaCI6NDg4
+        LjU0LCJmaWZ0eVR3b1dlZWtMb3ciOjE4Mi4wLCJhdmVyYWdlQW5hbHlzdFJhdGluZyI6IjIuNiAt
+        IEhvbGQiLCJzaG9ydE5hbWUiOiJUZXNsYSwgSW5jLiIsInJlZ3VsYXJNYXJrZXRDaGFuZ2VQZXJj
+        ZW50IjotMS45ODUwMjU1LCJkaXNwbGF5TmFtZSI6IlRlc2xhIiwic3ltYm9sIjoiVFNMQSJ9XSwi
+        dXNlUmVjb3JkcyI6ZmFsc2V9XSwiZXJyb3IiOm51bGx9fQ==
     headers:
       Age: '0'
       Cache-Control: private, no-cache, no-store
       Content-Encoding: gzip
-      Content-Length: '1088'
+      Content-Length: '1102'
       Content-Type: application/json;charset=utf-8
-      Date: Tue, 24 Jun 2025 17:23:07 GMT
+      Date: Tue, 24 Jun 2025 18:06:12 GMT
       Referrer-Policy: no-referrer-when-downgrade
       Server: ATS
       Set-Cookie: MOCK_COOKIE
@@ -103,7 +145,7 @@ interactions:
       Vary: Origin,Accept-Encoding
       X-Content-Type-Options: nosniff
       X-Envoy-Decorator-Operation: MOCK_OPERATION
-      X-Envoy-Upstream-Service-Time: '27'
+      X-Envoy-Upstream-Service-Time: '29'
       X-Frame-Options: SAMEORIGIN
       X-Xss-Protection: 1; mode=block
       Y-Rid: MOCK_RID

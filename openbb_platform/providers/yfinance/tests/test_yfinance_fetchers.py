@@ -52,8 +52,13 @@ def scrub_string(key, value):
     def before_record_response(response):
         if key == "<!doctype html>":
             response_body = response["body"]["string"]
-            if key in response_body.lower():
-                response["body"]["string"] = "MOCK_RESPONSE"
+            if isinstance(response_body, bytes):
+                response_body = response_body.decode("utf-8", errors="ignore")
+
+            # Check if the key (HTML doctype) is in the response body
+            if key.lower() in response_body.lower():
+                response["body"]["string"] = bytes("MOCK_RESPONSE", "utf-8")
+
         if key in response["headers"]:
             response["headers"][key] = value
         return response
