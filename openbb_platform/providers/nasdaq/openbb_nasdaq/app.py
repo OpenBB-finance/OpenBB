@@ -128,6 +128,19 @@ def main():
 
         return docs
 
+    @alru_cache(maxsize=128)
+    async def download_pdf_file(document_url: str):
+        """Download a PDF file from the given URL."""
+        # pylint: disable=import-outside-toplevel
+        import base64  # noqa
+        from openbb_core.provider.utils.helpers import make_request
+
+        response = make_request(document_url)
+        response.raise_for_status()
+        encoded_content = base64.b64encode(response.content).decode("utf-8")
+
+        return encoded_content
+
     @app.get(
         "/open_document",
         openapi_extra={
@@ -198,23 +211,61 @@ def main():
         document_url: str,
     ) -> dict:
         """Open the selected PDF filing document."""
-        import base64  # noqa
-        from openbb_core.provider.utils.helpers import make_request
-
         encoded_content: str = ""
+        error_message: str = ""
 
-        if document_url and document_url.startswith("http"):
-            response = make_request(document_url)
-            response.raise_for_status()
-            encoded_content = base64.b64encode(response.content).decode("utf-8")
+        try:
+            if document_url and document_url.startswith("http"):
+                encoded_content = await download_pdf_file(document_url)
 
-        return {
-            "data_format": {
-                "data_type": "pdf",
-                "filename": document_url.split("/")[-1],
-            },
-            "content": encoded_content,
-        }
+        except Exception as e:  # pylint: disable=broad-except
+            error_message = f"Error fetching document: {e.args[0]}"
+
+        symbol = document_url.split("&symbol=", maxsplit=1)[1].split("&", maxsplit=1)[0]
+        form_type = (
+            document_url.split("&formType=", maxsplit=1)[1]
+            .split("&", maxsplit=1)[0]
+            .replace("-", "")
+        )
+        date_str = document_url.split("&dateFiled=", maxsplit=1)[1][:10].replace(
+            "-", ""
+        )
+        filename = f"{symbol}-{date_str}-{form_type}.pdf"
+        content = (
+            {
+                "error_type": "download_error",
+                "content": error_message,
+            }
+            if error_message != ""
+            else {
+                "data_format": {
+                    "data_type": "pdf",
+                    "filename": filename,
+                },
+                "content": encoded_content,
+            }
+        )
+
+        return content
+
+    @app.post(
+        "/open_document",
+        include_in_schema=False,
+    )
+    async def post_open_document(
+        params: dict,
+    ) -> list:
+        """POST request to open the selected PDF filing document(s)."""
+        urls = params.get("document_url", [])
+        documents: list = []
+        if urls:
+            for document_url in urls:
+                if document_url.startswith("http"):
+                    document = await open_document(document_url)
+                    if document:
+                        documents.append(document)
+
+        return documents
 
     @app.get(
         "/earnings_calendar",
