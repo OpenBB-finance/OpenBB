@@ -2,7 +2,9 @@
 
 Model Context Protocol (MCP) server extension for OpenBB Platform. This extension enables LLM agents to interact with OpenBB Platform's REST API endpoints through the MCP protocol.
 
-In addition to the REST API endpoints, the server provides management endpoints that allow agents to explore different options and dynamically adjust their active toolset. This prevents agents from being overwhelmed with too many tools while allowing them to discover and activate only the tools they need for specific tasks.
+The server provides management tools that allow agents to explore different options and dynamically adjust their active toolset. This prevents agents from being overwhelmed with too many tools while allowing them to discover and activate only the tools they need for specific tasks.
+
+Using thes dynamic tool discovery, has one major drawback, it makes the server a single-user server. As tool updates are global, so if one user updates a tool, it will be updated for all users. If you plan to server multiple users, you should disable tool discovery, and instead use the `allowed_tool_categories` and `default_tool_categories` settings to control the tools that are available to the users.
 
 ## Installation
 
@@ -12,129 +14,107 @@ pip install openbb-mcp-server
 
 ## Usage
 
-Start the MCP server:
+Start the OpenBB MCP server with default settings:
 
 ```bash
-openbb-mcp [options]
+openbb-mcp
 ```
 
-Options:
+### Command Line Options
+
 - `--host`: Host to bind to (default: 127.0.0.1)
 - `--port`: Port to listen on (default: 8001)
-- `--categories`: Initial tool categories to enable (comma-separated)
-- `--log-level`: Logging level (default: info)
+- `--allowed-categories`: Comma-separated list of allowed tool categories
+- `--default-categories`: Comma-separated list of categories enabled at startup (default: admin)
+- `--transport`: Transport protocol (default: streamable-http)
+- `--no-tool-discovery`: Disable tool discovery for multi-client deployments
 
-## Management Endpoints
-
-The server provides several endpoints that allow agents to explore and manage their toolset:
-
-### Tool Category Management
-- **GET `/mcp/available_tool_categories`** - Get all available tool categories and currently active ones
-- **POST `/mcp/activate_tool_categories`** - Activate specific tool categories (makes their tools available for selection)
-
-### Tool Management  
-- **GET `/mcp/available_tools`** - Get available tools for active categories and currently active tools
-- **POST `/mcp/activate_tools`** - Activate specific tools (these become available to the LLM)
-
-### Example Workflow
-1. **Explore categories**: Agent calls `available_tool_categories` to see what's available
-2. **Activate categories**: Agent activates relevant categories with `activate_tool_categories` 
-3. **Explore tools**: Agent calls `available_tools` to see tools in active categories
-4. **Activate tools**: Agent selects specific tools with `activate_tools`
-
-This allows agents to start with a minimal toolset and progressively discover and activate only the tools they need.
-
-## Configuration
-
-The server can be configured through:
-
-1. **System Settings (recommended)**:
-   Add an "mcp_settings" section to your `~/.openbb_platform/system_settings.json`:
-
-```json
-{
-  "mcp_settings": {
-    "name": "OpenBB MCP",
-    "description": "OpenBB Platform MCP Server",
-    "default_tool_categories": ["equity", "news"],
-    "allowed_tool_categories": null,
-    "require_valid_credentials": true,
-    "allowed_providers": null,
-    "initial_tools": null,
-    "allowed_tools": null,
-    "describe_all_responses": false,
-    "describe_full_response_schema": false
-  }
-}
-```
-
-2. **Command Line Arguments**:
-   Command line arguments override system settings for host, port, categories, and log level.
-
-## Settings Reference
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| name | string | "OpenBB MCP" | Server name |
-| description | string | "OpenBB Platform MCP Server" | Server description |
-| default_tool_categories | list[string] | ["equity"] | Default active tool categories on startup |
-| allowed_tool_categories | list[string] | null | If set, restricts available tool categories to this list |
-| require_valid_credentials | boolean | true | Only allow providers with valid credentials |
-| allowed_providers | list[string] | null | If set, restricts available providers to this list |
-| initial_tools | list[string] | null | Initial tools to activate. If None, only required tools will be active |
-| allowed_tools | list[string] | null | If set, restricts available tools to this list |
-| describe_all_responses | boolean | false | Include all possible response types in tool descriptions |
-| describe_full_response_schema | boolean | false | Include full response schema in tool descriptions |
-
-## Required Tools
-
-The following tools are always available and cannot be disabled:
-- `get_available_tool_categories`
-- `activate_tool_categories`
-- `get_available_tools`
-- `activate_tools`
-
-## Tool Categories
-
-The server organizes OpenBB tools into categories such as:
-- `equity` - Stock data and analysis
-- `news` - Financial news
-- `crypto` - Cryptocurrency data
-- `economy` - Economic indicators
-- And more...
-
-## Provider Management
-
-The server can filter tools based on data providers:
-- Set `allowed_providers` to restrict which providers are available
-- Set `require_valid_credentials` to only show providers with valid API keys
-- Configure provider credentials through OpenBB Platform's standard settings
-
-## Example Usage
+### Examples
 
 ```bash
 # Start with default settings
 openbb-mcp
 
-# Start with specific categories and debug logging
-openbb-mcp --categories equity,news --log-level debug
+# Start with specific categories and custom host/port
+openbb-mcp --default-categories equity,news --host 0.0.0.0 --port 8080
 
-# Start on custom host and port
-openbb-mcp --host 0.0.0.0 --port 8080
+# Start with allowed categories restriction
+openbb-mcp --allowed-categories equity,crypto,news
+
+# Disable tool discovery for multi-client usage
+openbb-mcp --no-tool-discovery
 ```
 
-## Development
+## Configuration
 
-1. Clone the repository
-2. Install dependencies: `uv install`
-3. Run tests: `uv run pytest`
-4. Start development server: `uv run python openbb_platform/extensions/mcp-server/openbb_mcp_server/main.py`
+The server can be configured through multiple methods:
 
-## Future MCP Features
+### 1. Configuration File (Recommended)
 
-The Model Context Protocol supports additional features that could be valuable:
-- **Resources** - Expose datasets, files, or other resources that tools can reference
-- **Prompt Templates** - Predefined prompts that help agents use tools more effectively
-- **Sampling** - Allow the server to generate content using LLMs
+The server automatically creates and uses `~/.openbb_platform/mcp_settings.json`:
 
-These features could enhance the agent experience and provide more sophisticated interactions with financial data.
+```json
+{
+  "name": "OpenBB MCP",
+  "description": "All OpenBB REST endpoints exposed as MCP tools...",
+  "default_tool_categories": ["equity"],
+  "allowed_tool_categories": null,
+  "enable_tool_discovery": true,
+  "describe_responses": true
+}
+```
+
+### 2. Environment Variables
+
+Override settings using environment variables:
+- `OPENBB_MCP_NAME`: Server name
+- `OPENBB_MCP_DESCRIPTION`: Server description  
+- `OPENBB_MCP_DEFAULT_TOOL_CATEGORIES`: Comma-separated list of default categories
+- `OPENBB_MCP_ALLOWED_TOOL_CATEGORIES`: Comma-separated list of allowed categories
+- `OPENBB_MCP_ENABLE_TOOL_DISCOVERY`: true/false - Enable tool discovery features
+- `OPENBB_MCP_DESCRIBE_ALL_RESPONSES`: true/false - Include response details in descriptions
+- `OPENBB_MCP_DESCRIBE_FULL_RESPONSE_SCHEMA`: true/false - Include full response schemas
+
+### 3. Command Line Arguments
+
+Command line arguments override both configuration file and environment variables.
+
+## Settings Reference
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| name | string | "OpenBB MCP" | Server name displayed to MCP clients |
+| description | string | "All OpenBB REST endpoints..." | Server description |
+| default_tool_categories | list[string] | ["equity"] | Categories enabled at startup |
+| allowed_tool_categories | list[string] | null | If set, restricts available categories to this list |
+| enable_tool_discovery | boolean | true | Enable discovery and management tools |
+| describe_responses | boolean | true | Include response information in tool descriptions |
+
+## Tool Categories
+
+The server organizes OpenBB tools into categories based on the REST API structure:
+
+- **`equity`** - Stock data, fundamentals, price history, estimates
+- **`crypto`** - Cryptocurrency data and analysis  
+- **`economy`** - Economic indicators, GDP, employment data
+- **`news`** - Financial news from various sources
+- **`fixedincome`** - Bond data, rates, government securities
+- **`derivatives`** - Options and futures data
+- **`etf`** - ETF information and holdings
+- **`currency`** - Foreign exchange data
+- **`commodity`** - Commodity prices and data
+- **`index`** - Market indices data
+- **`regulators`** - SEC, CFTC regulatory data
+
+Each category contains subcategories that group related functionality (e.g., `equity_price`, `equity_fundamental`, etc.).
+
+## Tool Discovery
+
+When `enable_tool_discovery` is enabled (default), the server provides management tools that allow agents to:
+
+- Discover available tool categories and subcategories
+- See tool counts and descriptions before activating
+- Enable/disable specific tools dynamically during a session
+- Start with minimal tools and progressively add more as needed
+
+For multi-client deployments or scenarios where you want a fixed toolset, disable tool discovery with `--no-tool-discovery`.

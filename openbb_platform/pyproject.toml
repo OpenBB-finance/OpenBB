@@ -62,7 +62,7 @@ openbb-charting = { version = "^2.3.4", optional = true }
 openbb-econometrics = { version = "^1.5.3", optional = true }
 openbb-quantitative = { version = "^1.4.3", optional = true }
 openbb-technical = { version = "^1.4.3", optional = true }
-openbb-mcp-server = { version = "^0.0.1", optional = true, markers = "python_version >= '3.10'" }
+openbb-mcp-server = { version = "^0.0.1", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]

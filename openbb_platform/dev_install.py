@@ -50,6 +50,7 @@ openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
 openbb-index = { path = "./extensions/index", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
 openbb-regulators = { path = "./extensions/regulators", develop = true }
+openbb-mcp-server = { path = "./extensions/mcp_server", develop = true }
 
 # Community dependencies
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
