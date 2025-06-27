@@ -466,9 +466,12 @@ class ImportDefinition:
                     "str",
                 ]:
                     continue
-
                 if module not in module_types:
                     module_types[module] = set()
+
+                if str(type_name).startswith("typing.Optional"):
+                    continue
+
                 module_types[module].add(type_name)
 
         # Generate from-import statements for modules with specific types
