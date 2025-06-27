@@ -858,15 +858,6 @@ async def direction_of_trade(
                 "document_type": "minutes",
             },
         ),
-        APIEx(
-            description="The `url` parameter will override all other parameters to download the document."
-            + " The response will be a dictionary with keys `filename`, `content`, and `data_format`."
-            + " PDF content will be a base64 encoded string of the document.",
-            parameters={
-                "provider": "federal_reserve",
-                "url": "https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20220126.pdf",
-            },
-        ),
     ],
     response_model=Union[list, dict],
     openapi_extra={

@@ -1347,3 +1347,15 @@ def test_economy_shipping_port_volume(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.skip(reason="Endpoint not available to Python SDK.")
+def test_economy_fomc_documents_download(obb):
+    """Test the economy fomc documents download endpoint."""
+    params = {
+        "url": "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
+    }
+    result = obb.economy.fomc_documents_download(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

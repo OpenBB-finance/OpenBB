@@ -1,6 +1,7 @@
 """Test Economy API."""
 
 import base64
+import json
 
 import pytest
 import requests
@@ -1299,6 +1300,19 @@ def test_economy_fomc_documents(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/fomc_documents?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.integration
+def test_economy_fomc_documents_download(headers):
+    """Test the economy fomc documents download endpoint."""
+    params = {
+        "url": "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
+    }
+
+    url = "http://0.0.0.0:8000/api/v1/economy/fomc_documents/download?"
+    result = requests.post(url, headers=headers, timeout=10, json=params)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
