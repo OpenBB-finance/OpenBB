@@ -238,11 +238,11 @@ def main():
             }
             if error_message != ""
             else {
+                "content": encoded_content,
                 "data_format": {
                     "data_type": "pdf",
                     "filename": filename,
                 },
-                "content": encoded_content,
             }
         )
 
