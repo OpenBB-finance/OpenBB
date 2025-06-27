@@ -231,20 +231,19 @@ def main():
             "-", ""
         )
         filename = f"{symbol}-{date_str}-{form_type}.pdf"
-        content = (
-            {
+        if error_message != "":
+            content = {
                 "error_type": "download_error",
                 "content": error_message,
             }
-            if error_message != ""
-            else {
+        else:
+            content = {
                 "content": encoded_content,
                 "data_format": {
                     "data_type": "pdf",
                     "filename": filename,
                 },
             }
-        )
 
         return content
 
