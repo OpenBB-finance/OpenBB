@@ -1269,7 +1269,6 @@ def test_economy_direction_of_trade(params, headers):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": None,
             }
         ),
         (
@@ -1279,7 +1278,6 @@ def test_economy_direction_of_trade(params, headers):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": "https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20250129.pdf",
             }
         ),
         (
@@ -1289,7 +1287,6 @@ def test_economy_direction_of_trade(params, headers):
                 "document_type": "minutes",
                 "pdf_only": True,
                 "as_choices": True,
-                "url": None,
             }
         ),
     ],
