@@ -231,6 +231,7 @@ def main():
             "-", ""
         )
         filename = f"{symbol}-{date_str}-{form_type}.pdf"
+        content: dict[str, Any] = {}
         if error_message != "":
             content = {
                 "error_type": "download_error",
