@@ -263,6 +263,12 @@ def check_integration_tests(
                 processing_command_params = [
                     {k: "" for k in get_test_params_data_processing(hints)}
                 ]
+                if (
+                    not processing_command_params
+                    or len(functions[function].pytestmark) < 2
+                ):
+                    # If there are no params, we can skip this function
+                    continue
                 try:
                     function_params = functions[function].pytestmark[1].args[1]
                 except IndexError:

@@ -1,7 +1,8 @@
 """Test Economy API."""
 
+# pylint: disable=too-many-lines
+
 import base64
-import json
 
 import pytest
 import requests
