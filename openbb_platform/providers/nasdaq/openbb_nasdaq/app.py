@@ -22,7 +22,7 @@ def main():
     """Return a FastAPI app instance."""
     # pylint: disable=import-outside-toplevel
     from datetime import datetime
-    from typing import Annotated, Literal, Optional
+    from typing import Annotated, Any, Literal, Optional
 
     from async_lru import alru_cache
     from fastapi import Depends, FastAPI
@@ -209,7 +209,7 @@ def main():
     )
     async def open_document(
         document_url: str,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Open the selected PDF filing document."""
         encoded_content: str = ""
         error_message: str = ""
