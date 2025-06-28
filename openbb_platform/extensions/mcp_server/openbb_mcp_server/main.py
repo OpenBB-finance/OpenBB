@@ -1,3 +1,5 @@
+"""OpenBB MCP Server."""
+
 import logging
 import re
 import sys
@@ -5,8 +7,14 @@ from typing import Annotated
 
 from fastapi import FastAPI
 from fastmcp import FastMCP
-from fastmcp.server.openapi import FastMCPOpenAPI, OpenAPIResource, OpenAPIResourceTemplate, OpenAPITool
+from fastmcp.server.openapi import (
+    FastMCPOpenAPI,
+    OpenAPIResource,
+    OpenAPIResourceTemplate,
+    OpenAPITool,
+)
 from fastmcp.utilities.openapi import HTTPRoute
+from openbb_core.api.rest_api import app
 from pydantic import Field
 
 from .registry import ToolRegistry
@@ -32,12 +40,14 @@ def _extract_brief_description(full_description: str) -> str:
     if not full_description:
         return "No description available"
 
-    brief, *_ = re.split(r"\n{2,}\*\*(?:Query Parameters|Responses):", full_description, maxsplit=1)
+    brief, *_ = re.split(
+        r"\n{2,}\*\*(?:Query Parameters|Responses):", full_description, maxsplit=1
+    )
 
     return brief.strip() or "No description available"
 
 
-def create_mcp_server(settings: MCPSettings, app: FastAPI) -> FastMCPOpenAPI:
+def create_mcp_server(settings: MCPSettings, fastapi_app: FastAPI) -> FastMCPOpenAPI:
     """Create and configure the MCP server."""
     tool_registry = ToolRegistry()
 
@@ -69,13 +79,21 @@ def create_mcp_server(settings: MCPSettings, app: FastAPI) -> FastMCPOpenAPI:
             tool_parts = segments[2:]
             tool = "_".join(tool_parts)
 
-        component.name = f"{category}_{subcategory}_{tool}" if subcategory != "general" else f"{category}_{tool}"
+        component.name = (
+            f"{category}_{subcategory}_{tool}"
+            if subcategory != "general"
+            else f"{category}_{tool}"
+        )
         component.tags.add(category)
 
         if not settings.describe_responses:
-            component.description = _extract_brief_description(component.description or "")
+            component.description = _extract_brief_description(
+                component.description or ""
+            )
 
-        if any(tag in settings.default_tool_categories for tag in component.tags):
+        if "all" in settings.default_tool_categories or any(
+            tag in settings.default_tool_categories for tag in component.tags
+        ):
             component.enable()
         else:
             component.disable()
@@ -90,7 +108,7 @@ def create_mcp_server(settings: MCPSettings, app: FastAPI) -> FastMCPOpenAPI:
         return
 
     mcp = FastMCP.from_fastapi(
-        app=app,
+        app=fastapi_app,
         mcp_component_fn=customize_components,
         name=settings.name,
         route_maps=create_route_maps_from_settings(settings),
@@ -101,8 +119,8 @@ def create_mcp_server(settings: MCPSettings, app: FastAPI) -> FastMCPOpenAPI:
 
         @mcp.tool(tags={"admin"})
         def available_categories() -> list[CategoryInfo]:
-            """
-            List all categories with their subcategories and tool counts.
+            """List all categories with their subcategories and tool counts.
+
             This gives you a complete overview of what types of tasks you can solve.
             """
             categories = tool_registry.get_categories()
@@ -120,7 +138,9 @@ def create_mcp_server(settings: MCPSettings, app: FastAPI) -> FastMCPOpenAPI:
 
         @mcp.tool(tags={"admin"})
         def available_tools(
-            category: Annotated[str, Field(description="The category of tools to list")],
+            category: Annotated[
+                str, Field(description="The category of tools to list")
+            ],
             subcategory: Annotated[
                 str | None,
                 Field(
@@ -133,7 +153,9 @@ def create_mcp_server(settings: MCPSettings, app: FastAPI) -> FastMCPOpenAPI:
             if not category_data:
                 available_categories = list(tool_registry.get_categories().keys())
                 categories_str = ", ".join(sorted(available_categories))
-                raise ValueError(f"Category '{category}' not found. Available categories: {categories_str}")
+                raise ValueError(
+                    f"Category '{category}' not found. Available categories: {categories_str}"
+                )
 
             if subcategory:
                 # Single subcategory
@@ -148,7 +170,9 @@ def create_mcp_server(settings: MCPSettings, app: FastAPI) -> FastMCPOpenAPI:
 
                 return [
                     ToolInfo(
-                        name=name, active=tool.enabled, description=_extract_brief_description(tool.description or "")
+                        name=name,
+                        active=tool.enabled,
+                        description=_extract_brief_description(tool.description or ""),
                     )
                     for name, tool in sorted(tools_dict.items())
                 ]
@@ -156,20 +180,28 @@ def create_mcp_server(settings: MCPSettings, app: FastAPI) -> FastMCPOpenAPI:
             # All subcategories - flatten them
             tools_dict = tool_registry.get_category_tools(category)
             return [
-                ToolInfo(name=name, active=tool.enabled, description=_extract_brief_description(tool.description or ""))
+                ToolInfo(
+                    name=name,
+                    active=tool.enabled,
+                    description=_extract_brief_description(tool.description or ""),
+                )
                 for name, tool in sorted(tools_dict.items())
             ]
 
         @mcp.tool(tags={"admin"})
         def activate_tools(
-            tool_names: Annotated[list[str], Field(description="The name of the tool to activate")],
+            tool_names: Annotated[
+                list[str], Field(description="The name of the tool to activate")
+            ],
         ) -> str:
             """Activate a tool or a list of tools."""
             return tool_registry.toggle_tools(tool_names, enable=True).message
 
         @mcp.tool(tags={"admin"})
         def deactivate_tools(
-            tool_names: Annotated[list[str], Field(description="The name of the tool to deactivate")],
+            tool_names: Annotated[
+                list[str], Field(description="The name of the tool to deactivate")
+            ],
         ) -> str:
             """Deactivate a tool or a list of tools."""
             return tool_registry.toggle_tools(tool_names, enable=False).message
@@ -180,7 +212,6 @@ def create_mcp_server(settings: MCPSettings, app: FastAPI) -> FastMCPOpenAPI:
 def main():
     """Start the OpenBB MCP server."""
     args = parse_args()
-    from openbb_core.api.rest_api import app
 
     try:
         overrides = {}
@@ -197,7 +228,7 @@ def main():
         mcp.run(transport=args.transport, host=args.host, port=args.port)
 
     except Exception as e:
-        logger.error(f"Failed to start MCP server: {e}")
+        logger.error("Failed to start MCP server: %s", e)
         sys.exit(1)
 
 

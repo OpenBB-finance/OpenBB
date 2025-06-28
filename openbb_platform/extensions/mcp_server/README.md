@@ -4,7 +4,7 @@ Model Context Protocol (MCP) server extension for OpenBB Platform. This extensio
 
 The server provides management tools that allow agents to explore different options and dynamically adjust their active toolset. This prevents agents from being overwhelmed with too many tools while allowing them to discover and activate only the tools they need for specific tasks.
 
-Using thes dynamic tool discovery, has one major drawback, it makes the server a single-user server. As tool updates are global, so if one user updates a tool, it will be updated for all users. If you plan to server multiple users, you should disable tool discovery, and instead use the `allowed_tool_categories` and `default_tool_categories` settings to control the tools that are available to the users.
+Using these dynamic tool discovery, has one major drawback, it makes the server a single-user server. The tool updates are global, so if one user updates a tool, it will be updated for all users. If you plan to server multiple users, you should disable tool discovery, and instead use the `allowed_tool_categories` and `default_tool_categories` settings to control the tools that are available to the users.
 
 ## Installation
 
@@ -25,7 +25,7 @@ openbb-mcp
 - `--host`: Host to bind to (default: 127.0.0.1)
 - `--port`: Port to listen on (default: 8001)
 - `--allowed-categories`: Comma-separated list of allowed tool categories
-- `--default-categories`: Comma-separated list of categories enabled at startup (default: admin)
+- `--default-categories`: Comma-separated list of categories enabled at startup (default: all)
 - `--transport`: Transport protocol (default: streamable-http)
 - `--no-tool-discovery`: Disable tool discovery for multi-client deployments
 
@@ -57,7 +57,7 @@ The server automatically creates and uses `~/.openbb_platform/mcp_settings.json`
 {
   "name": "OpenBB MCP",
   "description": "All OpenBB REST endpoints exposed as MCP tools...",
-  "default_tool_categories": ["equity"],
+  "default_tool_categories": ["all"],
   "allowed_tool_categories": null,
   "enable_tool_discovery": true,
   "describe_responses": true
@@ -85,7 +85,7 @@ Command line arguments override both configuration file and environment variable
 |---------|------|---------|-------------|
 | name | string | "OpenBB MCP" | Server name displayed to MCP clients |
 | description | string | "All OpenBB REST endpoints..." | Server description |
-| default_tool_categories | list[string] | ["equity"] | Categories enabled at startup |
+| default_tool_categories | list[string] | ["all"] | Categories enabled at startup. Use "all" to enable all categories, or specify individual categories |
 | allowed_tool_categories | list[string] | null | If set, restricts available categories to this list |
 | enable_tool_discovery | boolean | true | Enable discovery and management tools |
 | describe_responses | boolean | true | Include response information in tool descriptions |
@@ -116,5 +116,7 @@ When `enable_tool_discovery` is enabled (default), the server provides managemen
 - See tool counts and descriptions before activating
 - Enable/disable specific tools dynamically during a session
 - Start with minimal tools and progressively add more as needed
+
+To take full advantage of minimal startup tools, you should set the `--default-categories` argument to `admin` this will enable only the discovery tools at startup.
 
 For multi-client deployments or scenarios where you want a fixed toolset, disable tool discovery with `--no-tool-discovery`.

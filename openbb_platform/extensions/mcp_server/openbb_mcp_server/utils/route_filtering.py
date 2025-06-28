@@ -26,12 +26,24 @@ def create_route_maps_from_settings(settings: MCPSettings) -> List[RouteMap]:
 
     if settings.allowed_tool_categories:
         # Create patterns for allowed categories
-        allowed_pattern = "|".join(re.escape(cat) for cat in settings.allowed_tool_categories)
+        allowed_pattern = "|".join(
+            re.escape(cat) for cat in settings.allowed_tool_categories
+        )
 
         # Include only allowed categories
-        route_maps.append(RouteMap(pattern=rf"^/api/v\d+/({allowed_pattern})/.*", mcp_type=MCPType.TOOL))
+        route_maps.append(
+            RouteMap(
+                pattern=rf"^/api/v\d+/({allowed_pattern})/.*",
+                mcp_type=MCPType.TOOL,
+            )
+        )
 
         # Exclude everything else
-        route_maps.append(RouteMap(pattern=rf"^/api/v\d+/(?!({allowed_pattern})/).*", mcp_type=MCPType.EXCLUDE))
+        route_maps.append(
+            RouteMap(
+                pattern=rf"^/api/v\d+/(?!({allowed_pattern})/).*",
+                mcp_type=MCPType.EXCLUDE,
+            )
+        )
 
     return route_maps

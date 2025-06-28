@@ -5,7 +5,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Any, Dict
+from typing import Dict, List, Union
 
 from openbb_core.app.constants import OPENBB_DIRECTORY
 
@@ -56,9 +56,9 @@ def save_mcp_settings(settings: MCPSettings) -> None:
         json.dump(settings.model_dump(), f, indent=2)
 
 
-def load_settings_from_env() -> Dict[str, Any]:
+def load_settings_from_env() -> Dict[str, Union[str, List[str], bool]]:
     """Load MCP settings from environment variables."""
-    env_settings = {}
+    env_settings: Dict[str, Union[str, List[str], bool]] = {}
 
     # Map environment variables to settings
     env_mapping = {
@@ -113,7 +113,7 @@ Examples:
   openbb-mcp                                        # Start with default settings
   openbb-mcp --host 0.0.0.0 --port 8001           # Custom host and port
   openbb-mcp --allowed-categories equity,crypto            # Allowed categories
-  openbb-mcp --default-categories equity,crypto            # What categories are enabled by default
+  openbb-mcp --default-categories equity,crypto            # Override default (all categories enabled by default)
   openbb-mcp --transport stdio                     # Use stdio transport
   openbb-mcp --no-tool-discovery                   # Disable tool discovery (multi-client safe)
 
@@ -124,8 +124,15 @@ The server can also be configured via:
 Command line arguments override configuration file and environment variables.
         """,
     )
-    parser.add_argument("--host", type=str, default="127.0.0.1", help="Host IP address to bind the server to")
-    parser.add_argument("--port", type=int, default=8001, help="Port number to bind the server to")
+    parser.add_argument(
+        "--host",
+        type=str,
+        default="127.0.0.1",
+        help="Host IP address to bind the server to",
+    )
+    parser.add_argument(
+        "--port", type=int, default=8001, help="Port number to bind the server to"
+    )
     parser.add_argument(
         "--allowed-categories",
         type=str,
@@ -135,9 +142,19 @@ Command line arguments override configuration file and environment variables.
     parser.add_argument(
         "--default-categories",
         type=str,
-        default="admin",
+        default="all",
         help="Comma-separated list of tool categories enabled at startup",
     )
-    parser.add_argument("--transport", type=str, default="streamable-http", help="MCP transport protocol to use")
-    parser.add_argument("--no-tool-discovery", action="store_true", help="Disable tool discovery (multi-client safe)")
+    parser.add_argument(
+        "--transport",
+        type=str,
+        default="streamable-http",
+        help="MCP transport protocol to use",
+        choices=["streamable-http", "stdio", "sse"],
+    )
+    parser.add_argument(
+        "--no-tool-discovery",
+        action="store_true",
+        help="Disable tool discovery (multi-client safe)",
+    )
     return parser.parse_args()
