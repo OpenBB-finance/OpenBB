@@ -65,10 +65,17 @@ app = FastAPI(
     ],
     lifespan=lifespan,
 )
+
+dev_origins = [
+    "http://localhost:1420",
+    "http://127.0.0.1:1420",
+]
+all_origins = list(set(system.api_settings.cors.allow_origins + dev_origins))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=system.api_settings.cors.allow_origins,
-    allow_methods=system.api_settings.cors.allow_methods,
+    allow_origins=all_origins,
+    allow_methods=["*"],
     allow_headers=system.api_settings.cors.allow_headers,
 )
 AppLoader.add_routers(

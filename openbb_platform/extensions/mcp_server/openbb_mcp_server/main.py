@@ -223,6 +223,7 @@ def main():
             overrides["enable_tool_discovery"] = False
 
         settings = load_mcp_settings_with_overrides(**overrides)
+
         mcp = create_mcp_server(settings, app)
 
         mcp.run(transport=args.transport, host=args.host, port=args.port)
