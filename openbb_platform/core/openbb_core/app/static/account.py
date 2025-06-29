@@ -94,8 +94,7 @@ class Account:  # noqa: D205, D400
         return hs
 
     # pylint: disable=R0917
-    # type: ignore[arg-type]
-    @_log_account_command
+    @_log_account_command  # type: ignore
     def login(
         self,
         email: Optional[str] = None,
