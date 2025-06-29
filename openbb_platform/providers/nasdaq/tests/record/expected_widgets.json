@@ -285,7 +285,7 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": "none",
+                        "formatterFn": null,
                         "headerName": "Symbol",
                         "headerTooltip": "Click on a ticker in the column to change the SEC documents viewer.",
                         "cellDataType": "text",
@@ -367,8 +367,7 @@
                         "headerTooltip": "The market cap (USD) of the reporting entity.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -435,7 +434,7 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": "none",
+                        "formatterFn": null,
                         "headerName": "Symbol",
                         "headerTooltip": "Click on a ticker in the column to update the historical dividends.",
                         "cellDataType": "text",
@@ -488,8 +487,7 @@
                         "headerTooltip": "The indicated annualized dividend amount.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -598,8 +596,7 @@
                         "headerTooltip": "Declaration date of the dividend.",
                         "cellDataType": "date"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -684,7 +681,7 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": "none",
+                        "formatterFn": null,
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
                         "cellDataType": "text",
@@ -747,8 +744,7 @@
                         "headerTooltip": "The status of the deal.",
                         "cellDataType": "text"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
