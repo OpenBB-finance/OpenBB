@@ -93,7 +93,8 @@ class Account:  # noqa: D205, D400
             hs.connect(email, password, pat)
         return hs
 
-    # type: ignore  pylint: disable=R0917
+    # pylint: disable=R0917
+    # type: ignore[arg-type]
     @_log_account_command
     def login(
         self,
