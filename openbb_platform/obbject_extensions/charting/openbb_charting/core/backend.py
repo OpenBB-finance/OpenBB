@@ -79,7 +79,6 @@ class Backend(PyWry):
             self.isatty = False
 
         self.WIDTH, self.HEIGHT = 1400, 762
-        self.logged_in: bool = False
 
         atexit.register(self.close)
 
@@ -142,12 +141,9 @@ class Backend(PyWry):
         theme: Optional[str] = None,
     ) -> dict:
         """Get the json update for the backend."""
-        if self.charting_settings.user_uuid and not self.logged_in:
-            self.logged_in = True
 
         return dict(
             theme=theme or self.charting_settings.chart_style,
-            log_id=self.charting_settings.app_id,
             pywry_version=self.__version__,
             platform_version=self.charting_settings.version,
             python_version=self.charting_settings.python_version,

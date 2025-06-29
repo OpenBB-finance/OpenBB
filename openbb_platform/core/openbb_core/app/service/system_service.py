@@ -15,7 +15,6 @@ class SystemService(metaclass=SingletonMeta):
 
     SYSTEM_SETTINGS_PATH = SYSTEM_SETTINGS_PATH
     SYSTEM_SETTINGS_ALLOWED_FIELD_SET = {
-        "log_collect",
         "test_mode",
         "headless",
         "logging_sub_app",
