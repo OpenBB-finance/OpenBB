@@ -1,12 +1,11 @@
 """OpenBB Workspace Application.
 
 This includes widgets and endpoints for fetching and displaying
-SEC filings, as well as calendars for earnings, dividends, ipos,
-and global economic events from the public Nasdaq website.
+SEC filings, as well as calendars for earnings, dividends, and IPOs.
 
 To use this app, launch it with:
 
-```bash
+```sh
 openbb-api --app openbb_nasdaq.app:main --factory
 ```
 
@@ -32,6 +31,9 @@ def main():
     from openbb_nasdaq.models.company_filings import NasdaqCompanyFilingsFetcher
     from openbb_nasdaq.models.economic_calendar import NasdaqEconomicCalendarFetcher
     from openbb_nasdaq.models.equity_search import NasdaqEquitySearchFetcher
+    from openbb_nasdaq.models.historical_dividends import (
+        NasdaqHistoricalDividendsFetcher,
+    )
     from pandas import DataFrame
 
     listings = DataFrame()
@@ -143,69 +145,7 @@ def main():
 
     @app.get(
         "/open_document",
-        openapi_extra={
-            "widget_config": {
-                "type": "multi_file_viewer",
-                "name": "SEC Filings",
-                "description": "View SEC filings by company.",
-                "refetchInterval": False,
-                "widgetId": "nasdaq_company_filings",
-                "params": [
-                    {
-                        "paramName": "document_url",
-                        "label": "Document URL",
-                        "description": "Select the document to open.",
-                        "type": "endpoint",
-                        "optionsEndpoint": "/get_symbol_choices",
-                        "optionsParams": {
-                            "symbol": "$symbol",
-                            "year": "$year",
-                            "form_group": "$form_group",
-                        },
-                        "show": False,
-                        "roles": ["fileSelector"],
-                        "multiSelect": True,
-                    },
-                    {
-                        "paramName": "symbol",
-                        "label": "Symbol",
-                        "description": (
-                            "Ticker symbol for the company."
-                            " Foreign (dual-listed) companies may not be required to file with the SEC."
-                        ),
-                        "type": "endpoint",
-                        "value": "AAPL",
-                        "optionsEndpoint": "/get_symbol_choices",
-                        "style": {"popupWidth": 850},
-                    },
-                    {
-                        "paramName": "year",
-                        "label": "Calendar Year",
-                        "description": "Calendar year for the filings.",
-                        "value": years[0]["value"],
-                        "type": "number",
-                        "options": years,
-                    },
-                    {
-                        "paramName": "form_group",
-                        "label": "Form Group",
-                        "description": "Form group for the filings.",
-                        "value": "8k",
-                        "type": "text",
-                        "options": [
-                            {"label": "Annual", "value": "annual"},
-                            {"label": "Quarterly", "value": "quarterly"},
-                            {"label": "Proxy", "value": "proxy"},
-                            {"label": "Insider", "value": "insider"},
-                            {"label": "8-K", "value": "8k"},
-                            {"label": "Registration", "value": "registration"},
-                            {"label": "Comment", "value": "comment"},
-                        ],
-                    },
-                ],
-                "gridData": {"w": 40, "h": 30},
-            }
-        },
+        include_in_schema=False,
     )
     async def open_document(
         document_url: str,
@@ -250,7 +190,69 @@ def main():
 
     @app.post(
         "/open_document",
-        include_in_schema=False,
+        openapi_extra={
+            "widget_config": {
+                "type": "multi_file_viewer",
+                "name": "SEC Filings",
+                "description": "View SEC filings by company.",
+                "refetchInterval": False,
+                "widgetId": "nasdaq_company_filings",
+                "params": [
+                    {
+                        "paramName": "symbol",
+                        "label": "Symbol",
+                        "description": (
+                            "Ticker symbol for the company."
+                            " Foreign (dual-listed) companies may not be required to file with the SEC."
+                        ),
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
+                    {
+                        "paramName": "document_url",
+                        "label": "Document URL",
+                        "description": "Select the document to open.",
+                        "type": "endpoint",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "optionsParams": {
+                            "symbol": "$symbol",
+                            "year": "$year",
+                            "form_group": "$form_group",
+                        },
+                        "show": False,
+                        "roles": ["fileSelector"],
+                        "multiSelect": True,
+                    },
+                    {
+                        "paramName": "year",
+                        "label": "Calendar Year",
+                        "description": "Calendar year for the filings.",
+                        "value": years[0]["value"],
+                        "type": "number",
+                        "options": years,
+                    },
+                    {
+                        "paramName": "form_group",
+                        "label": "Form Group",
+                        "description": "Form group for the filings.",
+                        "value": "8k",
+                        "type": "text",
+                        "options": [
+                            {"label": "Annual", "value": "annual"},
+                            {"label": "Quarterly", "value": "quarterly"},
+                            {"label": "Proxy", "value": "proxy"},
+                            {"label": "Insider", "value": "insider"},
+                            {"label": "8-K", "value": "8k"},
+                            {"label": "Registration", "value": "registration"},
+                            {"label": "Comment", "value": "comment"},
+                        ],
+                    },
+                ],
+                "gridData": {"w": 40, "h": 30},
+            }
+        },
     )
     async def post_open_document(
         params: dict,
@@ -281,6 +283,14 @@ def main():
                 "refetchInterval": False,
                 "params": [
                     {
+                        "paramName": "symbol",
+                        "show": False,
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
+                    {
                         "label": "Start Date",
                         "description": "Start date of the data.",
                         "type": "date",
@@ -304,6 +314,15 @@ def main():
                                 "formatterFn": "normalizedPercent",
                                 "cellDataType": "number",
                                 "renderFn": "greenRed",
+                            },
+                            {
+                                "field": "symbol",
+                                "headerTooltip": "Click on a ticker in the column to change the SEC documents viewer.",
+                                "renderFn": "cellOnClick",
+                                "renderFnParams": {
+                                    "actionType": "groupBy",
+                                    "groupByParamName": "symbol",
+                                },
                             },
                         ]
                     }
@@ -339,6 +358,14 @@ def main():
                 "refetchInterval": False,
                 "params": [
                     {
+                        "paramName": "symbol2",
+                        "show": False,
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
+                    {
                         "label": "Start Date",
                         "description": "Start date of the data.",
                         "type": "date",
@@ -354,6 +381,21 @@ def main():
                     },
                 ],
                 "gridData": {"w": 40, "h": 20},
+                "data": {
+                    "table": {
+                        "columnsDefs": [
+                            {
+                                "field": "symbol",
+                                "headerTooltip": "Click on a ticker in the column to update the historical dividends.",
+                                "renderFn": "cellOnClick",
+                                "renderFnParams": {
+                                    "actionType": "groupBy",
+                                    "groupByParamName": "symbol2",
+                                },
+                            },
+                        ]
+                    }
+                },
             }
         },
     )
@@ -370,6 +412,74 @@ def main():
         }
 
         return await fetcher.fetch_data(params, {})  # type: ignore
+
+    @app.get(
+        "/historical_dividends",
+        openapi_extra={
+            "widget_config": {
+                "name": "Historical Dividends",
+                "description": "Historical dividend payments for a given symbol.",
+                "category": "Equity",
+                "subCategory": "Dividends",
+                "type": "table",
+                "searchCategory": "Equity",
+                "widgetId": "nasdaq_historical_dividends",
+                "refetchInterval": False,
+                "params": [
+                    {
+                        "paramName": "symbol2",
+                        "label": "Symbol",
+                        "description": (
+                            "Select a ticker from the dividend calendar to update the historical dividends."
+                        ),
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
+                    {
+                        "label": "Start Date",
+                        "description": (
+                            "Start date of the data, in YYYY-MM-DD format."
+                            "(Default: 5 years ago)"
+                        ),
+                        "optional": True,
+                        "type": "date",
+                        "value": None,
+                        "show": True,
+                        "paramName": "start_date",
+                    },
+                    {
+                        "label": "End Date",
+                        "description": (
+                            "End date of the data, in YYYY-MM-DD format."
+                            "(Default: today)"
+                        ),
+                        "optional": True,
+                        "type": "date",
+                        "value": None,
+                        "show": True,
+                        "paramName": "end_date",
+                    },
+                ],
+            }
+        },
+    )
+    async def historical_dividends(
+        symbol2: str,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+    ) -> list[NasdaqHistoricalDividendsFetcher.data_type]:
+        """Get historical dividends for a given symbol."""
+        fetcher = NasdaqHistoricalDividendsFetcher()
+
+        params = {
+            "symbol": symbol2,
+            "start_date": start_date,
+            "end_date": end_date,
+        }
+
+        return await fetcher.fetch_data(params, {})
 
     @app.get(
         "/ipo_calendar",
@@ -447,8 +557,10 @@ def main():
 
     @app.get(
         "/economic_calendar",
+        include_in_schema=False,
         openapi_extra={
             "widget_config": {
+                "exclude": True,  # Exclude this widget temporarily while the source is not working.
                 "name": "Economic Calendar",
                 "description": "Upcoming, and historical, macroeconomic events.",
                 "category": "Economy",
@@ -714,7 +826,14 @@ def main():
                                     }
                                 },
                             },
-                        }
+                        },
+                        {
+                            "i": "nasdaq_historical_dividends",
+                            "x": 0,
+                            "y": 12,
+                            "w": 40,
+                            "h": 30,
+                        },
                     ],
                 },
                 "ipo-calendar": {
@@ -758,21 +877,29 @@ def main():
                         }
                     ],
                 },
-                "economic-calendar": {
-                    "id": "economic-calendar",
-                    "name": "Economic Calendar",
-                    "layout": [
-                        {
-                            "i": "nasdaq_economic_calendar",
-                            "x": 0,
-                            "y": 2,
-                            "w": 40,
-                            "h": 20,
-                        }
+            },
+            "groups": [
+                {
+                    "name": "Group 1",
+                    "type": "endpointParam",
+                    "paramName": "symbol",
+                    "defaultValue": "AAPL",
+                    "widgetIds": [
+                        "nasdaq_earnings_calendar",
+                        "nasdaq_company_filings",
                     ],
                 },
-            },
-            "groups": [],
+                {
+                    "name": "Group 2",
+                    "type": "endpointParam",
+                    "paramName": "symbol2",
+                    "defaultValue": "AAPL",
+                    "widgetIds": [
+                        "nasdaq_dividends_calendar",
+                        "nasdaq_historical_dividends",
+                    ],
+                },
+            ],
         }
 
     return app
