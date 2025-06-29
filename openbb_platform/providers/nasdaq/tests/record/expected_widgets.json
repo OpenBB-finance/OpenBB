@@ -340,11 +340,12 @@
                         "cellDataType": "number"
                     },
                     {
+                        "cellDataType": "text",
                         "field": "period_ending",
                         "formatterFn": null,
                         "headerName": "Period Ending",
                         "headerTooltip": "The fiscal period end date.",
-                        "cellDataType": "text"
+                        "pinned": "left"
                     },
                     {
                         "field": "previous_report_date",
