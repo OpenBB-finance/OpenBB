@@ -158,8 +158,6 @@ class OmniWidgetResponseModel(Data):
     ------
     content : Any
         The content to display in the Omni widget.
-    data_type : Optional[str]
-        The type of data, which is always "object" for Omni widgets, no need to specify.
     parse_as : Optional[str]
         The type of content to parse as. One of "table", "chart", or "text".
         Attempts to set this automatically based on the content type, but can be overridden.
