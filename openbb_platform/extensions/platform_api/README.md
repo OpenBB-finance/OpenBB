@@ -523,7 +523,7 @@ async def general_intake() -> list[IntakeForm]:
     return INTAKE_FORMS
 ```
 
-<img width="1552" alt="Screenshot 2025-03-09 at 9 51 47 PM" src="https://github.com/user-attachments/assets/16bb3844-ea43-44c8-ae44-67159b0b70e4" />
+<img width="1552" alt="Form Input Widget" src="https://github.com/user-attachments/assets/16bb3844-ea43-44c8-ae44-67159b0b70e4" />
 
 ### Omni Widget Example
 
@@ -578,6 +578,9 @@ async def create_omni_widget(item: TestOmniWidgetQueryModel):
 """
     return {"content": some_test_data}
 ```
+
+![Omni Widget](https://github.com/user-attachments/assets/6a5aa886-9701-4448-b397-ed7bab99cac7)
+
 
 ## Widget Config
 
