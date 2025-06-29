@@ -123,6 +123,13 @@
                             }
                         }
                     }
+                },
+                {
+                    "i": "nasdaq_historical_dividends",
+                    "x": 0,
+                    "y": 12,
+                    "w": 40,
+                    "h": 30
                 }
             ]
         },
@@ -169,20 +176,28 @@
                     }
                 }
             ]
-        },
-        "economic-calendar": {
-            "id": "economic-calendar",
-            "name": "Economic Calendar",
-            "layout": [
-                {
-                    "i": "nasdaq_economic_calendar",
-                    "x": 0,
-                    "y": 2,
-                    "w": 40,
-                    "h": 20
-                }
-            ]
         }
     },
-    "groups": []
+    "groups": [
+        {
+            "name": "Group 1",
+            "type": "endpointParam",
+            "paramName": "symbol",
+            "defaultValue": "AAPL",
+            "widgetIds": [
+                "nasdaq_earnings_calendar",
+                "nasdaq_company_filings"
+            ]
+        },
+        {
+            "name": "Group 2",
+            "type": "endpointParam",
+            "paramName": "symbol2",
+            "defaultValue": "AAPL",
+            "widgetIds": [
+                "nasdaq_dividends_calendar",
+                "nasdaq_historical_dividends"
+            ]
+        }
+    ]
 }
