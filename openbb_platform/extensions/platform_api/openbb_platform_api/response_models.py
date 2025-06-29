@@ -203,12 +203,10 @@ class OmniWidgetResponseModel(Data):
 
     @model_validator(mode="after")
     @classmethod
-    def validate_model(  # pylint: disable=import-outside-toplevel
-        cls, values
-    ) -> "OmniWidgetResponseModel":
+    def validate_model(cls, values) -> "OmniWidgetResponseModel":
         """Validate the Omni widget content."""
-        import contextlib  # noqa
-        import json
+        # pylint: disable=import-outside-toplevel
+        import json  # noqa
         import pandas as pd
 
         content = getattr(values, "content", None)
