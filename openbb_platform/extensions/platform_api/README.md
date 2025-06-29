@@ -525,6 +525,65 @@ async def general_intake() -> list[IntakeForm]:
 
 <img width="1552" alt="Screenshot 2025-03-09 at 9 51 47 PM" src="https://github.com/user-attachments/assets/16bb3844-ea43-44c8-ae44-67159b0b70e4" />
 
+### Omni Widget Example
+
+
+```python
+from typing import Literal, Optional
+from openbb_platform_api.query_models import OmniWidgetInput
+from openbb_platform_api.response_models import OmniWidgetResponseModel
+from pydantic import Field
+
+class TestOmniWidgetQueryModel(OmniWidgetInput):
+    """Test query model for OmniWidget."""
+    param1: str = Field(description="A string parameter for testing")
+    param2: int = Field(description="An integer parameter for testing")
+    param3: bool = Field(default=False, description="A boolean parameter for testing")
+    start_date: str = Field(description="The start date for testing")
+    end_date: str = Field(description="The end date for testing")
+    parse_as: Optional[Literal["table", "chart", "text"]] = Field(
+        default=None,
+        description="The format to parse the response as, either 'table', 'chart', or 'text'."
+        + " If not defined, the model will try to infer the type based on the content.",
+    )
+
+@app.post("/omni_widget", response_model=OmniWidgetResponseModel)
+async def create_omni_widget(item: TestOmniWidgetQueryModel):
+    """This is a test endpoint for generating an OmniWidget in OpenBB Workspace."""
+    # Here you would process the incoming request and return a response
+    some_test_data = [
+        {"prompt": item.prompt,
+        "param1": item.param1,
+        "param2": item.param2,
+        "param3": item.param3,
+        "start_date": item.start_date,
+        "end_date": item.end_date,
+    }]
+
+    if item.parse_as == "chart":
+        try:
+            from plotly.graph_objs import Bar, Layout, Figure
+            some_test_data = Figure(
+                data=[Bar(x=["A", "B", "C"], y=[1, 2, 3])],
+                layout=Layout(title="Hello Chart!"),
+            )
+        except ImportError:
+            pass
+
+    elif item.parse_as == "text":
+        some_test_data = f"""
+### This is a test OmniWidget response
+
+- Prompt: {item.prompt}
+- Param1: {item.param1}
+- Param2: {item.param2}
+- Param3: {item.param3}
+- Start Date: {item.start_date}
+- End Date: {item.end_date}
+"""
+    return {"content": some_test_data}
+```
+
 ## Widget Config
 
 Any value from the [`widgets.json`](https://docs.openbb.co/terminal/custom-backend/widgets-json-reference) structure can be passed into the `@app` decorator by including an `openapi_extra` dictionary with the key, `"widget_config"`.
