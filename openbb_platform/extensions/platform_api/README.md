@@ -561,15 +561,10 @@ async def create_omni_widget(item: TestOmniWidgetQueryModel):
     }]
 
     if item.parse_as == "chart":
-        try:
-            from plotly.graph_objs import Bar, Layout, Figure
-            some_test_data = Figure(
-                data=[Bar(x=["A", "B", "C"], y=[1, 2, 3])],
-                layout=Layout(title="Hello Chart!"),
-            )
-        except ImportError:
-            pass
-
+        some_test_data = {
+            "data": [{"type": "bar", "x": ["A", "B", "C"], "y": [1, 2, 3]}],
+            "layout": {"template": "...", "title": {"text": "Hello Chart!"}}
+        }
     elif item.parse_as == "text":
         some_test_data = f"""
 ### This is a test OmniWidget response
