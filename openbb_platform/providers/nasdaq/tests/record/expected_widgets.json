@@ -685,8 +685,7 @@
                         "formatterFn": null,
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text",
-                        "renderFn": null
+                        "cellDataType": "text"
                     },
                     {
                         "field": "ipo_date",
