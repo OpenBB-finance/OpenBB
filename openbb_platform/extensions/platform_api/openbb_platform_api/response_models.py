@@ -234,10 +234,7 @@ class OmniWidgetResponseModel(Data):
 
             return values
 
-        with contextlib.suppress(ImportError):
-            from plotly.graph_objs import Figure  # noqa
-
-        if Figure is not None and isinstance(content, Figure):
+        if content.__class__.__name__ == "Figure":
             values.parse_as = "chart"
             try:
                 content = content.to_json()
@@ -269,11 +266,15 @@ class OmniWidgetResponseModel(Data):
                     "Failed to convert dictionary of lists to list of records"
                 ) from e
             values.content = content
-        elif isinstance(content, str) and (
-            content.strip()[0] == "["
-            and content.strip()[-1] == "]"
-            or content.strip()[0] == "{"
-            and content.strip()[-1] == "}"
+        elif (  # pylint: disable=R0916
+            isinstance(content, str)
+            and content.strip()
+            and (
+                content.strip()[0] == "["
+                and content.strip()[-1] == "]"
+                or content.strip()[0] == "{"
+                and content.strip()[-1] == "}"
+            )
         ):
             try:
                 content = json.loads(content)
