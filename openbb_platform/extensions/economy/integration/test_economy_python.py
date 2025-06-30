@@ -1222,7 +1222,6 @@ def test_economy_direction_of_trade(params, obb):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": None,
             }
         ),
         (
@@ -1232,7 +1231,6 @@ def test_economy_direction_of_trade(params, obb):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": "https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20250129.pdf",
             }
         ),
         (
@@ -1242,7 +1240,6 @@ def test_economy_direction_of_trade(params, obb):
                 "document_type": "minutes",
                 "pdf_only": True,
                 "as_choices": True,
-                "url": None,
             }
         ),
     ],
@@ -1347,6 +1344,18 @@ def test_economy_shipping_chokepoint_volume(params, obb):
 def test_economy_shipping_port_volume(params, obb):
     """Test economy shipping chokepoint volume."""
     result = obb.economy.shipping.chokepoint_volume(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.skip(reason="Endpoint not available to Python SDK.")
+def test_economy_fomc_documents_download(obb):
+    """Test the economy fomc documents download endpoint."""
+    params = {
+        "url": "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
+    }
+    result = obb.economy.fomc_documents_download(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

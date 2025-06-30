@@ -1,5 +1,7 @@
 """Test Economy API."""
 
+# pylint: disable=too-many-lines
+
 import base64
 
 import pytest
@@ -1269,7 +1271,6 @@ def test_economy_direction_of_trade(params, headers):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": None,
             }
         ),
         (
@@ -1279,7 +1280,6 @@ def test_economy_direction_of_trade(params, headers):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": "https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20250129.pdf",
             }
         ),
         (
@@ -1289,7 +1289,6 @@ def test_economy_direction_of_trade(params, headers):
                 "document_type": "minutes",
                 "pdf_only": True,
                 "as_choices": True,
-                "url": None,
             }
         ),
     ],
@@ -1302,6 +1301,19 @@ def test_economy_fomc_documents(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/fomc_documents?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.integration
+def test_economy_fomc_documents_download(headers):
+    """Test the economy fomc documents download endpoint."""
+    params = {
+        "url": "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
+    }
+
+    url = "http://0.0.0.0:8000/api/v1/economy/fomc_documents/download?"
+    result = requests.post(url, headers=headers, timeout=10, json=params)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
