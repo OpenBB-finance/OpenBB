@@ -5,6 +5,7 @@ import re
 import sys
 from typing import Annotated
 
+import uvicorn
 from fastapi import FastAPI
 from fastmcp import FastMCP
 from fastmcp.server.openapi import (
@@ -15,7 +16,10 @@ from fastmcp.server.openapi import (
 )
 from fastmcp.utilities.openapi import HTTPRoute
 from openbb_core.api.rest_api import app
+from openbb_core.app.service.system_service import SystemService
 from pydantic import Field
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 
 from .registry import ToolRegistry
 from .tool_models import CategoryInfo, SubcategoryInfo, ToolInfo
@@ -225,7 +229,31 @@ def main():
         settings = load_mcp_settings_with_overrides(**overrides)
         mcp = create_mcp_server(settings, app)
 
-        mcp.run(transport=args.transport, host=args.host, port=args.port)
+        if args.transport == "stdio":
+            mcp.run(transport=args.transport, host=args.host, port=args.port)
+
+        else:
+            # Get CORS settings from system configuration
+            system_service = SystemService()
+            cors_settings = system_service.system_settings.api_settings.cors
+
+            cors_middleware = [
+                Middleware(
+                    CORSMiddleware,
+                    allow_origins=cors_settings.allow_origins,
+                    allow_methods=cors_settings.allow_methods,
+                    allow_headers=cors_settings.allow_headers,
+                ),
+            ]
+
+            # Create ASGI app with cors middleware
+            http_app = mcp.http_app(
+                middleware=cors_middleware,
+                transport=args.transport,
+                stateless_http=True,
+            )
+
+            uvicorn.run(http_app, host=args.host, port=args.port)
 
     except Exception as e:
         logger.error("Failed to start MCP server: %s", e)

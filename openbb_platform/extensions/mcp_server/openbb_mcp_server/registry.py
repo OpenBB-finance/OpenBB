@@ -18,7 +18,9 @@ class ToolRegistry:
     )
     _by_name: dict[str, OpenAPITool] = field(default_factory=dict)
 
-    def register_tool(self, *, category: str, subcategory: str, tool_name: str, tool: OpenAPITool) -> None:
+    def register_tool(
+        self, *, category: str, subcategory: str, tool_name: str, tool: OpenAPITool
+    ) -> None:
         """Register a tool in the registry."""
         self._by_category[category][subcategory][tool_name] = tool
         self._by_name[tool_name] = tool
@@ -27,7 +29,9 @@ class ToolRegistry:
         """Get immutable view of all categories and their tools."""
         return self._by_category
 
-    def get_category_tools(self, category: str, subcategory: str | None = None) -> dict[str, OpenAPITool]:
+    def get_category_tools(
+        self, category: str, subcategory: str | None = None
+    ) -> dict[str, OpenAPITool]:
         """Get tools in a category, optionally filtered by subcategory."""
         if subcategory is None:
             # flatten all subcategories
@@ -42,7 +46,9 @@ class ToolRegistry:
         """Get a tool by name."""
         return self._by_name.get(tool_name)
 
-    def get_category_subcategories(self, category: str) -> dict[str, dict[str, OpenAPITool]] | None:
+    def get_category_subcategories(
+        self, category: str
+    ) -> dict[str, dict[str, OpenAPITool]] | None:
         """Get all subcategories for a specific category."""
         return self._by_category.get(category)
 
