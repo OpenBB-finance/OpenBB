@@ -254,11 +254,8 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
     if not openapi:
         return {}
 
-    starred_list: list = [
-        "/api/v1/technical/*",
-        "/api/v1/quantitative/*",
-        "/api/v1/econometrics/*",
-    ]
+    starred_list: list = []
+
     for item in widget_exclude_filter.copy():
         if "*" in item:
             starred_list.append(item)
