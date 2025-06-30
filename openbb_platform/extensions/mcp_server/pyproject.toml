@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "openbb-mcp-server"
+version = "0.0.1"
+description = "OpenBB Platform MCP Server"
+authors = ["OpenBB <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+homepage = "https://openbb.co"
+repository = "https://github.com/openbb-finance/openbb"
+documentation = "https://docs.openbb.co"
+packages = [{ include = "openbb_mcp_server" }]
+
+[tool.poetry.scripts]
+openbb-mcp = "openbb_mcp_server.main:main"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+openbb-core = "^1.4.3"
+fastmcp = "^2.8.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
