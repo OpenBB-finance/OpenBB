@@ -277,10 +277,11 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "name",
@@ -328,7 +329,6 @@
                     },
                     {
                         "field": "period_ending",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Period Ending",
                         "headerTooltip": "The fiscal period end date.",
@@ -355,7 +355,8 @@
                         "headerTooltip": "The market cap (USD) of the reporting entity.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -412,10 +413,11 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "amount",
@@ -460,7 +462,8 @@
                         "headerTooltip": "The indicated annualized dividend amount.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -545,10 +548,11 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "ipo_date",
@@ -607,7 +611,8 @@
                         "headerTooltip": "The status of the deal.",
                         "cellDataType": "text"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -795,7 +800,8 @@
                         "headerTooltip": "Revised previous value, if applicable.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
