@@ -12,6 +12,8 @@ from openbb_core.provider.standard_models.economic_calendar import (
 )
 from pydantic import Field, field_validator
 
+from openbb_nasdaq.utils.helpers import get_data_from_url
+
 
 class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     """Nasdaq Economic Calendar Query.
@@ -29,6 +31,10 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     country: Optional[str] = Field(
         default=None,
         description="Country of the event",
+    )
+    use_cache: Optional[bool] = Field(
+        default=True,
+        description="Whether or not to use cache. If True, cache will store for two days.",
     )
 
     @field_validator("country", mode="before", check_fields=False)
@@ -123,7 +129,8 @@ class NasdaqEconomicCalendarFetcher(
             """Get the calendar data for a single date."""
             response: List = []
             url = f"https://api.nasdaq.com/api/calendar/economicevents?date={date}"
-            r_json = await amake_request(url=url, headers=IPO_HEADERS)
+            r_json = await get_data_from_url(url=url, file_path="economic_calendar", use_cache=query.use_cache,
+                                             headers=IPO_HEADERS)
             if r_json is not None and r_json.get("data"):  # type: ignore
                 response = r_json["data"].get("rows")  # type: ignore
             if response:
@@ -165,9 +172,9 @@ class NasdaqEconomicCalendarFetcher(
 
     @staticmethod
     def transform_data(
-        query: NasdaqEconomicCalendarQueryParams,
-        data: List[Dict],
-        **kwargs: Any,
+            query: NasdaqEconomicCalendarQueryParams,
+            data: List[Dict],
+            **kwargs: Any,
     ) -> List[NasdaqEconomicCalendarData]:
         """Return the transformed data."""
         return [NasdaqEconomicCalendarData.model_validate(d) for d in data]
