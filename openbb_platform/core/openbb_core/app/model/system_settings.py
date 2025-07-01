@@ -43,8 +43,7 @@ class SystemSettings(Tagged):
     logging_rolling_clock: bool = False
     logging_verbosity: int = 20
     logging_sub_app: Literal["python", "api", "pro", "cli"] = "python"
-    logging_suppress: bool = False
-    log_collect: bool = True
+    logging_suppress: bool = True
 
     # API section
     api_settings: APISettings = Field(default_factory=APISettings)
