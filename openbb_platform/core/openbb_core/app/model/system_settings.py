@@ -52,8 +52,6 @@ class SystemSettings(Tagged):
     # Python section
     python_settings: PythonSettings = Field(default_factory=PythonSettings)
 
-
-
     # Others
     debug_mode: bool = False
     test_mode: bool = False
