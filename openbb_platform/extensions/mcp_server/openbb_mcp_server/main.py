@@ -230,7 +230,7 @@ def main():
         mcp = create_mcp_server(settings, app)
 
         if args.transport == "stdio":
-            mcp.run(transport=args.transport, host=args.host, port=args.port)
+            mcp.run(transport=args.transport)
 
         else:
             # Get CORS settings from system configuration
