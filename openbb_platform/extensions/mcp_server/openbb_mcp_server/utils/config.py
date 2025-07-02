@@ -58,29 +58,16 @@ def save_mcp_settings(settings: MCPSettings) -> None:
 
 def load_settings_from_env() -> Dict[str, Union[str, List[str], bool]]:
     """Load MCP settings from environment variables."""
-    env_settings: Dict[str, Union[str, List[str], bool]] = {}
-
-    # Map environment variables to settings
-    env_mapping = {
-        "OPENBB_MCP_NAME": "name",
-        "OPENBB_MCP_DESCRIPTION": "description",
-        "OPENBB_MCP_DEFAULT_TOOL_CATEGORIES": "default_tool_categories",
-        "OPENBB_MCP_ALLOWED_TOOL_CATEGORIES": "allowed_tool_categories",
-        "OPENBB_MCP_ENABLE_TOOL_DISCOVERY": "enable_tool_discovery",
-        "OPENBB_MCP_DESCRIBE_RESPONSES": "describe_responses",
+    env_vars = {
+        f.alias: os.environ[f.alias]
+        for f in MCPSettings.model_fields.values()
+        if f.alias and f.alias in os.environ
     }
+    if not env_vars:
+        return {}
 
-    for env_var, setting_key in env_mapping.items():
-        value = os.getenv(env_var)
-        if value is not None:
-            if setting_key in ["default_tool_categories", "allowed_tool_categories"]:
-                env_settings[setting_key] = [item.strip() for item in value.split(",")]
-            elif setting_key in ["enable_tool_discovery", "describe_responses"]:
-                env_settings[setting_key] = value.lower() in ("true", "1", "yes", "on")
-            else:
-                env_settings[setting_key] = value
-
-    return env_settings
+    env_settings = MCPSettings.model_validate(env_vars, from_attributes=False)
+    return env_settings.model_dump(exclude_unset=True)
 
 
 def load_mcp_settings_with_overrides(**overrides) -> MCPSettings:
