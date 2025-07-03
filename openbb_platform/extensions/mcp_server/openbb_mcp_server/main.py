@@ -243,6 +243,8 @@ def main():
                     allow_origins=cors_settings.allow_origins,
                     allow_methods=cors_settings.allow_methods,
                     allow_headers=cors_settings.allow_headers,
+                    allow_credentials=True,
+                    expose_headers=["Mcp-Session-Id"],
                 ),
             ]
 
@@ -250,7 +252,7 @@ def main():
             http_app = mcp.http_app(
                 middleware=cors_middleware,
                 transport=args.transport,
-                stateless_http=True,
+                stateless_http=False,
             )
 
             uvicorn.run(http_app, host=args.host, port=args.port)

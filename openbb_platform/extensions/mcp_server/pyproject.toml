@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-mcp-server"
-version = "0.0.1"
+version = "0.0.3"
 description = "OpenBB Platform MCP Server"
 authors = ["OpenBB <hello@openbb.co>"]
 license = "AGPL-3.0-only"
