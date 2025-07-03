@@ -1,6 +1,7 @@
 """Credentials model and its utilities."""
 
 import json
+import os
 import traceback
 import warnings
 from pathlib import Path
@@ -95,6 +96,7 @@ class CredentialsLoader:
     def load(self) -> BaseModel:
         """Load credentials from providers."""
         # We load providers first to give them priority choosing credential names
+        _ = Env()
         self.from_providers()
         self.from_obbject()
         path = Path(USER_SETTINGS_PATH)
@@ -105,6 +107,28 @@ class CredentialsLoader:
                 data = json.load(f)
                 if "credentials" in data:
                     additional = data["credentials"]
+
+        # Collect all keys from providers to match with environment variables
+        all_keys = [
+            key
+            for keys in ProviderInterface().credentials.values()
+            if keys
+            for key in keys
+        ]
+
+        for key in all_keys:
+            if key.upper() in os.environ:
+                value = os.environ[key.upper()]
+                if value:
+                    additional[key] = SecretStr(value)
+
+        # Collect all environment variables ending with API_KEY
+        environ_keys = [d for d in os.environ if d.endswith("API_KEY")]
+
+        for key in environ_keys:
+            value = os.environ[key]
+            if value:
+                additional[key.lower()] = SecretStr(value)
 
         model = create_model(
             "Credentials",
