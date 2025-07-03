@@ -698,23 +698,11 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         k = to_snake_case(key)
         column_def["field"] = k
         if k in [
+            "date",
             "symbol",
+            "name",
             "symbol_root",
             "series_id",
-            "date",
-            "published",
-            "fiscal_year",
-            "period_ending",
-            "period_beginning",
-            "order",
-            "name",
-            "title",
-            "cusip",
-            "isin",
-            "expiration",
-            "dte",
-            "strike",
-            "option_type",
         ]:
             column_def["pinned"] = "left"
 
@@ -741,13 +729,24 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             column_def["renderFn"] = "greenRed"
             column_def["cellDataType"] = "number"
 
-        if k in ["cik", "isin", "figi", "cusip", "sedol", "symbol"]:
+        if k in [
+            "cik",
+            "isin",
+            "figi",
+            "cusip",
+            "sedol",
+            "symbol",
+            "children",
+            "element_id",
+            "parent_id",
+        ]:
             column_def["cellDataType"] = "text"
-            column_def["headerName"] = (
-                column_def["headerName"].upper() if k != "symbol" else "Symbol"
-            )
+            column_def["formatterFn"] = "none"
+            column_def["renderFn"] = None
+            if k not in ["symbol", "children", "element_id", "parent_id"]:
+                column_def["headerName"] = column_def["headerName"].upper()
 
-        if k in ["fiscal_year", "year", "year_born"]:
+        if k in ["fiscal_year", "year", "year_born", "calendar_year"]:
             column_def["cellDataType"] = "number"
             column_def["formatterFn"] = "none"
 
@@ -947,11 +946,11 @@ def post_query_schema_for_widget(
         if isinstance(param_ref, dict) and "type" in param_ref:
             param_ref = param_ref["type"]
 
-        if param_ref:
+        if param_ref and isinstance(param_ref, str):
             # Extract the schema name from the reference
             schema_name = param_ref.split("/")[-1]
             schema = openapi_json["components"]["schemas"].get(schema_name, schema_name)
-            props = schema.get("properties", {})
+            props = {} if isinstance(schema, str) else schema.get("properties", {})
 
             for k, v in props.items():
                 if target_schema and target_schema != k:
