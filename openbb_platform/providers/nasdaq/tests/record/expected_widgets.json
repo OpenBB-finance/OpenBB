@@ -355,8 +355,7 @@
                         "headerTooltip": "The market cap (USD) of the reporting entity.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -462,8 +461,7 @@
                         "headerTooltip": "The indicated annualized dividend amount.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -611,8 +609,7 @@
                         "headerTooltip": "The status of the deal.",
                         "cellDataType": "text"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -800,8 +797,7 @@
                         "headerTooltip": "Revised previous value, if applicable.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
