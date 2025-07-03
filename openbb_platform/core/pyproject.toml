@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "openbb_core" }]
 
 [tool.poetry.dependencies]
-python = ">=3.9.21,<3.13"
+python = ">=3.9.21,<3.14"
 uvicorn = "^0.34.2"
 websockets = "^15.0"
 pandas = ">=1.5.3"
