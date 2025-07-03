@@ -205,6 +205,7 @@ class OmniWidgetResponseModel(Data):
         """Validate the Omni widget content."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
+        import re
         import pandas as pd
 
         content = getattr(values, "content", None)
@@ -262,20 +263,17 @@ class OmniWidgetResponseModel(Data):
                     "Failed to convert dictionary of lists to list of records"
                 ) from e
             values.content = content
-        elif (  # pylint: disable=R0916
-            isinstance(content, str)
-            and content.strip()
-            and (
-                content.strip()[0] == "["
-                and content.strip()[-1] == "]"
-                or content.strip()[0] == "{"
-                and content.strip()[-1] == "}"
-            )
-        ):
+        elif isinstance(content, str) and content.strip():  # pylint: disable=R0916
             try:
                 content = json.loads(content)
-            except json.JSONDecodeError as e:
-                raise ValueError("JSON content could not be read.") from e
+            except json.JSONDecodeError:
+                # Remove trailing commas in objects and arrays
+                try:
+                    cleaned_content = re.sub(r",(\s*[}\]])", r"\1", content)
+                    content = json.loads(cleaned_content)
+                except json.JSONDecodeError:
+                    pass
+
             values.parse_as = "table" if isinstance(content, (list, dict)) else "text"
             values.content = content
         else:

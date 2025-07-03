@@ -167,8 +167,7 @@
                         "headerTooltip": "Survey title.",
                         "cellDataType": "text"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -327,8 +326,7 @@
                         "cellDataType": "number",
                         "renderFn": "greenRed"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -535,8 +533,7 @@
                         "headerTooltip": "Non-Labor Costs Index.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -786,8 +783,7 @@
                         "cellDataType": "number",
                         "renderFn": "greenRed"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -976,8 +972,7 @@
                         "headerTooltip": "The indentation level of the element.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -1313,8 +1308,7 @@
                         "headerTooltip": "CPI index value or period change.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -1720,8 +1714,7 @@
                         "headerTooltip": "Current Account Debits Total Secondary Income (USD)",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -2002,8 +1995,7 @@
                         "headerTooltip": "The series group ID of the series. This value is used to query for regional data.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -2218,8 +2210,7 @@
                         "headerTooltip": "The date of the data.",
                         "cellDataType": "date"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -2443,8 +2434,7 @@
                         "headerTooltip": "The date of the data.",
                         "cellDataType": "date"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -2587,8 +2577,7 @@
                         "headerTooltip": "The reported value of the series.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -2911,8 +2900,7 @@
                         "headerTooltip": "The individual series ID for the region.",
                         "cellDataType": "text"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -3116,8 +3104,7 @@
                         "headerTooltip": "Price, or change in price, per unit.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -3277,8 +3264,7 @@
                         "headerTooltip": "The line number of the series in the table.",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -3337,8 +3323,7 @@
                         "cellDataType": "text",
                         "renderFn": null
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -3403,8 +3388,7 @@
                         "headerTooltip": "Central Index Key (CIK)",
                         "cellDataType": "number"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -3471,8 +3455,7 @@
                         "headerTooltip": "Dictionary of URLs to SEC Schema Files",
                         "cellDataType": "text"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -3532,8 +3515,7 @@
                         "cellDataType": "text",
                         "renderFn": null
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -3602,8 +3584,7 @@
                         "headerTooltip": "URL to the release.",
                         "cellDataType": "text"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -3675,8 +3656,7 @@
                         "headerTooltip": "Reporting office within the Corporate Finance Office",
                         "cellDataType": "text"
                     }
-                ],
-                "enableAdvanced": true
+                ]
             }
         },
         "source": [
@@ -3791,8 +3771,7 @@
         "data": {
             "dataKey": "",
             "table": {
-                "showAll": true,
-                "enableAdvanced": true
+                "showAll": true
             }
         },
         "source": [

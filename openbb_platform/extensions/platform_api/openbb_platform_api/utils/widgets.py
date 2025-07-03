@@ -609,9 +609,9 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     widget_config,
                     widget_config_dict,
                 )
-
-            if widget_config.get("type") == "table":
-                widget_config["data"]["table"]["enableAdvanced"] = True
+            # TODO: uncomment when charting is implemented for advanced tables.
+            # if widget_config.get("type") == "table":
+            #    widget_config["data"]["table"]["enableAdvanced"] = True
 
             if widget_config.get("type") == "metric":
                 widget_config["gridData"]["w"] = (
