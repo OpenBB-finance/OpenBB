@@ -94,6 +94,8 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
     )
 
     modified_query_schema: list = []
+    if not query_schema:
+        return modified_query_schema
     for item in query_schema:
         # copy the item
         _item = deepcopy(item)
@@ -216,6 +218,17 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
                 ["paramName", "value"],
             )
 
+        if (
+            _item.get("multiSelect") is True
+            and _item.get("type") == "text"
+            and not _item.get("options")
+            and "semicolon" not in _item.get("description", "")
+        ):
+            _item["multiple"] = True
+            _item["style"] = (
+                _item.get("style", {}) if _item.get("style") else {"popupWidth": 400}
+            )
+
         modified_query_schema.append(_item)
 
     if provider_value != "custom":
@@ -226,7 +239,7 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
     return modified_query_schema
 
 
-def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-locals
+def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-locals, too-many-statements
     openapi: dict, widget_exclude_filter: list
 ):
     """Build the widgets.json file."""
@@ -242,6 +255,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
         return {}
 
     starred_list: list = []
+
     for item in widget_exclude_filter.copy():
         if "*" in item:
             starred_list.append(item)
@@ -251,13 +265,16 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
     routes = [
         p
         for p in openapi["paths"]
-        if openapi["paths"].get(p, {}) and "get" in openapi["paths"][p]
+        if openapi["paths"].get(p, {})
+        and ("get" in openapi["paths"][p] or "post" in openapi["paths"][p])
     ]
     for route in routes:
         has_form_endpoint = False
         form_route: dict = {}
         if "post" in openapi["paths"][route] and "get" in openapi["paths"][route]:
             has_form_endpoint = True
+            form_route = openapi["paths"][route]["post"]
+        elif "post" in openapi["paths"][route]:
             form_route = openapi["paths"][route]["post"]
 
         skip = False
@@ -276,6 +293,9 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             continue
 
         route_api = openapi["paths"][route]
+        route_method = (
+            "post" if "post" in route_api and not has_form_endpoint else "get"
+        )
         widget_id = (
             (
                 route[1:].replace("/", "_")
@@ -289,16 +309,26 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
         if widget_id in widget_exclude_filter:
             continue
 
-        widget_config_dict = route_api.get("get", {}).get("widget_config", {})
+        widget_config_dict = route_api.get(route_method, {}).get("widget_config", {})
 
         # If the widget is marked as excluded, skip it.
         if widget_config_dict.get("exclude") is True:
             continue
 
         # Prepare the query schema of the widget
-        query_schema, has_chart = get_query_schema_for_widget(openapi, route)
+        if route_method == "get":
+            query_schema, has_chart = get_query_schema_for_widget(openapi, route)
+        else:
+            query_schema = (
+                post_query_schema_for_widget(
+                    openapi, route_api.get("post", {}).get("operationId", ""), route
+                )
+                or []
+            )
+            has_chart = False
+
         response_schema = (
-            route_api.get("get", {})
+            route_api.get(route_method, {})
             .get("responses", {})
             .get("200", {})
             .get("content", {})
@@ -319,7 +349,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             columns_defs = (
                 data_schema_to_columns_defs(openapi, widget_id, provider, route)
                 if widget_config_dict.get("type")
-                not in ["multi_file_viewer", "pdf", "metric"]
+                not in ["multi_file_viewer", "pdf", "metric", "omni"]
                 else []
             )
             _cats = [
@@ -351,33 +381,34 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             )
             modified_query_schema = modify_query_schema(query_schema, provider)
 
-            if has_form_endpoint:
-                param_names: list = []
-                var_schema: dict = {}
-                if (
-                    _schema := route_api.get("post", {})
-                    .get("requestBody", {})
-                    .get("content", {})
-                    .get("application/json", {})
-                    .get("schema", {})
-                ):
-                    schema_name = _schema.get("$ref", "").split("/")[-1]
-                    var_schema = openapi["components"]["schemas"].get(schema_name, {})
+            param_names: list = []
+            var_schema: dict = {}
+            if (
+                _schema := route_api.get("post", {})
+                .get("requestBody", {})
+                .get("content", {})
+                .get("application/json", {})
+                .get("schema", {})
+            ):
+                schema_name = _schema.get("$ref", "").split("/")[-1]
+                var_schema = openapi["components"]["schemas"].get(schema_name, {})
 
-                    if var_schema:
-                        var_props = var_schema.get("properties", {})
-                        for k, v in var_props.items():
-                            if "$ref" in v:
-                                param_names.append(k)
+                if var_schema:
+                    var_props = var_schema.get("properties", {})
+                    for k, v in var_props.items():
+                        if "$ref" in v:
+                            param_names.append(k)
 
-                if param_names:
-                    for _param in param_names:
-                        post_params = post_query_schema_for_widget(
-                            openapi, form_route.get("operationId"), route, _param
-                        )
-                        modified_post_params = modify_query_schema(
-                            post_params, provider  # type: ignore
-                        )
+            if param_names:
+                for _param in param_names:
+                    post_params = post_query_schema_for_widget(
+                        openapi, form_route.get("operationId"), route, _param
+                    )
+                    modified_post_params = modify_query_schema(
+                        post_params, provider  # type: ignore
+                    )
+
+                    if has_form_endpoint:
                         form_params = {
                             "type": "form",
                             "paramName": _param,
@@ -398,11 +429,16 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                             )
 
                         modified_query_schema.append(form_params)
-                else:
-                    post_params = post_query_schema_for_widget(
-                        openapi, form_route.get("operationId"), route
-                    )
-                    modified_post_params = modify_query_schema(post_params, provider)  # type: ignore
+                    else:
+                        # For non-form endpoints, extend with the modified params directly
+                        modified_query_schema.extend(modified_post_params)
+            else:
+                post_params = post_query_schema_for_widget(
+                    openapi, form_route.get("operationId"), route
+                )
+                modified_post_params = modify_query_schema(post_params, provider)  # type: ignore
+
+                if has_form_endpoint:
                     form_params = {
                         "type": "form",
                         "paramName": "",
@@ -416,14 +452,19 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                         "inputParams": modified_post_params,
                     }
 
+                    var_key: dict = {}
                     # Widget Config at the model level goes first.
                     if post_config := var_schema.get("x-widget_config", {}):
+                        for key, value in post_config.copy().items():
+                            if key.startswith("$."):
+                                var_key[key] = value
+                            else:
+                                form_params[key] = value
+
                         form_params = deep_merge_configs(
                             form_params,
                             post_config,
                         )
-
-                    var_key: dict = {}
 
                     # Then the widget config at the POST endpoint level takes priority.
                     if post_config := form_route.get("widget_config", {}):
@@ -454,7 +495,9 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                                 )
                             else:
                                 widget_config_dict[key.replace("$.", "")] = value
-
+                    # For non-form endpoints, extend with the modified params directly
+                # else:
+                #    modified_query_schema.extend(modified_post_params)
             provider_map = {
                 "tmx": "TMX",
                 "ecb": "ECB",
@@ -484,17 +527,19 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                 and "/OBBject" in response_schema.get("$ref", "")
                 else ""
             )
-
             widget_type = (
-                "markdown"
-                if isinstance(response_schema, dict)
-                and response_schema.get("type") == "string"
-                else "table"
+                (
+                    "markdown"
+                    if isinstance(response_schema, dict)
+                    and response_schema.get("type") == "string"
+                    else "table"
+                )
+                if route_method == "get"
+                else "omni"
             )
-
             widget_config = {
-                "name": f"{name}" if name else route_api["get"].get("summary"),
-                "description": route_api["get"].get("description", ""),
+                "name": f"{name}" if name else route_api[route_method].get("summary"),
+                "description": route_api[route_method].get("description", ""),
                 "category": category.replace("_", " ").title(),
                 "type": widget_type,
                 "searchCategory": category.replace("_", " ").title(),
@@ -564,6 +609,9 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     widget_config,
                     widget_config_dict,
                 )
+            # TODO: uncomment when charting is implemented for advanced tables.
+            # if widget_config.get("type") == "table":
+            #    widget_config["data"]["table"]["enableAdvanced"] = True
 
             if widget_config.get("type") == "metric":
                 widget_config["gridData"]["w"] = (

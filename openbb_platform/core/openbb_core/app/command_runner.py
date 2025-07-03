@@ -296,9 +296,6 @@ class StaticCommandRunner:
         kwargs: Dict[str, Any],
     ) -> OBBject:
         """Execute a function and return the output."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.app.logs.logging_service import LoggingService
-
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
         raised_warnings: list = []
@@ -369,16 +366,21 @@ class StaticCommandRunner:
                             file=w.file,
                             line=w.line,
                         )
-            ls = LoggingService(system_settings, user_settings)
-            ls.log(
-                user_settings=user_settings,
-                system_settings=system_settings,
-                route=route,
-                func=func,
-                kwargs=kwargs,
-                exec_info=exc_info(),
-                custom_headers=custom_headers,
-            )
+
+            if system_settings.logging_suppress is False:
+                # pylint: disable=import-outside-toplevel
+                from openbb_core.app.logs.logging_service import LoggingService
+
+                ls = LoggingService(system_settings, user_settings)
+                ls.log(
+                    user_settings=user_settings,
+                    system_settings=system_settings,
+                    route=route,
+                    func=func,
+                    kwargs=kwargs,
+                    exec_info=exc_info(),
+                    custom_headers=custom_headers,
+                )
 
         return obbject
 

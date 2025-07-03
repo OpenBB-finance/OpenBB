@@ -56,7 +56,7 @@ class MockExecutionContext:
 @pytest.fixture()
 def execution_context():
     """Set up execution context."""
-    sys = SystemSettings()
+    sys = SystemSettings(logging_suppress=False)
     user = UserSettings()
     cmd_map = CommandMap()
     return MockExecutionContext(cmd_map, "mock/route", sys, user)
@@ -76,7 +76,7 @@ def mock_func():
 
 def test_execution_context():
     """Test execution context."""
-    sys = SystemSettings()
+    sys = SystemSettings(logging_suppress=False)
     user = UserSettings()
     cmd_map = CommandMap()
     ctx = ExecutionContext(cmd_map, "mock/route", sys, user)
@@ -178,7 +178,7 @@ def test_parameters_builder_merge_args_and_kwargs(
     [
         (
             {"cc": "existing_cc"},
-            SystemSettings(),
+            SystemSettings(logging_suppress=False),
             UserSettings(),
             {"cc": "mock_cc"},
         ),
@@ -288,7 +288,7 @@ def test_command_runner():
 
 def test_command_runner_properties():
     """Test properties."""
-    sys = SystemSettings()
+    sys = SystemSettings(logging_suppress=False)
     user = UserSettings()
     cmd_map = CommandMap()
     runner = CommandRunner(cmd_map, sys, user)

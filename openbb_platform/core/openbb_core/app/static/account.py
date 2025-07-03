@@ -53,18 +53,19 @@ class Account:  # noqa: D205, D400
             finally:
                 user_settings = self._base_app._command_runner.user_settings
                 system_settings = self._base_app._command_runner.system_settings
-                ls = LoggingService(
-                    user_settings=user_settings, system_settings=system_settings
-                )
-                ls.log(
-                    user_settings=user_settings,
-                    system_settings=system_settings,
-                    # pylint: disable=E1101
-                    route=f"/account/{func.__name__}",  # type: ignore[attr-defined]
-                    func=func,  # type: ignore[arg-type]
-                    kwargs={},  # don't want any credentials being logged by accident
-                    exec_info=exc_info(),
-                )
+                if system_settings.logging_suppress is False:
+                    ls = LoggingService(
+                        user_settings=user_settings, system_settings=system_settings
+                    )
+                    ls.log(
+                        user_settings=user_settings,
+                        system_settings=system_settings,
+                        # pylint: disable=E1101
+                        route=f"/account/{func.__name__}",  # type: ignore[attr-defined]
+                        func=func,  # type: ignore[arg-type]
+                        kwargs={},  # don't want any credentials being logged by accident
+                        exec_info=exc_info(),
+                    )
 
             return result
 
@@ -92,6 +93,7 @@ class Account:  # noqa: D205, D400
             hs.connect(email, password, pat)
         return hs
 
+    # pylint: disable=R0917
     @_log_account_command  # type: ignore
     def login(
         self,

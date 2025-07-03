@@ -16,21 +16,22 @@ from pydantic import BaseModel
 class MockSystemSettings:
     """Mock system settings."""
 
+    logging_suppress: bool = False
+
     def __init__(self):
         """Initialize the mock system settings."""
-        self.logging_suppress = False
-        self.log_collect = True
+        self.custom_attribute = ""
 
 
 class MockLoggingSettings:
     """Mock logging settings."""
 
+    logging_suppress: bool = False
+
     def __init__(self, system_settings, user_settings):
         """Initialize the mock logging settings."""
         self.system_settings = system_settings
         self.user_settings = user_settings
-        self.logging_suppress = False
-        self.log_collect = True
 
 
 class MockOBBject(BaseModel):
@@ -63,6 +64,8 @@ def logging_service():
             user_settings=mock_user_settings,
         )
         _logging_service._logger = MagicMock()
+        _logging_service._setup_handlers = MagicMock()
+        _logging_service._handlers_manager = MagicMock()
 
         return _logging_service
 
@@ -94,8 +97,10 @@ def test_correctly_initialized():
 
 def test_logging_settings_setter(logging_service):
     """Test the logging_settings setter."""
-    custom_user_settings = "custom_user_settings"
-    custom_system_settings = "custom_system_settings"
+    custom_user_settings = Mock()
+    custom_user_settings.preferences = "custom_preferences"
+    custom_system_settings = MockSystemSettings()
+    custom_system_settings.custom_attribute = "custom_system_settings"
 
     with patch(
         "openbb_core.app.logs.logging_service.LoggingSettings",
@@ -106,8 +111,8 @@ def test_logging_settings_setter(logging_service):
             custom_user_settings,
         )
 
-    assert logging_service.logging_settings.system_settings == "custom_system_settings"  # type: ignore[attr-defined]
-    assert logging_service.logging_settings.user_settings == "custom_user_settings"  # type: ignore[attr-defined]
+    assert logging_service.logging_settings.system_settings.custom_attribute == "custom_system_settings"  # type: ignore[attr-defined]
+    assert logging_service.logging_settings.user_settings.preferences == "custom_preferences"  # type: ignore[attr-defined]
 
 
 def test_log_startup(logging_service):
