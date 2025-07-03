@@ -285,7 +285,7 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Click on a ticker in the column to change the SEC documents viewer.",
                         "cellDataType": "text",
@@ -435,7 +435,7 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Click on a ticker in the column to update the historical dividends.",
                         "cellDataType": "text",
@@ -682,10 +682,11 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "ipo_date",
