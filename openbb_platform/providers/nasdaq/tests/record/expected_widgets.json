@@ -344,8 +344,7 @@
                         "field": "period_ending",
                         "formatterFn": null,
                         "headerName": "Period Ending",
-                        "headerTooltip": "The fiscal period end date.",
-                        "pinned": "left"
+                        "headerTooltip": "The fiscal period end date."
                     },
                     {
                         "field": "previous_report_date",
