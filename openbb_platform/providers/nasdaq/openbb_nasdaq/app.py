@@ -308,6 +308,7 @@ def main():
                 "gridData": {"w": 40, "h": 20},
                 "data": {
                     "table": {
+                        "enableAdvanced": True,
                         "columnsDefs": [
                             {
                                 "field": "surprise_percent",
@@ -324,7 +325,7 @@ def main():
                                     "groupByParamName": "symbol",
                                 },
                             },
-                        ]
+                        ],
                     }
                 },
             },
@@ -383,6 +384,7 @@ def main():
                 "gridData": {"w": 40, "h": 20},
                 "data": {
                     "table": {
+                        "enableAdvanced": True,
                         "columnsDefs": [
                             {
                                 "field": "symbol",
@@ -393,7 +395,7 @@ def main():
                                     "groupByParamName": "symbol2",
                                 },
                             },
-                        ]
+                        ],
                     }
                 },
             }
@@ -464,12 +466,13 @@ def main():
                 ],
             }
         },
+        response_model=list[NasdaqHistoricalDividendsFetcher.data_type],
     )
     async def historical_dividends(
         symbol2: str,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
-    ) -> list[NasdaqHistoricalDividendsFetcher.data_type]:
+    ):
         """Get historical dividends for a given symbol."""
         fetcher = NasdaqHistoricalDividendsFetcher()
 
@@ -494,6 +497,14 @@ def main():
                 "widgetId": "nasdaq_ipo_calendar",
                 "refetchInterval": False,
                 "params": [
+                    {
+                        "paramName": "symbol3",
+                        "show": False,
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
                     {
                         "label": "Start Date",
                         "description": "Start date of the data, in YYYY-MM-DD format.",
@@ -538,6 +549,22 @@ def main():
                     },
                 ],
                 "gridData": {"w": 40, "h": 20},
+                "data": {
+                    "table": {
+                        "enableAdvanced": True,
+                        "columnsDefs": [
+                            {
+                                "field": "symbol",
+                                "headerTooltip": "Click on a ticker in the column to update the historical dividends.",
+                                "renderFn": "cellOnClick",
+                                "renderFnParams": {
+                                    "actionType": "groupBy",
+                                    "groupByParamName": "symbol3",
+                                },
+                            },
+                        ],
+                    }
+                },
             }
         },
     )
@@ -557,10 +584,8 @@ def main():
 
     @app.get(
         "/economic_calendar",
-        include_in_schema=False,
         openapi_extra={
             "widget_config": {
-                "exclude": True,  # Exclude this widget temporarily while the source is not working.
                 "name": "Economic Calendar",
                 "description": "Upcoming, and historical, macroeconomic events.",
                 "category": "Economy",
@@ -600,6 +625,7 @@ def main():
                 "data": {
                     "table": {
                         "showAll": False,
+                        "enableAdvanced": True,
                         "columnsDefs": [
                             {
                                 "field": "date",
@@ -845,7 +871,7 @@ def main():
                             "x": 0,
                             "y": 2,
                             "w": 40,
-                            "h": 21,
+                            "h": 15,
                             "state": {
                                 "chartView": {"enabled": False, "chartType": "line"},
                                 "columnState": {
@@ -874,6 +900,47 @@ def main():
                                     }
                                 },
                             },
+                        },
+                        {
+                            "i": "nasdaq_company_filings",
+                            "x": 0,
+                            "y": 16,
+                            "w": 40,
+                            "h": 30,
+                            "state": {
+                                "params": {
+                                    "form_group": "registration",
+                                }
+                            },
+                        },
+                    ],
+                },
+                "economic-calendar": {
+                    "id": "economic-calendar",
+                    "name": "Economic Calendar",
+                    "layout": [
+                        {
+                            "i": "nasdaq_economic_calendar",
+                            "x": 0,
+                            "y": 2,
+                            "w": 40,
+                            "h": 20,
+                            "state": {
+                                "chartView": {"enabled": False, "chartType": "line"},
+                                "columnState": {
+                                    "default": {
+                                        "sort": {
+                                            "sortModel": [
+                                                {"colId": "date", "sort": "desc"}
+                                            ]
+                                        },
+                                        "columnPinning": {
+                                            "leftColIds": ["date"],
+                                            "rightColIds": [],
+                                        },
+                                    }
+                                },
+                            },
                         }
                     ],
                 },
@@ -898,6 +965,13 @@ def main():
                         "nasdaq_dividends_calendar",
                         "nasdaq_historical_dividends",
                     ],
+                },
+                {
+                    "name": "Group 3",
+                    "type": "endpointParam",
+                    "paramName": "document_url",
+                    "defaultValue": "AAPL",
+                    "widgetIds": ["nasdaq_ipo_calendar", "nasdaq_company_filings"],
                 },
             ],
         }
