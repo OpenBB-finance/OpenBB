@@ -5,7 +5,6 @@ import re
 import sys
 from typing import Annotated
 
-import uvicorn
 from fastapi import FastAPI
 from fastmcp import FastMCP
 from fastmcp.server.openapi import (
@@ -248,14 +247,12 @@ def main():
                 ),
             ]
 
-            # Create ASGI app with cors middleware
-            http_app = mcp.http_app(
-                middleware=cors_middleware,
+            mcp.run(
                 transport=args.transport,
-                stateless_http=False,
+                host=args.host,
+                port=args.port,
+                middleware=cors_middleware,
             )
-
-            uvicorn.run(http_app, host=args.host, port=args.port)
 
     except Exception as e:
         logger.error("Failed to start MCP server: %s", e)
