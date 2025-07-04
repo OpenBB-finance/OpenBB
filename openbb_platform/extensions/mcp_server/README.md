@@ -2,22 +2,26 @@
 
 Model Context Protocol (MCP) server extension for OpenBB Platform. This extension enables LLM agents to interact with OpenBB Platform's REST API endpoints through the MCP protocol.
 
-The server provides management tools that allow agents to explore different options and dynamically adjust their active toolset. This prevents agents from being overwhelmed with too many tools while allowing them to discover and activate only the tools they need for specific tasks.
+In addition, the server provides discovery tools that allow agents to explore different options and dynamically adjust their active toolset. This prevents agents from being overwhelmed with too many tools while allowing them to discover and activate only the tools they need for specific tasks.
 
 Using these dynamic tool discovery, has one major drawback, it makes the server a single-user server. The tool updates are global, so if one user updates a tool, it will be updated for all users. If you plan to server multiple users, you should disable tool discovery, and instead use the `allowed_tool_categories` and `default_tool_categories` settings to control the tools that are available to the users.
 
-## Installation
+## Installation & Usage
 
 ```bash
 pip install openbb-mcp-server
 ```
 
-## Usage
-
 Start the OpenBB MCP server with default settings:
 
 ```bash
 openbb-mcp
+```
+
+Or use the `uvx` command:
+
+```bash
+uvx --from openbb-mcp-server --with openbb openbb-mcp
 ```
 
 ### Command Line Options
@@ -45,9 +49,68 @@ openbb-mcp --allowed-categories equity,crypto,news
 openbb-mcp --no-tool-discovery
 ```
 
+#### Claude Desktop:
+
+To connect the OpenBB MCP server with Claude Desktop, you need to configure it as a custom tool server. Here are the steps:
+
+1.  Locate the settings or configuration file for Claude Desktop where you can define custom MCP servers.
+2.  Add the following entry to your `mcpServers` configuration. This will configure Claude Desktop to launch the OpenBB MCP server automatically using `stdio` for communication.
+
+```json
+{
+  "mcpServers": {
+    "openbb-mcp": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "openbb-mcp-server",
+        "--with",
+        "openbb",
+        "openbb-mcp",
+        "--transport",
+        "stdio"
+      ]
+    }
+  }
+}
+```
+
+3.  Ensure that `uvx`, is installed and available in your system's PATH. If not, follow the installation instructions.
+4.  Restart Claude Desktop to apply the changes. You should now see "openbb-mcp" as an available tool source.
+
+#### Cursor:
+
+To use OpenBB tools within Cursor, you first need to run the MCP server and then tell Cursor how to connect to it.
+
+**Step 1: Run the OpenBB MCP Server**
+
+Open your terminal and start the server. You can use the default settings or customize it.
+
+For a default setup, run:
+```bash
+openbb-mcp
+```
+The server will start on `http://127.0.0.1:8001`.
+
+**Step 2: Configure Cursor**
+
+Add the following configuration to the `mcpServers` object in your `mcp.json` file. If the `mcpServers` object doesn't exist, you can add it.
+
+```json
+{
+  "mcpServers": {
+    "openbb-mcp": {
+      "url": "http://localhost:8001/mcp/"
+    }
+  }
+}
+```
+
 ## Configuration
 
 The server can be configured through multiple methods:
+
+> **Note:** For some data providers you need to set your API key in the `~/.openbb_platform/user_settings.json` file.
 
 ### 1. Configuration File (Recommended)
 
@@ -60,7 +123,7 @@ The server automatically creates and uses `~/.openbb_platform/mcp_settings.json`
   "default_tool_categories": ["all"],
   "allowed_tool_categories": null,
   "enable_tool_discovery": true,
-  "describe_responses": true
+  "describe_responses": false
 }
 ```
 
@@ -88,7 +151,7 @@ Command line arguments override both configuration file and environment variable
 | default_tool_categories | list[string] | ["all"] | Categories enabled at startup. Use "all" to enable all categories, or specify individual categories |
 | allowed_tool_categories | list[string] | null | If set, restricts available categories to this list |
 | enable_tool_discovery | boolean | true | Enable discovery and management tools |
-| describe_responses | boolean | true | Include response information in tool descriptions |
+| describe_responses | boolean | false | Include response information in tool descriptions |
 
 ## Tool Categories
 
@@ -110,7 +173,7 @@ Each category contains subcategories that group related functionality (e.g., `eq
 
 ## Tool Discovery
 
-When `enable_tool_discovery` is enabled (default), the server provides management tools that allow agents to:
+When `enable_tool_discovery` is enabled (default), the server provides discovery tools that allow agents to:
 
 - Discover available tool categories and subcategories
 - See tool counts and descriptions before activating
