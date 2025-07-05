@@ -4,7 +4,6 @@ import base64
 
 import pytest
 import requests
-from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -21,7 +20,7 @@ def headers():
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -69,23 +68,21 @@ def test_derivatives_options_chains(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "symbol": "AAPL",
-                "provider": "intrinio",
-                "start_date": "2023-11-20",
-                "end_date": None,
-                "min_value": None,
-                "max_value": None,
-                "trade_type": None,
-                "sentiment": "neutral",
-                "limit": 1000,
-                "source": "delayed",
-            }
-        )
+        {
+            "symbol": "AAPL",
+            "provider": "intrinio",
+            "start_date": "2023-11-20",
+            "end_date": None,
+            "min_value": None,
+            "max_value": None,
+            "trade_type": None,
+            "sentiment": "neutral",
+            "limit": 1000,
+            "source": "delayed",
+        }
     ],
 )
 @pytest.mark.integration
@@ -100,7 +97,7 @@ def test_derivatives_options_unusual(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -136,7 +133,7 @@ def test_derivatives_futures_historical(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -168,7 +165,7 @@ def test_derivatives_futures_curve(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "intrinio", "date": None, "only_traded": True}),
@@ -188,7 +185,7 @@ def test_derivatives_options_snapshots(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "deribit"}),
@@ -206,7 +203,7 @@ def test_derivatives_futures_instruments(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "deribit", "symbol": "ETH-PERPETUAL"}),

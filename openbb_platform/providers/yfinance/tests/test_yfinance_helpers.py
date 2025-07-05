@@ -2,8 +2,7 @@
 
 import pandas as pd
 import pytest
-
-from providers.yfinance.openbb_yfinance.utils.helpers import (
+from openbb_yfinance.utils.helpers import (
     df_transform_numbers,
     get_futures_data,
 )
@@ -33,4 +32,4 @@ def test_df_transform_numbers():
     )
     transformed = df_transform_numbers(data, ["Value", "% Change"])
     assert transformed["Value"].equals(pd.Series([1e6, 2.5e9, 3e12]))
-    assert transformed["% Change"].equals(pd.Series([1/100, -2/100, 3.5/100]))
+    assert transformed["% Change"].equals(pd.Series([1 / 100, -2 / 100, 3.5 / 100]))

@@ -2,7 +2,7 @@
 
 import pandas as pd
 import pytest
-from obbject_extensions.charting.openbb_charting.core.plotly_ta.ta_helpers import (
+from openbb_charting.core.plotly_ta.ta_helpers import (
     check_columns,
 )
 

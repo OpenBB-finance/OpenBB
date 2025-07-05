@@ -4,7 +4,6 @@ import base64
 
 import pytest
 import requests
-from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -21,7 +20,7 @@ def headers():
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -56,7 +55,7 @@ def test_currency_search(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -149,9 +148,9 @@ def test_currency_price_historical(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
-    [({"provider": "ecb"})],
+    [{"provider": "ecb"}],
 )
 @pytest.mark.integration
 def test_currency_reference_rates(params, headers):
@@ -165,7 +164,7 @@ def test_currency_reference_rates(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (

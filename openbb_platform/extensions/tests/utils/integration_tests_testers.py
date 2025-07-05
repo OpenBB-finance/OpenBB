@@ -18,7 +18,7 @@ from typing import (
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 
-from extensions.tests.utils.integration_tests_generator import (
+from .integration_tests_generator import (
     find_extensions,
     get_test_params_data_processing,
 )
@@ -77,6 +77,8 @@ def check_missing_providers(
     missing_providers: List[str] = []
     providers = list(command_params.keys())
     providers.remove("openbb")
+    if not providers:
+        return []
 
     for test_params in function_params:
         provider = test_params.get("provider", None)
@@ -92,7 +94,9 @@ def check_missing_providers(
         if len(providers) == 1 and len(function_params) == 1:
             pass
         else:
-            missing_providers.append(f"Missing providers for {function}: {providers}")
+            missing_providers.append(
+                f"Missing providers for {function}: {providers}  --? {function_params}"
+            )
 
     return missing_providers
 
@@ -241,7 +245,11 @@ def check_integration_tests(
                     model
                 ]
                 try:
-                    function_params = functions[function].pytestmark[1].args[1]
+                    function_params = (
+                        functions[function].pytestmark[1].args[1]
+                        if len(functions[function].pytestmark[1].args) > 1
+                        else []
+                    )
                 except IndexError:
                     # Another decorator is below the parametrize decorator
                     function_params = functions[function].pytestmark[2].args[1]
