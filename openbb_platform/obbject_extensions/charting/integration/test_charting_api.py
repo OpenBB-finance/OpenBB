@@ -5,7 +5,6 @@ import json
 
 import pytest
 import requests
-from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -46,7 +45,7 @@ def get_equity_data():
     return data["stocks_data"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -77,7 +76,7 @@ def test_charting_equity_price_historical(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -108,7 +107,7 @@ def test_charting_currency_price_historical(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -139,7 +138,7 @@ def test_charting_etf_historical(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -170,7 +169,7 @@ def test_charting_index_price_historical(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -201,7 +200,7 @@ def test_charting_crypto_price_historical(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -234,7 +233,7 @@ def test_charting_technical_adx(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [{"data": "", "index": "date", "length": "30", "scalar": "110", "chart": True}],
 )
@@ -258,7 +257,7 @@ def test_charting_technical_aroon(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -291,7 +290,7 @@ def test_charting_technical_ema(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -324,7 +323,7 @@ def test_charting_technical_hma(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -358,7 +357,7 @@ def test_charting_technical_macd(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -392,7 +391,7 @@ def test_charting_technical_rsi(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -425,7 +424,7 @@ def test_charting_technical_sma(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -458,7 +457,7 @@ def test_charting_technical_wma(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -491,7 +490,7 @@ def test_charting_technical_zlma(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -521,7 +520,7 @@ def test_charting_technical_cones(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -552,7 +551,7 @@ def test_charting_economy_fred_series(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -597,7 +596,7 @@ def test_charting_technical_relative_rotation(params):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -631,7 +630,7 @@ def test_charting_equity_price_performance(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -661,7 +660,7 @@ def test_charting_etf_price_performance(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -695,7 +694,7 @@ def test_charting_etf_holdings(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -734,7 +733,7 @@ def test_charting_fixedincome_government_yield_curve(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -765,7 +764,7 @@ def test_charting_derivatives_futures_historical(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -805,7 +804,7 @@ def test_charting_derivatives_futures_curve(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -836,7 +835,7 @@ def test_charting_equity_historical_market_cap(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -869,7 +868,7 @@ def test_charting_economy_survey_bls_series(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -908,7 +907,7 @@ def test_charting_econometrics_correlation_matrix(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -939,7 +938,7 @@ def test_charting_economy_shipping_port_info(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (

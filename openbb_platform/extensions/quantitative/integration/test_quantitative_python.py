@@ -4,7 +4,6 @@ import random
 from typing import Literal
 
 import pytest
-from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -62,7 +61,7 @@ def get_data(menu: Literal["equity", "crypto"]):
     return funcs[menu]()
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -80,7 +79,7 @@ def test_quantitative_normality(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -98,7 +97,7 @@ def test_quantitative_capm(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -132,7 +131,7 @@ def test_quantitative_performance_omega_ratio(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close", "window": "5", "index": "date"}, "equity"),
@@ -151,7 +150,7 @@ def test_quantitative_rolling_kurtosis(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -185,7 +184,7 @@ def test_quantitative_unitroot_test(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -221,7 +220,7 @@ def test_quantitative_performance_sharpe_ratio(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -259,7 +258,7 @@ def test_quantitative_performance_sortino_ratio(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close", "window": "220", "index": "date"}, "equity"),
@@ -277,7 +276,7 @@ def test_quantitative_rolling_skew(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -314,7 +313,7 @@ def test_quantitative_rolling_quantile(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -332,7 +331,7 @@ def test_quantitative_summary(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -367,7 +366,7 @@ def test_quantitative_rolling_stdev(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -402,7 +401,7 @@ def test_quantitative_rolling_mean(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -437,7 +436,7 @@ def test_quantitative_rolling_variance(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -455,7 +454,7 @@ def test_quantitative_stats_skew(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -473,7 +472,7 @@ def test_quantitative_stats_kurtosis(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -491,7 +490,7 @@ def test_quantitative_stats_variance(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -509,7 +508,7 @@ def test_quantitative_stats_stdev(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -527,7 +526,7 @@ def test_quantitative_stats_mean(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
