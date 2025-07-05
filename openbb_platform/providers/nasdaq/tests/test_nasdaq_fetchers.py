@@ -45,6 +45,7 @@ def test_nasdaq_equity_search_fetcher(credentials=test_credentials):
     assert result is None
 
 
+@pytest.mark.skip("This function is currently not working at the source.")
 @pytest.mark.record_http
 def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
     """Test the Nasdaq Economic Calendar fetcher."""
