@@ -46,4 +46,13 @@ def create_route_maps_from_settings(settings: MCPSettings) -> List[RouteMap]:
             )
         )
 
+    # Always exclude all POST requests (technical and quantitative endpoints)
+    route_maps.append(
+        RouteMap(
+            methods=["POST"],
+            pattern=r".*",
+            mcp_type=MCPType.EXCLUDE,
+        )
+    )
+
     return route_maps
