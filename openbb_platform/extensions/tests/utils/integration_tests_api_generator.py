@@ -5,12 +5,13 @@ import os
 from pathlib import Path
 from typing import Dict, List, Literal, Type, Union, get_type_hints
 
+import pytest
 import requests
 from openbb_charting import Charting
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 
-from extensions.tests.utils.integration_tests_generator import get_test_params
+from .integration_tests_generator import get_test_params
 
 
 def get_http_method(api_paths: Dict[str, dict], route: str):
@@ -36,7 +37,6 @@ import pytest
 import requests
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
-from extensions.tests.conftest import parametrize
 
 
 @pytest.fixture(scope="session")
@@ -81,7 +81,7 @@ def write_test_w_template(
     """
 
     template = f"""
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [{params_str}],
 )
@@ -103,6 +103,7 @@ def test_{test_name_extra}{route.replace("/", "_")[1:]}(params, headers):
         f.write(template)
 
 
+@pytest.fixture(scope="function")
 def test_exists(route: str, path: str):
     """Check if a test exists."""
     with open(path) as f:
