@@ -159,6 +159,7 @@ def download_file(dataset) -> str:
     # pylint: disable=import-outside-toplevel
     import zipfile
     from io import BytesIO
+
     from openbb_core.provider.utils.helpers import get_requests_session
 
     url_map = {item["label"]: item["value"] for item in DATASET_CHOICES}
@@ -183,12 +184,12 @@ def download_file(dataset) -> str:
     data = ""
 
     with zipfile.ZipFile(BytesIO(response.content)) as f:
-        with f.open(f.namelist()[0]) as file:
-            data = file.read()
+        with f.open(f.namelist()[0]) as file:  # type: ignore
+            data = file.read()  # type: ignore
         try:
-            data = data.decode("utf-8")
+            data = data.decode("utf-8")  # type: ignore
         except UnicodeDecodeError:
-            data = data.decode("latin-1")
+            data = data.decode("latin-1")  # type: ignore
 
     return data
 
@@ -250,14 +251,13 @@ def read_csv_file(data: str):
 
     # Extract initial table metadata from the last line of general description
     table_metadata: str = ""
-    if general_description:
-        if (
-            "Monthly" in general_description[-1]
-            or "Annual" in general_description[-1]
-            or "Returns" in general_description[-1]
-        ):
-            table_metadata = general_description[-1]
-            general_description = general_description[:-1]
+    if general_description and (
+        "Monthly" in general_description[-1]
+        or "Annual" in general_description[-1]
+        or "Returns" in general_description[-1]
+    ):
+        table_metadata = general_description[-1]
+        general_description = general_description[:-1]
 
     general_desc_text = "\n".join(general_description)
 
@@ -335,7 +335,7 @@ def process_csv_tables(tables, general_description="") -> tuple:
     Note: This function is not intended for direct use, it is called by `get_portfolio_data`.
     """
     # pylint: disable=import-outside-toplevel
-    import warnings
+    import warnings  # noqa
     from pandas import DataFrame
 
     dataframes: list = []
@@ -468,30 +468,30 @@ def read_dat_file(data: str) -> list:
         if i < len(lines):
             header_line = lines[i].strip()
             # Check if this is a "Firms" table with its specific format
-            if "Firms" in header_line.split():
+            if (
+                "Firms" in header_line.split()
+                or header_line
+                and not header_line[0].isdigit()
+            ):
                 current_table["headers"] = ["Date"] + header_line.split()
                 i += 1
-            elif header_line and not header_line[0].isdigit():  # Normal header line
-                current_table["headers"] = ["Date"] + header_line.split()
-                i += 1
-            else:  # This is already a data row - create default headers
-                if "Firms" in current_table["meta"]:
-                    # Default headers for Firms tables if header row is missing
-                    current_table["headers"] = [
-                        "Date",
-                        "Firms",
-                        "B/M",
-                        "E/P",
-                        "CE/P",
-                        "Yld",
-                    ]
-                else:
-                    # Skip this table - malformed
-                    while i < len(lines) and not (
-                        re.match(r"\s*,", lines[i]) or "Data" in lines[i]
-                    ):
-                        i += 1
-                    continue
+            elif "Firms" in current_table["meta"]:
+                # Default headers for Firms tables if header row is missing
+                current_table["headers"] = [
+                    "Date",
+                    "Firms",
+                    "B/M",
+                    "E/P",
+                    "CE/P",
+                    "Yld",
+                ]
+            else:
+                # Skip this table - malformed
+                while i < len(lines) and not (
+                    re.match(r"\s*,", lines[i]) or "Data" in lines[i]
+                ):
+                    i += 1
+                continue
 
         # Process rows until next separator or next table start
         row_count = 0
@@ -586,7 +586,7 @@ def process_international_portfolio_data(tables: list, dividends: bool = True) -
     Note: Not intended for direct use, this function is called by `get_international_portfolio`.
     """
     # pylint: disable=import-outside-toplevel
-    import re
+    import re  # noqa
     import warnings
     from pandas import DataFrame, MultiIndex
 
@@ -620,10 +620,11 @@ def process_international_portfolio_data(tables: list, dividends: bool = True) -
             df["Date"] = df["Date"].astype(str)
 
         # Set Date as index (or Date and Mkt if applicable)
-        if "Mkt" in df.columns and not has_firms_column:
-            df = df.set_index(["Date", "Mkt"])
-        else:
-            df = df.set_index("Date")
+        df = (
+            df.set_index(["Date", "Mkt"])
+            if "Mkt" in df.columns and not has_firms_column
+            else df.set_index("Date")
+        )
 
         # Create multi-index columns only for regular tables (not those with Firms)
         if not has_firms_column and spanner_groups and len(df.columns) > 0:
@@ -907,7 +908,7 @@ def get_breakpoint_data(
         A tuple containing a pandas DataFrames a metadata dictionary.
     """
     # pylint: disable=import-outside-toplevel
-    from io import StringIO
+    from io import StringIO  # noqa
     from pandas import offsets, read_csv, to_datetime
 
     col_names = [
