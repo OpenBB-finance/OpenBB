@@ -134,6 +134,8 @@ def test_famafrench_regional_portfolio_returns(params, headers):
                 "frequency": None,
                 "start_date": None,
                 "end_date": None,
+                "dividends": True,
+                "all_data_items_required": True,
             }
         ),
     ],
@@ -166,6 +168,8 @@ def test_famafrench_country_portfolio_returns(params, headers):
                 "frequency": "annual",
                 "start_date": None,
                 "end_date": None,
+                "dividends": True,
+                "all_data_items_required": True,
             }
         ),
     ],
@@ -196,6 +200,8 @@ def test_famafrench_international_index_returns(params, headers):
             {
                 "provider": "famafrench",
                 "breakpoint_type": "op",
+                "start_date": None,
+                "end_date": None,
             }
         ),
     ],
