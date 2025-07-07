@@ -4,6 +4,7 @@
 
 from datetime import date as dateType
 from typing import Any, Literal, Optional
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -11,8 +12,8 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, model_validator
-from openbb_famafrench.utils.constants import FACTOR_REGION_MAP, REGIONS_MAP
 
+from openbb_famafrench.utils.constants import FACTOR_REGION_MAP, REGIONS_MAP
 
 api_prefix = SystemService().system_settings.api_settings.prefix
 factors_dict = {

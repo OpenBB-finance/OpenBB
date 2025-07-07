@@ -1,15 +1,16 @@
-"""Fama-French utilites for handling US and International portfolios and factors."""
+"""Fama-French utilities for handling US and International portfolios and factors."""
 
 # pylint: disable=R0912,R0913,R0914,R0917,R1702,W0612,W0613
 
 from functools import lru_cache
 from typing import Optional
+
 from openbb_famafrench.utils.constants import (
     BASE_URL,
     BREAKPOINT_FILES,
-    DATASET_CHOICES,
     COUNTRY_PORTFOLIO_FILES,
     COUNTRY_PORTFOLIOS_URLS,
+    DATASET_CHOICES,
     FACTOR_REGION_MAP,
     INTERNATIONAL_INDEX_PORTFOLIO_FILES,
     INTERNATIONAL_INDEX_PORTFOLIOS_URLS,

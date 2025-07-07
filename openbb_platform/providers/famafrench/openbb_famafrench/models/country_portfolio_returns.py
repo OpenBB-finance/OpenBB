@@ -4,12 +4,14 @@
 
 from datetime import date as dateType
 from typing import Any, Literal, Optional
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field
+
 from openbb_famafrench.utils.constants import CountryPortfolios
 
 
@@ -208,7 +210,7 @@ class FamaFrenchCountryPortfolioReturnsFetcher(
     ) -> tuple:
         """Extract data from the Fama-French FTP."""
         # pylint: disable=import-outside-toplevel
-        from openbb_famafrench.utils.helpers import get_international_portfolio
+        from openbb_famafrench.utils.helpers import get_international_portfolio  # noqa
         from warnings import warn
 
         if query.measure == "ratios" and query.frequency != "annual":

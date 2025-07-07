@@ -2,6 +2,7 @@
 """Fama-French Router."""
 
 from typing import Annotated, Optional
+
 from fastapi import Query as FastAPIQuery
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx

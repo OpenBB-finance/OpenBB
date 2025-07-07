@@ -4,12 +4,14 @@
 
 from datetime import date as dateType
 from typing import Any, Literal, Optional, Union
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field
+
 from openbb_famafrench.utils.constants import RegionalPortfolios, portfolio_choices
 
 

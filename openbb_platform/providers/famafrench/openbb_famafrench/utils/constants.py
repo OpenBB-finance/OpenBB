@@ -4,7 +4,6 @@
 
 from typing import Literal
 
-
 BASE_URL = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
 
 DATASET_CHOICES = [
