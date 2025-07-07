@@ -4,7 +4,6 @@ import base64
 
 import pytest
 import requests
-from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -22,7 +21,7 @@ def headers():
 # pylint: disable=redefined-outer-name
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -103,7 +102,7 @@ def test_news_world(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (

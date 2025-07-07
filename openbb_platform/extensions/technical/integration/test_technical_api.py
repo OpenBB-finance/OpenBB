@@ -9,7 +9,6 @@ from typing import Literal
 
 import pytest
 import requests
-from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -71,7 +70,7 @@ def get_crypto_data():
     return data["crypto_data"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -111,7 +110,7 @@ def test_technical_atr(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -151,7 +150,7 @@ def test_technical_fib(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "offset": ""}, "equity"),
@@ -171,7 +170,7 @@ def test_technical_obv(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "length": "", "signal": ""}, "equity"),
@@ -191,7 +190,7 @@ def test_technical_fisher(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -229,7 +228,7 @@ def test_technical_adosc(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -271,7 +270,7 @@ def test_technical_bbands(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -309,7 +308,7 @@ def test_technical_zlma(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "length": "", "scalar": ""}, "equity"),
@@ -337,7 +336,7 @@ def test_technical_aroon(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -375,7 +374,7 @@ def test_technical_sma(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -415,7 +414,7 @@ def test_technical_demark(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "anchor": "", "offset": ""}, "equity"),
@@ -435,7 +434,7 @@ def test_technical_vwap(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -475,7 +474,7 @@ def test_technical_macd(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -513,7 +512,7 @@ def test_technical_hma(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -551,7 +550,7 @@ def test_technical_donchian(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -593,7 +592,7 @@ def test_technical_ichimoku(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "date", "target": "close", "period": "10"}, "equity"),
@@ -621,7 +620,7 @@ def test_technical_clenow(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "offset": ""}, "equity"),
@@ -641,7 +640,7 @@ def test_technical_ad(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -679,7 +678,7 @@ def test_technical_adx(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -717,7 +716,7 @@ def test_technical_wma(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "length": "", "scalar": ""}, "equity"),
@@ -745,7 +744,7 @@ def test_technical_cci(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -785,7 +784,7 @@ def test_technical_rsi(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -823,7 +822,7 @@ def test_technical_stoch(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -863,7 +862,7 @@ def test_technical_kc(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "length": ""}, "equity"),
@@ -883,7 +882,7 @@ def test_technical_cg(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -925,7 +924,7 @@ def test_technical_cones(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params, data_type",
     [
         (
@@ -963,7 +962,7 @@ def test_technical_ema(params, data_type):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
