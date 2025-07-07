@@ -150,7 +150,7 @@ async def get_factor_choices(
 
 @lru_cache(maxsize=64)
 def download_file(dataset) -> str:
-    """Downloads the specified dataset file from the Ken French data library.
+    """Download the specified dataset file from the Ken French data library.
 
     Note: This function is not intended for direct use, it is called by `get_portfolio_data`.
     """
@@ -194,7 +194,7 @@ def download_file(dataset) -> str:
 
 @lru_cache(maxsize=64)
 def download_international_portfolios(url):
-    """Downloads the international index portfolios file.
+    """Download the international index portfolios file.
 
     Note: This function is not intended for direct use,
     it is called by `get_international_portfolio`.

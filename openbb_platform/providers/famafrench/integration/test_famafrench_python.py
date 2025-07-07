@@ -67,7 +67,7 @@ def test_famafrench_factors(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_us_portfolio_returns(params, obb):
+def test_famafrench_us_portfolio_returns(params, obb):
     """Test the US portfolio returns endpoint."""
     params = {p: v for p, v in params.items() if v}
 
@@ -98,7 +98,7 @@ def test_us_portfolio_returns(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_regional_portfolio_returns(params, obb):
+def test_famafrench_regional_portfolio_returns(params, obb):
     """Test the regional portfolio returns endpoint."""
     params = {p: v for p, v in params.items() if v}
 
@@ -129,7 +129,7 @@ def test_regional_portfolio_returns(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_country_portfolio_returns(params, obb):
+def test_famafrench_country_portfolio_returns(params, obb):
     """Test the country portfolio returns endpoint."""
     params = {p: v for p, v in params.items() if v}
 
@@ -160,7 +160,7 @@ def test_country_portfolio_returns(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_internation_index_returns(params, obb):
+def test_famafrench_internation_index_returns(params, obb):
     """Test the international index returns endpoint."""
     params = {p: v for p, v in params.items() if v}
 
@@ -187,7 +187,7 @@ def test_internation_index_returns(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fama_french_breakpoints(params, obb):
+def test_famafrench_breakpoints(params, obb):
     """Test the Fama-French breakpoints endpoint."""
     params = {p: v for p, v in params.items() if v}
 
