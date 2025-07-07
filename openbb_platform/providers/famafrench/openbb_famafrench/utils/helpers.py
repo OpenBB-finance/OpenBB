@@ -31,7 +31,6 @@ async def get_factor_choices(
 
     Parameters
     ----------
-
     region : Optional[str]
         The region for which to get factor choices. If None, all regions are considered.
     factor : Optional[str]
@@ -44,7 +43,6 @@ async def get_factor_choices(
 
     Returns
     -------
-
     list
         A list of dictionaries representing the choices for factors or portfolios.
         Each dictionary contains a 'label' and a 'value' key.
@@ -699,7 +697,6 @@ def get_international_portfolio(
 
     Parameters
     ----------
-
     index : Optional[str]
         The index for which to get the portfolio data. If None, country must be provided.
     country : Optional[str]
@@ -719,14 +716,12 @@ def get_international_portfolio(
 
     Returns
     -------
-
     tuple
         A tuple containing a list of pandas DataFrames and a list of metadata dictionaries.
         In most scenarios, there will only be 1 DataFrame and 1 metadata dictionary.
 
     Raises
     ------
-
     ValueError
         When an invalid combination of parameters or unsupported values are supplied.
     """
@@ -792,7 +787,6 @@ def get_portfolio_data(
 
     Parameters
     ----------
-
     dataset : str
         The dataset to retrieve. Must be one of the available datasets in DATASET_CHOICES.
     frequency : Optional[str]
@@ -805,14 +799,12 @@ def get_portfolio_data(
 
     Returns
     -------
-
     tuple
         A tuple containing a list of pandas DataFrames and a list of metadata dictionaries.
         In most scenarios, there will only be 1 DataFrame and 1 metadata dictionary.
 
     Raises
     ------
-
     ValueError
         When an invalid combination of parameters or unsupported values are supplied.
     """
@@ -897,13 +889,11 @@ def get_breakpoint_data(
 
     Parameters
     ----------
-
     breakpoint_type : str
         The breakpoint to retrieve. Must be one of the available breakpoints in BREAKPOINT_FILES.
 
     Returns
     -------
-
     tuple
         A tuple containing a pandas DataFrames a metadata dictionary.
     """

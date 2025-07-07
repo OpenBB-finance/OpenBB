@@ -97,6 +97,7 @@ all = [
     "openbb-deribit",
     "openbb-ecb",
     "openbb-econometrics",
+    "openbb-famafrench",
     "openbb-finra",
     "openbb-finviz",
     "openbb-government-us",
