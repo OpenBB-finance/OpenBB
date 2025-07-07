@@ -1,23 +1,18 @@
-"""Test Fama-French API endpoints."""
-
-import base64
+"""Test Fama-French Python Interface."""
 
 import pytest
-import requests
-from openbb_core.env import Env
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.app.model.obbject import OBBject
 
 # pylint: disable=redefined-outer-name
 
 
 @pytest.fixture(scope="session")
-def headers():
-    """Get the headers for the API request."""
-    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
-    userpass_bytes = userpass.encode("ascii")
-    base64_bytes = base64.b64encode(userpass_bytes)
+def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
+    """Fixture to setup obb."""
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb  # pylint: disable=import-outside-toplevel
 
-    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+        return openbb.obb
 
 
 @pytest.mark.parametrize(
@@ -41,15 +36,14 @@ def headers():
     ],
 )
 @pytest.mark.integration
-def test_famafrench_factors(params, headers):
+def test_famafrench_factors(params, obb):
     """Test the Fama-French factors endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/famafrench/factors?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
+    result = obb.famafrench.factors(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(
@@ -73,15 +67,14 @@ def test_famafrench_factors(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_us_portfolio_returns(params, headers):
+def test_famafrench_us_portfolio_returns(params, obb):
     """Test the US portfolio returns endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/famafrench/us_portfolio_returns?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
+    result = obb.famafrench.us_portfolio_returns(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(
@@ -97,7 +90,7 @@ def test_us_portfolio_returns(params, headers):
                 "provider": "famafrench",
                 "portfolio": "developed_ex_us_6_portfolios_me_op",
                 "measure": "equal",
-                "frequency": "annual",
+                "frequency": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -105,17 +98,14 @@ def test_us_portfolio_returns(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_regional_portfolio_returns(params, headers):
+def test_famafrench_regional_portfolio_returns(params, obb):
     """Test the regional portfolio returns endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    query_str = get_querystring(params, [])
-    url = (
-        f"http://0.0.0.0:8000/api/v1/famafrench/regional_portfolio_returns?{query_str}"
-    )
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
+    result = obb.famafrench.regional_portfolio_returns(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(
@@ -139,15 +129,14 @@ def test_regional_portfolio_returns(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_country_portfolio_returns(params, headers):
+def test_famafrench_country_portfolio_returns(params, obb):
     """Test the country portfolio returns endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/famafrench/country_portfolio_returns?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
+    result = obb.famafrench.country_portfolio_returns(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(
@@ -171,17 +160,14 @@ def test_country_portfolio_returns(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_internation_index_returns(params, headers):
+def test_famafrench_international_index_returns(params, obb):
     """Test the international index returns endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    query_str = get_querystring(params, [])
-    url = (
-        f"http://0.0.0.0:8000/api/v1/famafrench/international_index_returns?{query_str}"
-    )
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
+    result = obb.famafrench.international_index_returns(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(
@@ -201,15 +187,14 @@ def test_internation_index_returns(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_fama_french_breakpoints(params, headers):
-    """Test Fama-French breakpoints endpoint."""
+def test_famafrench_breakpoints(params, obb):
+    """Test the Fama-French breakpoints endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/famafrench/breakpoints?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
+    result = obb.famafrench.breakpoints(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(
@@ -226,12 +211,11 @@ def test_fama_french_breakpoints(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_famafrench_factor_choices(params, headers):
+def test_famafrench_factor_choices(params, obb):
     """Test Fama-French available factors endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/famafrench/factor_choices?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
+    result = obb.famafrench.factor_choices(**params)
+    assert result
+    assert isinstance(result, list)
+    assert len(result) > 0
