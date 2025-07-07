@@ -1,0 +1,1 @@
+"""OpenBB Fama-French Models."""
