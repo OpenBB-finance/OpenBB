@@ -1178,10 +1178,12 @@ class OpenBBFigure(go.Figure):
         kwargs.update(
             dict(
                 config={
+                    "displayModeBar": False,
+                    "edits": {
+                        "colorbarPosition": True,
+                        "legendPosition": True,
+                    },
                     "scrollZoom": True,
-                    "displaylogo": False,
-                    "editable": True,
-                    "displayModeBar": "hover",
                 },
                 include_plotlyjs=kwargs.pop("include_plotlyjs", False),
                 full_html=False,
@@ -1224,18 +1226,28 @@ class OpenBBFigure(go.Figure):
 
     def to_plotly_json(self) -> dict:
         """Serialize, then deserialize, the figure to JSON. Returns as a Python dictionary."""
-        fig = json.loads(self.to_json())
+
+        if "t" in self.layout.margin and (
+            self.layout.margin["t"] is None or (self.layout.margin["t"] < 50)
+        ):
+            self.layout.margin["t"] = 50
+
+        fig = super().to_json() or "{}"
+        fig = json.loads(fig)
 
         fig.update(
             {
                 "config": {
-                    "displayModeBar": "hover",
-                    "displaylogo": False,
-                    "editable": True,
+                    "displayModeBar": False,
+                    "edits": {
+                        "colorbarPosition": True,
+                        "legendPosition": True,
+                    },
                     "scrollZoom": True,
                 }
             }
         )
+
         return fig
 
     @staticmethod
