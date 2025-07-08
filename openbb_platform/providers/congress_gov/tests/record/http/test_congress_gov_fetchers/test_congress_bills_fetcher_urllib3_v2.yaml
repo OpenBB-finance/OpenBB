@@ -1,0 +1,83 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/bill?api_key=MOCK_API_KEY&format=json&limit=5&sort=updateDate%2Bdesc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+SWwW7cRgyG73kKQodcuvZatreNDRiB4bZweipi91T0wJ2hJNajGZXDWXcb5N0D
+        zq5rZw2nyCVt3L2sNPyHIsVvKL57AQDQLDmE3JzCr/XWfu/+vqoCl2IvlE3Ttiezj40BlbKeO+UU
+        m9OdrVWB1fY9KjWn0BweHC72Dr7da4+a2WOt0p9qqrfUkQh50AQ6EFymkgku0jiyKhGkWJd/Kp4d
+        o6z3m498vd8JMpZxSWKOjw/a450HN0m453gx4J2oPu2TqovkazaXuyplDdVynQBHih7qCrSvZvBL
+        ZCUPV2qvDMzFzPKjrLgMnAdwwiNHDDBRxKBMGbokNVMhdxMoZ+BxSqJorxSSwIDRB449pA48xp4k
+        lQzYC7sStIg5Qx1STzHvPwp2PW2yeLtrKZNHpUc1O35a9ya6UDzH/npbwk9skmCCQXXKp/M5Trx/
+        h9h+n1bz1dHcmJy37cl8kLmV7HWXZEQ9+z2neF/qB2V+1sgenPwryH73JLJC2HUsY81oS2R0BKmb
+        AUYPXGEwav8oLDRS1IryDG6T3GSzJ5mSoDlfrkHs3ZF54KgJAt5u/Bj9SQcSmIpMKdPXy/DByf+b
+        4Xbxn227uNt41xU8jkrSkVh3vWUdwKVxJHFkxC5DcjdmmcoysANJ6L/iBrt4HnD+EEn6dW0dF9ti
+        fQ6i7RdGdCD4eYPPJWHQAa5IVuwIzp1allh0SMJ/UZVekRNSlLV967cbLNPLMmK825rrvlsUD72g
+        tV1DPXDPy0BAUbmOFZogl8n6dqW6RNY1TCg4kh3tSDBJ6gXHDA5FmDykosARpM4UKIT52fXotn0e
+        x+BaMOb7MdGq9CZ2glmlOC3yWYfi8EsdCs9Cxv1AcO5HjpxVUI2uri7+SJ6MvfMVb/J6oLJbTeBS
+        9MUpIGQtfn33vRJCz9Gm59SBI1HkCMg2gWwOCDo7BckYg4H7YS9PRN4koIIrCs8P9cMnUK9Xv23c
+        NxP2HPERv41LJVpEx+2rw8XRfSxN3Eb6T4G8zkn07D7Vbzxl9zJ1XSY9W7wMPLL9PwpxS2pjgyVl
+        3Y0qKkW93pYApymwq9HPq4cHcW4cm+qB7xfvPwAAAP//AwA7oC1XEg8AAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '2'
+      Cache-Control:
+      - max-age=900
+      Cf-Cache-Status:
+      - DYNAMIC
+      Cf-Ray:
+      - 94ffad4b6ea40d87-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 15 Jun 2025 05:30:43 GMT
+      Expires:
+      - Sun, 15 Jun 2025 05:45:43 GMT
+      Link:
+      - <https://api.congress.gov/v3/bill>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=AJxfpJQAx9oqEAgaWEm5vxfPCuOlWjYcm97SJjTq2yM-1749965443-1.0.1.1-rr4a..B.BmiDrgUKE68rDzQK9RqQHWrkIIc5VYTU_mjwmw41_ZpMsyRsAKgSqlcMoDdnIRIw9hRBrQwCLbxsX_3KDLVggXMIPnYAhctxdgE;
+        path=/; expires=Sun, 15-Jun-25 06:00:43 GMT; domain=.congress.gov; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - cne88om8v3p3ds68du20
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4993'
+      X-Vcap-Request-Id:
+      - cd281125-3dc6-46c0-7f30-dbad0929be37
+    status:
+      code: 200
+      message: OK
+version: 1
