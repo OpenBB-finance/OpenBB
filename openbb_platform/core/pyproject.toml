@@ -21,7 +21,7 @@ requests = "^2.32.4"
 importlib-metadata = ">=6.8.0"
 python-dotenv = "^1.0.0"
 aiohttp = "^3.12.12"
-ruff = "^0.11.13"              # Needed here to lint generated code
+ruff = "^0.12"              # Needed here to lint generated code
 pyjwt = "^2.10.1"
 
 [tool.poetry.scripts]
