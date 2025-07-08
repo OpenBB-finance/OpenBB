@@ -898,8 +898,7 @@ def get_breakpoint_data(
         A tuple containing a pandas DataFrames a metadata dictionary.
     """
     # pylint: disable=import-outside-toplevel
-    from io import StringIO  # noqa
-    from pandas import offsets, read_csv, to_datetime
+    from io import StringIO
 
     col_names = [
         "num_firms",
