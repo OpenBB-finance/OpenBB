@@ -212,13 +212,13 @@ def download_international_portfolios(url):
 def apply_date(x):
     """Pandas Apply helper to convert various date formats to a standard YYYY-MM-DD format."""
     # pylint: disable=import-outside-toplevel
-    from pandas import offsets, to_datetime
+    from pandas import to_datetime
 
     date = str(x).replace(" ", "")
     if len(date) == 6:
-        date = (to_datetime(x, format="%Y%m") + offsets.MonthEnd(0)).strftime(
-            "%Y-%m-%d"
-        )
+        date = date[:4] + "-" + date[4:]
+        date = to_datetime(date, format="%Y-%m")
+        date = date.date().strftime("%Y-%m-%d")
     elif len(date) == 8:
         date = date[:4] + "-" + date[4:6] + "-" + date[6:]
     elif len(date) == 4:
@@ -899,7 +899,7 @@ def get_breakpoint_data(
     """
     # pylint: disable=import-outside-toplevel
     from io import StringIO  # noqa
-    from pandas import read_csv
+    from pandas import offsets, read_csv, to_datetime
 
     col_names = [
         "num_firms",
@@ -958,6 +958,12 @@ def get_breakpoint_data(
         engine="python",
     ).reset_index()
     df = df.rename(columns={"index": "date"})
-    df.date = df.date.apply(apply_date)
+    df.date = df.date.apply(
+        lambda x: (
+            (to_datetime(x, format="%Y%m") + offsets.MonthEnd(0)).strftime("%Y-%m-%d")
+            if len(str(x)) == 6
+            else str(x) + "-12-31"
+        )
+    )
 
     return [df], [metadata]
