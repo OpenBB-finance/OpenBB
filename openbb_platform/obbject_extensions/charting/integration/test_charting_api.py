@@ -967,7 +967,7 @@ def test_charting_economy_shipping_chokepoint_info(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (

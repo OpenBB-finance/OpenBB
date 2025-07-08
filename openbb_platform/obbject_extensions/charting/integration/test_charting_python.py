@@ -792,7 +792,7 @@ def test_charting_economy_shipping_chokepoint_info(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
