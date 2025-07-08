@@ -1,7 +1,6 @@
 """Python interface integration tests for the derivatives extension."""
 
 import pytest
-from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 # pylint: disable=too-many-lines,redefined-outer-name
@@ -17,7 +16,7 @@ def obb(pytestconfig):
         return openbb.obb
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -73,7 +72,7 @@ def test_derivatives_options_chains(params, obb):
     assert len(getattr(result, "dataframe", [])) == len(result.contract_symbol)  # type: ignore
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         {
@@ -99,7 +98,7 @@ def test_derivatives_options_unusual(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -132,7 +131,7 @@ def test_derivatives_futures_historical(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "yfinance", "symbol": "ES", "date": None}),
@@ -149,7 +148,7 @@ def test_derivatives_futures_curve(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "intrinio", "date": None, "only_traded": True}),
@@ -166,7 +165,7 @@ def test_derivatives_options_snapshots(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "deribit"}),
@@ -181,7 +180,7 @@ def test_derivatives_futures_instruments(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "deribit", "symbol": "ETH-PERPETUAL"}),

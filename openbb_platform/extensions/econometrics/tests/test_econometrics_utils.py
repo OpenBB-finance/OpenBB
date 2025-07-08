@@ -2,7 +2,7 @@
 
 import numpy as np
 import pandas as pd
-from extensions.econometrics.openbb_econometrics.utils import (
+from openbb_econometrics.utils import (
     get_engle_granger_two_step_cointegration_test,
     mock_multi_index_data,
 )
