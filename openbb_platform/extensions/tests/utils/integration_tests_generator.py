@@ -14,7 +14,7 @@ from typing import (
     get_type_hints,
 )
 
-from openbb_charting import Charting
+import pytest
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
@@ -22,7 +22,7 @@ from pydantic_core import PydanticUndefined
 
 ROOT_DIR = Path(__file__).parent.parent.parent.parent
 
-TEST_TEMPLATE = """\n\n@parametrize(
+TEST_TEMPLATE = """\n\n@pytest.mark.parametrize(
     "params",
     [
         {params}
@@ -67,8 +67,6 @@ def create_integration_test_files(extensions: List[PosixPath]) -> None:
                     f'''"""Test {extension_name} extension."""
 import pytest
 from openbb_core.app.model.obbject import OBBject
-from extensions.tests.conftest import parametrize
-
 
 @pytest.fixture(scope="session")
 def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
@@ -280,6 +278,10 @@ def write_commands_integration_tests() -> None:
     add_test_commands_to_file(extensions)
 
 
+@pytest.mark.skipif(
+    "openbb_charting" not in __import__("sys").modules,
+    reason="Charting extension not installed",
+)
 def write_charting_extension_integration_tests():
     """Write charting extension integration tests."""
     import openbb_charting  # pylint: disable=import-outside-toplevel

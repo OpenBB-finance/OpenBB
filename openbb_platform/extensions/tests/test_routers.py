@@ -1,6 +1,6 @@
 """Test the routers."""
 
-from extensions.tests.utils.router_testers import (
+from .utils.router_testers import (
     check_router_command_examples,
     check_router_function_models,
     check_router_model_functions_signature,

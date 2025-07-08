@@ -7,7 +7,6 @@ from typing import Dict
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.registry import RegistryLoader
-
 from providers.tests.utils.unit_tests_generator import (
     check_pattern_in_file,
     get_provider_fetchers,
