@@ -193,3 +193,36 @@ def test_derivatives_futures_info(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "target": "implied_volatility",
+                "underlying_price": None,
+                "option_type": "otm",
+                "dte_min": None,
+                "dte_max": None,
+                "moneyness": None,
+                "strike_min": None,
+                "strike_max": None,
+                "oi": False,
+                "volume": False,
+                "theme": "dark",
+                "chart_params": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_derivatives_options_surface(params, obb):
+    """Test equity price historical."""
+    data = obb.derivatives.options.chains("AAPL", provider="cboe")
+    params["data"] = data.results
+    result = obb.derivatives.options.surface(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

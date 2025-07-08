@@ -790,3 +790,30 @@ def test_charting_economy_shipping_chokepoint_info(params, obb):
     assert len(result.results) > 0
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "moneyness": 20,
+                "dte_min": 5,
+                "dte_max": 60,
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_derivatives_options_surface(params, obb):
+    """Test chart equity price historical."""
+    data = obb.derivatives.options.chains("AAPL", provider="cboe")
+    params["data"] = data.results
+    result = obb.derivatives.options.surface(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
