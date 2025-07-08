@@ -222,7 +222,7 @@ def test_derivatives_futures_info(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (

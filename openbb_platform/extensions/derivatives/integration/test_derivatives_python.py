@@ -195,7 +195,7 @@ def test_derivatives_futures_info(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
