@@ -37,7 +37,7 @@ Extensions:
     - bls@1.1.2
     - cftc@1.1.1
     - econdb@1.3.1
-    - federal_reserve@1.4.2
+    - federal_reserve@1.4.3
     - fmp@1.4.2
     - fred@1.4.4
     - imf@1.1.1
