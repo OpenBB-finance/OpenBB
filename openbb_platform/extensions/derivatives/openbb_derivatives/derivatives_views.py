@@ -242,3 +242,91 @@ class DerivativesViews:
         content = figure.show(external=True).to_plotly_json()
 
         return figure, content
+
+    @staticmethod
+    def derivatives_options_surface(  # noqa: PLR0912
+        **kwargs,
+    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+        """Options surface chart. All parameters are optional, and are kwargs.
+
+        Data filtering is done by the POST request function.
+
+        It is not recommended to redraw this chart with the `to_chart` method,
+        instead, POST a new request with the desired parameters to the
+        `/derivatives/options/surface` endpoint.
+
+        Exposed parameters are:
+
+        - `title`: The title of the chart.
+        - `xtitle`: Title for the x-axis.
+        - `ytitle`: Title for the y-axis.
+        - `ztitle`: Title for the z-axis.
+        - `colorscale`: The colorscale to use for the chart.
+        - `layout_kwargs`: Additional dictionary to be passed to `fig.update_layout` before output.
+        """
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.generic_charts import surface3d
+        from pandas import DataFrame
+
+        cols_map = {
+            "expiration": "Expiration",
+            "strike": "Strike",
+            "option_type": "Type",
+            "dte": "DTE",
+            "implied_volatility": "IV",
+            "gamma": "Gamma",
+            "GEX": "GEX",
+            "delta": "Delta",
+            "DEX": "DEX",
+            "theta": "Theta",
+            "vega": "Vega",
+            "rho": "Rho",
+            "open_interest": "OI",
+            "volume": "Volume",
+        }
+
+        data = kwargs["obbject_item"]
+        df = DataFrame(data)
+        df = df.rename(columns=cols_map)
+        target = kwargs.get("target", "implied_volatility")
+        option_type = kwargs.get("option_type", "otm").lower()
+        oi = kwargs.get("oi", False)
+        volume = kwargs.get("volume", False)
+
+        label_dict = {"calls": "Call", "puts": "Put", "otm": "OTM", "itm": "ITM"}
+
+        label = (
+            f" {label_dict[option_type]} {cols_map.get(target, '')} Surface"
+            if not oi
+            else f"{label_dict[option_type]} {cols_map.get(target, '')} With Open Interest"
+        )
+        label = label + " Excluding Untraded Contracts" if volume else label
+
+        title = kwargs.get("title") or label
+        theme = kwargs.get("theme")
+        colorscale = kwargs.get("colorscale")
+        layout_kwargs = kwargs.get("layout_kwargs")
+        z_title = kwargs.get("ztitle") or cols_map.get(target, "Value")
+        x_title = kwargs.get("xtitle") or "DTE"
+        y_title = kwargs.get("ytitle") or "Strike"
+
+        X = df.DTE
+        Y = df.Strike
+        Z = df[cols_map[target]]
+
+        figure = surface3d(
+            X=X,
+            Y=Y,
+            Z=Z,  # type: ignore
+            xtitle=x_title,
+            ytitle=y_title,
+            ztitle=z_title,
+            layout_kwargs=layout_kwargs,
+            colorscale=colorscale,
+            theme=theme,
+            title=title,
+        )
+
+        content = figure.show(external=True).to_plotly_json()  # type: ignore
+
+        return figure, content  # type: ignore

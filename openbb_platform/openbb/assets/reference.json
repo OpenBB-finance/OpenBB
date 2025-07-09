@@ -2408,6 +2408,150 @@
                 "model": "OptionsChains"
             }
         },
+        "/derivatives/options/surface": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Filter and process the options chains data for volatility.\n\n Data posted can be an instance of OptionsChainsData,\n a pandas DataFrame, or a list of dictionaries.\n Data should contain the fields:\n\n - `expiration`: The expiration date of the option.\n - `strike`: The strike price of the option.\n - `option_type`: The type of the option (call or put).\n - `implied_volatility`: The implied volatility of the option. Or 'target' field.\n - `open_interest`: The open interest of the option.\n - `volume`: The trading volume of the option.\n - `dte` : Optional, days to expiration (DTE) of the option.\n - `underlying_price`: Optional, the price of the underlying asset.\n\n Results from the `/derivatives/options/chains` endpoint are the preferred input.\n\n If `underlying_price` is not supplied in the data as a field, it must be provided as a parameter.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "data",
+                        "type": "Union[list[openbb_core.provider.abstract.data.Data], openbb_core.provider.abstract.data.Data]",
+                        "description": "target: str",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "underlying_price",
+                        "type": "float",
+                        "description": "The price of the underlying asset.",
+                        "default": "",
+                        "optional": true
+                    },
+                    {
+                        "name": "option_type",
+                        "type": "Literal['otm', 'itm', 'calls', 'puts']",
+                        "description": "The type of df to display. Default is 'otm'.",
+                        "default": "otm",
+                        "optional": true
+                    },
+                    {
+                        "name": "dte_min",
+                        "type": "int",
+                        "description": "Minimum days to expiration (DTE) to filter options.",
+                        "default": "None",
+                        "optional": true
+                    },
+                    {
+                        "name": "dte_max",
+                        "type": "int",
+                        "description": "Maximum days to expiration (DTE) to filter options.",
+                        "default": "None",
+                        "optional": true
+                    },
+                    {
+                        "name": "moneyness",
+                        "type": "float",
+                        "description": "Specify a % moneyness to target for display,",
+                        "default": "None",
+                        "optional": true
+                    },
+                    {
+                        "name": "strike_min",
+                        "type": "float",
+                        "description": "Minimum strike price to filter options.",
+                        "default": "None",
+                        "optional": true
+                    },
+                    {
+                        "name": "strike_max",
+                        "type": "float",
+                        "description": "Maximum strike price to filter options.",
+                        "default": "None",
+                        "optional": true
+                    },
+                    {
+                        "name": "oi",
+                        "type": "bool",
+                        "description": "Filter for only options that have open interest. Default is False.",
+                        "default": "False",
+                        "optional": true
+                    },
+                    {
+                        "name": "volume",
+                        "type": "bool",
+                        "description": "Filter for only options that have trading volume. Default is False.",
+                        "default": "False",
+                        "optional": true
+                    },
+                    {
+                        "name": "chart",
+                        "type": "bool",
+                        "description": "Whether to return a chart or not. Default is False.",
+                        "default": "False",
+                        "optional": false
+                    },
+                    {
+                        "name": "theme",
+                        "type": "Literal['dark', 'light']",
+                        "description": "The theme to use for the chart. Default is 'dark'.",
+                        "default": "dark",
+                        "optional": true
+                    },
+                    {
+                        "name": "chart_params",
+                        "type": "dict",
+                        "description": "Additional parameters to pass to the charting library.",
+                        "default": "None",
+                        "optional": true
+                    },
+                    {
+                        "name": "target",
+                        "type": "str",
+                        "description": "",
+                        "default": "implied_volatility",
+                        "optional": true,
+                        "choices": null,
+                        "json_schema_extra": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "list[list]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": null,
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[list[Warning_]]",
+                        "description": "list of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {},
+            "model": null,
+            "openapi_extra": {}
+        },
         "/derivatives/options/unusual": {
             "deprecated": {
                 "flag": null,
@@ -4039,7 +4183,7 @@
                     {
                         "name": "country",
                         "type": "Literal['ABW', 'AGO', 'AIA', 'ALB', 'ARE', 'ARG', 'ASM', 'ATG', 'AUS', 'AZE', 'BEL', 'BEN', 'BES', 'BGD', 'BGR', 'BHR', 'BHS', 'BLM', 'BLZ', 'BRA', 'BRB', 'BRN', 'CAN', 'CHL', 'CHN', 'CIV', 'CMR', 'COD', 'COG', 'COK', 'COL', 'COM', 'CPV', 'CRI', 'CUB', 'CUW', 'CYM', 'CYP', 'DEU', 'DJI', 'DMA', 'DNK', 'DOM', 'DZA', 'ECU', 'EGY', 'ERI', 'ESP', 'EST', 'FIN', 'FJI', 'FRA', 'FRO', 'FSM', 'GAB', 'GBR', 'GEO', 'GHA', 'GIB', 'GIN', 'GLP', 'GMB', 'GNB', 'GNQ', 'GRC', 'GRD', 'GTM', 'GUF', 'GUM', 'GUY', 'HKG', 'HND', 'HRV', 'HTI', 'IDN', 'IND', 'IRL', 'IRN', 'IRQ', 'ISL', 'ISR', 'ITA', 'JAM', 'JOR', 'JPN', 'KAZ', 'KEN', 'KHM', 'KIR', 'KNA', 'KOR', 'KWT', 'LBN', 'LBR', 'LBY', 'LCA', 'LKA', 'LTU', 'LVA', 'MAC', 'MAF', 'MAR', 'MDA', 'MDG', 'MDV', 'MEX', 'MHL', 'MLT', 'MMR', 'MNE', 'MNP', 'MOZ', 'MRT', 'MSR', 'MTQ', 'MUS', 'MYS', 'MYT', 'NAM', 'NCL', 'NGA', 'NIC', 'NLD', 'NOR', 'NRU', 'NZL', 'OMN', 'PAK', 'PAN', 'PER', 'PHL', 'PLW', 'PNG', 'POL', 'PRI', 'PRT', 'PYF', 'QAT', 'REU', 'ROU', 'RUS', 'SAU', 'SDN', 'SEN', 'SGP', 'SLB', 'SLE', 'SLV', 'SOM', 'STP', 'SUR', 'SVN', 'SWE', 'SXM', 'SYC', 'SYR', 'TCA', 'TGO', 'THA', 'TKM', 'TLS', 'TON', 'TTO', 'TUN', 'TUR', 'TUV', 'TWN', 'TZA', 'UKR', 'URY', 'USA', 'VCT', 'VEN', 'VGB', 'VIR', 'VNM', 'VUT', 'WSM', 'YEM', 'ZAF']",
-                        "description": "Country to focus on. Enter as a 3-letter ISO country code. This parameter supersedes `continent` if both are provided.",
+                        "description": "Country to focus on. Enter as a 3-letter ISO country code. This parameter is overridden by `port_code` if both are provided.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -11074,7 +11218,7 @@
                     {
                         "name": "country",
                         "type": "Literal['ABW', 'AGO', 'AIA', 'ALB', 'ARE', 'ARG', 'ASM', 'ATG', 'AUS', 'AZE', 'BEL', 'BEN', 'BES', 'BGD', 'BGR', 'BHR', 'BHS', 'BLM', 'BLZ', 'BRA', 'BRB', 'BRN', 'CAN', 'CHL', 'CHN', 'CIV', 'CMR', 'COD', 'COG', 'COK', 'COL', 'COM', 'CPV', 'CRI', 'CUB', 'CUW', 'CYM', 'CYP', 'DEU', 'DJI', 'DMA', 'DNK', 'DOM', 'DZA', 'ECU', 'EGY', 'ERI', 'ESP', 'EST', 'FIN', 'FJI', 'FRA', 'FRO', 'FSM', 'GAB', 'GBR', 'GEO', 'GHA', 'GIB', 'GIN', 'GLP', 'GMB', 'GNB', 'GNQ', 'GRC', 'GRD', 'GTM', 'GUF', 'GUM', 'GUY', 'HKG', 'HND', 'HRV', 'HTI', 'IDN', 'IND', 'IRL', 'IRN', 'IRQ', 'ISL', 'ISR', 'ITA', 'JAM', 'JOR', 'JPN', 'KAZ', 'KEN', 'KHM', 'KIR', 'KNA', 'KOR', 'KWT', 'LBN', 'LBR', 'LBY', 'LCA', 'LKA', 'LTU', 'LVA', 'MAC', 'MAF', 'MAR', 'MDA', 'MDG', 'MDV', 'MEX', 'MHL', 'MLT', 'MMR', 'MNE', 'MNP', 'MOZ', 'MRT', 'MSR', 'MTQ', 'MUS', 'MYS', 'MYT', 'NAM', 'NCL', 'NGA', 'NIC', 'NLD', 'NOR', 'NRU', 'NZL', 'OMN', 'PAK', 'PAN', 'PER', 'PHL', 'PLW', 'PNG', 'POL', 'PRI', 'PRT', 'PYF', 'QAT', 'REU', 'ROU', 'RUS', 'SAU', 'SDN', 'SEN', 'SGP', 'SLB', 'SLE', 'SLV', 'SOM', 'STP', 'SUR', 'SVN', 'SWE', 'SXM', 'SYC', 'SYR', 'TCA', 'TGO', 'THA', 'TKM', 'TLS', 'TON', 'TTO', 'TUN', 'TUR', 'TUV', 'TWN', 'TZA', 'UKR', 'URY', 'USA', 'VCT', 'VEN', 'VGB', 'VIR', 'VNM', 'VUT', 'WSM', 'YEM', 'ZAF']",
-                        "description": "Country to focus on. Enter as a 3-letter ISO country code. This parameter supersedes `continent` if both are provided.",
+                        "description": "Country to focus on. Enter as a 3-letter ISO country code. This parameter is overridden by `port_code` if both are provided.",
                         "default": null,
                         "optional": true,
                         "choices": null
