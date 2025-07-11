@@ -527,43 +527,6 @@ files = [
 ]
 
 [[package]]
-name = "dnspython"
-version = "2.7.0"
-description = "DNS toolkit"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "dnspython-2.7.0-py3-none-any.whl", hash = "sha256:b4c34b7d10b51bcc3a5071e7b8dee77939f1e878477eeecc965e9835f63c6c86"},
-    {file = "dnspython-2.7.0.tar.gz", hash = "sha256:ce9c432eda0dc91cf618a5cedf1a4e142651196bbcd2c80e89ed5a907e5cfaf1"},
-]
-
-[package.extras]
-dev = ["black (>=23.1.0)", "coverage (>=7.0)", "flake8 (>=7)", "hypercorn (>=0.16.0)", "mypy (>=1.8)", "pylint (>=3)", "pytest (>=7.4)", "pytest-cov (>=4.1.0)", "quart-trio (>=0.11.0)", "sphinx (>=7.2.0)", "sphinx-rtd-theme (>=2.0.0)", "twine (>=4.0.0)", "wheel (>=0.42.0)"]
-dnssec = ["cryptography (>=43)"]
-doh = ["h2 (>=4.1.0)", "httpcore (>=1.0.0)", "httpx (>=0.26.0)"]
-doq = ["aioquic (>=1.0.0)"]
-idna = ["idna (>=3.7)"]
-trio = ["trio (>=0.23)"]
-wmi = ["wmi (>=1.5.1)"]
-
-[[package]]
-name = "email-validator"
-version = "2.2.0"
-description = "A robust email address syntax and deliverability validation library."
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "email_validator-2.2.0-py3-none-any.whl", hash = "sha256:561977c2d73ce3611850a06fa56b414621e0c8faa9d66f2611407d87465da631"},
-    {file = "email_validator-2.2.0.tar.gz", hash = "sha256:cb690f344c617a714f22e66ae771445a1ceb46821152df8e165c5f9a364582b7"},
-]
-
-[package.dependencies]
-dnspython = ">=2.0.0"
-idna = ">=2.0.0"
-
-[[package]]
 name = "exceptiongroup"
 version = "1.3.0"
 description = "Backport of PEP 654 (exception groups)"
@@ -604,23 +567,22 @@ standard = ["email-validator (>=2.0.0)", "fastapi-cli[standard] (>=0.0.5)", "htt
 
 [[package]]
 name = "fastmcp"
-version = "2.10.1"
+version = "2.8.1"
 description = "The fast, Pythonic way to build MCP servers."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "fastmcp-2.10.1-py3-none-any.whl", hash = "sha256:17d0acea04eeb3464c9eca42b6774fb06b38b72cface9af6a7482b3aa561db13"},
-    {file = "fastmcp-2.10.1.tar.gz", hash = "sha256:450c72e523926a2203c7eecdb4a8b0507506667bc8736b8b7bb44f6312424649"},
+    {file = "fastmcp-2.8.1-py3-none-any.whl", hash = "sha256:3b56a7bbab6bbac64d2a251a98b3dec5bb822ab1e4e9f20bb259add028b10d44"},
+    {file = "fastmcp-2.8.1.tar.gz", hash = "sha256:c89d8ce8bf53a166eda444cfdcb2c638170e62445487229fbaf340aed31beeaf"},
 ]
 
 [package.dependencies]
 authlib = ">=1.5.2"
 exceptiongroup = ">=1.2.2"
 httpx = ">=0.28.1"
-mcp = ">=1.10.0"
+mcp = ">=1.9.4,<2.0.0"
 openapi-pydantic = ">=0.5.1"
-pydantic = {version = ">=2.11.7", extras = ["email"]}
 python-dotenv = ">=1.1.0"
 rich = ">=13.9.4"
 typer = ">=0.15.2"
@@ -1532,7 +1494,6 @@ files = [
 
 [package.dependencies]
 annotated-types = ">=0.6.0"
-email-validator = {version = ">=2.0.0", optional = true, markers = "extra == \"email\""}
 pydantic-core = "2.33.2"
 typing-extensions = ">=4.12.2"
 typing-inspection = ">=0.4.0"
@@ -2420,4 +2381,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.13"
-content-hash = "046056a5a3bbaeecc2b143ee4c51f27fd73e9f79e12056e895d0d87a5ac6bc64"
+content-hash = "34cc8886cead5109a4590038adb7896223f3bbfc2a67d4275aed463f416a6324"

@@ -49,7 +49,7 @@ the exact same operations available to REST clients.""",
 
     # Response configuration
     describe_responses: bool = Field(
-        default=True,
+        default=False,
         description="Include response types in tool descriptions",
         alias="OPENBB_MCP_DESCRIBE_RESPONSES",
     )

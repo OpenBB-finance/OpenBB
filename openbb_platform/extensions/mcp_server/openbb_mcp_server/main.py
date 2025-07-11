@@ -5,7 +5,6 @@ import re
 import sys
 from typing import Annotated
 
-import uvicorn
 from fastapi import FastAPI
 from fastmcp import FastMCP
 from fastmcp.server.openapi import (
@@ -14,6 +13,7 @@ from fastmcp.server.openapi import (
     OpenAPIResourceTemplate,
     OpenAPITool,
 )
+from fastmcp.utilities.json_schema import compress_schema
 from fastmcp.utilities.openapi import HTTPRoute
 from openbb_core.api.rest_api import app
 from openbb_core.app.service.system_service import SystemService
@@ -59,7 +59,7 @@ def create_mcp_server(settings: MCPSettings, fastapi_app: FastAPI) -> FastMCPOpe
         route: HTTPRoute,
         component: OpenAPITool | OpenAPIResource | OpenAPIResourceTemplate,
     ) -> None:
-        """Attach category/tool tags & disable tools that are not admin."""
+        """Attach category/tool tags & disable tools based on settings."""
         if not isinstance(component, OpenAPITool):
             return
 
@@ -90,11 +90,18 @@ def create_mcp_server(settings: MCPSettings, fastapi_app: FastAPI) -> FastMCPOpe
         )
         component.tags.add(category)
 
+        # Compress schemas
+        component.parameters = compress_schema(component.parameters)
+        if hasattr(component, "output_schema") and component.output_schema:
+            component.output_schema = compress_schema(component.output_schema)
+
+        # Remove unnecessary details from descriptions
         if not settings.describe_responses:
             component.description = _extract_brief_description(
                 component.description or ""
             )
 
+        # Enable tool if it's in the default tool categories
         if "all" in settings.default_tool_categories or any(
             tag in settings.default_tool_categories for tag in component.tags
         ):
@@ -243,17 +250,17 @@ def main():
                     allow_origins=cors_settings.allow_origins,
                     allow_methods=cors_settings.allow_methods,
                     allow_headers=cors_settings.allow_headers,
+                    allow_credentials=True,
+                    expose_headers=["Mcp-Session-Id"],
                 ),
             ]
 
-            # Create ASGI app with cors middleware
-            http_app = mcp.http_app(
-                middleware=cors_middleware,
+            mcp.run(
                 transport=args.transport,
-                stateless_http=True,
+                host=args.host,
+                port=args.port,
+                middleware=cors_middleware,
             )
-
-            uvicorn.run(http_app, host=args.host, port=args.port)
 
     except Exception as e:
         logger.error("Failed to start MCP server: %s", e)
