@@ -106,6 +106,56 @@ Add the following configuration to the `mcpServers` object in your `mcp.json` fi
 }
 ```
 
+
+#### VS Code
+
+**Step 1: Enable MCP in VS Code Settings**
+
+Enter `shift + command + p` and open "Preferences: Open User Settings"
+
+Search for "mcp", and the item should show up under "Chat". Check the box to enable MCP server integrations.
+
+<img width="1278" height="411" alt="vs-code-mcp-enable" src="https://github.com/user-attachments/assets/5ace29de-e59c-45c3-b751-c6d92614e0ee" />
+
+
+**Step 2: Run the OpenBB MCP Server**
+
+Open your terminal and start the server. You can use the default settings or customize it.
+
+For a default setup, run:
+```bash
+openbb-mcp
+```
+The server will start on `http://127.0.0.1:8001`.
+
+**Step 3: Add Server as HTTP**
+
+Enter `shift + command + p` and select "MCP: Add Server".
+
+<img width="595" height="412" alt="vs-code-mcp-commands" src="https://github.com/user-attachments/assets/9b13a5b6-ec20-43e2-9aae-7982e9fdcae6" />
+
+Press enter and then select HTTP.
+
+<img width="594" height="174" alt="vs-code-mcp-add-http" src="https://github.com/user-attachments/assets/d2a06e4b-404a-4317-ad2c-241c1ac5e04b" />
+
+Copy the URL from the console of the running server, and enter it
+
+```sh
+INFO     Starting MCP server 'OpenBB MCP' with transport 'streamable-http' on http://127.0.0.1:8001/mcp
+```
+
+Give it a name, and add it either as global or to a workspace. The end result will create a `mcp.json` VS Code configuration file for the chosen domain.
+
+<img width="402" height="195" alt="vs-code-mcp-json" src="https://github.com/user-attachments/assets/fdea335b-0523-4103-be3e-b5d9675c25b3" />
+
+The tools can now be added as context to the chat.
+
+<img width="601" height="442" alt="vs-code-mcp-tools" src="https://github.com/user-attachments/assets/06c39248-aedd-4f53-9560-6dfbae1efaf8" />
+
+
+**Note**: When adding to the Cline extension, set `--transport sse` when starting the server.
+
+
 ## Configuration
 
 The server can be configured through multiple methods:
