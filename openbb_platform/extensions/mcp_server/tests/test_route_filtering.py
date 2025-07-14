@@ -1,8 +1,15 @@
 """Unit tests for route filtering utilities."""
 
+import sys
+
+import pytest
 from fastmcp.server.openapi import MCPType
 from openbb_mcp_server.utils.route_filtering import create_route_maps_from_settings
 from openbb_mcp_server.utils.settings import MCPSettings
+
+# Skip all tests if Python version < 3.10
+if sys.version_info < (3, 10):
+    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 def test_create_route_maps_from_settings_no_allowed():
