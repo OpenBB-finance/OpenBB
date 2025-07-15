@@ -1,13 +1,17 @@
 """Unit tests for ToolRegistry."""
 
 # pylint: disable=redefined-outer-name
-
+import sys
 from unittest.mock import MagicMock
 
 import pytest
 from fastmcp.server.openapi import OpenAPITool
 from openbb_mcp_server.registry import ToolRegistry
 from openbb_mcp_server.tool_models import ToggleResult
+
+# Skip all tests if Python version < 3.10
+if sys.version_info < (3, 10):
+    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 @pytest.fixture
