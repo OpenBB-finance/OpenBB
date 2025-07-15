@@ -1,8 +1,15 @@
+"""Test schema compression in fastmcp."""
+
 import json
+import sys
 
 import pytest
 from openbb_core.api.rest_api import app as fastapi_app
 from openbb_mcp_server.main import MCPSettings, create_mcp_server
+
+# Skip all tests if Python version < 3.10
+if sys.version_info < (3, 10):
+    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 @pytest.mark.integration

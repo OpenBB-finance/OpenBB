@@ -12,20 +12,11 @@ from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field
 
-from openbb_famafrench.utils.constants import (
-    BREAKPOINT_CHOICES,
-    BreakpointChoices,
-)
+from openbb_famafrench.utils.constants import BreakpointChoices
 
 
 class FamaFrenchBreakpointQueryParams(QueryParams):
     """Fama-French Breakpoints Query."""
-
-    __json_schema_extra__ = {
-        "breakpoint_type": {
-            "choices": BREAKPOINT_CHOICES,
-        }
-    }
 
     breakpoint_type: BreakpointChoices = Field(
         default="me",

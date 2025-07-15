@@ -1,6 +1,7 @@
 """Unit tests for config utilities."""
 
 import json
+import sys
 from pathlib import Path
 from unittest.mock import mock_open, patch
 
@@ -14,6 +15,10 @@ from openbb_mcp_server.utils.config import (
     save_mcp_settings,
 )
 from openbb_mcp_server.utils.settings import MCPSettings
+
+# Skip all tests if Python version < 3.10
+if sys.version_info < (3, 10):
+    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 def test_get_mcp_config_path():
