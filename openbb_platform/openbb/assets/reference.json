@@ -1,40 +1,40 @@
 {
-    "openbb": "4.4.4",
+    "openbb": "4.4.5",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.4.7",
+        "core": "1.4.8",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.3.1",
-                "crypto@1.4.1",
-                "currency@1.4.1",
-                "derivatives@1.4.1",
-                "economy@1.4.2",
-                "equity@1.4.1",
-                "etf@1.4.1",
-                "fixedincome@1.4.3",
-                "index@1.4.1",
-                "news@1.4.1",
-                "regulators@1.4.2"
+                "commodity@1.3.2",
+                "crypto@1.4.2",
+                "currency@1.4.2",
+                "derivatives@1.4.2",
+                "economy@1.4.3",
+                "equity@1.4.2",
+                "etf@1.4.2",
+                "fixedincome@1.4.4",
+                "index@1.4.2",
+                "news@1.4.2",
+                "regulators@1.4.3"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.4.1",
-                "bls@1.1.2",
-                "cftc@1.1.1",
-                "econdb@1.3.1",
-                "federal_reserve@1.4.3",
-                "fmp@1.4.2",
-                "fred@1.4.4",
-                "imf@1.1.1",
-                "intrinio@1.4.1",
-                "oecd@1.4.1",
-                "polygon@1.4.1",
-                "sec@1.4.3",
-                "tiingo@1.4.1",
-                "tradingeconomics@1.4.1",
-                "us_eia@1.1.1",
-                "yfinance@1.4.6"
+                "benzinga@1.4.2",
+                "bls@1.1.3",
+                "cftc@1.1.2",
+                "econdb@1.3.2",
+                "federal_reserve@1.4.4",
+                "fmp@1.4.3",
+                "fred@1.4.5",
+                "imf@1.1.2",
+                "intrinio@1.4.2",
+                "oecd@1.4.2",
+                "polygon@1.4.2",
+                "sec@1.4.4",
+                "tiingo@1.4.2",
+                "tradingeconomics@1.4.2",
+                "us_eia@1.1.2",
+                "yfinance@1.4.7"
             ],
             "openbb_obbject_extension": []
         }
@@ -2414,7 +2414,7 @@
                 "message": null
             },
             "description": "Filter and process the options chains data for volatility.\n\n Data posted can be an instance of OptionsChainsData,\n a pandas DataFrame, or a list of dictionaries.\n Data should contain the fields:\n\n - `expiration`: The expiration date of the option.\n - `strike`: The strike price of the option.\n - `option_type`: The type of the option (call or put).\n - `implied_volatility`: The implied volatility of the option. Or 'target' field.\n - `open_interest`: The open interest of the option.\n - `volume`: The trading volume of the option.\n - `dte` : Optional, days to expiration (DTE) of the option.\n - `underlying_price`: Optional, the price of the underlying asset.\n\n Results from the `/derivatives/options/chains` endpoint are the preferred input.\n\n If `underlying_price` is not supplied in the data as a field, it must be provided as a parameter.",
-            "examples": "",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Filter and process options chains data for volatility.\ndata = obb.derivatives.options.chains('AAPL', provider='cboe')\nsurface = obb.derivatives.options.surface(data=data.results, moneyness=20, dte_min=10, dte_max=60, chart=True)\nsurface.show()\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -12158,8 +12158,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Get FOMC documents by year and document type.\nOptionally, download the file directly from the Federal Reserve's website.\n\nSource: https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm\nSource: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm\n\nThis function does not return the typical OBBject response.\n\nThe response is `list[dict[str, str]]` of FOMC documents and their URLs.\n\nEach dictionary entry has keys: `date`, `url`, `doc_type`, and `doc_format`.\n\nIf `as_choices` is True, the response is a list of valid Workspace parameter choices.\nKeys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.\n\nIf `url` was provided, the response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fomc_documents(provider='federal_reserve')\n# Filter all documents by year.\nobb.economy.fomc_documents(provider='federal_reserve', year=2022)\n# Filter all documents by year and document type.\nobb.economy.fomc_documents(provider='federal_reserve', year=2022, document_type=minutes)\n# The `url` parameter will override all other parameters to download the document. The response will be a dictionary with keys `filename`, `content`, and `data_format`. PDF content will be a base64 encoded string of the document.\nobb.economy.fomc_documents(provider='federal_reserve', url=https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20220126.pdf)\n```\n\n",
+            "description": "Get FOMC documents by year and document type.\n\nSource: https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm\n\nSource: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm\n\nThis function does not return the typical OBBject response.\n\nThe response is `list[dict[str, str]]` of FOMC documents and their URLs.\n\nEach dictionary entry has keys: `date`, `url`, `doc_type`, and `doc_format`.\n\nIf `as_choices` is True, the response is a list of valid Workspace parameter choices.\nKeys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fomc_documents(provider='federal_reserve')\n# Filter all documents by year.\nobb.economy.fomc_documents(provider='federal_reserve', year=2022)\n# Filter all documents by year and document type.\nobb.economy.fomc_documents(provider='federal_reserve', year=2022, document_type=minutes)\n```\n\n",
             "parameters": {
                 "standard": [],
                 "federal_reserve": [
@@ -12174,7 +12174,7 @@
                     {
                         "name": "document_type",
                         "type": "str",
-                        "description": "Filter by document type. Default is all. Choose from: all, monetary_policy, minutes, projections, materials, press_release, press_conference, conference_call, agenda, transcript, speaker_key, beige_book, teal_book, green_book, blue_book, red_book",
+                        "description": "Filter by document type. Default is all. Choose from: all, monetary_policy, minutes, projections, materials, press_release, press_conference, agenda, transcript, speaker_key, beige_book, teal_book, green_book, blue_book, red_book",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -12192,14 +12192,6 @@
                         "type": "bool",
                         "description": "Whether to return cast as a list of valid Workspace parameter choices. Leave as False for typical use.",
                         "default": false,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "url",
-                        "type": "str",
-                        "description": "Download a document from the supplied URL. When provided, all other parameters are ignored. Content is returned as a base64 encoded string.",
-                        "default": null,
                         "optional": true,
                         "choices": null
                     }
@@ -12251,15 +12243,64 @@
             "openapi_extra": {
                 "widget_config": {
                     "type": "multi_file_viewer",
-                    "name": "FOMC Document Viewer",
-                    "description": "View FOMC materials.",
+                    "name": "FOMC PDF Document Viewer",
+                    "description": "Current and historical FOMC PDF materials.",
                     "gridData": {
                         "w": 30,
                         "h": 27
                     },
-                    "refetchInterval": false
+                    "refetchInterval": false,
+                    "endpoint": "/api/v1/economy/fomc_documents/download",
+                    "params": [
+                        {
+                            "type": "endpoint",
+                            "paramName": "url",
+                            "optionsEndpoint": "/api/v1/economy/fomc_documents",
+                            "optionsParams": {
+                                "document_type": "$document_type",
+                                "year": "$year",
+                                "pdf_only": true,
+                                "as_choices": true,
+                                "provider": "federal_reserve"
+                            },
+                            "show": false,
+                            "multiSelect": true,
+                            "roles": [
+                                "fileSelector"
+                            ]
+                        }
+                    ]
                 },
                 "model": "FomcDocuments"
+            }
+        },
+        "/economy/fomc_documents/download": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Download FOMC documents from the Federal Reserve's website.\n\n This function does not return the typical OBBject response.\n\n The response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "params",
+                        "type": "dict",
+                        "description": null,
+                        "default": null,
+                        "optional": false,
+                        "choices": null,
+                        "json_schema_extra": null
+                    }
+                ]
+            },
+            "returns": "list",
+            "data": {},
+            "model": null,
+            "openapi_extra": {
+                "widget_config": {
+                    "exclude": true
+                }
             }
         },
         "/equity/calendar/ipo": {
@@ -44117,6 +44158,9 @@
             "description": "Derivatives market data."
         },
         "/economy": {
+            "description": "Economic data."
+        },
+        "/economy/fomc_documents": {
             "description": "Economic data."
         },
         "/equity": {

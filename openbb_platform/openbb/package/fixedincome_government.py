@@ -246,7 +246,7 @@ class ROUTER_fixedincome_government(Container):
     def yield_curve(
         self,
         date: Annotated[
-            Union[datetime.date, str, None, list[Union[datetime.date, str, None]]],
+            Union[str, datetime.date, None, list[Union[str, datetime.date, None]]],
             OpenBBField(
                 description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred."
             ),
@@ -265,7 +265,7 @@ class ROUTER_fixedincome_government(Container):
         ----------
         provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.
-        date : Union[date, str, None, list[Union[date, str, None]]]
+        date : Union[str, date, None, list[Union[str, date, None]]]
             A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.
         country : str
             The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. Multiple comma separated items allowed. (provider: econdb)
