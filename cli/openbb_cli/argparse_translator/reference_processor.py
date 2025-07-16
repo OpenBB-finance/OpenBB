@@ -1,6 +1,7 @@
+import ast
 """Module for the ReferenceToArgumentsProcessor class."""
 
-# `ForwardRef`needs to be imported because the usage of `eval()`,
+# `ForwardRef`needs to be imported because the usage of `ast.literal_eval()`,
 # which creates a ForwardRef
 # which would raise a not defined error if it's not imported here.
 # pylint: disable=unused-import
@@ -53,7 +54,7 @@ class ReferenceToArgumentsProcessor:
                 type_ = type_.replace("Annotated[", "").replace("]", "")
             type_ = type_.split(",")[0]
 
-        return eval(type_)  # noqa: S307, E501 pylint: disable=eval-used
+        return ast.literal_eval(type_)  # noqa: S307, E501 pylint: disable=eval-used
 
     def _parse_type(self, type_: str) -> type:
         """Parse the type from the string representation."""
