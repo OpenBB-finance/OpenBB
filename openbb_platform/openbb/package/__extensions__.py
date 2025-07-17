@@ -44,7 +44,7 @@ Extensions:
     - intrinio@1.4.2
     - oecd@1.4.2
     - polygon@1.4.2
-    - sec@1.4.4
+    - sec@1.4.5
     - tiingo@1.4.2
     - tradingeconomics@1.4.2
     - us_eia@1.1.2
